@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="completeToSaveImage">Image is saved</string>
+    
+    <string name="failToSaveImage">Fail to save image</string>
+    <string name="failToShowVideoFullScreenMode">Fail to open this video with fullscreen mode</string>
+
+    <string name="pullToRefresh">Pull to refresh.</string>
+    <string name="pullToLoadNewList">Pull to load new list.</string>
+    <string name="putToRefresh">Put to refresh.</string>
+    <string name="putToLoadNewList">Put to load new list.</string>
+    
+</resources>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/imageviewerActivity_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <ProgressBar 
+        android:id="@+id/imageviewerActivity_progress"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <com.outspoken_kid.views.PinchImageView
+        android:id="@+id/imageviewerActivity_image"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent" />
+    
+    <View 
+	    android:id="@+id/imageviewerActivity_cover"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent" />
+    
+    <TextView 
+        android:id="@+id/imageviewerActivity_title"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:textColor="#fff"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:background="#8000" />
+    
+    <Button
+        android:id="@+id/imageviewerActivity_btnSave"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <View
+        android:id="@+id/imageviewerActivity_thumbnailLinearBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#8000" />
+    
+	<HorizontalScrollView
+	    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:fillViewport="true" >
+        
+	    <LinearLayout 
+	        android:id="@+id/imageviewerActivity_thumbnailLinear"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" />
+	    
+	</HorizontalScrollView>    
+	
+</FrameLayout>

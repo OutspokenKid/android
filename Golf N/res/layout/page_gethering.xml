@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/getheringPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+
+    <Button 
+        android:id="@+id/getheringPage_btnIntro"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringMenu_intro"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringPage_btnNewPost"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringPage_btnIntro"
+        android:layout_alignTop="@id/getheringPage_btnIntro"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringMenu_newPost"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringPage_btnMember"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringPage_btnNewPost"
+        android:layout_alignTop="@id/getheringPage_btnNewPost"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringMenu_member"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringPage_btnStandBy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringPage_btnMember"
+        android:layout_alignTop="@id/getheringPage_btnMember"
+        android:gravity="center"
+        android:background="#373737"
+        android:text="@string/getheringMenu_standBy"
+        android:textColor="#fff" />
+
+    <ScrollView
+        android:id="@+id/getheringPage_scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true" 
+        android:layout_alignLeft="@id/getheringPage_btnIntro"
+        android:layout_below="@id/getheringPage_btnIntro" >
+
+        <RelativeLayout
+	        android:id="@+id/getheringPage_introRelative"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <View 
+		        android:id="@+id/getheringPage_bgProfile"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentLeft="true"
+		        android:background="@drawable/bg_gethering_308" />
+		    
+		    <ProgressBar
+		        android:id="@+id/getheringPage_profileProgress"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentLeft="true" />
+		    
+		    <ImageView 
+		        android:id="@+id/getheringPage_ivProfile"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentLeft="true"
+		        android:scaleType="centerCrop" />
+		
+		    <TextView
+		        android:id="@+id/getheringPage_tvPostCount1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_toRightOf="@id/getheringPage_bgProfile"
+		        android:layout_alignTop="@id/getheringPage_bgProfile"
+		        android:textColor="#fff"
+		        android:text="@string/post"
+		        android:gravity="right|bottom" 
+		        android:background="#0f75bc" />
+		    
+		    <TextView
+		        android:id="@+id/getheringPage_tvPostCount2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/getheringPage_tvPostCount1"
+		        android:layout_alignTop="@id/getheringPage_tvPostCount1"
+		        android:padding="10dp"
+		        android:textColor="#fff" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvMemberCount1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_toRightOf="@id/getheringPage_tvPostCount1"
+		        android:layout_alignTop="@id/getheringPage_tvPostCount1" 
+		        android:textColor="#fff"
+		        android:text="@string/memberCount"
+		        android:gravity="right|bottom" 
+		        android:background="#39b54a" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvMemberCount2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/getheringPage_tvMemberCount1"
+		        android:layout_alignTop="@id/getheringPage_tvMemberCount1"
+		        android:padding="10dp" 
+		        android:textColor="#fff" />
+		    
+		    <View 
+		        android:id="@+id/getheringPage_bgOwnerProfile"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_toRightOf="@id/getheringPage_bgProfile"
+		        android:layout_alignBottom="@id/getheringPage_bgProfile"
+		        android:background="@drawable/bg_profile_150" />
+		    
+		    <ProgressBar 
+		        android:id="@+id/getheringPage_ownerProgress"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/getheringPage_bgOwnerProfile"
+		        android:layout_alignTop="@id/getheringPage_bgOwnerProfile" />
+		
+		    <ImageView 
+		        android:id="@+id/getheringPage_ivOwnerProfile"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/getheringPage_bgOwnerProfile"
+		        android:layout_alignTop="@id/getheringPage_bgOwnerProfile"
+		        android:scaleType="centerCrop" />
+		    
+		    <View
+		        android:id="@+id/getheringPage_isPublic"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_toRightOf="@id/getheringPage_bgOwnerProfile"
+		        android:layout_alignBottom="@id/getheringPage_bgOwnerProfile"
+		        android:background="#000" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvGetheringName"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/getheringPage_bgProfile"
+		        android:layout_below="@id/getheringPage_bgProfile"
+		        android:gravity="left|center_vertical"
+		        android:maxLines="2"
+		        android:ellipsize="end"
+		        android:textColor="#fff" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvNickname"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignTop="@id/getheringPage_tvGetheringName"
+		        android:gravity="center_vertical"
+		        android:singleLine="true" 
+		        android:textColor="#fff" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvRegdate"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentRight="true"
+		        android:layout_below="@id/getheringPage_tvNickname"
+		        android:gravity="center_vertical"
+		        android:textColor="#fff" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvRegdate2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/getheringPage_tvRegdate"
+		        android:layout_toLeftOf="@id/getheringPage_tvRegdate"
+		        android:gravity="center_vertical"
+		        android:text="@string/regdate"
+		        android:visibility="invisible" 
+		        android:textColor="#fff" />
+		    
+		    <View
+		        android:id="@+id/getheringPage_horizontalLine"
+		        android:layout_width="match_parent"
+		        android:layout_height="1px"
+		        android:layout_below="@id/getheringPage_tvRegdate"
+		        android:background="#ddd" />
+		    
+		    <TextView 
+		        android:id="@+id/getheringPage_tvGetheringIntro"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@id/getheringPage_bgProfile"
+		        android:layout_below="@id/getheringPage_horizontalLine" 
+		        android:textColor="#fff" />
+		    
+	    </RelativeLayout>
+        
+    </ScrollView>
+    
+    <com.outspoken_kid.views.holo_dark.HoloStyleButton 
+        android:id="@+id/getheringPage_btnForMember"
+    	android:layout_width="0dp"
+       	android:layout_height="0dp" 
+       	android:layout_centerHorizontal="true"
+       	android:layout_alignParentBottom="true"
+       	android:visibility="invisible" />
+    
+    <Button 
+        android:id="@+id/getheringPage_btnSeeMore"
+    	android:layout_width="0dp"
+       	android:layout_height="0dp" 
+       	android:layout_alignParentRight="true"
+       	android:layout_alignParentBottom="true" 
+       	android:background="@drawable/img_dot" />
+    
+    <com.handmark.pulltorefresh.library.PullToRefreshGridView
+        android:id="@+id/getheringPage_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/getheringPage_btnIntro"
+        android:background="#000" />
+    
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/getheringPage_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/getheringPage_btnIntro"
+        android:layout_below="@id/getheringPage_btnIntro"
+        android:background="#000" />
+    
+    <com.outspoken_kid.views.holo_dark.HoloStyleButton 
+        android:id="@+id/getheringPage_btnForOwner"
+    	android:layout_width="0dp"
+       	android:layout_height="0dp" 
+       	android:layout_alignParentBottom="true"
+       	android:layout_centerHorizontal="true"
+       	android:visibility="invisible" />
+
+    <com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup
+        android:id="@+id/getheringPage_pMore" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+</RelativeLayout>

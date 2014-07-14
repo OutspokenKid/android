@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/postPage_mainLayout" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:clickable="true"
+	    android:background="#000" >
+	
+		<ScrollView 
+		    android:id="@+id/postPage_scrollView"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dp"
+		    android:layout_weight="1"
+		    android:fillViewport="false" >
+	
+		    <LinearLayout
+		        android:id="@+id/postPage_innerLayout" 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:visibility="invisible"
+			    android:orientation="vertical" >
+			    
+		        <LinearLayout
+		            android:id="@+id/postPage_mustvalueLinear"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical" 
+		            android:visibility="gone" >
+		            
+		            <TextView 
+			            android:id="@+id/postPage_tvInput1" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue1" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvSpec" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput2" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue2" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput3" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue3" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput4" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue4" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput5" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue5" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput6" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue6" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput7" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue7" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+			        
+			        <TextView 
+			            android:id="@+id/postPage_tvInput8" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:gravity="center_vertical" />
+			        	    
+			        <TextView
+			            android:id="@+id/postPage_tvValue8" 
+			            android:layout_width="0dp"
+				    	android:layout_height="0dp"
+				    	android:textColor="#fff"
+				    	android:singleLine="true"
+				    	android:ellipsize="end"
+				    	android:gravity="center_vertical" />
+		            
+		        </LinearLayout>
+			    
+		        <LinearLayout
+		            android:id="@+id/postPage_contentLayout"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:background="#000" >
+	
+		            <TextView 
+			            android:id="@+id/postPage_tvText"
+			            android:layout_width="match_parent"	
+			            android:layout_height="wrap_content"
+			            android:autoLink="web|email"
+			            android:textColor="#ddd" />	            
+		            
+		        </LinearLayout>
+			    
+			    <LinearLayout
+		            android:id="@+id/postPage_replyLinear"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical" />
+			    
+			</LinearLayout>
+		
+		</ScrollView>
+		
+		<LinearLayout
+	        android:id="@+id/postPage_writeLinear"
+			android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:orientation="horizontal" >
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+	            android:id="@+id/postPage_editText"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleButton
+	            android:id="@+id/postPage_submitButton"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp" />
+	        
+	    </LinearLayout>
+	
+	</LinearLayout>
+	
+    <LinearLayout
+	    android:id="@+id/postPage_targetLinear"
+		android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="#a333" />
+    
+</FrameLayout>

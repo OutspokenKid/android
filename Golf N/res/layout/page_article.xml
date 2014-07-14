@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/articlePage_mainLayout" 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+
+    <LinearLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:orientation="vertical"
+	    android:clickable="true"
+	    android:background="#000" >
+	
+		<ScrollView 
+		    android:id="@+id/articlePage_scrollView"
+		    android:layout_width="match_parent"
+		    android:layout_height="0dp"
+		    android:layout_weight="1"
+		    android:fillViewport="false" >
+	
+		    <LinearLayout
+		        android:id="@+id/articlePage_innerLayout" 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:visibility="invisible"
+			    android:orientation="vertical" >
+			    
+		        <LinearLayout
+		            android:id="@+id/articlePage_contentLayout"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical"
+		            android:background="#000" >
+		            
+		        </LinearLayout>
+			    
+			    <LinearLayout
+		            android:id="@+id/articlePage_replyLinear"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="vertical" />
+			    
+			</LinearLayout>
+		
+		</ScrollView>
+		
+		<LinearLayout
+	        android:id="@+id/articlePage_writeLinear"
+			android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:orientation="horizontal" >
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+	            android:id="@+id/articlePage_editText"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleButton
+	            android:id="@+id/articlePage_submitButton"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp" />
+	        
+	    </LinearLayout>
+	
+	</LinearLayout>
+	
+    <LinearLayout
+	    android:id="@+id/articlePage_targetLinear"
+		android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:background="#a333" />
+    
+</FrameLayout>

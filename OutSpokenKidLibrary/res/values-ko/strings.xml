@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="completeToSaveImage">이미지 저장 완료</string>
+
+    <string name="failToSaveImage">이미지 저장 실패</string>
+    <string name="failToShowVideoFullScreenMode">해당 동영상을 전체화면 보기로 열 수 없습니다</string>
+    
+    <string name="pullToRefresh">당겨서 새로고침</string>
+    <string name="pullToLoadNewList">당겨서 새로운 리스트 불러오기</string>
+    <string name="putToRefresh">놓아서 새로고침</string>
+    <string name="putToLoadNewList">놓아서 새로운 리스트 불러오기</string>
+    
+</resources>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#000" >
+
+    <LinearLayout
+        android:id="@+id/cooperateActivity_titleBar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:background="#fff" >
+
+        <TextView
+	        android:id="@+id/cooperateActivity_tvTitle"
+	        android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:layout_gravity="center_vertical"
+	        android:gravity="center"
+	        android:text="@string/cooperate"
+	        android:textColor="#000" />
+        
+        <FrameLayout
+            android:id="@+id/cooperateActivity_btnSubmit"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent" >
+	    
+            <View
+            	android:id="@+id/cooperateActivity_submitImage"    
+                android:layout_width="0dp"
+	        	android:layout_height="0dp"
+	        	android:background="@drawable/btn_top_submit"  />
+            
+		</FrameLayout>
+        
+    </LinearLayout>
+        
+    <ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="#000"
+	    android:fillViewport="true" >
+	
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		        android:id="@+id/cooperateActivity_etTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		        android:id="@+id/cooperateActivity_etCompany"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		        android:id="@+id/cooperateActivity_etPhoneNumber"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		        android:id="@+id/cooperateActivity_etEmail"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" />
+	        
+	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		        android:id="@+id/cooperateActivity_etContent"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" />
+	        
+	    </LinearLayout>
+	
+	</ScrollView>
+        
+</LinearLayout>
