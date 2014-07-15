@@ -307,7 +307,6 @@ public class PostPage extends BaseFragment {
 				
 				try {
 					JSONObject objResult = new JSONObject(result);
-					
 					post = new Post(objResult.getJSONObject("data"));
 					setPage(true);
 				} catch(Exception e) {
@@ -494,11 +493,15 @@ public class PostPage extends BaseFragment {
 		try {
 			String[] mustvalues = post.getMustvalue();
 			
-			for (int i = 0; i < WriteForFleaActivity.NUMBER_OF_TEXTS; i++) {
+			for(int i=0; i<WriteForFleaActivity.NUMBER_OF_TEXTS; i++) {
+				tvValues[i].setText("-");
+			}
+			
+			int size = Math.min(mustvalues.length, WriteForFleaActivity.NUMBER_OF_TEXTS);
+			for (int i = 0; i < size; i++) {
+
 				if(!StringUtils.isEmpty(mustvalues[i])) {
 					tvValues[i].setText(mustvalues[i]);
-				} else {
-					tvValues[i].setText("-");
 				}
 				
 				tvInputs[i].setVisibility(View.GONE);
@@ -653,6 +656,13 @@ public class PostPage extends BaseFragment {
 						
 						for(int i=0; i<length; i++) {
 							final Reply reply = new Reply(arJSON.getJSONObject(i));
+							
+							if(isGethering) {
+								reply.setReplyType(Reply.TYPE_GETHERING);
+							} else {
+								reply.setReplyType(Reply.TYPE_NORMAL);
+							}
+							
 							ViewForReply vfr = new ViewForReply(mContext, madeCount, post.getSpot_nid(), replyLinear);
 							ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, vfr, 
 									1, 0, new int[]{8, 0, 8, 0});
@@ -724,8 +734,15 @@ public class PostPage extends BaseFragment {
 			}
 		};
 		
-		String url = ZoneConstants.BASE_URL + "reply/list" +
-				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+		String url = null;
+		
+		if(isGethering) {
+			url = ZoneConstants.BASE_URL + "boardreply/list";
+		} else{
+			url = ZoneConstants.BASE_URL + "reply/list";
+		}
+		
+		url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&spot_nid=" + spot_nid +
 				"&image_size=100" +
 				"&last_reply_nid=" + lastIndexno;
@@ -777,8 +794,17 @@ public class PostPage extends BaseFragment {
 		};
 		
 		try {
-			String url = ZoneConstants.BASE_URL + "reply/write" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+			String url = null;
+			
+			if(isGethering) {
+				url = ZoneConstants.BASE_URL + "boardreply/write?origin_sb_id=" + 
+						ZoneConstants.PAPP_ID;
+			} else {
+				url = ZoneConstants.BASE_URL + "reply/write?sb_id=" +
+						ZoneConstants.PAPP_ID;
+			}
+			
+			url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID) +
 					"&spot_nid=" + post.getSpot_nid() +
 					"&content=" + URLEncoder.encode(text, "UTF-8");
 			
@@ -945,10 +971,18 @@ public class PostPage extends BaseFragment {
 					}
 				}
 			};
+
+			String url = null;
 			
-			String url = ZoneConstants.BASE_URL + "spot/badSpot" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&spot_nid=" + post.getSpot_nid();
+			if(isGethering) {
+				url = ZoneConstants.BASE_URL + "boardspot/badSpot";
+			} else {
+				url = ZoneConstants.BASE_URL + "spot/badSpot";
+			}
+			
+			url = "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&spot_nid=" + post.getSpot_nid() +
+					"&bad_reason_kind=080";
 			
 			AsyncStringDownloader.download(url, null, ocl);
 		} catch(Exception e) {
@@ -1054,9 +1088,16 @@ public class PostPage extends BaseFragment {
 					ApplicationManager.refreshTopPage();
 				}
 			};
+
+			String url = null;
 			
-			String url = ZoneConstants.BASE_URL + "spot/delete" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+			if(isGethering) {
+				url = ZoneConstants.BASE_URL + "boardspot/delete";
+			} else {
+				url = ZoneConstants.BASE_URL + "spot/delete";
+			}
+			
+			url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&spot_nid=" + post.getSpot_nid();
 			
 			AsyncStringDownloader.download(url, null, ocl);

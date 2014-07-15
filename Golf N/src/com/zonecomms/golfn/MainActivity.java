@@ -421,12 +421,12 @@ public class MainActivity extends BaseFragmentActivity {
 
 				if(data != null && data.hasExtra("spot_nid") && data.hasExtra("isGethering")) {
 					
-					int spot_nid = data.getIntExtra("spot_nid", 0);
-					boolean isGethering = data.getBooleanExtra("isGethering", false);
+					LogUtils.log("###MainActivity.onActivityResult.  spot_nid : " + 
+							data.getIntExtra("spot_nid", 0) +
+							", isGethering :  " + data.getBooleanExtra("isGethering", false));
 					
-					if(spot_nid != 0) {
-						showRecentPostPage(spot_nid, isGethering);
-					}
+					showRecentPostPage(data.getIntExtra("spot_nid", 0), 
+							data.getBooleanExtra("isGethering", false));
 				}
 			}
 			break;
@@ -1014,7 +1014,7 @@ public class MainActivity extends BaseFragmentActivity {
 		
 		Intent intent = new Intent(this, WriteActivity.class);
 		intent.putExtra("titleText", titleText);
-		intent.putExtra("isGethering", true);
+		intent.putExtra("isGethering", false);
 		intent.putExtra("isFinding", true);
 		startActivityWithAnim(intent, ZoneConstants.REQUEST_WRITE);
 	}
@@ -1404,9 +1404,18 @@ public class MainActivity extends BaseFragmentActivity {
 			
 			int currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 			int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+
+			LogUtils.log("###MainActivity.checkPopup.  " +
+					"\nlastIndexno : " + lastIndexno +
+					"\nlastDate : " + lastDate +
+					"\nlastMonth : " + lastMonth +
+					"\ncurrentIndexno : " + startupInfo.getPopup().getNotice_nid() +
+					"\ncurrentDate : " + currentDate +
+					"\ncurrentMonth : " + currentMonth);
 			
-			if(lastIndexno != startupInfo.getPopup().getNotice_nid() && 
-					lastDate != currentDate && lastMonth != currentMonth ) {
+			if(lastIndexno != startupInfo.getPopup().getNotice_nid() 
+					|| lastDate != currentDate 
+					|| lastMonth != currentMonth ) {
 				gestureSlidingLayout.postDelayed(new Runnable() {
 					
 					@Override
@@ -1427,16 +1436,19 @@ public class MainActivity extends BaseFragmentActivity {
 			
 			@Override
 			public void onErrorRaised(String url, Exception e) {
+				LogUtils.log("###MainActivity.onErrorRaised.  \nurl : " + url);
 			}
 			
 			@Override
 			public void onCompleted(String url, String result) {
 				
+				LogUtils.log("###MainActivity.onCompleted.  \nurl : " + url + "\nresult : " + result);
+				
 				try {
 					JSONObject objJSON = new JSONObject(result);
 					int version = com.outspoken_kid.utils.AppInfoUtils.getVersionCode();
 					
-					if(version != objJSON.getJSONObject("data").getInt("version_nid")) {
+					if(version < objJSON.getJSONObject("data").getInt("version_nid")) {
 						showAlertDialog(getString(R.string.notice), 
 								getString(R.string.wannaUpdate), 
 								getString(R.string.update), 

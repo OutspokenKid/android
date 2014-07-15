@@ -132,7 +132,7 @@ public class CooperateActivity extends Activity {
 	}
 	
 	public void submit() {
-		
+
 		try {
 			String title = URLEncoder.encode(etTitle.getEditText().getText().toString(), "UTF-8");
 			String company = URLEncoder.encode(etCompany.getEditText().getText().toString(), "UTF-8");

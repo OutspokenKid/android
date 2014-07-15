@@ -159,7 +159,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	 * 댓글 - Notification(앱 실행, 해당 글로).
 	 * 
 	 * @param push_msg : 띄워줄 메세지.
-	 * @param msg_type : 메세지 타입 - 000 (전체 푸시), 010 (메시지), 021 (댓글)
+	 * @param msg_type : 메세지 타입 - 000 (전체 푸시), 010 (메시지), 021 (댓글), 022 (모임 댓글), 031 (type3 댓글), 050 (모임 상태 변경)
 	 * @param member_id : 메세지의 경우 보낸 사람의 id.
 	 * @param spot_nid : 댓글인 경우 글의 nid.
 	 * @param sb_id : 모임 관련 푸시인 경우 모임의 sb_id.

@@ -238,9 +238,6 @@ public class IntroActivity extends Activity {
 				downloadLoadingImages();
 			}
 		};
-
-		//common/common_data?image_size=480&sb_id=golfn
-
 		
 		String url = ZoneConstants.BASE_URL + "common/common_data" +
 				"?sb_id=" + ZoneConstants.PAPP_ID +

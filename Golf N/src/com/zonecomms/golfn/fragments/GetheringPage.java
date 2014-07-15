@@ -935,6 +935,7 @@ public class GetheringPage extends BaseListFragment {
 		
 		String url = ZoneConstants.BASE_URL + "boardspot/list" +
 				"?sb_id=" + sb_id +
+				"&origin_sb_id=" + ZoneConstants.PAPP_ID +
 				"&image_size=308" +
 				"&last_spot_nid=" + lastIndexno +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID);
@@ -998,9 +999,12 @@ public class GetheringPage extends BaseListFragment {
 		} else {
 			url += "&max_sb_member_nid=0";
 		}
-		
+	
+		//대기 멤버.
 		if(isStandingBy) {
 			url += "&status=0";
+		
+		//가입된 멤버.
 		} else {
 			url += "&status=1";
 		}
@@ -1083,7 +1087,7 @@ public class GetheringPage extends BaseListFragment {
 									public void run() {
 										ToastUtils.showToast(R.string.willBeCompletedWhenApply);
 									}
-								}, 2000);
+								}, 3000);
 							} else {
 								showMenu(0);
 							}
@@ -1092,7 +1096,6 @@ public class GetheringPage extends BaseListFragment {
 						} else{
 							ToastUtils.showToast(R.string.failToJoinGethering);
 						}
-							
 					} catch(Exception e) {
 						ToastUtils.showToast(R.string.failToJoinGethering);
 					}
@@ -1193,6 +1196,7 @@ public class GetheringPage extends BaseListFragment {
 		try {
 			String url = ZoneConstants.BASE_URL + "sb/statusSBMember" +
 					"?sb_id=" + URLEncoder.encode(gethering.getSb_id(), "utf-8") +
+					"&origin_sb_id=" + ZoneConstants.PAPP_ID +
 					"&status=-9" +
 					"&member_ids=" + ViewWrapperForGetheringMemberList.getMemberidString();
 			
@@ -1236,6 +1240,7 @@ public class GetheringPage extends BaseListFragment {
 		try {
 			String url = ZoneConstants.BASE_URL + "sb/statusSBMember" +
 					"?sb_id=" + URLEncoder.encode(gethering.getSb_id(), "utf-8") +
+					"&origin_sb_id=" + ZoneConstants.PAPP_ID +
 					"&status=1" +
 					"&member_ids=" + ViewWrapperForGetheringMemberList.getMemberidString();
 			

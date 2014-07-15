@@ -257,16 +257,13 @@ public class GridPage extends BaseListFragment {
 			url +=  "boardspot/list" +
 					"?image_size=308" +
 					"&last_spot_nid=" + lastIndexno +
-					"&origin_sb_id=" + ZoneConstants.PAPP_ID +
 					"&member_id=" + MainActivity.myInfo.getMember_id();
 			break;
-			
+
 		case ZoneConstants.TYPE_POST_GETHERING_INTRO:
-			url += "boardspot/list" +
+			url += "spot/list" +
 					"?concern_kind=050" +
 					"&image_size=308" +
-					"&member_id=" + MainActivity.myInfo.getMember_id() +
-					"&origin_sb_id=" + ZoneConstants.PAPP_ID +
 					"&last_spot_nid=" + lastIndexno;
 			break;
 		}
@@ -276,6 +273,8 @@ public class GridPage extends BaseListFragment {
 		if(type != ZoneConstants.TYPE_POST_GETHERING
 				&& type != ZoneConstants.TYPE_POST_GETHERING_INTRO) {
 			url += "&sb_id=" + ZoneConstants.PAPP_ID;
+		} else {
+			url += "&origin_sb_id=" + ZoneConstants.PAPP_ID;
 		}
 		
 		if(!StringUtils.isEmpty(url)) {
@@ -317,9 +316,11 @@ public class GridPage extends BaseListFragment {
 										Post post = new Post(arJSON.getJSONObject(i));
 										post.setItemCode(ZoneConstants.ITEM_POST);
 										
-										if(type == ZoneConstants.TYPE_POST_GETHERING
-												|| type == ZoneConstants.TYPE_POST_GETHERING_INTRO) {
+										if(type == ZoneConstants.TYPE_POST_GETHERING) {
 											post.setFromGethering(true);
+											//Set indexno to spot_nid.
+										} else if(type == ZoneConstants.TYPE_POST_GETHERING_INTRO) {
+											//Set indexno to spot_nid.
 										} else {
 											post.setIndexno(post.getSb_spot_nid());
 										}

@@ -97,7 +97,7 @@ public class NoticePopup extends FrameLayout {
 			
 			@Override
 			public void onClick(View v) {
-				SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_POPUP, "lastIndex", popup.getNotice_nid());
+				SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_POPUP, "lastIndexno", popup.getNotice_nid());
 				
 				int currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 				SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_POPUP, "lastDate", currentDate);

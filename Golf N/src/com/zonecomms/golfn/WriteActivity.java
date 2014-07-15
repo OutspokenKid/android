@@ -136,7 +136,7 @@ public class WriteActivity extends RecyclingActivity {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, findViewById(R.id.writeActivity_titleBar), 1, 0, null);
 		FontInfo.setFontSize((TextView)findViewById(R.id.writeActivity_tvTitle), 36);
 		ResizeUtils.viewResize(60, 30, findViewById(R.id.writeActivity_submitImage), 2, 
-				Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
+				Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 20, 0});
 		
 		//EditText.
 		FontInfo.setFontSize(editText, 36);
@@ -467,9 +467,17 @@ public class WriteActivity extends RecyclingActivity {
 
 			//모임 찾기.
 			if(isFinding) {
-				url += "spot/write" +
-						"?spot_content=" + URLEncoder.encode(editText.getText().toString(), "utf-8") +
-						"&concern_kind=" + (isGethering? "050" : "040");
+				
+				if(isEdit) {
+					url += "spot/update" +
+							"?spot_nid=" + getIntent().getIntExtra("spot_nid", 0);
+				} else {
+					url += "spot/write" +
+							"?concern_kind=050" +
+							"&origin_sb_id=" + ZoneConstants.PAPP_ID;
+				}
+
+				url += "&spot_content=" + URLEncoder.encode(editText.getText().toString(), "utf-8");
 				
 			} else if(isEdit) {
 				
@@ -574,6 +582,9 @@ public class WriteActivity extends RecyclingActivity {
 					Intent intent = new Intent();
 					intent.putExtra("spot_nid", spot_nid);
 					intent.putExtra("isGethering", isGethering);
+
+					LogUtils.log("###WriteActivity.onCompleted.  spot_nid : " + spot_nid + 
+							", isGethering : " + isGethering);
 					
 					setResult(RESULT_OK, intent);
 					finish();

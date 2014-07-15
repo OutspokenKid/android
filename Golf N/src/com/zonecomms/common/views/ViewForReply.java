@@ -264,8 +264,24 @@ public class ViewForReply extends RelativeLayout {
 				}
 			};
 			
-			String url = ZoneConstants.BASE_URL + "reply/delete" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+			String url = null;
+			
+			switch(reply.getReplyType()) {
+			
+			case Reply.TYPE_NORMAL:
+				url = ZoneConstants.BASE_URL + "reply/delete";
+				break;
+				
+			case Reply.TYPE_GETHERING:
+				url = ZoneConstants.BASE_URL + "boardreply/delete";
+				break;
+				
+			case Reply.TYPE_ARTICLE:
+				url = ZoneConstants.BASE_URL + "newSpotReply/delete";
+				break;
+			}
+			
+			url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&reply_nid=" + reply.getReply_nid() +
 					"&spot_nid=" + spot_nid;
 			
@@ -282,7 +298,7 @@ public class ViewForReply extends RelativeLayout {
 			ToastUtils.showToast(R.string.failToAccuseReply);
 			return;
 		}
-		
+
 		try {
 			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
 				
@@ -313,8 +329,24 @@ public class ViewForReply extends RelativeLayout {
 				}
 			};
 			
-			String url = ZoneConstants.BASE_URL + "reply/bad" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+			String url = null;
+			
+			switch(reply.getReplyType()) {
+			
+			case Reply.TYPE_NORMAL:
+				url = ZoneConstants.BASE_URL + "reply/bad";
+				break;
+				
+			case Reply.TYPE_GETHERING:
+				url = ZoneConstants.BASE_URL + "boardreply/bad";
+				break;
+				
+			case Reply.TYPE_ARTICLE:
+				url = ZoneConstants.BASE_URL + "newSpotReply/bad";
+				break;
+			}
+			
+			url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&reply_nid=" + reply.getReply_nid() +
 					"&bad_reason_kind=080";
 			

@@ -588,6 +588,7 @@ public class ArticlePage extends BaseFragment {
 						
 						for(int i=0; i<length; i++) {
 							final Reply reply = new Reply(arJSON.getJSONObject(i));
+							reply.setReplyType(Reply.TYPE_ARTICLE);
 							ViewForReply vfr = new ViewForReply(mContext, madeCount, article.getSpot_nid(), replyLinear);
 							ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, vfr, 
 									1, 0, new int[]{8, 0, 8, 0});

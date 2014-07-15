@@ -73,6 +73,7 @@ public class GetheringListPage extends BaseListFragment {
 	@Override
 	protected void setVariables() {
 		
+		//모임 검색.
 		if(type == -1) {
 			addSearchBar();
 		} else {
@@ -191,6 +192,7 @@ public class GetheringListPage extends BaseListFragment {
 		
 		super.downloadInfo();
 		
+		//모임 검색.
 		if(type == -1) {
 			
 			String keyword = "";

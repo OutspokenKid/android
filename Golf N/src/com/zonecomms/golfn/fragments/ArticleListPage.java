@@ -217,7 +217,7 @@ public class ArticleListPage extends BaseListFragment {
 		
 		try {
 			mActivity.showLoadingView();
-
+			
 			url = ZoneConstants.BASE_URL + "common/cate_list_all?l_cate_id=" + l_cate_id;
 			
 			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {

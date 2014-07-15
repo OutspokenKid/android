@@ -302,7 +302,7 @@ public class IntentHandlerActivity extends Activity {
 				} else if(url.equals("android.zonecomms.com/addedprofile")) {
 					mActivity.showAddedProfilePage();
 					
-					//모임 상세 페이지.
+				//모임 상세 페이지.
 				} else if(url.equals("android.zonecomms.com/gethering")) {
 					String sb_id = URLDecoder.decode(uri.getQueryParameter("sb_id"), "utf-8");
 					mActivity.showGetheringPage(sb_id);

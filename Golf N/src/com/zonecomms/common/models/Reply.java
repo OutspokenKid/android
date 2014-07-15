@@ -10,6 +10,12 @@ import com.outspoken_kid.model.BaseModel;
 
 public class Reply extends BaseModel {
 
+	public static final int TYPE_NORMAL = 0;
+	public static final int TYPE_GETHERING = 1;
+	public static final int TYPE_ARTICLE = 2;
+	
+	private int replyType;
+	
 	private int reply_nid;
 	private String content;
 	private Member member;
@@ -92,5 +98,13 @@ public class Reply extends BaseModel {
 
 	public void setReg_dt(String reg_dt) {
 		this.reg_dt = reg_dt;
+	}
+
+	public int getReplyType() {
+		return replyType;
+	}
+
+	public void setReplyType(int replyType) {
+		this.replyType = replyType;
 	}
 }
