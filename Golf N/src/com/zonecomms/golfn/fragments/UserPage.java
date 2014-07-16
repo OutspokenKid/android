@@ -1,13 +1,64 @@
 package com.zonecomms.golfn.fragments;
 
+import java.io.File;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.TextUtils.TruncateAt;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.outspoken_kid.classes.FontInfo;
+import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
+import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
+import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
+import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.adapters.ListAdapter;
+import com.zonecomms.common.models.MessageSample;
 import com.zonecomms.common.models.MyStoryInfo;
+import com.zonecomms.common.models.Post;
+import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
+import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
+import com.zonecomms.golfn.IntentHandlerActivity;
+import com.zonecomms.golfn.MainActivity;
+import com.zonecomms.golfn.R;
 import com.zonecomms.golfn.classes.BaseListFragment;
+import com.zonecomms.golfn.classes.ZoneConstants;
 
 public class UserPage extends BaseListFragment {
 

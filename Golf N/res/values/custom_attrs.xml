@@ -7,7 +7,7 @@
 	
 	<!-- Length of logo at IntroActivity.java -->
 	<string name="logo_width">640</string>
-	<string name="logo_height">444</string>
+	<string name="logo_height">448</string>
 
 	<!-- sb_id. -->
 	<string name="sb_id">golfn</string>
