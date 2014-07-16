@@ -82,7 +82,6 @@ public class PostPage extends BaseFragment {
 	private int lastIndexno;
 	private boolean isNeedToShowBottom;
 	private int board_id;
-	private boolean needFullScroll;
 	
 	private ArrayList<Member> targets = new ArrayList<Member>();
 	
@@ -132,6 +131,7 @@ public class PostPage extends BaseFragment {
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
 			isGethering = getArguments().getBoolean("isGethering");
+			isNeedToShowBottom = getArguments().getBoolean("isNeedToShowBottom");
 		}
 		
 		editText.getEditText().setHint(R.string.hintForReply);
@@ -650,8 +650,12 @@ public class PostPage extends BaseFragment {
 					
 					int length = arJSON.length();
 
+					if(replyLinear != null) {
+						replyLinear.removeAllViews();
+					}
+					
 					ArrayList<ViewForReply> replyViews = new ArrayList<ViewForReply>();
-
+					
 					if(length != 0) {
 						
 						for(int i=0; i<length; i++) {
@@ -710,6 +714,8 @@ public class PostPage extends BaseFragment {
 							removeLoadingView();
 						}
 
+						LogUtils.log("###PostPage.onCompleted.  isNeedToShowBottom : " + isNeedToShowBottom);
+						
 						if(isNeedToShowBottom) {
 							isNeedToShowBottom = false;
 							scrollView.postDelayed(new Runnable() {
@@ -719,14 +725,11 @@ public class PostPage extends BaseFragment {
 									scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 								}
 							}, 100);
+						} else {
+							
 						}
 					} else {
 						removeLoadingView();
-					}
-					
-					if(needFullScroll) {
-						needFullScroll = false;
-			            scrollView.fullScroll(ScrollView.FOCUS_DOWN);
 					}
 				} catch(Exception e) {
 					LogUtils.trace(e);
@@ -1121,9 +1124,9 @@ public class PostPage extends BaseFragment {
 		
 		return post.getSpot_nid();
 	}
-
-	public void setNeedFullScroll(boolean needFullScroll) {
+	
+	public void setNeedToShowBottom(boolean needToShowBottom) {
 		
-		this.needFullScroll = needFullScroll;
+		isNeedToShowBottom = needToShowBottom;
 	}
 }

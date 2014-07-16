@@ -16,6 +16,7 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.golfn.classes.ApplicationManager;
 import com.zonecomms.golfn.classes.ZoneConstants;
@@ -164,7 +165,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	 * @param spot_nid : 댓글인 경우 글의 nid.
 	 * @param sb_id : 모임 관련 푸시인 경우 모임의 sb_id.
 	 */
-	public void handleMessage(Context context, String push_msg, String msg_type, 
+	public void handleMessage(Context context, final String push_msg, String msg_type, 
 			String member_id, String post_member_id, int spot_nid, String sb_id) {
 
 		if(msg_type == null) {
@@ -173,29 +174,37 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		//해당 메세지 페이지가 열려있는 경우.
 		if(ApplicationManager.getFragmentsSize() != 0 
-				&& msg_type != null 
-				&& msg_type.equals("010")
+				&& "010".equals(msg_type)
 				&& member_id != null
-				&& ApplicationManager.getTopFragment() instanceof MessagePage) {
-			
+				&& ApplicationManager.getTopFragment() instanceof MessagePage
+				&& post_member_id.equals(((MessagePage) ApplicationManager.getTopFragment()).getFriend_member_id())
+				) {
 			try {
-				MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
-				
-				if(mp.getFriend_member_id() != null
-						&& mp.getFriend_member_id().equals(member_id)) {
-					mp.onRefreshPage();
-				}
+				ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						ApplicationManager.getTopFragment().onRefreshPage();
+					}
+				});
 			} catch(Exception e) {
+				LogUtils.trace(e);
 			}
 			
 		//해당 글 상세페이지가 열려있는 경우.
 		} else if((msg_type.equals("021") || msg_type.equals("022"))
 				&& ApplicationManager.getTopFragment() instanceof PostPage
 				&& ((PostPage)ApplicationManager.getTopFragment()).getSpotNid() == spot_nid) {
-			ApplicationManager.getTopFragment().onRefreshPage();
-			((PostPage)ApplicationManager.getTopFragment()).setNeedFullScroll(true);
+			ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					((PostPage)ApplicationManager.getTopFragment()).setNeedToShowBottom(true);
+					ApplicationManager.getTopFragment().onRefreshPage();
+				}
+			});
+			
 		} else {
-
 			String uriString = "";
 
 			//000 : 전체 푸시 (post_member_id : 보낸사람, member_id : 받을사람, push_msg : 메시지)
@@ -213,13 +222,15 @@ public class GCMIntentService extends GCMBaseIntentService {
 			} else if(msg_type.equals("021")) {
 				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
 						"&spot_nid=" + spot_nid +
-						"&isGethering=false";
+						"&isGethering=false" +
+						"&isNeedToShowBottom=true";
 			
 			//022 : 모임 댓글 (spot_nid : 모임 글번호, member_id : 받을사람, sb_id : 모임ID, push_msg : 댓글내용)
 			} else if(msg_type.equals("022")) {
 				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
 						"&spot_nid=" + spot_nid +
-						"&isGethering=true";
+						"&isGethering=true" +
+						"&isNeedToShowBottom=true";
 				
 			//031 : type3 글 댓글 (spot_nid : type3 글번호, member_id : 받을사람, push_msg : 댓글내용)
 			} else if(msg_type.equals("031")) {
@@ -227,15 +238,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 				
 			//050 : 모임 상태변경 - 승인, 추방, 거부 ( member_id : 받을사람, push_msg : 상태변경 메시지, sb_id : 모임ID)	
 			} else if(msg_type.equals("050")) {
-				
+
 				//해당 모임 페이지가 열려있는 경우,
 				if(ApplicationManager.getTopFragment() instanceof GetheringPage
 						&& sb_id != null
 						&& sb_id.equals(((GetheringPage)ApplicationManager.getTopFragment()).getSb_id())) {
-					//showMessage.
-					
-					//새로고침(인덱스0).
-					((GetheringPage)ApplicationManager.getTopFragment()).showMenu(0);
+					ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							//새로고침(인덱스0).
+							((GetheringPage)ApplicationManager.getTopFragment()).showMenu(0);
+							ToastUtils.showToast(push_msg);
+						}
+					});
 					return;
 				//해당 모임 페이지가 열려있지 않은 경우,
 				} else {

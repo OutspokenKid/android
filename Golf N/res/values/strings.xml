@@ -32,6 +32,7 @@
     <string name="completeApplyForAdmission">Apply for admission complete</string>
     <string name="completeEdit">Edit complete</string>
     <string name="completeOpenGethering">Open Gethering complete</string>
+    <string name="completeJoinGethering">Join gethering complete</string>
     <string name="completeSignUp">Sign up complete</string>
     <string name="completeWithdraw">Withdraw complete</string>
     <string name="confirm">Confirm</string>

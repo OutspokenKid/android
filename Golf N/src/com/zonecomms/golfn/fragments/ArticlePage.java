@@ -102,6 +102,7 @@ public class ArticlePage extends BaseFragment {
 
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
+			isNeedToShowBottom = getArguments().getBoolean("isNeedToShowBottom", false);
 		}
 		
 		editText.getEditText().setHint(R.string.hintForReply);

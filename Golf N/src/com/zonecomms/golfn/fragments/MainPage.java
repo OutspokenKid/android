@@ -597,13 +597,24 @@ public class MainPage extends BaseFragment {
 		});
 		mainRelative.addView(golfcourse);
 		
+		//Bottom logo.					id : 17
+		View bottomLogo = new View(mContext);
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(416), 
+				ResizeUtils.getSpecificLength(44));
+		rp.topMargin = s*2;
+		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 16);
+		bottomLogo.setBackgroundResource(R.drawable.img_bottom_logo);
+		bottomLogo.setLayoutParams(rp);
+		
 ///////////////////////////////////////////////////////
 		
 		//Bottom blank.
 		View bottomBlank = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(s, s);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 15);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 15);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 17);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 17);
 		bottomBlank.setLayoutParams(rp);
 		mainRelative.addView(bottomBlank);
 

@@ -724,6 +724,11 @@ public class MainActivity extends BaseFragmentActivity {
 	
 	public void showPostPage(String title, int spot_nid, boolean isGethering) {
 		
+		showPostPage(title, spot_nid, isGethering, false);
+	}
+	
+	public void showPostPage(String title, int spot_nid, boolean isGethering, boolean isNeedToShowBottom) {
+		
 		try {
 			PostPage pp = new PostPage();
 			
@@ -731,6 +736,7 @@ public class MainActivity extends BaseFragmentActivity {
 			bundle.putString("title", title);
 			bundle.putInt("spot_nid", spot_nid);
 			bundle.putBoolean("isGethering", isGethering);
+			bundle.putBoolean("isNeedToShowBottom", isNeedToShowBottom);
 			
 			startPage(pp, bundle);
 		} catch(Exception e) {
@@ -934,6 +940,11 @@ public class MainActivity extends BaseFragmentActivity {
 	}
 	
 	public void showArticlePage(String title, int spot_nid) {
+
+		showArticlePage(title, spot_nid, false);
+	}
+	
+	public void showArticlePage(String title, int spot_nid, boolean isNeedToShowBottom) {
 		
 		try {
 			ArticlePage ap = new ArticlePage();
@@ -941,6 +952,7 @@ public class MainActivity extends BaseFragmentActivity {
 			Bundle bundle = new Bundle();
 			bundle.putString("title", title);
 			bundle.putInt("spot_nid", spot_nid);
+			bundle.putBoolean("isNeedToShowBottom", isNeedToShowBottom);
 			
 			startPage(ap, bundle);
 		} catch(Exception e) {

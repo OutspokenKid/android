@@ -332,7 +332,7 @@ public class MessagePage extends BaseListFragment {
 				}
 			};
 			
-			if(models.size() == 0) {
+			if(models.size() == 0 && !isRefreshing) {
 				mActivity.showLoadingView();
 			}
 			
@@ -372,6 +372,7 @@ public class MessagePage extends BaseListFragment {
 				@Override
 				public void run() {
 					try {
+						//Scroll to last item.
 						listView.getRefreshableView().setSelection(zoneAdapter.getCount());
 					} catch(Exception e) {
 						LogUtils.trace(e);
@@ -412,8 +413,11 @@ public class MessagePage extends BaseListFragment {
 	@Override
 	public void onRefreshPage() {
 
+		LogUtils.log("###MessagePage.onRefreshPage.  ");
+		
 		isRefreshing = true;
 		isFirstLoading = true;
+		isDownloading = false;
 		numOfNewMessages = 0;
 		lastIndexno = 0;
 		models.clear();

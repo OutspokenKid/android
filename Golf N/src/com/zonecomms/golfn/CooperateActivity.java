@@ -86,7 +86,7 @@ public class CooperateActivity extends Activity {
 		tvTitle.setPadding(ResizeUtils.getSpecificLength(100), 0, 0, ResizeUtils.getSpecificLength(4));
 		
 		ResizeUtils.viewResize(60, 30, findViewById(R.id.cooperateActivity_submitImage), 2, 
-				Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
+				Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 20, 0});
 		
 		ResizeUtils.viewResize(540, 70, etTitle, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 90, 0, 0});
 		ResizeUtils.viewResize(540, 70, etCompany, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 40, 0, 0});

@@ -33,7 +33,7 @@
             	android:id="@+id/cooperateActivity_submitImage"    
                 android:layout_width="0dp"
 	        	android:layout_height="0dp"
-	        	android:background="@drawable/btn_top_submit"  />
+	        	android:background="@drawable/btn_top_submit2"  />
             
 		</FrameLayout>
         

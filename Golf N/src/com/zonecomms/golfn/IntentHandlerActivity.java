@@ -280,14 +280,19 @@ public class IntentHandlerActivity extends Activity {
 				} else if(url.equals("android.zonecomms.com/post")) {
 					title = URLDecoder.decode(uri.getQueryParameter("title"), "utf-8");
 					int spot_nid = Integer.parseInt(uri.getQueryParameter("spot_nid"));
-					String gethering = uri.getQueryParameter("isGethering");
-					boolean isGethering = false;
 					
-					if(!StringUtils.isEmpty(gethering) && gethering.equals("true")) {
+					boolean isGethering = false;
+					boolean isNeedToShowBottom = false;
+					
+					if("true".equals(uri.getQueryParameter("isGethering"))) {
 						isGethering = true;
 					}
 					
-					mActivity.showPostPage(title, spot_nid, isGethering);
+					if("true".equals(uri.getQueryParameter("isNeedToShowBottom"))) {
+						isNeedToShowBottom = true;
+					}
+					
+					mActivity.showPostPage(title, spot_nid, isGethering, isNeedToShowBottom);
 					
 				//메세지 페이지.
 				} else if(url.equals("android.zonecomms.com/message")) {
@@ -336,7 +341,14 @@ public class IntentHandlerActivity extends Activity {
 				} else if(url.equals("android.zonecomms.com/article")) {
 					title = uri.getQueryParameter("title");
 					int spot_nid = Integer.parseInt(uri.getQueryParameter("spot_nid"));
-					mActivity.showArticlePage(title, spot_nid);
+					
+					boolean isNeedToShowBottom = false;
+					
+					if("true".equals(uri.getQueryParameter("isNeedToShowBottom"))) {
+						isNeedToShowBottom = true;
+					}
+					
+					mActivity.showArticlePage(title, spot_nid, isNeedToShowBottom);
 				} else {
 					handleInvalidUri();
 				}

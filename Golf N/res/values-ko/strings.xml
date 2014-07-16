@@ -31,6 +31,7 @@
     <string name="completeApplyForAdmission">가입 신청 완료</string>
     <string name="completeEdit">수정 완료</string>
     <string name="completeOpenGethering">모임 개설 완료</string>
+    <string name="completeJoinGethering">모임 가입 완료</string>
     <string name="completeSignUp">회원 가입 완료</string>
     <string name="completeWithdraw">모임에서 탈퇴 하였습니다</string>
     <string name="confirm">확인</string>
