@@ -603,10 +603,13 @@ public class MainPage extends BaseFragment {
 				ResizeUtils.getSpecificLength(416), 
 				ResizeUtils.getSpecificLength(44));
 		rp.topMargin = s*2;
+		rp.bottomMargin = s*2;
 		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 16);
-		bottomLogo.setBackgroundResource(R.drawable.img_bottom_logo);
 		bottomLogo.setLayoutParams(rp);
+		bottomLogo.setId(madeCount + 17);
+		bottomLogo.setBackgroundResource(R.drawable.img_bottom_logo);
+		mainRelative.addView(bottomLogo);
 		
 ///////////////////////////////////////////////////////
 		
@@ -620,9 +623,10 @@ public class MainPage extends BaseFragment {
 
 		//150 * 9 = 1350
 		//8 * 10 = 80
-		//1350 + 80 = 1430
+		// 44 + 8 * 4 = 76
+		//1350 + 80 + 76 = 1506
 		coverForMenu = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getScreenWidth(), ResizeUtils.getSpecificLength(1430));
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getScreenWidth(), ResizeUtils.getSpecificLength(1506));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		coverForMenu.setLayoutParams(rp);
