@@ -101,20 +101,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		LogUtils.log("BaseFragmentActivity.onResume.");
-		
-		try {
-			ApplicationManager.getTopFragment().onHiddenChanged(false);
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
 	}
 	
 	@Override
 	protected void onPause() {
 		super.onPause();
-		
 		LogUtils.log("BaseFragmentActivity.onPause.");
 	}
 

@@ -216,22 +216,17 @@ public class GridPage extends BaseListFragment {
 			url += "sb/member_list" +
 					"?image_size=150" +
 					"&max_sb_member_nid=" + lastIndexno +
-					"status=1";
+					"&status=1";
 
 			if(editText != null && editText.getEditText().getText() != null 
 					&& !StringUtils.isEmpty(editText.getEditText().getText().toString())) {
 				try {
 					keyword = URLEncoder.encode(editText.getEditText().getText().toString(), "UTF-8");
+					url += "&keyword=" + keyword;
 				} catch(Exception e) {
 					LogUtils.trace(e);
 				}
 			}
-			
-			url = ZoneConstants.BASE_URL + "sb/member_list"
-					+ "?status=1"
-					+ "&max_sb_member_nid=" + lastIndexno
-					+ "&image_size=150"
-					+ "&keyword=" + keyword;
 			
 			switch(menuIndex) {
 			

@@ -35,12 +35,9 @@ public class NoticePopup extends FrameLayout {
 
 	private TextView tvTitle;
 	private ScrollView scrollView;
-	private TextView tvContent;
-	private FrameLayout imageFrame;
-	private ProgressBar progress;
-	private ImageView ivImage;
 	private HoloStyleButton btnDontSeeAgainToday, btnConfirm;
 	private Popup popup;
+	private LinearLayout innerLinear;
 	
 	public NoticePopup(Context context) {
 		super(context);
@@ -65,30 +62,15 @@ public class NoticePopup extends FrameLayout {
 		
 		scrollView = new ScrollView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 
-				scrollView, 2, Gravity.LEFT, new int[]{0, 90, 0, 120});
+				scrollView, 2, Gravity.LEFT, new int[]{0, 98, 0, 0});
 		scrollView.setFillViewport(true);
 		this.addView(scrollView);
 		
-		LinearLayout innerLinear = new LinearLayout(getContext());
+		innerLinear = new LinearLayout(getContext());
 		innerLinear.setLayoutParams(new FrameLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		innerLinear.setOrientation(LinearLayout.VERTICAL);
 		scrollView.addView(innerLinear);
-		
-		imageFrame = new FrameLayout(getContext());
-		innerLinear.addView(imageFrame);
-		
-		progress = new ProgressBar(getContext());
-		ResizeUtils.viewResize(40, 40, progress, 2, Gravity.CENTER, null);
-		imageFrame.addView(progress);
-		
-		tvContent = new TextView(getContext());
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 
-				tvContent, 1, Gravity.CENTER_HORIZONTAL, null);
-		tvContent.setPadding(p, p, p, p);
-		tvContent.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvContent, 26);
-		innerLinear.addView(tvContent);
 		
 		btnDontSeeAgainToday = new HoloStyleButton(getContext());
 		ResizeUtils.viewResize(400, 80, btnDontSeeAgainToday, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{20, 0, 0, 20});
@@ -133,6 +115,7 @@ public class NoticePopup extends FrameLayout {
 		}
 		
 		if(getVisibility() != View.VISIBLE) {
+			
 			//Set title.
 			if(!StringUtils.isEmpty(popup.getNotice_title())) {
 				
@@ -144,94 +127,122 @@ public class NoticePopup extends FrameLayout {
 				//Hide tvTitle.
 				tvTitle.setVisibility(View.INVISIBLE);
 				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 
-						scrollView, 2, Gravity.LEFT, new int[]{0, 0, 0, 120});
+						scrollView, 2, Gravity.LEFT, null);
 			}
 			
-			//Set imageView.
-			if(!StringUtils.isEmpty(popup.getBg_img_url())) {
-				//Show imageFrame.
-				ResizeUtils.viewResize(600, 600, imageFrame, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 20, 0, 20});
-				imageFrame.setVisibility(View.VISIBLE);
-				
-				ivImage = new ImageView(getContext());
-				imageFrame.addView(ivImage);
-				
-				this.postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
-							
-							@Override
-							public void onErrorRaised(String url, Exception e) {
-								
-								imageFrame.setVisibility(View.GONE);
-							}
-							
-							@Override
-							public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-								
-								try {
-									if(bitmap != null && !bitmap.isRecycled() && view != null) {
-										int height = (int)(624f
-												* (float) bitmap.getHeight()
-												/ (float) bitmap.getWidth());
-
-										LogUtils.log("###NoticePopup.onCompleted.  " +
-												"\nwidth : " + bitmap.getWidth() +
-												"\nheight : " + bitmap.getHeight() +
-												"\nscaledHeight : " + height);
-										
-										ResizeUtils.viewResize(624, height, imageFrame, 1, 
-												Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 8});
-										ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 
-												LayoutParams.MATCH_PARENT, 
-												ivImage, 2, 0, null);
-										ivImage.setScaleType(ScaleType.FIT_XY);
-										ivImage.setImageBitmap(bitmap);
-									}
-								} catch (Exception e) {
-									LogUtils.trace(e);
-									imageFrame.setVisibility(View.GONE);
-								} catch (Error e) {
-									LogUtils.trace(e);
-									imageFrame.setVisibility(View.GONE);
-								}
-							}
-						};
-						BitmapDownloader.download(popup.getBg_img_url(), null, ocl, null, ivImage, true);
-					}
-				}, 300);
-			
-			} else {
-				//Hide imageFrame.
-				imageFrame.setVisibility(View.GONE);
+			//Set images.
+			if(popup.getImageUrls() != null
+					&& popup.getImageUrls().length > 0) {
+				int size = popup.getImageUrls().length;
+				for(int i=0; i<size; i++) {
+					addImageFrame(popup.getImageUrls()[i]);
+				}
 			}
 			
+			//Set content.
 			if(!StringUtils.isEmpty(popup.getContent())) {
-				//Show tvContent.
-				tvContent.setVisibility(View.VISIBLE);
-				tvContent.setText(popup.getContent());
-			} else {
-				//Hide tvContent.
-				tvContent.setVisibility(View.GONE);
+				addContent(popup.getContent());
 			}
 			
 			//Set link.
-			this.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
+			if(!StringUtils.isEmpty(popup.getLink_url())) {
+				addLink(popup.getLink_url());
+			}
 
-					if(popup != null && !StringUtils.isEmpty(popup.getLink_url())) {
-						IntentHandlerActivity.actionByUri(Uri.parse(popup.getLink_url()));
-					}
-				}
-			});
+			View bottomBlank = new View(getContext());
+			ResizeUtils.viewResize(10, 120, bottomBlank, 1, 0, null);
+			innerLinear.addView(bottomBlank);
 			
 			this.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_from_bottom));
 			this.setVisibility(View.VISIBLE);
 		}
+	}
+	
+	public void addImageFrame(final String imageUrl) {
+		
+		final FrameLayout imageFrame = new FrameLayout(getContext());
+		ResizeUtils.viewResize(600, 600, imageFrame, 1, Gravity.CENTER_HORIZONTAL, null);
+		innerLinear.addView(imageFrame);
+		
+		final ProgressBar progress = new ProgressBar(getContext());
+		ResizeUtils.viewResize(40, 40, progress, 2, Gravity.CENTER, null);
+		imageFrame.addView(progress);
+		
+		final ImageView ivImage = new ImageView(getContext());
+		imageFrame.addView(ivImage);
+		
+		this.postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
+					
+					@Override
+					public void onErrorRaised(String url, Exception e) {
+						
+						imageFrame.setVisibility(View.GONE);
+					}
+					
+					@Override
+					public void onCompleted(String url, Bitmap bitmap, ImageView view) {
+						
+						try {
+							if(bitmap != null && !bitmap.isRecycled() && view != null) {
+								int height = (int)(624f
+										* (float) bitmap.getHeight()
+										/ (float) bitmap.getWidth());
+
+								LogUtils.log("###NoticePopup.onCompleted.  " +
+										"\nwidth : " + bitmap.getWidth() +
+										"\nheight : " + bitmap.getHeight() +
+										"\nscaledHeight : " + height);
+								
+								ResizeUtils.viewResize(624, height, imageFrame, 1, 
+										Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 0});
+								ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 
+										LayoutParams.MATCH_PARENT, 
+										ivImage, 2, 0, null);
+								ivImage.setScaleType(ScaleType.FIT_XY);
+								ivImage.setImageBitmap(bitmap);
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							imageFrame.setVisibility(View.GONE);
+						} catch (Error e) {
+							LogUtils.trace(e);
+							imageFrame.setVisibility(View.GONE);
+						}
+					}
+				};
+				BitmapDownloader.download(imageUrl, null, ocl, null, ivImage, true);
+			}
+		}, 2000);
+	}
+	
+	public void addContent(String content) {
+		
+		int p = ResizeUtils.getSpecificLength(10);
+		
+		TextView tvContent = new TextView(getContext());
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 
+				tvContent, 1, Gravity.CENTER_HORIZONTAL, null);
+		tvContent.setPadding(p, p, p, p);
+		tvContent.setTextColor(Color.WHITE);
+		tvContent.setText(content);
+		FontInfo.setFontSize(tvContent, 26);
+		innerLinear.addView(tvContent);
+	}
+	
+	public void addLink(final String linkUrl) {
+		
+		innerLinear.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				IntentHandlerActivity.actionByUri(Uri.parse(linkUrl));
+			}
+		});
 	}
 	
 	public void hide(final OnAfterHideListener onAfterHideListener) {
@@ -257,7 +268,7 @@ public class NoticePopup extends FrameLayout {
 	public void clear() {
 		
 		popup = null;
-		ViewUnbindHelper.unbindReferences(ivImage);
+		ViewUnbindHelper.unbindReferences(scrollView);
 	}
 	
 //////////////////// Interfaces.

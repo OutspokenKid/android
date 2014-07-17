@@ -430,13 +430,6 @@ public class MainActivity extends BaseFragmentActivity {
 				}
 			}
 			break;
-		
-		case ZoneConstants.REQUEST_EDIT:
-			
-			if(resultCode == RESULT_OK && ApplicationManager.getTopFragment() != null) {
-				((PostPage)ApplicationManager.getTopFragment()).onRefreshPage();
-			}
-			break;
 		}
 	}
 	
