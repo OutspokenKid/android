@@ -428,6 +428,8 @@ public class PostPage extends BaseFragment {
 	@Override
 	public void onRefreshPage() {
 
+		LogUtils.log("###PostPage.onRefreshPage.  reply count : " + replyLinear.getChildCount());
+		
 		ArrayList<View> views = new ArrayList<View>();
 		
 		int length = replyLinear.getChildCount();
@@ -649,10 +651,6 @@ public class PostPage extends BaseFragment {
 					JSONArray arJSON = (new JSONObject(result)).getJSONArray("data");
 					
 					int length = arJSON.length();
-
-					if(replyLinear != null) {
-						replyLinear.removeAllViews();
-					}
 					
 					ArrayList<ViewForReply> replyViews = new ArrayList<ViewForReply>();
 					
@@ -1060,6 +1058,7 @@ public class PostPage extends BaseFragment {
 		}
 
 		if(post.getMustvalue() != null
+				&& post.getMustvalue().length != 0
 				&& post.getMustvalue()[0] != null
 				&& !StringUtils.isEmpty(post.getMustvalue()[0])) {
 			mActivity.showWriteForFleaActivity(board_id, getString(R.string.editPost), isGethering, 

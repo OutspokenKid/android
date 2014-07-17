@@ -60,11 +60,11 @@ public class Member extends BaseModel {
 			
 			if(objJSON.has("friend_plus_nid")) {
 				this.setFriend_plus_nid(objJSON.getInt("friend_plus_nid"));
-				setIndexno(getFriend_plus_nid());
 			}
 			
 			if(objJSON.has("sb_member_nid")) {
 				this.sb_member_nid = objJSON.getInt("sb_member_nid");
+				setIndexno(sb_member_nid);
 			}
 			
 			if(objJSON.has("status")) {
