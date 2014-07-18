@@ -3,8 +3,6 @@ package com.outspoken_kid.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.net.URI;
-import java.net.URLEncoder;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -20,7 +17,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.outspoken_kid.R;
-import com.outspoken_kid.classes.SingleMediaScanner;
 
 public class ImageCacheUtils {
 	
