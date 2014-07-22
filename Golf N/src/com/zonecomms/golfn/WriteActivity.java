@@ -474,7 +474,8 @@ public class WriteActivity extends RecyclingActivity {
 				} else {
 					url += "spot/write" +
 							"?concern_kind=050" +
-							"&origin_sb_id=" + ZoneConstants.PAPP_ID;
+//							"&origin_sb_id=" + ZoneConstants.PAPP_ID;
+							"&sb_id=" + ZoneConstants.PAPP_ID;
 				}
 
 				url += "&spot_content=" + URLEncoder.encode(editText.getText().toString(), "utf-8");

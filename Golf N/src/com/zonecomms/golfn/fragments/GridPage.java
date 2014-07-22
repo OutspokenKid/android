@@ -265,8 +265,8 @@ public class GridPage extends BaseListFragment {
 		
 		url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID|AppInfoUtils.WITHOUT_SB_ID);
 		
-		if(type != ZoneConstants.TYPE_POST_GETHERING
-				&& type != ZoneConstants.TYPE_POST_GETHERING_INTRO) {
+		if(type != ZoneConstants.TYPE_POST_GETHERING) {
+//				&& type != ZoneConstants.TYPE_POST_GETHERING_INTRO) {
 			url += "&sb_id=" + ZoneConstants.PAPP_ID;
 		} else {
 			url += "&origin_sb_id=" + ZoneConstants.PAPP_ID;
