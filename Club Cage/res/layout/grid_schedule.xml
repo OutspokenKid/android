@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.zonecomms.common.wrapperviews.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_poster" />
+    
+    <ImageView
+        android:id="@+id/grid_schedule_ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:scaleType="centerCrop" />
+    
+    <TextView 
+        android:id="@+id/grid_schedule_tvTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center"
+    	android:background="#8000"
+    	android:textColor="#fff"
+    	android:ellipsize="end" />
+    
+</com.zonecomms.common.wrapperviews.WrapperView>

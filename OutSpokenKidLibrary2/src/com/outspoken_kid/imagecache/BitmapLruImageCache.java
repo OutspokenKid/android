@@ -24,11 +24,13 @@ public class BitmapLruImageCache extends LruCache<String, Bitmap> implements Ima
 	
 	@Override
 	public Bitmap getBitmap(String url) {
+
 		return get(url);
 	}
  
 	@Override
 	public void putBitmap(String url, Bitmap bitmap) {
+		
 		put(url, bitmap);
 	}
 }

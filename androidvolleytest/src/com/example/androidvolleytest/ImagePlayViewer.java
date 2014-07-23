@@ -274,4 +274,11 @@ public class ImagePlayViewer extends FrameLayout {
 		
 		this.needPlayImage = needPlayImage;
 	}
+	
+	public void clear() {
+
+		nextBitmap.recycle();
+		ViewUnbindHelper.unbindReferences(imageViews[0]);
+		ViewUnbindHelper.unbindReferences(imageViews[1]);
+	}
 }

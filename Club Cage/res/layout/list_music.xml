@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zonecomms.common.wrapperviews.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View 
+        android:id="@+id/list_music_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <View 
+        android:id="@+id/list_music_imageBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_post" />
+    
+    <ImageView
+        android:id="@+id/list_music_ivImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop" />
+    
+    <TextView 
+        android:id="@+id/list_music_tvTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:textColor="#ddd"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+
+    <TextView 
+        android:id="@+id/list_music_tvSubTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:textColor="#eee"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <View 
+        android:id="@+id/list_music_arrow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/img_arrow_right" />
+    
+</com.zonecomms.common.wrapperviews.WrapperView>

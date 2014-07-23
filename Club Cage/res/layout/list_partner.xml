@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zonecomms.common.wrapperviews.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View
+        android:id="@+id/list_partner_profile"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <TextView 
+        android:id="@+id/list_partner_tvPartnerName"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:textColor="#000"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+
+    <View
+        android:id="@+id/list_partner_target"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:background="#f0f" />
+    
+    <View
+        android:id="@+id/list_partner_checkBox"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:background="#ff0" />
+    
+</com.zonecomms.common.wrapperviews.WrapperView>

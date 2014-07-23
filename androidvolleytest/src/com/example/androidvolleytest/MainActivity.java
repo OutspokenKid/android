@@ -28,6 +28,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -338,7 +339,7 @@ public class MainActivity extends Activity {
 				
 				if(!isInit) {
 					isInit = true;
-					
+
 					//Set titleBars.
 			    	setTitleBarText("STORY");
 			    	
@@ -363,6 +364,13 @@ public class MainActivity extends Activity {
 				}
 			}
 		}, 1000);
+    }
+
+    @Override
+    protected void onDestroy() {
+    	super.onDestroy();
+    	imagePlayViewer.clear();
+    	ViewUnbindHelper.unbindReferences(this, R.layout.activity_main);
     }
     
     public void downloadPosts() {

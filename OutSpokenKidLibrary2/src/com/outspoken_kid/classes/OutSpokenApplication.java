@@ -54,11 +54,18 @@ public class OutSpokenApplication extends Application {
 	 */
 	private void createImageCache(){
 
+//		ImageCacheManager.getInstance().init(this,
+//				this.getPackageCodePath()
+//				, DISK_IMAGECACHE_SIZE
+//				, DISK_IMAGECACHE_COMPRESS_FORMAT
+//				, DISK_IMAGECACHE_QUALITY
+//				, CacheType.MEMORY);
+		
 		ImageCacheManager.getInstance().init(this,
 				this.getPackageCodePath()
 				, DISK_IMAGECACHE_SIZE
 				, DISK_IMAGECACHE_COMPRESS_FORMAT
 				, DISK_IMAGECACHE_QUALITY
-				, CacheType.MEMORY);
+				, CacheType.DUAL);
 	}
 }

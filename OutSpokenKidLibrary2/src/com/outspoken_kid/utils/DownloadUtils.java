@@ -87,12 +87,25 @@ public class DownloadUtils {
 			final OnBitmapDownloadListener onBitmapDownloadListener) {
 		
 		try {
+			Bitmap bitmap = ImageCacheManager.getInstance().getBitmap(url);
+			
+			if(bitmap != null && !bitmap.isRecycled()) {
+				
+				if(onBitmapDownloadListener != null) {
+					onBitmapDownloadListener.onCompleted(url, bitmap);
+				} 
+				
+				return;
+			}
+			
 			Response.Listener<Bitmap> onResponseListener = new Response.Listener<Bitmap>() {
 
 				@Override
 				public void onResponse(Bitmap bitmap) {
 
 					if(bitmap != null && !bitmap.isRecycled()) {
+						ImageCacheManager.getInstance().putBitmap(url, bitmap);
+						
 						if(onBitmapDownloadListener != null) {
 							onBitmapDownloadListener.onCompleted(url, bitmap);
 						}
@@ -101,7 +114,6 @@ public class DownloadUtils {
 							onBitmapDownloadListener.onError(url);
 						}
 					}
-					
 				}
 			};
 			
