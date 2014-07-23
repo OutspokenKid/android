@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="pull_to_refresh_pull_label">당겨서 새로 고침…</string>
+  <string name="pull_to_refresh_release_label">놓아서 새로 고침…</string>
+  <string name="pull_to_refresh_refreshing_label">로드 중…</string>
+  
+  <string name="pull_to_loading_pull_label">당겨서 이전 목록 보기…</string>
+  <string name="pull_to_loading_release_label">놓아서 이전 목록 보기…</string>
+</resources>
