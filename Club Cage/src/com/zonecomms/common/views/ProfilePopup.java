@@ -5,29 +5,12 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.GestureSlidingLayout;
-import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.MyStoryInfo;
-import com.zonecomms.common.utils.AppInfoUtils;
-import com.zonecomms.common.utils.ImageDownloadUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -39,6 +22,20 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.GestureSlidingLayout;
+import com.zonecomms.clubcage.IntentHandlerActivity;
+import com.zonecomms.clubcage.MainActivity;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.models.MyStoryInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class ProfilePopup extends FrameLayout {
 
@@ -146,7 +143,7 @@ public class ProfilePopup extends FrameLayout {
 				if(myStoryInfo != null && !StringUtils.isEmpty(myStoryInfo.getMystory_member_profile())) {
 					String title = myStoryInfo.getMystory_member_nickname();
 					String[] imageUrls = new String[]{myStoryInfo.getMystory_member_profile()};
-					ApplicationManager.getInstance().getMainActivity().showImageViewerActivity(title, imageUrls, null, 0);
+					ZonecommsApplication.getActivity().showImageViewerActivity(title, imageUrls, null, 0);
 				}
 			}
 		});
@@ -242,7 +239,7 @@ public class ProfilePopup extends FrameLayout {
 	public void downloadUserInfo(String userId) {
 
 		try {
-			ApplicationManager.getInstance().getMainActivity().showLoadingView();
+			ZonecommsApplication.getActivity().showLoadingView();
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + URLEncoder.encode(userId, "UTF-8") +
@@ -254,7 +251,7 @@ public class ProfilePopup extends FrameLayout {
 				@Override
 				public void onErrorRaised(String url, Exception e) {
 					ToastUtils.showToast(R.string.failToLoadUserInfo);
-					ApplicationManager.getInstance().getMainActivity().hideLoadingView();
+					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					LogUtils.log("ProfilePopup.onErrorRaised.  url : " + url);
 				}
@@ -263,7 +260,7 @@ public class ProfilePopup extends FrameLayout {
 				public void onCompleted(String url, String result) {
 
 					LogUtils.log("ProfilePopup.onCompleted.  url : " + url + "\nresult : " + result);
-					ApplicationManager.getInstance().getMainActivity().hideLoadingView();
+					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					try {
 						JSONObject objResult = new JSONObject(result);

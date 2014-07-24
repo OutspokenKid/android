@@ -9,18 +9,13 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.BaseFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -32,8 +27,10 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.MyStoryInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class AddedProfilePage extends BaseFragment {
 
@@ -77,8 +74,8 @@ public class AddedProfilePage extends BaseFragment {
 		setVariables();
 		createPage();
 		
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 	}
 	
 	@Override
@@ -201,13 +198,13 @@ public class AddedProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 
 		int p = ResizeUtils.getSpecificLength(40);
 		innerFrame.setPadding(p, p, p, p);

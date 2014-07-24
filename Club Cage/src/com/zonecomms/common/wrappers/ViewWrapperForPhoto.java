@@ -1,6 +1,5 @@
 package com.zonecomms.common.wrappers;
 
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,11 +8,12 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.BaseModel;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
@@ -42,7 +42,7 @@ public class ViewWrapperForPhoto extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 
 		try {
 			if(length == 0) {
@@ -84,7 +84,7 @@ public class ViewWrapperForPhoto extends ViewWrapper {
 	}
 	
 	@Override
-	public void setListener() {
+	public void setListeners() {
 
 		try {
 			if(link != null) {
@@ -95,7 +95,7 @@ public class ViewWrapperForPhoto extends ViewWrapper {
 						@Override
 						public void onClick(View v) {
 							
-							ApplicationManager.getInstance().getMainActivity().showImageViewerActivity(link.getTitle(), link.getLink_datas(), link.getThumbnails(), 0);
+							ZonecommsApplication.getActivity().showImageViewerActivity(link.getTitle(), link.getLink_datas(), link.getThumbnails(), 0);
 						}
 					});
 				}

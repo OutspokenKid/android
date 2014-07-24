@@ -1,22 +1,21 @@
 package com.zonecomms.common.wrappers;
 
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.BaseModel;
 import com.zonecomms.common.models.Notice;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
@@ -36,7 +35,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 		super(row, itemCode);
 		
 		bindViews();
-		setSize();
+		setSizes();
 	}
 
 	@Override
@@ -54,7 +53,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 		
 		int p = ResizeUtils.getSpecificLength(8);
 		AbsListView.LayoutParams ap = new AbsListView.LayoutParams(ResizeUtils.getSpecificLength(640), 
@@ -104,7 +103,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 	}
 	
 	@Override
-	public void setListener() {
+	public void setListeners() {
 		
 		final ViewWrapperForNotice thisNotice = this;
 		

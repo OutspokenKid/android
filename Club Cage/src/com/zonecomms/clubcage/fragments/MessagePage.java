@@ -14,7 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import com.outspoken_kid.utils.StringUtils;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,17 +26,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.outspoken_kid.classes.BaseListFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
@@ -44,15 +38,16 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.Message;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
 public class MessagePage extends BaseListFragment {
 
-	private PullToRefreshListView listView;
 	private FrameLayout mainLayout;
 	private View photo;
 	private HoloStyleEditText etMessage;
@@ -83,8 +78,8 @@ public class MessagePage extends BaseListFragment {
 		setVariables();
 		createPage();
 		
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 	}
 	
 	@Override
@@ -229,7 +224,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 
 		photo.setOnClickListener(new OnClickListener() {
 			
@@ -255,7 +250,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		
 		ResizeUtils.viewResize(66, 53, photo, 1, Gravity.CENTER_VERTICAL, new int[]{8, 8, 8, 8});
 		

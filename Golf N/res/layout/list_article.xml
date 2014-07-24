@@ -27,18 +27,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:ellipsize="end"
+        android:maxLines="2"
         android:gravity="center_vertical|left"
-        android:singleLine="true"
         android:textColor="#ddd" />
-
-    <TextView
-        android:id="@+id/list_article_tvContent"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:ellipsize="end"
-        android:gravity="center_vertical|left"
-        android:singleLine="true"
-        android:textColor="#eee" />
 
     <TextView
         android:id="@+id/list_article_tvRegdate"

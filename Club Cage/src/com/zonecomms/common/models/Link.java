@@ -3,6 +3,8 @@ package com.zonecomms.common.models;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class Link extends BaseModel {
 
 	/**
@@ -39,8 +41,6 @@ public class Link extends BaseModel {
 	public Link() {}
 	
 	public Link(JSONObject objJSON) {
-		
-		super(objJSON);
 		
 		try {
 			if(objJSON.has("link_type")) {
@@ -104,7 +104,7 @@ public class Link extends BaseModel {
 			
 			if(objJSON.has("link_nid")) {
 				this.link_nid = objJSON.getInt("link_nid");
-				this.indexno = link_nid;
+				setIndexno(link_nid);
 			}
 			
 			if(objJSON.has("reg_id")) {

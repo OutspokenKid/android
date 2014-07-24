@@ -3,6 +3,8 @@ package com.zonecomms.common.models;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class Post extends BaseModel {
 	
 	/**
@@ -51,17 +53,16 @@ reg_id : 작성자 ID
 	private Media[] medias;
 	
 	private boolean postForNApp;
+	private String reg_dt;
 	
 	public Post() {}
 	
 	public Post(JSONObject objJSON) {
 		
-		super(objJSON);
-		
 		try {
 			if(objJSON.has("sb_spot_nid")) {
 				this.sb_spot_nid = objJSON.getInt("sb_spot_nid");
-				this.indexno = sb_spot_nid;
+				setIndexno(sb_spot_nid);
 			}
 			
 			if(objJSON.has("sb_nickname")) {
@@ -143,6 +144,10 @@ reg_id : 작성자 ID
 						}
 					}
 				}
+			}
+			
+			if(objJSON.has("reg_dt")) {
+				this.reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -267,5 +272,13 @@ reg_id : 작성자 ID
 
 	public void setPostForNApp(boolean postForNApp) {
 		this.postForNApp = postForNApp;
+	}
+
+	public String getReg_dt() {
+		return reg_dt;
+	}
+
+	public void setReg_dt(String reg_dt) {
+		this.reg_dt = reg_dt;
 	}
 }

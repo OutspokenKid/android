@@ -20,9 +20,9 @@ import com.outspoken_kid.utils.ToastUtils;
  */
 public class OutSpokenApplication extends Application {
 
-	private static int DISK_IMAGECACHE_SIZE = 1024*1024*10;
-	private static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
-	private static int DISK_IMAGECACHE_QUALITY = 100;  //PNG is lossless so quality is ignored but must be provided
+	protected static int DISK_IMAGECACHE_SIZE = 1024*1024*10;
+	protected static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
+	protected static int DISK_IMAGECACHE_QUALITY = 100;  //PNG is lossless so quality is ignored but must be provided
 	
 	@Override
 	public void onCreate() {
@@ -33,7 +33,7 @@ public class OutSpokenApplication extends Application {
 	/**
 	 * Intialize the request manager and the image cache 
 	 */
-	private void init() {
+	protected void init() {
 		
 		RequestManager.init(this);
 		createImageCache();
@@ -52,7 +52,7 @@ public class OutSpokenApplication extends Application {
 	/**
 	 * Create the image cache. Uses Memory Cache by default. Change to Disk for a Disk based LRU implementation.  
 	 */
-	private void createImageCache(){
+	protected void createImageCache(){
 
 //		ImageCacheManager.getInstance().init(this,
 //				this.getPackageCodePath()

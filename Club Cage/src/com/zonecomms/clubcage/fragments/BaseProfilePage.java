@@ -16,31 +16,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.DatePicker;
+import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.DatePicker.OnDateChangedListener;
-import android.widget.ImageView.ScaleType;
 
-import com.outspoken_kid.classes.BaseFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
@@ -49,9 +43,11 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.CustomDatePicker;
 
@@ -97,8 +93,8 @@ public class BaseProfilePage extends BaseFragment {
 		setVariables();
 		createPage();
 		
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 	}
 	
 	@Override
@@ -283,7 +279,7 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 
 		pPhoto.setOnItemClickedListener(new OnItemClickedListener() {
 			
@@ -380,7 +376,7 @@ public class BaseProfilePage extends BaseFragment {
 	}
 	
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		// TODO Auto-generated method stub
 
 	}

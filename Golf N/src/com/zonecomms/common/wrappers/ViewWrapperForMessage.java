@@ -1,33 +1,28 @@
 package com.zonecomms.common.wrappers;
 
-import org.json.JSONObject;
-
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
 import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.common.models.Message;
+import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.golfn.BaseFragmentActivity.OnPositiveClickedListener;
 import com.zonecomms.golfn.MainActivity;
 import com.zonecomms.golfn.R;
 import com.zonecomms.golfn.classes.ApplicationManager;
 import com.zonecomms.golfn.classes.ViewWrapperForZonecomms;
-import com.zonecomms.golfn.classes.ZoneConstants;
+import com.zonecomms.golfn.fragments.MessagePage;
 
 public class ViewWrapperForMessage extends ViewWrapperForZonecomms {
 
@@ -143,73 +138,53 @@ public class ViewWrapperForMessage extends ViewWrapperForZonecomms {
 	@Override
 	public void setListeners() {
 
-		if(MainActivity.myInfo.getMember_id().equals(message.getPost_member_id())) {
-			row.setOnLongClickListener(new OnLongClickListener() {
-				
-				@Override
-				public boolean onLongClick(View v) {
+		row.setOnLongClickListener(new OnLongClickListener() {
+			
+			@Override
+			public boolean onLongClick(View v) {
 
-					if(message.getMicrospot_nid() != 0) {
-						String title = row.getContext().getString(R.string.deleteMessage);
-						String messageString = row.getContext().getString(R.string.wannaDelete);
+				if(message.getMicrospot_nid() != 0) {
+					
+					LogUtils.log("###ViewWrapperForMessage.onLongClick.  postId : " + message.getPost_member_id() + ", memberId : " + MainActivity.myInfo.getMember_id());
+					
+					//isOwner.
+					if(message.getPost_member_id().equals(MainActivity.myInfo.getMember_id())) {
+						//copy, delete -> pmessage
+						((MessagePage) ApplicationManager.getTopFragment())
+							.showDialogForMessage(message.getMicrospot_nid(), message.getContent());
+						
+					//notOwner.
+					} else{
+						//copy -> dialog.
+						String title = row.getContext().getString(R.string.copy);
+						String messageString = row.getContext().getString(R.string.wannaCopy);
 						OnPositiveClickedListener opcl = new OnPositiveClickedListener() {
 							
 							@Override
 							public void onPositiveClicked() {
-								deleteMessage(message.getMicrospot_nid());
+								
+								if(StringUtils.copyStringToClipboard(row.getContext(), message.getContent())) {
+									ToastUtils.showToast(R.string.copyReplyCompleted);
+								} else {
+									ToastUtils.showToast(R.string.failToCopyReply);
+								}
 							}
 						};
 						ApplicationManager.getInstance().getActivity().showAlertDialog(title, messageString, opcl);
 					}
-					return false;
 				}
-			});
-		}
+				return false;
+			}
+		});
 		
 		ivImage.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				
-				message.getContent();
 				ApplicationManager.getInstance().getActivity()
 					.showImageViewerActivity(null, new String[]{message.getContent()}, null, 0);
 			}
 		});
-	}
-
-	public void deleteMessage(int microspot_nid) {
-		
-		String url = ZoneConstants.BASE_URL + "microspot/microspot_delete" +
-				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&microspot_nid=" + message.getMicrospot_nid();
-		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-				ToastUtils.showToast(R.string.failToDeleteMessage);
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
-				
-				try {
-					JSONObject objJSON = new JSONObject(result);
-					
-					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
-						ToastUtils.showToast(R.string.deleteCompleted);
-						ApplicationManager.refreshTopPage();
-					} else {
-						ToastUtils.showToast(R.string.failToDeleteMessage);
-					}
-				} catch(Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.failToDeleteMessage);
-				}
-			}
-		};
-		ToastUtils.showToast(R.string.wait);
-		AsyncStringDownloader.download(url, ApplicationManager.getDownloadKeyFromTopFragment(), ocl);
 	}
 }

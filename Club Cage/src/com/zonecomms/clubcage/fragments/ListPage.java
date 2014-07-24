@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import com.outspoken_kid.utils.StringUtils;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,27 +13,21 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.outspoken_kid.classes.BaseListFragment;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.models.Notice;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class ListPage extends BaseListFragment {
 
 	private static int MAX_LOADING_COUNT = 12;
-	
-	private PullToRefreshListView listView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -92,12 +86,12 @@ public class ListPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		// TODO Auto-generated method stub
 	}
 

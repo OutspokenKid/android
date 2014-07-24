@@ -2,27 +2,26 @@ package com.zonecomms.common.views;
 
 import java.util.Calendar;
 
-import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.views.holo_dark.HoloStyleButton;
-import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.Popup;
-import com.zonecomms.common.utils.ImageDownloadUtils;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.ImageView.ScaleType;
+import android.widget.ProgressBar;
+
+import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.holo_dark.HoloStyleButton;
+import com.zonecomms.clubcage.IntentHandlerActivity;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.models.Popup;
 
 public class NoticePopup extends FrameLayout {
 

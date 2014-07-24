@@ -15,7 +15,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Selection;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,22 +26,20 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.RecyclingActivity;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
+import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
@@ -74,8 +71,8 @@ public class WriteActivity extends RecyclingActivity {
 		bindViews();
 		setVariables();
 		createPage();
-		setSize();
-		setListener();
+		setSizes();
+		setListeners();
 		downloadInfo();
 		setPage();
 	}
@@ -129,7 +126,7 @@ public class WriteActivity extends RecyclingActivity {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		
 		//ScrollView
 		int p = ResizeUtils.getSpecificLength(8);
@@ -147,7 +144,7 @@ public class WriteActivity extends RecyclingActivity {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		
 		btnComplete.setOnClickListener(new OnClickListener() {
 			

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
-import com.outspoken_kid.utils.StringUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.view.View;
@@ -17,20 +16,19 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.RecyclingActivity;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
+import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.MyInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class SignInActivity extends RecyclingActivity {
 	
@@ -50,8 +48,8 @@ public class SignInActivity extends RecyclingActivity {
 		bindViews();
 		setVariables();
 		createPage();
-		setSize();
-		setListener();
+		setSizes();
+		setListeners();
 		
 		signInActivity = this;
 	}
@@ -73,11 +71,11 @@ public class SignInActivity extends RecyclingActivity {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 
 	}
 	

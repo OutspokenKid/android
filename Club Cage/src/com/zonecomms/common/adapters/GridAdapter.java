@@ -2,27 +2,25 @@ package com.zonecomms.common.adapters;
 
 import java.util.ArrayList;
 
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
-import com.zonecomms.clubcage.MainActivity;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.BaseModel;
-import com.zonecomms.common.wrappers.ViewWrapper;
-import com.zonecomms.common.wrappers.ViewWrapperForMember;
-import com.zonecomms.common.wrappers.ViewWrapperForPhoto;
-import com.zonecomms.common.wrappers.ViewWrapperForPost;
-import com.zonecomms.common.wrappers.ViewWrapperForSchedule;
-import com.zonecomms.common.wrapperviews.WrapperView;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+
+import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.zonecomms.clubcage.MainActivity;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.wrappers.ViewWrapper;
+import com.zonecomms.common.wrappers.ViewWrapperForMember;
+import com.zonecomms.common.wrappers.ViewWrapperForPhoto;
+import com.zonecomms.common.wrappers.ViewWrapperForPost;
+import com.zonecomms.common.wrappers.ViewWrapperForSchedule;
+import com.zonecomms.common.wrapperviews.WrapperView;
 
 public class GridAdapter extends BaseAdapter {
 
@@ -125,7 +123,7 @@ public class GridAdapter extends BaseAdapter {
 			
 			setRowPadding(itemCode, position, viewForWrapper);
 			viewWrapper.setValues(model);
-			viewWrapper.setListener();
+			viewWrapper.setListeners();
 			
 			if(useHardCache) {
 				hardCache.add(viewForWrapper);
@@ -137,8 +135,6 @@ public class GridAdapter extends BaseAdapter {
 			return getBlankView();
 		} catch(OutOfMemoryError oom) {
 			oom.printStackTrace();
-			ToastUtils.showToast(R.string.notEnoughMemory);
-			ApplicationManager.clearFragmentsWithoutMain();
 			return getBlankView();
 		}
 	}

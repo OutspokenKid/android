@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +19,14 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
-import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.Notice;
-import com.zonecomms.common.utils.ImageDownloadUtils;
 
 /**
  * 217 27 92
@@ -70,8 +69,8 @@ public class MainPage extends BaseFragment {
 		setVariables();
 		createPage();
 		
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 		
 		setPage(true);
 	}
@@ -510,11 +509,11 @@ public class MainPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		// TODO Auto-generated method stub
 
 	}

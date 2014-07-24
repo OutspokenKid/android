@@ -18,16 +18,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.BaseFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.models.VIPFloorInfo;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.models.VIPFloorInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class InformationPage extends BaseFragment {
 
@@ -58,8 +56,8 @@ public class InformationPage extends BaseFragment {
 		setVariables();
 		createPage();
 		
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 	}
 	
 	@Override
@@ -250,13 +248,13 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		// TODO Auto-generated method stub
 
 	}

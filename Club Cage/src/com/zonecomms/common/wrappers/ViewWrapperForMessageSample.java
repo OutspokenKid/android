@@ -4,30 +4,28 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
+import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.BaseModel;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MessageSample;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
 public class ViewWrapperForMessageSample extends ViewWrapper {
@@ -57,7 +55,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 
 		int p = ResizeUtils.getSpecificLength(8);
 		row.setPadding(p, p, p, p);
@@ -117,7 +115,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 	}
 
 	@Override
-	public void setListener() {
+	public void setListeners() {
 
 		row.setOnClickListener(new OnClickListener() {
 			
@@ -142,8 +140,8 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 			public boolean onLongClick(View v) {
 
 				if(messageSample.getRelation_nid() != 0) {
-					String title = ApplicationManager.getInstance().getMainActivity().getString(R.string.deleteMessage);
-					String message = ApplicationManager.getInstance().getMainActivity().getString(R.string.wannaDelete);
+					String title = row.getContext().getString(R.string.deleteMessage);
+					String message = row.getContext().getString(R.string.wannaDelete);
 					OnPositiveClickedListener opcl = new OnPositiveClickedListener() {
 						
 						@Override
@@ -151,7 +149,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 							deleteMessage(messageSample.getRelation_nid());
 						}
 					};
-					ApplicationManager.getInstance().getMainActivity().showAlertDialog(title, message, opcl);
+					ZonecommsApplication.getActivity().showAlertDialog(title, message, opcl);
 				}
 				return false;
 			}

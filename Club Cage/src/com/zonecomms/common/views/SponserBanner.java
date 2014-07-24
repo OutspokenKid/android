@@ -1,17 +1,9 @@
 package com.zonecomms.common.views;
 
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader.OnCompletedListener;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.Banner;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -20,6 +12,12 @@ import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.models.Banner;
 
 public class SponserBanner extends FrameLayout {
 
@@ -65,7 +63,7 @@ public class SponserBanner extends FrameLayout {
 					
 					if(banners != null && banners.length > 0 && banners.length > bannerIndex 
 							&& !StringUtils.isEmpty(banners[bannerIndex].getTarget_link())) {
-						ApplicationManager.getInstance().getMainActivity().showDeviceBrowser(banners[bannerIndex].getTarget_link());
+						ZonecommsApplication.getActivity().showDeviceBrowser(banners[bannerIndex].getTarget_link());
 					}
 				}
 			});

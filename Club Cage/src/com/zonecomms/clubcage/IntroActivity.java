@@ -2,39 +2,35 @@ package com.zonecomms.clubcage;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.classes.SetupClass;
-import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.outspoken_kid.utils.ImageCacheUtils;
-import com.outspoken_kid.utils.ImageCacheUtils.OnAfterLoadBitmap;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.NetworkUtils;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.utils.ToastUtils;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.StartupInfo;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.DialogInterface.OnCancelListener;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
+
+import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.ImageCacheUtils;
+import com.outspoken_kid.utils.ImageCacheUtils.OnAfterLoadBitmap;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.NetworkUtils;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.models.StartupInfo;
 
 public class IntroActivity extends Activity {
 
@@ -52,10 +48,10 @@ public class IntroActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		SetupClass.setupApplication(this);
+		ZonecommsApplication.initWithActivity(this);
 		setContentView(R.layout.activity_intro);
 		bindViews();
-		setSize();
+		setSizes();
 		
 		isInIntro = true;
 	}
@@ -95,7 +91,7 @@ public class IntroActivity extends Activity {
 		ivSponser = (ImageView) findViewById(R.id.introActivity_ivSponser);
 	}
 	
-	public void setSize() {
+	public void setSizes() {
 		
 		ResizeUtils.viewResize(Integer.parseInt(getString(R.string.logo_width)), 
 				Integer.parseInt(getString(R.string.logo_height)), 
@@ -345,8 +341,8 @@ public class IntroActivity extends Activity {
 	
 	public void clearApplication() {
 		
-		if(ApplicationManager.getInstance().getMainActivity() != null) {
-			ApplicationManager.getInstance().getMainActivity().finish();
+		if(ZonecommsApplication.getActivity() != null) {
+			ZonecommsApplication.getActivity().finish();
 		}
 	}
 

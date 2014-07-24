@@ -1,6 +1,5 @@
 package com.zonecomms.common.wrappers;
 
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,11 +8,12 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.BaseModel;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
@@ -40,7 +40,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 
 		try {
 			int length = ResizeUtils.getScreenWidth()/4;
@@ -69,13 +69,13 @@ public class ViewWrapperForMember extends ViewWrapper {
 				if(!StringUtils.isEmpty(member.getMember_nickname())) {
 					infoString += member.getMember_nickname();
 				} else {
-					infoString += ApplicationManager.getTopFragment().getActivity().getString(R.string.noname);
+					infoString += row.getContext().getString(R.string.noname);
 				}
 				
 				if(!StringUtils.isEmpty(member.getMember_gender()) && member.getMember_gender().equals("M")) {
-					infoString += "/" + ApplicationManager.getTopFragment().getActivity().getString(R.string.maleInit);
+					infoString += "/" + row.getContext().getString(R.string.maleInit);
 				} else {
-					infoString += "/" + ApplicationManager.getTopFragment().getActivity().getString(R.string.femaleInit);
+					infoString += "/" + row.getContext().getString(R.string.femaleInit);
 				}
 				
 				if(member.getMember_age() > 0 && member.getMember_age() < 100) {
@@ -103,7 +103,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 	}
 
 	@Override
-	public void setListener() {
+	public void setListeners() {
 		
 		if(member != null) {
 			row.setOnClickListener(new OnClickListener() {
@@ -111,7 +111,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 				@Override
 				public void onClick(View v) {
 					if(member != null && !StringUtils.isEmpty(member.getMember_id())) {
-						ApplicationManager.getInstance().getMainActivity().showProfilePopup(
+						ZonecommsApplication.getActivity().showProfilePopup(
 								member.getMember_id(), member.getStatus());
 					}
 				}

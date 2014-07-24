@@ -12,7 +12,6 @@ import com.nhn.android.mapviewer.NMapPOIflagType;
 import com.nhn.android.mapviewer.NMapViewerResourceProvider;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
-import com.outspoken_kid.classes.ApplicationManager;
 
 public class NaverMapActivity extends NMapActivity {
 
@@ -24,8 +23,6 @@ public class NaverMapActivity extends NMapActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		ApplicationManager.getInstance().addActivity(this);
 	
 		// create map view
 		mMapView = new NMapView(this);
@@ -73,10 +70,4 @@ public class NaverMapActivity extends NMapActivity {
 		} else { // fail
 		}
 	}	
-
-	@Override
-	public void finish() {
-		ApplicationManager.removeActivity(this);
-		super.finish();
-	}
 }

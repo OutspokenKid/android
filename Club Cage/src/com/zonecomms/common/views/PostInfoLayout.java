@@ -1,16 +1,7 @@
 package com.zonecomms.common.views;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.Member;
-import com.zonecomms.common.models.Post;
-import com.zonecomms.common.utils.ImageDownloadUtils;
-
 import android.content.Context;
 import android.graphics.Color;
-import com.outspoken_kid.utils.StringUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -19,6 +10,14 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.models.Member;
+import com.zonecomms.common.models.Post;
 
 public class PostInfoLayout extends RelativeLayout {
 
@@ -155,7 +154,7 @@ public class PostInfoLayout extends RelativeLayout {
 				
 				@Override
 				public void onClick(View v) {
-					ApplicationManager.getInstance().getMainActivity().showProfilePopup(
+					ZonecommsApplication.getActivity().showProfilePopup(
 							member.getMember_id(), member.getStatus());
 				}
 			});

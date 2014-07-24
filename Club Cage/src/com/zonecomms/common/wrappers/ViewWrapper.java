@@ -2,11 +2,8 @@ package com.zonecomms.common.wrappers;
 
 import android.graphics.Color;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.outspoken_kid.utils.StringUtils;
-import com.zonecomms.common.models.BaseModel;
-import com.zonecomms.common.utils.ImageDownloadUtils;
+import com.outspoken_kid.model.BaseModel;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
 public abstract class ViewWrapper {
@@ -23,13 +20,13 @@ public abstract class ViewWrapper {
 		setRow(row);
 		setItemCode(itemCode);
 		bindViews();
-		setSize();
+		setSizes();
 	}
 
 	public abstract void bindViews();
-	public abstract void setSize();
+	public abstract void setSizes();
 	public abstract void setValues(BaseModel baseModel);
-	public abstract void setListener();
+	public abstract void setListeners();
 	public abstract void setUnusableView();
 
 	public WrapperView getRow() {
@@ -89,33 +86,6 @@ public abstract class ViewWrapper {
 			bg.setBackgroundColor(Color.rgb(newColor, newColor, newColor));
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
-	}
-
-	public void setImage(ImageView ivImage, String url, String key, int size) {
-
-		if(ivImage == null) {
-			return;
-		}
-		
-		boolean hasUrl = !StringUtils.isEmpty(url);
-		boolean hasTag = (ivImage.getTag() != null);
-		boolean same = hasUrl && hasTag && ivImage.getTag().toString().equals(url);
-		
-		if(hasUrl) {
-
-			if(same) {
-				ivImage.setVisibility(View.VISIBLE);
-			} else {
-				ivImage.setImageBitmap(null);
-				ivImage.setVisibility(View.INVISIBLE);
-			}
-			
-			ImageDownloadUtils.downloadImageImmediately(url, key, ivImage, size, true);
-		} else {
-			ivImage.setVisibility(View.INVISIBLE);
-			ivImage.setImageBitmap(null);
-			ivImage.setTag(null);
 		}
 	}
 }

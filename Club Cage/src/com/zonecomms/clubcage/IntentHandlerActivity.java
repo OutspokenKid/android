@@ -2,8 +2,8 @@ package com.zonecomms.clubcage;
 
 import java.net.URLDecoder;
 
-import com.outspoken_kid.classes.ApplicationManager;
 import com.outspoken_kid.utils.LogUtils;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 
 import android.app.Activity;
@@ -35,7 +35,7 @@ public class IntentHandlerActivity extends Activity {
 	public void handlingIntent(final Intent intent) {
 
 		try {
-			if(ApplicationManager.getFragmentsSize() != 0) {
+			if(ZonecommsApplication.getFragmentsSize() != 0) {
 				Intent mainActivityIntent = new Intent(this, MainActivity.class);
 				mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 				startActivity(mainActivityIntent);
@@ -95,16 +95,16 @@ public class IntentHandlerActivity extends Activity {
 					+ "\nhost : " + host + "\nurl : " + url + "\nPAppId :" + ZoneConstants.PAPP_ID + "\n=========");
 			
 			if(scheme.equals("http")||scheme.equals("https")) {
-				ApplicationManager.getInstance().getMainActivity().showDeviceBrowser(uri.toString());
+				ZonecommsApplication.getActivity().showDeviceBrowser(uri.toString());
 			} else if(scheme.equals("market") || scheme.equals("tstore")) {
-				ApplicationManager.getInstance().getMainActivity().showDownloadPage(uri.toString(), null);
+				ZonecommsApplication.getActivity().showDownloadPage(uri.toString(), null);
 			} else if(scheme.equals("popup")) {
 				String message = uri.getQueryParameter("message");
 				message = URLDecoder.decode(message, "utf-8");
-				ApplicationManager.getInstance().getMainActivity().showAlertDialog(null, message, null, false);
+				ZonecommsApplication.getActivity().showAlertDialog(null, message, null, false);
 			} else if(scheme.equals(ZoneConstants.PAPP_ID)) {
 
-				MainActivity mActivity = ApplicationManager.getInstance().getMainActivity();
+				MainActivity mActivity = ZonecommsApplication.getActivity();
 				
 				//인포메이션.
 				if(url.equals("android.zonecomms.com/information")) {
@@ -208,6 +208,6 @@ public class IntentHandlerActivity extends Activity {
 	
 	public static void handleInvalidUri() {
 //		ToastUtils.showToast(R.string.invalidUri);
-//		ApplicationManager.getInstance().getMainActivity().showMainPage();
+//		ClubCageApplication.getActivity().showMainPage();
 	}
 }

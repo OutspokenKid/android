@@ -1,11 +1,5 @@
 package com.zonecomms.common.views;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.StringUtils;
-import com.zonecomms.clubcage.R;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
@@ -15,6 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubcage.R;
 
 public class TitleBar extends LinearLayout {
 

@@ -1,21 +1,20 @@
 package com.zonecomms.common.wrappers;
 
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.BaseModel;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
@@ -42,7 +41,7 @@ public class ViewWrapperForMusic extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 
 		int p = ResizeUtils.getSpecificLength(8);
 		AbsListView.LayoutParams ap = new AbsListView.LayoutParams(ResizeUtils.getSpecificLength(640), 
@@ -92,7 +91,7 @@ public class ViewWrapperForMusic extends ViewWrapper {
 	}
 
 	@Override
-	public void setListener() {
+	public void setListeners() {
 
 		if(link != null) {
 			if(!StringUtils.isEmpty(link.getLink_data())) {

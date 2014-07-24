@@ -7,14 +7,33 @@ import java.util.Calendar;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
 import com.google.android.gcm.GCMRegistrar;
-import com.outspoken_kid.classes.BaseFragment;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.classes.SetupClass;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.NetworkUtils;
@@ -22,14 +41,17 @@ import com.outspoken_kid.utils.PackageUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
-import com.outspoken_kid.views.SoftKeyboardDetector;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterCloseListener;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
+import com.outspoken_kid.views.SoftKeyboardDetector;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnHiddenSoftKeyboardListener;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnShownSoftKeyboardListener;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.fragments.AddedProfilePage;
 import com.zonecomms.clubcage.fragments.BaseProfilePage;
 import com.zonecomms.clubcage.fragments.GridPage;
@@ -47,6 +69,7 @@ import com.zonecomms.common.models.Popup;
 import com.zonecomms.common.models.SideMenu;
 import com.zonecomms.common.models.StartupInfo;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.NoticePopup;
@@ -57,32 +80,6 @@ import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.TitleBar.OnNButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnSideMenuButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnWriteButtonClickedListener;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-import com.outspoken_kid.utils.StringUtils;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ScrollView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -123,14 +120,14 @@ public class MainActivity extends FragmentActivity {
 		
 		try {
 			setContentView(R.layout.activity_main);
-			SetupClass.setupApplication(this);
+			ZonecommsApplication.initWithActivity(this);
 			context = this;
 			
 			bindViews();
 			setVariables();
 			createPage();
-			setListener();
-			setSize();
+			setListeners();
+			setSizes();
 			
 			downloadInfo();
 			
@@ -174,7 +171,7 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 
-	public void setListener() {
+	public void setListeners() {
 		
 		titleBar.setOnSideMenuButtonClickedListener(new OnSideMenuButtonClickedListener() {
 			
@@ -189,13 +186,13 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onWriteButtonClicked() {
 				
-				BaseFragment bf = ApplicationManager.getTopFragment();
+				BaseFragment bf = ZonecommsApplication.getTopFragment();
 				
 				try {
 					if(bf instanceof MainPage) {
 						((MainPage) bf).showBoardMenu(true);
 					} else {
-						showWriteActivity(ApplicationManager.getTopFragment().getBoardIndex());
+						showWriteActivity(ZonecommsApplication.getTopFragment().getBoardIndex());
 					}
 				} catch(Exception e) {
 					e.printStackTrace();
@@ -217,7 +214,7 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onShownSoftKeyboard() {
 				try {
-					ApplicationManager.getTopFragment().onSoftKeyboardShown();
+					ZonecommsApplication.getTopFragment().onSoftKeyboardShown();
 				} catch(Exception e) {
 				}
 			}
@@ -229,14 +226,14 @@ public class MainActivity extends FragmentActivity {
 			public void onHiddenSoftKeyboard() {
 				
 				try {
-					ApplicationManager.getTopFragment().onSoftKeyboardHidden();
+					ZonecommsApplication.getTopFragment().onSoftKeyboardHidden();
 				} catch(Exception e) {
 				}
 			}
 		});
 	}
 	
-	public void setSize() {
+	public void setSizes() {
 		
 		ResizeUtils.viewResize(550, LayoutParams.MATCH_PARENT, leftView, 2, 0, null);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, titleBar, 1, 0, null);
@@ -251,10 +248,9 @@ public class MainActivity extends FragmentActivity {
 	
 	public void setPage() {
 		
-		ApplicationManager.getInstance().setMainActivity(this);
 		setAnimationDrawable();
 		
-		if(ApplicationManager.getFragmentsSize() == 0) {
+		if(ZonecommsApplication.getFragmentsSize() == 0) {
 			showMainPage();
 			checkPopup();
 		}
@@ -299,14 +295,14 @@ public class MainActivity extends FragmentActivity {
 						gestureSlidingLayout.close(true, null);
 					} else if(cover.getVisibility() == View.VISIBLE) {
 						//Just wait.
-					} else if(ApplicationManager.getTopFragment() != null 
-							&& ApplicationManager.getTopFragment().onBackKeyPressed()) {
+					} else if(ZonecommsApplication.getTopFragment() != null 
+							&& ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
 						//Do nothing.
 					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
 						noticePopup.hide(null);
 					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
 						profilePopup.hide(null);
-					} else if(ApplicationManager.getFragmentsSize() > 1){
+					} else if(ZonecommsApplication.getFragmentsSize() > 1){
 						closeTopPage();
 					} else {
 						finish();
@@ -327,8 +323,8 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void finish() {
 		super.finish();
-		ApplicationManager.clearFragments();
-		ApplicationManager.clearActivities();
+		ZonecommsApplication.clearFragments();
+		ZonecommsApplication.clearActivities();
 		ViewUnbindHelper.unbindReferences(this, R.id.mainActivity_gestureSlidingLayout);
 	}
 
@@ -430,9 +426,9 @@ public class MainActivity extends FragmentActivity {
 		case ZoneConstants.REQUEST_WRITE:
 			
 			if(resultCode == RESULT_OK) {
-				if(ApplicationManager.getTopFragment() != null
-						&& ApplicationManager.getTopFragment() instanceof GridPage) {
-					GridPage gridPage = (GridPage)ApplicationManager.getTopFragment();
+				if(ZonecommsApplication.getTopFragment() != null
+						&& ZonecommsApplication.getTopFragment() instanceof GridPage) {
+					GridPage gridPage = (GridPage)ZonecommsApplication.getTopFragment();
 					gridPage.onRefreshPage();
 				}
 				
@@ -449,8 +445,8 @@ public class MainActivity extends FragmentActivity {
 		case ZoneConstants.REQUEST_EDIT:
 			
 			if(resultCode == RESULT_OK) {
-				if(ApplicationManager.getTopFragment() != null) {
-					((PostPage)ApplicationManager.getTopFragment()).onRefreshPage();
+				if(ZonecommsApplication.getTopFragment() != null) {
+					((PostPage)ZonecommsApplication.getTopFragment()).onRefreshPage();
 				}
 			}
 			break;
@@ -579,8 +575,8 @@ public class MainActivity extends FragmentActivity {
 	
 	public void closeTopPage() {
 		
-		if(ApplicationManager.getTopFragment() != null) {
-			ApplicationManager.getTopFragment().finish(true, ApplicationManager.getFragmentsSize() == 2? true : false);
+		if(ZonecommsApplication.getTopFragment() != null) {
+			ZonecommsApplication.getTopFragment().finish(true, ZonecommsApplication.getFragmentsSize() == 2? true : false);
 		}
 		showTopFragment();
 	}
@@ -588,11 +584,11 @@ public class MainActivity extends FragmentActivity {
 	public void showMainPage() {
 		
 		try {
-			if(ApplicationManager.getFragmentsSize() == 0) {
+			if(ZonecommsApplication.getFragmentsSize() == 0) {
 				MainPage mp = new MainPage();
 				startPage(mp, null);
 			} else {
-				ApplicationManager.clearFragmentsWithoutMain();
+				ZonecommsApplication.clearFragmentsWithoutMain();
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -759,17 +755,17 @@ public class MainActivity extends FragmentActivity {
 			if(fadePageAnim) {
 				fadePageAnim = false;
 				//Exclude animation.
-			} else if(ApplicationManager.getTopFragment() == null || ApplicationManager.getFragmentsSize() == 0) {
+			} else if(ZonecommsApplication.getTopFragment() == null || ZonecommsApplication.getFragmentsSize() == 0) {
 				//MainPage.
-			} else if(ApplicationManager.getTopFragment() != null
-					&& ApplicationManager.getTopFragment() instanceof MainPage) {
+			} else if(ZonecommsApplication.getTopFragment() != null
+					&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
 				ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
 			} else {
 				ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
 			}
 			
-			if(ApplicationManager.getInstance().getFragments().size() != 0) {
-				ft.hide(ApplicationManager.getTopFragment());
+			if(ZonecommsApplication.getFragmentsSize() != 0) {
+				ft.hide(ZonecommsApplication.getTopFragment());
 			}
 			ft.add(R.id.mainActivity_fragmentFrame, fragment);
 			ft.commitAllowingStateLoss();
@@ -817,13 +813,13 @@ public class MainActivity extends FragmentActivity {
 		try {
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			
-			if(ApplicationManager.getTopFragment() instanceof MainPage) {
+			if(ZonecommsApplication.getTopFragment() instanceof MainPage) {
 				ft.setCustomAnimations(R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
 			} else {
 				ft.setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
 			}
 			
-			ft.show(ApplicationManager.getTopFragment());
+			ft.show(ZonecommsApplication.getTopFragment());
 			ft.commitAllowingStateLoss();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -939,8 +935,8 @@ public class MainActivity extends FragmentActivity {
 		
 		startActivity(intent);
 		
-		if(ApplicationManager.getTopFragment() != null
-				&& ApplicationManager.getTopFragment() instanceof MainPage) {
+		if(ZonecommsApplication.getTopFragment() != null
+				&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
 			overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
 		} else {
 			overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
@@ -951,8 +947,8 @@ public class MainActivity extends FragmentActivity {
 		
 		startActivityForResult(intent, requestCode);
 		
-		if(ApplicationManager.getTopFragment() != null
-				&& ApplicationManager.getTopFragment() instanceof MainPage) {
+		if(ZonecommsApplication.getTopFragment() != null
+				&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
 			overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
 		} else {
 			overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
@@ -1028,7 +1024,7 @@ public class MainActivity extends FragmentActivity {
 						public void onAfterClose() {
 							
 							if(I >=0 && I<=11) {
-								ApplicationManager.clearFragmentsWithoutMain();
+								ZonecommsApplication.clearFragmentsWithoutMain();
 							}
 							
 							String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
@@ -1365,20 +1361,20 @@ public class MainActivity extends FragmentActivity {
 
 		if(StringUtils.isEmpty(id) || StringUtils.isEmpty(pw)) {
 			ToastUtils.showToast(R.string.restartApp);
-			ApplicationManager.getInstance().getMainActivity().finish();
+			ZonecommsApplication.getActivity().finish();
 		} else{
 			SignInActivity.OnAfterSigningInListener osl = new SignInActivity.OnAfterSigningInListener() {
 
 				@Override
 				public void OnAfterSigningIn(boolean successSignIn) {
 
-					ApplicationManager.getInstance().getMainActivity().hideCover();
-					ApplicationManager.getInstance().getMainActivity().hideLoadingView();
+					ZonecommsApplication.getActivity().hideCover();
+					ZonecommsApplication.getActivity().hideLoadingView();
 				}
 			};
 
-			ApplicationManager.getInstance().getMainActivity().showCover();
-			ApplicationManager.getInstance().getMainActivity().showLoadingView();
+			ZonecommsApplication.getActivity().showCover();
+			ZonecommsApplication.getActivity().showLoadingView();
 			SignInActivity.signIn(id, pw, osl);
 		}
 	}

@@ -43,6 +43,7 @@ import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.golfn.MainActivity;
 import com.zonecomms.golfn.R;
+import com.zonecomms.golfn.classes.ApplicationManager;
 import com.zonecomms.golfn.classes.BaseListFragment;
 import com.zonecomms.golfn.classes.ZoneConstants;
 
@@ -54,10 +55,13 @@ public class MessagePage extends BaseListFragment {
 	private HoloStyleEditText etMessage;
 	private HoloStyleButton btnSend;
 	private HoloStyleSpinnerPopup pPhoto;
+	private HoloStyleSpinnerPopup pMessage;
 	
 	private String member_id;
 	private boolean isFirstLoading = true;
 	private int numOfNewMessages;
+	private String message_content;
+	private int message_microspot_nid;
 	
 	@Override
 	protected void bindViews() {
@@ -196,6 +200,29 @@ public class MessagePage extends BaseListFragment {
 			}
 		});
 		mainLayout.addView(pPhoto);
+		
+		pMessage = new HoloStyleSpinnerPopup(mContext);
+		pMessage.setTitle(null);
+		pMessage.addItem(getString(R.string.copy));
+		pMessage.addItem(getString(R.string.delete));
+		pMessage.notifyDataSetChanged();
+		pMessage.setOnItemClickedListener(new OnItemClickedListener() {
+
+			@Override
+			public void onItemClicked(int position, String itemString) {
+
+				if(StringUtils.isEmpty(itemString)) {
+					return;
+					
+				} else if(itemString.equals(getString(R.string.copy))){
+					copyMesasge();
+					
+				} else if(itemString.equals(getString(R.string.delete))){
+					deleteMessage();
+				}
+			}
+		});
+		mainLayout.addView(pMessage);
 	}
 
 	@Override
@@ -404,6 +431,8 @@ public class MessagePage extends BaseListFragment {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
 			pPhoto.hidePopup();
+		} else if(pMessage.getVisibility() == View.VISIBLE) {
+			pMessage.hidePopup();
 		} else {
 			return false;
 		}
@@ -499,5 +528,59 @@ public class MessagePage extends BaseListFragment {
 	@Override
 	protected int getXmlResId() {
 		return R.layout.page_message;
+	}
+	
+	public void showDialogForMessage(int microspot_nid, String content) {
+		
+		LogUtils.log("###MessagePage.showDialogForMessage.  microspot_nid : " + microspot_nid + ", content : " + content);
+		
+		this.message_microspot_nid = microspot_nid;
+		this.message_content = content;
+
+		pMessage.showPopup();
+	}
+
+	public void copyMesasge() {
+		
+		if(StringUtils.copyStringToClipboard(mContext, message_content)) {
+			ToastUtils.showToast(R.string.copyReplyCompleted);
+		} else {
+			ToastUtils.showToast(R.string.failToCopyReply);
+		}
+	}
+	
+	public void deleteMessage() {
+		
+		String url = ZoneConstants.BASE_URL + "microspot/microspot_delete" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&microspot_nid=" + message_microspot_nid;
+		
+		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+			
+			@Override
+			public void onErrorRaised(String url, Exception e) {
+				ToastUtils.showToast(R.string.failToDeleteMessage);
+			}
+			
+			@Override
+			public void onCompleted(String url, String result) {
+				
+				try {
+					JSONObject objJSON = new JSONObject(result);
+					
+					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
+						ToastUtils.showToast(R.string.deleteCompleted);
+						onRefreshPage();
+					} else {
+						ToastUtils.showToast(R.string.failToDeleteMessage);
+					}
+				} catch(Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToDeleteMessage);
+				}
+			}
+		};
+		ToastUtils.showToast(R.string.wait);
+		AsyncStringDownloader.download(url, ApplicationManager.getDownloadKeyFromTopFragment(), ocl);
 	}
 }

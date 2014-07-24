@@ -789,140 +789,6 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
          */
         public static final int prompt=0x7f010051;
-        /**  BELOW HERE ARE DEPRECEATED. DO NOT USE. 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-         */
-        public static final int ptrAdapterViewBackground=0x7f01009e;
-        /**  Style of Animation should be used displayed when pulling. 
-         <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
-<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
-</table>
-         */
-        public static final int ptrAnimationStyle=0x7f01009a;
-        /**  Drawable to use as Loading Indicator. Changes both Header and Footer. 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrDrawable=0x7f010094;
-        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrDrawableBottom=0x7f0100a0;
-        /**  Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrDrawableEnd=0x7f010096;
-        /**  Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrDrawableStart=0x7f010095;
-        /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrDrawableTop=0x7f01009f;
-        /**  A drawable to use as the background of the Header and Footer Loading Views 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-         */
-        public static final int ptrHeaderBackground=0x7f01008f;
-        /**  Text Color of the Header and Footer Loading Views Sub Header 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-         */
-        public static final int ptrHeaderSubTextColor=0x7f010091;
-        /**  Base text color, typeface, size, and style for Header and Footer Loading Views 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrHeaderTextAppearance=0x7f010098;
-        /**  Text Color of the Header and Footer Loading Views 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-         */
-        public static final int ptrHeaderTextColor=0x7f010090;
-        /** 
-        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
-        	able to scroll while refreshing, and behaves better. It acheives this by adding
-        	Header and/or Footer Views to the ListView.
-        
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-         */
-        public static final int ptrListViewExtrasEnabled=0x7f01009c;
-        /**  Mode of Pull-to-Refresh that should be used 
-         <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
-<tr><td><code>pullFromStart</code></td><td>0x1</td><td></td></tr>
-<tr><td><code>pullFromEnd</code></td><td>0x2</td><td></td></tr>
-<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
-<tr><td><code>manualOnly</code></td><td>0x4</td><td></td></tr>
-<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td> These last two are depreacted </td></tr>
-<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
-</table>
-         */
-        public static final int ptrMode=0x7f010092;
-        /**  Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-         */
-        public static final int ptrOverScroll=0x7f010097;
-        /**  A drawable to use as the background of the Refreshable View 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-         */
-        public static final int ptrRefreshableViewBackground=0x7f01008e;
-        /** 
-        	Whether the Drawable should be continually rotated as you pull. This only
-        	takes effect when using the 'Rotate' Animation Style.
-        
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-         */
-        public static final int ptrRotateDrawableWhilePulling=0x7f01009d;
-        /**  Whether the user can scroll while the View is Refreshing 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-         */
-        public static final int ptrScrollingWhileRefreshingEnabled=0x7f01009b;
-        /**  Whether the Indicator overlay(s) should be used 
-         <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-         */
-        public static final int ptrShowIndicator=0x7f010093;
-        /**  Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header 
-         <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-         */
-        public static final int ptrSubHeaderTextAppearance=0x7f010099;
         /**  An optional query hint string to be displayed in the empty query field. 
          <p>Must be a string value, using '\\;' to escape characters such as '\\n' or '\\uxxxx' for a unicode character.
 <p>This may also be a reference to a resource (in the form
@@ -1441,8 +1307,8 @@ containing a value of this type.
         public static final int abc_search_view_text_min_width=0x7f08000c;
         /**  Default screen margins, per the Android Design guidelines. 
          */
-        public static final int activity_horizontal_margin=0x7f08001a;
-        public static final int activity_vertical_margin=0x7f08001b;
+        public static final int activity_horizontal_margin=0x7f080015;
+        public static final int activity_vertical_margin=0x7f080016;
         /**  The platform's desired fixed height for a dialog along the major axis
          (the screen is in portrait). This may be either a fraction or a dimension.
  The platform's desired fixed height for a dialog along the major axis
@@ -1475,11 +1341,6 @@ containing a value of this type.
          (the screen is in portrait). This may be either a fraction or a dimension.
          */
         public static final int dialog_fixed_width_minor=0x7f080012;
-        public static final int header_footer_left_right_padding=0x7f080018;
-        public static final int header_footer_top_bottom_padding=0x7f080019;
-        public static final int indicator_corner_radius=0x7f080016;
-        public static final int indicator_internal_padding=0x7f080017;
-        public static final int indicator_right_padding=0x7f080015;
     }
     public static final class drawable {
         public static final int abc_ab_bottom_solid_dark_holo=0x7f020000;
@@ -1595,150 +1456,120 @@ containing a value of this type.
         public static final int common_signin_btn_text_normal_light=0x7f02006e;
         public static final int common_signin_btn_text_pressed_dark=0x7f02006f;
         public static final int common_signin_btn_text_pressed_light=0x7f020070;
-        public static final int default_ptr_flip=0x7f020071;
-        public static final int default_ptr_rotate=0x7f020072;
-        public static final int ic_launcher=0x7f020073;
-        public static final int ic_plusone_medium_off_client=0x7f020074;
-        public static final int ic_plusone_small_off_client=0x7f020075;
-        public static final int ic_plusone_standard_off_client=0x7f020076;
-        public static final int ic_plusone_tall_off_client=0x7f020077;
-        public static final int img_browser_back_off=0x7f020078;
-        public static final int img_browser_back_on=0x7f020079;
-        public static final int img_browser_bg=0x7f02007a;
-        public static final int img_browser_close=0x7f02007b;
-        public static final int img_browser_forward_off=0x7f02007c;
-        public static final int img_browser_forward_on=0x7f02007d;
-        public static final int img_browser_refresh=0x7f02007e;
-        public static final int indicator_arrow=0x7f02007f;
-        public static final int indicator_bg_bottom=0x7f020080;
-        public static final int indicator_bg_top=0x7f020081;
-        public static final int powered_by_google_dark=0x7f020082;
-        public static final int powered_by_google_light=0x7f020083;
-        public static final int wheel_bg=0x7f020084;
-        public static final int wheel_val=0x7f020085;
+        public static final int ic_launcher=0x7f020071;
+        public static final int ic_plusone_medium_off_client=0x7f020072;
+        public static final int ic_plusone_small_off_client=0x7f020073;
+        public static final int ic_plusone_standard_off_client=0x7f020074;
+        public static final int ic_plusone_tall_off_client=0x7f020075;
+        public static final int img_browser_back_off=0x7f020076;
+        public static final int img_browser_back_on=0x7f020077;
+        public static final int img_browser_bg=0x7f020078;
+        public static final int img_browser_close=0x7f020079;
+        public static final int img_browser_forward_off=0x7f02007a;
+        public static final int img_browser_forward_on=0x7f02007b;
+        public static final int img_browser_refresh=0x7f02007c;
+        public static final int powered_by_google_dark=0x7f02007d;
+        public static final int powered_by_google_light=0x7f02007e;
+        public static final int wheel_bg=0x7f02007f;
+        public static final int wheel_val=0x7f020080;
     }
     public static final class id {
-        public static final int action_bar=0x7f05003a;
+        public static final int action_bar=0x7f05002e;
         public static final int action_bar_activity_content=0x7f050015;
-        public static final int action_bar_container=0x7f050039;
-        public static final int action_bar_overlay_layout=0x7f05003d;
-        public static final int action_bar_root=0x7f050038;
-        public static final int action_bar_subtitle=0x7f050041;
-        public static final int action_bar_title=0x7f050040;
-        public static final int action_context_bar=0x7f05003b;
+        public static final int action_bar_container=0x7f05002d;
+        public static final int action_bar_overlay_layout=0x7f050031;
+        public static final int action_bar_root=0x7f05002c;
+        public static final int action_bar_subtitle=0x7f050035;
+        public static final int action_bar_title=0x7f050034;
+        public static final int action_context_bar=0x7f05002f;
         public static final int action_menu_divider=0x7f050016;
         public static final int action_menu_presenter=0x7f050017;
-        public static final int action_mode_close_button=0x7f050042;
-        public static final int action_settings=0x7f050078;
-        public static final int activity_chooser_view_content=0x7f050043;
+        public static final int action_mode_close_button=0x7f050036;
+        public static final int action_settings=0x7f05005f;
+        public static final int activity_chooser_view_content=0x7f050037;
         public static final int always=0x7f05000b;
         public static final int beginning=0x7f050011;
         public static final int book_now=0x7f050028;
-        public static final int both=0x7f05002f;
         public static final int buyButton=0x7f050022;
         public static final int buy_now=0x7f050027;
         public static final int buy_with_google=0x7f050026;
-        public static final int checkbox=0x7f05004b;
+        public static final int checkbox=0x7f05003f;
         public static final int classic=0x7f050029;
         public static final int collapseActionView=0x7f05000d;
-        public static final int default_activity_button=0x7f050046;
+        public static final int default_activity_button=0x7f05003a;
         public static final int dialog=0x7f05000e;
         public static final int disableHome=0x7f050008;
-        public static final int disabled=0x7f05002c;
         public static final int dropdown=0x7f05000f;
-        public static final int edit_query=0x7f05004e;
+        public static final int edit_query=0x7f050042;
         public static final int end=0x7f050013;
-        public static final int expand_activities_button=0x7f050044;
-        public static final int expanded_menu=0x7f05004a;
-        public static final int fl_inner=0x7f05006e;
-        public static final int flip=0x7f050034;
+        public static final int expand_activities_button=0x7f050038;
+        public static final int expanded_menu=0x7f05003e;
         public static final int grayscale=0x7f05002a;
-        public static final int gridview=0x7f050035;
         public static final int holo_dark=0x7f05001d;
         public static final int holo_light=0x7f05001e;
         public static final int home=0x7f050014;
         public static final int homeAsUp=0x7f050005;
         public static final int hybrid=0x7f05001c;
-        public static final int icon=0x7f050048;
+        public static final int icon=0x7f05003c;
         public static final int ifRoom=0x7f05000a;
-        public static final int image=0x7f050045;
-        public static final int imagePlayViewer=0x7f050064;
-        public static final int imageviewerActivity_btnSave=0x7f05005f;
-        public static final int imageviewerActivity_cover=0x7f05005d;
-        public static final int imageviewerActivity_image=0x7f05005c;
-        public static final int imageviewerActivity_mainLayout=0x7f05005a;
-        public static final int imageviewerActivity_progress=0x7f05005b;
-        public static final int imageviewerActivity_thumbnailLinear=0x7f050061;
-        public static final int imageviewerActivity_thumbnailLinearBg=0x7f050060;
-        public static final int imageviewerActivity_title=0x7f05005e;
-        public static final int ivImage=0x7f050077;
-        public static final int ivProfile=0x7f050073;
+        public static final int image=0x7f050039;
+        public static final int imagePlayViewer=0x7f050050;
+        public static final int ivImage=0x7f05005e;
+        public static final int ivProfile=0x7f05005a;
         public static final int listMode=0x7f050001;
-        public static final int listView=0x7f050066;
-        public static final int list_item=0x7f050047;
-        public static final int manualOnly=0x7f050030;
+        public static final int listView=0x7f050052;
+        public static final int list_item=0x7f05003b;
         public static final int match_parent=0x7f050024;
-        public static final int menu=0x7f05006c;
-        public static final int menuCover=0x7f050069;
-        public static final int menuLinear=0x7f05006b;
-        public static final int menuScroll=0x7f05006a;
+        public static final int menu=0x7f050058;
+        public static final int menuCover=0x7f050055;
+        public static final int menuLinear=0x7f050057;
+        public static final int menuScroll=0x7f050056;
         public static final int middle=0x7f050012;
         public static final int monochrome=0x7f05002b;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
         public static final int production=0x7f05001f;
-        public static final int progress=0x7f050063;
+        public static final int progress=0x7f05004f;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
-        public static final int pullDownFromTop=0x7f050031;
-        public static final int pullFromEnd=0x7f05002e;
-        public static final int pullFromStart=0x7f05002d;
-        public static final int pullUpFromBottom=0x7f050032;
-        public static final int pull_to_refresh_image=0x7f05006f;
-        public static final int pull_to_refresh_progress=0x7f050070;
-        public static final int pull_to_refresh_sub_text=0x7f050072;
-        public static final int pull_to_refresh_text=0x7f050071;
-        public static final int radio=0x7f05004d;
-        public static final int rotate=0x7f050033;
+        public static final int radio=0x7f050041;
         public static final int sandbox=0x7f050020;
         public static final int satellite=0x7f05001a;
-        public static final int scrollview=0x7f050037;
-        public static final int search_badge=0x7f050050;
-        public static final int search_bar=0x7f05004f;
-        public static final int search_button=0x7f050051;
-        public static final int search_close_btn=0x7f050056;
-        public static final int search_edit_frame=0x7f050052;
-        public static final int search_go_btn=0x7f050058;
-        public static final int search_mag_icon=0x7f050053;
-        public static final int search_plate=0x7f050054;
-        public static final int search_src_text=0x7f050055;
-        public static final int search_voice_btn=0x7f050059;
+        public static final int search_badge=0x7f050044;
+        public static final int search_bar=0x7f050043;
+        public static final int search_button=0x7f050045;
+        public static final int search_close_btn=0x7f05004a;
+        public static final int search_edit_frame=0x7f050046;
+        public static final int search_go_btn=0x7f05004c;
+        public static final int search_mag_icon=0x7f050047;
+        public static final int search_plate=0x7f050048;
+        public static final int search_src_text=0x7f050049;
+        public static final int search_voice_btn=0x7f05004d;
         public static final int selectionDetails=0x7f050023;
-        public static final int shortcut=0x7f05004c;
+        public static final int shortcut=0x7f050040;
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
         public static final int showTitle=0x7f050006;
-        public static final int split_action_bar=0x7f05003c;
+        public static final int split_action_bar=0x7f050030;
         public static final int strict_sandbox=0x7f050021;
-        public static final int submit_area=0x7f050057;
-        public static final int swipe_container=0x7f050065;
+        public static final int submit_area=0x7f05004b;
+        public static final int swipe_container=0x7f050051;
         public static final int tabMode=0x7f050002;
         public static final int terrain=0x7f05001b;
-        public static final int title=0x7f050049;
-        public static final int top_action_bar=0x7f05003e;
-        public static final int tvContent=0x7f050076;
-        public static final int tvIntro=0x7f050062;
-        public static final int tvNickname=0x7f050074;
-        public static final int tvRegdate=0x7f050075;
-        public static final int tvTitle1=0x7f050067;
-        public static final int tvTitle2=0x7f050068;
-        public static final int up=0x7f05003f;
+        public static final int title=0x7f05003d;
+        public static final int top_action_bar=0x7f050032;
+        public static final int tvContent=0x7f05005d;
+        public static final int tvIntro=0x7f05004e;
+        public static final int tvNickname=0x7f05005b;
+        public static final int tvRegdate=0x7f05005c;
+        public static final int tvTitle1=0x7f050053;
+        public static final int tvTitle2=0x7f050054;
+        public static final int up=0x7f050033;
         public static final int useLogo=0x7f050003;
-        public static final int webview=0x7f050036;
         public static final int withText=0x7f05000c;
         public static final int wrap_content=0x7f050025;
-        public static final int write=0x7f05006d;
+        public static final int write=0x7f050059;
     }
     public static final class integer {
         /**  The maximum number of action buttons that should be permitted within
@@ -1791,13 +1622,10 @@ containing a value of this type.
         public static final int abc_search_dropdown_item_icons_2line=0x7f030015;
         public static final int abc_search_view=0x7f030016;
         public static final int abc_simple_decor=0x7f030017;
-        public static final int activity_imageviewer=0x7f030018;
-        public static final int activity_intro=0x7f030019;
-        public static final int activity_main=0x7f03001a;
-        public static final int pull_to_refresh_header_horizontal=0x7f03001b;
-        public static final int pull_to_refresh_header_vertical=0x7f03001c;
-        public static final int relative=0x7f03001d;
-        public static final int support_simple_spinner_dropdown_item=0x7f03001e;
+        public static final int activity_intro=0x7f030018;
+        public static final int activity_main=0x7f030019;
+        public static final int relative=0x7f03001a;
+        public static final int support_simple_spinner_dropdown_item=0x7f03001b;
     }
     public static final class menu {
         public static final int main=0x7f0c0000;
@@ -1843,8 +1671,8 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abc_shareactionprovider_share_with_application=0x7f0a000b;
-        public static final int action_settings=0x7f0a003e;
-        public static final int app_name=0x7f0a003c;
+        public static final int action_settings=0x7f0a003b;
+        public static final int app_name=0x7f0a0039;
         public static final int auth_client_needs_enabling_title=0x7f0a000e;
         public static final int auth_client_needs_installation_title=0x7f0a000f;
         public static final int auth_client_needs_update_title=0x7f0a0010;
@@ -1940,24 +1768,19 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f0a002b;
-        public static final int completeToSaveImage=0x7f0a0035;
-        public static final int failToSaveImage=0x7f0a0036;
-        public static final int failToShowVideoFullScreenMode=0x7f0a0037;
-        public static final int hello_world=0x7f0a003d;
-        public static final int pullToLoadNewList=0x7f0a0039;
-        public static final int pullToRefresh=0x7f0a0038;
+        public static final int completeToSaveImage=0x7f0a0032;
+        public static final int failToSaveImage=0x7f0a0033;
+        public static final int failToShowVideoFullScreenMode=0x7f0a0034;
+        public static final int hello_world=0x7f0a003a;
+        public static final int pullToLoadNewList=0x7f0a0036;
+        public static final int pullToRefresh=0x7f0a0035;
         public static final int pull_to_loading_pull_label=0x7f0a0030;
         public static final int pull_to_loading_release_label=0x7f0a0031;
-        /**  Just use standard Pull Down String when pulling up. These can be set for languages which require it 
-         */
-        public static final int pull_to_refresh_from_bottom_pull_label=0x7f0a0032;
-        public static final int pull_to_refresh_from_bottom_refreshing_label=0x7f0a0034;
-        public static final int pull_to_refresh_from_bottom_release_label=0x7f0a0033;
         public static final int pull_to_refresh_pull_label=0x7f0a002d;
         public static final int pull_to_refresh_refreshing_label=0x7f0a002f;
         public static final int pull_to_refresh_release_label=0x7f0a002e;
-        public static final int putToLoadNewList=0x7f0a003b;
-        public static final int putToRefresh=0x7f0a003a;
+        public static final int putToLoadNewList=0x7f0a0038;
+        public static final int putToRefresh=0x7f0a0037;
         /**  Text on a placeholder buy button when Google Play services is not
          available or up-to-date 
          */
@@ -3742,326 +3565,6 @@ containing a value of this type.
           @attr name android:windowAnimationStyle
         */
         public static final int MenuView_android_windowAnimationStyle = 0;
-        /** Attributes that can be used with a PullToRefresh.
-           <p>Includes the following attributes:</p>
-           <table>
-           <colgroup align="left" />
-           <colgroup align="left" />
-           <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrAdapterViewBackground com.example.androidvolleytest:ptrAdapterViewBackground}</code></td><td> BELOW HERE ARE DEPRECEATED.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrAnimationStyle com.example.androidvolleytest:ptrAnimationStyle}</code></td><td> Style of Animation should be used displayed when pulling.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrDrawable com.example.androidvolleytest:ptrDrawable}</code></td><td> Drawable to use as Loading Indicator.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrDrawableBottom com.example.androidvolleytest:ptrDrawableBottom}</code></td><td></td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrDrawableEnd com.example.androidvolleytest:ptrDrawableEnd}</code></td><td> Drawable to use as Loading Indicator in the Footer View.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrDrawableStart com.example.androidvolleytest:ptrDrawableStart}</code></td><td> Drawable to use as Loading Indicator in the Header View.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrDrawableTop com.example.androidvolleytest:ptrDrawableTop}</code></td><td></td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrHeaderBackground com.example.androidvolleytest:ptrHeaderBackground}</code></td><td> A drawable to use as the background of the Header and Footer Loading Views </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrHeaderSubTextColor com.example.androidvolleytest:ptrHeaderSubTextColor}</code></td><td> Text Color of the Header and Footer Loading Views Sub Header </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextAppearance com.example.androidvolleytest:ptrHeaderTextAppearance}</code></td><td> Base text color, typeface, size, and style for Header and Footer Loading Views </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrHeaderTextColor com.example.androidvolleytest:ptrHeaderTextColor}</code></td><td> Text Color of the Header and Footer Loading Views </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrListViewExtrasEnabled com.example.androidvolleytest:ptrListViewExtrasEnabled}</code></td><td>
-        	Whether PullToRefreshListView has it's extras enabled.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrMode com.example.androidvolleytest:ptrMode}</code></td><td> Mode of Pull-to-Refresh that should be used </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrOverScroll com.example.androidvolleytest:ptrOverScroll}</code></td><td> Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrRefreshableViewBackground com.example.androidvolleytest:ptrRefreshableViewBackground}</code></td><td> A drawable to use as the background of the Refreshable View </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrRotateDrawableWhilePulling com.example.androidvolleytest:ptrRotateDrawableWhilePulling}</code></td><td>
-        	Whether the Drawable should be continually rotated as you pull.</td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrScrollingWhileRefreshingEnabled com.example.androidvolleytest:ptrScrollingWhileRefreshingEnabled}</code></td><td> Whether the user can scroll while the View is Refreshing </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrShowIndicator com.example.androidvolleytest:ptrShowIndicator}</code></td><td> Whether the Indicator overlay(s) should be used </td></tr>
-           <tr><td><code>{@link #PullToRefresh_ptrSubHeaderTextAppearance com.example.androidvolleytest:ptrSubHeaderTextAppearance}</code></td><td> Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header </td></tr>
-           </table>
-           @see #PullToRefresh_ptrAdapterViewBackground
-           @see #PullToRefresh_ptrAnimationStyle
-           @see #PullToRefresh_ptrDrawable
-           @see #PullToRefresh_ptrDrawableBottom
-           @see #PullToRefresh_ptrDrawableEnd
-           @see #PullToRefresh_ptrDrawableStart
-           @see #PullToRefresh_ptrDrawableTop
-           @see #PullToRefresh_ptrHeaderBackground
-           @see #PullToRefresh_ptrHeaderSubTextColor
-           @see #PullToRefresh_ptrHeaderTextAppearance
-           @see #PullToRefresh_ptrHeaderTextColor
-           @see #PullToRefresh_ptrListViewExtrasEnabled
-           @see #PullToRefresh_ptrMode
-           @see #PullToRefresh_ptrOverScroll
-           @see #PullToRefresh_ptrRefreshableViewBackground
-           @see #PullToRefresh_ptrRotateDrawableWhilePulling
-           @see #PullToRefresh_ptrScrollingWhileRefreshingEnabled
-           @see #PullToRefresh_ptrShowIndicator
-           @see #PullToRefresh_ptrSubHeaderTextAppearance
-         */
-        public static final int[] PullToRefresh = {
-            0x7f01008e, 0x7f01008f, 0x7f010090, 0x7f010091,
-            0x7f010092, 0x7f010093, 0x7f010094, 0x7f010095,
-            0x7f010096, 0x7f010097, 0x7f010098, 0x7f010099,
-            0x7f01009a, 0x7f01009b, 0x7f01009c, 0x7f01009d,
-            0x7f01009e, 0x7f01009f, 0x7f0100a0
-        };
-        /**
-          <p>
-          @attr description
-           BELOW HERE ARE DEPRECEATED. DO NOT USE. 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrAdapterViewBackground
-        */
-        public static final int PullToRefresh_ptrAdapterViewBackground = 16;
-        /**
-          <p>
-          @attr description
-           Style of Animation should be used displayed when pulling. 
-
-
-          <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>rotate</code></td><td>0x0</td><td></td></tr>
-<tr><td><code>flip</code></td><td>0x1</td><td></td></tr>
-</table>
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrAnimationStyle
-        */
-        public static final int PullToRefresh_ptrAnimationStyle = 12;
-        /**
-          <p>
-          @attr description
-           Drawable to use as Loading Indicator. Changes both Header and Footer. 
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrDrawable
-        */
-        public static final int PullToRefresh_ptrDrawable = 6;
-        /**
-          <p>This symbol is the offset where the {@link com.example.androidvolleytest.R.attr#ptrDrawableBottom}
-          attribute's value can be found in the {@link #PullToRefresh} array.
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.androidvolleytest:ptrDrawableBottom
-        */
-        public static final int PullToRefresh_ptrDrawableBottom = 18;
-        /**
-          <p>
-          @attr description
-           Drawable to use as Loading Indicator in the Footer View. Overrides value set in ptrDrawable. 
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrDrawableEnd
-        */
-        public static final int PullToRefresh_ptrDrawableEnd = 8;
-        /**
-          <p>
-          @attr description
-           Drawable to use as Loading Indicator in the Header View. Overrides value set in ptrDrawable. 
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrDrawableStart
-        */
-        public static final int PullToRefresh_ptrDrawableStart = 7;
-        /**
-          <p>This symbol is the offset where the {@link com.example.androidvolleytest.R.attr#ptrDrawableTop}
-          attribute's value can be found in the {@link #PullToRefresh} array.
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.androidvolleytest:ptrDrawableTop
-        */
-        public static final int PullToRefresh_ptrDrawableTop = 17;
-        /**
-          <p>
-          @attr description
-           A drawable to use as the background of the Header and Footer Loading Views 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrHeaderBackground
-        */
-        public static final int PullToRefresh_ptrHeaderBackground = 1;
-        /**
-          <p>
-          @attr description
-           Text Color of the Header and Footer Loading Views Sub Header 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrHeaderSubTextColor
-        */
-        public static final int PullToRefresh_ptrHeaderSubTextColor = 3;
-        /**
-          <p>
-          @attr description
-           Base text color, typeface, size, and style for Header and Footer Loading Views 
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrHeaderTextAppearance
-        */
-        public static final int PullToRefresh_ptrHeaderTextAppearance = 10;
-        /**
-          <p>
-          @attr description
-           Text Color of the Header and Footer Loading Views 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrHeaderTextColor
-        */
-        public static final int PullToRefresh_ptrHeaderTextColor = 2;
-        /**
-          <p>
-          @attr description
-          
-        	Whether PullToRefreshListView has it's extras enabled. This allows the user to be 
-        	able to scroll while refreshing, and behaves better. It acheives this by adding
-        	Header and/or Footer Views to the ListView.
-        
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrListViewExtrasEnabled
-        */
-        public static final int PullToRefresh_ptrListViewExtrasEnabled = 14;
-        /**
-          <p>
-          @attr description
-           Mode of Pull-to-Refresh that should be used 
-
-
-          <p>Must be one or more (separated by '|') of the following constant values.</p>
-<table>
-<colgroup align="left" />
-<colgroup align="left" />
-<colgroup align="left" />
-<tr><th>Constant</th><th>Value</th><th>Description</th></tr>
-<tr><td><code>disabled</code></td><td>0x0</td><td></td></tr>
-<tr><td><code>pullFromStart</code></td><td>0x1</td><td></td></tr>
-<tr><td><code>pullFromEnd</code></td><td>0x2</td><td></td></tr>
-<tr><td><code>both</code></td><td>0x3</td><td></td></tr>
-<tr><td><code>manualOnly</code></td><td>0x4</td><td></td></tr>
-<tr><td><code>pullDownFromTop</code></td><td>0x1</td><td> These last two are depreacted </td></tr>
-<tr><td><code>pullUpFromBottom</code></td><td>0x2</td><td></td></tr>
-</table>
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrMode
-        */
-        public static final int PullToRefresh_ptrMode = 4;
-        /**
-          <p>
-          @attr description
-           Whether Android's built-in Over Scroll should be utilised for Pull-to-Refresh. 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrOverScroll
-        */
-        public static final int PullToRefresh_ptrOverScroll = 9;
-        /**
-          <p>
-          @attr description
-           A drawable to use as the background of the Refreshable View 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
-"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrRefreshableViewBackground
-        */
-        public static final int PullToRefresh_ptrRefreshableViewBackground = 0;
-        /**
-          <p>
-          @attr description
-          
-        	Whether the Drawable should be continually rotated as you pull. This only
-        	takes effect when using the 'Rotate' Animation Style.
-        
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrRotateDrawableWhilePulling
-        */
-        public static final int PullToRefresh_ptrRotateDrawableWhilePulling = 15;
-        /**
-          <p>
-          @attr description
-           Whether the user can scroll while the View is Refreshing 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrScrollingWhileRefreshingEnabled
-        */
-        public static final int PullToRefresh_ptrScrollingWhileRefreshingEnabled = 13;
-        /**
-          <p>
-          @attr description
-           Whether the Indicator overlay(s) should be used 
-
-
-          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-<p>May be a boolean value, either "<code>true</code>" or "<code>false</code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrShowIndicator
-        */
-        public static final int PullToRefresh_ptrShowIndicator = 5;
-        /**
-          <p>
-          @attr description
-           Base text color, typeface, size, and style for Header and Footer Loading Views Sub Header 
-
-
-          <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
-or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          <p>This is a private symbol.
-          @attr name com.example.androidvolleytest:ptrSubHeaderTextAppearance
-        */
-        public static final int PullToRefresh_ptrSubHeaderTextAppearance = 11;
         /** Attributes that can be used with a SearchView.
            <p>Includes the following attributes:</p>
            <table>

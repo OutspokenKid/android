@@ -9,8 +9,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
-import com.outspoken_kid.utils.StringUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,36 +24,31 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.outspoken_kid.classes.BaseListFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Notice;
 import com.zonecomms.common.models.Post;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class GridPage extends BaseListFragment {
 
-	private PullToRefreshGridView gridView;
 	private HoloStyleEditText editText;
 	
 	private boolean isAnimating;
@@ -155,13 +150,13 @@ public class GridPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 	}
 
 	@Override

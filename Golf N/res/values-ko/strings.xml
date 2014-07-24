@@ -37,6 +37,7 @@
     <string name="confirm">확인</string>
     <string name="confirmPassword">비밀번호 확인</string>
     <string name="cooperate">제휴 문의</string>
+    <string name="copy">복사</string>
     <string name="copyReplyCompleted">댓글이 복사되었습니다</string>
 
     <string name="delete">삭제</string>
@@ -337,6 +338,7 @@
 	<string name="wannaApproval">선택한 멤버를 승인하시겠습니까?</string>
 	<string name="wannaBanish">선택한 멤버를 추방하시겠습니까?</string>
 	<string name="wannaCloseGethering">모임을 폐쇄하시겠습니까?</string>
+	<string name="wannaCopy">해당 메세지를 복사하시겠습니까?</string>
 	<string name="wannaDelete">삭제하시겠습니까?</string>
 	<string name="wannaDeleteScrap">해당 스크랩을 삭제하시겠습니까?</string>
 	<string name="wannaEdit">수정하시겠습니까?</string>

@@ -1,7 +1,6 @@
 package com.zonecomms.common.wrappers;
 
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,13 +9,14 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.BaseModel;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.wrapperviews.WrapperView;
@@ -57,7 +57,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 
 		try {
 			if(length == 0) {
@@ -147,7 +147,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 	}
 	
 	@Override
-	public void setListener() {
+	public void setListeners() {
 
 		try {
 			if(post != null) {
@@ -157,7 +157,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 						
 						@Override
 						public void onClick(View v) {
-							ApplicationManager.getInstance().getMainActivity().checkNApp(null);
+							ZonecommsApplication.getActivity().checkNApp(null);
 						}
 					});
 				} else {
@@ -180,7 +180,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 						public void onClick(View v) {
 							
 							if(post != null && post.getMember() != null && !StringUtils.isEmpty(post.getMember().getMember_id())) {
-								ApplicationManager.getInstance().getMainActivity().showProfilePopup(
+								ZonecommsApplication.getActivity().showProfilePopup(
 										post.getMember().getMember_id(), post.getMember().getStatus());
 							}
 						}

@@ -55,7 +55,6 @@ public class CircleHeaderView extends FrameLayout {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 200, ivTitle, 2, 
 				Gravity.BOTTOM, new int[]{0, 0, 0, TITLE_BAR_HEIGHT});
 		ivTitle.setScaleType(ScaleType.FIT_XY);
-//		ivTitle.setBackgroundColor(Color.argb(100, 0, 255, 255));
 		this.addView(ivTitle);
 		
 		tvTitles[0] = new TextView(getContext());

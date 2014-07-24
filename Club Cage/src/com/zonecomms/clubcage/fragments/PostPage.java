@@ -9,7 +9,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import com.outspoken_kid.utils.StringUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,16 +25,12 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.BaseFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
@@ -43,11 +38,13 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.Reply;
-import com.zonecomms.common.utils.ImageDownloadUtils;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.views.PostInfoLayout;
 import com.zonecomms.common.views.ReplyLoadingView;
 import com.zonecomms.common.views.ReplyLoadingView.OnLoadingViewClickedListener;
@@ -99,8 +96,8 @@ public class PostPage extends BaseFragment {
 		bindViews();
 		setVariables();
 		createPage();
-		setListener();
-		setSize();
+		setListeners();
+		setSizes();
 	}
 	
 	@Override
@@ -155,7 +152,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 		
 		btnSubmit.setOnClickListener(new OnClickListener() {
 			
@@ -232,7 +229,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, contentLayout, 1, Gravity.LEFT, new int[]{8, 0, 8, 0});
 
@@ -879,7 +876,7 @@ public class PostPage extends BaseFragment {
 			}
 		}
 
-		ApplicationManager.getInstance().getMainActivity().
+		ZonecommsApplication.getActivity().
 				showWriteActivity(post.getSpot_nid(), post.getContent(), imageUrls, post.getMember().getMember_id());
 	}
 	
@@ -1052,17 +1049,17 @@ public class PostPage extends BaseFragment {
 					@Override
 					public boolean onLongClick(View v) {
 						
-						if(ApplicationManager.getTopFragment() != null
-								&& ApplicationManager.getTopFragment() instanceof PostPage) {
+						if(ZonecommsApplication.getTopFragment() != null
+								&& ZonecommsApplication.getTopFragment() instanceof PostPage) {
 							
 							if(MainActivity.myInfo.isAdmin()
 									|| (!StringUtils.isEmpty(member.getMember_id()) 
 											&& member.getMember_id().equals(MainActivity.myInfo.getMember_id()))
 									|| (!StringUtils.isEmpty(post.getMember().getMember_id()) 
 											&& post.getMember().getMember_id().equals(MainActivity.myInfo.getMember_id()))) {
-								((PostPage) ApplicationManager.getTopFragment()).showPopupForReply(true, ViewForReply.this);
+								((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(true, ViewForReply.this);
 							} else {
-								((PostPage) ApplicationManager.getTopFragment()).showPopupForReply(false, ViewForReply.this);
+								((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(false, ViewForReply.this);
 							}
 							return true;
 						}

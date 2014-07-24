@@ -131,7 +131,7 @@ public class ViewWrapperForPost extends ViewWrapperForZonecomms {
 					}
 				});
 				
-				profileImage.setOnClickListener(new OnClickListener() {
+				row.findViewById(R.id.grid_post_profileBg).setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {

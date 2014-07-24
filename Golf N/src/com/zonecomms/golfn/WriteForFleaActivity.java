@@ -372,8 +372,29 @@ public class WriteForFleaActivity extends RecyclingActivity {
 		LogUtils.log(printText);
 
 		Intent intent = new Intent(this, WriteActivity.class);
+
+		int titleResId = 0;
 		
-		intent.putExtra("titleText", getString(R.string.title_market1));
+		switch(board_id) {
+		
+		case 5:
+			titleResId = R.string.title_market1;
+			break;
+			
+		case 6:
+			titleResId = R.string.title_market2;
+			break;
+			
+		case 7:
+			titleResId = R.string.title_market3;
+			break;
+			
+		case 8:
+			titleResId = R.string.title_market4;
+			break;
+		}
+		
+		intent.putExtra("titleText", getString(titleResId));
 		intent.putExtra("board_id", board_id);
 		intent.putExtra("isGethering", false);
 		intent.putExtra("mustValues", inputTexts);

@@ -258,7 +258,7 @@ public class MainActivity extends Activity {
     
     public void addMenus() {
     	
-    	int size = 5;
+    	int size = 15;
     	for(int i=0; i<size; i++) {
 			View line = new View(this);
 			line.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2));

@@ -14,7 +14,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,19 +27,17 @@ import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.ImageView.ScaleType;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.RecyclingActivity;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
@@ -48,6 +45,7 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.SignInActivity.OnAfterSigningInListener;
+import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.ImageUploadUtils;
@@ -104,8 +102,8 @@ public class SignUpActivity extends RecyclingActivity {
 		bindViews();
 		setVariables();
 		createPage();
-		setSize();
-		setListener();
+		setSizes();
+		setListeners();
 	}
 	
 	@Override
@@ -159,7 +157,7 @@ public class SignUpActivity extends RecyclingActivity {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.LEFT|Gravity.TOP, null);
 		FontInfo.setFontSize(tvTitle, 30);
@@ -174,7 +172,7 @@ public class SignUpActivity extends RecyclingActivity {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 
 		pEmail.setOnItemClickedListener(new OnItemClickedListener() {
 			

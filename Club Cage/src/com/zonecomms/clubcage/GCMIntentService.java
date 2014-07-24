@@ -12,13 +12,13 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gcm.GCMBaseIntentService;
-import com.outspoken_kid.classes.ApplicationManager;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.fragments.MessagePage;
 import com.zonecomms.common.utils.AppInfoUtils;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 
 /**
  * v1.0.1
@@ -122,11 +122,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onRegistered(Context context, String regId) {
 
 		try {
-			AsyncStringDownloader.download(
-					ZoneConstants.BASE_URL + "push/androiddevicetoken" +
-							"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-							"&registration_id=" + regId,
-					null, null);
+			String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&registration_id=" + regId;
+			DownloadUtils.downloadString(url, null);
 		} catch(Exception e) {
 			//Do nothing.
 		}
@@ -160,18 +159,24 @@ public class GCMIntentService extends GCMBaseIntentService {
 			return;
 		}
 		
-		if(ApplicationManager.getFragmentsSize() != 0 
+		if(ZonecommsApplication.getFragmentsSize() != 0 
 				&& msg_type != null 
 				&& msg_type.equals("010")
 				&& member_id != null
-				&& ApplicationManager.getTopFragment() instanceof MessagePage) {
+				&& ZonecommsApplication.getTopFragment() instanceof MessagePage) {
 			
 			try {
-				MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
+				final MessagePage mp = (MessagePage) ZonecommsApplication.getTopFragment();
 				
 				if(mp.getFriend_member_id() != null
 						&& mp.getFriend_member_id().equals(member_id)) {
-					mp.onRefreshPage();
+					ZonecommsApplication.getActivity().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							mp.onRefreshPage();
+						}
+					});
 				}
 			} catch(Exception e) {
 			}

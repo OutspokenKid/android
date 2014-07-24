@@ -2,11 +2,18 @@ package com.zonecomms.common.adapters;
 
 import java.util.ArrayList;
 
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
+import android.widget.BaseAdapter;
+
 import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.model.BaseModel;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.BaseModel;
 import com.zonecomms.common.wrappers.ViewWrapper;
 import com.zonecomms.common.wrappers.ViewWrapperForMessage;
 import com.zonecomms.common.wrappers.ViewWrapperForMessageSample;
@@ -14,13 +21,6 @@ import com.zonecomms.common.wrappers.ViewWrapperForMusic;
 import com.zonecomms.common.wrappers.ViewWrapperForNotice;
 import com.zonecomms.common.wrappers.ViewWrapperForVideo;
 import com.zonecomms.common.wrapperviews.WrapperView;
-
-import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 
 public class ListAdapter extends BaseAdapter {
 
@@ -139,7 +139,7 @@ public class ListAdapter extends BaseAdapter {
 			}
 			
 			viewWrapper.setValues(model);
-			viewWrapper.setListener();
+			viewWrapper.setListeners();
 			
 			if(useHardCache) {
 				hardCache.add(viewForWrapper);

@@ -2,27 +2,29 @@ package com.zonecomms.common.wrappers;
 
 import android.content.Intent;
 import android.net.Uri;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
+import com.android.volley.toolbox.NetworkImageView;
+import com.outspoken_kid.classes.RequestManager;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.common.models.BaseModel;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.wrapperviews.WrapperView;
 
 public class ViewWrapperForVideo extends ViewWrapper {
 
-	private ImageView ivThumbnail;
+	private NetworkImageView ivThumbnail;
 	private TextView tvTitle;
 	private Link link;
 
@@ -30,18 +32,18 @@ public class ViewWrapperForVideo extends ViewWrapper {
 		super(row, itemCode);
 		
 		bindViews();
-		setSize();
+		setSizes();
 	}
 
 	@Override
 	public void bindViews() {
 
-		ivThumbnail = (ImageView) row.findViewById(R.id.list_video_ivThumbnail);
+		ivThumbnail = (NetworkImageView) row.findViewById(R.id.list_video_ivThumbnail);
 		tvTitle = (TextView) row.findViewById(R.id.list_video_tvTitle);
 	}
 
 	@Override
-	public void setSize() {
+	public void setSizes() {
 		
 		//624, 468
 		int p = ResizeUtils.getSpecificLength(8);
@@ -79,7 +81,7 @@ public class ViewWrapperForVideo extends ViewWrapper {
 	}
 
 	@Override
-	public void setListener() {
+	public void setListeners() {
 
 		if(link != null) {
 			row.setOnClickListener(new OnClickListener() {
@@ -108,7 +110,7 @@ public class ViewWrapperForVideo extends ViewWrapper {
 			try {
 				Uri uri = Uri.parse("http://www.youtube.com/watch?v=" + videoUrl);
 				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
-				ApplicationManager.getInstance().getMainActivity().startActivity(i);
+				ZonecommsApplication.getActivity().startActivity(i);
 			} catch(Exception e) {
 				e.printStackTrace();
 				ToastUtils.showToast(R.string.failToShowVideo);

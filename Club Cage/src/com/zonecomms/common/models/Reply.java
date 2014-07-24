@@ -5,24 +5,25 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class Reply extends BaseModel {
 
 	private int reply_nid;
 	private String content;
 	private Member member;
 	private ArrayList<Member> target_member = new ArrayList<Member>();
+	private String reg_dt;
 	
 	public Reply(){}
 
 	public Reply(JSONObject objJSON) {
 		
-		super(objJSON);
-
 		if(objJSON != null) {
 			try {
 				if(objJSON.has("reply_nid")) {
 					this.reply_nid = objJSON.getInt("reply_nid");
-					indexno = reply_nid;
+					setIndexno(reply_nid);
 				}
 				
 				if(objJSON.has("content")) {
@@ -44,6 +45,10 @@ public class Reply extends BaseModel {
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
+				}
+				
+				if(objJSON.has("reg_dt")) {
+					this.reg_dt = objJSON.getString("reg_dt");
 				}
 			} catch(Exception e) {
 				e.printStackTrace();
@@ -78,5 +83,13 @@ public class Reply extends BaseModel {
 	public ArrayList<Member> getTarget_member() {
 		
 		return target_member;
+	}
+
+	public String getReg_dt() {
+		return reg_dt;
+	}
+
+	public void setReg_dt(String reg_dt) {
+		this.reg_dt = reg_dt;
 	}
 }

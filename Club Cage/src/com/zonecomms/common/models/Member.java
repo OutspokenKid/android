@@ -2,6 +2,8 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 /**
  * @author HyungGunKim
  * Using at post, reply and messmember_age.
@@ -17,12 +19,11 @@ public class Member extends BaseModel {
 	private int member_age;
 	private int sb_member_nid;
 	private int status;
+	private String reg_dt;
 	
 	public Member() {}
 	
 	public Member(JSONObject objJSON) {
-		
-		super(objJSON);
 		
 		try {
 			if(objJSON.has("member_nid")) {
@@ -55,11 +56,15 @@ public class Member extends BaseModel {
 			
 			if(objJSON.has("sb_member_nid")) {
 				this.sb_member_nid = objJSON.getInt("sb_member_nid");
-				this.indexno = sb_member_nid;
+				setIndexno(sb_member_nid);
 			}
 			
 			if(objJSON.has("status")) {
 				this.status = objJSON.getInt("status");
+			}
+			
+			if(objJSON.has("reg_dt")) {
+				this.reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -136,5 +141,13 @@ public class Member extends BaseModel {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getReg_dt() {
+		return reg_dt;
+	}
+
+	public void setReg_dt(String reg_dt) {
+		this.reg_dt = reg_dt;
 	}
 }

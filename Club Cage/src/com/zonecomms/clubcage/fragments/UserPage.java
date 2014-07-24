@@ -13,7 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import com.outspoken_kid.utils.StringUtils;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,46 +23,40 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
-import com.outspoken_kid.classes.BaseListFragment;
-import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.LogUtils;
-//import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.adapters.ListAdapter;
-import com.zonecomms.common.models.BaseModel;
 import com.zonecomms.common.models.MessageSample;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
+//import com.outspoken_kid.utils.IntentUtils;
 
 public class UserPage extends BaseListFragment {
 
@@ -102,8 +96,6 @@ public class UserPage extends BaseListFragment {
 	private TextView tvActiveLocation;
 	private HoloStyleSpinnerPopup pPhoto;
 
-	private PullToRefreshGridView gridView;
-	private PullToRefreshListView listView;
 	private GridAdapter gridAdapter;
 	private ListAdapter listAdapter;
 	private int lastIndexno;
@@ -638,11 +630,11 @@ public class UserPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListener() {
+	protected void setListeners() {
 	}
 
 	@Override
-	protected void setSize() {
+	protected void setSizes() {
 	}
 
 	@Override

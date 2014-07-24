@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -409,6 +410,7 @@ public class ArticlePage extends BaseFragment {
 					textView, 1, 0, new int[]{20, 20, 20, 0});
 			textView.setTextColor(Color.WHITE);
 			textView.setText(text);
+			textView.setAutoLinkMask(Linkify.WEB_URLS|Linkify.EMAIL_ADDRESSES);
 			FontInfo.setFontSize(textView, 30);
 			contentLayout.addView(textView);
 		} catch (Exception e) {

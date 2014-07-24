@@ -51,6 +51,7 @@ public class MainPage extends BaseFragment {
 	private ImageView[] customViews;
 	
 	private View coverForMenu;
+	private View hasNewMessage;
 
 	private boolean animating;
 	private AlphaAnimation aaIn, aaOut, aaIn2, aaOut2;

@@ -2,6 +2,8 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class Message extends BaseModel {
 
 	private int microspot_nid;
@@ -12,17 +14,16 @@ public class Message extends BaseModel {
 	private String mystory_member_nickname;
 	private String post_member_id;
 	private String mystory_member_id;
+	private String reg_dt;
 	
 	public Message(){}
 	
 	public Message(JSONObject objJSON) {
 		
-		super(objJSON);
-		
 		try {
 			if(objJSON.has("microspot_nid")) {
 				microspot_nid = objJSON.getInt("microspot_nid");
-				indexno = microspot_nid;
+				setIndexno(microspot_nid);
 			}
 			
 			if(objJSON.has("content")) {
@@ -61,6 +62,10 @@ public class Message extends BaseModel {
 			
 			if(objJSON.has("content_type")) {
 				content_type = objJSON.getInt("content_type");
+			}
+			
+			if(objJSON.has("reg_dt")) {
+				this.reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -129,5 +134,13 @@ public class Message extends BaseModel {
 
 	public void setMystory_member_id(String mystory_member_id) {
 		this.mystory_member_id = mystory_member_id;
+	}
+
+	public String getReg_dt() {
+		return reg_dt;
+	}
+
+	public void setReg_dt(String reg_dt) {
+		this.reg_dt = reg_dt;
 	}
 }

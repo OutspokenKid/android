@@ -39,7 +39,7 @@
 			            android:id="@+id/postPage_tvInput1" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -55,14 +55,14 @@
 			            android:id="@+id/postPage_tvSpec" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        
 			        <TextView 
 			            android:id="@+id/postPage_tvInput2" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -78,7 +78,7 @@
 			            android:id="@+id/postPage_tvInput3" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -94,7 +94,7 @@
 			            android:id="@+id/postPage_tvInput4" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -110,7 +110,7 @@
 			            android:id="@+id/postPage_tvInput5" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -126,7 +126,7 @@
 			            android:id="@+id/postPage_tvInput6" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -142,7 +142,7 @@
 			            android:id="@+id/postPage_tvInput7" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -158,7 +158,7 @@
 			            android:id="@+id/postPage_tvInput8" 
 			            android:layout_width="0dp"
 				    	android:layout_height="0dp"
-				    	android:textColor="#fff"
+				    	android:textColor="#ccc"
 				    	android:gravity="center_vertical" />
 			        	    
 			        <TextView
@@ -184,7 +184,7 @@
 			            android:layout_width="match_parent"	
 			            android:layout_height="wrap_content"
 			            android:autoLink="web|email"
-			            android:textColor="#ddd" />	            
+			            android:textColor="#fff" />	            
 		            
 		        </LinearLayout>
 			    

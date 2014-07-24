@@ -2,25 +2,23 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class MessageSample extends BaseModel {
 
 	private int member_nid;
 	private String member_id;
 	private String media_src;
 	private String member_nickname;
-	
 	private String latest_msg;
 	private String latest_date;
-	
 	private int relation_nid;
-	
 	private String new_check;
+	private String reg_dt;
 	
 	public MessageSample(){}
 	
 	public MessageSample(JSONObject objJSON) {
-		
-		super(objJSON);
 		
 		try {
 			if(objJSON.has("member")) {
@@ -57,6 +55,10 @@ public class MessageSample extends BaseModel {
 			
 			if(objJSON.has("new_check")) {
 				new_check = objJSON.getString("new_check");
+			}
+			
+			if(objJSON.has("reg_dt")) {
+				reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -114,5 +116,13 @@ public class MessageSample extends BaseModel {
 
 	public void setNew_check(String new_check) {
 		this.new_check = new_check;
+	}
+
+	public String getReg_dt() {
+		return reg_dt;
+	}
+
+	public void setReg_dt(String reg_dt) {
+		this.reg_dt = reg_dt;
 	}
 }

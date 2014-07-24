@@ -3,6 +3,8 @@ package com.zonecomms.common.models;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
+
 public class Notice extends BaseModel {
 
 	private int notice_nid;
@@ -25,12 +27,10 @@ public class Notice extends BaseModel {
 	
 	public Notice(JSONObject objJSON) {
 
-		super(objJSON);
-		
 		try {
 			if(objJSON.has("notice_nid")) {
 				this.notice_nid = objJSON.getInt("notice_nid");
-				this.indexno = notice_nid;
+				setIndexno(notice_nid);
 			}
 			
 			if(objJSON.has("spot_nid")) {
