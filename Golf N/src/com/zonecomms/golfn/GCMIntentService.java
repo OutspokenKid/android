@@ -181,7 +181,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if(ApplicationManager.getFragmentsSize() != 0
 				&& msg_type.equals("010")
 				&& ApplicationManager.getTopFragment() instanceof MainPage) {
-			((MainPage)ApplicationManager.getTopFragment()).showHasNewMessage();
+			
+			ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					((MainPage)ApplicationManager.getTopFragment()).showHasNewMessage();
+				}
+			});
 		}
 		
 		//화면이 켜져있고 앱이 실행 중인 경우.
