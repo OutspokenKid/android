@@ -65,7 +65,7 @@ public class ViewWrapperForGetheringList extends ViewWrapperForZonecomms {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 50, tvGetheringName, 2, Gravity.LEFT, new int[]{158, 0, 0, 0});
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 50, tvIntroduce, 2, Gravity.LEFT, new int[]{158, 50, 0, 0});
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 50, tvOwner, 2, Gravity.LEFT, new int[]{158, 100, 0, 0});
-		ResizeUtils.viewResize(50, 50, publicGethering, 2, Gravity.RIGHT, new int[]{0, 0, 8, 0});
+		ResizeUtils.viewResize(30, 40, publicGethering, 2, Gravity.RIGHT, new int[]{0, 8, 28, 0});
 
 		int maxWidth = ResizeUtils.getSpecificLength(420);
 		tvGetheringName.setMaxWidth(maxWidth);

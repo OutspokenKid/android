@@ -61,16 +61,52 @@
         
     </ScrollView>
 
-    <View
-        android:id="@+id/menu"
+    <FrameLayout
+        android:id="@+id/frameForMenu"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#00f" />
+        android:layout_height="0dp" >
 
-    <View
-        android:id="@+id/write"
+        <View
+            android:id="@+id/menu"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_top_renewal_menu" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameForHome"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#ff0" />
+        android:layout_height="0dp" >
 
+        <View
+            android:id="@+id/home"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_top_renewal_home" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameForWrite"
+        android:layout_width="0dp"
+        android:layout_height="0dp" >
+
+        <View
+            android:id="@+id/write"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_top_renewal_write" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frameForN"
+        android:layout_width="0dp"
+        android:layout_height="0dp" >
+
+        <View
+            android:id="@+id/n"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_top_renewal_n" />
+    </FrameLayout>
+    
 </merge>

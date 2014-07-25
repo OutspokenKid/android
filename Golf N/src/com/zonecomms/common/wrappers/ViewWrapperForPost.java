@@ -1,6 +1,5 @@
 package com.zonecomms.common.wrappers;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import org.json.JSONObject;
@@ -124,7 +123,7 @@ public class ViewWrapperForPost extends ViewWrapperForZonecomms {
 										"&spot_nid=" + post.getSpot_nid() +
 										"&isGethering=" + post.isFromGethering();
 								IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-							} catch (UnsupportedEncodingException e) {
+							} catch (Exception e) {
 								LogUtils.trace(e);
 							}
 						}

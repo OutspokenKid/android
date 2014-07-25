@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gcm.GCMBaseIntentService;
@@ -20,7 +21,9 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.golfn.classes.ApplicationManager;
 import com.zonecomms.golfn.classes.ZoneConstants;
+import com.zonecomms.golfn.fragments.ArticlePage;
 import com.zonecomms.golfn.fragments.GetheringPage;
+import com.zonecomms.golfn.fragments.MainPage;
 import com.zonecomms.golfn.fragments.MessagePage;
 import com.zonecomms.golfn.fragments.PostPage;
 
@@ -32,9 +35,9 @@ import com.zonecomms.golfn.fragments.PostPage;
  */
 public class GCMIntentService extends GCMBaseIntentService {
 	
-	public static NotificationManager notiManager;
-	private boolean sound = true;
-	private boolean vibration = true;
+	private static NotificationManager notiManager;
+	private static boolean sound = true;
+	private static boolean vibration = true;
 	
 	public GCMIntentService() {
 		
@@ -167,19 +170,28 @@ public class GCMIntentService extends GCMBaseIntentService {
 	 */
 	public void handleMessage(Context context, final String push_msg, String msg_type, 
 			String member_id, String post_member_id, int spot_nid, String sb_id) {
-
+		
 		if(msg_type == null) {
 			return;
 		}
 		
-		//해당 메세지 페이지가 열려있는 경우.
-		if(ApplicationManager.getFragmentsSize() != 0 
-				&& "010".equals(msg_type)
-				&& member_id != null
-				&& ApplicationManager.getTopFragment() instanceof MessagePage
-				&& post_member_id.equals(((MessagePage) ApplicationManager.getTopFragment()).getFriend_member_id())
-				) {
-			try {
+		PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+
+		//앱이 실행 중, 메세지 푸시, 메인 페이지인 경우 'New' 보이도록.
+		if(ApplicationManager.getFragmentsSize() != 0
+				&& msg_type.equals("010")
+				&& ApplicationManager.getTopFragment() instanceof MainPage) {
+			((MainPage)ApplicationManager.getTopFragment()).showHasNewMessage();
+		}
+		
+		//화면이 켜져있고 앱이 실행 중인 경우.
+		if (pm.isScreenOn() && ApplicationManager.getFragmentsSize() != 0) {
+			
+			//해당 메세지 페이지가 열려있는 경우.
+			if(msg_type.equals("010")
+					&& member_id != null
+					&& ApplicationManager.getTopFragment() instanceof MessagePage
+					&& post_member_id.equals(((MessagePage) ApplicationManager.getTopFragment()).getFriend_member_id())) {
 				ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
 					
 					@Override
@@ -187,91 +199,122 @@ public class GCMIntentService extends GCMBaseIntentService {
 						ApplicationManager.getTopFragment().onRefreshPage();
 					}
 				});
-			} catch(Exception e) {
-				LogUtils.trace(e);
-			}
-			
-		//해당 글 상세페이지가 열려있는 경우.
-		} else if((msg_type.equals("021") || msg_type.equals("022"))
-				&& ApplicationManager.getTopFragment() instanceof PostPage
-				&& ((PostPage)ApplicationManager.getTopFragment()).getSpotNid() == spot_nid) {
-			ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+				return;
 				
-				@Override
-				public void run() {
-					((PostPage)ApplicationManager.getTopFragment()).setNeedToShowBottom(true);
-					ApplicationManager.getTopFragment().onRefreshPage();
-				}
-			});
-			
-		} else {
-			String uriString = "";
-
-			//000 : 전체 푸시 (post_member_id : 보낸사람, member_id : 받을사람, push_msg : 메시지)
-			if(msg_type.equals("000")) {
-				try {
-					uriString = "popup://android.zonecomms.com/?message=" + URLEncoder.encode(push_msg, "utf-8");
-				} catch(Exception e) {
-				}
-				
-			//010 : 메시지 푸시 (post_member_id : 보낸사람, member_id : 받을사람, push_msg : 메시지)
-			} else if(msg_type.equals("010")) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
-				
-			//021 : type1,type2 글의 댓글 (spot_nid : type1 or type2 글번호, member_id : 받을사람, push_msg : 댓글내용)
-			} else if(msg_type.equals("021")) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
-						"&spot_nid=" + spot_nid +
-						"&isGethering=false" +
-						"&isNeedToShowBottom=true";
-			
-			//022 : 모임 댓글 (spot_nid : 모임 글번호, member_id : 받을사람, sb_id : 모임ID, push_msg : 댓글내용)
-			} else if(msg_type.equals("022")) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
-						"&spot_nid=" + spot_nid +
-						"&isGethering=true" +
-						"&isNeedToShowBottom=true";
-				
-			//031 : type3 글 댓글 (spot_nid : type3 글번호, member_id : 받을사람, push_msg : 댓글내용)
-			} else if(msg_type.equals("031")) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/article?spot_nid=" + spot_nid;
-				
-			//050 : 모임 상태변경 - 승인, 추방, 거부 ( member_id : 받을사람, push_msg : 상태변경 메시지, sb_id : 모임ID)	
-			} else if(msg_type.equals("050")) {
-
-				//해당 모임 페이지가 열려있는 경우,
-				if(ApplicationManager.getTopFragment() instanceof GetheringPage
-						&& sb_id != null
-						&& sb_id.equals(((GetheringPage)ApplicationManager.getTopFragment()).getSb_id())) {
-					ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							//새로고침(인덱스0).
-							((GetheringPage)ApplicationManager.getTopFragment()).showMenu(0);
-							ToastUtils.showToast(push_msg);
-						}
-					});
-					return;
-				//해당 모임 페이지가 열려있지 않은 경우,
-				} else {
+			//해당 글 상세페이지가 열려있는 경우.
+			} else if((msg_type.equals("021") || msg_type.equals("022"))
+					&& ApplicationManager.getTopFragment() instanceof PostPage
+					&& ((PostPage)ApplicationManager.getTopFragment()).getSpotNid() == spot_nid) {
+				ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
 					
-					try {
-						//해당 모임 페이지 열어주기.
-						uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/gethering"
-								+ "?sb_id=" + URLEncoder.encode(sb_id, "utf-8");
-					} catch (UnsupportedEncodingException e) {
-						LogUtils.trace(e);
-						return;
+					@Override
+					public void run() {
+						((PostPage)ApplicationManager.getTopFragment()).setNeedToShowBottom(true);
+						ApplicationManager.getTopFragment().onRefreshPage();
 					}
-				}
+				});
+				return;
+				
+			//해당 기사 상세페이지가 열려있는 경우.
+			} else if(msg_type.equals("031")
+					&& ApplicationManager.getTopFragment() instanceof ArticlePage
+					&& ((ArticlePage)ApplicationManager.getTopFragment()).getSpotNid() == spot_nid) {
+				ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						((ArticlePage)ApplicationManager.getTopFragment()).setNeedToShowBottom(true);
+						ApplicationManager.getTopFragment().onRefreshPage();
+					}
+				});
+				return;
+				
+			//해당 모임 페이지가 열려있는 경우,
+			} else if(msg_type.equals("050")
+					&& ApplicationManager.getTopFragment() instanceof GetheringPage
+					&& sb_id != null
+					&& sb_id.equals(((GetheringPage)ApplicationManager.getTopFragment()).getSb_id())) {
+				ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						//새로고침(인덱스0).
+						((GetheringPage)ApplicationManager.getTopFragment()).showMenu(0);
+						ToastUtils.showToast(push_msg);
+					}
+				});
+				return;
+			}
+		}
+		
+		String uriString = "";
+
+		//000 : 전체 푸시 (post_member_id : 보낸사람, member_id : 받을사람, push_msg : 메시지)
+		if(msg_type.equals("000")) {
+			try {
+				uriString = "popup://android.zonecomms.com/?message=" + URLEncoder.encode(push_msg, "utf-8");
+			} catch(Exception e) {
 			}
 			
+		//010 : 메시지 푸시 (post_member_id : 보낸사람, member_id : 받을사람, push_msg : 메시지)
+		} else if(msg_type.equals("010")) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
+			
+		//021 : type1,type2 글의 댓글 (spot_nid : type1 or type2 글번호, member_id : 받을사람, push_msg : 댓글내용)
+		} else if(msg_type.equals("021")) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
+					"&spot_nid=" + spot_nid +
+					"&isGethering=false" +
+					"&isNeedToShowBottom=true";
+		
+		//022 : 모임 댓글 (spot_nid : 모임 글번호, member_id : 받을사람, sb_id : 모임ID, push_msg : 댓글내용)
+		} else if(msg_type.equals("022")) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?title=InStory" +
+					"&spot_nid=" + spot_nid +
+					"&isGethering=true" +
+					"&isNeedToShowBottom=true";
+			
+		//031 : type3 글 댓글 (spot_nid : type3 글번호, member_id : 받을사람, push_msg : 댓글내용)
+		} else if(msg_type.equals("031")) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/article?spot_nid=" + spot_nid;
+			
+		//050 : 모임 상태변경 - 승인, 추방, 거부 ( member_id : 받을사람, push_msg : 상태변경 메시지, sb_id : 모임ID)	
+		} else if(msg_type.equals("050")) {
+
+			try {
+				//해당 모임 페이지 열어주기.
+				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/gethering"
+						+ "?sb_id=" + URLEncoder.encode(sb_id, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				LogUtils.trace(e);
+				return;
+			}
+		}
+		
+		if(pm.isScreenOn()) {
 			showNotification(context, push_msg, uriString);
+		} else {
+			showDialog(context, push_msg, msg_type, member_id, post_member_id, spot_nid, sb_id, uriString);
 		}
 	}
+
+	public void showDialog(Context context, String push_msg, String msg_type, 
+			String member_id, String post_member_id, int spot_nid, String sb_id, String uriString) {
+		
+		Intent intent = new Intent(context, DialogActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+		intent.putExtra("push_msg", push_msg);
+		intent.putExtra("msg_type", msg_type);
+		intent.putExtra("member_id", member_id);
+		intent.putExtra("post_member_id", post_member_id);
+		intent.putExtra("spot_nid", spot_nid);
+		intent.putExtra("sb_id", sb_id);
+		intent.putExtra("uriString", uriString);
+		
+	    context.startActivity(intent);
+	}
 	
-	public void showNotification(Context context, String push_msg, String uriString) {
+	public static void showNotification(Context context, String push_msg, String uriString) {
 		
 		try {
 			if(notiManager == null) {
@@ -294,7 +337,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			
 			PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 			
-			String title = getString(R.string.app_name);
+			String title = context.getString(R.string.app_name);
 			int pushSetting = Notification.DEFAULT_LIGHTS;
 			
 			if(sound) {

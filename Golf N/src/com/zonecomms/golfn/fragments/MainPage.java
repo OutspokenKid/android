@@ -24,6 +24,7 @@ import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCom
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageDownloadUtils;
 import com.zonecomms.golfn.IntentHandlerActivity;
 import com.zonecomms.golfn.MainActivity;
@@ -169,6 +170,17 @@ public class MainPage extends BaseFragment {
 			}
 		});
 		mainRelative.addView(message);
+		
+		//HasNewMessage.
+		hasNewMessage = new View(mContext);
+		int length = ResizeUtils.getSpecificLength(30);
+		rp = new RelativeLayout.LayoutParams(length, length);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
+		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 2);
+		hasNewMessage.setLayoutParams(rp);
+		hasNewMessage.setBackgroundResource(R.drawable.img_new);
+		hasNewMessage.setVisibility(View.INVISIBLE);
+		mainRelative.addView(hasNewMessage);
 		
 		//Cooperation.					id : 3
 		View bgForCooperation = new View(mContext);
@@ -726,6 +738,8 @@ public class MainPage extends BaseFragment {
 			
 			mActivity.getTitleBar().hideHomeButton();
 			mActivity.getTitleBar().hideWriteButton();
+			
+			checkNewMessage();
 		}
 	}
 	
@@ -1006,5 +1020,53 @@ public class MainPage extends BaseFragment {
 			}
 		};
 		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+	}
+
+	public void checkNewMessage() {
+
+		String url = ZoneConstants.BASE_URL + "microspot/relationList" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&image_size=150";
+		
+		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+			
+			@Override
+			public void onErrorRaised(String url, Exception e) {
+			}
+			
+			@Override
+			public void onCompleted(String url, String result) {
+				
+				try {
+					boolean hasNew = false;
+					
+					JSONArray arJSON = new JSONObject(result).getJSONArray("data");
+					
+					int size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						if(!"old".equals(arJSON.getJSONObject(i).getString("new_check"))) {
+							hasNew = true;
+							break;
+						}
+					}
+					
+					if(hasNew) {
+						hasNewMessage.setVisibility(View.VISIBLE);
+					} else {
+						hasNewMessage.setVisibility(View.INVISIBLE);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		};
+		AsyncStringDownloader.download(url, null, ocl);
+	}
+	
+	public void showHasNewMessage() {
+		
+		hasNewMessage.setVisibility(View.VISIBLE);
 	}
 }

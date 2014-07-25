@@ -22,6 +22,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -46,7 +47,7 @@ public class MainActivity extends Activity {
 	private LinearLayout menuLinear;
 	private ImagePlayViewer imagePlayViewer;
 	private TextView[] tvTitles = new TextView[2];
-	private View menu, write;
+	private FrameLayout frameForMenu, frameForHome, frameForWrite, frameForN; 
 	private SwipeRefreshLayout swipeLayout;
 	private ListView listView;
 	private ListAdapter listAdapter;
@@ -82,8 +83,11 @@ public class MainActivity extends Activity {
     	imagePlayViewer = (ImagePlayViewer) findViewById(R.id.imagePlayViewer);
     	tvTitles[0] = (TextView) findViewById(R.id.tvTitle1);
     	tvTitles[1] = (TextView) findViewById(R.id.tvTitle2);
-    	menu = findViewById(R.id.menu);
-    	write = findViewById(R.id.write);
+    
+    	frameForMenu = (FrameLayout) findViewById(R.id.frameForMenu);
+    	frameForHome = (FrameLayout) findViewById(R.id.frameForHome);
+    	frameForWrite = (FrameLayout) findViewById(R.id.frameForWrite);
+    	frameForN = (FrameLayout) findViewById(R.id.frameForN);
     	
     	swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
     	listView = (ListView) findViewById(R.id.listView);
@@ -164,8 +168,15 @@ public class MainActivity extends Activity {
     	ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, CircleHeaderView.TITLE_BAR_HEIGHT, 
     			tvTitles[1], 2, Gravity.TOP, null);
     	
-    	ResizeUtils.viewResize(50, 50, menu, 2, Gravity.LEFT|Gravity.TOP, new int[]{20, 20, 0, 0});
-    	ResizeUtils.viewResize(50, 50, write, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 20, 20, 0});
+    	ResizeUtils.viewResize(60, 60, frameForMenu, 2, Gravity.LEFT|Gravity.TOP, new int[]{17, 11, 0, 0});
+    	ResizeUtils.viewResize(60, 60, frameForHome, 2, Gravity.LEFT|Gravity.TOP, new int[]{81, 11, 0, 0});
+    	ResizeUtils.viewResize(60, 60, frameForWrite, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 81, 0});
+    	ResizeUtils.viewResize(60, 60, frameForN, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 17, 0});
+    	
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.menu), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.home), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.write), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.n), 2, Gravity.CENTER, null);
     	
     	FontInfo.setFontSize(tvTitles[0], 36);
     	FontInfo.setFontSize(tvTitles[1], 36);
@@ -211,7 +222,7 @@ public class MainActivity extends Activity {
 			}
 		});
     	
-    	menu.setOnClickListener(new OnClickListener() {
+    	frameForMenu.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -224,12 +235,30 @@ public class MainActivity extends Activity {
 			}
 		});
     	
-    	write.setOnClickListener(new OnClickListener() {
+    	frameForHome.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("Home button clicked.");
+			}
+		});
+    	
+    	frameForWrite.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
 				ToastUtils.showToast("Write button clicked.");
+			}
+		});
+    	
+    	frameForN.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("N button clicked.");
 			}
 		});
     	
@@ -242,7 +271,19 @@ public class MainActivity extends Activity {
 				
 				new Handler().postDelayed(new Runnable() {
 			        @Override public void run() {
-			            swipeLayout.setRefreshing(false);
+			        	
+			        	//ImagePlayViewer가 슬라이드 중인 경우 ImagePlayViewer.SLIDE_DURATION 만큼 대기했다가 새로고침.
+			        	if(imagePlayViewer.isSliding()) {
+			        		new Handler().postDelayed(new Runnable() {
+								
+								@Override
+								public void run() {
+									onRefreshPage();
+								}
+							}, ImagePlayViewer.SLIDE_DURATION);
+			        	} else{
+			        		onRefreshPage();
+			        	}
 			        }
 			    }, 2000);
 			}
@@ -325,6 +366,12 @@ public class MainActivity extends Activity {
     	swipeLayout.setVisibility(View.VISIBLE);
     }
 
+    public void onRefreshPage() {
+    	
+    	swipeLayout.setRefreshing(false);
+    	showNext();
+    }
+    
     @Override
     protected void onResume() {
     	super.onResume();
@@ -352,15 +399,7 @@ public class MainActivity extends Activity {
 					downloadPosts();
 				
 				} else {
-					ImagePlayViewer.imageIndex++;
-					
-					String colorText = "#b2" + bgInfos.colors.get(
-			    			ImagePlayViewer.imageIndex % bgInfos.colors.size()).replace("#", "");
-			    	int color = Color.parseColor(colorText);
-					
-					imagePlayViewer.showNext();
-					changeTitleBarColor(color);
-					changeMenuColor(color);
+					showNext();
 				}
 			}
 		}, 1000);
@@ -414,6 +453,19 @@ public class MainActivity extends Activity {
     public void hideTitleBar() {
     	
     	tvTitles[ImagePlayViewer.imageIndex % 2].setVisibility(View.INVISIBLE);
+    }
+ 
+    public void showNext() {
+    	
+    	ImagePlayViewer.imageIndex++;
+		
+		String colorText = "#b2" + bgInfos.colors.get(
+    			ImagePlayViewer.imageIndex % bgInfos.colors.size()).replace("#", "");
+    	int color = Color.parseColor(colorText);
+		
+		imagePlayViewer.showNext();
+		changeTitleBarColor(color);
+		changeMenuColor(color);
     }
     
     public void changeTitleBarColor(int color) {

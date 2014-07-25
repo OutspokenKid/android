@@ -24,14 +24,14 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ImagePlayViewer extends FrameLayout {
 
+	public static final int SLIDE_DURATION = 3000;
+	public static int imageIndex;
+	
 	private static final int ANIM_DURATION = 2000;
-	private static final int SLIDE_DURATION = 3000;
 	private static final float MOVE_DIST = 0.05f;
 	
 	private static final int MODE_DUAL = 0;
 	private static final int MODE_MORE = 1;
-	
-	public static int imageIndex;
 	
 	private ImageView[] imageViews = new ImageView[2];
 	private Bitmap nextBitmap;
@@ -39,6 +39,7 @@ public class ImagePlayViewer extends FrameLayout {
 	private ArrayList<String> imageUrls;
 	private boolean needPlayImage;
 	private int mode;
+	private boolean isSliding;
 	
 	private AlphaAnimation aaIn, aaOut;
 	
@@ -192,6 +193,8 @@ public class ImagePlayViewer extends FrameLayout {
         final Matrix matrix = new Matrix(ivImage.getImageMatrix());
         final float totalDist = -ResizeUtils.getScreenWidth() * MOVE_DIST;
         
+        setSliding(true);
+        
         ivImage.post(new Runnable() {
 
         	float r, r0, t, distX;
@@ -212,6 +215,7 @@ public class ImagePlayViewer extends FrameLayout {
                 if (t < 1f) {
                     ivImage.post(this);
                 } else {
+                	setSliding(false);
                 	downloadNextBitmap();
                 }
             }
@@ -280,5 +284,13 @@ public class ImagePlayViewer extends FrameLayout {
 		nextBitmap.recycle();
 		ViewUnbindHelper.unbindReferences(imageViews[0]);
 		ViewUnbindHelper.unbindReferences(imageViews[1]);
+	}
+
+	public boolean isSliding() {
+		return isSliding;
+	}
+
+	public void setSliding(boolean isSliding) {
+		this.isSliding = isSliding;
 	}
 }

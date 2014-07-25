@@ -527,10 +527,7 @@ public class PostPage extends BaseFragment {
 
 			int length = contentLayout.getChildCount();
 			for(int i=0; i<length; i++) {
-				
-				if(!(contentLayout.getChildAt(i) instanceof TextView)) {
-					views.add(contentLayout.getChildAt(i));
-				}
+				views.add(contentLayout.getChildAt(i));
 			}
 
 			length = views.size();

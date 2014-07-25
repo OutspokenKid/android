@@ -20,8 +20,8 @@ public class CircleHeaderView extends FrameLayout {
 
 	private static final int ANIM_DURATION = 500;
 
-	public static final int HEADER_VIEW_HEIGHT = 720;
-	public static final int TITLE_BAR_HEIGHT = 90;
+	public static final int HEADER_VIEW_HEIGHT = 708;
+	public static final int TITLE_BAR_HEIGHT = 82;
 	public static int diffLength;
 	
 	private NetworkImageView ivTitle;

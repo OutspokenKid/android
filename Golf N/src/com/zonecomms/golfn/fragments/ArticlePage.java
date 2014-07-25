@@ -858,4 +858,14 @@ public class ArticlePage extends BaseFragment {
 			ToastUtils.showToast(R.string.failToShowVideo);
 		}
 	}
+
+	public int getSpotNid() {
+		
+		return article.getSpot_nid();
+	}
+	
+	public void setNeedToShowBottom(boolean isNeedToShowBottom) {
+		
+		this.isNeedToShowBottom = isNeedToShowBottom;
+	}
 }

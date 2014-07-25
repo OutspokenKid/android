@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#f000" >
+
+    <View 
+        android:layout_width="10dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView 
+        android:id="@+id/dialogActivity_tvContent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:textColor="#000"
+        android:maxLines="2"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:background="@drawable/bg_push" />
+    
+    <LinearLayout 
+        android:id="@+id/dialogActivity_buttonLinear"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+	    android:orientation="horizontal"
+	    android:background="@drawable/btn_push_1" >
+	
+        <TextView
+	        android:id="@+id/dialogActivity_button1"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:textColor="#000"
+	        android:text="@string/confirm" />
+        
+        <TextView
+	        android:id="@+id/dialogActivity_button2"
+	        android:layout_width="0dp"
+	        android:layout_height="match_parent"
+	        android:layout_weight="1"
+	        android:gravity="center"
+	        android:textColor="#000"
+	        android:text="@string/cancel" />
+        
+    </LinearLayout>
+    
+    <View 
+        android:layout_width="10dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+    
+</LinearLayout>
