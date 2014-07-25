@@ -30,6 +30,7 @@ import com.zonecomms.golfn.MainActivity;
 import com.zonecomms.golfn.R;
 import com.zonecomms.golfn.classes.ApplicationManager;
 import com.zonecomms.golfn.classes.ZoneConstants;
+import com.zonecomms.golfn.fragments.ArticlePage;
 import com.zonecomms.golfn.fragments.PostPage;
 
 /**
@@ -189,12 +190,11 @@ public class ViewForReply extends RelativeLayout {
 				@Override
 				public boolean onLongClick(View v) {
 					
-					if(ApplicationManager.getTopFragment() instanceof PostPage) {
+					if(ApplicationManager.getTopFragment() instanceof PostPage
+							|| ApplicationManager.getTopFragment() instanceof ArticlePage) {
 						
 						if(onShowPopupForReplyListener != null) {
 							if(MainActivity.myInfo.isAdmin()
-									|| (!StringUtils.isEmpty(member.getMember_id()) 
-											&& member.getMember_id().equals(MainActivity.myInfo.getMember_id()))
 									|| (!StringUtils.isEmpty(member.getMember_id()) 
 											&& member.getMember_id().equals(MainActivity.myInfo.getMember_id()))) {
 								onShowPopupForReplyListener.showPopupForReply(true, ViewForReply.this);

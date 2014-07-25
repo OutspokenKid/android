@@ -811,10 +811,11 @@ public class ArticlePage extends BaseFragment {
 		
 		spForReply.clearItems();
 		spForReply.addItem(getString(R.string.reply_copy));
-		spForReply.addItem(getString(R.string.reply_accuse));
 		
 		if(forOwner) {
 			spForReply.addItem(getString(R.string.reply_delete));
+		} else{
+			spForReply.addItem(getString(R.string.reply_accuse));
 		}
 		
 		spForReply.notifyDataSetChanged();
