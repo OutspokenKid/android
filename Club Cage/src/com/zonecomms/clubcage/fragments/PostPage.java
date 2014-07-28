@@ -74,7 +74,8 @@ public class PostPage extends BaseFragment {
 	private HoloStyleSpinnerPopup spForPost;
 	private HoloStyleSpinnerPopup spForReply;
 	private ViewForReply selectedVFR;
-	
+
+	private int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
 	private int spot_nid;
 	private int lastIndexno;
 	private boolean isNeedToShowBottom;
@@ -123,8 +124,6 @@ public class PostPage extends BaseFragment {
 	@Override
 	protected void setVariables() {
 
-		setDownloadKey("POSTPAGE" + madeCount);
-		
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
 		}
@@ -151,7 +150,7 @@ public class PostPage extends BaseFragment {
 			spForReply = new HoloStyleSpinnerPopup(mContext);
 			((FrameLayout) mThisView.findViewById(R.id.postPage_mainLayout)).addView(spForReply);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -526,7 +525,7 @@ public class PostPage extends BaseFragment {
 			innerLayout.addView(replyLoadingView, innerLayout.getChildCount() - 1);
 			writeLinear.setVisibility(View.VISIBLE);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -537,7 +536,7 @@ public class PostPage extends BaseFragment {
 				innerLayout.removeView(replyLoadingView);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -703,7 +702,7 @@ public class PostPage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSendReply);
 		}
 	}
@@ -855,7 +854,7 @@ public class PostPage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToAccuse);
 		}
 	}
@@ -904,7 +903,7 @@ public class PostPage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToScrapPost);
 		}
 	}
@@ -960,9 +959,14 @@ public class PostPage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToDeletePost);
 		}
+	}
+	
+	public int getBoardIndex() {
+		
+		return boardIndex;
 	}
 	
 //////////////////////Classes.
@@ -984,7 +988,7 @@ public class PostPage extends BaseFragment {
 		
 		private void init() {
 			
-			madeCount += 10;
+			int madeCount = 0;
 			
 			RelativeLayout.LayoutParams rp = null;
 			int l = ResizeUtils.getSpecificLength(100);
@@ -1211,7 +1215,7 @@ public class PostPage extends BaseFragment {
 					}
 				});
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToDeleteReply);
 			}
 		}
@@ -1261,7 +1265,7 @@ public class PostPage extends BaseFragment {
 					}
 				});
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToAccuseReply);
 			}
 		}

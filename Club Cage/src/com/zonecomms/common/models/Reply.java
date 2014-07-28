@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 
 public class Reply extends BaseModel {
 
@@ -43,7 +44,7 @@ public class Reply extends BaseModel {
 							target_member.add(new Member(arJSON.getJSONObject(i)));
 						}
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 					}
 				}
 				
@@ -51,7 +52,7 @@ public class Reply extends BaseModel {
 					this.reg_dt = objJSON.getString("reg_dt");
 				}
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 	}

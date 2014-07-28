@@ -57,7 +57,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			sound = SharedPrefsUtils.getBooleanFromPrefs(ZoneConstants.PREFS_PUSH, "sound");
 			vibration = SharedPrefsUtils.getBooleanFromPrefs(ZoneConstants.PREFS_PUSH, "vibration");
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 		
 		try {
@@ -110,7 +110,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				handleMessage(context, push_msg, msg_type, member_id, post_member_id, spot_nid);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -245,7 +245,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			
 			notiManager.notify(time, noti);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -257,7 +257,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		try {
 			senderIds = super.getSenderIds(context);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		} finally {
 			if(senderIds == null) {
 				senderIds = new String[]{ZoneConstants.GCM_SENDER_ID};

@@ -41,13 +41,24 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	public static BaseFragment getTopFragment() {
 
 		try {
-		    String fragmentTag = mainActivity.getSupportFragmentManager()
-		    		.getBackStackEntryAt(mainActivity.getSupportFragmentManager().getBackStackEntryCount() - 1)
-		    		.getName();
-		    return (BaseFragment) mainActivity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
+			//메인 페이지 시작 전.
+			if(getFragmentsSize() == 0) {
+				return null;
+				
+			//메인 페이지.
+			} else if(getFragmentsSize() == 1) {
+				return (BaseFragment) mainActivity.getSupportFragmentManager().getFragments().get(0);
+				
+			//다른 최상단 페이지.
+			} else {
+				String fragmentTag = mainActivity.getSupportFragmentManager()
+			    		.getBackStackEntryAt(mainActivity.getSupportFragmentManager().getBackStackEntryCount() - 1)
+			    		.getName();
+			    return (BaseFragment) mainActivity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
-		} catch (Error e) {
+		} catch (Error e) {	
 			LogUtils.trace(e);
 		}
 		
@@ -57,7 +68,15 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	public static int getFragmentsSize() {
 		
 		try {
-			mainActivity.getSupportFragmentManager().getFragments().size();
+			//메인 실행 전.
+			if(mainActivity.getSupportFragmentManager().getFragments() == null) {
+				return 0;
+				
+			//메인 실행 후.
+			} else {
+				int entrySize = mainActivity.getSupportFragmentManager().getBackStackEntryCount();
+				return entrySize + 1;
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -68,6 +87,12 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	}
 
 	public static void clearFragmentsWithoutMain() {
+
+		int size = getFragmentsSize();
+		
+		for(int i=0; i<size; i++) {
+			((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim();
+		}
 		
 		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}

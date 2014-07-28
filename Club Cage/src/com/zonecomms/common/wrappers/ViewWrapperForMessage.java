@@ -132,7 +132,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 

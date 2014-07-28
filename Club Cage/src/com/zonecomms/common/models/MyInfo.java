@@ -2,6 +2,8 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.utils.LogUtils;
+
 public class MyInfo {
 
 	private String member_id;
@@ -76,7 +78,7 @@ public class MyInfo {
 			}
 			return true;
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			return false;
 		}
 	}

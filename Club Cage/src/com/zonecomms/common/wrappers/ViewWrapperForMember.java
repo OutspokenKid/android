@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -34,7 +35,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 			ivImage = (ImageView) row.findViewById(R.id.grid_member_ivImage);
 			tvInfo = (TextView) row.findViewById(R.id.grid_member_tvInfo);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -52,7 +53,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 			
 			FontInfo.setFontSize(tvInfo, 20);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -91,7 +92,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 				setUnusableView();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}

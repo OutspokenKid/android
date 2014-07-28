@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -110,7 +111,7 @@ public class ViewWrapperForVideo extends ViewWrapper {
 				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
 				ZonecommsApplication.getActivity().startActivity(i);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToShowVideo);
 			}
 		} else {

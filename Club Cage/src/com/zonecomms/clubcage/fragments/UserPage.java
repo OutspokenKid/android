@@ -39,12 +39,12 @@ import android.widget.TextView;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
@@ -76,7 +76,8 @@ public class UserPage extends BaseListFragment {
 	private boolean isUploadingProfileImage;
 	
 	private FrameLayout mainLayout;
-	private SwipeRefreshLayout swipeRefreshLayout; 
+	private SwipeRefreshLayout swipeRefreshLayoutForGrid;
+	private SwipeRefreshLayout swipeRefreshLayoutForList;
 	private GridView gridView;
 	private ListView listView;
 	private RelativeLayout relative;
@@ -137,7 +138,6 @@ public class UserPage extends BaseListFragment {
 			
 			if(getArguments().containsKey("userId")) {
 				userId = getArguments().getString("userId");
-				setDownloadKey("USERPAGE" + madeCount);
 			}
 
 			if(getArguments().containsKey("menuIndex")) {
@@ -150,7 +150,7 @@ public class UserPage extends BaseListFragment {
 						mode = 3;
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		}
@@ -280,7 +280,7 @@ public class UserPage extends BaseListFragment {
 						IntentHandlerActivity.actionByUri(Uri.parse(uriString));
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -430,23 +430,7 @@ public class UserPage extends BaseListFragment {
 		
 		addProfileScroll();
 		
-		swipeRefreshLayout = new SwipeRefreshLayout(mContext);
-		swipeRefreshLayout.setColorSchemeColors(
-        		Color.argb(255, 255, 102, 153), 
-        		Color.argb(255, 255, 153, 153), 
-        		Color.argb(255, 255, 204, 153), 
-        		Color.argb(255, 255, 255, 153));
-		swipeRefreshLayout.setEnabled(true);
-		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
-			
-			@Override
-			public void onRefresh() {
-
-				swipeRefreshLayout.setRefreshing(true);
-				onRefreshPage();
-			}
-		});
-		contentFrame.addView(swipeRefreshLayout);
+		swipeRefreshLayoutForGrid = new SwipeRefreshLayout(mContext);
 		
 		gridAdapter = new GridAdapter(mContext, mActivity, modelsForGrid, true);
 		gridView = new GridView(mContext);
@@ -496,7 +480,26 @@ public class UserPage extends BaseListFragment {
 				}
 			}
 		});
-		swipeRefreshLayout.addView(gridView);
+		swipeRefreshLayoutForGrid.addView(gridView);
+		
+		swipeRefreshLayoutForGrid.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+		swipeRefreshLayoutForGrid.setEnabled(true);
+		swipeRefreshLayoutForGrid.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+
+				swipeRefreshLayoutForGrid.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
+		contentFrame.addView(swipeRefreshLayoutForGrid);
+		
+		swipeRefreshLayoutForList = new SwipeRefreshLayout(mContext);
 		
 		listAdapter = new ListAdapter(mContext, mActivity, modelsForList, true);
 		listView = new ListView(mContext);
@@ -539,7 +542,24 @@ public class UserPage extends BaseListFragment {
 				}
 			}
 		});
-		swipeRefreshLayout.addView(listView);
+		swipeRefreshLayoutForList.addView(listView);
+		
+		swipeRefreshLayoutForList.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+		swipeRefreshLayoutForList.setEnabled(true);
+		swipeRefreshLayoutForList.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+
+				swipeRefreshLayoutForList.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
+		contentFrame.addView(swipeRefreshLayoutForList);
 		
 		pPhoto = new HoloStyleSpinnerPopup(mContext);
 		pPhoto.setTitle(getString(R.string.uploadPhoto));
@@ -636,7 +656,7 @@ public class UserPage extends BaseListFragment {
 										});
 								
 							} catch(Exception e) {
-								e.printStackTrace();
+								LogUtils.trace(e);
 								ToastUtils.showToast(R.string.failToLoadBitmap);
 							}
 						}
@@ -682,8 +702,10 @@ public class UserPage extends BaseListFragment {
 			@Override
 			public void run() {
 				
-				if(mode != 0) {
-					swipeRefreshLayout.setRefreshing(false);
+				if(mode == 1 || mode == 2) {
+					swipeRefreshLayoutForGrid.setRefreshing(false);
+				} else if(mode == 3) {
+					swipeRefreshLayoutForList.setRefreshing(false);
 				}
 			}
 		}, 1000);
@@ -1112,7 +1134,7 @@ public class UserPage extends BaseListFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -1509,7 +1531,7 @@ public class UserPage extends BaseListFragment {
 							}
 						}
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 					}
 				}
 			}, ANIM_DURATION + 200);

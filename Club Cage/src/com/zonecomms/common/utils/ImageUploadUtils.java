@@ -102,7 +102,7 @@ public class ImageUploadUtils {
 	        } catch (Exception e) {
 	        	ToastUtils.showToast(R.string.failToLoadBitmap);
 	        	
-	            e.printStackTrace();
+	            LogUtils.trace(e);
 	        } finally {
 	        	try {
 	                out.close();
@@ -141,7 +141,7 @@ public class ImageUploadUtils {
 					onAfterUploadImage.onAfterUploadImage(new UploadImageInfo(resultString), thumbnail);
 				} catch(Exception e) {
 					ToastUtils.showToast(R.string.failToLoadBitmap);
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		}

@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 
 public class Notice extends BaseModel {
 
@@ -75,7 +76,7 @@ public class Notice extends BaseModel {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 

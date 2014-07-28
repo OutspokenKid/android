@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 
 public class Link extends BaseModel {
 
@@ -119,7 +120,7 @@ public class Link extends BaseModel {
 				this.main_image = objJSON.getString("main_image");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 

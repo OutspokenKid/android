@@ -317,10 +317,10 @@ public class SignUpActivity extends RecyclingActivity {
 				oom.printStackTrace();
 				ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
 			} catch(Error e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 			}
 		} else {
@@ -638,7 +638,7 @@ public class SignUpActivity extends RecyclingActivity {
 												ToastUtils.showToast(objJSON.getString("errorMsg"));
 											}
 										} catch(Exception e) {
-											e.printStackTrace();
+											LogUtils.trace(e);
 										}
 									}
 								});
@@ -648,7 +648,7 @@ public class SignUpActivity extends RecyclingActivity {
 								isLoading = false;
 							}
 						} catch(Exception e) {
-							e.printStackTrace();
+							LogUtils.trace(e);
 							hideLoadingView();
 							isLoading = false;
 						}
@@ -816,7 +816,7 @@ public class SignUpActivity extends RecyclingActivity {
 								ToastUtils.showToast(objJSON.getString("errorMsg"));
 							}
 						} catch(Exception e) {
-							e.printStackTrace();
+							LogUtils.trace(e);
 						}
 					}
 				});
@@ -1072,13 +1072,13 @@ public class SignUpActivity extends RecyclingActivity {
 							ToastUtils.showToast(R.string.failToSignUp);
 						}
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 						ToastUtils.showToast(R.string.failToSignUp);
 					}
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			isLoading = false;
 		}
 	}

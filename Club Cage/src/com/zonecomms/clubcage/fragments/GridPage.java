@@ -59,6 +59,7 @@ public class GridPage extends BaseListFragment {
 
 	private int numOfColumn;
 	private int menuIndex;
+	private int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private GridView gridView;
@@ -107,8 +108,6 @@ public class GridPage extends BaseListFragment {
 			title = getString(R.string.board_findPeople);
 			break;
 		}
-		
-		setDownloadKey("GRIDPAGE" + madeCount);
 	}
 
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD) @Override
@@ -199,7 +198,7 @@ public class GridPage extends BaseListFragment {
 				try {
 					keyword = URLEncoder.encode(editText.getEditText().getText().toString(), "UTF-8");
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 			
@@ -630,6 +629,11 @@ public class GridPage extends BaseListFragment {
 				}
 			}, 300);
 		}
+	}
+	
+	public int getBoardIndex() {
+		
+		return boardIndex;
 	}
 
 //////////////////////// Classes.

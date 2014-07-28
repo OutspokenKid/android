@@ -3,6 +3,7 @@ package com.outspoken_kid.utils;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -83,7 +84,7 @@ public class DownloadUtils {
 	 * @param url
 	 * @param onBitmapDownloadListener
 	 */
-	public static void downloadBitmap(final String url, 
+	public static void downloadBitmap(final String url, final ImageView ivImage,
 			final OnBitmapDownloadListener onBitmapDownloadListener) {
 		
 		try {
@@ -92,7 +93,7 @@ public class DownloadUtils {
 			if(bitmap != null && !bitmap.isRecycled()) {
 				
 				if(onBitmapDownloadListener != null) {
-					onBitmapDownloadListener.onCompleted(url, bitmap);
+					onBitmapDownloadListener.onCompleted(url, ivImage, bitmap);
 				} 
 				
 				return;
@@ -107,11 +108,11 @@ public class DownloadUtils {
 						ImageCacheManager.getInstance().putBitmap(url, bitmap);
 						
 						if(onBitmapDownloadListener != null) {
-							onBitmapDownloadListener.onCompleted(url, bitmap);
+							onBitmapDownloadListener.onCompleted(url, ivImage, bitmap);
 						}
 					} else{
 						if(onBitmapDownloadListener != null) {
-							onBitmapDownloadListener.onError(url);
+							onBitmapDownloadListener.onError(url, ivImage);
 						}
 					}
 				}
@@ -123,7 +124,7 @@ public class DownloadUtils {
 				public void onErrorResponse(VolleyError arg0) {
 					
 					if(onBitmapDownloadListener != null) {
-						onBitmapDownloadListener.onError(url);
+						onBitmapDownloadListener.onError(url, ivImage);
 					}
 				}
 			};
@@ -135,13 +136,13 @@ public class DownloadUtils {
 			LogUtils.trace(e);
 			
 			if(onBitmapDownloadListener != null) {
-				onBitmapDownloadListener.onError(url);
+				onBitmapDownloadListener.onError(url, ivImage);
 			}
 		} catch (Error e) {
 			LogUtils.trace(e);
 			
 			if(onBitmapDownloadListener != null) {
-				onBitmapDownloadListener.onError(url);
+				onBitmapDownloadListener.onError(url, ivImage);
 			}
 		}
 	}
@@ -156,7 +157,7 @@ public class DownloadUtils {
 	
 	public interface OnBitmapDownloadListener {
 		
-		public void onCompleted(String url, Bitmap bitmap);
-		public void onError(String url);
+		public void onCompleted(String url, ImageView ivImage, Bitmap bitmap);
+		public void onError(String url, ImageView ivImage);
 	}
 }

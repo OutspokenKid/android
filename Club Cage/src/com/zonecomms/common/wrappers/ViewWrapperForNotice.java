@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -95,7 +96,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		} finally {
 			close();

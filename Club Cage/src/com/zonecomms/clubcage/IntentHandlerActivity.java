@@ -63,7 +63,7 @@ public class IntentHandlerActivity extends Activity {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 
 		finish();
@@ -201,13 +201,11 @@ public class IntentHandlerActivity extends Activity {
 				handleInvalidUri();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			handleInvalidUri();
 		}
 	}
 	
 	public static void handleInvalidUri() {
-//		ToastUtils.showToast(R.string.invalidUri);
-//		ClubCageApplication.getActivity().showMainPage();
 	}
 }

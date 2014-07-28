@@ -125,6 +125,7 @@ public class MainActivity extends FragmentActivity {
 		try {
 			setContentView(R.layout.activity_main);
 			ZonecommsApplication.initWithActivity(this);
+			ZonecommsApplication.setupResources(this);
 			context = this;
 			
 			bindViews();
@@ -196,10 +197,10 @@ public class MainActivity extends FragmentActivity {
 					if(bf instanceof MainPage) {
 						((MainPage) bf).showBoardMenu(true);
 					} else {
-						showWriteActivity(ZonecommsApplication.getTopFragment().getBoardIndex());
+						showWriteActivity(((GridPage)ZonecommsApplication.getTopFragment()).getBoardIndex());
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -281,42 +282,44 @@ public class MainActivity extends FragmentActivity {
 			
 			case KeyEvent.KEYCODE_MENU :
 
-				try {
-					if(GestureSlidingLayout.isOpenToLeft()) {
-						gestureSlidingLayout.close(true, null);
-					} else {
-						gestureSlidingLayout.open(true, null);
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
+				ZonecommsApplication.getFragmentsSize();
+				
+//				try {
+//					if(GestureSlidingLayout.isOpenToLeft()) {
+//						gestureSlidingLayout.close(true, null);
+//					} else {
+//						gestureSlidingLayout.open(true, null);
+//					}
+//				} catch(Exception e) {
+//					LogUtils.trace(e);
+//				}
 				break;
 			
 			case KeyEvent.KEYCODE_BACK :
 				
-				try {
-					if(GestureSlidingLayout.isOpenToLeft()) {
-						gestureSlidingLayout.close(true, null);
-					} else if(cover.getVisibility() == View.VISIBLE) {
-						//Just wait.
-					} else if(ZonecommsApplication.getTopFragment() != null 
-							&& ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
-						//Do nothing.
-					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
-						noticePopup.hide(null);
-					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
-						profilePopup.hide(null);
-					} else if(ZonecommsApplication.getFragmentsSize() > 1){
-						closeTopPage();
-					} else {
-						finish();
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-				}
-				break;
-				
-				default:
+//				try {
+//					if(GestureSlidingLayout.isOpenToLeft()) {
+//						gestureSlidingLayout.close(true, null);
+//					} else if(cover.getVisibility() == View.VISIBLE) {
+//						//Just wait.
+//					} else if(ZonecommsApplication.getTopFragment() != null 
+//							&& ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
+//						//Do nothing.
+//					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
+//						noticePopup.hide(null);
+//					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
+//						profilePopup.hide(null);
+//					} else if(ZonecommsApplication.getFragmentsSize() > 1){
+//						closeTopPage();
+//					} else {
+//						finish();
+//					}
+//				} catch(Exception e) {
+//					LogUtils.trace(e);
+//				}
+//				break;
+//				
+//				default:
 					return super.onKeyDown(keyCode, event);
 			}
 		}
@@ -404,11 +407,11 @@ public class MainActivity extends FragmentActivity {
 					ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
 					clearImageUploadSetting();
 				} catch(Error e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToLoadBitmap);
 					clearImageUploadSetting();
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToLoadBitmap);
 					clearImageUploadSetting();
 				}
@@ -527,7 +530,7 @@ public class MainActivity extends FragmentActivity {
 						}
 					});
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 			
@@ -581,10 +584,7 @@ public class MainActivity extends FragmentActivity {
 	
 	public void closeTopPage() {
 		
-		if(ZonecommsApplication.getTopFragment() != null) {
-			ZonecommsApplication.getTopFragment().finish(true, ZonecommsApplication.getFragmentsSize() == 2? true : false);
-		}
-		showTopFragment();
+		getSupportFragmentManager().popBackStack();
 	}
 	
 	public void showMainPage() {
@@ -597,7 +597,7 @@ public class MainActivity extends FragmentActivity {
 				ZonecommsApplication.clearFragmentsWithoutMain();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -613,7 +613,7 @@ public class MainActivity extends FragmentActivity {
 			
 			startPage(gp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -627,7 +627,7 @@ public class MainActivity extends FragmentActivity {
 			
 			startPage(pp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -640,7 +640,7 @@ public class MainActivity extends FragmentActivity {
 			bundle.putInt("menuIndex", menuIndex);
 			startPage(up, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -654,7 +654,7 @@ public class MainActivity extends FragmentActivity {
 			
 			startPage(lp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -664,7 +664,7 @@ public class MainActivity extends FragmentActivity {
 			InformationPage ip = new InformationPage();
 			startPage(ip, null);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -674,7 +674,7 @@ public class MainActivity extends FragmentActivity {
 			SettingPage sp = new SettingPage();
 			startPage(sp, null);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -686,7 +686,7 @@ public class MainActivity extends FragmentActivity {
 			bundle.putString("member_id", userId);
 			startPage(mp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -696,7 +696,7 @@ public class MainActivity extends FragmentActivity {
 			BaseProfilePage bp = new BaseProfilePage();
 			startPage(bp, null);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -714,7 +714,7 @@ public class MainActivity extends FragmentActivity {
 			bundle.putString("introduce", introduce);
 			startPage(bp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -724,7 +724,7 @@ public class MainActivity extends FragmentActivity {
 			AddedProfilePage pp = new AddedProfilePage();
 			startPage(pp, null);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -745,7 +745,7 @@ public class MainActivity extends FragmentActivity {
 			
 			startPage(pp, bundle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -758,20 +758,26 @@ public class MainActivity extends FragmentActivity {
 
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
+			//Set Animation.
 			if(fadePageAnim) {
+				LogUtils.log("###where.startPage.  fadeAnim");
 				fadePageAnim = false;
-				//Exclude animation.
-			} else if(ZonecommsApplication.getTopFragment() == null || ZonecommsApplication.getFragmentsSize() == 0) {
+				//Exclude animation when open page.
+				ft.setCustomAnimations(0, 0, 
+						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
+				
+			} else if(ZonecommsApplication.getFragmentsSize() == 0) {
+				LogUtils.log("###where.startPage.  Maybe MainPage.  size : " + ZonecommsApplication.getFragmentsSize());
 				//MainPage.
 			} else if(ZonecommsApplication.getTopFragment() != null
 					&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
-				ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
+				LogUtils.log("###where.startPage.  Second Page.  size : " + ZonecommsApplication.getFragmentsSize());
+				ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, 
+						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
 			} else {
-				ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
-			}
-			
-			if(ZonecommsApplication.getFragmentsSize() != 0) {
-				ft.hide(ZonecommsApplication.getTopFragment());
+				LogUtils.log("###where.startPage.  Other Page.  size : " + ZonecommsApplication.getFragmentsSize());
+				ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
+						R.anim.slide_in_from_left, R.anim.slide_out_to_right);
 			}
 			
 			if(ZonecommsApplication.getFragmentsSize() == 0) {
@@ -785,7 +791,7 @@ public class MainActivity extends FragmentActivity {
 			
 			SoftKeyboardUtils.hideKeyboard(this, gestureSlidingLayout);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -799,7 +805,7 @@ public class MainActivity extends FragmentActivity {
 			    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			    startActivityWithAnim(intent);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadWebBrowser);
 			}
 		}
@@ -815,27 +821,9 @@ public class MainActivity extends FragmentActivity {
 			    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			    startActivityWithAnim(intent, requestCode);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadWebBrowser);
 			}
-		}
-	}
-	
-	public void showTopFragment() {
-
-		try {
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-			
-			if(ZonecommsApplication.getTopFragment() instanceof MainPage) {
-				ft.setCustomAnimations(R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
-			} else {
-				ft.setCustomAnimations(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-			}
-			
-			ft.show(ZonecommsApplication.getTopFragment());
-			ft.commitAllowingStateLoss();
-		} catch(Exception e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -853,6 +841,23 @@ public class MainActivity extends FragmentActivity {
 		intent.putExtra("imageUrls", imageUrls);
 		intent.putExtra("member_id", member_id);
 		startActivityWithAnim(intent, ZoneConstants.REQUEST_EDIT);
+	}
+	
+	public void showImageViewerActivity(String title, int imageResId) {
+		
+		if(imageResId == 0) {
+			return;
+		}
+		
+		Intent intent = new Intent(this, ImageViewer.class);
+		
+		if(!StringUtils.isEmpty(title)) {
+			intent.putExtra("title", title);
+		}
+		
+		intent.putExtra("imageResId", imageResId);
+		startActivity(intent);
+		overridePendingTransition(R.anim.slide_in_from_bottom, android.R.anim.fade_out);
 	}
 	
 	public void showImageViewerActivity(String title, Media[] medias, int index) {
@@ -879,7 +884,7 @@ public class MainActivity extends FragmentActivity {
 			return;
 		}
 		
-		Intent intent = new Intent(this, ImageViewerActivity.class);
+		Intent intent = new Intent(this, ImageViewer.class);
 
 		if(!StringUtils.isEmpty(title)) {
 			intent.putExtra("title", title);
@@ -933,7 +938,7 @@ public class MainActivity extends FragmentActivity {
 				ToastUtils.showToast(R.string.invalidUri);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1191,7 +1196,7 @@ public class MainActivity extends FragmentActivity {
 						try {
 							onPositiveClickedListener.onPositiveClicked();
 						} catch(Exception e) {
-							e.printStackTrace();
+							LogUtils.trace(e);
 						}
 					}
 				}
@@ -1205,7 +1210,7 @@ public class MainActivity extends FragmentActivity {
 			adb.setMessage(message);
 			adb.show();
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1323,7 +1328,7 @@ public class MainActivity extends FragmentActivity {
 				updateInfo(regId);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1400,7 +1405,7 @@ public class MainActivity extends FragmentActivity {
 			startActivity(intent);
 			finish();
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSignOut);
 		}
 	}

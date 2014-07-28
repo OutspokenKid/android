@@ -273,13 +273,13 @@ public class ProfilePopup extends FrameLayout {
 							setInfo();
 						}
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 						ToastUtils.showToast(R.string.failToLoadUserInfo);
 					}
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -319,7 +319,7 @@ public class ProfilePopup extends FrameLayout {
 				friend.setBackgroundResource(R.drawable.img_profile_people_add);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToLoadUserInfo);
 		}
 	}
@@ -408,7 +408,7 @@ public class ProfilePopup extends FrameLayout {
 						}
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -445,7 +445,7 @@ public class ProfilePopup extends FrameLayout {
 						});
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -486,7 +486,7 @@ public class ProfilePopup extends FrameLayout {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -512,7 +512,7 @@ public class ProfilePopup extends FrameLayout {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	

@@ -35,7 +35,7 @@ public class UploadImageInfo {
 					imageHeight = Integer.parseInt(strs[i].split(":")[1]);
 				}
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 			}
 		}

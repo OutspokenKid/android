@@ -272,7 +272,7 @@ public class WriteActivity extends RecyclingActivity {
 									uii.setImageHeight(bitmap.getHeight());
 									addThumbnailView(bitmap, uii);
 								} catch(Exception e) {
-									e.printStackTrace();
+									LogUtils.trace(e);
 									ToastUtils.showToast(R.string.failToLoadBitmap);
 								}
 							}
@@ -364,10 +364,10 @@ public class WriteActivity extends RecyclingActivity {
 				oom.printStackTrace();
 				ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
 			} catch(Error e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 			}
 		} else {
@@ -411,7 +411,7 @@ public class WriteActivity extends RecyclingActivity {
 					ViewUnbindHelper.unbindReferences(frame);
 					setPhotoFrame();
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -512,7 +512,7 @@ public class WriteActivity extends RecyclingActivity {
 					try {
 						spot_nid = Integer.parseInt(objJSON.getString("data"));
 					} catch(Exception e) {
-						e.printStackTrace();	
+						LogUtils.trace(e);	
 					}
 					
 					Intent intent = new Intent();
@@ -523,7 +523,7 @@ public class WriteActivity extends RecyclingActivity {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSendPost);
 		}
 	}

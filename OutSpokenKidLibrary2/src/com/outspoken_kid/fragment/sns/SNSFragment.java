@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
@@ -54,8 +53,6 @@ public abstract class SNSFragment extends Fragment {
 				public void onClick(View v) {
 					needPosting = !needPosting;
 					
-					Log.i("notice", "publishButton clicked");
-					
 					if(needPosting) {
 						coverImage.setBackgroundResource(getPostableImageResId());
 					} else {
@@ -100,8 +97,6 @@ public abstract class SNSFragment extends Fragment {
 
 	protected void clear() {
 		
-		Log.i("notice", "clear");
-		
 		if(publishButton != null) {
 			publishButton.setVisibility(View.INVISIBLE);
 		}
@@ -115,11 +110,6 @@ public abstract class SNSFragment extends Fragment {
 		
 		if(onAfterLoginListener != null && userInfo != null) {
 			onAfterLoginListener.onAfterLogin(userInfo);
-			Log.i("notice", "executeListener. not null.");
-		} else if(userInfo == null){
-			Log.i("notice", "executeListener. userInfo is null");
-		} else {
-			Log.i("notice", "executeListener. listener is null");
 		}
 		
 		onAfterLoginListener = null;

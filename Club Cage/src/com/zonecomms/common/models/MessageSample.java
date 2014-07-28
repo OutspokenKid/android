@@ -3,6 +3,7 @@ package com.zonecomms.common.models;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 
 public class MessageSample extends BaseModel {
 
@@ -61,7 +62,7 @@ public class MessageSample extends BaseModel {
 				reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	

@@ -32,6 +32,15 @@ public abstract class BaseListFragment extends BaseFragment {
 	}
 	
 	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(!isDownloading && !isRefreshing && models.size() == 0) {
+			downloadInfo();
+		}
+	}
+	
+	@Override
 	protected void setPage(boolean successDownload) {
 
 		super.setPage(successDownload);

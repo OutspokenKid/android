@@ -91,7 +91,7 @@ public abstract class ViewWrapper {
 			
 			bg.setBackgroundColor(Color.rgb(newColor, newColor, newColor));
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 

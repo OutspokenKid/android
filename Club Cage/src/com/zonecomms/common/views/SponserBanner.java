@@ -15,6 +15,7 @@ import android.widget.ImageView.ScaleType;
 
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -122,13 +123,13 @@ public class SponserBanner extends FrameLayout {
 						bitmaps[bitmapIndex] = bitmap;
 						showBanner(bitmapIndex);
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 						hideBanner();
 					}
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -202,7 +203,7 @@ public class SponserBanner extends FrameLayout {
 				});
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -220,7 +221,7 @@ public class SponserBanner extends FrameLayout {
 				playTask.execute();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -245,7 +246,7 @@ public class SponserBanner extends FrameLayout {
 			try {
 				Thread.sleep(BANNER_DELAY);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 			return null;
 		}

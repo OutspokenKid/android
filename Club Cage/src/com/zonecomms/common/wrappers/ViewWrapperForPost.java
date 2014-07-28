@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
@@ -51,7 +52,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 			tvRegdate = (TextView) row.findViewById(R.id.grid_post_tvRegdate);
 			tvText = (TextView) row.findViewById(R.id.grid_post_tvText);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -84,7 +85,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 			FontInfo.setFontSize(tvRegdate, 22);
 			FontInfo.setFontSize(tvText, 22);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -139,7 +140,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 				setUnusableView();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -186,7 +187,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}

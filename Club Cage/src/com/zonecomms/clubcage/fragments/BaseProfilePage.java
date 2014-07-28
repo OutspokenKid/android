@@ -136,7 +136,7 @@ public class BaseProfilePage extends BaseFragment {
 				try {
 					pPhoto.showPopup();
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -376,7 +376,7 @@ public class BaseProfilePage extends BaseFragment {
 											}
 										});
 							} catch(Exception e) {
-								e.printStackTrace();
+								LogUtils.trace(e);
 								ToastUtils.showToast(R.string.failToLoadBitmap);
 							}
 						}
@@ -462,7 +462,7 @@ public class BaseProfilePage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -643,7 +643,7 @@ public class BaseProfilePage extends BaseFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 		}
 	}

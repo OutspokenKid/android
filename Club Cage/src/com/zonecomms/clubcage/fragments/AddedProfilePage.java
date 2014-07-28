@@ -89,8 +89,6 @@ public class AddedProfilePage extends BaseFragment {
 
 	@Override
 	protected void setVariables() {
-		
-		setDownloadKey("PROFILEPAGE" + madeCount);
 	}
 
 	@Override
@@ -518,7 +516,7 @@ public class AddedProfilePage extends BaseFragment {
 			mActivity.showLoadingView();
 			mActivity.showCover();
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 		}
 	}

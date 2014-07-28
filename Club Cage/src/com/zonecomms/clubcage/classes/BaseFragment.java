@@ -2,35 +2,30 @@ package com.zonecomms.clubcage.classes;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.LogUtils;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 
 public abstract class BaseFragment extends Fragment {
 	
-	public final int LEFT = -1;
-	public final int FADE = 0;
-	public final int RIGHT = 1;
-	
-	protected static int madeCount = 0;
-	
 	protected View mThisView;
-	
 	protected Context mContext;
 	protected MainActivity mActivity;
 	
 	protected String title;
-	protected String downloadKey;
-	protected int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
 	protected boolean isDownloading;
 	protected boolean isRefreshing;
+	protected boolean disableExitAnim;
 
 	protected abstract void bindViews();
 	protected abstract void setVariables();
@@ -50,46 +45,73 @@ public abstract class BaseFragment extends Fragment {
 	protected ArrayList<ImageView> imageViews = new ArrayList<ImageView>();
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 		
-		madeCount++;
-		
-		if(getArguments() != null) {
-			title = getArguments().getString("title");
-		}
+		LogUtils.log("###BaseFragment.onAttach.  ");
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		LogUtils.log("###BaseFragment.onCreate.  ");
+		
 		mContext = getActivity();
 		mActivity = (MainActivity) getActivity();
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		LogUtils.log("###BaseFragment.onActivityCreated.  ");
+		
+		if(getArguments() != null) {
+			title = getArguments().getString("title");
+		}
 	}
 
 	@Override
 	public void onResume() {
-		
 		super.onResume();
 		
-		if(this == ZonecommsApplication.getTopFragment()) {
-			ZonecommsApplication.getTopFragment().onHiddenChanged(false);
-		}
+		LogUtils.log("###BaseFragment.onResume.  ");
+		checkTitleText();
 	}
 	
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
+	public void onPause() {
+		super.onPause();
+		LogUtils.log("###BaseFragment.onPause.  ");
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
 		
-		if(!hidden) {
-			checkTitleText();
-		}
+		LogUtils.log("###BaseFragment.onStop.  ");
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		LogUtils.log("###BaseFragment.onDestroyView.  ");
+	}
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		
+		LogUtils.log("###BaseFragment.onDestroy.  ");
 	}
 	
 	@Override
 	public void onDetach() {
-
 		super.onDetach();
+
+		LogUtils.log("###BaseFragment.onDetach.  ");
 		
 		try {
 			for(int i=0; i<imageViews.size(); i++) {
@@ -99,7 +121,7 @@ public abstract class BaseFragment extends Fragment {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -119,7 +141,7 @@ public abstract class BaseFragment extends Fragment {
 			ft.remove(this);
 			ft.commitAllowingStateLoss();
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 		
 		mActivity.hideLoadingView();
@@ -150,21 +172,25 @@ public abstract class BaseFragment extends Fragment {
 				mActivity.getTitleBar().setTitleText(getTitleText());
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
-	public void setDownloadKey(String downloadKey) {
+	@Override
+	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		
-		this.downloadKey = downloadKey;
+		if(disableExitAnim) {
+			disableExitAnim = false;
+			Animation a = new Animation() {};
+			a.setDuration(0);
+			return a;
+		}
+		
+		return super.onCreateAnimation(transit, enter, nextAnim);
 	}
 	
-	public String getDownloadKey() {
-		return downloadKey;
-	}
-	
-	public int getBoardIndex() {
+	public void disableExitAnim() {
 		
-		return boardIndex;
+		disableExitAnim = true;
 	}
 }

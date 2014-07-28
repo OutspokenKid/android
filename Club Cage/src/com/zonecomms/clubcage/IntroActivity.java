@@ -52,6 +52,7 @@ public class IntroActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		ZonecommsApplication.initWithActivity(this);
+		ZonecommsApplication.setupResources(this);
 		setContentView(R.layout.activity_intro);
 		bindViews();
 		setSizes();
@@ -147,7 +148,7 @@ public class IntroActivity extends Activity {
 						loadOldSponserBitmap();
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 					loadOldSponserBitmap();
 				}
 			}
@@ -220,7 +221,7 @@ public class IntroActivity extends Activity {
 				try {
 					MainActivity.startupInfo = new StartupInfo(objJSON);
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 				
 				downloadLoadingImages();

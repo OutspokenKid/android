@@ -265,7 +265,7 @@ public class SignInActivity extends RecyclingActivity {
 							onAfterSigningInListener.OnAfterSigningIn(true);	
 						}
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 						
 						if(onAfterSigningInListener != null) {
 							onAfterSigningInListener.OnAfterSigningIn(false);
@@ -274,7 +274,7 @@ public class SignInActivity extends RecyclingActivity {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			
 			if(onAfterSigningInListener != null) {
 				onAfterSigningInListener.OnAfterSigningIn(false);

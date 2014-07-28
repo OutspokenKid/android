@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -147,7 +148,7 @@ public class ListAdapter extends BaseAdapter {
 			
 			return viewForWrapper;
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			return getBlankView();
 		}		
 	}

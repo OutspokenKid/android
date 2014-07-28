@@ -25,6 +25,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
 
 public class HttpUtil {
@@ -134,7 +136,7 @@ public class HttpUtil {
 			
 			inputStream = execute(httpPost, context);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 		return streamToString(inputStream);
 	}
@@ -165,12 +167,12 @@ public class HttpUtil {
 		try {
 			httpResponse = defaultHttpClient.execute(httpUriRequest);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			
 			try {
 				httpResponse = defaultHttpClient.execute(httpUriRequest);
 			} catch (IOException e1) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -184,9 +186,9 @@ public class HttpUtil {
 			try {
 				return httpEntity.getContent();
 			} catch (IllegalStateException e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			} catch (IOException e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 
 		} else {
@@ -214,12 +216,12 @@ public class HttpUtil {
 				stringBuilder.append(line);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		} finally {
 			try {
 				inputStream.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -237,7 +239,7 @@ public class HttpUtil {
 		try {
 			bufferedInputStream.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 
 		return bitmap;

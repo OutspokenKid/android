@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.LogUtils;
 
 public class Post extends BaseModel {
 	
@@ -94,7 +95,7 @@ reg_id : 작성자 ID
 						this.s_cate_id[i] = arJSON.getInt(i);
 					}
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 			
@@ -140,7 +141,7 @@ reg_id : 작성자 ID
 							Media media = new Media(arJSON.getJSONObject(i));
 							medias[i] = media;
 						} catch(Exception e) {
-							e.printStackTrace();
+							LogUtils.trace(e);
 						}
 					}
 				}
@@ -150,7 +151,7 @@ reg_id : 작성자 ID
 				this.reg_dt = objJSON.getString("reg_dt");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 

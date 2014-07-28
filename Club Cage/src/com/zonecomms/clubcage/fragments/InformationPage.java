@@ -23,6 +23,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.PinchImageView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
@@ -169,7 +170,7 @@ public class InformationPage extends BaseFragment {
 					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getString(R.string.textForCall)));
 					mActivity.startActivity(intent);
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -220,6 +221,15 @@ public class InformationPage extends BaseFragment {
 		banner.setLayoutParams(rp);
 		banner.setId(madeCount + 4);
 		banner.setBackgroundResource(R.drawable.img_clubphoto);
+		banner.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				mActivity.showImageViewerActivity(getString(R.string.app_name), 
+						R.drawable.img_clubphoto);
+			}
+		});
 		relative.addView(banner);
 		
 		//VIP info.	id : 5
@@ -359,7 +369,7 @@ public class InformationPage extends BaseFragment {
 					VIPInfoLayout.addView(tvFloor);
 					
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 			}
 			

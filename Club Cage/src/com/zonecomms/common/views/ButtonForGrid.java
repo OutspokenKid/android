@@ -11,6 +11,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -41,7 +42,7 @@ public class ButtonForGrid extends FrameLayout {
 				tvTitle.setText(resId);
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -62,7 +63,7 @@ public class ButtonForGrid extends FrameLayout {
 		try {
 			viewForImage.setBackgroundResource(resId);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -88,7 +89,7 @@ public class ButtonForGrid extends FrameLayout {
 					this.setBackgroundColor(Color.rgb(newR, newG, newB));
 				}
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -108,11 +109,11 @@ public class ButtonForGrid extends FrameLayout {
 					//Set onClickListener.
 					ToastUtils.showToast("menuClicked : " + gridMenu.getUri());
 				} catch(Exception e) {
-					e.printStackTrace();
+					LogUtils.trace(e);
 				}
 				return;
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -121,7 +122,7 @@ public class ButtonForGrid extends FrameLayout {
 				//Set onClickListener.
 				ToastUtils.showToast("menuClicked : " + gridMenu.getUri());
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -133,7 +134,7 @@ public class ButtonForGrid extends FrameLayout {
 				viewForImage.setBackgroundResource(gridMenu.getIconResId());
 				this.addView(viewForImage);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -145,7 +146,7 @@ public class ButtonForGrid extends FrameLayout {
 				ResizeUtils.viewResize(110, 110, viewForImage, 2, Gravity.LEFT, null);
 				this.addView(viewForImage);
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 		
@@ -176,7 +177,7 @@ public class ButtonForGrid extends FrameLayout {
 					FontInfo.setFontSize(tvTitle, 22);
 				}
 			} catch(Exception e) {
-				e.printStackTrace();
+				LogUtils.trace(e);
 			}
 		}
 	}

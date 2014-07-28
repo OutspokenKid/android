@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -36,7 +37,7 @@ public class ViewWrapperForSchedule extends ViewWrapper {
 			ivImage = (ImageView) row.findViewById(R.id.grid_schedule_ivImage);
 			tvTitle = (TextView) row.findViewById(R.id.grid_schedule_tvTitle);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -55,7 +56,7 @@ public class ViewWrapperForSchedule extends ViewWrapper {
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 120, tvTitle, 2, Gravity.BOTTOM, null, new int[]{20, 0, 20, 0});
 			FontInfo.setFontSize(tvTitle, 26);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -76,7 +77,7 @@ public class ViewWrapperForSchedule extends ViewWrapper {
 				setUnusableView();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
@@ -98,7 +99,7 @@ public class ViewWrapperForSchedule extends ViewWrapper {
 				setUnusableView();
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
-import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.fragments.MainPage;
@@ -32,7 +31,6 @@ public abstract class RecyclingActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ViewUnbindHelper.unbindReferences(this, getContentViewId());
 	}
 	
 	@Override

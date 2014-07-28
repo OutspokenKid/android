@@ -2,6 +2,8 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.utils.LogUtils;
+
 public class Popup {
 
 	private String content;
@@ -33,7 +35,7 @@ public class Popup {
 				this.notice_nid = objJSON.getInt("notice_nid");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	

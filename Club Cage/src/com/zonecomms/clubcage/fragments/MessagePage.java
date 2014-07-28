@@ -101,8 +101,6 @@ public class MessagePage extends BaseListFragment {
 	@Override
 	protected void setVariables() {
 		
-		setDownloadKey("MESSAGEPAGE" + madeCount);
-		
 		if(getArguments() != null) {
 			member_id = getArguments().getString("member_id");
 		}
@@ -231,7 +229,7 @@ public class MessagePage extends BaseListFragment {
 											}
 										});
 							} catch(Exception e) {
-								e.printStackTrace();
+								LogUtils.trace(e);
 								ToastUtils.showToast(R.string.failToLoadBitmap);
 							}
 						}
@@ -388,7 +386,7 @@ public class MessagePage extends BaseListFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 
@@ -424,7 +422,7 @@ public class MessagePage extends BaseListFragment {
 					try {
 						listView.setSelection(targetAdapter.getCount());
 					} catch(Exception e) {
-						e.printStackTrace();
+						LogUtils.trace(e);
 					}
 				}
 			}, 500);
@@ -560,7 +558,7 @@ public class MessagePage extends BaseListFragment {
 				}
 			});
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 }

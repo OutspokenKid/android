@@ -888,7 +888,7 @@ public class SettingPage extends BaseFragment {
 			sound = SharedPrefsUtils.getBooleanFromPrefs(ZoneConstants.PREFS_PUSH, "sound");
 			vibration = SharedPrefsUtils.getBooleanFromPrefs(ZoneConstants.PREFS_PUSH, "vibration");
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 		
 		cbSound.setChecked(sound);
@@ -1002,7 +1002,7 @@ public class SettingPage extends BaseFragment {
 			SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_PUSH, "sound", sound);
 			SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_PUSH, "vibration", vibration);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 		
 		showFrameForMain();
@@ -1060,7 +1060,7 @@ public class SettingPage extends BaseFragment {
 			});
 			ToastUtils.showToast(R.string.submittingToServer);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 		}
 	}

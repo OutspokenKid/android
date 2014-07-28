@@ -2,6 +2,8 @@ package com.zonecomms.common.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.utils.LogUtils;
+
 public class Banner {
 
 	private int status;
@@ -40,7 +42,7 @@ public class Banner {
 				this.target_link = objJSON.getString("target_link");
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	

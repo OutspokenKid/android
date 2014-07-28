@@ -22,12 +22,12 @@ public class ImageViewer extends ImageViewerActivity {
 
 		try {
 
-			int width = ResizeUtils.getSpecificLength(80);
-			int height = ResizeUtils.getSpecificLength(50);
+			int width = ResizeUtils.getSpecificLength(70);
+			int height = ResizeUtils.getSpecificLength(70);
 			FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(width, height);
 			fp.gravity = Gravity.TOP | Gravity.RIGHT;
 			fp.setMargins(0, ResizeUtils.getSpecificLength(10), 
-					ResizeUtils.getSpecificLength(10), 0);
+					ResizeUtils.getSpecificLength(20), 0);
 			return fp;
 		} catch (Exception e) {
 			LogUtils.trace(e);

@@ -49,13 +49,12 @@ public class ListPage extends BaseListFragment {
 	
 	@Override
 	protected void bindViews() {
+		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.listPage_mainLayout);
 		listView = (ListView) mThisView.findViewById(R.id.listPage_listView);
 	}
 
 	@Override
 	protected void setVariables() {
-		
-		setDownloadKey("LISTPAGE" + madeCount);
 	}
 
 	@Override
@@ -257,6 +256,18 @@ public class ListPage extends BaseListFragment {
 			if(mActivity.getSponserBanner() != null) {
 				mActivity.getSponserBanner().downloadBanner();
 			}
+		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().downloadBanner();
 		}
 	}
 

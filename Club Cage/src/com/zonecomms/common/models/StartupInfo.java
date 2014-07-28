@@ -3,6 +3,8 @@ package com.zonecomms.common.models;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.outspoken_kid.utils.LogUtils;
+
 /**
  * v1.0.1
  * @author HyungGunKim
@@ -62,7 +64,7 @@ public class StartupInfo {
 				}
 			}
 		} catch(Exception e) {
-			e.printStackTrace();
+			LogUtils.trace(e);
 		}
 	}
 	
