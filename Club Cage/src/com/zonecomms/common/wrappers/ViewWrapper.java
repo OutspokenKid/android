@@ -1,10 +1,16 @@
 package com.zonecomms.common.wrappers;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.zonecomms.common.views.WrapperView;
 
 public abstract class ViewWrapper {
 
@@ -87,5 +93,44 @@ public abstract class ViewWrapper {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public void setImage(ImageView ivImage, String url) {
+
+		if(ivImage == null) {
+			return;
+		}
+
+		ivImage.setVisibility(View.INVISIBLE);
+		
+		ivImage.setTag(url);
+		DownloadUtils.downloadBitmap(url, ivImage, new OnBitmapDownloadListener() {
+			
+			@Override
+			public void onError(String url, ImageView ivImage) {
+			}
+			
+			@Override
+			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
+				try {
+					String tag = ivImage.getTag().toString();
+					
+					//태그가 다른 경우 아무 것도 하지 않음.
+					if(!StringUtils.isEmpty(tag)
+							&& tag.equals(url)) {
+						
+						if(ivImage != null) {
+							ivImage.setImageBitmap(bitmap);
+							ivImage.setVisibility(View.VISIBLE);
+						}
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		});
 	}
 }

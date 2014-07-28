@@ -13,8 +13,8 @@ import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.common.wrappers.ViewWrapper;
-import com.zonecomms.common.wrapperviews.WrapperView;
 
 /**
  * @author HyungGunKim

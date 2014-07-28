@@ -15,7 +15,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMember extends ViewWrapper {
 	
@@ -86,13 +86,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 					tvInfo.setText(infoString);
 				}
 				
-				if(ivImage.getTag() == null || ivImage.getTag().toString() == null
-						|| !ivImage.getTag().toString().equals(member.getMedia_src())) {
-					ivImage.setVisibility(View.INVISIBLE);
-				}
-				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				setImage(ivImage, member.getMedia_src(), key, 150);
+				setImage(ivImage, member.getMedia_src());
 			} else {
 				setUnusableView();
 			}

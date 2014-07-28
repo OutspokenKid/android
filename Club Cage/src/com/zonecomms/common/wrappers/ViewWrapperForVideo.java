@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -20,7 +19,7 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Link;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForVideo extends ViewWrapper {
 
@@ -74,9 +73,8 @@ public class ViewWrapperForVideo extends ViewWrapper {
 				tvTitle.setText(link.getTitle());
 			}
 			
-			String key = ApplicationManager.getDownloadKeyFromTopFragment();
 			String url = "http://img.youtube.com/vi/" + link.getLink_data() + "/0.jpg";
-			setImage(ivThumbnail, url, key, 468);
+			setImage(ivThumbnail, url);
 		}
 	}
 

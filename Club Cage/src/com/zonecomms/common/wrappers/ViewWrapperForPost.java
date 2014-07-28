@@ -19,7 +19,7 @@ import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForPost extends ViewWrapper {
 	
@@ -96,11 +96,9 @@ public class ViewWrapperForPost extends ViewWrapper {
 			if(baseModel instanceof Post) {
 				post = (Post) baseModel;
 				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				
 				if(post.getMember() != null) {
 					Member member = post.getMember();
-					setImage(profileImage, member.getMedia_src(), key, 60);
+					setImage(profileImage, member.getMedia_src());
 					String info = "";
 					
 					if(!StringUtils.isEmpty(member.getMember_nickname())) {
@@ -119,7 +117,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 					imageBg.setBackgroundResource(R.drawable.bg_talk);
 				} else {
 					imageBg.setBackgroundResource(R.drawable.bg_post);
-					setImage(ivImage, post.getMedia_src(), key, 308);
+					setImage(ivImage, post.getMedia_src());
 				}
 				
 				if(post.getReply_cnt() > 999) {

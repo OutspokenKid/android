@@ -5,10 +5,13 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,14 +31,17 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseListFragment;
@@ -48,14 +54,15 @@ import com.zonecomms.common.models.Post;
 import com.zonecomms.common.utils.AppInfoUtils;
 
 public class GridPage extends BaseListFragment {
-
-	private HoloStyleEditText editText;
 	
 	private boolean isAnimating;
 
 	private int numOfColumn;
 	private int menuIndex;
-	
+
+	private SwipeRefreshLayout swipeRefreshLayout;
+	private GridView gridView;
+	private HoloStyleEditText editText;
 	private TextView[] menus;
 	
 	private AsyncSearchTask currentTask;
@@ -74,7 +81,8 @@ public class GridPage extends BaseListFragment {
 	
 	@Override
 	protected void bindViews() {
-		gridView = (PullToRefreshGridView) mThisView.findViewById(R.id.gridPage_pullToRefreshView);
+		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.gridPage_swipeRefreshLayout);
+		gridView = (GridView) mThisView.findViewById(R.id.gridPage_gridView);
 	}
 
 	@Override
@@ -103,7 +111,7 @@ public class GridPage extends BaseListFragment {
 		setDownloadKey("GRIDPAGE" + madeCount);
 	}
 
-	@Override
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD) @Override
 	protected void createPage() {
 
 		if(numOfColumn == 0) {
@@ -114,25 +122,34 @@ public class GridPage extends BaseListFragment {
 			addMenuForPeople();
 			addSearchBar();
 		}
+
+		swipeRefreshLayout.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+        swipeRefreshLayout.setEnabled(true);
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+
+				swipeRefreshLayout.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
 		
 		GridAdapter gridAdapter = new GridAdapter(mContext, mActivity, models, false);
 		gridView.setAdapter(gridAdapter);
-		gridView.getRefreshableView().setNumColumns(numOfColumn);
-		gridView.getRefreshableView().setPadding(0, ResizeUtils.getSpecificLength(8), 0, 0);
-		gridView.getRefreshableView().setSelector(R.drawable.list_selector);
+		gridView.setNumColumns(numOfColumn);
+		gridView.setPadding(0, ResizeUtils.getSpecificLength(8), 0, 0);
+		gridView.setSelector(R.drawable.list_selector);
 		
 	    if (android.os.Build.VERSION.SDK_INT >= 9) {
 	    	gridView.setOverScrollMode(GridView.OVER_SCROLL_NEVER);
 	    }
-		
-		gridView.setOnRefreshListener(new OnRefreshListener<GridView>() {
 
-			@Override
-			public void onRefresh(PullToRefreshBase<GridView> refreshView) {
-				onRefreshPage();
-			}
-		});
-		gridView.setOnScrollListener(new OnScrollListener() {
+	    gridView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {}
@@ -227,20 +244,22 @@ public class GridPage extends BaseListFragment {
 			
 			
 			url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						LogUtils.log("GridPage.onCompleted.  url : " + url + "\nresult : " + result);
-						
-						JSONObject objJSON = new JSONObject(result);
+						LogUtils.log("GridPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
 						JSONArray arJSON = objJSON.getJSONArray("data");
 						int length = arJSON.length();
 						
@@ -273,13 +292,15 @@ public class GridPage extends BaseListFragment {
 						}
 
 						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						setPage(false);
 					}
 				}
-			};
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+			});
 		}
 	}
 
@@ -292,9 +313,10 @@ public class GridPage extends BaseListFragment {
 				
 				@Override
 				public void run() {
-					gridView.onRefreshComplete();
+					
+					swipeRefreshLayout.setRefreshing(false);
 				}
-			}, 500);
+			}, 1000);
 		}
 		
 		super.setPage(successDownload);
@@ -310,7 +332,7 @@ public class GridPage extends BaseListFragment {
 	@Override
 	protected int getContentViewId() {
 
-		return R.id.gridPage_pullToRefreshView;
+		return R.id.gridPage_mainLayout;
 	}
 
 	@Override
@@ -355,15 +377,25 @@ public class GridPage extends BaseListFragment {
 	
 	public void addMenuForPeople() {
 		
-		LinearLayout linear = new LinearLayout(mContext);
-		linear.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		linear.setOrientation(LinearLayout.HORIZONTAL);
-		((LinearLayout)mThisView.findViewById(R.id.gridPage_mainLayout)).addView(linear, 0);
-
-		menus = new TextView[4];
-		
+		RelativeLayout.LayoutParams rp = null;
 		int length = ResizeUtils.getScreenWidth()/4;
 		int p = ResizeUtils.getSpecificLength(8);
+		
+		LinearLayout linear = new LinearLayout(mContext);
+		
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		linear.setLayoutParams(rp);
+		linear.setOrientation(LinearLayout.HORIZONTAL);
+		((RelativeLayout)mThisView.findViewById(R.id.gridPage_mainLayout)).addView(linear);
+
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		rp.topMargin = length / 2;
+		swipeRefreshLayout.setLayoutParams(rp);
+		
+		menus = new TextView[4];
+		
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(length, length);
 		
 		for(int i=0; i<4; i++) {
@@ -406,7 +438,6 @@ public class GridPage extends BaseListFragment {
 					if(I != 3) {
 						hideSearchBar();
 						
-						AsyncStringDownloader.cancelAllTasksByKey(getDownloadKey());
 						isLastList = false;
 						isDownloading = false;
 						isRefreshing = false;
@@ -444,9 +475,16 @@ public class GridPage extends BaseListFragment {
 
 	public void addSearchBar() {
 		
-		int p = ResizeUtils.getSpecificLength(8);
+		int m = ResizeUtils.getSpecificLength(8);
+		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
+				ResizeUtils.getSpecificLength(70));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.leftMargin = m;
+		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.rightMargin = m;
+		
 		editText = new HoloStyleEditText(mContext);
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, editText, 2, Gravity.TOP, new int[]{p, 0, p, 0});
+		editText.setLayoutParams(rp);
 		editText.getEditText().setSingleLine();
 		editText.setVisibility(View.INVISIBLE);
 		FontInfo.setFontSize(editText.getEditText(), 20);
@@ -485,7 +523,7 @@ public class GridPage extends BaseListFragment {
 			public void afterTextChanged(Editable s) {}
 		});
 		
-		((FrameLayout)mThisView.findViewById(R.id.gridPage_mainFrame)).addView(editText);
+		((RelativeLayout)mThisView.findViewById(R.id.gridPage_mainLayout)).addView(editText);
 	}
 	
 	public void showSearchBar() {

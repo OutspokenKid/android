@@ -17,7 +17,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.common.models.Notice;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForNotice extends ViewWrapper {
 
@@ -147,9 +147,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 				ivImage.setLayoutParams(fp);
 			}
 			
-			String key = ApplicationManager.getDownloadKeyFromTopFragment();
-			String url = notice.getMedias()[0].getMedia_src();
-			setImage(ivImage, url, key, 640);
+			setImage(ivImage, notice.getMedias()[0].getMedia_src());
 		} else {
 			progress.setVisibility(View.GONE);
 			ivImage.setVisibility(View.GONE);

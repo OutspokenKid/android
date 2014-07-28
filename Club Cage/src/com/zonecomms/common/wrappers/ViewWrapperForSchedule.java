@@ -15,7 +15,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Notice;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForSchedule extends ViewWrapper {
 	
@@ -71,8 +71,7 @@ public class ViewWrapperForSchedule extends ViewWrapper {
 					tvTitle.setText(notice.getNotice_title());
 				}
 				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				setImage(ivImage, notice.getMedias()[0].getThumbnail(), key, 308);
+				setImage(ivImage, notice.getMedias()[0].getThumbnail());
 			} else {
 				setUnusableView();
 			}

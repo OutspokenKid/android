@@ -1,10 +1,10 @@
-package com.zonecomms.common.wrapperviews;
-
-import com.zonecomms.common.wrappers.ViewWrapper;
+package com.zonecomms.common.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import com.zonecomms.common.wrappers.ViewWrapper;
 
 public class WrapperView extends FrameLayout {
 

@@ -33,9 +33,13 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 
 import com.google.android.gcm.GCMRegistrar;
+import com.outspoken_kid.activities.ImageViewerActivity;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.BitmapUtils;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.IntentUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.NetworkUtils;
 import com.outspoken_kid.utils.PackageUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -323,8 +327,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void finish() {
 		super.finish();
-		ZonecommsApplication.clearFragments();
-		ZonecommsApplication.clearActivities();
 		ViewUnbindHelper.unbindReferences(this, R.id.mainActivity_gestureSlidingLayout);
 	}
 
@@ -480,35 +482,6 @@ public class MainActivity extends FragmentActivity {
 				showCover();
 				showLoadingView();
 				
-				AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-					
-					@Override
-					public void onErrorRaised(String url, Exception e) {
-						
-						hideCover();
-						hideLoadingView();
-					}
-					
-					@Override
-					public void onCompleted(String url, String result) {
-
-						hideCover();
-						hideLoadingView();
-						
-						try {
-							JSONObject objResult = new JSONObject(result);
-							
-							if(objResult.has("errorCode")
-									&& objResult.getInt("errorCode") != 1) {
-								signOut();
-							}
-						} catch(Exception e) {
-							e.printStackTrace();
-							ToastUtils.showToast(R.string.failToSignIn);
-						}
-					}
-				};
-				
 				try {
 					String id = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "id");
 					String pw = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
@@ -519,7 +492,40 @@ public class MainActivity extends FragmentActivity {
 							"&image_size=" + ResizeUtils.getSpecificLength(308) +
 							"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 					
-					AsyncStringDownloader.download(url, null, ocl);
+					DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+						@Override
+						public void onError(String url) {
+
+							hideCover();
+							hideLoadingView();
+						}
+
+						@Override
+						public void onCompleted(String url,
+								JSONObject objJSON) {
+
+							try {
+								LogUtils.log("MainActivity.onCompleted."
+										+ "\nurl : " + url
+										+ "\nresult : " + objJSON);
+
+								hideCover();
+								hideLoadingView();
+								
+								if(objJSON.has("errorCode")
+										&& objJSON.getInt("errorCode") != 1) {
+									signOut();
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+								ToastUtils.showToast(R.string.failToSignIn);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+								ToastUtils.showToast(R.string.failToSignIn);
+							}
+						}
+					});
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
@@ -767,7 +773,14 @@ public class MainActivity extends FragmentActivity {
 			if(ZonecommsApplication.getFragmentsSize() != 0) {
 				ft.hide(ZonecommsApplication.getTopFragment());
 			}
-			ft.add(R.id.mainActivity_fragmentFrame, fragment);
+			
+			if(ZonecommsApplication.getFragmentsSize() == 0) {
+				ft.add(R.id.mainActivity_fragmentFrame, fragment);
+			} else {
+				ft.replace(R.id.mainActivity_fragmentFrame, fragment);
+				ft.addToBackStack(null);
+			}
+			
 			ft.commitAllowingStateLoss();
 			
 			SoftKeyboardUtils.hideKeyboard(this, gestureSlidingLayout);
@@ -1316,11 +1329,30 @@ public class MainActivity extends FragmentActivity {
 	
 	public void updateInfo(String regId) {
 		
-		AsyncStringDownloader.download(
-				ZoneConstants.BASE_URL + "push/androiddevicetoken" +
-						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-						"&registration_id=" + regId,
-				null, null);
+		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&registration_id=" + regId;
+		
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+				// TODO Auto-generated method stub		
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainActivity.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 
 	public void showRecentPostPage(int spot_nid) {
@@ -1339,7 +1371,26 @@ public class MainActivity extends FragmentActivity {
 					"&registration_id=" +
 					"&sb_id=" + ZoneConstants.PAPP_ID;
 			
-			AsyncStringDownloader.download(url, null, null);
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					// TODO Auto-generated method stub		
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("MainActivity.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 			
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "id");
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "pw");

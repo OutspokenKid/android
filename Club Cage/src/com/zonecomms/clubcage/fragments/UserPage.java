@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -37,10 +38,13 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
@@ -72,6 +76,9 @@ public class UserPage extends BaseListFragment {
 	private boolean isUploadingProfileImage;
 	
 	private FrameLayout mainLayout;
+	private SwipeRefreshLayout swipeRefreshLayout; 
+	private GridView gridView;
+	private ListView listView;
 	private RelativeLayout relative;
 	private ProgressBar progress;
 	private ImageView ivImage;
@@ -423,38 +430,49 @@ public class UserPage extends BaseListFragment {
 		
 		addProfileScroll();
 		
+		swipeRefreshLayout = new SwipeRefreshLayout(mContext);
+		swipeRefreshLayout.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+		swipeRefreshLayout.setEnabled(true);
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+
+				swipeRefreshLayout.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
+		contentFrame.addView(swipeRefreshLayout);
+		
 		gridAdapter = new GridAdapter(mContext, mActivity, modelsForGrid, true);
-		gridView = new PullToRefreshGridView(mContext);
-		gridView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		gridView = new GridView(mContext);
+		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		gridView.setAdapter(gridAdapter);
 		gridView.setBackgroundColor(Color.BLACK);
 		gridView.setVisibility(View.INVISIBLE);
 		
-		gridView.getRefreshableView().setNumColumns(numOfColumn);
-		gridView.getRefreshableView().setPadding(0, 0, 0, 0);
-		gridView.getRefreshableView().setSelector(R.drawable.list_selector);
-		gridView.setOnRefreshListener(new OnRefreshListener<GridView>() {
-
-			@Override
-			public void onRefresh(PullToRefreshBase<GridView> refreshView) {
-				onRefreshPage();
-			}
-		});
+		gridView.setNumColumns(numOfColumn);
+		gridView.setPadding(0, 0, 0, 0);
+		gridView.setSelector(R.drawable.list_selector);
 		gridView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				
 				if(scrollState == 0) {
-					if(gridView.getRefreshableView().getFirstVisiblePosition() == 0) {
+					if(gridView.getFirstVisiblePosition() == 0) {
 						showInformation();
 					} else {
 						hideInformation();
 					}
 					
-					gridView.setTouched(false);
+//					gridView.setTouched(false);
 				} else if(scrollState == 2) {
-					gridView.setTouched(false);
+//					gridView.setTouched(false);
 				}
 			}
 			
@@ -466,50 +484,42 @@ public class UserPage extends BaseListFragment {
 					downloadInfo();
 				}
 
-				if(gridView.isTouched()) {
-					return;
-				}
+//				if(gridView.isTouched()) {
+//					return;
+//				}
 				
-				if(firstVisibleItem == 0 && gridView.getRefreshableView().getChildCount() != 0 
-						&& gridView.getRefreshableView().getChildAt(0).getTop() <= 10) {
+				if(firstVisibleItem == 0 && gridView.getChildCount() != 0 
+						&& gridView.getChildAt(0).getTop() <= 10) {
 					showInformation();
 				} else if(firstVisibleItem == numOfColumn) {
 					hideInformation();
 				}
 			}
 		});
-		contentFrame.addView(gridView);
+		swipeRefreshLayout.addView(gridView);
 		
 		listAdapter = new ListAdapter(mContext, mActivity, modelsForList, true);
-		listView = new PullToRefreshListView(mContext);
-		listView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		listView = new ListView(mContext);
+		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
 		listView.setBackgroundColor(Color.BLACK);
-		listView.getRefreshableView().setCacheColorHint(Color.argb(0, 0, 0, 0));
+		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setVisibility(View.INVISIBLE);
-		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-
-			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-
-				onRefreshPage();
-			}
-		});
 		listView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				if(scrollState == 0) {
 					
-					if(listView.getRefreshableView().getFirstVisiblePosition() == 0) {
+					if(listView.getFirstVisiblePosition() == 0) {
 						showInformation();
 					} else {
 						hideInformation();
 					}
 					
-					listView.setTouched(false);
+//					listView.setTouched(false);
 				} else if(scrollState == 2) {
-					listView.setTouched(false);
+//					listView.setTouched(false);
 				}
 			}
 			
@@ -517,19 +527,19 @@ public class UserPage extends BaseListFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(listView.isTouched()) {
-					return;
-				}
+//				if(listView.isTouched()) {
+//					return;
+//				}
 				
-				if(firstVisibleItem == 0 && listView.getRefreshableView().getChildCount() != 0 
-						&& listView.getRefreshableView().getChildAt(0).getTop() == 0) {
+				if(firstVisibleItem == 0 && listView.getChildCount() != 0 
+						&& listView.getChildAt(0).getTop() == 0) {
 					showInformation();
 				} else if(firstVisibleItem == numOfColumn) {
 					hideInformation();
 				}
 			}
 		});
-		contentFrame.addView(listView);
+		swipeRefreshLayout.addView(listView);
 		
 		pPhoto = new HoloStyleSpinnerPopup(mContext);
 		pPhoto.setTitle(getString(R.string.uploadPhoto));
@@ -586,32 +596,44 @@ public class UserPage extends BaseListFragment {
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
 										"&image_size=" + ResizeUtils.getSpecificLength(308);
-								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-									
-									@Override
-									public void onErrorRaised(String url, Exception e) {
-										ToastUtils.showToast(R.string.failToLoadBitmap);
-									}
-									
-									@Override
-									public void onCompleted(String url, String result) {
+								
+								DownloadUtils.downloadString(url,
+										new OnJSONDownloadListener() {
 
-										try {
-											if((new JSONObject(result)).getInt("errorCode") == 1) {
-												isDownloading = false;
-												isLastList = false;
-												isRefreshing = false;
-												loadProfile();
-											} else {
+											@Override
+											public void onError(String url) {
+												
 												ToastUtils.showToast(R.string.failToLoadBitmap);
 											}
-										} catch(Exception e) {
-											e.printStackTrace();
-											ToastUtils.showToast(R.string.failToLoadBitmap);
-										}
-									}
-								};
-								AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+
+											@Override
+											public void onCompleted(String url,
+													JSONObject objJSON) {
+
+												try {
+													LogUtils.log("UserPage.onCompleted."
+															+ "\nurl : "
+															+ url
+															+ "\nresult : "
+															+ objJSON);
+
+													if(objJSON.getInt("errorCode") == 1) {
+														isDownloading = false;
+														isLastList = false;
+														isRefreshing = false;
+														loadProfile();
+													} else {
+														ToastUtils.showToast(R.string.failToLoadBitmap);
+													}													
+												} catch (Exception e) {
+													LogUtils.trace(e);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												} catch (OutOfMemoryError oom) {
+													LogUtils.trace(oom);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												}
+											}
+										});
 								
 							} catch(Exception e) {
 								e.printStackTrace();
@@ -659,14 +681,12 @@ public class UserPage extends BaseListFragment {
 			
 			@Override
 			public void run() {
-
-				if(mode == 1 || mode == 2) {
-					gridView.onRefreshComplete();
-				} else if(mode == 3) {
-					listView.onRefreshComplete();
+				
+				if(mode != 0) {
+					swipeRefreshLayout.setRefreshing(false);
 				}
 			}
-		}, 500);
+		}, 1000);
 
 		if(successDownload) {
 			
@@ -1051,45 +1071,46 @@ public class UserPage extends BaseListFragment {
 			if(isDownloading) {
 				return;
 			}
-			
-			AsyncStringDownloader.OnCompletedListener ocl = new AsyncStringDownloader.OnCompletedListener() {
-				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
 
-					setPage(false);
-				}
-				
-				@Override
-				public void onCompleted(String url, String result) {
-					
-					LogUtils.log("UserPage.onCompleted.\nurl : " + url + "\nresult : " + result);
-					
-					try {
-						JSONObject objResult = new JSONObject(result);
-						
-						JSONArray arJSON = objResult.getJSONArray("result");
-						
-						myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
-						setMyStoryInfo();
-						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
-						ToastUtils.showToast(R.string.failToLoadUserInfo);
-						setPage(false);
-					}
-				}
-			};
+			mActivity.showCover();
+			mActivity.showLoadingView();
 			
 			url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + userId +
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 			
-			mActivity.showCover();
-			mActivity.showLoadingView();
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
-			
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					setPage(false);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("UserPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						JSONArray arJSON = objJSON.getJSONArray("result");
+						
+						myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
+						setMyStoryInfo();
+						setPage(true);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToLoadUserInfo);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToLoadUserInfo);
+						setPage(false);
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -1186,22 +1207,38 @@ public class UserPage extends BaseListFragment {
 			progress.setVisibility(View.VISIBLE);
 			ivImage.setVisibility(View.INVISIBLE);
 			
-			BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
-				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
-					ivImage.setVisibility(View.VISIBLE);
-					progress.setVisibility(View.INVISIBLE);
-				}
-				
-				@Override
-				public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-					view.setImageBitmap(bitmap);
-					ivImage.setVisibility(View.VISIBLE);
-					progress.setVisibility(View.INVISIBLE);
-				}
-			};
-			BitmapDownloader.download(myStoryInfo.getMystory_member_profile(), null, ocl, null, ivImage, false);
+			ivImage.setTag(myStoryInfo.getMystory_member_profile());
+			DownloadUtils.downloadBitmap(myStoryInfo.getMystory_member_profile(), ivImage,
+					new OnBitmapDownloadListener() {
+
+						@Override
+						public void onError(String url, ImageView ivImage) {
+							ivImage.setVisibility(View.VISIBLE);
+							progress.setVisibility(View.INVISIBLE);
+						}
+
+						@Override
+						public void onCompleted(String url, ImageView ivImage,
+								Bitmap bitmap) {
+
+							try {
+								LogUtils.log("UserPage.onCompleted." + "\nurl : "
+										+ url);
+
+								if (ivImage != null
+										&& ivImage.getTag() != null
+										&& ivImage.getTag().toString()
+												.equals(url)) {
+									ivImage.setVisibility(View.VISIBLE);
+									progress.setVisibility(View.INVISIBLE);
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
 		} else {
 			ivImage.setVisibility(View.VISIBLE);
 			progress.setVisibility(View.INVISIBLE);
@@ -1264,51 +1301,53 @@ public class UserPage extends BaseListFragment {
 			return;
 		}
 
-		if(!StringUtils.isEmpty(url)) {
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
 				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
+				setPage(false);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("UserPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					JSONArray arJSON = objJSON.getJSONArray("data");
+					int length = arJSON.length();
 					
+					if(length > 0) {
+						for(int i=0; i<length; i++) {
+							try {
+								Post post = new Post(arJSON.getJSONObject(i));
+								post.setItemCode(ZoneConstants.ITEM_POST);
+								
+								if(mode == 2) {
+									post.setPostForNApp(true);
+								}
+								
+								models.add(post);
+							} catch(Exception e) {
+							}
+						}
+					} else {
+						isLastList = true;
+						ToastUtils.showToast(R.string.lastPage);
+					}
+					
+					setPage(true);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					setPage(false);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					setPage(false);
 				}
-				
-				@Override
-				public void onCompleted(String url, String result) {
-					
-					try {
-						JSONObject objJSON = new JSONObject(result);
-						JSONArray arJSON = objJSON.getJSONArray("data");
-						int length = arJSON.length();
-						
-						if(length > 0) {
-							for(int i=0; i<length; i++) {
-								try {
-									Post post = new Post(arJSON.getJSONObject(i));
-									post.setItemCode(ZoneConstants.ITEM_POST);
-									
-									if(mode == 2) {
-										post.setPostForNApp(true);
-									}
-									
-									models.add(post);
-								} catch(Exception e) {
-								}
-							}
-						} else {
-							isLastList = true;
-							ToastUtils.showToast(R.string.lastPage);
-						}
-						
-						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
-						setPage(false);
-					}
-				}
-			};
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
-		}
+			}
+		});
 	}
 	
 	public void loadMessageSample() {
@@ -1334,18 +1373,21 @@ public class UserPage extends BaseListFragment {
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 		}
 
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
+				
 				setPage(false);
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
-				
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					JSONObject objJSON = new JSONObject(result);
+					LogUtils.log("UserPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
 					JSONArray arJSON = objJSON.getJSONArray("data");
 					int length = arJSON.length();
 					if(length > 0) {
@@ -1370,13 +1412,15 @@ public class UserPage extends BaseListFragment {
 					}
 
 					setPage(true);
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					setPage(false);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					setPage(false);
 				}
 			}
-		};
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+		});
 	}
 	
 	public void showInformation() {
@@ -1414,9 +1458,9 @@ public class UserPage extends BaseListFragment {
 					ResizeUtils.setMargin(contentFrame, new int[]{0, 482, 0, 0});
 					
 					if(mode == 1 || mode == 2) {
-						gridView.getRefreshableView().setSelection(0);
+						gridView.setSelection(0);
 					} else if(mode == 3) {
-						listView.getRefreshableView().setSelection(0);
+						listView.setSelection(0);
 					}
 				}
 			}, ANIM_DURATION + 100);
@@ -1450,18 +1494,18 @@ public class UserPage extends BaseListFragment {
 
 					try {
 						if(mode == 1 || mode == 2) {
-							int fp = gridView.getRefreshableView().getFirstVisiblePosition();
+							int fp = gridView.getFirstVisiblePosition();
 							
 							if(fp < 2) {
 								fp = 2;
 							}
 							
-							gridView.getRefreshableView().smoothScrollBy(listView.getChildAt(fp).getBottom(), ANIM_DURATION/2);
+							gridView.smoothScrollBy(listView.getChildAt(fp).getBottom(), ANIM_DURATION/2);
 						} else if(mode == 3) {
-							int fp = listView.getRefreshableView().getFirstVisiblePosition();
+							int fp = listView.getFirstVisiblePosition();
 							
 							if(fp != 0) {
-								listView.getRefreshableView().smoothScrollBy(listView.getChildAt(fp).getBottom(), ANIM_DURATION/2);
+								listView.smoothScrollBy(listView.getChildAt(fp).getBottom(), ANIM_DURATION/2);
 							}
 						}
 					} catch(Exception e) {

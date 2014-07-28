@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -215,56 +217,6 @@ public class SignInActivity extends RecyclingActivity {
 
 	public static void signIn(final String id, final String pw, final OnAfterSigningInListener onAfterSigningInListener) {
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-
-				LogUtils.log("SignInActivity.SignIn.onError.  url : " + url);
-				
-				if(onAfterSigningInListener != null) {
-					onAfterSigningInListener.OnAfterSigningIn(false);
-				}
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
-
-				LogUtils.log("SignInActivity.SignIn.onCompleted.  url : " + url + "\nresult : " + result);
-				
-				try {
-					JSONObject objResult = new JSONObject(result);
-					
-					if(!objResult.has("data")
-							|| !objResult.has("errorMsg") 
-							|| StringUtils.isEmpty(objResult.getString("errorMsg"))
-							|| objResult.getInt("errorCode") != 1) {
-						
-						if(onAfterSigningInListener != null) {
-							onAfterSigningInListener.OnAfterSigningIn(false);
-						}
-						return;
-					}
-					
-					MainActivity.myInfo = new MyInfo();
-					MainActivity.myInfo.setUserInfo(objResult);
-					
-					SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "id", id);
-					SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "pw", pw);
-
-					if(onAfterSigningInListener != null) {
-						onAfterSigningInListener.OnAfterSigningIn(true);	
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-					
-					if(onAfterSigningInListener != null) {
-						onAfterSigningInListener.OnAfterSigningIn(false);
-					}
-				}
-			}
-		};
-		
 		try {
 			ToastUtils.showToast(R.string.signingIn);
 			
@@ -273,7 +225,54 @@ public class SignInActivity extends RecyclingActivity {
 					"&password=" + URLEncoder.encode(pw, "UTF-8") + 
 					"&image_size=" + ResizeUtils.getSpecificLength(308) +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
-			AsyncStringDownloader.download(url, null, ocl);
+			
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("SignInActivity.SignIn.onError.  url : " + url);
+					
+					if(onAfterSigningInListener != null) {
+						onAfterSigningInListener.OnAfterSigningIn(false);
+					}
+				}
+				
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					LogUtils.log("SignInActivity.SignIn.onCompleted.  url : " + url + "\nresult : " + objJSON);
+					
+					try {
+						if(!objJSON.has("data")
+								|| !objJSON.has("errorMsg") 
+								|| StringUtils.isEmpty(objJSON.getString("errorMsg"))
+								|| objJSON.getInt("errorCode") != 1) {
+							
+							if(onAfterSigningInListener != null) {
+								onAfterSigningInListener.OnAfterSigningIn(false);
+							}
+							return;
+						}
+						
+						MainActivity.myInfo = new MyInfo();
+						MainActivity.myInfo.setUserInfo(objJSON);
+						
+						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "id", id);
+						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "pw", pw);
+
+						if(onAfterSigningInListener != null) {
+							onAfterSigningInListener.OnAfterSigningIn(true);	
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+						
+						if(onAfterSigningInListener != null) {
+							onAfterSigningInListener.OnAfterSigningIn(false);
+						}
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			

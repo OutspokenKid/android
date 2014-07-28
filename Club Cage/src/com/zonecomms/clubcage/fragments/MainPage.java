@@ -1,6 +1,7 @@
 package com.zonecomms.clubcage.fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
@@ -436,7 +440,38 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
-						ImageDownloadUtils.downloadImageImmediately(url, "mainPoster1", ivPoster1, 308, true);
+						ivPoster1.setTag(url);
+						DownloadUtils.downloadBitmap(url, ivPoster1,
+								new OnBitmapDownloadListener() {
+
+									@Override
+									public void onError(String url,
+											ImageView ivImage) {
+										// TODO Auto-generated method stub		
+									}
+
+									@Override
+									public void onCompleted(String url,
+											ImageView ivImage, Bitmap bitmap) {
+
+										try {
+											LogUtils.log("MainPage.onCompleted."
+													+ "\nurl : " + url);
+
+											if (ivImage != null
+													&& ivImage.getTag() != null
+													&& ivImage.getTag()
+															.toString()
+															.equals(url)) {
+												ivImage.setImageBitmap(bitmap);
+											}
+										} catch (Exception e) {
+											LogUtils.trace(e);
+										} catch (OutOfMemoryError oom) {
+											LogUtils.trace(oom);
+										}
+									}
+								});
 					}
 				});
 			}
@@ -471,7 +506,39 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
-						ImageDownloadUtils.downloadImageImmediately(url, "mainPoster2", ivPoster2, 308, true);
+						ivPoster2.setTag(url);
+						DownloadUtils.downloadBitmap(url, ivPoster2,
+								new OnBitmapDownloadListener() {
+
+									@Override
+									public void onError(String url,
+											ImageView ivImage) {
+										// TODO Auto-generated method stub		
+									}
+
+									@Override
+									public void onCompleted(String url,
+											ImageView ivImage, Bitmap bitmap) {
+
+										try {
+											LogUtils.log("MainPage.onCompleted."
+													+ "\nurl : " + url);
+
+											if (ivImage != null
+													&& ivImage.getTag() != null
+													&& ivImage.getTag()
+															.toString()
+															.equals(url)) {
+												ivImage.setImageBitmap(bitmap);
+											}
+										} catch (Exception e) {
+											LogUtils.trace(e);
+										} catch (OutOfMemoryError oom) {
+											LogUtils.trace(oom);
+										}
+									}
+								});
+
 					}
 				});
 			}
@@ -530,7 +597,37 @@ public class MainPage extends BaseFragment {
 			
 			if(mActivity.getProfileView() != null) {
 				if(!StringUtils.isEmpty(url) && mActivity.getProfileView().getIcon() != null) {
-					ImageDownloadUtils.downloadImageImmediately(url, "", mActivity.getProfileView().getIcon(), 80, true);
+					mActivity.getProfileView().getIcon().setTag(url);
+					DownloadUtils.downloadBitmap(url, mActivity.getProfileView().getIcon(),
+							new OnBitmapDownloadListener() {
+
+								@Override
+								public void onError(String url,
+										ImageView ivImage) {
+									// TODO Auto-generated method stub		
+								}
+
+								@Override
+								public void onCompleted(String url,
+										ImageView ivImage, Bitmap bitmap) {
+
+									try {
+										LogUtils.log("MainPage.onCompleted."
+												+ "\nurl : " + url);
+
+										if (ivImage != null
+												&& ivImage.getTag() != null
+												&& ivImage.getTag().toString()
+														.equals(url)) {
+											ivImage.setImageBitmap(bitmap);
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
 				}
 				
 				String nickname = MainActivity.myInfo.getMember_nickname();

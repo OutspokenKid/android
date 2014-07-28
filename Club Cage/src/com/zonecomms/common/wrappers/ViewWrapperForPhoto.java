@@ -15,7 +15,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Link;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForPhoto extends ViewWrapper {
 
@@ -72,8 +72,7 @@ public class ViewWrapperForPhoto extends ViewWrapper {
 					tvTitle.setText(link.getTitle());
 				}
 				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				setImage(ivImage, link.getLink_datas()[0], key, 308);
+				setImage(ivImage, link.getLink_datas()[0]);
 			} else {
 				setUnusableView();
 			}

@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -26,7 +28,7 @@ import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MessageSample;
 import com.zonecomms.common.utils.AppInfoUtils;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMessageSample extends ViewWrapper {
 
@@ -90,8 +92,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 				if(!StringUtils.isEmpty(messageSample.getMember_nickname())) {
 					tvNickname.setText(messageSample.getMember_nickname());
 					
-					String key = ApplicationManager.getDownloadKeyFromTopFragment();
-					setImage(ivProfile, messageSample.getMedia_src(), key, 320);
+					setImage(ivProfile, messageSample.getMedia_src());
 				}
 				
 				if(!StringUtils.isEmpty(messageSample.getLatest_date())) {
@@ -168,35 +169,37 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 				+ "microspot/delete" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&relation_nid=" + messageSample.getRelation_nid();
-		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+
+		ToastUtils.showToast(R.string.wait);
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
+
 				ToastUtils.showToast(R.string.failToDeleteMessage);
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
-				
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					LogUtils.log("ViewWrapperForMessageSample.deleteMessage.  url : "+ url + "\nresult : " + result);
-					
-					JSONObject objJSON = new JSONObject(result);
-					
+					LogUtils.log("ViewWrapperForMessageSample.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
 					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
 						ToastUtils.showToast(R.string.deleteCompleted);
-						ApplicationManager.refreshTopPage();
+						ZonecommsApplication.getTopFragment().onRefreshPage();
 					} else {
 						ToastUtils.showToast(R.string.failToDeleteMessage);
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToDeleteMessage);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					ToastUtils.showToast(R.string.failToDeleteMessage);
 				}
 			}
-		};
-		ToastUtils.showToast(R.string.wait);
-		AsyncStringDownloader.download(url, ApplicationManager.getDownloadKeyFromTopFragment(), ocl);
+		});
 	}
 }

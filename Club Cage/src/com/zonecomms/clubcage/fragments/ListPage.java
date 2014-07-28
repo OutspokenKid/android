@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
 
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -28,6 +31,9 @@ import com.zonecomms.common.utils.AppInfoUtils;
 public class ListPage extends BaseListFragment {
 
 	private static int MAX_LOADING_COUNT = 12;
+	
+	private SwipeRefreshLayout swipeRefreshLayout;
+	private ListView listView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,7 +49,7 @@ public class ListPage extends BaseListFragment {
 	
 	@Override
 	protected void bindViews() {
-		listView = (PullToRefreshListView) mThisView.findViewById(R.id.listPage_pullToRefreshView);
+		listView = (ListView) mThisView.findViewById(R.id.listPage_listView);
 	}
 
 	@Override
@@ -55,19 +61,27 @@ public class ListPage extends BaseListFragment {
 	@Override
 	protected void createPage() {
 
-		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
-		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
-		listView.getRefreshableView().setDividerHeight(0);
-		listView.getRefreshableView().setCacheColorHint(Color.argb(0, 0, 0, 0));
-		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-
+		swipeRefreshLayout.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+        swipeRefreshLayout.setEnabled(true);
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
 			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				
+			public void onRefresh() {
+
+				swipeRefreshLayout.setRefreshing(true);
 				onRefreshPage();
 			}
 		});
+        
+		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
+		listView.setAdapter(listAdapter);
+		listView.setBackgroundColor(Color.BLACK);
+		listView.setDividerHeight(0);
+		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setOnScrollListener(new OnScrollListener() {
 			
 			@Override
@@ -132,21 +146,22 @@ public class ListPage extends BaseListFragment {
 		
 		if(!StringUtils.isEmpty(url)) {
 			super.downloadInfo();
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
-					
+				public void onError(String url) {
+
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						LogUtils.log("ListPage.  url : " + url + "\nresult : " + result);
-						
-						JSONObject objJSON = new JSONObject(result);
+						LogUtils.log("ListPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
 						JSONArray arJSON = objJSON.getJSONArray("data");
 						int length = arJSON.length();
 						
@@ -179,13 +194,15 @@ public class ListPage extends BaseListFragment {
 						}
 
 						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						setPage(false);
 					}
 				}
-			};
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+			});
 		}
 	}
 
@@ -197,9 +214,10 @@ public class ListPage extends BaseListFragment {
 				
 				@Override
 				public void run() {
-					listView.onRefreshComplete();					
+					
+					swipeRefreshLayout.setRefreshing(false);
 				}
-			}, 500);
+			}, 1000);
 		}
 		
 		super.setPage(successDownload);
@@ -219,7 +237,7 @@ public class ListPage extends BaseListFragment {
 	@Override
 	protected int getContentViewId() {
 
-		return R.id.listPage_pullToRefreshView;
+		return R.id.listPage_mainLayout;
 	}
 
 	@Override

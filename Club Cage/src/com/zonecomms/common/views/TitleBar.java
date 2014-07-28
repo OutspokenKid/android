@@ -14,6 +14,7 @@ import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 
 public class TitleBar extends LinearLayout {
 
@@ -68,7 +69,7 @@ public class TitleBar extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 
-				ApplicationManager.clearFragmentsWithoutMain();
+				ZonecommsApplication.clearFragmentsWithoutMain();
 			}
 		});
 		this.addView(btnHome);

@@ -16,6 +16,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -29,6 +31,7 @@ import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
@@ -213,19 +216,26 @@ public class AddedProfilePage extends BaseFragment {
 	@Override
 	protected void downloadInfo() {
 
-		AsyncStringDownloader.OnCompletedListener ocl1 = new OnCompletedListener() {
-			
+		String url = ZoneConstants.BASE_URL + "member/mstatus_list" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
+
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
+
 				ToastUtils.showToast(R.string.failToLoadUserStatus);
 				setPage(false);
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
+			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					JSONArray arJSON = (new JSONObject(result)).getJSONArray("data");
+					LogUtils.log("AddedProfilePage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					JSONArray arJSON = objJSON.getJSONArray("data");
 					
 					int length = arJSON.length();
 					
@@ -235,63 +245,63 @@ public class AddedProfilePage extends BaseFragment {
 						arStatus[i] = arJSON.getJSONObject(i).getString("mstatus_name");
 					}
 					
-					try {
-						AsyncStringDownloader.OnCompletedListener ocl = new AsyncStringDownloader.OnCompletedListener() {
-							
-							@Override
-							public void onErrorRaised(String url, Exception e) {
+					String url2 = ZoneConstants.BASE_URL + "member/info" +
+							"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+							"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
+							"&image_size=" + ResizeUtils.getSpecificLength(308);
+					
+					DownloadUtils.downloadString(url2,
+							new OnJSONDownloadListener() {
 
-								ToastUtils.showToast(R.string.failToLoadUserInfo);
-								setPage(false);
-							}
-							
-							@Override
-							public void onCompleted(String url, String result) {
-								
-								LogUtils.log("BaseProfilePage.onCompleted.  url : "+ url + "\nresult : " + result);
-								
-								try {
-									JSONObject objResult = new JSONObject(result);
+								@Override
+								public void onError(String url) {
 									
-									JSONArray arJSON = objResult.getJSONArray("result");
-									
-									myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
-									status = myStoryInfo.getMstatus_name();
-									interested = myStoryInfo.getIlike();
-									job = myStoryInfo.getJob();
-									company = myStoryInfo.getJobname();
-									liveLocation = myStoryInfo.getAddress();
-									activeLocation = myStoryInfo.getPlayground();
-									
-									setPage(true);
-								} catch(Exception e) {
-									e.printStackTrace();
 									ToastUtils.showToast(R.string.failToLoadUserInfo);
 									setPage(false);
 								}
-							}
-						};
-						
-						url = ZoneConstants.BASE_URL + "member/info" +
-								"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-								"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
-								"&image_size=" + ResizeUtils.getSpecificLength(308);
-						
-						AsyncStringDownloader.download(url, getDownloadKey(), ocl);
-						
-					} catch(Exception e) {
-						e.printStackTrace();
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
+
+								@Override
+								public void onCompleted(String url,
+										JSONObject objJSON) {
+
+									try {
+										LogUtils.log("AddedProfilePage.onCompleted."
+												+ "\nurl : " + url
+												+ "\nresult : " + objJSON);
+
+										JSONArray arJSON = objJSON.getJSONArray("result");
+										
+										myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
+										status = myStoryInfo.getMstatus_name();
+										interested = myStoryInfo.getIlike();
+										job = myStoryInfo.getJob();
+										company = myStoryInfo.getJobname();
+										liveLocation = myStoryInfo.getAddress();
+										activeLocation = myStoryInfo.getPlayground();
+										
+										setPage(true);
+									} catch (Exception e) {
+										LogUtils.trace(e);
+										ToastUtils.showToast(R.string.failToLoadUserInfo);
+										setPage(false);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+										ToastUtils.showToast(R.string.failToLoadUserInfo);
+										setPage(false);
+									}
+								}
+							});
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadUserStatus);
+					setPage(false);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					ToastUtils.showToast(R.string.failToLoadUserStatus);
 					setPage(false);
 				}
 			}
-		};
-		String url = ZoneConstants.BASE_URL + "member/mstatus_list" +
-				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl1);
+		});
 		
 		isDownloading = true;
 		mActivity.showLoadingView();
@@ -468,38 +478,45 @@ public class AddedProfilePage extends BaseFragment {
 					"&jobname=" + URLEncoder.encode(company, "UTF-8") +
 					"&ilike=" + URLEncoder.encode(interested, "UTF-8");
 			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						if((new JSONObject(result)).getInt("errorCode") == 1) {
+						LogUtils.log("AddedProfilePage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
 							mActivity.closeTopPage();
-							ApplicationManager.refreshTopPage();
+							ZonecommsApplication.getTopFragment().onRefreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 							setPage(false);
 						}
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToSubmitAddedProfile);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 						setPage(false);
 					}
 				}
-			};
+			});
 			ToastUtils.showToast(R.string.submittingToServer);
 			mActivity.showLoadingView();
 			mActivity.showCover();
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToSubmitAddedProfile);

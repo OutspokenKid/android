@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils.TruncateAt;
@@ -27,6 +28,9 @@ import android.widget.TextView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -254,38 +258,37 @@ public class PostPage extends BaseFragment {
 	@Override
 	protected void downloadInfo() {
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-
-				LogUtils.log("PostPage.downloadInfo.onError.\nurl : " + url);
-				setPage(false);
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
-				
-				LogUtils.log("PostPage.onCompleted.  url : " + url + "\nresult : " + result);
-				
-				try {
-					JSONObject objResult = new JSONObject(result);
-					
-					post = new Post(objResult.getJSONObject("data"));
-					setPage(true);
-				} catch(Exception e) {
-					e.printStackTrace();
-					setPage(false);
-				}
-			}
-		};
-		
 		String url = ZoneConstants.BASE_URL + "spot/detail" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&image_size=" + ResizeUtils.getSpecificLength(640) +
 				"&spot_nid=" + spot_nid;
 		super.downloadInfo();
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+				
+				setPage(false);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					post = new Post(objJSON.getJSONObject("data"));
+					setPage(true);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					setPage(false);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					setPage(false);
+				}
+			}
+		});
 	}
 	
 	@Override
@@ -467,7 +470,37 @@ public class PostPage extends BaseFragment {
 			image.setDrawingCacheEnabled(true);
 			frame.addView(image);
 			
-			ImageDownloadUtils.downloadImageImmediately(post.getMedias()[i].getMedia_src(), getDownloadKey(), image, 640, true);
+			String url = post.getMedias()[i].getMedia_src();
+			image.setTag(url);
+			DownloadUtils.downloadBitmap(url, image,
+					new OnBitmapDownloadListener() {
+
+						@Override
+						public void onError(String url, ImageView ivImage) {
+							// TODO Auto-generated method stub		
+						}
+
+						@Override
+						public void onCompleted(String url, ImageView ivImage,
+								Bitmap bitmap) {
+
+							try {
+								LogUtils.log("PostPage.onCompleted." + "\nurl : "
+										+ url);
+
+								if (ivImage != null
+										&& ivImage.getTag() != null
+										&& ivImage.getTag().toString()
+												.equals(url)) {
+									ivImage.setImageBitmap(bitmap);
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
 		}
 	}
 
@@ -514,21 +547,28 @@ public class PostPage extends BaseFragment {
 			replyLoadingView.setMode(ReplyLoadingView.MODE_LOADING);
 		}
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+		String url = ZoneConstants.BASE_URL + "reply/list" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&spot_nid=" + spot_nid +
+				"&image_size=" + ResizeUtils.getSpecificLength(100) +
+				"&last_reply_nid=" + lastIndexno;
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
+				
 				ToastUtils.showToast(R.string.failToLoadReplies);
 				removeLoadingView();
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
-				
-				LogUtils.log("PostPage.loadReplies.  result : " + result);
-				
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					JSONArray arJSON = (new JSONObject(result)).getJSONArray("data");
+					LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					JSONArray arJSON = objJSON.getJSONArray("data");
 					
 					int length = arJSON.length();
 
@@ -584,61 +624,19 @@ public class PostPage extends BaseFragment {
 					} else {
 						removeLoadingView();
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 				}
 			}
-		};
-		
-		String url = ZoneConstants.BASE_URL + "reply/list" +
-				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&spot_nid=" + spot_nid +
-				"&image_size=" + ResizeUtils.getSpecificLength(100) +
-				"&last_reply_nid=" + lastIndexno;
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+		});
 	}
 	
 	public void writeReply(String text) {
 
 		mActivity.showLoadingView();
 		mActivity.showCover();
-		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-				ToastUtils.showToast(R.string.failToSendReply);
-				mActivity.hideLoadingView();
-				mActivity.hideCover();
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
-				
-				mActivity.hideLoadingView();
-				mActivity.hideCover();
-				
-				try {
-					if((new JSONObject(result)).getInt("errorCode") == 1) {
-						SoftKeyboardUtils.hideKeyboard(mContext, editText);
-						editText.getEditText().setText("");
-						
-						isNeedToShowBottom = true;
-						replyLinear.removeAllViews();
-						lastIndexno = 0;
-						loadReplis();
-						
-						targets.clear();
-						setTargetViews();
-					} else {
-						ToastUtils.showToast(R.string.failToSendReply);
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-					ToastUtils.showToast(R.string.failToSendReply);
-				}
-			}
-		};
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "reply/write" +
@@ -660,8 +658,50 @@ public class PostPage extends BaseFragment {
 					url += targets.get(i).getMember_id();
 				}
 			}
-			
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					
+					ToastUtils.showToast(R.string.failToSendReply);
+					mActivity.hideLoadingView();
+					mActivity.hideCover();
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						mActivity.hideLoadingView();
+						mActivity.hideCover();
+						
+						if(objJSON.getInt("errorCode") == 1) {
+							SoftKeyboardUtils.hideKeyboard(mContext, editText);
+							editText.getEditText().setText("");
+							
+							isNeedToShowBottom = true;
+							replyLinear.removeAllViews();
+							lastIndexno = 0;
+							loadReplis();
+							
+							targets.clear();
+							setTargetViews();
+						} else {
+							ToastUtils.showToast(R.string.failToSendReply);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToSendReply);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToSendReply);
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToSendReply);
@@ -774,19 +814,25 @@ public class PostPage extends BaseFragment {
 	public void accuse() {
 
 		try {
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			String url = ZoneConstants.BASE_URL + "spot/badSpot" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&spot_nid=" + post.getSpot_nid();
+
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToAccuse);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-				
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						JSONObject objJSON = new JSONObject(result);
-						
+						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
 						int errorCode = objJSON.getInt("errorCode");
 						
 						if(errorCode == 1) {
@@ -799,18 +845,15 @@ public class PostPage extends BaseFragment {
 						} else {
 							ToastUtils.showToast(R.string.failToAccuse);
 						}
-					} catch(Exception e){
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToAccuse);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToAccuse);
 					}
 				}
-			};
-			
-			String url = ZoneConstants.BASE_URL + "spot/badSpot" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&spot_nid=" + post.getSpot_nid();
-			
-			AsyncStringDownloader.download(url, null, ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToAccuse);
@@ -820,19 +863,25 @@ public class PostPage extends BaseFragment {
 	public void scrap() {
 		
 		try {
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			String url = ZoneConstants.BASE_URL + "spot/scrap" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&spot_nid=" + post.getSpot_nid();
+
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToScrapPost);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						JSONObject objJSON = new JSONObject(result);
-						
+						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
 						int errorCode = objJSON.getInt("errorCode");
 						
 						if(errorCode == 1) {
@@ -845,18 +894,15 @@ public class PostPage extends BaseFragment {
 						} else {
 							ToastUtils.showToast(R.string.failToScrapPost);
 						}
-					} catch(Exception e){
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToScrapPost);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToScrapPost);
 					}
 				}
-			};
-			
-			String url = ZoneConstants.BASE_URL + "spot/scrap" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&spot_nid=" + post.getSpot_nid();
-			
-			AsyncStringDownloader.download(url, null, ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToScrapPost);
@@ -883,28 +929,36 @@ public class PostPage extends BaseFragment {
 	public void delete() {
 		
 		try {
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
-					ToastUtils.showToast(R.string.failToDeletePost);
-					LogUtils.log("PostPage.delete.onError.\nurl : " + url);
-				}
-				
-				@Override
-				public void onCompleted(String url, String result) {
-					LogUtils.log("PostPage.delete.onCompleted.\nurl : " + url + "\nresult : " + result);
-					ToastUtils.showToast(R.string.deleteCompleted);
-					ApplicationManager.getInstance().getMainActivity().closeTopPage();
-					ApplicationManager.refreshTopPage();
-				}
-			};
-			
 			String url = ZoneConstants.BASE_URL + "spot/delete" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&spot_nid=" + post.getSpot_nid();
-			
-			AsyncStringDownloader.download(url, null, ocl);
+
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					
+					ToastUtils.showToast(R.string.failToDeletePost);
+					LogUtils.log("PostPage.delete.onError.\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						ToastUtils.showToast(R.string.deleteCompleted);
+						ZonecommsApplication.getActivity().closeTopPage();
+						ZonecommsApplication.getTopFragment().onRefreshPage();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToDeletePost);
@@ -1032,9 +1086,36 @@ public class PostPage extends BaseFragment {
 					tvNickname.setText(member.getMember_nickname());
 				}
 				
-				if(!StringUtils.isEmpty(member.getMedia_src())) {
-					ImageDownloadUtils.downloadImageImmediately(member.getMedia_src(), getDownloadKey(), ivImage, 100, true);
-				}
+				ivImage.setTag(member.getMedia_src());
+				DownloadUtils.downloadBitmap(member.getMedia_src(), ivImage,
+						new OnBitmapDownloadListener() {
+
+							@Override
+							public void onError(String url, ImageView ivImage) {
+								// TODO Auto-generated method stub		
+							}
+
+							@Override
+							public void onCompleted(String url,
+									ImageView ivImage, Bitmap bitmap) {
+
+								try {
+									LogUtils.log("PostPage.onCompleted."
+											+ "\nurl : " + url);
+
+									if (ivImage != null
+											&& ivImage.getTag() != null
+											&& ivImage.getTag().toString()
+													.equals(url)) {
+										ivImage.setImageBitmap(bitmap);
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						});
 				
 				ivImage.setOnClickListener(new OnClickListener() {
 					
@@ -1092,19 +1173,26 @@ public class PostPage extends BaseFragment {
 			}
 
 			try {
-				AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-					
+				String url = ZoneConstants.BASE_URL + "reply/delete" +
+						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+						"&reply_nid=" + reply.getReply_nid() +
+						"&spot_nid=" + post.getSpot_nid();
+				
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 					@Override
-					public void onErrorRaised(String url, Exception e) {
+					public void onError(String url) {
+						
 						ToastUtils.showToast(R.string.failToDeleteReply);
 					}
-					
+
 					@Override
-					public void onCompleted(String url, String result) {
-					
+					public void onCompleted(String url, JSONObject objJSON) {
+
 						try {
-							JSONObject objJSON = new JSONObject(result);
-							
+							LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+
 							int errorCode = objJSON.getInt("errorCode");
 							
 							if(errorCode == 1) {
@@ -1113,19 +1201,15 @@ public class PostPage extends BaseFragment {
 							} else {
 								ToastUtils.showToast(R.string.failToDeleteReply);
 							}
-						} catch(Exception e){
-							e.printStackTrace();
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							ToastUtils.showToast(R.string.failToDeleteReply);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
 							ToastUtils.showToast(R.string.failToDeleteReply);
 						}
 					}
-				};
-				
-				String url = ZoneConstants.BASE_URL + "reply/delete" +
-						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-						"&reply_nid=" + reply.getReply_nid() +
-						"&spot_nid=" + post.getSpot_nid();
-				
-				AsyncStringDownloader.download(url, null, ocl);
+				});
 			} catch(Exception e) {
 				e.printStackTrace();
 				ToastUtils.showToast(R.string.failToDeleteReply);
@@ -1140,21 +1224,26 @@ public class PostPage extends BaseFragment {
 			}
 			
 			try {
-				AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-					
+				String url = ZoneConstants.BASE_URL + "reply/bad" +
+						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+						"&reply_nid=" + reply.getReply_nid() +
+						"&bad_reason_kind=080";
+
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 					@Override
-					public void onErrorRaised(String url, Exception e) {
+					public void onError(String url) {
+						
 						ToastUtils.showToast(R.string.failToAccuseReply);
 					}
-					
+
 					@Override
-					public void onCompleted(String url, String result) {
-					
+					public void onCompleted(String url, JSONObject objJSON) {
+
 						try {
-							LogUtils.log("PostPage.AccuseReply.\nurl : " + url + "\nresult : " + result);
-							
-							JSONObject objJSON = new JSONObject(result);
-							
+							LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+
 							int errorCode = objJSON.getInt("errorCode");
 							
 							if(errorCode == 1) {
@@ -1162,19 +1251,15 @@ public class PostPage extends BaseFragment {
 							} else {
 								ToastUtils.showToast(R.string.failToAccuseReply);
 							}
-						} catch(Exception e){
-							e.printStackTrace();
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							ToastUtils.showToast(R.string.failToAccuseReply);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
 							ToastUtils.showToast(R.string.failToAccuseReply);
 						}
 					}
-				};
-				
-				String url = ZoneConstants.BASE_URL + "reply/bad" +
-						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-						"&reply_nid=" + reply.getReply_nid() +
-						"&bad_reason_kind=080";
-				
-				AsyncStringDownloader.download(url, null, ocl);
+				});
 			} catch(Exception e) {
 				e.printStackTrace();
 				ToastUtils.showToast(R.string.failToAccuseReply);

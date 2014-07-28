@@ -3,6 +3,7 @@ package com.zonecomms.common.views;
 import java.util.Calendar;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.view.Gravity;
@@ -14,6 +15,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -114,7 +117,21 @@ public class NoticePopup extends FrameLayout {
 				
 				@Override
 				public void run() {
-					ImageDownloadUtils.downloadImage(popup.getBg_img_url(), null, ivImage, 640);
+					
+					DownloadUtils.downloadBitmap(popup.getBg_img_url(), ivImage, new OnBitmapDownloadListener() {
+						
+						@Override
+						public void onError(String url, ImageView ivImage) {
+						}
+						
+						@Override
+						public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+							
+							if(ivImage != null && bitmap != null && !bitmap.isRecycled()) {
+								ivImage.setImageBitmap(bitmap);
+							}
+						}
+					});
 				}
 			}, 300);
 		}

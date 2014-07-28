@@ -20,6 +20,9 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.ImageView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.ImageCacheUtils;
 import com.outspoken_kid.utils.ImageCacheUtils.OnAfterLoadBitmap;
 import com.outspoken_kid.utils.LogUtils;
@@ -111,22 +114,26 @@ public class IntroActivity extends Activity {
 	
 	public void checkSponserVersion() {
 
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+		int currentSponserVersion = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_SPONSER, "version");
+		String url = ZoneConstants.BASE_URL + "common/mainbanner" +
+				"?sb_id=" + ZoneConstants.PAPP_ID +
+				"&image_size=" + ResizeUtils.getScreenWidth() +
+				"&ver=" + currentSponserVersion;
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 			
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
 
 				LogUtils.log("IntroActivity.checkSponserVersion.onError.  url : " + url);
 				loadOldSponserBitmap();
 			}
 			
 			@Override
-			public void onCompleted(String url, String result) {
+			public void onCompleted(String url, JSONObject objJSON) {
 
 				LogUtils.log("IntroActivity.checkSponserVersion.onCompleted.  url : " + url);
 				
 				try {
-					JSONObject objJSON = new JSONObject(result);
 					int errorCode = objJSON.getInt("errorCode");
 
 					if(errorCode == 1) {
@@ -144,42 +151,34 @@ public class IntroActivity extends Activity {
 					loadOldSponserBitmap();
 				}
 			}
-		};
-	
-		int currentSponserVersion = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_SPONSER, "version");
-		String url = ZoneConstants.BASE_URL + "common/mainbanner" +
-				"?sb_id=" + ZoneConstants.PAPP_ID +
-				"&image_size=" + ResizeUtils.getScreenWidth() +
-				"&ver=" + currentSponserVersion;
-		AsyncStringDownloader.download(url, null, ocl);
+		});
 	}
 	
 	public void downloadSponserBitmap(final int newVersionCode, String sponserUrl) {
 		
 		LogUtils.log("IntroActivity.downloadSponserBitmap.  versionCode : " + newVersionCode);
 		
-		final Activity activity = this;
-		BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
+		DownloadUtils.downloadBitmap(sponserUrl, null, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url, ImageView ivImage) {
 
 				LogUtils.log("IntroActivity.downloadAndCacheSponser.onError.  url : " + url);
 				loadOldSponserBitmap();
 			}
 			
 			@Override
-			public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-				
+			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
 				sponserBitmap = bitmap;
 				SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SPONSER, "version", newVersionCode);
 				String fileName = ZoneConstants.PAPP_ID + "_sponser_bitmap";
-				ImageCacheUtils.BackgroundFileCaching bfc = new ImageCacheUtils.BackgroundFileCaching(activity, bitmap, fileName, false);
+				ImageCacheUtils.BackgroundFileCaching bfc = new ImageCacheUtils.BackgroundFileCaching(
+						IntroActivity.this, bitmap, fileName, false);
 				bfc.execute();
 				downloadStartupInfo();
 			}
-		};
-		BitmapDownloader.download(sponserUrl, null, ocl, null, null, false);
+		});
 	}
 	
 	public void loadOldSponserBitmap() {
@@ -202,32 +201,31 @@ public class IntroActivity extends Activity {
 	}
 
 	public void downloadStartupInfo() {
+
+		String url = ZoneConstants.BASE_URL + "common/common_data" +
+				"?sb_id=" + ZoneConstants.PAPP_ID +
+				"&image_size=" + ResizeUtils.getScreenWidth();
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 			
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
 
 				selectAccount();
 			}
 			
 			@Override
-			public void onCompleted(String url, String result) {
+			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					MainActivity.startupInfo = new StartupInfo(new JSONObject(result));
+					MainActivity.startupInfo = new StartupInfo(objJSON);
 				} catch(Exception e) {
 					e.printStackTrace();
 				}
 				
 				downloadLoadingImages();
 			}
-		};
-
-		String url = ZoneConstants.BASE_URL + "common/common_data" +
-				"?sb_id=" + ZoneConstants.PAPP_ID +
-				"&image_size=" + ResizeUtils.getScreenWidth();
-		AsyncStringDownloader.download(url, null, ocl);
+		});
 	}
 	
 	public void downloadLoadingImages() {
@@ -242,19 +240,20 @@ public class IntroActivity extends Activity {
 			for(int i=0; i<size; i++) {
 			
 				final int I = i;
-				BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
+				
+				DownloadUtils.downloadBitmap(images[i], null, new OnBitmapDownloadListener() {
 					
 					@Override
-					public void onErrorRaised(String url, Exception e) {
-						
+					public void onError(String url, ImageView ivImage) {
+
 						if(++downloadCount == size) {
 							selectAccount();
 						}
 					}
 					
 					@Override
-					public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-						
+					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
 						try {
 							Drawable d = new BitmapDrawable(getResources(), bitmap);
 							MainActivity.startupInfo.getLoadingImageSet().getDrawables()[I] = d;
@@ -266,8 +265,7 @@ public class IntroActivity extends Activity {
 							selectAccount();
 						}
 					}
-				};
-				BitmapDownloader.downloadImmediately(images[i], null, ocl, null, null, false);
+				});
 			}
 		} else {
 			selectAccount();

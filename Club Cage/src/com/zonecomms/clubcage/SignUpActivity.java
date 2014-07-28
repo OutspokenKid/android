@@ -34,6 +34,8 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.BitmapUtils;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -584,52 +586,23 @@ public class SignUpActivity extends RecyclingActivity {
 				
 				isLoading = true;
 				showLoadingView();
-				AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+				String url = ZoneConstants.BASE_URL + "member/check/id?member_id=" + etId.getEditText().getText();
+				
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 					
 					@Override
-					public void onErrorRaised(String url, Exception e) {
+					public void onError(String url) {
+
 						ToastUtils.showToast(R.string.failToSignUp);
 						hideLoadingView();
 						isLoading = false;
 					}
 					
 					@Override
-					public void onCompleted(String url, String result) {
+					public void onCompleted(String url, JSONObject objJSON) {
 
 						try {
-							JSONObject objJSON = new JSONObject(result);
-							
 							if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
-								
-								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-									
-									@Override
-									public void onErrorRaised(String url, Exception e) {
-										ToastUtils.showToast(R.string.failToSignUp);
-										hideLoadingView();
-										isLoading = false;
-									}
-									
-									@Override
-									public void onCompleted(String url, String result) {
-										
-										hideLoadingView();
-										isLoading = false;
-
-										try {
-											JSONObject objJSON = new JSONObject(result);
-											
-											if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
-												showSub();
-											} else if(objJSON.has("errorMsg")) {
-												ToastUtils.showToast(objJSON.getString("errorMsg"));
-											}
-										} catch(Exception e) {
-											e.printStackTrace();
-										}
-									}
-								};
-								
 								String emailText = etEmail.getEditText().getText().toString();
 								
 								//직접 입력
@@ -641,7 +614,34 @@ public class SignUpActivity extends RecyclingActivity {
 								}
 								
 								String url2 = ZoneConstants.BASE_URL + "member/check/email?member_email=" + emailText;
-								AsyncStringDownloader.download(url2, downloadKey, ocl);
+								
+								DownloadUtils.downloadString(url2, new OnJSONDownloadListener() {
+									
+									@Override
+									public void onError(String url) {
+
+										ToastUtils.showToast(R.string.failToSignUp);
+										hideLoadingView();
+										isLoading = false;
+									}
+									
+									@Override
+									public void onCompleted(String url, JSONObject objJSON) {
+
+										hideLoadingView();
+										isLoading = false;
+
+										try {
+											if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
+												showSub();
+											} else if(objJSON.has("errorMsg")) {
+												ToastUtils.showToast(objJSON.getString("errorMsg"));
+											}
+										} catch(Exception e) {
+											e.printStackTrace();
+										}
+									}
+								});
 							} else if(objJSON.has("errorMsg")) {
 								ToastUtils.showToast(objJSON.getString("errorMsg"));
 								hideLoadingView();
@@ -653,9 +653,7 @@ public class SignUpActivity extends RecyclingActivity {
 							isLoading = false;
 						}
 					}
-				};
-				String url = ZoneConstants.BASE_URL + "member/check/id?member_id=" + etId.getEditText().getText();
-				AsyncStringDownloader.download(url, downloadKey, ocl);
+				});
 			}
 		});
 		frameForMain.addView(btnInputMoreInfo);
@@ -793,24 +791,25 @@ public class SignUpActivity extends RecyclingActivity {
 				
 				isLoading = true;
 				showLoadingView();
-				AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+				String url = ZoneConstants.BASE_URL + "member/check/nickname?member_nickname=" + etNickname.getEditText().getText();
+				
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 					
 					@Override
-					public void onErrorRaised(String url, Exception e) {
+					public void onError(String url) {
+
 						ToastUtils.showToast(R.string.failToSignUp);
 						hideLoadingView();
 						isLoading = false;
 					}
 					
 					@Override
-					public void onCompleted(String url, String result) {
+					public void onCompleted(String url, JSONObject objJSON) {
 
 						isLoading = false;
 						hideLoadingView();
 						
 						try {
-							JSONObject objJSON = new JSONObject(result);
-							
 							if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
 								signUp();
 							} else if(objJSON.has("errorMsg")) {
@@ -820,9 +819,7 @@ public class SignUpActivity extends RecyclingActivity {
 							e.printStackTrace();
 						}
 					}
-				};
-				String url = ZoneConstants.BASE_URL + "member/check/nickname?member_nickname=" + etNickname.getEditText().getText();
-				AsyncStringDownloader.download(url, downloadKey, ocl);
+				});
 			}
 		});
 		frameForSub.addView(btnCompleteSignUp);
@@ -986,55 +983,6 @@ public class SignUpActivity extends RecyclingActivity {
 		
 		isLoading = true;
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-
-				LogUtils.log("SignUpActivity.signUp.onError.  url : " + url);
-				
-				ToastUtils.showToast(R.string.failToSignUp);
-				isLoading = false;
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
-				
-				LogUtils.log("SignUpActivity.signUp.onCompleted.  url : " + url + "\nresult : " + result);
-				
-				isLoading = false;
-				
-				try {
-					JSONObject objJSON = new JSONObject(result);
-					if(objJSON.has("errorMsg") 
-							&& objJSON.getString("errorMsg") != null
-							&& objJSON.getString("errorMsg").equals("set_member success")) {
-						
-						ToastUtils.showToast(R.string.signUpCompleted);
-						SignInActivity.OnAfterSigningInListener oasl = new OnAfterSigningInListener() {
-							
-							@Override
-							public void OnAfterSigningIn(boolean successSignIn) {
-
-								if(successSignIn) {
-									launchToMainActivity();
-								} else {
-									ToastUtils.showToast(R.string.failToSignIn);
-								}
-							}
-						};
-						
-						SignInActivity.signIn(etId.getEditText().getText().toString(), etPw.getEditText().getText().toString(), oasl);
-					} else {
-						ToastUtils.showToast(R.string.failToSignUp);
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
-					ToastUtils.showToast(R.string.failToSignUp);
-				}
-			}
-		};
-		
 		try {
 			ToastUtils.showToast(R.string.signingUp);
 			
@@ -1082,7 +1030,53 @@ public class SignUpActivity extends RecyclingActivity {
 					"&auth_key=1" +
 					"&sb_id=" + ZoneConstants.PAPP_ID;
 			
-			AsyncStringDownloader.download(url, null, ocl);
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("SignUpActivity.signUp.onError.  url : " + url);
+					
+					ToastUtils.showToast(R.string.failToSignUp);
+					isLoading = false;
+				}
+				
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					isLoading = false;
+					
+					try {
+						LogUtils.log("SignUpActivity.signUp.onCompleted.  url : " + url + "\nresult : " + objJSON.toString());
+						
+						if(objJSON.has("errorMsg") 
+								&& objJSON.getString("errorMsg") != null
+								&& objJSON.getString("errorMsg").equals("set_member success")) {
+							
+							ToastUtils.showToast(R.string.signUpCompleted);
+							SignInActivity.OnAfterSigningInListener oasl = new OnAfterSigningInListener() {
+								
+								@Override
+								public void OnAfterSigningIn(boolean successSignIn) {
+
+									if(successSignIn) {
+										launchToMainActivity();
+									} else {
+										ToastUtils.showToast(R.string.failToSignIn);
+									}
+								}
+							};
+							
+							SignInActivity.signIn(etId.getEditText().getText().toString(), etPw.getEditText().getText().toString(), oasl);
+						} else {
+							ToastUtils.showToast(R.string.failToSignUp);
+						}
+					} catch(Exception e) {
+						e.printStackTrace();
+						ToastUtils.showToast(R.string.failToSignUp);
+					}
+				}
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			isLoading = false;

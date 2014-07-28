@@ -15,12 +15,12 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.common.wrappers.ViewWrapper;
 import com.zonecomms.common.wrappers.ViewWrapperForMember;
 import com.zonecomms.common.wrappers.ViewWrapperForPhoto;
 import com.zonecomms.common.wrappers.ViewWrapperForPost;
 import com.zonecomms.common.wrappers.ViewWrapperForSchedule;
-import com.zonecomms.common.wrapperviews.WrapperView;
 
 public class GridAdapter extends BaseAdapter {
 

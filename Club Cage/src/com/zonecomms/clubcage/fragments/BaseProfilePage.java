@@ -31,6 +31,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -45,6 +48,7 @@ import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
@@ -332,35 +336,45 @@ public class BaseProfilePage extends BaseFragment {
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
 										"&image_size=" + ResizeUtils.getSpecificLength(308);
-								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-									
-									@Override
-									public void onErrorRaised(String url, Exception e) {
-										ToastUtils.showToast(R.string.failToLoadBitmap);
-										mActivity.hideCover();
-										mActivity.hideLoadingView();
-									}
-									
-									@Override
-									public void onCompleted(String url, String result) {
+								DownloadUtils.downloadString(url,
+										new OnJSONDownloadListener() {
 
-										try {
-											mActivity.hideCover();
-											mActivity.hideLoadingView();
-											
-											if((new JSONObject(result)).getInt("errorCode") == 1) {
-												ivImage.setImageBitmap(fBitmap);
-											} else {
+											@Override
+											public void onError(String url) {
+												
 												ToastUtils.showToast(R.string.failToLoadBitmap);
+												mActivity.hideCover();
+												mActivity.hideLoadingView();
 											}
-										} catch(Exception e) {
-											e.printStackTrace();
-											ToastUtils.showToast(R.string.failToLoadBitmap);
-										}
-									}
-								};
-								AsyncStringDownloader.download(url, getDownloadKey(), ocl);
-								
+
+											@Override
+											public void onCompleted(String url,
+													JSONObject objJSON) {
+
+												try {
+													LogUtils.log("BaseProfilePage.onCompleted."
+															+ "\nurl : "
+															+ url
+															+ "\nresult : "
+															+ objJSON);
+
+													mActivity.hideCover();
+													mActivity.hideLoadingView();
+													
+													if(objJSON.getInt("errorCode") == 1) {
+														ivImage.setImageBitmap(fBitmap);
+													} else {
+														ToastUtils.showToast(R.string.failToLoadBitmap);
+													}
+												} catch (Exception e) {
+													LogUtils.trace(e);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												} catch (OutOfMemoryError oom) {
+													LogUtils.trace(oom);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												}
+											}
+										});
 							} catch(Exception e) {
 								e.printStackTrace();
 								ToastUtils.showToast(R.string.failToLoadBitmap);
@@ -393,24 +407,28 @@ public class BaseProfilePage extends BaseFragment {
 		mActivity.showCover();
 
 		try {
-			AsyncStringDownloader.OnCompletedListener ocl = new AsyncStringDownloader.OnCompletedListener() {
-				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
+			String url = ZoneConstants.BASE_URL + "member/info" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
+					"&image_size=" + ResizeUtils.getSpecificLength(308);
 
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToLoadUserInfo);
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
-					LogUtils.log("BaseProfilePage.onCompleted.  url : "+ url + "\nresult : " + result);
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						JSONObject objResult = new JSONObject(result);
-						
-						JSONArray arJSON = objResult.getJSONArray("result");
+						LogUtils.log("BaseProfilePage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						JSONArray arJSON = objJSON.getJSONArray("result");
 						
 						myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
 						
@@ -432,21 +450,17 @@ public class BaseProfilePage extends BaseFragment {
 						introduce = myStoryInfo.getMystory_title();
 
 						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToLoadUserInfo);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToLoadUserInfo);
 						setPage(false);
 					}
 				}
-			};
-			
-			String url = ZoneConstants.BASE_URL + "member/info" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
-			
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
-			
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -552,24 +566,26 @@ public class BaseProfilePage extends BaseFragment {
 		progress.setVisibility(View.VISIBLE);
 		ivImage.setVisibility(View.INVISIBLE);
 		
-		BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
+		String url = myStoryInfo.getMystory_member_profile();
+		DownloadUtils.downloadBitmap(url, ivImage, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onErrorRaised(String url, Exception e) {
-				
+			public void onError(String url, ImageView ivImage) {
+
 				ivImage.setVisibility(View.VISIBLE);
 				progress.setVisibility(View.INVISIBLE);
 			}
 			
 			@Override
-			public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-				
-				view.setImageBitmap(bitmap);
-				ivImage.setVisibility(View.VISIBLE);
-				progress.setVisibility(View.INVISIBLE);
+			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
+				if(bitmap != null && !bitmap.isRecycled()) {
+					ivImage.setImageBitmap(bitmap);
+					ivImage.setVisibility(View.VISIBLE);
+					progress.setVisibility(View.INVISIBLE);
+				}
 			}
-		};
-		BitmapDownloader.download(myStoryInfo.getMystory_member_profile(), null, ocl, null, ivImage, false);
+		});
 	}
 	
 	public void submit(final String nickname, final String gender, final String yearString, 
@@ -584,41 +600,48 @@ public class BaseProfilePage extends BaseFragment {
 					"&birth_day=" + monthAndDateString +
 					"&mystory_title=" + URLEncoder.encode(myStoryTitle, "UTF-8");
 			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			ToastUtils.showToast(R.string.submittingToServer);
+			
+			mActivity.showLoadingView();
+			mActivity.showCover();
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						if((new JSONObject(result)).getInt("errorCode") == 1) {
+						LogUtils.log("BaseProfilePage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
 							MainActivity.myInfo.setMember_birty_yy(yearString);
 							MainActivity.myInfo.setMember_birty_md(monthAndDateString);
 							mActivity.closeTopPage();
-							ApplicationManager.refreshTopPage();
+							ZonecommsApplication.getTopFragment().onRefreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 							setPage(false);
 						}
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToSubmitBaseProfile);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 						setPage(false);
 					}
 				}
-			};
-			ToastUtils.showToast(R.string.submittingToServer);
-			
-			mActivity.showLoadingView();
-			mActivity.showCover();
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);

@@ -19,6 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
@@ -269,10 +272,10 @@ public class InformationPage extends BaseFragment {
 				"?link_type=7" +
 				"&image_size=" + ResizeUtils.getSpecificLength(640);
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
 				
 				if(VIPInfoLayout != null) {
 					VIPInfoLayout.setVisibility(View.GONE);
@@ -280,13 +283,14 @@ public class InformationPage extends BaseFragment {
 				
 				VIPInfos = null;
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
+			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					JSONObject objJSON = new JSONObject(result);
-					
+					LogUtils.log("from.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
 					if(objJSON.has("data")) {
 						JSONArray arJSON = objJSON.getJSONArray("data");
 						
@@ -302,13 +306,13 @@ public class InformationPage extends BaseFragment {
 					}
 					
 					setPage(true);
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 				}
 			}
-		};
-		
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+		});
 	}
 
 	@Override

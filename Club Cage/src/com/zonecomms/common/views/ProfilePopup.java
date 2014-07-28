@@ -24,6 +24,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -244,12 +247,12 @@ public class ProfilePopup extends FrameLayout {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + URLEncoder.encode(userId, "UTF-8") +
 					"&image_size=" + ResizeUtils.getSpecificLength(400);
-			String key = ApplicationManager.getDownloadKeyFromTopFragment();
-			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 				
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToLoadUserInfo);
 					ZonecommsApplication.getActivity().hideLoadingView();
 					
@@ -257,16 +260,14 @@ public class ProfilePopup extends FrameLayout {
 				}
 				
 				@Override
-				public void onCompleted(String url, String result) {
+				public void onCompleted(String url, JSONObject objJSON) {
 
-					LogUtils.log("ProfilePopup.onCompleted.  url : " + url + "\nresult : " + result);
+					LogUtils.log("ProfilePopup.onCompleted.  url : " + url + "\nresult : " + objJSON);
 					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					try {
-						JSONObject objResult = new JSONObject(result);
-						
-						if(objResult.has("result")) {
-							JSONArray arJSON = objResult.getJSONArray("result");
+						if(objJSON.has("result")) {
+							JSONArray arJSON = objJSON.getJSONArray("result");
 					
 							myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
 							setInfo();
@@ -276,9 +277,7 @@ public class ProfilePopup extends FrameLayout {
 						ToastUtils.showToast(R.string.failToLoadUserInfo);
 					}
 				}
-			};
-			AsyncStringDownloader.download(url, key, ocl);
-			
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -296,8 +295,21 @@ public class ProfilePopup extends FrameLayout {
 			tvGenderWithAge.setText(myStoryInfo.getMember_gender() + "/" + myStoryInfo.getMember_age());
 			
 			if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_profile())) {
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				ImageDownloadUtils.downloadImageImmediately(myStoryInfo.getMystory_member_profile(), key, ivImage, 400, true);
+				DownloadUtils.downloadBitmap(myStoryInfo.getMystory_member_profile(), 
+						ivImage, new OnBitmapDownloadListener() {
+					
+					@Override
+					public void onError(String url, ImageView ivImage) {
+					}
+					
+					@Override
+					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
+						if(ivImage != null) {
+							ivImage.setImageBitmap(bitmap);
+						}
+					}
+				});
 			}
 			
 			if(!StringUtils.isEmpty(myStoryInfo.getIs_friend())
@@ -459,19 +471,20 @@ public class ProfilePopup extends FrameLayout {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + URLEncoder.encode(myStoryInfo.getMystory_member_id(), "UTF-8") +
 					"&status=1";
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 				
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+
 					LogUtils.log("addFriend.onError.  url : " + url);
 				}
 				
 				@Override
-				public void onCompleted(String url, String result) {
-					LogUtils.log("addFriend.onCompleted.  url : " + url + "\nresult : " + result);
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					LogUtils.log("addFriend.onCompleted.  url : " + url + "\nresult : " + objJSON);
 				}
-			};
-			AsyncStringDownloader.download(url, null, ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -484,19 +497,20 @@ public class ProfilePopup extends FrameLayout {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + URLEncoder.encode(myStoryInfo.getMystory_member_id(), "UTF-8") +
 					"&status=-1";
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 				
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					LogUtils.log("deleteFriend.onError.  url : " + url);
 				}
 				
 				@Override
-				public void onCompleted(String url, String result) {
-					LogUtils.log("deleteFriend.onCompleted.  url : " + url + "\nresult : " + result);
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					LogUtils.log("deleteFriend.onCompleted.  url : " + url + "\nresult : " + objJSON);
 				}
-			};
-			AsyncStringDownloader.download(url, null, ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

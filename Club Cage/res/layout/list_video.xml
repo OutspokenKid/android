@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.zonecomms.common.wrapperviews.WrapperView
+<com.zonecomms.common.views.WrapperView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="0dp"
     android:layout_height="0dp" >
@@ -31,4 +31,4 @@
 	    android:text="YouTube"
 	    android:textColor="#eee" />
     
-</com.zonecomms.common.wrapperviews.WrapperView>
+</com.zonecomms.common.views.WrapperView>

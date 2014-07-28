@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,11 +28,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
@@ -49,6 +52,8 @@ import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 public class MessagePage extends BaseListFragment {
 
 	private FrameLayout mainLayout;
+	private SwipeRefreshLayout swipeRefreshLayout;
+	private ListView listView;
 	private View photo;
 	private HoloStyleEditText etMessage;
 	private HoloStyleButton btnSend;
@@ -86,7 +91,8 @@ public class MessagePage extends BaseListFragment {
 	protected void bindViews() {
 
 		mainLayout = (FrameLayout) mThisView.findViewById(R.id.messagePage_mainLayout);
-		listView = (PullToRefreshListView) mThisView.findViewById(R.id.messagePage_pullToRefreshView);
+		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.messagePage_swipeRefreshLayout);
+		listView = (ListView) mThisView.findViewById(R.id.messagePage_listView);
 		photo = mThisView.findViewById(R.id.messagePage_photo);
 		etMessage = (HoloStyleEditText) mThisView.findViewById(R.id.messagePage_etMessage);
 		btnSend = (HoloStyleButton) mThisView.findViewById(R.id.messagePage_btnSend);
@@ -105,23 +111,28 @@ public class MessagePage extends BaseListFragment {
 	@Override
 	protected void createPage() {
 		
-		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
-		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
-		listView.getRefreshableView().setDividerHeight(0);
-		listView.getRefreshableView().setCacheColorHint(Color.argb(0, 0, 0, 0));
-		listView.getRefreshableView().setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-		listView.setLabels(getString(
-				R.string.pull_to_loading_pull_label),
-				getString(R.string.pull_to_loading_release_label));
-		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-
+		swipeRefreshLayout.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+        swipeRefreshLayout.setEnabled(true);
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
 			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+			public void onRefresh() {
 
+				swipeRefreshLayout.setRefreshing(true);
 				downloadInfo();
 			}
 		});
+		
+		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
+		listView.setAdapter(listAdapter);
+		listView.setBackgroundColor(Color.BLACK);
+		listView.setDividerHeight(0);
+		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
+		listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 		
 		targetAdapter = listAdapter;
 		etMessage.getEditText().setSingleLine(false);
@@ -185,29 +196,40 @@ public class MessagePage extends BaseListFragment {
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight();
 								
-								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-									
-									@Override
-									public void onErrorRaised(String url, Exception e) {
-										ToastUtils.showToast(R.string.failToLoadBitmap);
-									}
-									
-									@Override
-									public void onCompleted(String url, String result) {
+								DownloadUtils.downloadString(url,
+										new OnJSONDownloadListener() {
 
-										try {
-											if((new JSONObject(result)).getInt("errorCode") == 1) {
-												onRefreshPage();
-											} else {
+											@Override
+											public void onError(String url) {
+												
 												ToastUtils.showToast(R.string.failToLoadBitmap);
 											}
-										} catch(Exception e) {
-											e.printStackTrace();
-											ToastUtils.showToast(R.string.failToLoadBitmap);
-										}
-									}
-								};
-								AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+
+											@Override
+											public void onCompleted(String url,
+													JSONObject objJSON) {
+
+												try {
+													LogUtils.log("MessagePage.onCompleted."
+															+ "\nurl : "
+															+ url
+															+ "\nresult : "
+															+ objJSON);
+
+													if(objJSON.getInt("errorCode") == 1) {
+														onRefreshPage();
+													} else {
+														ToastUtils.showToast(R.string.failToLoadBitmap);
+													}
+												} catch (Exception e) {
+													LogUtils.trace(e);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												} catch (OutOfMemoryError oom) {
+													LogUtils.trace(oom);
+													ToastUtils.showToast(R.string.failToLoadBitmap);
+												}
+											}
+										});
 							} catch(Exception e) {
 								e.printStackTrace();
 								ToastUtils.showToast(R.string.failToLoadBitmap);
@@ -272,27 +294,34 @@ public class MessagePage extends BaseListFragment {
 		}
 		
 		try {
+			if(models.size() == 0) {
+				mActivity.showLoadingView();
+			}
+			
+			isDownloading = true;
+			
 			url = ZoneConstants.BASE_URL + "microspot/message_tap" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + member_id +
 					"&last_microspot_nid=" + lastIndexno +
 					"&image_size=" + ResizeUtils.getSpecificLength(640);
 			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
-				@Override
-				public void onErrorRaised(String url, Exception e) {
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 
+				@Override
+				public void onError(String url) {
+					
 					setPage(false);
 				}
-				
-				@Override
-				public void onCompleted(String url, String result) {
 
-					LogUtils.log("MessagePage.  url : " + url + "\nresult : " + result);
-					
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						JSONArray arResult = (new JSONObject(result)).getJSONArray("data");
+						LogUtils.log("MessagePage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						JSONArray arResult = objJSON.getJSONArray("data");
 						int length = arResult.length();
 						
 						boolean addToTop = false;
@@ -349,19 +378,15 @@ public class MessagePage extends BaseListFragment {
 						}
 
 						setPage(true);
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						setPage(false);
 					}
 				}
-			};
-			
-			if(models.size() == 0) {
-				mActivity.showLoadingView();
-			}
-			
-			isDownloading = true;
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -376,28 +401,28 @@ public class MessagePage extends BaseListFragment {
 		if(!isRefreshing && !isFirstLoading) {
 
 			if(listView != null) {
-				listView.getRefreshableView().setTranscriptMode(AbsListView.TRANSCRIPT_MODE_DISABLED);
+				listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_DISABLED);
 				listView.postDelayed(new Runnable() {
 					
 					@Override
 					public void run() {
-						listView.onRefreshComplete();
+						swipeRefreshLayout.setRefreshing(false);
 						
 						if(numOfNewMessages != 0) {
-							listView.getRefreshableView().setSelectionFromTop(numOfNewMessages, 0);
+							listView.setSelectionFromTop(numOfNewMessages, 0);
 						}
 					}
-				}, 300);
+				}, 500);
 			}	
 		} else {
 			isFirstLoading = false;
-			listView.getRefreshableView().setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+			listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 			listView.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
 					try {
-						listView.getRefreshableView().setSelection(targetAdapter.getCount());
+						listView.setSelection(targetAdapter.getCount());
 					} catch(Exception e) {
 						e.printStackTrace();
 					}
@@ -508,23 +533,32 @@ public class MessagePage extends BaseListFragment {
 					"&img_width=" +
 					"&img_height=";
 			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
+					
 					ToastUtils.showToast(R.string.failToSendMessage);
 					mActivity.hideLoadingView();
 					mActivity.hideCover();
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					onRefreshPage();
-					etMessage.getEditText().setText("");
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("MessagePage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						onRefreshPage();
+						etMessage.getEditText().setText("");
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
 				}
-			};
-			
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

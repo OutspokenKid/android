@@ -1,6 +1,7 @@
 package com.zonecomms.common.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
@@ -12,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -123,9 +126,21 @@ public class PostInfoLayout extends RelativeLayout {
 		if(member != null) {
 			
 			if(!StringUtils.isEmpty(member.getMedia_src())) {
-				ImageDownloadUtils.downloadImageImmediately(member.getMedia_src(), 
-						ApplicationManager.getDownloadKeyFromTopFragment(), 
-						ivImage, 150, true);
+				DownloadUtils.downloadBitmap(member.getMedia_src(), 
+						ivImage, new OnBitmapDownloadListener() {
+					
+					@Override
+					public void onError(String url, ImageView ivImage) {
+					}
+					
+					@Override
+					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+
+						if(ivImage != null) {
+							ivImage.setImageBitmap(bitmap);
+						}
+					}
+				});
 			}
 			
 			if(!StringUtils.isEmpty(member.getMember_nickname())) {

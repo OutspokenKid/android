@@ -13,6 +13,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -100,20 +102,20 @@ public class SponserBanner extends FrameLayout {
 			}
 			
 			final int bitmapIndex = bannerIndex;
-			
-			BitmapDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+
+			ivImage.setTag(banners[bannerIndex].getImg_url());
+			DownloadUtils.downloadBitmap(banners[bannerIndex].getImg_url(), ivImage, new OnBitmapDownloadListener() {
 				
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url, ImageView ivImage) {
 					hideBanner();
 				}
 				
 				@Override
-				public void onCompleted(String url, Bitmap bitmap, ImageView view) {
-
+				public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+				
 					try {
-						if(url == null || bitmap == null || bitmap.isRecycled() || view == null 
-								|| view.getTag() == null || !url.equals(view.getTag().toString())) {
+						if(ivImage == null || ivImage.getTag() == null || !url.equals(ivImage.getTag().toString())) {
 							return;
 						}
 
@@ -124,10 +126,7 @@ public class SponserBanner extends FrameLayout {
 						hideBanner();
 					}
 				}
-			};
-
-			ivImage.setTag(banners[bannerIndex].getImg_url());
-			BitmapDownloader.downloadImmediately(banners[bannerIndex].getImg_url(), null, ocl, null, ivImage, true);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
 import com.zonecomms.clubcage.R;
@@ -24,7 +26,7 @@ import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Message;
 import com.zonecomms.common.utils.AppInfoUtils;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMessage extends ViewWrapper {
 
@@ -82,8 +84,6 @@ public class ViewWrapperForMessage extends ViewWrapper {
 			if(baseModel != null && baseModel instanceof Message) {
 				message = (Message) baseModel;
 				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				
 				if(!StringUtils.isEmpty(message.getPost_member_id())) {
 //////////////////////////////////////////////////////////////////////////					
 					//내가 보낸 메세지
@@ -109,7 +109,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 						contentsLinear.setBackgroundResource(R.drawable.img_message_receive);
 						
 						tvNickname.setText(message.getPost_member_nickname());
-						setImage(ivProfile, message.getPost_media_src(), key, 160);
+						setImage(ivProfile, message.getPost_media_src());
 					}
 					
 //////////////////////////////////////////////////////////////////////////					
@@ -128,7 +128,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 					}
 				} else if(message.getContent_type() == TYPE_IMAGE) {
 					tvContent.setVisibility(View.GONE);
-					setImage(ivImage, message.getContent(), key, 400);
+					setImage(ivImage, message.getContent());
 				}
 			}
 		} catch(Exception e) {
@@ -168,7 +168,8 @@ public class ViewWrapperForMessage extends ViewWrapper {
 			public void onClick(View v) {
 				
 				message.getContent();
-				ApplicationManager.getInstance().getMainActivity().showImageViewerActivity(null, new String[]{message.getContent()}, null, 0);
+				ZonecommsApplication.getActivity().showImageViewerActivity(null, 
+						new String[]{message.getContent()}, null, 0);
 			}
 		});
 	}
@@ -186,34 +187,35 @@ public class ViewWrapperForMessage extends ViewWrapper {
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&microspot_nid=" + message.getMicrospot_nid();
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+		ToastUtils.showToast(R.string.wait);
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
-				ToastUtils.showToast(R.string.failToDeleteMessage);
+			public void onError(String url) {
+				// TODO Auto-generated method stub		
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
-				
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					LogUtils.log("ViewWrapperForMessage.deleteMessage.  url : "+ url + "\nresult : " + result);
-					
-					JSONObject objJSON = new JSONObject(result);
-					
+					LogUtils.log("ViewWrapperForMessage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
 					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
 						ToastUtils.showToast(R.string.deleteCompleted);
-						ApplicationManager.refreshTopPage();
+						ZonecommsApplication.getTopFragment().onRefreshPage();
 					} else {
 						ToastUtils.showToast(R.string.failToDeleteMessage);
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToDeleteMessage);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					ToastUtils.showToast(R.string.failToDeleteMessage);
 				}
 			}
-		};
-		ToastUtils.showToast(R.string.wait);
-		AsyncStringDownloader.download(url, ApplicationManager.getDownloadKeyFromTopFragment(), ocl);
+		});
 	}
 }

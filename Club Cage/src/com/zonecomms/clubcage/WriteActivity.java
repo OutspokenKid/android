@@ -29,6 +29,9 @@ import android.widget.TextView;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.BitmapUtils;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -238,12 +241,12 @@ public class WriteActivity extends RecyclingActivity {
 					showLoadingView();
 					
 					for(int i=0; i<imageUrls.length; i++) {
-
-						final String originalUrl = imageUrls[i];
-						BitmapDownloader.OnCompletedListener ocl = new BitmapDownloader.OnCompletedListener() {
+						
+						DownloadUtils.downloadBitmap(imageUrls[i], null, new OnBitmapDownloadListener() {
 							
 							@Override
-							public void onErrorRaised(String url, Exception e) {
+							public void onError(String url, ImageView ivImage) {
+
 								ToastUtils.showToast(R.string.failToLoadBitmap);
 								
 								downloadImageCount ++;
@@ -254,7 +257,7 @@ public class WriteActivity extends RecyclingActivity {
 							}
 							
 							@Override
-							public void onCompleted(String url, Bitmap bitmap, ImageView view) {
+							public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
 
 								downloadImageCount ++;
 								
@@ -264,7 +267,7 @@ public class WriteActivity extends RecyclingActivity {
 								
 								try {
 									UploadImageInfo uii = new UploadImageInfo();
-									uii.setImageUrl(originalUrl);
+									uii.setImageUrl(url);
 									uii.setImageWidth(bitmap.getWidth());
 									uii.setImageHeight(bitmap.getHeight());
 									addThumbnailView(bitmap, uii);
@@ -273,8 +276,7 @@ public class WriteActivity extends RecyclingActivity {
 									ToastUtils.showToast(R.string.failToLoadBitmap);
 								}
 							}
-						};
-						BitmapDownloader.download(originalUrl, downloadKey, ocl, null, null, false);
+						});
 					}
 				}
 			}
@@ -482,11 +484,13 @@ public class WriteActivity extends RecyclingActivity {
 			} else {
 				url += "&member_id=" + MainActivity.myInfo.getMember_id();
 			}
-			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
+
+			cover.setVisibility(View.VISIBLE);
+			showLoadingView();
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 				
 				@Override
-				public void onErrorRaised(String url, Exception e) {
+				public void onError(String url) {
 
 					LogUtils.log("WriteActivity.onError.  url : " + url);
 					
@@ -496,9 +500,9 @@ public class WriteActivity extends RecyclingActivity {
 				}
 				
 				@Override
-				public void onCompleted(String url, String result) {
+				public void onCompleted(String url, JSONObject objJSON) {
 
-					LogUtils.log("WriteActivity.onCompleted.  url : " + url + "\nresult : " + result);
+					LogUtils.log("WriteActivity.onCompleted.  url : " + url + "\nresult : " + objJSON.toString());
 					
 					ToastUtils.showToast(R.string.postingCompleted);
 					SoftKeyboardUtils.hideKeyboard(editText.getContext(), editText);
@@ -506,7 +510,7 @@ public class WriteActivity extends RecyclingActivity {
 					int spot_nid = 0;
 					
 					try {
-						spot_nid = Integer.parseInt((new JSONObject(result)).getString("data"));
+						spot_nid = Integer.parseInt(objJSON.getString("data"));
 					} catch(Exception e) {
 						e.printStackTrace();	
 					}
@@ -517,11 +521,7 @@ public class WriteActivity extends RecyclingActivity {
 					setResult(RESULT_OK, intent);
 					finish();
 				}
-			};
-
-			cover.setVisibility(View.VISIBLE);
-			showLoadingView();
-			AsyncStringDownloader.download(url, null, ocl);
+			});
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToSendPost);

@@ -16,7 +16,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.common.models.Link;
-import com.zonecomms.common.wrapperviews.WrapperView;
+import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMusic extends ViewWrapper {
 
@@ -82,8 +82,7 @@ public class ViewWrapperForMusic extends ViewWrapper {
 					tvSubTitle.setText(link.getName());
 				}
 				
-				String key = ApplicationManager.getDownloadKeyFromTopFragment();
-				setImage(ivImage, link.getMain_image(), key, 150);
+				setImage(ivImage, link.getMain_image());
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package com.zonecomms.clubcage.classes;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.support.v4.app.FragmentManager;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
 import com.outspoken_kid.utils.LogUtils;
@@ -64,5 +65,10 @@ public class ZonecommsApplication extends OutSpokenApplication {
 		}
 		
 		return 0;
+	}
+
+	public static void clearFragmentsWithoutMain() {
+		
+		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 }

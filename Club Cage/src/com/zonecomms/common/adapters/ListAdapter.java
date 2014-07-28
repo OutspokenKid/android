@@ -14,13 +14,13 @@ import com.outspoken_kid.model.BaseModel;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.common.wrappers.ViewWrapper;
 import com.zonecomms.common.wrappers.ViewWrapperForMessage;
 import com.zonecomms.common.wrappers.ViewWrapperForMessageSample;
 import com.zonecomms.common.wrappers.ViewWrapperForMusic;
 import com.zonecomms.common.wrappers.ViewWrapperForNotice;
 import com.zonecomms.common.wrappers.ViewWrapperForVideo;
-import com.zonecomms.common.wrapperviews.WrapperView;
 
 public class ListAdapter extends BaseAdapter {
 

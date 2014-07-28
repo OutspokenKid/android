@@ -23,6 +23,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -44,6 +46,7 @@ import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.utils.AppInfoUtils;
 
 public class SettingPage extends BaseFragment {
@@ -244,7 +247,27 @@ public class SettingPage extends BaseFragment {
 				} else{
 					url += "N";
 				}
-				AsyncStringDownloader.download(url, downloadKey, null);
+
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+						// TODO Auto-generated method stub		
+					}
+
+					@Override
+					public void onCompleted(String url, JSONObject objJSON) {
+
+						try {
+							LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 			}
 		});
 		
@@ -263,7 +286,27 @@ public class SettingPage extends BaseFragment {
 				} else{
 					url += "N";
 				}
-				AsyncStringDownloader.download(url, downloadKey, null);
+
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+						// TODO Auto-generated method stub		
+					}
+
+					@Override
+					public void onCompleted(String url, JSONObject objJSON) {
+
+						try {
+							LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 			}
 		});
 		
@@ -282,7 +325,26 @@ public class SettingPage extends BaseFragment {
 				} else{
 					url += "N";
 				}
-				AsyncStringDownloader.download(url, downloadKey, null);
+				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+						// TODO Auto-generated method stub		
+					}
+
+					@Override
+					public void onCompleted(String url, JSONObject objJSON) {
+
+						try {
+							LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 			}
 		});
 	}
@@ -843,42 +905,45 @@ public class SettingPage extends BaseFragment {
 		
 		String url = ZoneConstants.BASE_URL + "member/push/info" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
-		AsyncStringDownloader.download(url, downloadKey, new OnCompletedListener() {
-			
-			@Override
-			public void onErrorRaised(String url, Exception e) {
-			}
-			
-			@Override
-			public void onCompleted(String url, String result) {
 
-				LogUtils.log("SettingPage.  url : " + url + "\nresult : " + result);
-				
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+				// TODO Auto-generated method stub		
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					JSONObject objData = (new JSONObject(result)).getJSONObject("data");
-					
-					if(objData.has("push_all") && !StringUtils.isEmpty(objData.getString("push_all"))
-							&& objData.getString("push_all").equals("Y")) {
+					LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.has("push_all") && !StringUtils.isEmpty(objJSON.getString("push_all"))
+							&& objJSON.getString("push_all").equals("Y")) {
 						cbNotiAll.setChecked(true);
 					} else {
 						cbNotiAll.setChecked(false);
 					}
 					
-					if(objData.has("push_message") && !StringUtils.isEmpty(objData.getString("push_message"))
-							&& objData.getString("push_message").equals("Y")) {
+					if(objJSON.has("push_message") && !StringUtils.isEmpty(objJSON.getString("push_message"))
+							&& objJSON.getString("push_message").equals("Y")) {
 						cbNotiMessage.setChecked(true);
 					} else {
 						cbNotiMessage.setChecked(false);
 					}
 					
-					if(objData.has("push_reply") && !StringUtils.isEmpty(objData.getString("push_reply"))
-							&& objData.getString("push_reply").equals("Y")) {
+					if(objJSON.has("push_reply") && !StringUtils.isEmpty(objJSON.getString("push_reply"))
+							&& objJSON.getString("push_reply").equals("Y")) {
 						cbNotiReply.setChecked(true);
 					} else {
 						cbNotiReply.setChecked(false);
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 				}
 			}
 		});
@@ -886,19 +951,26 @@ public class SettingPage extends BaseFragment {
 
 	public void editPw(String member_pwd, String new_member_pwd) {
 		
-		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-			
+		String url = ZoneConstants.BASE_URL + "member/update/password" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&member_pwd=" + member_pwd +
+				"&new_member_pwd=" + new_member_pwd;
+		
+		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 			@Override
-			public void onErrorRaised(String url, Exception e) {
+			public void onError(String url) {
+				
 				ToastUtils.showToast(R.string.failToSubmitPassword);
 			}
-			
+
 			@Override
-			public void onCompleted(String url, String result) {
-				
+			public void onCompleted(String url, JSONObject objJSON) {
+
 				try {
-					JSONObject objJSON = new JSONObject(result);
-					
+					LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
 					if(objJSON.has("errorCode")
 							&& objJSON.getInt("errorCode") == 1) {
 						ToastUtils.showToast(R.string.submitCompleted);
@@ -910,17 +982,15 @@ public class SettingPage extends BaseFragment {
 					} else {
 						ToastUtils.showToast(R.string.failToSubmitPassword);
 					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSubmitPassword);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					ToastUtils.showToast(R.string.failToSubmitPassword);
 				}
 			}
-		};
-		String url = ZoneConstants.BASE_URL + "member/update/password" +
-				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&member_pwd=" + member_pwd +
-				"&new_member_pwd=" + new_member_pwd;
-		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
+		});
 	}
 	
 	public void editPushSetting() {
@@ -949,41 +1019,46 @@ public class SettingPage extends BaseFragment {
 					"&mobile_no=" + URLEncoder.encode(phoneNumber, "UTF-8") +
 					"&email=" + URLEncoder.encode(email, "UTF-8");
 			
-			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
-				
+			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+
 				@Override
-				public void onErrorRaised(String url, Exception e) {
-					ToastUtils.showToast(R.string.failToSubmitBaseProfile);
+				public void onError(String url) {
+					
 					LogUtils.log("SettingPage.onError.  url : " + url);
+					ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 					setPage(false);
 				}
-				
+
 				@Override
-				public void onCompleted(String url, String result) {
-					
-					LogUtils.log("SettingPage.onCompleted.  url : " + url + "\nresult : " + result);
-					
+				public void onCompleted(String url, JSONObject objJSON) {
+
 					try {
-						if((new JSONObject(result)).getInt("errorCode") == 1) {
+						LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
 							MainActivity.myInfo.setMobile_no(phoneNumber);
 							MainActivity.myInfo.setMember_email(email);
 							mActivity.closeTopPage();
-							ApplicationManager.refreshTopPage();
+							ZonecommsApplication.getTopFragment().onRefreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 							setPage(false);
 						}
-					} catch(Exception e) {
-						e.printStackTrace();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToSubmitBaseProfile);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 						setPage(false);
 					}
 				}
-			};
+			});
 			ToastUtils.showToast(R.string.submittingToServer);
-			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 		} catch(Exception e) {
 			e.printStackTrace();
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);
