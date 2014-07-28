@@ -21,6 +21,9 @@ public class Post {
 	//이미지.
 	public String imageUrl;
 	
+	//댓글 수.
+	public int reply_cnt;
+	
 	public Post(JSONObject objJSON) {
 		
 		try {
@@ -29,6 +32,7 @@ public class Post {
 			regdate = objJSON.getString("reg_dt");
 			content = objJSON.getString("content");
 			imageUrl = objJSON.getString("media_src");
+			reply_cnt = objJSON.getInt("reply_cnt");
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

@@ -396,6 +396,7 @@ public class MainActivity extends Activity {
 					tvTitles[0].setBackgroundColor(color);
 					circleHeaderView.setTitleBarColor(color);
 					changeMenuColor(color);
+					listAdapter.changeColor(color);
 					downloadPosts();
 				
 				} else {
@@ -410,6 +411,16 @@ public class MainActivity extends Activity {
     	super.onDestroy();
     	imagePlayViewer.clear();
     	ViewUnbindHelper.unbindReferences(this, R.layout.activity_main);
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	
+    	if(menuScroll.getVisibility() == View.VISIBLE) {
+    		hideMenuScroll();
+    	} else {
+    		super.onBackPressed();
+    	}
     }
     
     public void downloadPosts() {
@@ -466,6 +477,7 @@ public class MainActivity extends Activity {
 		imagePlayViewer.showNext();
 		changeTitleBarColor(color);
 		changeMenuColor(color);
+		listAdapter.changeColor(color);
     }
     
     public void changeTitleBarColor(int color) {

@@ -2,17 +2,18 @@ package com.example.androidvolleytest;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.classes.OutSpokenApplication;
-import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.outspoken_kid.utils.ToastUtils;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.ImageView;
+
+import com.outspoken_kid.classes.OutSpokenApplication;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class IntroActivity extends Activity {
 
@@ -49,17 +50,17 @@ public class IntroActivity extends Activity {
 	
 	public void downloadBitmap(String url) {
 		
-		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(url, null, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url) {
+			public void onError(String url, ImageView ivImage) {
 				LogUtils.log("###IntroActivity.onError.  url : " + url);
 				ToastUtils.showToast("Fail to download image.");
 				finish();
 			}
 			
 			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
+			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
 				launchMainActivity();
 			}
 		});
