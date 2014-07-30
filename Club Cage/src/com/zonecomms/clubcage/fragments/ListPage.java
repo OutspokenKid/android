@@ -4,12 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -34,18 +30,6 @@ public class ListPage extends BaseListFragment {
 	
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_list, null);
-		return mThisView;
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -240,25 +224,17 @@ public class ListPage extends BaseListFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_list;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().downloadBanner();
-			}
-		}
-	}
-	
 	@Override
 	public void onResume() {
 		super.onResume();

@@ -54,11 +54,10 @@
         android:layout_height="match_parent" 
         android:layout_above="@id/messagePage_line1" >
 
-        <com.handmark.pulltorefresh.library.PullToRefreshListView
+        <ListView
             android:id="@+id/messagePage_listView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true" />
+            android:layout_height="match_parent" />
           
     </android.support.v4.widget.SwipeRefreshLayout>
     

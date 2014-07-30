@@ -2,7 +2,6 @@ package com.zonecomms.clubcage.classes;
 
 import java.util.ArrayList;
 
-import android.os.Bundle;
 import android.widget.BaseAdapter;
 
 import com.outspoken_kid.model.BaseModel;
@@ -18,18 +17,6 @@ public abstract class BaseListFragment extends BaseFragment {
 	
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected BaseAdapter targetAdapter;
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-	}
 	
 	@Override
 	public void onResume() {
@@ -84,15 +71,6 @@ public abstract class BaseListFragment extends BaseFragment {
 		
 		if(targetAdapter instanceof GridAdapter) {
 			((GridAdapter)targetAdapter).clearHardCache();
-		}
-	}
-	
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-
-		if(!hidden && !isDownloading && !isRefreshing && models.size() == 0) {
-			downloadInfo();
 		}
 	}
 }

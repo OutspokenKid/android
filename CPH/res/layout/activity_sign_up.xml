@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#fff" >
+
+    <TextView 
+        android:id="@+id/signUpActivity_tvTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:text="@string/signUp"
+    	android:textColor="#000"
+    	android:gravity="center"
+    	android:background="#f5f5f5" />
+
+    <FrameLayout
+        android:id="@+id/signUpActivity_fragmentFrame"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent" />
+    
+    <!-- Wholesale -->
+    <!-- 도매 대표. -->
+    <!-- 도매 직원. -->
+    <!-- 도매 디자이너. -->
+    	<!-- 상호명, 전화번호, 매장 위치, 사업자 등록번호 검색 가능. -->
+    	<!-- 상호명, 매장 전화번호, 매장 위치, 아이디, 비밀번호, 비밀번호 확인, 휴대폰 번호, 인증번호. -->	
+    
+    <!-- 소매 대표. -->
+    <!-- 소매 인터넷 쇼핑몰 대표. -->
+    	<!-- 상호명, 주소, (사이트 주소), 대표자 성함, 사업자 등록번호 -->
+    	<!-- 아이디, 비밀번호, 비밀번호 확인, 휴대폰 번호, 인증번호 -->
+    	
+    <!-- 소매 직원 -->
+    <!-- 소매 MD -->
+    <!-- 소매 인터넷 쇼핑몰 직원. -->
+    <!-- 소매 인터넷 쇼핑몰 MD. -->
+    	<!-- 상호명, 전화번호, 사업자 등록번호 검색 가능. -->
+    	<!-- 상호명, 사업장 전화번호, 사업장 주소, 아이디, 비밀번호, 비밀번호 확인, 휴대폰 번호, 인증번호 .-->
+    
+</LinearLayout>

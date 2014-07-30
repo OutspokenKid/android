@@ -11,30 +11,27 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
@@ -51,7 +48,7 @@ import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
 public class MessagePage extends BaseListFragment {
 
-	private FrameLayout mainLayout;
+	private RelativeLayout mainLayout;
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
 	private View photo;
@@ -64,33 +61,9 @@ public class MessagePage extends BaseListFragment {
 	private int numOfNewMessages;
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_message, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-	}
-	
-	@Override
 	protected void bindViews() {
 
-		mainLayout = (FrameLayout) mThisView.findViewById(R.id.messagePage_mainLayout);
+		mainLayout = (RelativeLayout) mThisView.findViewById(R.id.messagePage_mainLayout);
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.messagePage_swipeRefreshLayout);
 		listView = (ListView) mThisView.findViewById(R.id.messagePage_listView);
 		photo = mThisView.findViewById(R.id.messagePage_photo);
@@ -457,6 +430,12 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_message;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
@@ -479,16 +458,14 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
+	public void onResume() {
+		super.onResume();
+		
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
 		}
 	}
 

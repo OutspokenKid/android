@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:id="@+id/signUpActivity_relativeTerms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff" >
+
+        <!-- 상호명 -->
+        <TextView
+            android:id="@+id/signUpForWritePage_tvCompanyName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/companyName"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForWriteCompanyName"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 주소 -->
+        <TextView
+            android:id="@+id/signUpForWritePage_tvCompanyAddress"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/address"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyAddress"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForWriteCompanyAddress"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 대표자 성함 -->
+        <TextView
+            android:id="@+id/signUpForWritePage_tvCompanyOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/ownerName"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyOwnerName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForWriteCompanyOwnerName"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 사업자 등록번호 -->
+        <TextView
+            android:id="@+id/signUpForWritePage_tvCompanyRegistration"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/registrationNumber"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyRegistration1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyRegistration2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <EditText
+            android:id="@+id/signUpForWritePage_etCompanyRegistration3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:inputType="number"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <Button
+            android:id="@+id/signUpForWritePage_btnNext"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/next" />
+    </RelativeLayout>
+    
+</ScrollView>

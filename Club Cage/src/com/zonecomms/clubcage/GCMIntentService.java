@@ -15,9 +15,10 @@ import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.fragments.MessagePage;
+import com.zonecomms.clubcage.fragments.PostPage;
 import com.zonecomms.common.utils.AppInfoUtils;
 
 /**
@@ -159,13 +160,11 @@ public class GCMIntentService extends GCMBaseIntentService {
 			return;
 		}
 		
-		if(ZonecommsApplication.getFragmentsSize() != 0 
-				&& msg_type != null 
-				&& msg_type.equals("010")
-				&& member_id != null
-				&& ZonecommsApplication.getTopFragment() instanceof MessagePage) {
+		if(ZonecommsApplication.getFragmentsSize() != 0) {
 			
-			try {
+			if("010".equals(msg_type)
+					&& member_id != null
+					&& ZonecommsApplication.getTopFragment() instanceof MessagePage) {
 				final MessagePage mp = (MessagePage) ZonecommsApplication.getTopFragment();
 				
 				if(mp.getFriend_member_id() != null
@@ -178,20 +177,30 @@ public class GCMIntentService extends GCMBaseIntentService {
 						}
 					});
 				}
-			} catch(Exception e) {
+			} else if(("021".equals(msg_type))
+					&& ZonecommsApplication.getTopFragment() instanceof PostPage
+					&& ((PostPage)ZonecommsApplication.getTopFragment()).getSpotNid() == spot_nid) {
+				ZonecommsApplication.getActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						((PostPage)ZonecommsApplication.getTopFragment()).setNeedToShowBottom(true);
+						ZonecommsApplication.getTopFragment().onRefreshPage();
+					}
+				});
 			}
 		} else {
 
 			String uriString = "";
 			
-			if(msg_type.equals("000")) {
+			if("000".equals(msg_type)) {
 				try {
 					uriString = "popup://android.zonecomms.com/?message=" + URLEncoder.encode(push_msg, "utf-8");
 				} catch(Exception e) {
 				}
-			} else if(msg_type.equals("010")) {
+			} else if("010".equals(msg_type)) {
 				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
-			} else if(msg_type.equals("021")) {
+			} else if("021".equals(msg_type)) {
 				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?spot_nid=" + spot_nid;
 			}
 			

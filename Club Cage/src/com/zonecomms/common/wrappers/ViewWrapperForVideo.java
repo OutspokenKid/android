@@ -1,7 +1,6 @@
 package com.zonecomms.common.wrappers;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +17,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.YoutubePlayerActivity;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.views.WrapperView;
@@ -104,12 +104,16 @@ public class ViewWrapperForVideo extends ViewWrapper {
 	}
 
 	public void showLink(String videoUrl) {
-
+		
 		if(!StringUtils.isEmpty(videoUrl)) {
 			try {
-				Uri uri = Uri.parse("http://www.youtube.com/watch?v=" + videoUrl);
-				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
-				ZonecommsApplication.getActivity().startActivity(i);
+				Intent intent = new Intent(ZonecommsApplication.getActivity(), YoutubePlayerActivity.class);
+				intent.putExtra("videoId", videoUrl);
+				ZonecommsApplication.getActivity().startActivity(intent);
+				
+//				Uri uri = Uri.parse("http://www.youtube.com/watch?v=" + videoUrl);
+//				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
+//				ZonecommsApplication.getActivity().startActivity(i);
 			} catch(Exception e) {
 				LogUtils.trace(e);
 				ToastUtils.showToast(R.string.failToShowVideo);

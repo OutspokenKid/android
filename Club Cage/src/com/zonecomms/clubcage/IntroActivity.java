@@ -159,17 +159,17 @@ public class IntroActivity extends Activity {
 		
 		LogUtils.log("IntroActivity.downloadSponserBitmap.  versionCode : " + newVersionCode);
 		
-		DownloadUtils.downloadBitmap(sponserUrl, null, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(sponserUrl, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 
 				LogUtils.log("IntroActivity.downloadAndCacheSponser.onError.  url : " + url);
 				loadOldSponserBitmap();
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+			public void onCompleted(String url, Bitmap bitmap) {
 
 				sponserBitmap = bitmap;
 				SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SPONSER, "version", newVersionCode);
@@ -242,10 +242,10 @@ public class IntroActivity extends Activity {
 			
 				final int I = i;
 				
-				DownloadUtils.downloadBitmap(images[i], null, new OnBitmapDownloadListener() {
+				DownloadUtils.downloadBitmap(images[i], new OnBitmapDownloadListener() {
 					
 					@Override
-					public void onError(String url, ImageView ivImage) {
+					public void onError(String url) {
 
 						if(++downloadCount == size) {
 							selectAccount();
@@ -253,7 +253,7 @@ public class IntroActivity extends Activity {
 					}
 					
 					@Override
-					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+					public void onCompleted(String url, Bitmap bitmap) {
 
 						try {
 							Drawable d = new BitmapDrawable(getResources(), bitmap);

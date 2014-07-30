@@ -3,6 +3,8 @@
  */
 package com.zonecomms.clubcage;
 
+import android.graphics.Color;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
@@ -17,6 +19,13 @@ import com.outspoken_kid.utils.ResizeUtils;
  */
 public class ImageViewer extends ImageViewerActivity {
 
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(Color.BLACK);
+	}
+	
 	@Override
 	protected LayoutParams getSaveButtonLayoutParams() {
 

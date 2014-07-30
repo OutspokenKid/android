@@ -13,14 +13,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.DatePicker;
 import android.widget.DatePicker.OnDateChangedListener;
@@ -76,30 +73,6 @@ public class BaseProfilePage extends BaseFragment {
 	private CustomDatePicker dpBirth;
 	private HoloStyleEditText etIntroduce;
 	private HoloStyleSpinnerPopup pPhoto;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_baseprofile, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -504,6 +477,12 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_baseprofile;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
@@ -535,15 +514,13 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-
-		if(!hidden) {
-			downloadInfo();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
+	public void onResume() {
+		super.onResume();
+		
+		downloadInfo();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
 		}
 	}
 
@@ -567,17 +544,17 @@ public class BaseProfilePage extends BaseFragment {
 		ivImage.setVisibility(View.INVISIBLE);
 		
 		String url = myStoryInfo.getMystory_member_profile();
-		DownloadUtils.downloadBitmap(url, ivImage, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 
 				ivImage.setVisibility(View.VISIBLE);
 				progress.setVisibility(View.INVISIBLE);
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+			public void onCompleted(String url, Bitmap bitmap) {
 
 				if(bitmap != null && !bitmap.isRecycled()) {
 					ivImage.setImageBitmap(bitmap);

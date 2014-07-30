@@ -9,13 +9,10 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -83,29 +80,6 @@ public class PostPage extends BaseFragment {
 	private ArrayList<Member> targets = new ArrayList<Member>();
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-
-		mThisView = inflater.inflate(R.layout.page_post, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		setListeners();
-		setSizes();
-	}
-	
-	@Override
 	protected void bindViews() {
 		
 		tvText = (TextView) mThisView.findViewById(R.id.postPage_tvText);
@@ -127,19 +101,19 @@ public class PostPage extends BaseFragment {
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
 		}
-		
-		editText.getEditText().setHint(R.string.hintForReply);
-		editText.getEditText().setHintTextColor(Color.rgb(120, 120, 120));
-		editText.getEditText().setTextColor(Color.WHITE);
-		editText.getEditText().setSingleLine(false);
-		btnSubmit.setTextColor(Color.WHITE);
-		btnSubmit.setText(R.string.submitReply);
 	}
 
 	@Override
 	protected void createPage() {
-
+		
 		try {
+			editText.getEditText().setHint(R.string.hintForReply);
+			editText.getEditText().setHintTextColor(Color.rgb(120, 120, 120));
+			editText.getEditText().setTextColor(Color.WHITE);
+			editText.getEditText().setSingleLine(false);
+			btnSubmit.setTextColor(Color.WHITE);
+			btnSubmit.setText(R.string.submitReply);
+			
 			postInfoLayout = new PostInfoLayout(mContext);
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 150, postInfoLayout, 1, 0, new int[]{8, 8, 8, 8});
 			innerLayout.addView(postInfoLayout, 0);
@@ -325,16 +299,25 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_post;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 
 		if(spForPost.getVisibility() == View.VISIBLE) {
 			spForPost.hidePopup();
+			LogUtils.log("###PostPage.onBackKeyPressed.  true");
 			return true;
 		} else if(spForReply.getVisibility() == View.VISIBLE) {
 			spForReply.hidePopup();
+			LogUtils.log("###PostPage.onBackKeyPressed.  true");
 			return true;
 		}
 		
+		LogUtils.log("###PostPage.onBackKeyPressed.  false");
 		return false;
 	}
 
@@ -359,23 +342,21 @@ public class PostPage extends BaseFragment {
 		lastIndexno = 0;
 		downloadInfo();
 	}
-	
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
-			
-			onRefreshPage();
-		}
-	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
+		}
+		
+		onRefreshPage();
+	}
+	
 	@Override
 	public void onDetach() {
 		
@@ -455,7 +436,7 @@ public class PostPage extends BaseFragment {
 			ResizeUtils.viewResize(50, 50, progress, 2, Gravity.CENTER, null);
 			frame.addView(progress);
 			
-			ImageView image = new ImageView(mContext);
+			final ImageView image = new ImageView(mContext);
 			image.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			image.setScaleType(ScaleType.CENTER_CROP);
 			image.setOnClickListener(new OnClickListener() {
@@ -471,27 +452,26 @@ public class PostPage extends BaseFragment {
 			
 			String url = post.getMedias()[i].getMedia_src();
 			image.setTag(url);
-			DownloadUtils.downloadBitmap(url, image,
+			DownloadUtils.downloadBitmap(url,
 					new OnBitmapDownloadListener() {
 
 						@Override
-						public void onError(String url, ImageView ivImage) {
+						public void onError(String url) {
 							// TODO Auto-generated method stub		
 						}
 
 						@Override
-						public void onCompleted(String url, ImageView ivImage,
-								Bitmap bitmap) {
+						public void onCompleted(String url, Bitmap bitmap) {
 
 							try {
 								LogUtils.log("PostPage.onCompleted." + "\nurl : "
 										+ url);
 
-								if (ivImage != null
-										&& ivImage.getTag() != null
-										&& ivImage.getTag().toString()
+								if (image != null
+										&& image.getTag() != null
+										&& image.getTag().toString()
 												.equals(url)) {
-									ivImage.setImageBitmap(bitmap);
+									image.setImageBitmap(bitmap);
 								}
 							} catch (Exception e) {
 								LogUtils.trace(e);
@@ -968,6 +948,16 @@ public class PostPage extends BaseFragment {
 		
 		return boardIndex;
 	}
+
+	public int getSpotNid() {
+		
+		return post.getSpot_nid();
+	}
+	
+	public void setNeedToShowBottom(boolean needToShowBottom) {
+		
+		isNeedToShowBottom = needToShowBottom;
+	}
 	
 //////////////////////Classes.
 	
@@ -988,7 +978,7 @@ public class PostPage extends BaseFragment {
 		
 		private void init() {
 			
-			int madeCount = 0;
+			int madeCount = 110612;
 			
 			RelativeLayout.LayoutParams rp = null;
 			int l = ResizeUtils.getSpecificLength(100);
@@ -1019,8 +1009,9 @@ public class PostPage extends BaseFragment {
 			//id : 1
 			tvNickname = new TextView(getContext());
 			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
-			rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
+			rp.leftMargin = l + m * 2;
 			tvNickname.setLayoutParams(rp);
 			tvNickname.setId(madeCount + 1);
 			tvNickname.setTextColor(Color.WHITE);
@@ -1091,17 +1082,16 @@ public class PostPage extends BaseFragment {
 				}
 				
 				ivImage.setTag(member.getMedia_src());
-				DownloadUtils.downloadBitmap(member.getMedia_src(), ivImage,
+				DownloadUtils.downloadBitmap(member.getMedia_src(),
 						new OnBitmapDownloadListener() {
 
 							@Override
-							public void onError(String url, ImageView ivImage) {
+							public void onError(String url) {
 								// TODO Auto-generated method stub		
 							}
 
 							@Override
-							public void onCompleted(String url,
-									ImageView ivImage, Bitmap bitmap) {
+							public void onCompleted(String url, Bitmap bitmap) {
 
 								try {
 									LogUtils.log("PostPage.onCompleted."

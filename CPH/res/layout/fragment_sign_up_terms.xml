@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForTermsPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+	<!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForTermsPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <ScrollView
+        android:id="@+id/signUpForTermsPage_scrollView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/signUpForTermsPage_titleBar"
+	    android:fillViewport="true" >
+	
+        <!-- 약관 텍스트. -->
+        
+        <TextView
+            android:id="@+id/signUpForTermsPage_tvTerms"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/terms"
+            android:textColor="#000" />
+	    
+	</ScrollView>
+		    
+    <!-- 동의하기 버튼. -->
+    
+    <Button
+        android:id="@+id/signUpForTermsPage_btnAgree"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:layout_centerHorizontal="true"
+    	android:background="@drawable/btn_agree" />
+    
+    <!-- 저작권 표시. -->
+
+	<ImageView 
+        android:id="@+id/signUpForTermsPage_ivCopyright"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:layout_centerHorizontal="true"
+    	android:src="@drawable/img_reserved"
+    	android:scaleType="centerInside" />
+    
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForTermsPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForTermsPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+</RelativeLayout>

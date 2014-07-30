@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signUpForBusinessPage_relativeBusiness"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForBusinessPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+	<!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForBusinessPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <Button
+        android:id="@+id/signUpForBusinessPage_btnWholesale"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/signUpForBusinessPage_titleBar" />
+
+    <Button
+        android:id="@+id/signUpForBusinessPage_btnRetailOffline"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/signUpForBusinessPage_btnWholesale" />
+
+    <Button
+        android:id="@+id/signUpForBusinessPage_btnRetailOnline"
+        android:layout_width="0dp"
+        android:layout_height="0dp" 
+        android:layout_below="@id/signUpForBusinessPage_btnRetailOffline" />
+    
+     <!-- 저작권 표시. -->
+
+	<ImageView 
+        android:id="@+id/signUpForBusinessPage_ivCopyright"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:layout_centerHorizontal="true"
+    	android:src="@drawable/img_reserved"
+    	android:scaleType="centerInside" />
+    
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForBusinessPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+</RelativeLayout>

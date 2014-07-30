@@ -33,7 +33,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 
 import com.google.android.gcm.GCMRegistrar;
-import com.outspoken_kid.activities.ImageViewerActivity;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -282,44 +281,44 @@ public class MainActivity extends FragmentActivity {
 			
 			case KeyEvent.KEYCODE_MENU :
 
-				ZonecommsApplication.getFragmentsSize();
-				
-//				try {
-//					if(GestureSlidingLayout.isOpenToLeft()) {
-//						gestureSlidingLayout.close(true, null);
-//					} else {
-//						gestureSlidingLayout.open(true, null);
-//					}
-//				} catch(Exception e) {
-//					LogUtils.trace(e);
-//				}
+				try {
+					if(GestureSlidingLayout.isOpenToLeft()) {
+						gestureSlidingLayout.close(true, null);
+					} else {
+						gestureSlidingLayout.open(true, null);
+					}
+				} catch(Exception e) {
+					LogUtils.trace(e);
+				}
 				break;
 			
 			case KeyEvent.KEYCODE_BACK :
 				
-//				try {
-//					if(GestureSlidingLayout.isOpenToLeft()) {
-//						gestureSlidingLayout.close(true, null);
-//					} else if(cover.getVisibility() == View.VISIBLE) {
-//						//Just wait.
+				try {
+					if(GestureSlidingLayout.isOpenToLeft()) {
+						gestureSlidingLayout.close(true, null);
+					} else if(cover.getVisibility() == View.VISIBLE) {
+						//Just wait.
+					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
+						noticePopup.hide(null);
+					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
+						profilePopup.hide(null);
 //					} else if(ZonecommsApplication.getTopFragment() != null 
 //							&& ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
 //						//Do nothing.
-//					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
-//						noticePopup.hide(null);
-//					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
-//						profilePopup.hide(null);
-//					} else if(ZonecommsApplication.getFragmentsSize() > 1){
-//						closeTopPage();
-//					} else {
-//						finish();
-//					}
-//				} catch(Exception e) {
-//					LogUtils.trace(e);
-//				}
-//				break;
-//				
-//				default:
+					} else if(ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
+						LogUtils.log("###########################.onKeyDown.  ;aldkfjals;dkfjs.");
+					} else if(ZonecommsApplication.getFragmentsSize() > 1){
+						closeTopPage();
+					} else {
+						finish();
+					}
+				} catch(Exception e) {
+					LogUtils.trace(e);
+				}
+				break;
+				
+				default:
 					return super.onKeyDown(keyCode, event);
 			}
 		}
@@ -760,22 +759,18 @@ public class MainActivity extends FragmentActivity {
 
 			//Set Animation.
 			if(fadePageAnim) {
-				LogUtils.log("###where.startPage.  fadeAnim");
 				fadePageAnim = false;
 				//Exclude animation when open page.
 				ft.setCustomAnimations(0, 0, 
 						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
 				
 			} else if(ZonecommsApplication.getFragmentsSize() == 0) {
-				LogUtils.log("###where.startPage.  Maybe MainPage.  size : " + ZonecommsApplication.getFragmentsSize());
 				//MainPage.
 			} else if(ZonecommsApplication.getTopFragment() != null
 					&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
-				LogUtils.log("###where.startPage.  Second Page.  size : " + ZonecommsApplication.getFragmentsSize());
 				ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, 
 						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
 			} else {
-				LogUtils.log("###where.startPage.  Other Page.  size : " + ZonecommsApplication.getFragmentsSize());
 				ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
 						R.anim.slide_in_from_left, R.anim.slide_out_to_right);
 			}
@@ -783,8 +778,8 @@ public class MainActivity extends FragmentActivity {
 			if(ZonecommsApplication.getFragmentsSize() == 0) {
 				ft.add(R.id.mainActivity_fragmentFrame, fragment);
 			} else {
-				ft.replace(R.id.mainActivity_fragmentFrame, fragment);
-				ft.addToBackStack(null);
+				ft.replace(R.id.mainActivity_fragmentFrame, fragment, fragment.getFragmentTag());
+				ft.addToBackStack(fragment.getFragmentTag());
 			}
 			
 			ft.commitAllowingStateLoss();

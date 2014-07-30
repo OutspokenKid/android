@@ -4,12 +4,9 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -52,32 +49,6 @@ public class MainPage extends BaseFragment {
 	private boolean isWriting;
 	private AlphaAnimation aaIn, aaOut, aaIn2, aaOut2;
 	private int madeCount = 870901;
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_main, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-		
-		setPage(true);
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -441,29 +412,29 @@ public class MainPage extends BaseFragment {
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
 						ivPoster1.setTag(url);
-						DownloadUtils.downloadBitmap(url, ivPoster1,
+						DownloadUtils.downloadBitmap(url,
 								new OnBitmapDownloadListener() {
 
 									@Override
-									public void onError(String url,
-											ImageView ivImage) {
-										// TODO Auto-generated method stub		
+									public void onError(String url) {
+										
+										LogUtils.log("MainPage.onError."
+												+ "\nurl : " + url);
 									}
 
 									@Override
-									public void onCompleted(String url,
-											ImageView ivImage, Bitmap bitmap) {
+									public void onCompleted(String url, Bitmap bitmap) {
 
 										try {
 											LogUtils.log("MainPage.onCompleted."
 													+ "\nurl : " + url);
 
-											if (ivImage != null
-													&& ivImage.getTag() != null
-													&& ivImage.getTag()
+											if (ivPoster1 != null
+													&& ivPoster1.getTag() != null
+													&& ivPoster1.getTag()
 															.toString()
 															.equals(url)) {
-												ivImage.setImageBitmap(bitmap);
+												ivPoster1.setImageBitmap(bitmap);
 											}
 										} catch (Exception e) {
 											LogUtils.trace(e);
@@ -507,29 +478,27 @@ public class MainPage extends BaseFragment {
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
 						ivPoster2.setTag(url);
-						DownloadUtils.downloadBitmap(url, ivPoster2,
+						DownloadUtils.downloadBitmap(url,
 								new OnBitmapDownloadListener() {
 
 									@Override
-									public void onError(String url,
-											ImageView ivImage) {
+									public void onError(String url) {
 										// TODO Auto-generated method stub		
 									}
 
 									@Override
-									public void onCompleted(String url,
-											ImageView ivImage, Bitmap bitmap) {
+									public void onCompleted(String url, Bitmap bitmap) {
 
 										try {
 											LogUtils.log("MainPage.onCompleted."
 													+ "\nurl : " + url);
 
-											if (ivImage != null
-													&& ivImage.getTag() != null
-													&& ivImage.getTag()
+											if (ivPoster2 != null
+													&& ivPoster2.getTag() != null
+													&& ivPoster2.getTag()
 															.toString()
 															.equals(url)) {
-												ivImage.setImageBitmap(bitmap);
+												ivPoster2.setImageBitmap(bitmap);
 											}
 										} catch (Exception e) {
 											LogUtils.trace(e);
@@ -598,23 +567,25 @@ public class MainPage extends BaseFragment {
 			if(mActivity.getProfileView() != null) {
 				if(!StringUtils.isEmpty(url) && mActivity.getProfileView().getIcon() != null) {
 					mActivity.getProfileView().getIcon().setTag(url);
-					DownloadUtils.downloadBitmap(url, mActivity.getProfileView().getIcon(),
+					DownloadUtils.downloadBitmap(url,
 							new OnBitmapDownloadListener() {
 
 								@Override
-								public void onError(String url,
-										ImageView ivImage) {
-									// TODO Auto-generated method stub		
+								public void onError(String url) {
+									
+									LogUtils.log("MainPage.onError."
+											+ "\nurl : " + url);
 								}
 
 								@Override
-								public void onCompleted(String url,
-										ImageView ivImage, Bitmap bitmap) {
+								public void onCompleted(String url, Bitmap bitmap) {
 
 									try {
 										LogUtils.log("MainPage.onCompleted."
 												+ "\nurl : " + url);
 
+										ImageView ivImage = mActivity.getProfileView().getIcon();
+										
 										if (ivImage != null
 												&& ivImage.getTag() != null
 												&& ivImage.getTag().toString()
@@ -651,6 +622,12 @@ public class MainPage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_main;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		
 		if(boardMenu.getVisibility() == View.VISIBLE) {
@@ -666,25 +643,24 @@ public class MainPage extends BaseFragment {
 	}
 	
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
+	public void onResume() {
+		super.onResume();
 		
-		if(!hidden) {
+		setPage(true);
+		
+		mThisView.postDelayed(new Runnable() {
 			
-			mThisView.postDelayed(new Runnable() {
-				
-				@Override
-				public void run() {
-					InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
-				}
-			}, 1000);
-			mActivity.getTitleBar().hideHomeButton();
-			mActivity.getTitleBar().showWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
+			@Override
+			public void run() {
+				InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
 			}
+		}, 1000);
+		mActivity.getTitleBar().hideHomeButton();
+		mActivity.getTitleBar().showWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
 		}
 	}
 	

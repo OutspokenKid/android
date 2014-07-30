@@ -1402,7 +1402,8 @@ public class MainActivity extends BaseFragmentActivity {
 
 	public void checkPopup() {
 		
-		if(startupInfo != null && startupInfo.getPopup() != null) {
+		if(startupInfo != null && startupInfo.getPopup() != null
+				&& startupInfo.getPopup().getNotice_nid() != 0) {
 			int lastIndexno = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastIndexno");
 			int lastDate = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastDate");
 			int lastMonth = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastMonth");

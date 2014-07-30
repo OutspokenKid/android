@@ -5,12 +5,9 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -56,30 +53,6 @@ public class AddedProfilePage extends BaseFragment {
 	private HoloStyleEditText etCompany;
 	private HoloStyleEditText etLive;
 	private HoloStyleEditText etActive;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_addedprofile, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -373,6 +346,12 @@ public class AddedProfilePage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_addedprofile;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		
 		if(pStatus.getVisibility() == View.VISIBLE) {
@@ -389,18 +368,15 @@ public class AddedProfilePage extends BaseFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		
-		super.onHiddenChanged(hidden);
+	public void onResume() {
+		super.onResume();
 		
 		if(status == null) {
 			downloadInfo();
 		}
 		
-		if(!hidden) {
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
 		}
 	}
 	

@@ -7,21 +7,27 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 
 public abstract class BaseFragment extends Fragment {
+
+	private static int madeCount;
 	
 	protected View mThisView;
 	protected Context mContext;
 	protected MainActivity mActivity;
-	
+
+	protected String fragmentTag;
 	protected String title;
 	protected boolean isDownloading;
 	protected boolean isRefreshing;
@@ -36,6 +42,7 @@ public abstract class BaseFragment extends Fragment {
 
 	protected abstract String getTitleText();
 	protected abstract int getContentViewId();
+	protected abstract int getLayoutResId();
 
 	public abstract void onRefreshPage();
 	public abstract boolean onBackKeyPressed();
@@ -44,11 +51,17 @@ public abstract class BaseFragment extends Fragment {
 	
 	protected ArrayList<ImageView> imageViews = new ArrayList<ImageView>();
 
+	public BaseFragment() {
+		
+		madeCount ++;
+		fragmentTag = "page" + madeCount;
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		LogUtils.log("###BaseFragment.onAttach.  ");
+		LogUtils.log("###BaseFragment.onAttach.");
 	}
 	
 	@Override
@@ -56,9 +69,24 @@ public abstract class BaseFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		
 		LogUtils.log("###BaseFragment.onCreate.  ");
+		setVariables();
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		LogUtils.log("###BaseFragment.onCreateView.  ");
 		
+		if(container == null) {
+			return null;
+		}
+	
 		mContext = getActivity();
 		mActivity = (MainActivity) getActivity();
+		
+		mThisView = inflater.inflate(getLayoutResId(), null);
+		return mThisView;
 	}
 	
 	@Override
@@ -70,14 +98,36 @@ public abstract class BaseFragment extends Fragment {
 		if(getArguments() != null) {
 			title = getArguments().getString("title");
 		}
+		
+		bindViews();
+		createPage();
+		
+		setListeners();
+		setSizes();
 	}
 
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		LogUtils.log("###BaseFragment.onStart.  ");
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		LogUtils.log("###BaseFragment.onSaveInstanceState.  ");
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		LogUtils.log("###BaseFragment.onResume.  ");
 		checkTitleText();
+		
+		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
 	}
 	
 	@Override
@@ -192,5 +242,10 @@ public abstract class BaseFragment extends Fragment {
 	public void disableExitAnim() {
 		
 		disableExitAnim = true;
+	}
+
+	public String getFragmentTag() {
+		
+		return fragmentTag;
 	}
 }

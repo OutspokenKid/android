@@ -13,6 +13,15 @@ import com.zonecomms.clubcage.R;
 public class ZonecommsApplication extends OutSpokenApplication {
 	
 	private static MainActivity mainActivity;
+
+	public static void initWithActivity(Activity activity) {
+		
+		if(activity instanceof MainActivity) {
+			mainActivity = (MainActivity) activity;
+		}
+		
+		OutSpokenApplication.initWithActivity(activity);
+	}
 	
 	public static void setupResources(Activity activity) {
 
@@ -39,7 +48,7 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	}
 	
 	public static BaseFragment getTopFragment() {
-
+		
 		try {
 			//메인 페이지 시작 전.
 			if(getFragmentsSize() == 0) {
@@ -54,6 +63,7 @@ public class ZonecommsApplication extends OutSpokenApplication {
 				String fragmentTag = mainActivity.getSupportFragmentManager()
 			    		.getBackStackEntryAt(mainActivity.getSupportFragmentManager().getBackStackEntryCount() - 1)
 			    		.getName();
+
 			    return (BaseFragment) mainActivity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
 			}
 		} catch (Exception e) {

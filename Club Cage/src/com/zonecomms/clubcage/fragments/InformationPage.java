@@ -6,12 +6,9 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -23,7 +20,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.views.PinchImageView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
@@ -39,30 +35,6 @@ public class InformationPage extends BaseFragment {
 	private LinearLayout VIPInfoLayout;
 	
 	private VIPFloorInfo[] VIPInfos;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_information, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -392,6 +364,12 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_information;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		// TODO Auto-generated method stub
 		return false;
@@ -402,20 +380,18 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
+	public void onResume() {
+		super.onResume();
 		
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().downloadBanner();
-			}
-			
-			if(!isDownloading) {
-				downloadInfo();
-			}
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().downloadBanner();
+		}
+		
+		if(!isDownloading) {
+			downloadInfo();
 		}
 	}
 

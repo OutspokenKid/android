@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public class ProfilePopup extends FrameLayout {
 	private TextView tvGenderWithAge;
 	private ImageView ivImage;
 	private View home, friend, message, close;
+	private ProgressBar progress;
 	
 	private boolean isAnimating;
 	private AlphaAnimation aaIn;
@@ -130,6 +132,12 @@ public class ProfilePopup extends FrameLayout {
 		imageBg.setBackgroundResource(R.drawable.bg_profile_400);
 		relative.addView(imageBg);
 		
+		progress = new ProgressBar(getContext());
+		rp = new RelativeLayout.LayoutParams(width/8, width/8);
+		rp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		progress.setLayoutParams(rp);
+		relative.addView(progress);
+		
 		//id : 1
 		ivImage = new ImageView(getContext());
 		rp = new RelativeLayout.LayoutParams(width, width);
@@ -151,7 +159,7 @@ public class ProfilePopup extends FrameLayout {
 			}
 		});
 		relative.addView(ivImage);
-
+		
 		int l = (width - 8) / 4;
 		int mod = (width - 8) % 4;
 		
@@ -248,6 +256,8 @@ public class ProfilePopup extends FrameLayout {
 					"&mystory_member_id=" + URLEncoder.encode(userId, "UTF-8") +
 					"&image_size=" + ResizeUtils.getSpecificLength(400);
 
+			progress.setVisibility(View.VISIBLE);
+			
 			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
 				
 				@Override
@@ -257,6 +267,7 @@ public class ProfilePopup extends FrameLayout {
 					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					LogUtils.log("ProfilePopup.onErrorRaised.  url : " + url);
+					progress.setVisibility(View.INVISIBLE);
 				}
 				
 				@Override
@@ -275,6 +286,7 @@ public class ProfilePopup extends FrameLayout {
 					} catch(Exception e) {
 						LogUtils.trace(e);
 						ToastUtils.showToast(R.string.failToLoadUserInfo);
+						progress.setVisibility(View.INVISIBLE);
 					}
 				}
 			});
@@ -296,20 +308,31 @@ public class ProfilePopup extends FrameLayout {
 			
 			if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_profile())) {
 				DownloadUtils.downloadBitmap(myStoryInfo.getMystory_member_profile(), 
-						ivImage, new OnBitmapDownloadListener() {
+						new OnBitmapDownloadListener() {
 					
 					@Override
-					public void onError(String url, ImageView ivImage) {
+					public void onError(String url) {
+						
+						LogUtils.log("###ProfilePopup.onError.  url : " + url);
+						
+						progress.setVisibility(View.INVISIBLE);
 					}
 					
 					@Override
-					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+					public void onCompleted(String url, Bitmap bitmap) {
 
+						LogUtils.log("###ProfilePopup.onCompleted.  url : " + url);
+						
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);
+							ivImage.setVisibility(View.VISIBLE);
 						}
+						
+						progress.setVisibility(View.INVISIBLE);
 					}
 				});
+			} else {
+				progress.setVisibility(View.INVISIBLE);
 			}
 			
 			if(!StringUtils.isEmpty(myStoryInfo.getIs_friend())
@@ -321,6 +344,7 @@ public class ProfilePopup extends FrameLayout {
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToLoadUserInfo);
+			progress.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -330,6 +354,7 @@ public class ProfilePopup extends FrameLayout {
 		
 		myStoryInfo = null;
 		tvNickname.setText("");
+		tvGenderWithAge.setText("");
         
 		Drawable d = ivImage.getDrawable();
         ivImage.setImageDrawable(null);

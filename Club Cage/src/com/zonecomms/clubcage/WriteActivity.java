@@ -242,10 +242,10 @@ public class WriteActivity extends RecyclingActivity {
 					
 					for(int i=0; i<imageUrls.length; i++) {
 						
-						DownloadUtils.downloadBitmap(imageUrls[i], null, new OnBitmapDownloadListener() {
+						DownloadUtils.downloadBitmap(imageUrls[i], new OnBitmapDownloadListener() {
 							
 							@Override
-							public void onError(String url, ImageView ivImage) {
+							public void onError(String url) {
 
 								ToastUtils.showToast(R.string.failToLoadBitmap);
 								
@@ -257,7 +257,7 @@ public class WriteActivity extends RecyclingActivity {
 							}
 							
 							@Override
-							public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+							public void onCompleted(String url, Bitmap bitmap) {
 
 								downloadImageCount ++;
 								

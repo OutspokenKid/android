@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/findIdPwPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+    <!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/findIdPwPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentTop="true" />
+    
+    <ScrollView
+        android:id="@+id/findIdPwPage_scrollView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:fillViewport="true" >
+	
+	    <RelativeLayout
+	        android:id="@+id/findIdPwPage_relative" 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		    
+		    <!-- 전화번호 입력. -->
+		    
+		    <EditText 
+		        android:id="@+id/findIdPwPage_etPhone"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentTop="true"
+		    	android:layout_centerHorizontal="true"
+		    	android:background="#b2ffffff"
+		    	android:singleLine="true"
+		    	android:textColor="#4a4a4a"
+		    	android:textColorHint="#4a4a4a"
+		    	android:imeOptions="actionSend"
+		    	android:inputType="phone"
+		    	android:hint="@string/inputPhone"
+		    	android:gravity="center" />
+		
+		    <!-- 인증번호 발송 버튼. -->
+		    
+		    <Button
+		        android:id="@+id/findIdPwPage_btnSend"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/findIdPwPage_etPhone"
+		    	android:layout_centerHorizontal="true"
+		    	android:background="@drawable/btn_send_certification" />
+		    
+		    <!-- 인증번호 입력. -->
+		    
+		    <EditText 
+		        android:id="@+id/findIdPwPage_etCertification"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/findIdPwPage_etPhone"
+		    	android:layout_centerHorizontal="true"
+		    	android:visibility="invisible"
+		    	android:background="#b2ffffff"
+		    	android:singleLine="true"
+		    	android:textColor="#4a4a4a"
+		    	android:textColorHint="#4a4a4a"
+		    	android:hint="@string/inputCertification"
+		    	android:imeOptions="actionSend"
+		    	android:inputType="phone"
+		    	android:gravity="center" />
+		    
+		    <!-- 인증하기 버튼. -->
+		    
+		    <Button
+		        android:id="@+id/findIdPwPage_btnCertify"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/findIdPwPage_etCertification"
+		    	android:layout_centerHorizontal="true"
+		    	android:visibility="invisible"
+		    	android:background="@drawable/btn_certification" />
+		    
+		    <!-- 저작권 표시. -->
+		
+			<ImageView 
+		        android:id="@+id/findIdPwPage_ivCopyright"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentBottom="true"
+		    	android:layout_centerHorizontal="true"
+		    	android:src="@drawable/img_reserved"
+		    	android:scaleType="centerInside" />
+		    
+		</RelativeLayout>
+	    
+	</ScrollView>
+	
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/findIdPwPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/findIdPwPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+</RelativeLayout>

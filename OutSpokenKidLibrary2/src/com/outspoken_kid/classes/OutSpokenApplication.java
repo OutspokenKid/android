@@ -2,8 +2,8 @@ package com.outspoken_kid.classes;
 
 import android.app.Activity;
 import android.app.Application;
-import android.graphics.PixelFormat;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.PixelFormat;
 
 import com.outspoken_kid.imagecache.ImageCacheManager;
 import com.outspoken_kid.imagecache.ImageCacheManager.CacheType;

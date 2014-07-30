@@ -1,0 +1,48 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.cmons.cph"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:name="com.cmons.classes.CphApplication"
+        android:theme="@style/AppTheme" >
+
+        <activity
+            android:name=".SignInActivity"
+        	android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden|adjustResize"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" >
+        	
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+        </activity>
+        
+        <activity
+            android:name=".SignUpActivity"
+        	android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden|adjustResize"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" >
+            
+        </activity>
+        
+        <activity
+            android:name=".MainActivity"
+        	android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden|adjustResize"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" >
+            
+        </activity>
+        
+    </application>
+
+</manifest>

@@ -105,15 +105,15 @@ public class SponserBanner extends FrameLayout {
 			final int bitmapIndex = bannerIndex;
 
 			ivImage.setTag(banners[bannerIndex].getImg_url());
-			DownloadUtils.downloadBitmap(banners[bannerIndex].getImg_url(), ivImage, new OnBitmapDownloadListener() {
+			DownloadUtils.downloadBitmap(banners[bannerIndex].getImg_url(), new OnBitmapDownloadListener() {
 				
 				@Override
-				public void onError(String url, ImageView ivImage) {
+				public void onError(String url) {
 					hideBanner();
 				}
 				
 				@Override
-				public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+				public void onCompleted(String url, Bitmap bitmap) {
 				
 					try {
 						if(ivImage == null || ivImage.getTag() == null || !url.equals(ivImage.getTag().toString())) {

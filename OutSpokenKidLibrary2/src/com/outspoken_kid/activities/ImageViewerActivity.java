@@ -344,7 +344,9 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 			setTitle(title);
 		}
 
-		if(imageResId != 0) {
+		LogUtils.log("ImageViewerActivity.setPage.  position : " + imageIndex + ", imageResId : " + imageResId);
+		
+		if(imageResId == 0) {
 			mainLayout.postDelayed(new Runnable() {
 				
 				@Override
@@ -352,7 +354,6 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 
 					if(imageIndex != 0) {
 						atStart = true;
-						LogUtils.log("ImageViewerActivity.setPage.  position : " + imageIndex);
 						
 						if(viewPagerForImages != null 
 								&& viewPagerForImages.getAdapter() != null
@@ -586,14 +587,14 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 		
 		public void downloadImage() {
 
-			DownloadUtils.downloadBitmap(url, ivImage, new OnBitmapDownloadListener() {
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 				
 				@Override
-				public void onError(String url, ImageView ivImage) {
+				public void onError(String url) {
 				}
 				
 				@Override
-				public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+				public void onCompleted(String url, Bitmap bitmap) {
 					
 					if(ivImage != null && bitmap != null && !bitmap.isRecycled()) {
 						ivImage.setImageBitmap(bitmap);
@@ -659,17 +660,17 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 		
 		public void download() {
 			
-			DownloadUtils.downloadBitmap(url, ivThumbnail, new OnBitmapDownloadListener() {
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 				
 				@Override
-				public void onError(String url, ImageView ivImage) {
+				public void onError(String url) {
 				}
 				
 				@Override
-				public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+				public void onCompleted(String url, Bitmap bitmap) {
 
-					if(ivImage != null) {
-						ivImage.setImageBitmap(bitmap);
+					if(ivThumbnail != null) {
+						ivThumbnail.setImageBitmap(bitmap);
 					}
 				}
 			});

@@ -118,14 +118,14 @@ public class NoticePopup extends FrameLayout {
 				@Override
 				public void run() {
 					
-					DownloadUtils.downloadBitmap(popup.getBg_img_url(), ivImage, new OnBitmapDownloadListener() {
+					DownloadUtils.downloadBitmap(popup.getBg_img_url(), new OnBitmapDownloadListener() {
 						
 						@Override
-						public void onError(String url, ImageView ivImage) {
+						public void onError(String url) {
 						}
 						
 						@Override
-						public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+						public void onCompleted(String url, Bitmap bitmap) {
 							
 							if(ivImage != null && bitmap != null && !bitmap.isRecycled()) {
 								ivImage.setImageBitmap(bitmap);

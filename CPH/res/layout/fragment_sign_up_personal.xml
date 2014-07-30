@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    android:fillViewport="true" >
+
+    <RelativeLayout
+        android:id="@+id/signUpForPersonalPage_relativeBusiness"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff" >
+
+        <!-- 상호명 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvCompanyName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/companyName"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etCompanyName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:textColor="#000" />
+
+        <!-- 매장 전화번호 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvCompanyPhone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etCompanyPhone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:inputType="phone"
+            android:textColor="#000" />
+
+        <!-- 매장 위치 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvCompanyLocation"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etCompanyLocation"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:textColor="#000" />
+
+        <!-- 아이디 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/id"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForId"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <Button
+            android:id="@+id/signUpForPersonalPage_btnCheckId"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/checkDuplication" />
+
+        <!-- 비밀번호 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvPw"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/id"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etPw"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForPw"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 비밀번호 확인 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvConfirmPw"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/confirmPw"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etConfirmPw"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForPw"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 휴대폰 번호 -->
+        <TextView
+            android:id="@+id/signUpForPersonalPage_tvPhone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:text="@string/phoneNumber"
+            android:textColor="#000" />
+
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etPhone"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForPhone"
+            android:inputType="phone"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 인증번호 입력 -->
+        <EditText
+            android:id="@+id/signUpForPersonalPage_etVerification"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:hint="@string/hintForVerification"
+            android:inputType="text"
+            android:textColor="#000"
+            android:textColorHint="#aaa" />
+
+        <!-- 인증번호 발송 -->
+        <Button
+            android:id="@+id/signUpForPersonalPage_btnSendVerification"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/sendVerification" />
+
+        <!-- 완료 -->
+        <Button
+            android:id="@+id/signUpForPersonalPage_btnComplete"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/complete" />
+    </RelativeLayout>
+
+</ScrollView>

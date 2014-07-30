@@ -1,0 +1,73 @@
+<resources>
+
+    <string name="address">Address</string>
+    <string name="agree">Agree</string>
+    <string name="app_name">CPH</string>
+
+    <string name="checkDuplication">Check duplication</string>
+    <string name="companyName">Company name</string>
+    <string name="complete">Complete</string>
+    <string name="confirmPw">Confirm password</string>
+    
+    <string name="employee_designer">Employee designer</string>
+    <string name="employee_md">Employee md</string>
+    <string name="employee_normal">Employee normal</string>
+    
+    <string name="findId">Find ID</string>
+    <string name="findPw">Find Password</string>
+    <string name="floor">Floor</string>
+    
+    <string name="hintForId">Find ID</string>
+    <string name="hintForPw">Find PW</string>
+    <string name="hintForPhone">Phone number</string>
+    <string name="hintForSearchCompanyName">Input company name</string>
+    <string name="hintForSearchCompanyPhone">Input company phone</string>
+    <string name="hintForSearchCompanyRegistration">Input company registration</string>
+    <string name="hintForVerification">VerificationNumber</string>
+    <string name="hintForWriteCompanyName">Input company name</string>
+    <string name="hintForWriteCompanyAddress">Input company address</string>
+    <string name="hintForWriteCompanyOwnerName">Input company owner name</string>
+    
+    <string name="id">Id</string>
+    <string name="inputPhone">Input phone number</string>
+    <string name="inputCompanyInfo">Input company info</string>
+    <string name="inputUserInfo">Input user info</string>
+    <string name="inputCertification">Input certification number</string>
+    
+    <string name="next">Next</string>
+    <string name="notice">Notice</string>
+    
+    <string name="owner">Owner</string>
+    <string name="ownerName">Owner name</string>
+
+    <string name="phoneNumber">Phone number</string>
+    <string name="phoneNumberForWholesale">Phone number</string>
+    <string name="phoneNumberForRetail">Phone number</string>
+    <string name="pw">Password</string>
+    
+    <string name="registrationNumber">Registration number</string>
+    <string name="retailOffline">Retail - Offline</string>
+    <string name="retailOnline">Retail - Online</string>
+    <string name="roomNumber">Room number</string>
+
+    <string name="search">Search</string>
+    <string name="searchCompany">Search company</string>
+    <string name="searchCompanyName">Search company name</string>
+    <string name="searchCompanyPhone">Search company Phone number</string>
+    <string name="searchCompanyLocation">Search company location</string>
+    <string name="searchCompanyRegistration">Search company registration number</string>
+    <string name="sendIdCompleted">Send id completed</string>
+    <string name="sendPwCompleted">Send pw completed</string>
+    <string name="sendVerification">Send verification number</string>
+    <string name="signIn">Sign In</string>
+    <string name="signingIn">Signing In..</string>
+    <string name="signUp">Sign Up</string>
+    
+    <string name="terms">Terms...</string>
+    
+    <string name="verify">Verify</string>
+    
+    <string name="wholesale">Wholesale</string>
+    <string name="wrongId">Wrong ID</string>
+    <string name="wrongPw">Wrong PW</string>
+</resources>

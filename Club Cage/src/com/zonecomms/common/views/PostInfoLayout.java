@@ -127,14 +127,14 @@ public class PostInfoLayout extends RelativeLayout {
 			
 			if(!StringUtils.isEmpty(member.getMedia_src())) {
 				DownloadUtils.downloadBitmap(member.getMedia_src(), 
-						ivImage, new OnBitmapDownloadListener() {
+						new OnBitmapDownloadListener() {
 					
 					@Override
-					public void onError(String url, ImageView ivImage) {
+					public void onError(String url) {
 					}
 					
 					@Override
-					public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+					public void onCompleted(String url, Bitmap bitmap) {
 
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);

@@ -6,13 +6,10 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.widget.CheckBox;
@@ -82,32 +79,6 @@ public class SettingPage extends BaseFragment {
 	private CheckBox cbNotiReply;
 	private CheckBox cbSound;
 	private CheckBox cbVibration;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_setting, null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		
-		setListeners();
-		setSizes();
-		
-		setPage(true);
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -422,6 +393,12 @@ public class SettingPage extends BaseFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_setting;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 
 		if(webBrowser.getVisibility() == View.VISIBLE) {
@@ -445,17 +422,17 @@ public class SettingPage extends BaseFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
+	public void onResume() {
+		super.onResume();
 		
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
 		}
+		
+		setPage(true);
 	}
 	
 	@Override

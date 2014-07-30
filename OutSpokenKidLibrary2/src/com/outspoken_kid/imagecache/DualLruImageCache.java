@@ -5,8 +5,10 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.os.AsyncTask;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
 
 /**
@@ -24,7 +26,7 @@ public class DualLruImageCache implements ImageCache {
 			int diskCacheSize, CompressFormat compressFormat, int quality) {
 		
 		memoryCache = new BitmapLruImageCache(diskCacheSize);
-		diskCache = new DiskLruImageCache(context, uniqueName, diskCacheSize,
+		diskCache = new DiskLruImageCache(context, uniqueName, diskCacheSize * 3,
 				compressFormat, quality);
 	}
 	
@@ -42,19 +44,52 @@ public class DualLruImageCache implements ImageCache {
 			bitmap = diskCache.getBitmap(url);
 			
 			if(bitmap != null && !bitmap.isRecycled()) {
+				LogUtils.log("###DualLruImageCache.from disk cache.  url : " + url);
 				memoryCache.putBitmap(url, bitmap);
 			}
+		} else {
+			LogUtils.log("###DualLruImageCache.from memory cache.  url : " + url);
 		}
 		
 		return bitmap;
 	}
  
 	@Override
-	public void putBitmap(String url, Bitmap bitmap) {
+	public void putBitmap(String url, final Bitmap bitmap) {
 
 		if(bitmap != null && !bitmap.isRecycled()) {
-			url = StringUtils.stringReplace(url).toLowerCase(Locale.getDefault());
-			memoryCache.putBitmap(url, bitmap);
+
+			try {
+				//Put bitmap to memory cache.
+				memoryCache.putBitmap(url, bitmap);
+				
+				//Put bitmap to disk cache.
+				(new BackgroundPutBitmapThread(
+						StringUtils.stringReplace(url).toLowerCase(Locale.getDefault()), 
+						bitmap)).run();
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+////////////////// Classes.
+	
+	public class BackgroundPutBitmapThread extends Thread {
+		
+		private String url;
+		private Bitmap bitmap;
+		
+		public BackgroundPutBitmapThread(String url, Bitmap bitmap) {
+			
+			this.url = url;
+			this.bitmap = bitmap;
+		}
+		
+		@Override
+		public void run() {
 			diskCache.putBitmap(url, bitmap);
 		}
 	}

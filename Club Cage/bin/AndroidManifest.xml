@@ -112,6 +112,12 @@
         	android:screenOrientation="portrait"
         	android:windowSoftInputMode="stateHidden" />
         
+        <activity 
+            android:name=".YoutubePlayerActivity"
+        	android:screenOrientation="landscape"
+        	android:windowSoftInputMode="stateAlwaysHidden"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+        
 	</application>
 
 </manifest>

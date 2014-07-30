@@ -10,16 +10,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -36,12 +33,12 @@ import android.widget.TextView;
 
 import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseListFragment;
@@ -61,24 +58,14 @@ public class GridPage extends BaseListFragment {
 	private int menuIndex;
 	private int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
 
+	private boolean isEditTextShown;
+	
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private GridView gridView;
 	private HoloStyleEditText editText;
 	private TextView[] menus;
 	
 	private AsyncSearchTask currentTask;
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_grid, null);
-		return mThisView;
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -333,6 +320,12 @@ public class GridPage extends BaseListFragment {
 
 		return R.id.gridPage_mainLayout;
 	}
+	
+	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_grid;
+	}
 
 	@Override
 	public boolean onBackKeyPressed() {
@@ -341,22 +334,19 @@ public class GridPage extends BaseListFragment {
 	}
 
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-
+	public void onResume() {
+		super.onResume();
 		
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			
-			if(boardIndex != 0) {
-				mActivity.getTitleBar().showWriteButton();
-			} else {
-				mActivity.getTitleBar().hideWriteButton();
-			}
+		mActivity.getTitleBar().showHomeButton();
+		
+		if(boardIndex != 0) {
+			mActivity.getTitleBar().showWriteButton();
+		} else {
+			mActivity.getTitleBar().hideWriteButton();
+		}
 
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().downloadBanner();
-			}
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().downloadBanner();
 		}
 	}
 
@@ -376,26 +366,14 @@ public class GridPage extends BaseListFragment {
 	
 	public void addMenuForPeople() {
 		
-		RelativeLayout.LayoutParams rp = null;
 		int length = ResizeUtils.getScreenWidth()/4;
 		int p = ResizeUtils.getSpecificLength(8);
-		
-		LinearLayout linear = new LinearLayout(mContext);
-		
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		linear.setLayoutParams(rp);
-		linear.setOrientation(LinearLayout.HORIZONTAL);
-		((RelativeLayout)mThisView.findViewById(R.id.gridPage_mainLayout)).addView(linear);
 
-		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		rp.topMargin = length / 2;
-		swipeRefreshLayout.setLayoutParams(rp);
+		LinearLayout linear = (LinearLayout) mThisView.findViewById(R.id.gridPage_menuLinear);
+		linear.setVisibility(View.VISIBLE);
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(length, length);
 		
 		menus = new TextView[4];
-		
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(length, length);
 		
 		for(int i=0; i<4; i++) {
 			
@@ -414,7 +392,7 @@ public class GridPage extends BaseListFragment {
 			
 			TextView v = new TextView(mContext);
 			v.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			v.setBackgroundColor(i==0?Color.BLACK:Color.rgb(55, 55, 55));
+			v.setBackgroundColor(i==menuIndex?Color.BLACK:Color.rgb(55, 55, 55));
 			v.setTextColor(Color.WHITE);
 			v.setGravity(Gravity.CENTER);
 			v.setPadding(0, 0, 0, 0);
@@ -479,13 +457,23 @@ public class GridPage extends BaseListFragment {
 				ResizeUtils.getSpecificLength(70));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		rp.leftMargin = m;
-		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.topMargin = ResizeUtils.getSpecificLength(166);
 		rp.rightMargin = m;
 		
 		editText = new HoloStyleEditText(mContext);
 		editText.setLayoutParams(rp);
 		editText.getEditText().setSingleLine();
-		editText.setVisibility(View.INVISIBLE);
+		
+		if(isEditTextShown) {
+			editText.setVisibility(View.VISIBLE);
+			((RelativeLayout.LayoutParams)swipeRefreshLayout.getLayoutParams()).
+					topMargin = ResizeUtils.getSpecificLength(78);
+		} else {
+			editText.setVisibility(View.INVISIBLE);
+			((RelativeLayout.LayoutParams)swipeRefreshLayout.getLayoutParams()).
+					topMargin = ResizeUtils.getSpecificLength(0);
+		}
+		
 		FontInfo.setFontSize(editText.getEditText(), 20);
 		editText.getEditText().addTextChangedListener(new TextWatcher() {
 			
@@ -529,8 +517,9 @@ public class GridPage extends BaseListFragment {
 		
 		if(!isAnimating && editText.getVisibility() != View.VISIBLE) {
 			isAnimating = true;
+			isEditTextShown = true;
 
-			float animOffset = (float)ResizeUtils.getSpecificLength(70) / (float)gridView.getMeasuredHeight();
+			float animOffset = (float)ResizeUtils.getSpecificLength(70) / (float)swipeRefreshLayout.getMeasuredHeight();
 
 			TranslateAnimation taDown = new TranslateAnimation(
 					TranslateAnimation.RELATIVE_TO_SELF, 0, 
@@ -559,14 +548,14 @@ public class GridPage extends BaseListFragment {
 					editText.requestFocus();
 					editText.setVisibility(View.VISIBLE);
 					editText.startAnimation(aaIn);
-					
-					gridView.postDelayed(new Runnable() {
+
+					swipeRefreshLayout.postDelayed(new Runnable() {
 						
 						@Override
 						public void run() {
-							gridView.clearAnimation();
-							ResizeUtils.setMargin(gridView, new int[]{0, 70, 0, 0});
-							
+							swipeRefreshLayout.clearAnimation();
+							((RelativeLayout.LayoutParams)swipeRefreshLayout.getLayoutParams()).
+									topMargin = ResizeUtils.getSpecificLength(78);
 							isLastList = false;
 							isRefreshing = true;
 							lastIndexno = 0;
@@ -577,10 +566,10 @@ public class GridPage extends BaseListFragment {
 					}, 500);
 				}
 			});
-			gridView.scrollTo(0, 0);
-			gridView.startAnimation(taDown);
+			swipeRefreshLayout.scrollTo(0, 0);
+			swipeRefreshLayout.startAnimation(taDown);
 			
-			gridView.postDelayed(new Runnable() {
+			swipeRefreshLayout.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
@@ -595,6 +584,8 @@ public class GridPage extends BaseListFragment {
 		
 		if(!isAnimating && editText != null && editText.getVisibility() == View.VISIBLE) {
 			isAnimating = true;
+			isEditTextShown = false;
+			
 			editText.getEditText().setText("");
 			
 			AlphaAnimation aaOut = new AlphaAnimation(1, 0);
@@ -607,7 +598,7 @@ public class GridPage extends BaseListFragment {
 					isAnimating = false;
 					editText.setVisibility(View.INVISIBLE);
 					
-					float animOffset = (float)ResizeUtils.getSpecificLength(70) / (float)gridView.getMeasuredHeight();
+					float animOffset = (float)ResizeUtils.getSpecificLength(70) / (float)swipeRefreshLayout.getMeasuredHeight();
 					
 					TranslateAnimation taUp = new TranslateAnimation(
 							TranslateAnimation.RELATIVE_TO_SELF, 0, 
@@ -616,8 +607,9 @@ public class GridPage extends BaseListFragment {
 							TranslateAnimation.RELATIVE_TO_SELF, 0);
 					taUp.setDuration(300);
 					taUp.setInterpolator(mContext, android.R.anim.accelerate_decelerate_interpolator);
-					ResizeUtils.setMargin(gridView, new int[]{0, 0, 0, 0});
-					gridView.startAnimation(taUp);
+					((RelativeLayout.LayoutParams)swipeRefreshLayout.getLayoutParams()).
+							topMargin = ResizeUtils.getSpecificLength(0);
+					swipeRefreshLayout.startAnimation(taUp);
 					
 					mActivity.runOnUiThread(new Runnable() {
 						

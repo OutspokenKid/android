@@ -10,21 +10,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
@@ -50,7 +48,7 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedList
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseListFragment;
+import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.adapters.ListAdapter;
@@ -60,21 +58,12 @@ import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
-//import com.outspoken_kid.utils.IntentUtils;
 
-public class UserPage extends BaseListFragment {
+public class UserPage extends BaseFragment {
 
 	private static final int ANIM_DURATION = 300;
 	private static int madeCount = 130222;
 
-	private MyStoryInfo myStoryInfo;
-	
-	private int mode;
-	private String userId;
-	private boolean isAnimating;
-	private boolean isInfoHidden;
-	private boolean isUploadingProfileImage;
-	
 	private FrameLayout mainLayout;
 	private SwipeRefreshLayout swipeRefreshLayoutForGrid;
 	private SwipeRefreshLayout swipeRefreshLayoutForList;
@@ -82,6 +71,7 @@ public class UserPage extends BaseListFragment {
 	private ListView listView;
 	private RelativeLayout relative;
 	private ProgressBar progress;
+	private FrameLayout imageFrame;
 	private ImageView ivImage;
 	private TextView tvNickname;
 	private TextView tvId;
@@ -92,10 +82,6 @@ public class UserPage extends BaseListFragment {
 	private TextView tvFriendCount;
 	private FrameLayout contentFrame;
 	private ScrollView profileScroll;
-//	private Button btnFacebook;
-//	private Button btnKakaoTalk;
-//	private Button btnKakaoStory;
-//	private Button btnMobileNumber;
 	private TextView tvStatus;
 	private TextView tvInterested;
 	private TextView tvJob;
@@ -104,26 +90,29 @@ public class UserPage extends BaseListFragment {
 	private TextView tvActiveLocation;
 	private HoloStyleSpinnerPopup pPhoto;
 
-	private GridAdapter gridAdapter;
-	private ListAdapter listAdapter;
-	private int lastIndexno;
-	private int numOfColumn = 2;
+	private MyStoryInfo myStoryInfo;
 	
+	private int mode;
+	private String userId;
+	private boolean isAnimating;
+	private boolean isInfoHidden;
+	private boolean isUploadingProfileImage;
+	protected boolean isLastList;
+	protected String url;
+	
+	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	private ArrayList<BaseModel> modelsForList = new ArrayList<BaseModel>();
 	private ArrayList<BaseModel> modelsForGrid = new ArrayList<BaseModel>();
+	
+	protected BaseAdapter targetAdapter;
+	private GridAdapter gridAdapter;
+	private ListAdapter listAdapter;
+	
+	private int lastIndexno;
+	private int numOfColumn = 2;
+	private boolean isDrag;
+	
 	private View[] bgMenus = new View[4];
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-	
-		mThisView = inflater.inflate(R.layout.page_user, null);
-		return mThisView;
-	}
 	
 	@Override
 	protected void bindViews() {
@@ -134,6 +123,8 @@ public class UserPage extends BaseListFragment {
 	@Override
 	protected void setVariables() {
 
+		LogUtils.log("###UserPage.setVariables.  menuIndex :  " + mode);
+		
 		if(getArguments() != null) {
 			
 			if(getArguments().containsKey("userId")) {
@@ -142,7 +133,7 @@ public class UserPage extends BaseListFragment {
 
 			if(getArguments().containsKey("menuIndex")) {
 				try {
-					int mode = getArguments().getInt("menuIndex");
+					mode = getArguments().getInt("menuIndex");
 					
 					if(mode < 0) {
 						mode = 0;
@@ -174,7 +165,7 @@ public class UserPage extends BaseListFragment {
 		madeCount += 27;
 
 		//id : 0
-		FrameLayout imageFrame = new FrameLayout(mContext);
+		imageFrame = new FrameLayout(mContext);
 		rp = new RelativeLayout.LayoutParams(l*2 + s, l*2 + s);
 		rp.topMargin = s;
 		rp.leftMargin = s;
@@ -399,7 +390,7 @@ public class UserPage extends BaseListFragment {
 			bgMenu.setText(resId);
 			bgMenu.setLayoutParams(rp);
 			bgMenu.setPadding(0, 0, 0, 0);
-			bgMenu.setBackgroundColor(i==0?Color.BLACK:Color.rgb(55, 55, 55));
+			bgMenu.setBackgroundColor(i==mode?Color.BLACK:Color.rgb(55, 55, 55));
 			bgMenu.setTextColor(Color.WHITE);
 			bgMenu.setGravity(Gravity.CENTER);
 			FontInfo.setFontSize(bgMenu, 28);
@@ -429,137 +420,8 @@ public class UserPage extends BaseListFragment {
 		mainLayout.addView(contentFrame);
 		
 		addProfileScroll();
-		
-		swipeRefreshLayoutForGrid = new SwipeRefreshLayout(mContext);
-		
-		gridAdapter = new GridAdapter(mContext, mActivity, modelsForGrid, true);
-		gridView = new GridView(mContext);
-		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		gridView.setAdapter(gridAdapter);
-		gridView.setBackgroundColor(Color.BLACK);
-		gridView.setVisibility(View.INVISIBLE);
-		
-		gridView.setNumColumns(numOfColumn);
-		gridView.setPadding(0, 0, 0, 0);
-		gridView.setSelector(R.drawable.list_selector);
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				
-				if(scrollState == 0) {
-					if(gridView.getFirstVisiblePosition() == 0) {
-						showInformation();
-					} else {
-						hideInformation();
-					}
-					
-//					gridView.setTouched(false);
-				} else if(scrollState == 2) {
-//					gridView.setTouched(false);
-				}
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
-
-//				if(gridView.isTouched()) {
-//					return;
-//				}
-				
-				if(firstVisibleItem == 0 && gridView.getChildCount() != 0 
-						&& gridView.getChildAt(0).getTop() <= 10) {
-					showInformation();
-				} else if(firstVisibleItem == numOfColumn) {
-					hideInformation();
-				}
-			}
-		});
-		swipeRefreshLayoutForGrid.addView(gridView);
-		
-		swipeRefreshLayoutForGrid.setColorSchemeColors(
-        		Color.argb(255, 255, 102, 153), 
-        		Color.argb(255, 255, 153, 153), 
-        		Color.argb(255, 255, 204, 153), 
-        		Color.argb(255, 255, 255, 153));
-		swipeRefreshLayoutForGrid.setEnabled(true);
-		swipeRefreshLayoutForGrid.setOnRefreshListener(new OnRefreshListener() {
-			
-			@Override
-			public void onRefresh() {
-
-				swipeRefreshLayoutForGrid.setRefreshing(true);
-				onRefreshPage();
-			}
-		});
-		contentFrame.addView(swipeRefreshLayoutForGrid);
-		
-		swipeRefreshLayoutForList = new SwipeRefreshLayout(mContext);
-		
-		listAdapter = new ListAdapter(mContext, mActivity, modelsForList, true);
-		listView = new ListView(mContext);
-		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
-		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
-		listView.setVisibility(View.INVISIBLE);
-		listView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if(scrollState == 0) {
-					
-					if(listView.getFirstVisiblePosition() == 0) {
-						showInformation();
-					} else {
-						hideInformation();
-					}
-					
-//					listView.setTouched(false);
-				} else if(scrollState == 2) {
-//					listView.setTouched(false);
-				}
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				
-//				if(listView.isTouched()) {
-//					return;
-//				}
-				
-				if(firstVisibleItem == 0 && listView.getChildCount() != 0 
-						&& listView.getChildAt(0).getTop() == 0) {
-					showInformation();
-				} else if(firstVisibleItem == numOfColumn) {
-					hideInformation();
-				}
-			}
-		});
-		swipeRefreshLayoutForList.addView(listView);
-		
-		swipeRefreshLayoutForList.setColorSchemeColors(
-        		Color.argb(255, 255, 102, 153), 
-        		Color.argb(255, 255, 153, 153), 
-        		Color.argb(255, 255, 204, 153), 
-        		Color.argb(255, 255, 255, 153));
-		swipeRefreshLayoutForList.setEnabled(true);
-		swipeRefreshLayoutForList.setOnRefreshListener(new OnRefreshListener() {
-			
-			@Override
-			public void onRefresh() {
-
-				swipeRefreshLayoutForList.setRefreshing(true);
-				onRefreshPage();
-			}
-		});
-		contentFrame.addView(swipeRefreshLayoutForList);
+		addGridView();
+		addListView();
 		
 		pPhoto = new HoloStyleSpinnerPopup(mContext);
 		pPhoto.setTitle(getString(R.string.uploadPhoto));
@@ -681,17 +543,16 @@ public class UserPage extends BaseListFragment {
 
 	@Override
 	protected void downloadInfo() {
-		
+
 		if(mode == 1 || mode == 2) {
 			loadPosts();
 		}
-		
-		super.downloadInfo();
 	}
 
 	@Override
 	protected void setPage(boolean successDownload) {
 
+		LogUtils.log("###where.setPage.  hideLoadingView");
 		mActivity.hideCover();
 		mActivity.hideLoadingView();
 		isRefreshing = false;
@@ -741,6 +602,12 @@ public class UserPage extends BaseListFragment {
 	}
 
 	@Override
+	protected int getLayoutResId() {
+
+		return R.layout.page_user;
+	}
+	
+	@Override
 	public boolean onBackKeyPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
@@ -759,6 +626,7 @@ public class UserPage extends BaseListFragment {
 		}
 
 		isRefreshing = true;
+		isLastList = false;
 		lastIndexno = 0;
 		models.clear();
 		targetAdapter.notifyDataSetChanged();
@@ -786,25 +654,24 @@ public class UserPage extends BaseListFragment {
 			return;
 		}
 	}
-
+	
 	@Override
-	public void onHiddenChanged(boolean hidden) {
-		
-		if(mode != 0) {
-			super.onHiddenChanged(hidden);
-		}
+	public void onResume() {
+		super.onResume();
 
-		if(!hidden) {
-			mActivity.getTitleBar().showHomeButton();
-			mActivity.getTitleBar().hideWriteButton();
-			
-			if(mActivity.getSponserBanner() != null) {
-				mActivity.getSponserBanner().hideBanner();
-			}
-			
-			if(mode == 0 || (mode != 3 && models.size() == 0)) {
-				setMode(mode);
-			}
+		LogUtils.log("###USerPage.onResume.  mode : " + mode);
+		
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
+		
+		if(mActivity.getSponserBanner() != null) {
+			mActivity.getSponserBanner().hideBanner();
+		}
+	
+		if(mode == 0) {
+			setMode(mode);
+		} else {
+			loadProfile();
 		}
 	}
 	
@@ -827,6 +694,7 @@ public class UserPage extends BaseListFragment {
 		profileScroll = new ScrollView(mContext);
 		profileScroll.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
 		profileScroll.setFillViewport(true);
+		profileScroll.setVisibility(mode==0?View.VISIBLE:View.INVISIBLE);
 		contentFrame.addView(profileScroll);
 		
 		RelativeLayout relative = new RelativeLayout(mContext);
@@ -841,91 +709,11 @@ public class UserPage extends BaseListFragment {
 		int width = l*2 + p;
 		int height = l;
 		
-//		//Facebook.		id : 3
-//		btnFacebook = new Button(mContext);
-//		rp = new RelativeLayout.LayoutParams(l, l);
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-//		rp.rightMargin = p;
-//		rp.bottomMargin = p;
-//		btnFacebook.setLayoutParams(rp);
-//		btnFacebook.setId(madeCount + 3);
-//		btnFacebook.setBackgroundColor(Color.RED);
-//		btnFacebook.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				if(!StringUtils.isEmpty(myStoryInfo.getFacebook())) {
-//					mActivity.showDeviceBrowser(myStoryInfo.getFacebook());
-//				}
-//			}
-//		});
-//		relative.addView(btnFacebook);
-//		
-//		//Kakao talk.	id : 4
-//		btnKakaoTalk = new Button(mContext);
-//		rp = new RelativeLayout.LayoutParams(l, l);
-//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 3);
-//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 3);
-//		rp.rightMargin = p;
-//		rp.bottomMargin = p;
-//		btnKakaoTalk.setLayoutParams(rp);
-//		btnKakaoTalk.setId(madeCount + 4);
-//		btnKakaoTalk.setBackgroundColor(Color.GREEN);
-//		btnKakaoTalk.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//
-//				if(!StringUtils.isEmpty(myStoryInfo.getKakao())) {
-//					mActivity.showAlertDialog(getString(R.string.kakaoTalkId), myStoryInfo.getKakao(), null, false);
-//				}
-//			}
-//		});
-//		relative.addView(btnKakaoTalk);
-//		
-//		//Kakao story.	id : 5
-//		btnKakaoStory = new Button(mContext);
-//		rp = new RelativeLayout.LayoutParams(l, l);
-//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
-//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
-//		rp.rightMargin = p;
-//		rp.bottomMargin = p;
-//		btnKakaoStory.setLayoutParams(rp);
-//		btnKakaoStory.setId(madeCount + 5);
-//		btnKakaoStory.setBackgroundColor(Color.BLUE);
-//		relative.addView(btnKakaoStory);
-//		
-//		//Mobile number.
-//		btnMobileNumber = new Button(mContext);
-//		rp = new RelativeLayout.LayoutParams(l, l);
-//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 5);
-//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 5);
-//		btnMobileNumber.setLayoutParams(rp);
-//		btnMobileNumber.setBackgroundColor(Color.YELLOW);
-//		btnMobileNumber.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				
-//				if(!StringUtils.isEmpty(myStoryInfo.getMystory_mobile_no())) {
-//					boolean result = IntentUtils.call(mContext, myStoryInfo.getMystory_mobile_no());
-//					
-//					if(!result) {
-//						ToastUtils.showToast(R.string.unusableNumber);
-//					}
-//				}
-//			}
-//		});
-//		relative.addView(btnMobileNumber);
-		
 		//현재 상태		id : 0
 		tvStatus = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
-//		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
 		rp.rightMargin = p;
 		rp.bottomMargin = p;
 		tvStatus.setLayoutParams(rp);
@@ -1027,6 +815,154 @@ public class UserPage extends BaseListFragment {
 		relative.addView(bottomBlank);
 	}
 	
+	public void addGridView() {
+		
+		swipeRefreshLayoutForGrid = new SwipeRefreshLayout(mContext);
+		
+		gridAdapter = new GridAdapter(mContext, mActivity, modelsForGrid, true);
+		gridView = new GridView(mContext);
+		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		gridView.setAdapter(gridAdapter);
+		gridView.setBackgroundColor(Color.BLACK);
+		
+		gridView.setNumColumns(numOfColumn);
+		gridView.setPadding(0, 0, 0, 0);
+		gridView.setSelector(R.drawable.list_selector);
+		gridView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				
+				if(scrollState == 0) {
+					if(gridView.getFirstVisiblePosition() == 0) {
+						showInformation();
+					} else {
+						hideInformation();
+					}
+
+					isDrag = false;
+					
+				} else if(scrollState == 1) {
+					isDrag = true;
+					
+				} else if(scrollState == 2) {
+					isDrag = false;
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
+
+				if(isDrag) {
+					return;
+				}
+				
+				if(firstVisibleItem == 0 && gridView.getChildCount() != 0 
+						&& gridView.getChildAt(0).getTop() <= 10) {
+					showInformation();
+				} else if(firstVisibleItem == numOfColumn) {
+					hideInformation();
+				}
+			}
+		});
+		swipeRefreshLayoutForGrid.addView(gridView);
+		
+		swipeRefreshLayoutForGrid.setVisibility(mode == 1 || mode == 2 ? View.VISIBLE : View.INVISIBLE);
+		swipeRefreshLayoutForGrid.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+		swipeRefreshLayoutForGrid.setEnabled(true);
+		swipeRefreshLayoutForGrid.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				
+				swipeRefreshLayoutForGrid.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
+		contentFrame.addView(swipeRefreshLayoutForGrid);
+	}
+	
+	public void addListView() {
+
+		swipeRefreshLayoutForList = new SwipeRefreshLayout(mContext);
+		
+		listAdapter = new ListAdapter(mContext, mActivity, modelsForList, true);
+		listView = new ListView(mContext);
+		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		listView.setAdapter(listAdapter);
+		listView.setBackgroundColor(Color.BLACK);
+		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				
+				LogUtils.log("###where.onScrollStateChanged.  sS ; " + scrollState);
+				
+				if(scrollState == 0) {
+					
+					if(listView.getFirstVisiblePosition() == 0) {
+						showInformation();
+					} else {
+						hideInformation();
+					}
+					
+					isDrag = false;
+					
+				} else if(scrollState == 1) {
+					isDrag = true;
+					
+				} else if(scrollState == 2) {
+					isDrag = false;
+				}
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(isDrag) {
+					return;
+				}
+				
+				if(firstVisibleItem == 0 && listView.getChildCount() != 0 
+						&& listView.getChildAt(0).getTop() == 0) {
+					showInformation();
+				} else if(firstVisibleItem == numOfColumn) {
+					hideInformation();
+				}
+			}
+		});
+		swipeRefreshLayoutForList.addView(listView);
+
+		swipeRefreshLayoutForList.setVisibility(mode == 3? View.VISIBLE : View.INVISIBLE);
+		swipeRefreshLayoutForList.setColorSchemeColors(
+        		Color.argb(255, 255, 102, 153), 
+        		Color.argb(255, 255, 153, 153), 
+        		Color.argb(255, 255, 204, 153), 
+        		Color.argb(255, 255, 255, 153));
+		swipeRefreshLayoutForList.setEnabled(true);
+		swipeRefreshLayoutForList.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				
+				swipeRefreshLayoutForList.setRefreshing(true);
+				onRefreshPage();
+			}
+		});
+		contentFrame.addView(swipeRefreshLayoutForList);
+	}
+	
 	public void setMode(int mode) {
 		
 		if(isUploadingProfileImage) {
@@ -1037,6 +973,7 @@ public class UserPage extends BaseListFragment {
 		isDownloading = false;
 		isLastList = false;
 		mActivity.showLoadingView();
+		
 		mActivity.showCover();
 		
 		if(targetAdapter != null) {
@@ -1060,8 +997,8 @@ public class UserPage extends BaseListFragment {
 		case 0:
 			targetAdapter = null;
 			profileScroll.setVisibility(View.VISIBLE);
-			gridView.setVisibility(View.INVISIBLE);
-			listView.setVisibility(View.INVISIBLE);
+			swipeRefreshLayoutForGrid.setVisibility(View.INVISIBLE);
+			swipeRefreshLayoutForList.setVisibility(View.INVISIBLE);
 			loadProfile();
 			break;
 		case 1:
@@ -1069,16 +1006,16 @@ public class UserPage extends BaseListFragment {
 			targetAdapter = gridAdapter;
 			models = modelsForGrid;
 			profileScroll.setVisibility(View.INVISIBLE);
-			gridView.setVisibility(View.VISIBLE);
-			listView.setVisibility(View.INVISIBLE);
+			swipeRefreshLayoutForGrid.setVisibility(View.VISIBLE);
+			swipeRefreshLayoutForList.setVisibility(View.INVISIBLE);
 			loadPosts();
 			break;
 		case 3:
 			targetAdapter = listAdapter;
 			models = modelsForList;
 			profileScroll.setVisibility(View.INVISIBLE);
-			gridView.setVisibility(View.INVISIBLE);
-			listView.setVisibility(View.VISIBLE);
+			swipeRefreshLayoutForGrid.setVisibility(View.INVISIBLE);
+			swipeRefreshLayoutForList.setVisibility(View.VISIBLE);
 			loadMessageSample();  
 			break;
 		
@@ -1094,9 +1031,6 @@ public class UserPage extends BaseListFragment {
 				return;
 			}
 
-			mActivity.showCover();
-			mActivity.showLoadingView();
-			
 			url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + userId +
@@ -1190,7 +1124,7 @@ public class UserPage extends BaseListFragment {
 				tvLiveLocation.setOnClickListener(ocl);
 				tvActiveLocation.setOnClickListener(ocl);
 			} else {
-				ivImage.setOnClickListener(new OnClickListener() {
+				imageFrame.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -1230,18 +1164,17 @@ public class UserPage extends BaseListFragment {
 			ivImage.setVisibility(View.INVISIBLE);
 			
 			ivImage.setTag(myStoryInfo.getMystory_member_profile());
-			DownloadUtils.downloadBitmap(myStoryInfo.getMystory_member_profile(), ivImage,
+			DownloadUtils.downloadBitmap(myStoryInfo.getMystory_member_profile(),
 					new OnBitmapDownloadListener() {
 
 						@Override
-						public void onError(String url, ImageView ivImage) {
+						public void onError(String url) {
 							ivImage.setVisibility(View.VISIBLE);
 							progress.setVisibility(View.INVISIBLE);
 						}
 
 						@Override
-						public void onCompleted(String url, ImageView ivImage,
-								Bitmap bitmap) {
+						public void onCompleted(String url, Bitmap bitmap) {
 
 							try {
 								LogUtils.log("UserPage.onCompleted." + "\nurl : "
@@ -1306,19 +1239,19 @@ public class UserPage extends BaseListFragment {
 		if(isDownloading || isLastList) {
 			return;
 		}
-
-		super.downloadInfo();
+		
+		isDownloading = true;
 		
 		url = ZoneConstants.BASE_URL + "sb/posting_list_by_story" +
 				"?member_id=" + userId + 
-				"&last_sb_spot_nid=" + lastIndexno +
+				"&last_spot_nid=" + lastIndexno +
 				"&image_size=" + ResizeUtils.getSpecificLength(308) +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 
 		if(mode == 1) {
 			url += "&story=in";
 		} else if(mode == 2) {
-			url += "&story=out";
+			url += "&story=other";
 		} else {
 			return;
 		}
@@ -1378,7 +1311,7 @@ public class UserPage extends BaseListFragment {
 			return;
 		}
 		
-		super.downloadInfo();
+		isDownloading = true;
 		
 		String url = null;
 		
@@ -1450,6 +1383,9 @@ public class UserPage extends BaseListFragment {
 		if(!isAnimating && isInfoHidden) {
 			isInfoHidden = false;
 			isAnimating = true;
+			
+			swipeRefreshLayoutForGrid.setEnabled(true);
+			swipeRefreshLayoutForList.setEnabled(true);
 
 			if(mode == 1 || mode == 2) {
 				int scrollOffset = gridView.getScrollX();
@@ -1496,6 +1432,9 @@ public class UserPage extends BaseListFragment {
 			isInfoHidden = true;
 			isAnimating = true;
 
+			swipeRefreshLayoutForGrid.setEnabled(false);
+			swipeRefreshLayoutForList.setEnabled(false);
+			
 			float animOffset = (float)relative.getMeasuredHeight() / (float)mainLayout.getMeasuredHeight();
 			
 			TranslateAnimation taUp = new TranslateAnimation(

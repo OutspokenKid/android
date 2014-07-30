@@ -95,7 +95,7 @@ public abstract class ViewWrapper {
 		}
 	}
 
-	public void setImage(ImageView ivImage, String url) {
+	public void setImage(final ImageView ivImage, String url) {
 
 		if(ivImage == null) {
 			return;
@@ -104,14 +104,14 @@ public abstract class ViewWrapper {
 		ivImage.setVisibility(View.INVISIBLE);
 		
 		ivImage.setTag(url);
-		DownloadUtils.downloadBitmap(url, ivImage, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
 					String tag = ivImage.getTag().toString();
