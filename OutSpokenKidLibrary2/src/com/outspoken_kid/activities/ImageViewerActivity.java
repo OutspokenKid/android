@@ -31,9 +31,9 @@ import android.widget.TextView;
 
 import com.calciumion.widget.BasePagerAdapter;
 import com.outspoken_kid.R;
-import com.outspoken_kid.model.FontInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ImageCacheUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -155,7 +155,7 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 			finish();
 		}
 		
-		FontInfo.setFontSize(tvTitle, 32);
+		FontUtils.setFontSize(tvTitle, 32);
 		limitDist = ResizeUtils.getSpecificLength(30);
 		downloadKey = "IMAGEVIEWERACTIVITY";
 		

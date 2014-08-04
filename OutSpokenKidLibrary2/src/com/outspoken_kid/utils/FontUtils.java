@@ -1,4 +1,4 @@
-package com.outspoken_kid.model;
+package com.outspoken_kid.utils;
 
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,7 +10,6 @@ import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.ResizeUtils;
 
 /**
  * v1.0.1
@@ -19,7 +18,7 @@ import com.outspoken_kid.utils.ResizeUtils;
  * 
  * v1.0.1 - Add setHintSize()
  */
-public class FontInfo {
+public class FontUtils {
 	
 	public static final int NONE = 0, BOLD = 1, ITELIC = 2, UNDERLINE = 4;
 	
@@ -28,7 +27,7 @@ public class FontInfo {
 	private float[] shadow = null;		//radius, dx, dy, a, r, g, b (a,r,g,b).
 	private int fontStyle = 0;			//0 : none.		1 : bold.		2 : itelic.		4 : underline.
 	
-	public FontInfo(int fontSize, int[] fontColor, float[] shadow, int fontStyle) {
+	public FontUtils(int fontSize, int[] fontColor, float[] shadow, int fontStyle) {
 		
 		this.fontSize = fontSize;
 		this.fontColor = fontColor;
@@ -124,16 +123,16 @@ public class FontInfo {
 		}
 	}
 	
-	public static void setTextView(TextView textView, FontInfo fontInfo) {
+	public static void setTextView(TextView textView, FontUtils fontInfo) {
 		
 		if(textView == null || fontInfo == null) {
 			return;
 		}
 
-		FontInfo.setFontSize(textView, fontInfo.getFontSize());
-		FontInfo.setFontColor(textView, fontInfo.getFontColor());
-		FontInfo.setShadow(textView, fontInfo.getShadow());
-		FontInfo.setFontStyle(textView, fontInfo.getFontStyle());
+		FontUtils.setFontSize(textView, fontInfo.getFontSize());
+		FontUtils.setFontColor(textView, fontInfo.getFontColor());
+		FontUtils.setShadow(textView, fontInfo.getShadow());
+		FontUtils.setFontStyle(textView, fontInfo.getFontStyle());
 	}
 
 	public int getFontSize() {
@@ -171,9 +170,9 @@ public class FontInfo {
 	public static void setFontAndHintSize(final EditText editText, final int fontSize, final int hintSize) {
 
 		if(editText.getEditableText() == null || editText.getEditableText().length() == 0) {
-			FontInfo.setFontSize(editText, hintSize);
+			FontUtils.setFontSize(editText, hintSize);
 		} else {
-			FontInfo.setFontSize(editText, fontSize);
+			FontUtils.setFontSize(editText, fontSize);
 		}
 		
 		editText.addTextChangedListener(new TextWatcher() {
@@ -183,11 +182,11 @@ public class FontInfo {
 				
 				//Empty.
 				if(s == null || s.length() == 0) {
-					FontInfo.setFontSize(editText, hintSize);
+					FontUtils.setFontSize(editText, hintSize);
 					
 				//First input.
 				} else if(before == 0){
-					FontInfo.setFontSize(editText, fontSize);
+					FontUtils.setFontSize(editText, fontSize);
 				}
 			}
 			

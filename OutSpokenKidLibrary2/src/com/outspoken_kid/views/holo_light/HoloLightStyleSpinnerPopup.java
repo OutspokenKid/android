@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
@@ -108,8 +108,8 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 			tvTitle.setText(title);
 		}
 		tvTitle.setTextColor(Color.rgb(25, 25, 25));
-		FontInfo.setFontSize(tvTitle, 40);
-		FontInfo.setFontStyle(tvTitle, FontInfo.BOLD);
+		FontUtils.setFontSize(tvTitle, 40);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		popupLinear.addView(tvTitle);
 		
 		View blueLine = new View(getContext());
@@ -156,8 +156,8 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 					tvItem.setText(itemString);
 					tvItem.setGravity(Gravity.CENTER);
 					tvItem.setTextColor(Color.rgb(220, 220, 220));
-					FontInfo.setFontSize(tvItem, 35);
-					FontInfo.setFontStyle(tvItem, FontInfo.BOLD);
+					FontUtils.setFontSize(tvItem, 35);
+					FontUtils.setFontStyle(tvItem, FontUtils.BOLD);
 					tvItem.setMaxLines(2);
 					tvItem.setEllipsize(TruncateAt.END);
 					tvItem.setOnClickListener(new OnClickListener() {

@@ -11,10 +11,13 @@ import android.os.Message;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
+import com.android.volley.toolbox.StringRequest;
 import com.outspoken_kid.classes.CacheCheckThread;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.imagecache.ImageCacheManager;
@@ -39,7 +42,6 @@ public class DownloadUtils {
 			if(bitmap != null && !bitmap.isRecycled()) {
 				task.onBitmapDownloadListener.onCompleted(url, bitmap);
 			} else {
-				LogUtils.log("###DownloadUtils.handleMessage.  download bitmap.  url : " + url);
 				downloadBitmap(task);
 			}
 		};
@@ -131,7 +133,7 @@ public class DownloadUtils {
 	 * @param url
 	 * @param onJSONDownloadListener
 	 */
-	public static void downloadString(final String url, final OnJSONDownloadListener onJSONDownloadListener) {
+	public static void downloadJSONString(final String url, final OnJSONDownloadListener onJSONDownloadListener) {
 		
 		try {
 			Response.Listener<JSONObject> onResponseListener = new Response.Listener<JSONObject>() {
@@ -202,12 +204,63 @@ public class DownloadUtils {
 			}
 		}
 	}
+
+	/**
+	 * String downloader.
+	 * 
+	 * @param url
+	 * @param onStringDownloadListener
+	 */
+	public static void downloadString(final String url, 
+			final OnStringDownloadListener onStringDownloadListener) {
+		
+		try {
+			StringRequest request = new StringRequest(url, new Listener<String>() {
+
+				@Override
+				public void onResponse(String string) {
+
+					if(onStringDownloadListener != null) {
+						onStringDownloadListener.onCompleted(url, string);
+					}
+				}
+			}, new ErrorListener() {
+
+				@Override
+				public void onErrorResponse(VolleyError arg0) {
+					
+					if(onStringDownloadListener != null) {
+						onStringDownloadListener.onError(url);
+					}
+				}
+			});
+			RequestManager.getRequestQueue().add(request);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			
+			if(onStringDownloadListener != null) {
+				onStringDownloadListener.onError(url);
+			}
+		} catch (Error e) {
+			LogUtils.trace(e);
+			
+			if(onStringDownloadListener != null) {
+				onStringDownloadListener.onError(url);
+			}
+		}
+	}
 	
 /////////////////////////// Interfaces.
 	
 	public interface OnJSONDownloadListener {
 
 		public void onCompleted(String url, JSONObject objJSON);
+		public void onError(String url);
+	}
+
+	public interface OnStringDownloadListener {
+		
+		public void onCompleted(String url, String result);
 		public void onError(String url);
 	}
 	

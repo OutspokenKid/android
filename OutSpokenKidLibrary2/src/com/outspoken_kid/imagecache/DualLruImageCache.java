@@ -5,7 +5,6 @@ import java.util.Locale;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
-import android.os.AsyncTask;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
 import com.outspoken_kid.utils.LogUtils;
@@ -44,11 +43,8 @@ public class DualLruImageCache implements ImageCache {
 			bitmap = diskCache.getBitmap(url);
 			
 			if(bitmap != null && !bitmap.isRecycled()) {
-				LogUtils.log("###DualLruImageCache.from disk cache.  url : " + url);
 				memoryCache.putBitmap(url, bitmap);
 			}
-		} else {
-			LogUtils.log("###DualLruImageCache.from memory cache.  url : " + url);
 		}
 		
 		return bitmap;
