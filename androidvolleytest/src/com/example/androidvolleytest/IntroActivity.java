@@ -6,7 +6,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -31,7 +30,7 @@ public class IntroActivity extends Activity {
 	
 	public void downloadString(String url) {
 		
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
@@ -50,17 +49,17 @@ public class IntroActivity extends Activity {
 	
 	public void downloadBitmap(String url) {
 		
-		DownloadUtils.downloadBitmap(url, null, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 				LogUtils.log("###IntroActivity.onError.  url : " + url);
 				ToastUtils.showToast("Fail to download image.");
 				finish();
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+			public void onCompleted(String url, Bitmap bitmap) {
 				launchMainActivity();
 			}
 		});

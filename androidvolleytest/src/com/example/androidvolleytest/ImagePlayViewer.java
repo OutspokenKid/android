@@ -96,17 +96,17 @@ public class ImagePlayViewer extends FrameLayout {
 		imageIndex = 0;
 		
 		//첫번째 이미지 다운로드, 끝난 후 이미지 세팅.
-		DownloadUtils.downloadBitmap(imageUrls.get(0), imageViews[0], new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(imageUrls.get(0), new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 				//서버에서 에러 안나는 이미지를 보내줬다고 가정.
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
-				ivImage.setImageBitmap(bitmap);
-				ivImage.setImageMatrix(getBitmapMatrix(bitmap));
+			public void onCompleted(String url, Bitmap bitmap) {
+				imageViews[0].setImageBitmap(bitmap);
+				imageViews[0].setImageMatrix(getBitmapMatrix(bitmap));
 			}
 		});
 	}
@@ -226,17 +226,16 @@ public class ImagePlayViewer extends FrameLayout {
 
 		//다음 이미지 다운로드.
 		DownloadUtils.downloadBitmap(imageUrls.get((imageIndex+1)%imageUrls.size()),
-				null,
 				new OnBitmapDownloadListener() {
 			
 			@Override
-			public void onError(String url, ImageView ivImage) {
+			public void onError(String url) {
 				//서버에서 에러 안나는 이미지를 보내줬다고 가정.
 				LogUtils.log("###ImagePlayViewer.onError.  \nurl : " + url);
 			}
 			
 			@Override
-			public void onCompleted(String url, ImageView ivImage, Bitmap bitmap) {
+			public void onCompleted(String url, Bitmap bitmap) {
 				
 				LogUtils.log("###ImagePlayViewer.onCompleted.  \nurl : " + url);
 				nextBitmap = bitmap;

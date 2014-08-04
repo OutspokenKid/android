@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -165,7 +165,7 @@ public class ListAdapter extends BaseAdapter {
 			rp.addRule(RelativeLayout.ALIGN_TOP, R.id.list_circlepost_profileFrame);
 			rp.addRule(RelativeLayout.RIGHT_OF, R.id.list_circlepost_profileFrame);
 			tvNickname.setLayoutParams(rp);
-			FontInfo.setFontSize(tvNickname, 24);
+			FontUtils.setFontSize(tvNickname, 24);
 			
 			//tvRegdate.
 			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ResizeUtils.getSpecificLength(80));
@@ -173,7 +173,7 @@ public class ListAdapter extends BaseAdapter {
 			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			rp.rightMargin = margin;
 			tvRegdate.setLayoutParams(rp);
-			FontInfo.setFontSize(tvRegdate, 20);
+			FontUtils.setFontSize(tvRegdate, 20);
 			
 			//tvContent.
 			rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -182,7 +182,7 @@ public class ListAdapter extends BaseAdapter {
 			rp.rightMargin = margin;
 			rp.bottomMargin = margin;
 			tvContent.setLayoutParams(rp);
-			FontInfo.setFontSize(tvContent, 30);
+			FontUtils.setFontSize(tvContent, 30);
 			
 			//ivImage.
 			rp = new RelativeLayout.LayoutParams(
@@ -210,7 +210,7 @@ public class ListAdapter extends BaseAdapter {
 			
 			//tvReply.
 			ResizeUtils.viewResize(40, 40, tvReply, 2, Gravity.RIGHT, null);
-			FontInfo.setFontSize(tvReply, 26);
+			FontUtils.setFontSize(tvReply, 26);
 			
 			//moreFrame.
 			rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(68), 
@@ -262,10 +262,10 @@ public class ListAdapter extends BaseAdapter {
 			}
 			
 			if(post.reply_cnt > 99) {
-				FontInfo.setFontSize(tvReply, 20);
+				FontUtils.setFontSize(tvReply, 20);
 				tvReply.setText("99+");
 			} else {
-				FontInfo.setFontSize(tvReply, 26);
+				FontUtils.setFontSize(tvReply, 26);
 				
 				if(post.reply_cnt < 0) {
 					tvReply.setText("0");

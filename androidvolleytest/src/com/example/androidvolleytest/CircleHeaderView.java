@@ -12,7 +12,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
@@ -62,7 +62,7 @@ public class CircleHeaderView extends FrameLayout {
 				Gravity.BOTTOM, null);
 		tvTitles[0].setTextColor(Color.WHITE);
 		tvTitles[0].setGravity(Gravity.CENTER);
-		FontInfo.setFontSize(tvTitles[0], 36);
+		FontUtils.setFontSize(tvTitles[0], 36);
 		this.addView(tvTitles[0]);
 		
 		tvTitles[1] = new TextView(getContext());
@@ -71,7 +71,7 @@ public class CircleHeaderView extends FrameLayout {
 		tvTitles[1].setTextColor(Color.WHITE);
 		tvTitles[1].setGravity(Gravity.CENTER);
 		tvTitles[1].setVisibility(View.INVISIBLE);
-		FontInfo.setFontSize(tvTitles[1], 36);
+		FontUtils.setFontSize(tvTitles[1], 36);
 		this.addView(tvTitles[1]);
 		
 		aaIn = new AlphaAnimation(0, 1);

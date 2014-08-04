@@ -30,7 +30,7 @@ import android.widget.TextView;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -178,8 +178,8 @@ public class MainActivity extends Activity {
     	ResizeUtils.viewResize(34, 34, findViewById(R.id.write), 2, Gravity.CENTER, null);
     	ResizeUtils.viewResize(34, 34, findViewById(R.id.n), 2, Gravity.CENTER, null);
     	
-    	FontInfo.setFontSize(tvTitles[0], 36);
-    	FontInfo.setFontSize(tvTitles[1], 36);
+    	FontUtils.setFontSize(tvTitles[0], 36);
+    	FontUtils.setFontSize(tvTitles[1], 36);
     }
     
     public void setListeners() {
@@ -313,7 +313,7 @@ public class MainActivity extends Activity {
     		textView.setTextColor(Color.WHITE);
     		textView.setText("Menu text " + (i+1));
     		textView.setGravity(Gravity.CENTER);
-    		FontInfo.setFontSize(textView, 30);
+    		FontUtils.setFontSize(textView, 30);
     		menuLinear.addView(textView);
     	}
     }
@@ -426,7 +426,7 @@ public class MainActivity extends Activity {
     public void downloadPosts() {
 
     	String url = "http://112.169.61.103/externalapi/public/sb/partner_spot_list?sb_id=massclub&board_nid=1&last_sb_spot_nid=0&image_size=640";
-    	DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+    	DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
