@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/signUpForCategoryPage_mainLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#fff" >
+
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForCategoryPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+    <!-- 저작권 표시. -->
+
+    <ImageView
+        android:id="@+id/signUpForCategoryPage_ivCopyright"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_reserved" />
+    
+    <!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForCategoryPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+	<TextView
+        android:id="@+id/signUpForCategoryPage_tvCategory"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/signUpForCategoryPage_titleBar"
+        android:gravity="center"
+        android:text="@string/categoryText"
+        android:textColor="#fff" />
+	
+    <ListView
+        android:id="@+id/signUpForCategoryPage_listView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/signUpForCategoryPage_tvCategory" />
+	
+    <Button
+	    android:id="@+id/signUpForCategoryPage_btnNext"
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_centerHorizontal="true"
+	    android:layout_alignParentBottom="true"
+	    android:background="@drawable/btn_next" />
+    	
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForCategoryPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+</RelativeLayout>

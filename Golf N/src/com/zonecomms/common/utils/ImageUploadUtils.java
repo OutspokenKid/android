@@ -34,7 +34,8 @@ public class ImageUploadUtils {
         return cursor.getString(column_index);
     }
 	
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB) public static void uploadImage(Context context, OnAfterUploadImage onAfterUploadImage,
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
+	public static void uploadImage(Context context, OnAfterUploadImage onAfterUploadImage,
 			String filePath, int inSampleSize){
 		
 		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
