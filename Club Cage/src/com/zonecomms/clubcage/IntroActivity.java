@@ -120,7 +120,7 @@ public class IntroActivity extends Activity {
 				"?sb_id=" + ZoneConstants.PAPP_ID +
 				"&image_size=" + ResizeUtils.getScreenWidth() +
 				"&ver=" + currentSponserVersion;
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
@@ -207,7 +207,7 @@ public class IntroActivity extends Activity {
 				"?sb_id=" + ZoneConstants.PAPP_ID +
 				"&image_size=" + ResizeUtils.getScreenWidth();
 		
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
 			@Override
 			public void onError(String url) {

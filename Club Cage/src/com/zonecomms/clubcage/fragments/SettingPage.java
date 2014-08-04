@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -219,7 +219,7 @@ public class SettingPage extends BaseFragment {
 					url += "N";
 				}
 
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -258,7 +258,7 @@ public class SettingPage extends BaseFragment {
 					url += "N";
 				}
 
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -296,7 +296,7 @@ public class SettingPage extends BaseFragment {
 				} else{
 					url += "N";
 				}
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -339,18 +339,18 @@ public class SettingPage extends BaseFragment {
 		ResizeUtils.viewResize(540, 80, tvBaseProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 860, 0, 0});
 		ResizeUtils.viewResize(540, 80, tvAddedProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 960, 0, 0});
 		
-		FontInfo.setFontSize(tvId.getTextView(), 22);
-		FontInfo.setFontSize(tvPw.getTextView(), 22);
-		FontInfo.setFontSize(etEmail.getEditText(), 22);
-		FontInfo.setFontSize(tvPw.getTextView(), 22);
-		FontInfo.setFontSize(etEmail2.getEditText(), 22);
-		FontInfo.setFontSize(etPhoneNumber.getEditText(), 22);
-		FontInfo.setFontSize(tvPush.getTextView(), 22);
-		FontInfo.setFontSize(tvSNS.getTextView(), 22);
-		FontInfo.setFontSize(tvSignOut.getTextView(), 22);
-		FontInfo.setFontSize(tvLeaveMember.getTextView(), 22);
-		FontInfo.setFontSize(tvAddedProfile.getTextView(), 22);
-		FontInfo.setFontSize(tvBaseProfile.getTextView(), 22);
+		FontUtils.setFontSize(tvId.getTextView(), 22);
+		FontUtils.setFontSize(tvPw.getTextView(), 22);
+		FontUtils.setFontSize(etEmail.getEditText(), 22);
+		FontUtils.setFontSize(tvPw.getTextView(), 22);
+		FontUtils.setFontSize(etEmail2.getEditText(), 22);
+		FontUtils.setFontSize(etPhoneNumber.getEditText(), 22);
+		FontUtils.setFontSize(tvPush.getTextView(), 22);
+		FontUtils.setFontSize(tvSNS.getTextView(), 22);
+		FontUtils.setFontSize(tvSignOut.getTextView(), 22);
+		FontUtils.setFontSize(tvLeaveMember.getTextView(), 22);
+		FontUtils.setFontSize(tvAddedProfile.getTextView(), 22);
+		FontUtils.setFontSize(tvBaseProfile.getTextView(), 22);
 	}
 
 	@Override
@@ -558,7 +558,7 @@ public class SettingPage extends BaseFragment {
 		id.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
 		id.setText(R.string.id);
 		id.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(id, 22);
+		FontUtils.setFontSize(id, 22);
 		frameForMain.addView(id);
 		
 		TextView pw = new TextView(mContext);
@@ -566,14 +566,14 @@ public class SettingPage extends BaseFragment {
 		pw.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
 		pw.setText(R.string.password);
 		pw.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(pw, 22);
+		FontUtils.setFontSize(pw, 22);
 		frameForMain.addView(pw);
 		
 		TextView at = new TextView(mContext);
 		ResizeUtils.viewResize(60, 60, at, 2, Gravity.LEFT|Gravity.TOP, new int[]{310, 260, 0, 0});
 		at.setText("@");
 		at.setGravity(Gravity.CENTER);
-		FontInfo.setFontSize(at, 36);
+		FontUtils.setFontSize(at, 36);
 		frameForMain.addView(at);
 		
 		TextView phoneNumber = new TextView(mContext);
@@ -581,7 +581,7 @@ public class SettingPage extends BaseFragment {
 		phoneNumber.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
 		phoneNumber.setText(R.string.phoneNumber);
 		phoneNumber.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(phoneNumber, 22);
+		FontUtils.setFontSize(phoneNumber, 22);
 		frameForMain.addView(phoneNumber);
 		
 		HoloStyleButton btnSubmit = new HoloStyleButton(mContext);
@@ -629,7 +629,7 @@ public class SettingPage extends BaseFragment {
 			}
 		});
 		btnSubmit.setText(R.string.submit);
-		FontInfo.setFontSize(btnSubmit.getTextView(), 26);
+		FontUtils.setFontSize(btnSubmit.getTextView(), 26);
 		frameForMain.addView(btnSubmit);
 		
 		View line = new View(mContext);
@@ -650,21 +650,21 @@ public class SettingPage extends BaseFragment {
 		ResizeUtils.viewResize(540, 70, etPwBefore, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 50, 0, 0});
 		etPwBefore.setHint(R.string.hintForCurrentPw);
 		etPwBefore.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		FontInfo.setFontSize(etPwBefore.getEditText(), 22);
+		FontUtils.setFontSize(etPwBefore.getEditText(), 22);
 		frameForEditPw.addView(etPwBefore);
 		
 		etPw = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(540, 70, etPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 150, 0, 0});
 		etPw.setHint(R.string.hintForNewPw);
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		FontInfo.setFontSize(etPw.getEditText(), 22);
+		FontUtils.setFontSize(etPw.getEditText(), 22);
 		frameForEditPw.addView(etPw);
 		
 		etConfirmPw = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(540, 70, etConfirmPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 250, 0, 0});
 		etConfirmPw.setHint(R.string.hintForConfirmNewPw);
 		etConfirmPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		FontInfo.setFontSize(etConfirmPw.getEditText(), 22);
+		FontUtils.setFontSize(etConfirmPw.getEditText(), 22);
 		frameForEditPw.addView(etConfirmPw);
 		
 		HoloStyleButton btnSubmit = new HoloStyleButton(mContext);
@@ -712,7 +712,7 @@ public class SettingPage extends BaseFragment {
 			}
 		});
 		btnSubmit.setText(R.string.submit);
-		FontInfo.setFontSize(btnSubmit.getTextView(), 26);
+		FontUtils.setFontSize(btnSubmit.getTextView(), 26);
 		frameForEditPw.addView(btnSubmit);
 	}
 	
@@ -730,7 +730,7 @@ public class SettingPage extends BaseFragment {
 		tvNotiAll.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiAll.setText(R.string.notificationAll);
 		tvNotiAll.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNotiAll, 26);
+		FontUtils.setFontSize(tvNotiAll, 26);
 		frameForEditPush.addView(tvNotiAll);
 		
 		TextView tvNotiMessage = new TextView(mContext);
@@ -738,7 +738,7 @@ public class SettingPage extends BaseFragment {
 		tvNotiMessage.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiMessage.setText(R.string.notificationMessage);
 		tvNotiMessage.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNotiMessage, 26);
+		FontUtils.setFontSize(tvNotiMessage, 26);
 		frameForEditPush.addView(tvNotiMessage);
 		
 		TextView tvNotiReply = new TextView(mContext);
@@ -746,7 +746,7 @@ public class SettingPage extends BaseFragment {
 		tvNotiReply.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiReply.setText(R.string.notificationReply);
 		tvNotiReply.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNotiReply, 26);
+		FontUtils.setFontSize(tvNotiReply, 26);
 		frameForEditPush.addView(tvNotiReply);
 		
 		TextView tvSound = new TextView(mContext);
@@ -754,7 +754,7 @@ public class SettingPage extends BaseFragment {
 		tvSound.setGravity(Gravity.CENTER_VERTICAL);
 		tvSound.setText("Sound");
 		tvSound.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvSound, 26);
+		FontUtils.setFontSize(tvSound, 26);
 		frameForEditPush.addView(tvSound);
 		
 		TextView tvVibration = new TextView(mContext);
@@ -762,7 +762,7 @@ public class SettingPage extends BaseFragment {
 		tvVibration.setGravity(Gravity.CENTER_VERTICAL);
 		tvVibration.setText("Vibration");
 		tvVibration.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvVibration, 26);
+		FontUtils.setFontSize(tvVibration, 26);
 		frameForEditPush.addView(tvVibration);
 		
 		cbNotiAll = new CheckBox(mContext);
@@ -795,7 +795,7 @@ public class SettingPage extends BaseFragment {
 			}
 		});
 		btnSubmit.setText(R.string.submit);
-		FontInfo.setFontSize(btnSubmit.getTextView(), 26);
+		FontUtils.setFontSize(btnSubmit.getTextView(), 26);
 		frameForEditPush.addView(btnSubmit);
 		
 		View view = new View(mContext);
@@ -883,7 +883,7 @@ public class SettingPage extends BaseFragment {
 		String url = ZoneConstants.BASE_URL + "member/push/info" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
 
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -933,7 +933,7 @@ public class SettingPage extends BaseFragment {
 				"&member_pwd=" + member_pwd +
 				"&new_member_pwd=" + new_member_pwd;
 		
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -996,7 +996,7 @@ public class SettingPage extends BaseFragment {
 					"&mobile_no=" + URLEncoder.encode(phoneNumber, "UTF-8") +
 					"&email=" + URLEncoder.encode(email, "UTF-8");
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

@@ -27,7 +27,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -119,7 +119,7 @@ public class BaseProfilePage extends BaseFragment {
 		ResizeUtils.viewResize(540, 70, etNickname, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{50, 300, 0, 0}, new int[]{160, 0, 30, 0});
 		etNickname.getEditText().setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-		FontInfo.setFontSize(etNickname.getEditText(), 22);
+		FontUtils.setFontSize(etNickname.getEditText(), 22);
 		innerFrame.addView(etNickname);
 		
 		TextView tvNickname = new TextView(mContext);
@@ -127,7 +127,7 @@ public class BaseProfilePage extends BaseFragment {
 		tvNickname.setGravity(Gravity.CENTER_VERTICAL);
 		tvNickname.setText(R.string.nickname);
 		tvNickname.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNickname, 25);
+		FontUtils.setFontSize(tvNickname, 25);
 		innerFrame.addView(tvNickname);
 		
 		spGender = new HoloStyleSpinnerButton(mContext);
@@ -155,7 +155,7 @@ public class BaseProfilePage extends BaseFragment {
 		tvBirth.setText(R.string.birth);
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvBirth, 2, Gravity.LEFT|Gravity.TOP, new int[]{40, 510, 0, 0});
 		tvBirth.setGravity(Gravity.CENTER_VERTICAL);
-		FontInfo.setFontSize(tvBirth, 25);
+		FontUtils.setFontSize(tvBirth, 25);
 		tvBirth.setTextColor(Color.WHITE);
 		innerFrame.addView(tvBirth);
 		
@@ -178,7 +178,7 @@ public class BaseProfilePage extends BaseFragment {
 				new int[]{40, (currentapiVersion >= 11? 940 : 820), 0, 0});
 		tvIntroduce.setGravity(Gravity.CENTER_VERTICAL);
 		tvIntroduce.setText(R.string.introduce);
-		FontInfo.setFontSize(tvIntroduce, 25);
+		FontUtils.setFontSize(tvIntroduce, 25);
 		tvIntroduce.setTextColor(Color.WHITE);
 		innerFrame.addView(tvIntroduce);
 		
@@ -187,13 +187,13 @@ public class BaseProfilePage extends BaseFragment {
 				new int[]{50, (currentapiVersion >= 11? 980 : 860), 0, 0});
 		etIntroduce.setHint(R.string.hintForIntroduce);
 		etIntroduce.getEditText().setSingleLine(false);
-		FontInfo.setFontSize(etIntroduce.getEditText(), 22);
+		FontUtils.setFontSize(etIntroduce.getEditText(), 22);
 		innerFrame.addView(etIntroduce);
 		
 		HoloStyleButton btnSubmit = new HoloStyleButton(mContext);
 		ResizeUtils.viewResize(540, 70, btnSubmit, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, (currentapiVersion >= 11? 1100 : 980), 0, 0});
 		btnSubmit.setText(R.string.inputComplete);
-		FontInfo.setFontSize(btnSubmit.getTextView(), 23);
+		FontUtils.setFontSize(btnSubmit.getTextView(), 23);
 		btnSubmit.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -309,7 +309,7 @@ public class BaseProfilePage extends BaseFragment {
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
 										"&image_size=" + ResizeUtils.getSpecificLength(308);
-								DownloadUtils.downloadString(url,
+								DownloadUtils.downloadJSONString(url,
 										new OnJSONDownloadListener() {
 
 											@Override
@@ -385,7 +385,7 @@ public class BaseProfilePage extends BaseFragment {
 					"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -581,7 +581,7 @@ public class BaseProfilePage extends BaseFragment {
 			
 			mActivity.showLoadingView();
 			mActivity.showCover();
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

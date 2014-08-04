@@ -24,7 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -167,7 +167,7 @@ public class MessagePage extends BaseListFragment {
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight();
 								
-								DownloadUtils.downloadString(url,
+								DownloadUtils.downloadJSONString(url,
 										new OnJSONDownloadListener() {
 
 											@Override
@@ -251,10 +251,10 @@ public class MessagePage extends BaseListFragment {
 		etMessage.setLayoutParams(lp);
 		etMessage.getEditText().setMinimumHeight(ResizeUtils.getSpecificLength(60));
 		etMessage.getEditText().setMaxHeight(ResizeUtils.getSpecificLength(150));
-		FontInfo.setFontSize(etMessage.getEditText(), 30);
+		FontUtils.setFontSize(etMessage.getEditText(), 30);
 		
 		ResizeUtils.viewResize(100, 60, btnSend, 1, Gravity.CENTER_VERTICAL, new int[]{8, 8, 8, 8});
-		FontInfo.setFontSize(btnSend.getTextView(), 30);
+		FontUtils.setFontSize(btnSend.getTextView(), 30);
 	}
 
 	@Override
@@ -277,7 +277,7 @@ public class MessagePage extends BaseListFragment {
 					"&last_microspot_nid=" + lastIndexno +
 					"&image_size=" + ResizeUtils.getSpecificLength(640);
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -508,7 +508,7 @@ public class MessagePage extends BaseListFragment {
 					"&img_width=" +
 					"&img_height=";
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

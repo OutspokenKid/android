@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -67,13 +67,13 @@ public class ViewWrapperForNotice extends ViewWrapper {
 
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvTitle, 2, 
 				Gravity.CENTER_VERTICAL, new int[]{30, 0, 60, 0});
-		FontInfo.setFontSize(tvTitle, 30);
+		FontUtils.setFontSize(tvTitle, 30);
 
 		ResizeUtils.viewResize(624, 0, ivImage, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0});
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, tvContent, 
 				1, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0}, new int[]{8, 8, 8, 8});
-		FontInfo.setFontSize(tvContent, 30);
+		FontUtils.setFontSize(tvContent, 30);
 	}
 
 	@Override

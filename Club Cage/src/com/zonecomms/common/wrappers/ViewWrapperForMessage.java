@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -68,9 +68,9 @@ public class ViewWrapperForMessage extends ViewWrapper {
 		ResizeUtils.viewResize(360, 360, ivImage, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 20, 0, 20});
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, tvContent, 1, 0, new int[]{8, 8, 8, 8});
 		
-		FontInfo.setFontSize(tvNickname, 32);
-		FontInfo.setFontSize(tvRegdate, 26);
-		FontInfo.setFontSize(tvContent, 32);
+		FontUtils.setFontSize(tvNickname, 32);
+		FontUtils.setFontSize(tvRegdate, 26);
+		FontUtils.setFontSize(tvContent, 32);
 	}
 
 	@Override
@@ -188,7 +188,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 				"&microspot_nid=" + message.getMicrospot_nid();
 		
 		ToastUtils.showToast(R.string.wait);
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {

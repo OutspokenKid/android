@@ -31,7 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -231,7 +231,7 @@ public class GridPage extends BaseListFragment {
 			
 			url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -396,8 +396,8 @@ public class GridPage extends BaseListFragment {
 			v.setTextColor(Color.WHITE);
 			v.setGravity(Gravity.CENTER);
 			v.setPadding(0, 0, 0, 0);
-			FontInfo.setFontStyle(v, FontInfo.BOLD);
-			FontInfo.setFontSize(v, 26);
+			FontUtils.setFontStyle(v, FontUtils.BOLD);
+			FontUtils.setFontSize(v, 26);
 			frame.addView(v);
 
 			menus[i] = v;
@@ -474,7 +474,7 @@ public class GridPage extends BaseListFragment {
 					topMargin = ResizeUtils.getSpecificLength(0);
 		}
 		
-		FontInfo.setFontSize(editText.getEditText(), 20);
+		FontUtils.setFontSize(editText.getEditText(), 20);
 		editText.getEditText().addTextChangedListener(new TextWatcher() {
 			
 			@Override

@@ -126,7 +126,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&registration_id=" + regId;
-			DownloadUtils.downloadString(url, null);
+			DownloadUtils.downloadJSONString(url, null);
 		} catch(Exception e) {
 			//Do nothing.
 		}

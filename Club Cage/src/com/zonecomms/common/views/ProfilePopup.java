@@ -24,7 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -101,8 +101,8 @@ public class ProfilePopup extends FrameLayout {
 		tvNickname.setGravity(Gravity.CENTER);
 		tvNickname.setId(madeCount);
 		tvNickname.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNickname, 30);
-		FontInfo.setFontStyle(tvNickname, FontInfo.BOLD);
+		FontUtils.setFontSize(tvNickname, 30);
+		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		relative.addView(tvNickname);
 		
 		tvGenderWithAge = new TextView(getContext());
@@ -113,7 +113,7 @@ public class ProfilePopup extends FrameLayout {
 		tvGenderWithAge.setLayoutParams(rp);
 		tvGenderWithAge.setGravity(Gravity.CENTER_VERTICAL);
 		tvGenderWithAge.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvGenderWithAge, 26);
+		FontUtils.setFontSize(tvGenderWithAge, 26);
 		relative.addView(tvGenderWithAge);
 		
 		View line1 = new View(getContext());
@@ -258,7 +258,7 @@ public class ProfilePopup extends FrameLayout {
 
 			progress.setVisibility(View.VISIBLE);
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {
@@ -496,7 +496,7 @@ public class ProfilePopup extends FrameLayout {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + URLEncoder.encode(myStoryInfo.getMystory_member_id(), "UTF-8") +
 					"&status=1";
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {
@@ -522,7 +522,7 @@ public class ProfilePopup extends FrameLayout {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + URLEncoder.encode(myStoryInfo.getMystory_member_id(), "UTF-8") +
 					"&status=-1";
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {

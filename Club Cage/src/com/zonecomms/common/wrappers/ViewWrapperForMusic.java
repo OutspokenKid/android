@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -60,8 +60,8 @@ public class ViewWrapperForMusic extends ViewWrapper {
 		ResizeUtils.viewResize(25, 42, row.findViewById(R.id.list_music_arrow), 2, 
 				Gravity.CENTER_VERTICAL|Gravity.RIGHT, new int[]{0, 0, 20, 0});
 		
-		FontInfo.setFontSize(tvTitle, 32);
-		FontInfo.setFontSize(tvSubTitle, 32);
+		FontUtils.setFontSize(tvTitle, 32);
+		FontUtils.setFontSize(tvSubTitle, 32);
 	}
 
 	@Override

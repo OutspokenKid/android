@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -49,7 +49,7 @@ public class ButtonForGrid extends FrameLayout {
 	public void setTextSize(int size) {
 		
 		if(tvTitle != null && size > 10) {
-			FontInfo.setFontSize(tvTitle, size);
+			FontUtils.setFontSize(tvTitle, size);
 		}
 	}
 	
@@ -164,17 +164,17 @@ public class ButtonForGrid extends FrameLayout {
 					tvTitle.setGravity(Gravity.CENTER);
 
 					if(!gridMenu.isGroup()) {
-						FontInfo.setFontSize(tvTitle, 32);
+						FontUtils.setFontSize(tvTitle, 32);
 					} else if(gridMenu.getText().length() >= 8){
-						FontInfo.setFontSize(tvTitle, 42);
+						FontUtils.setFontSize(tvTitle, 42);
 					} else if(gridMenu.getText().length() >= 4){
-						FontInfo.setFontSize(tvTitle, 52);
+						FontUtils.setFontSize(tvTitle, 52);
 					} else {
-						FontInfo.setFontSize(tvTitle, 62);
+						FontUtils.setFontSize(tvTitle, 62);
 					}
 				} else {
 					tvTitle.setGravity(Gravity.RIGHT|Gravity.BOTTOM);
-					FontInfo.setFontSize(tvTitle, 22);
+					FontUtils.setFontSize(tvTitle, 22);
 				}
 			} catch(Exception e) {
 				LogUtils.trace(e);

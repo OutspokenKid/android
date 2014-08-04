@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -51,7 +51,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 					row.findViewById(R.id.grid_member_bg), 2, Gravity.BOTTOM, null);
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 30, tvInfo, 2, Gravity.BOTTOM, null, new int[]{6, 0, 6, 0});
 			
-			FontInfo.setFontSize(tvInfo, 20);
+			FontUtils.setFontSize(tvInfo, 20);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();

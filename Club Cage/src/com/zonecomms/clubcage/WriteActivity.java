@@ -27,7 +27,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -138,10 +138,10 @@ public class WriteActivity extends RecyclingActivity {
 		//titleBar.
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, findViewById(R.id.writeActivity_titleBar), 1, 0, null);
 		ResizeUtils.viewResize(70, 70, btnComplete, 2, Gravity.RIGHT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 20, 0});
-		FontInfo.setFontSize((TextView)findViewById(R.id.writeActivity_tvTitle), 40);
+		FontUtils.setFontSize((TextView)findViewById(R.id.writeActivity_tvTitle), 40);
 		
 		//EditText.
-		FontInfo.setFontSize(editText, 36);
+		FontUtils.setFontSize(editText, 36);
 		
 		ResizeUtils.viewResize(66, 53, btnPhoto, 1, Gravity.CENTER_VERTICAL, new int[]{10, 10, 10, 10});
 	}
@@ -487,7 +487,7 @@ public class WriteActivity extends RecyclingActivity {
 
 			cover.setVisibility(View.VISIBLE);
 			showLoadingView();
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {

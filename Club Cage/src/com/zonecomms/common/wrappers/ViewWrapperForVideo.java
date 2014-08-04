@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -57,10 +57,10 @@ public class ViewWrapperForVideo extends ViewWrapper {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 30, row.findViewById(R.id.list_video_tvYoutube), 2,
 				Gravity.RIGHT|Gravity.TOP, new int[]{0, 60, 20, 0});
 
-		FontInfo.setFontSize(tvTitle, 28);
-		FontInfo.setFontStyle(tvTitle, FontInfo.BOLD);
+		FontUtils.setFontSize(tvTitle, 28);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		
-		FontInfo.setFontSize((TextView)row.findViewById(R.id.list_video_tvYoutube), 20);
+		FontUtils.setFontSize((TextView)row.findViewById(R.id.list_video_tvYoutube), 20);
 	}
 
 	@Override

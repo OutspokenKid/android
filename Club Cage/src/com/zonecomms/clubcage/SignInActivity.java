@@ -16,7 +16,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -120,14 +120,14 @@ public class SignInActivity extends RecyclingActivity {
 		etId = new HoloStyleEditText(this);
 		ResizeUtils.viewResize(500, 70, etId, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 40, 0, 0});
 		etId.setHint(R.string.hintForId);
-		FontInfo.setFontSize(etId.getEditText(), 20);
+		FontUtils.setFontSize(etId.getEditText(), 20);
 		etId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		innerLinear.addView(etId);
 		
 		etPw = new HoloStyleEditText(this);
 		ResizeUtils.viewResize(500, 70, etPw, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 20, 0, 30});
 		etPw.setHint(R.string.hintForPw);
-		FontInfo.setFontSize(etPw.getEditText(), 20);
+		FontUtils.setFontSize(etPw.getEditText(), 20);
 		etPw.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		etPw.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
 		innerLinear.addView(etPw);
@@ -137,7 +137,7 @@ public class SignInActivity extends RecyclingActivity {
 		tvNId.setGravity(Gravity.CENTER_HORIZONTAL);
 		tvNId.setText(R.string.introduceNId);
 		tvNId.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNId, 32);
+		FontUtils.setFontSize(tvNId, 32);
 		innerLinear.addView(tvNId);
 		
 		HoloStyleButton btnSignIn = new HoloStyleButton(this);
@@ -180,7 +180,7 @@ public class SignInActivity extends RecyclingActivity {
 			}
 		});
 		btnSignIn.setText(R.string.signIn);
-		FontInfo.setFontSize(btnSignIn.getTextView(), 25);
+		FontUtils.setFontSize(btnSignIn.getTextView(), 25);
 		innerLinear.addView(btnSignIn);
 		
 		HoloStyleButton btnSignUp = new HoloStyleButton(this);
@@ -193,7 +193,7 @@ public class SignInActivity extends RecyclingActivity {
 			}
 		});
 		btnSignUp.setText(R.string.signUp);
-		FontInfo.setFontSize(btnSignUp.getTextView(), 25);
+		FontUtils.setFontSize(btnSignUp.getTextView(), 25);
 		innerLinear.addView(btnSignUp);
 		
 		HoloStyleButton btnFind = new HoloStyleButton(this);
@@ -207,7 +207,7 @@ public class SignInActivity extends RecyclingActivity {
 			}
 		});
 		btnFind.setText(R.string.findIdAndPw);
-		FontInfo.setFontSize(btnFind.getTextView(), 25);
+		FontUtils.setFontSize(btnFind.getTextView(), 25);
 		innerLinear.addView(btnFind);
 		
 		View bottomBlank = new View(this);
@@ -226,7 +226,7 @@ public class SignInActivity extends RecyclingActivity {
 					"&image_size=" + ResizeUtils.getSpecificLength(308) +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {

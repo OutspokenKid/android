@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -81,9 +81,9 @@ public class TitleBar extends LinearLayout {
 		int p = ResizeUtils.getSpecificLength(8);
 		tvTitle.setPadding(p, p, p, p);
 		tvTitle.setEllipsize(TruncateAt.END);
-		FontInfo.setFontSize(tvTitle, 36);
-		FontInfo.setFontColor(tvTitle, Color.WHITE);
-		FontInfo.setFontStyle(tvTitle, FontInfo.BOLD);
+		FontUtils.setFontSize(tvTitle, 36);
+		FontUtils.setFontColor(tvTitle, Color.WHITE);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		this.addView(tvTitle);
 		
 		//btnWrite.

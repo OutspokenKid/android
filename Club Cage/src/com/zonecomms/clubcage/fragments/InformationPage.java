@@ -15,7 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -89,8 +89,8 @@ public class InformationPage extends BaseFragment {
 		tvName.setTextColor(Color.WHITE);
 		tvName.setText(R.string.app_name);
 		tvName.setPadding(p, p, p, p);
-		FontInfo.setFontSize(tvName, 30);
-		FontInfo.setFontStyle(tvName, FontInfo.BOLD);
+		FontUtils.setFontSize(tvName, 30);
+		FontUtils.setFontStyle(tvName, FontUtils.BOLD);
 		textContainer.addView(tvName);
 		
 		//Address.
@@ -100,8 +100,8 @@ public class InformationPage extends BaseFragment {
 		tvAddress.setTextColor(Color.WHITE);
 		tvAddress.setText(R.string.clubAddress);
 		tvAddress.setPadding(p, p, p, p);
-		FontInfo.setFontSize(tvAddress, 30);
-		FontInfo.setFontStyle(tvAddress, FontInfo.BOLD);
+		FontUtils.setFontSize(tvAddress, 30);
+		FontUtils.setFontStyle(tvAddress, FontUtils.BOLD);
 		textContainer.addView(tvAddress);
 		
 		//Location.  id : 1
@@ -227,8 +227,8 @@ public class InformationPage extends BaseFragment {
 		tvIntroduce.setPadding(p, p, p, p);
 		tvIntroduce.setText(R.string.textForIntroduce);
 		tvIntroduce.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvIntroduce, 26);
-		FontInfo.setFontStyle(tvIntroduce, FontInfo.BOLD);
+		FontUtils.setFontSize(tvIntroduce, 26);
+		FontUtils.setFontStyle(tvIntroduce, FontUtils.BOLD);
 		relative.addView(tvIntroduce);
 	}
 
@@ -254,7 +254,7 @@ public class InformationPage extends BaseFragment {
 				"?link_type=7" +
 				"&image_size=" + ResizeUtils.getSpecificLength(640);
 		
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -311,7 +311,7 @@ public class InformationPage extends BaseFragment {
 			tv.setGravity(Gravity.CENTER_VERTICAL);
 			tv.setTextColor(Color.WHITE);
 			tv.setText(R.string.VIPTableInfo);
-			FontInfo.setFontSize(tv, 30);
+			FontUtils.setFontSize(tv, 30);
 			VIPInfoLayout.addView(tv);
 			
 			int size = VIPInfos.length;
@@ -326,7 +326,7 @@ public class InformationPage extends BaseFragment {
 					tvFloor.setGravity(Gravity.CENTER_VERTICAL);
 					tvFloor.setTextColor(Color.WHITE);
 					tvFloor.setText(VIPInfos[i].getFloor());
-					FontInfo.setFontSize(tvFloor, 30);
+					FontUtils.setFontSize(tvFloor, 30);
 					tvFloor.setOnClickListener(new OnClickListener() {
 						
 						@Override

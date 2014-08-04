@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -80,10 +80,10 @@ public class ViewWrapperForPost extends ViewWrapper {
 					2, Gravity.BOTTOM, new int[]{0, 0, 0, 68});
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, tvText, 2, Gravity.BOTTOM, new int[]{10, 0, 10, 0});
 			
-			FontInfo.setFontSize(tvInfo, 22);
-			FontInfo.setFontSize(tvReplyCount, 22);
-			FontInfo.setFontSize(tvRegdate, 22);
-			FontInfo.setFontSize(tvText, 22);
+			FontUtils.setFontSize(tvInfo, 22);
+			FontUtils.setFontSize(tvReplyCount, 22);
+			FontUtils.setFontSize(tvRegdate, 22);
+			FontUtils.setFontSize(tvText, 22);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();

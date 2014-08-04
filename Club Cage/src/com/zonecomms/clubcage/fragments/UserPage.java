@@ -35,7 +35,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -205,7 +205,7 @@ public class UserPage extends BaseFragment {
 		tvNickname.setLayoutParams(rp);
 		tvNickname.setPadding(s, 0, 0, 0);
 		tvNickname.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvNickname, 24);
+		FontUtils.setFontSize(tvNickname, 24);
 		relative.addView(tvNickname);
 		
 		tvId = new TextView(mContext);
@@ -215,7 +215,7 @@ public class UserPage extends BaseFragment {
 		tvId.setLayoutParams(rp);
 		tvId.setPadding(s, 0, 0, 0);
 		tvId.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvId, 24);
+		FontUtils.setFontSize(tvId, 24);
 		relative.addView(tvId);
 
 		tvGender = new TextView(mContext);
@@ -225,7 +225,7 @@ public class UserPage extends BaseFragment {
 		tvGender.setLayoutParams(rp);
 		tvGender.setPadding(0, 0, s, 0);
 		tvGender.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvGender, 24);
+		FontUtils.setFontSize(tvGender, 24);
 		relative.addView(tvGender);
 		
 		tvAge = new TextView(mContext);
@@ -235,7 +235,7 @@ public class UserPage extends BaseFragment {
 		tvAge.setLayoutParams(rp);
 		tvAge.setPadding(0, 0, s, 0);
 		tvAge.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvAge, 24);
+		FontUtils.setFontSize(tvAge, 24);
 		relative.addView(tvAge);
 		
 		tvIntroduce = new TextView(mContext);
@@ -248,7 +248,7 @@ public class UserPage extends BaseFragment {
 		tvIntroduce.setMaxLines(2);
 		tvIntroduce.setTextColor(Color.WHITE);
 		tvIntroduce.setEllipsize(TruncateAt.END);
-		FontInfo.setFontSize(tvIntroduce, 24);
+		FontUtils.setFontSize(tvIntroduce, 24);
 		relative.addView(tvIntroduce);
 		
 		View coverForBaseProfile = new View(mContext);
@@ -301,8 +301,8 @@ public class UserPage extends BaseFragment {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvPostCount, 
 				2, Gravity.TOP|Gravity.RIGHT, new int[]{0, 10, 10, 0});
 		tvPostCount.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvPostCount, 55);
-		FontInfo.setFontStyle(tvPostCount, FontInfo.BOLD);
+		FontUtils.setFontSize(tvPostCount, 55);
+		FontUtils.setFontStyle(tvPostCount, FontUtils.BOLD);
 		postCountFrame.addView(tvPostCount);
 		
 		//'작성글' 기본 텍스트.
@@ -311,8 +311,8 @@ public class UserPage extends BaseFragment {
 				2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 10, 10});
 		tvPostCount2.setTextColor(Color.WHITE);
 		tvPostCount2.setText(R.string.post);
-		FontInfo.setFontSize(tvPostCount2, 30);
-		FontInfo.setFontStyle(tvPostCount2, FontInfo.BOLD);
+		FontUtils.setFontSize(tvPostCount2, 30);
+		FontUtils.setFontStyle(tvPostCount2, FontUtils.BOLD);
 		postCountFrame.addView(tvPostCount2);
 		
 		FrameLayout friendCountFrame = new FrameLayout(mContext);
@@ -339,8 +339,8 @@ public class UserPage extends BaseFragment {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvFriendCount, 
 				2, Gravity.TOP|Gravity.RIGHT, new int[]{0, 10, 10, 0});
 		tvFriendCount.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvFriendCount, 55);
-		FontInfo.setFontStyle(tvFriendCount, FontInfo.BOLD);
+		FontUtils.setFontSize(tvFriendCount, 55);
+		FontUtils.setFontStyle(tvFriendCount, FontUtils.BOLD);
 		friendCountFrame.addView(tvFriendCount);
 
 		//'친구' 기본 텍스트.
@@ -349,8 +349,8 @@ public class UserPage extends BaseFragment {
 				2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 10, 10});
 		tvFriendCount2.setText(R.string.friend);
 		tvFriendCount2.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvFriendCount2, 30);
-		FontInfo.setFontStyle(tvFriendCount2, FontInfo.BOLD);
+		FontUtils.setFontSize(tvFriendCount2, 30);
+		FontUtils.setFontStyle(tvFriendCount2, FontUtils.BOLD);
 		friendCountFrame.addView(tvFriendCount2);
 		
 		for(int i=0; i<4; i++) {
@@ -393,8 +393,8 @@ public class UserPage extends BaseFragment {
 			bgMenu.setBackgroundColor(i==mode?Color.BLACK:Color.rgb(55, 55, 55));
 			bgMenu.setTextColor(Color.WHITE);
 			bgMenu.setGravity(Gravity.CENTER);
-			FontInfo.setFontSize(bgMenu, 28);
-			FontInfo.setFontStyle(bgMenu, FontInfo.BOLD);
+			FontUtils.setFontSize(bgMenu, 28);
+			FontUtils.setFontStyle(bgMenu, FontUtils.BOLD);
 			bgMenu.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -479,7 +479,7 @@ public class UserPage extends BaseFragment {
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
 										"&image_size=" + ResizeUtils.getSpecificLength(308);
 								
-								DownloadUtils.downloadString(url,
+								DownloadUtils.downloadJSONString(url,
 										new OnJSONDownloadListener() {
 
 											@Override
@@ -724,7 +724,7 @@ public class UserPage extends BaseFragment {
 		tvStatus.setGravity(Gravity.CENTER);
 		tvStatus.setTextColor(Color.WHITE);
 		tvStatus.setId(madeCount);
-		FontInfo.setFontSize(tvStatus, 30);
+		FontUtils.setFontSize(tvStatus, 30);
 		relative.addView(tvStatus);
 		
 		//관심사
@@ -739,7 +739,7 @@ public class UserPage extends BaseFragment {
 		tvInterested.setEllipsize(TruncateAt.END);
 		tvInterested.setGravity(Gravity.CENTER);
 		tvInterested.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvInterested, 30);
+		FontUtils.setFontSize(tvInterested, 30);
 		relative.addView(tvInterested);
 		
 		//직업			id : 1
@@ -757,7 +757,7 @@ public class UserPage extends BaseFragment {
 		tvJob.setGravity(Gravity.CENTER);
 		tvJob.setTextColor(Color.WHITE);
 		tvJob.setId(madeCount + 1);
-		FontInfo.setFontSize(tvJob, 30);
+		FontUtils.setFontSize(tvJob, 30);
 		relative.addView(tvJob);
 		
 		//직장/학교
@@ -772,7 +772,7 @@ public class UserPage extends BaseFragment {
 		tvCompany.setEllipsize(TruncateAt.END);
 		tvCompany.setGravity(Gravity.CENTER);
 		tvCompany.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvCompany, 30);
+		FontUtils.setFontSize(tvCompany, 30);
 		relative.addView(tvCompany);
 		
 		//사는 곳			id : 2
@@ -789,7 +789,7 @@ public class UserPage extends BaseFragment {
 		tvLiveLocation.setGravity(Gravity.CENTER);
 		tvLiveLocation.setTextColor(Color.WHITE);
 		tvLiveLocation.setId(madeCount + 2);
-		FontInfo.setFontSize(tvLiveLocation, 30);
+		FontUtils.setFontSize(tvLiveLocation, 30);
 		relative.addView(tvLiveLocation);
 		
 		//활동 지역
@@ -804,7 +804,7 @@ public class UserPage extends BaseFragment {
 		tvActiveLocation.setEllipsize(TruncateAt.END);
 		tvActiveLocation.setGravity(Gravity.CENTER);
 		tvActiveLocation.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvActiveLocation, 30);
+		FontUtils.setFontSize(tvActiveLocation, 30);
 		relative.addView(tvActiveLocation);
 		
 		View bottomBlank = new View(mContext);
@@ -1036,7 +1036,7 @@ public class UserPage extends BaseFragment {
 					"&mystory_member_id=" + userId +
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -1256,7 +1256,7 @@ public class UserPage extends BaseFragment {
 			return;
 		}
 
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -1328,7 +1328,7 @@ public class UserPage extends BaseFragment {
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 		}
 
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {

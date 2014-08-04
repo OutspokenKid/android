@@ -12,7 +12,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -77,13 +77,13 @@ public class AddedProfilePage extends BaseFragment {
 		tvStatus.setGravity(Gravity.CENTER_VERTICAL);
 		tvStatus.setText(R.string.status);
 		tvStatus.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvStatus, 22);
+		FontUtils.setFontSize(tvStatus, 22);
 		innerFrame.addView(tvStatus);
 
 		etInterested = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, etInterested, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{0, 130, 0, 0}, new int[]{160, 0, 0, 0});
-		FontInfo.setFontSize(etInterested.getEditText(), 22);
+		FontUtils.setFontSize(etInterested.getEditText(), 22);
 		innerFrame.addView(etInterested);
 		
 		TextView tvInterested = new TextView(mContext);
@@ -91,13 +91,13 @@ public class AddedProfilePage extends BaseFragment {
 		tvInterested.setGravity(Gravity.CENTER_VERTICAL);
 		tvInterested.setText(R.string.interested);
 		tvInterested.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvInterested, 22);
+		FontUtils.setFontSize(tvInterested, 22);
 		innerFrame.addView(tvInterested);
 		
 		etJob = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, etJob, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{0, 220, 0, 0}, new int[]{160, 0, 0, 0});
-		FontInfo.setFontSize(etJob.getEditText(), 22);
+		FontUtils.setFontSize(etJob.getEditText(), 22);
 		innerFrame.addView(etJob);
 		
 		TextView tvJob = new TextView(mContext);
@@ -105,13 +105,13 @@ public class AddedProfilePage extends BaseFragment {
 		tvJob.setGravity(Gravity.CENTER_VERTICAL);
 		tvJob.setText(R.string.job);
 		tvJob.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvJob, 22);
+		FontUtils.setFontSize(tvJob, 22);
 		innerFrame.addView(tvJob);
 		
 		etCompany = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, etCompany, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{0, 310, 0, 0}, new int[]{160, 0, 0, 0});
-		FontInfo.setFontSize(etCompany.getEditText(), 22);
+		FontUtils.setFontSize(etCompany.getEditText(), 22);
 		innerFrame.addView(etCompany);
 		
 		TextView tvCompany = new TextView(mContext);
@@ -119,13 +119,13 @@ public class AddedProfilePage extends BaseFragment {
 		tvCompany.setGravity(Gravity.CENTER_VERTICAL);
 		tvCompany.setText(R.string.company);
 		tvCompany.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvCompany, 22);
+		FontUtils.setFontSize(tvCompany, 22);
 		innerFrame.addView(tvCompany);
 		
 		etLive = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, etLive, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{0, 400, 0, 0}, new int[]{160, 0, 0, 0});
-		FontInfo.setFontSize(etLive.getEditText(), 22);
+		FontUtils.setFontSize(etLive.getEditText(), 22);
 		innerFrame.addView(etLive);
 		
 		TextView tvLive = new TextView(mContext);
@@ -133,13 +133,13 @@ public class AddedProfilePage extends BaseFragment {
 		tvLive.setGravity(Gravity.CENTER_VERTICAL);
 		tvLive.setText(R.string.liveLocation);
 		tvLive.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvLive, 22);
+		FontUtils.setFontSize(tvLive, 22);
 		innerFrame.addView(tvLive);
 		
 		etActive = new HoloStyleEditText(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, etActive, 2, Gravity.LEFT|Gravity.TOP, 
 				new int[]{0, 490, 0, 0}, new int[]{160, 0, 0, 0});
-		FontInfo.setFontSize(etActive.getEditText(), 22);
+		FontUtils.setFontSize(etActive.getEditText(), 22);
 		innerFrame.addView(etActive);
 		
 		TextView tvActive = new TextView(mContext);
@@ -147,7 +147,7 @@ public class AddedProfilePage extends BaseFragment {
 		tvActive.setGravity(Gravity.CENTER_VERTICAL);
 		tvActive.setText(R.string.activeLocation);
 		tvActive.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontInfo.setFontSize(tvActive, 22);
+		FontUtils.setFontSize(tvActive, 22);
 		innerFrame.addView(tvActive);
 		
 		HoloStyleButton btnSubmit = new HoloStyleButton(mContext);
@@ -190,7 +190,7 @@ public class AddedProfilePage extends BaseFragment {
 		String url = ZoneConstants.BASE_URL + "member/mstatus_list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
 
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -221,7 +221,7 @@ public class AddedProfilePage extends BaseFragment {
 							"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
 							"&image_size=" + ResizeUtils.getSpecificLength(308);
 					
-					DownloadUtils.downloadString(url2,
+					DownloadUtils.downloadJSONString(url2,
 							new OnJSONDownloadListener() {
 
 								@Override
@@ -452,7 +452,7 @@ public class AddedProfilePage extends BaseFragment {
 					"&jobname=" + URLEncoder.encode(company, "UTF-8") +
 					"&ilike=" + URLEncoder.encode(interested, "UTF-8");
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

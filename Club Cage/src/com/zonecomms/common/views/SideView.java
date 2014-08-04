@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
@@ -58,8 +58,8 @@ public class SideView extends FrameLayout {
 		tvTitle.setTextColor(Color.WHITE);
 		tvTitle.setEllipsize(TruncateAt.END);
 		tvTitle.setGravity(Gravity.CENTER_VERTICAL);
-		FontInfo.setFontSize(tvTitle, 30);
-		FontInfo.setFontStyle(tvTitle, FontInfo.BOLD);
+		FontUtils.setFontSize(tvTitle, 30);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		this.addView(tvTitle);
 	}
 	

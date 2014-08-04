@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -73,9 +73,9 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 		tvContent.setSingleLine();
 		tvContent.setEllipsize(TruncateAt.END);
 		
-		FontInfo.setFontSize(tvNickname, 32);
-		FontInfo.setFontSize(tvRegdate, 24);
-		FontInfo.setFontSize(tvContent, 24);
+		FontUtils.setFontSize(tvNickname, 32);
+		FontUtils.setFontSize(tvRegdate, 24);
+		FontUtils.setFontSize(tvContent, 24);
 	}
 
 	@Override
@@ -171,7 +171,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 				"&relation_nid=" + messageSample.getRelation_nid();
 
 		ToastUtils.showToast(R.string.wait);
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {

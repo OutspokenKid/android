@@ -494,7 +494,7 @@ public class MainActivity extends FragmentActivity {
 							"&image_size=" + ResizeUtils.getSpecificLength(308) +
 							"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 					
-					DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+					DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 						@Override
 						public void onError(String url) {
@@ -1333,7 +1333,7 @@ public class MainActivity extends FragmentActivity {
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&registration_id=" + regId;
 		
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -1371,7 +1371,7 @@ public class MainActivity extends FragmentActivity {
 					"&registration_id=" +
 					"&sb_id=" + ZoneConstants.PAPP_ID;
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

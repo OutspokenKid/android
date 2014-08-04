@@ -32,7 +32,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -162,8 +162,8 @@ public class SignUpActivity extends RecyclingActivity {
 	protected void setSizes() {
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.LEFT|Gravity.TOP, null);
-		FontInfo.setFontSize(tvTitle, 30);
-		FontInfo.setFontStyle(tvTitle, FontInfo.BOLD);
+		FontUtils.setFontSize(tvTitle, 30);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForClause, 2, 
 				Gravity.LEFT|Gravity.TOP, new int[]{0, 90, 0, 0}, new int[]{40, 40, 40, 40});
@@ -397,7 +397,7 @@ public class SignUpActivity extends RecyclingActivity {
 		HoloStyleButton btnAgree = new HoloStyleButton(context);
 		ResizeUtils.viewResize(360, 60, btnAgree, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{0, 0, 20, 0});
 		btnAgree.setText(getString(R.string.agreeWithClause));
-		FontInfo.setFontSize(btnAgree.getTextView(), 20);
+		FontUtils.setFontSize(btnAgree.getTextView(), 20);
 		btnAgree.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -410,7 +410,7 @@ public class SignUpActivity extends RecyclingActivity {
 		HoloStyleButton btnDisagree = new HoloStyleButton(context);
 		ResizeUtils.viewResize(180, 60, btnDisagree, 2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 0, 0});
 		btnDisagree.setText(getString(R.string.disagreeWithClause));
-		FontInfo.setFontSize(btnDisagree.getTextView(), 20);
+		FontUtils.setFontSize(btnDisagree.getTextView(), 20);
 		btnDisagree.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -429,35 +429,35 @@ public class SignUpActivity extends RecyclingActivity {
 		ResizeUtils.viewResize(540, 70, etId, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 80, 0, 0});
 		etId.setHint(R.string.hintForId);
 		etId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		FontInfo.setFontSize(etId.getEditText(), 22);
+		FontUtils.setFontSize(etId.getEditText(), 22);
 		frameForMain.addView(etId);
 		
 		etPw = new HoloStyleEditText(context);
 		ResizeUtils.viewResize(540, 70, etPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 180, 0, 0});
 		etPw.setHint(R.string.hintForPw);
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		FontInfo.setFontSize(etPw.getEditText(), 22);
+		FontUtils.setFontSize(etPw.getEditText(), 22);
 		frameForMain.addView(etPw);
 		
 		etConfirmPw = new HoloStyleEditText(context);
 		ResizeUtils.viewResize(540, 70, etConfirmPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 280, 0, 0});
 		etConfirmPw.setHint(R.string.hintForConfirmPw);
 		etConfirmPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
-		FontInfo.setFontSize(etConfirmPw.getEditText(), 22);
+		FontUtils.setFontSize(etConfirmPw.getEditText(), 22);
 		frameForMain.addView(etConfirmPw);
 		
 		etEmail = new HoloStyleEditText(context);
 		ResizeUtils.viewResize(270, 70, etEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 380, 0, 0});
 		etEmail.setHint(R.string.hintForEmail);
 		etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		FontInfo.setFontSize(etEmail.getEditText(), 22);
+		FontUtils.setFontSize(etEmail.getEditText(), 22);
 		frameForMain.addView(etEmail);
 		
 		TextView tvAt = new TextView(context);
 		ResizeUtils.viewResize(60, 60, tvAt, 2, Gravity.LEFT|Gravity.TOP, new int[]{310, 380, 0, 0});
 		tvAt.setText("@");
 		tvAt.setGravity(Gravity.CENTER);
-		FontInfo.setFontSize(tvAt, 40);
+		FontUtils.setFontSize(tvAt, 40);
 		frameForMain.addView(tvAt);
 		
 		spEmail = new HoloStyleSpinnerButton(context);
@@ -490,20 +490,20 @@ public class SignUpActivity extends RecyclingActivity {
 		etEmail2.setVisibility(View.INVISIBLE);
 		etEmail2.setBackgroundColor(Color.TRANSPARENT);
 		etEmail2.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		FontInfo.setFontSize(etEmail2.getEditText(), 22);
+		FontUtils.setFontSize(etEmail2.getEditText(), 22);
 		frameForMain.addView(etEmail2);
 		
 		etPhoneNumber = new HoloStyleEditText(context);
 		ResizeUtils.viewResize(540, 70, etPhoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 480, 0, 0});
 		etPhoneNumber.setHint(R.string.hintForPhoneNumber);
 		etPhoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
-		FontInfo.setFontSize(etPhoneNumber.getEditText(), 22);
+		FontUtils.setFontSize(etPhoneNumber.getEditText(), 22);
 		frameForMain.addView(etPhoneNumber);
 		
 		HoloStyleButton btnInputMoreInfo = new HoloStyleButton(context);
 		ResizeUtils.viewResize(540, 70, btnInputMoreInfo, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 620, 0, 0});
 		btnInputMoreInfo.setText(R.string.inputMoreInfo);
-		FontInfo.setFontSize(btnInputMoreInfo.getTextView(), 23);
+		FontUtils.setFontSize(btnInputMoreInfo.getTextView(), 23);
 		btnInputMoreInfo.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -588,7 +588,7 @@ public class SignUpActivity extends RecyclingActivity {
 				showLoadingView();
 				String url = ZoneConstants.BASE_URL + "member/check/id?member_id=" + etId.getEditText().getText();
 				
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 					
 					@Override
 					public void onError(String url) {
@@ -615,7 +615,7 @@ public class SignUpActivity extends RecyclingActivity {
 								
 								String url2 = ZoneConstants.BASE_URL + "member/check/email?member_email=" + emailText;
 								
-								DownloadUtils.downloadString(url2, new OnJSONDownloadListener() {
+								DownloadUtils.downloadJSONString(url2, new OnJSONDownloadListener() {
 									
 									@Override
 									public void onError(String url) {
@@ -686,13 +686,13 @@ public class SignUpActivity extends RecyclingActivity {
 				CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 350, 0, 0});
 		tv.setText(R.string.profilePhotoCondition);
 		tv.setGravity(Gravity.CENTER_HORIZONTAL);
-		FontInfo.setFontSize(tv, 20);
+		FontUtils.setFontSize(tv, 20);
 		frameForSub.addView(tv);
 		
 		etNickname = new HoloStyleEditText(context);
 		ResizeUtils.viewResize(540, 70, etNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 410, 0, 0});
 		etNickname.setHint(R.string.hintForNickname);
-		FontInfo.setFontSize(etNickname.getEditText(), 22);
+		FontUtils.setFontSize(etNickname.getEditText(), 22);
 		frameForSub.addView(etNickname);
 		
 		spGender = new HoloStyleSpinnerButton(context);
@@ -722,7 +722,7 @@ public class SignUpActivity extends RecyclingActivity {
 		tvBirth.setText(R.string.birth);
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvBirth, 2, Gravity.LEFT|Gravity.TOP, new int[]{40, 640, 0, 0});
 		tvBirth.setGravity(Gravity.CENTER_VERTICAL);
-		FontInfo.setFontSize(tvBirth, 25);
+		FontUtils.setFontSize(tvBirth, 25);
 		tvBirth.setTextColor(Color.WHITE);
 		frameForSub.addView(tvBirth);
 		
@@ -753,13 +753,13 @@ public class SignUpActivity extends RecyclingActivity {
 		ResizeUtils.viewResize(540, 90, etIntroduce, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, (currentapiVersion >= 11? 1080 : 960), 0, 0});
 		etIntroduce.setHint(R.string.hintForIntroduce);
 		etIntroduce.getEditText().setSingleLine(false);
-		FontInfo.setFontSize(etIntroduce.getEditText(), 22);
+		FontUtils.setFontSize(etIntroduce.getEditText(), 22);
 		frameForSub.addView(etIntroduce);
 		
 		HoloStyleButton btnCompleteSignUp = new HoloStyleButton(context);
 		ResizeUtils.viewResize(540, 70, btnCompleteSignUp, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, (currentapiVersion >= 11? 1180 : 1060), 0, 0});
 		btnCompleteSignUp.setText(R.string.completeSignUp);
-		FontInfo.setFontSize(btnCompleteSignUp.getTextView(), 23);
+		FontUtils.setFontSize(btnCompleteSignUp.getTextView(), 23);
 		btnCompleteSignUp.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -793,7 +793,7 @@ public class SignUpActivity extends RecyclingActivity {
 				showLoadingView();
 				String url = ZoneConstants.BASE_URL + "member/check/nickname?member_nickname=" + etNickname.getEditText().getText();
 				
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 					
 					@Override
 					public void onError(String url) {
@@ -1030,7 +1030,7 @@ public class SignUpActivity extends RecyclingActivity {
 					"&auth_key=1" +
 					"&sb_id=" + ZoneConstants.PAPP_ID;
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override
 				public void onError(String url) {

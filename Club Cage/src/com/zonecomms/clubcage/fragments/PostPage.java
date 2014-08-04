@@ -24,7 +24,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -212,7 +212,7 @@ public class PostPage extends BaseFragment {
 
 		int p = ResizeUtils.getSpecificLength(20);
 		tvText.setPadding(p, p, p, p);
-		FontInfo.setFontSize(tvText, 30);
+		FontUtils.setFontSize(tvText, 30);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, writeLinear, 1, Gravity.LEFT, new int[]{8, 8, 8, 8});
 		
@@ -220,10 +220,10 @@ public class PostPage extends BaseFragment {
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ResizeUtils.getSpecificLength(90), 1);
 		lp.setMargins(m, m, m, m);
 		editText.setLayoutParams(lp);
-		FontInfo.setFontAndHintSize(editText.getEditText(), 25, 20);
+		FontUtils.setFontAndHintSize(editText.getEditText(), 25, 20);
 		
 		ResizeUtils.viewResize(120, 80, btnSubmit, 1, Gravity.CENTER_VERTICAL, new int[]{0, 8, 8, 8});
-		FontInfo.setFontSize(btnSubmit.getTextView(), 20);
+		FontUtils.setFontSize(btnSubmit.getTextView(), 20);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, targetLinear, 2, Gravity.BOTTOM, new int[]{0, 0, 0, 108});
 	}
@@ -236,7 +236,7 @@ public class PostPage extends BaseFragment {
 				"&image_size=" + ResizeUtils.getSpecificLength(640) +
 				"&spot_nid=" + spot_nid;
 		super.downloadInfo();
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -531,7 +531,7 @@ public class PostPage extends BaseFragment {
 				"&spot_nid=" + spot_nid +
 				"&image_size=" + ResizeUtils.getSpecificLength(100) +
 				"&last_reply_nid=" + lastIndexno;
-		DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -638,7 +638,7 @@ public class PostPage extends BaseFragment {
 				}
 			}
 
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -742,7 +742,7 @@ public class PostPage extends BaseFragment {
 						setTargetViews();
 					}
 				});
-				FontInfo.setFontSize(tv, 22);
+				FontUtils.setFontSize(tv, 22);
 				linear.addView(tv);
 			}
 		}
@@ -797,7 +797,7 @@ public class PostPage extends BaseFragment {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&spot_nid=" + post.getSpot_nid();
 
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -846,7 +846,7 @@ public class PostPage extends BaseFragment {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&spot_nid=" + post.getSpot_nid();
 
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -912,7 +912,7 @@ public class PostPage extends BaseFragment {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&spot_nid=" + post.getSpot_nid();
 
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -1016,8 +1016,8 @@ public class PostPage extends BaseFragment {
 			tvNickname.setId(madeCount + 1);
 			tvNickname.setTextColor(Color.WHITE);
 			tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
-			FontInfo.setFontSize(tvNickname, 30);
-			FontInfo.setFontStyle(tvNickname, FontInfo.BOLD);
+			FontUtils.setFontSize(tvNickname, 30);
+			FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 			this.addView(tvNickname);
 			
 			//id : 3
@@ -1039,7 +1039,7 @@ public class PostPage extends BaseFragment {
 			tvText.setLayoutParams(rp);
 			tvText.setTextColor(Color.WHITE);
 			tvText.setId(madeCount + 2);
-			FontInfo.setFontSize(tvText, 30);
+			FontUtils.setFontSize(tvText, 30);
 			this.addView(tvText);
 			
 			tvRegdate = new TextView(getContext());
@@ -1050,7 +1050,7 @@ public class PostPage extends BaseFragment {
 			rp.rightMargin = m;
 			tvRegdate.setLayoutParams(rp);
 			tvRegdate.setTextColor(Color.WHITE);
-			FontInfo.setFontSize(tvRegdate, 26);
+			FontUtils.setFontSize(tvRegdate, 26);
 			this.addView(tvRegdate);
 			
 			View bottomBlank = new View(getContext());
@@ -1172,7 +1172,7 @@ public class PostPage extends BaseFragment {
 						"&reply_nid=" + reply.getReply_nid() +
 						"&spot_nid=" + post.getSpot_nid();
 				
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -1223,7 +1223,7 @@ public class PostPage extends BaseFragment {
 						"&reply_nid=" + reply.getReply_nid() +
 						"&bad_reason_kind=080";
 
-				DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -1318,7 +1318,7 @@ public class PostPage extends BaseFragment {
 							mActivity.showProfilePopup(MEMBER.getMember_id(), MEMBER.getStatus());
 						}
 					});
-					FontInfo.setFontSize(tv, 20);
+					FontUtils.setFontSize(tv, 20);
 					linear.addView(tv);
 				}
 			}

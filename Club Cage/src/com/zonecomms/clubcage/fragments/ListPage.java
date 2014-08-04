@@ -130,7 +130,7 @@ public class ListPage extends BaseListFragment {
 		if(!StringUtils.isEmpty(url)) {
 			super.downloadInfo();
 			
-			DownloadUtils.downloadString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {

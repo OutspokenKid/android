@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.R;
 
@@ -55,7 +55,7 @@ public class ReplyLoadingView extends LinearLayout {
 		tvText = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvText, 1, Gravity.CENTER_VERTICAL, null);
 		tvText.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvText, 30);
+		FontUtils.setFontSize(tvText, 30);
 		this.addView(tvText);
 		
 		View rightBlank = new View(getContext());
