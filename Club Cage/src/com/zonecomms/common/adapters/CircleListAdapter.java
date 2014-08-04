@@ -1,4 +1,4 @@
-package com.example.androidvolleytest;
+package com.zonecomms.common.adapters;
 
 import java.util.ArrayList;
 
@@ -21,8 +21,11 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.common.models.Post;
+import com.zonecomms.common.views.CircleHeaderView;
 
-public class ListAdapter extends BaseAdapter {
+public class CircleListAdapter extends BaseAdapter {
 
 	public int color;
 	
@@ -31,7 +34,7 @@ public class ListAdapter extends BaseAdapter {
 	private ArrayList<Post> posts = new ArrayList<Post>();
 	private ArrayList<View> circleViews = new ArrayList<View>();
 	
-	public ListAdapter(Context context, CircleHeaderView circleHeaderView, 
+	public CircleListAdapter(Context context, CircleHeaderView circleHeaderView, 
 			LayoutInflater mInflater, ArrayList<Post> posts) {
 
 		this.circleHeaderView = circleHeaderView;
@@ -241,37 +244,37 @@ public class ListAdapter extends BaseAdapter {
 	
 		public void setValues(Post post) {
 
-			if(!StringUtils.isEmpty(post.profileUrl)) {
+			if(!StringUtils.isEmpty(post.getMember().getMedia_src())) {
 				ivProfile.setVisibility(View.VISIBLE);
-				DownloadUtils.downloadImage(ivProfile, post.profileUrl);
+				DownloadUtils.downloadImage(ivProfile, post.getMember().getMedia_src());
 				
 			} else {
 				ivProfile.setVisibility(View.GONE);
 			}
 			
-			tvNickname.setText(post.nickname);
-			tvRegdate.setText(post.regdate);
-			tvContent.setText(post.content);
+			tvNickname.setText(post.getMember().getMember_nickname());
+			tvRegdate.setText(post.getReg_dt());
+			tvContent.setText(post.getContent());
 			
-			if(!StringUtils.isEmpty(post.imageUrl)) {
+			if(!StringUtils.isEmpty(post.getMedia_src())) {
 				ivImage.setVisibility(View.VISIBLE);
-				DownloadUtils.downloadImage(ivImage, post.imageUrl);
+				DownloadUtils.downloadImage(ivImage, post.getMedia_src());
 				
 			} else {
 				ivImage.setVisibility(View.GONE);
 			}
 			
-			if(post.reply_cnt > 99) {
+			if(post.getReply_cnt() > 99) {
 				FontUtils.setFontSize(tvReply, 20);
 				tvReply.setText("99+");
 			} else {
 				FontUtils.setFontSize(tvReply, 26);
 				
-				if(post.reply_cnt < 0) {
+				if(post.getReply_cnt() < 0) {
 					tvReply.setText("0");
 					
 				} else {
-					tvReply.setText("" + post.reply_cnt);
+					tvReply.setText("" + post.getReply_cnt());
 				}
 			}
 

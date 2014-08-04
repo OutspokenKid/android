@@ -1,7 +1,12 @@
 package com.zonecomms.common.models;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 
 import com.outspoken_kid.utils.LogUtils;
 
@@ -13,6 +18,7 @@ import com.outspoken_kid.utils.LogUtils;
  */
 public class StartupInfo {
 
+	private BgInfo bgInfo;
 	private Banner[] banners;
 	private MenuColorSet[] menuColorSets;
 	private LoadingImageSet loadingImageSet;
@@ -63,6 +69,10 @@ public class StartupInfo {
 					schedules[i] = new Notice(arJSON.getJSONObject(i));
 				}
 			}
+			
+			if(objJSON.has("bgInfo")) {
+				setBgInfo(new BgInfo(objJSON.getJSONArray("bgInfo")));
+			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}
@@ -107,5 +117,291 @@ public class StartupInfo {
 	public Notice[] getSchedules() {
 		
 		return schedules;
+	}
+
+	public BgInfo getBgInfo() {
+		
+		return bgInfo;
+	}
+
+	public void setBgInfo(BgInfo bgInfo) {
+		
+		this.bgInfo = bgInfo;
+	}
+	
+///////////////////// Classes.
+
+	public class Banner {
+
+		private int status;
+		private String ad_nid;
+		private String img_url;
+		private String reg_id;
+		private String reg_date;
+		private String target_link;
+		
+		public Banner(){};
+		
+		public Banner(JSONObject objJSON) {
+			
+			try {
+				if(objJSON.has("status")) {
+					this.status = objJSON.getInt("status");
+				}
+				
+				if(objJSON.has("ad_nid")) {
+					this.ad_nid = objJSON.getString("ad_nid");
+				}
+				
+				if(objJSON.has("img_url")) {
+					this.img_url = objJSON.getString("img_url");
+				}
+				
+				if(objJSON.has("reg_id")) {
+					this.reg_id = objJSON.getString("reg_id");
+				}
+				
+				if(objJSON.has("reg_date")) {
+					this.reg_date = objJSON.getString("reg_date");
+				}
+				
+				if(objJSON.has("target_link")) {
+					this.target_link = objJSON.getString("target_link");
+				}
+			} catch(Exception e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		public int getStatus() {
+			return status;
+		}
+		public void setStatus(int status) {
+			this.status = status;
+		}
+		public String getAd_nid() {
+			return ad_nid;
+		}
+		public void setAd_nid(String ad_nid) {
+			this.ad_nid = ad_nid;
+		}
+		public String getImg_url() {
+			return img_url;
+		}
+		public void setImg_url(String img_url) {
+			this.img_url = img_url;
+		}
+		public String getReg_id() {
+			return reg_id;
+		}
+		public void setReg_id(String reg_id) {
+			this.reg_id = reg_id;
+		}
+		public String getReg_date() {
+			return reg_date;
+		}
+		public void setReg_date(String reg_date) {
+			this.reg_date = reg_date;
+		}
+		public String getTarget_link() {
+			return target_link;
+		}
+		public void setTarget_link(String target_link) {
+			this.target_link = target_link;
+		}
+	}
+
+	public class MenuColorSet {
+
+		private int color_type;
+		private int[] colors;
+		
+		public MenuColorSet(){}
+		
+		public MenuColorSet(JSONObject objJSON) {
+
+			try {
+				if(objJSON.has("color_type")) {
+					color_type = objJSON.getInt("color_type");
+				}
+				
+				if(objJSON.has("color")) {
+					JSONArray arJSON = objJSON.getJSONArray("color");
+					
+					int size = arJSON.length();
+					colors = new int[size];
+					for(int i=0; i<size; i++) {
+						JSONObject objColor = arJSON.getJSONObject(i);
+						
+						int r = objColor.getInt("r");
+						int g = objColor.getInt("g");
+						int b = objColor.getInt("b");
+						
+						colors[i] = Color.rgb(r, g, b);
+					}
+				}
+			} catch(Exception e) {}
+		}
+		
+		public int getColor_type() {
+			return color_type;
+		}
+		public void setColor_type(int color_type) {
+			this.color_type = color_type;
+		}
+		public int[] getColors() {
+			return colors;
+		}
+		public void setColors(int[] colors) {
+			this.colors = colors;
+		}
+	}
+
+	public class LoadingImageSet {
+
+		private int time;
+		private String[] images;
+		private Drawable[] drawables;
+		
+		public LoadingImageSet(){}
+		
+		public LoadingImageSet(JSONObject objJSON) {
+			
+			try {
+				if(objJSON.has("loading")) {
+					
+					JSONArray arJSON = objJSON.getJSONArray("loading");
+					int size = arJSON.length();
+					images = new String[size];
+					drawables = new Drawable[size];
+					for(int i=0; i<size; i++) {
+						images[i] = arJSON.getString(i);
+					}
+				}
+				
+				if(objJSON.has("timer")) {
+					String timerString = objJSON.getString("timer");
+					float timer = Float.parseFloat(timerString);
+					time = (int)(timer / ((float)images.length) * 1000);
+				}
+				
+			} catch(Exception e) {}
+		}
+		
+		public int getTime() {
+			return time;
+		}
+		
+		public void setTime(int time) {
+			this.time = time;
+		}
+		
+		public String[] getImages() {
+			return images;
+		}
+		
+		public void setImages(String[] images) {
+			this.images = images;
+		}
+
+		public Drawable[] getDrawables() {
+			return drawables;
+		}
+
+		public void setDrawables(Drawable[] drawables) {
+			this.drawables = drawables;
+		}
+	}
+
+	public class Popup {
+
+		private String content;
+		private String bg_img_url;
+		private String link_url;
+		private String notice_title;
+		private int notice_nid;
+		
+		public Popup(JSONObject objJSON) {
+
+			try {
+				if(objJSON.has("content")) {
+					this.content = objJSON.getString("content");
+				}
+				
+				if(objJSON.has("bg_img_url")) {
+					this.bg_img_url = objJSON.getString("bg_img_url");
+				}
+				
+				if(objJSON.has("link_url")) {
+					this.link_url = objJSON.getString("link_url");
+				}
+				
+				if(objJSON.has("notice_title")) {
+					this.notice_title = objJSON.getString("notice_title");
+				}
+				
+				if(objJSON.has("notice_nid")) {
+					this.notice_nid = objJSON.getInt("notice_nid");
+				}
+			} catch(Exception e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		public String getContent() {
+			return content;
+		}
+		public void setContent(String content) {
+			this.content = content;
+		}
+		public String getBg_img_url() {
+			return bg_img_url;
+		}
+		public void setBg_img_url(String bg_img_url) {
+			this.bg_img_url = bg_img_url;
+		}
+		public String getLink_url() {
+			return link_url;
+		}
+		public void setLink_url(String link_url) {
+			this.link_url = link_url;
+		}
+		public String getNotice_title() {
+			return notice_title;
+		}
+		public void setNotice_title(String notice_title) {
+			this.notice_title = notice_title;
+		}
+
+		public int getNotice_nid() {
+			return notice_nid;
+		}
+
+		public void setNotice_nid(int notice_nid) {
+			this.notice_nid = notice_nid;
+		}
+	}
+
+	public class BgInfo {
+		
+		public ArrayList<String> colors = new ArrayList<String>();
+		public ArrayList<String> urls = new ArrayList<String>();
+
+		public BgInfo(JSONArray arJSON) {
+			
+			try {
+				int size = arJSON.length();
+				
+				for(int i=0; i<size; i++) {
+					JSONObject objInfo = arJSON.getJSONObject(i);
+					colors.add(objInfo.getString("colorBG"));
+					urls.add(objInfo.getJSONArray("link_datas").getString(0));
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
 	}
 }

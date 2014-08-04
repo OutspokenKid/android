@@ -118,7 +118,7 @@ public class IntroActivity extends Activity {
 		int currentSponserVersion = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_SPONSER, "version");
 		String url = ZoneConstants.BASE_URL + "common/mainbanner" +
 				"?sb_id=" + ZoneConstants.PAPP_ID +
-				"&image_size=" + ResizeUtils.getScreenWidth() +
+				"&image_size=640" +
 				"&ver=" + currentSponserVersion;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
@@ -205,7 +205,7 @@ public class IntroActivity extends Activity {
 
 		String url = ZoneConstants.BASE_URL + "common/common_data" +
 				"?sb_id=" + ZoneConstants.PAPP_ID +
-				"&image_size=" + ResizeUtils.getScreenWidth();
+				"&image_size=640";
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
@@ -220,13 +220,39 @@ public class IntroActivity extends Activity {
 
 				try {
 					MainActivity.startupInfo = new StartupInfo(objJSON);
+					
+					if(MainActivity.startupInfo.getBgInfo().urls.size() > 0) {
+						downloadBgs();
+					} else {
+						downloadLoadingImages();
+					}
 				} catch(Exception e) {
 					LogUtils.trace(e);
+					downloadLoadingImages();
 				}
-				
-				downloadLoadingImages();
 			}
 		});
+	}
+	
+	public void downloadBgs() {
+		
+		DownloadUtils.downloadBitmap(MainActivity.startupInfo.getBgInfo().urls.get(0),
+				new OnBitmapDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+						
+						LogUtils.log("IntroActivity.onError." + "\nurl : " + url);
+						downloadLoadingImages();
+					}
+
+					@Override
+					public void onCompleted(String url, Bitmap bitmap) {
+
+						LogUtils.log("IntroActivity.onCompleted." + "\nurl : " + url);
+						downloadLoadingImages();
+					}
+				});
 	}
 	
 	public void downloadLoadingImages() {
@@ -304,7 +330,6 @@ public class IntroActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					MainActivity.myInfo = null;
-					clearApplication();
 					String newPw = getIntent().getStringExtra("pw");
 					signCheck(newId, newPw);
 				}
@@ -315,7 +340,6 @@ public class IntroActivity extends Activity {
 				@Override
 				public void onCancel(DialogInterface dialog) {
 					MainActivity.myInfo = null;
-					clearApplication();
 					signCheck(null, null);
 				}
 			});
@@ -327,21 +351,12 @@ public class IntroActivity extends Activity {
 			
 		} else if(hasNewAccount) {
 			MainActivity.myInfo = null;
-			clearApplication();
 			String newId = getIntent().getStringExtra("id");
 			String newPw = getIntent().getStringExtra("pw");
 			signCheck(newId, newPw);
 		} else {
 			MainActivity.myInfo = null;
-			clearApplication();
 			signCheck(null, null);
-		}
-	}
-	
-	public void clearApplication() {
-		
-		if(ZonecommsApplication.getActivity() != null) {
-			ZonecommsApplication.getActivity().finish();
 		}
 	}
 
@@ -435,10 +450,12 @@ public class IntroActivity extends Activity {
 	public void showSponserImage() {
 
 		if(sponserBitmap == null || sponserBitmap.isRecycled()) {
-
-			if(MainActivity.myInfo == null) {
-				launchToSignInActivity();
-			} else {
+			
+			if(MainActivity.startupInfo.getBgInfo() != null
+					&& MainActivity.startupInfo.getBgInfo().urls.size() > 0
+					&& MainActivity.startupInfo.getBgInfo().colors.size() > 0) {
+				launchToCircleMainActivity();
+			} else{
 				launchToMainActivity();
 			}
 			return;
@@ -493,19 +510,21 @@ public class IntroActivity extends Activity {
 				ivSponser.setVisibility(View.INVISIBLE);
 				ViewUnbindHelper.unbindReferences(ivSponser);
 				
-				if(MainActivity.myInfo == null) {
-					launchToSignInActivity();
-				} else {
+				if(MainActivity.startupInfo.getBgInfo() != null
+						&& MainActivity.startupInfo.getBgInfo().urls.size() > 0
+						&& MainActivity.startupInfo.getBgInfo().colors.size() > 0) {
+					launchToCircleMainActivity();
+				} else{
 					launchToMainActivity();
 				}
 			}
 		});
 		ivSponser.startAnimation(aaOut);
 	}
-	
-	public void launchToSignInActivity() {
 
-		Intent intent = new Intent(this, SignInActivity.class);
+	public void launchToCircleMainActivity() {
+		
+		Intent intent = new Intent(this, CircleMainActivity.class);
 		Intent i = getIntent();				//'i' is intent that passed intent from before.
 		
 		if(i!= null && i.getData() != null) {
@@ -528,14 +547,6 @@ public class IntroActivity extends Activity {
 		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		finish();
-	}
-	
-	public void launchToTestActivity() {
-
-		Intent intent = new Intent(this, NaverMapActivity.class);
-		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		startActivity(intent);
 		finish();
 	}
 }

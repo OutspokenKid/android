@@ -7,9 +7,10 @@ import com.zonecomms.clubcage.classes.ZoneConstants;
 
 public class AppInfoUtils {
 	
-	public static int ALL = 0;
+	public static int NONE = 0;
 	public static int WITHOUT_MEMBER_ID = 1;
 	public static int WITHOUT_SB_ID = 2;
+	public static int ALL = 3;
 	
 	public static String getAppInfo(int mode) {
 		
@@ -25,18 +26,25 @@ public class AppInfoUtils {
 		try {
 			String str = com.outspoken_kid.utils.AppInfoUtils.getAddedString();
 			
-			if(mode == 3) {
+			if(mode == NONE) {
 				//No.
-			} else if(mode == 2) {
+				
+			} else if(mode == WITHOUT_SB_ID && MainActivity.myInfo != null) {
 				//Need member_id.
 				str += "&member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8");
-			} else if(mode == 1) {
+				
+			} else if(mode == WITHOUT_MEMBER_ID) {
 				//Need sb_id.
 				str += "&sb_id=" + ZoneConstants.PAPP_ID;
-			} else {
+				
+			} else if(mode == ALL) {
 				//Need both.
-				str += "&member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8") +
-						"&sb_id=" + ZoneConstants.PAPP_ID;
+				
+				str += "&sb_id=" + ZoneConstants.PAPP_ID;
+				
+				if(MainActivity.myInfo != null) {
+					str += "&member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8");
+				}
 			}
 			
 			return str;

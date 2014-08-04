@@ -472,8 +472,8 @@ public class BaseProfilePage extends BaseFragment {
 
 	@Override
 	protected int getContentViewId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.id.baseProfilePage_mainLayout;
 	}
 
 	@Override

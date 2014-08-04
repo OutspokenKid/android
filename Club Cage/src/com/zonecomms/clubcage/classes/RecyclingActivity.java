@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.fragments.MainPage;
@@ -26,6 +27,13 @@ public abstract class RecyclingActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		
+		FontUtils.setGlobalFont(this, layoutResID, getString(R.string.customFont));
 	}
 	
 	@Override

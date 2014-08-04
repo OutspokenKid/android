@@ -100,8 +100,16 @@ public class ZonecommsApplication extends OutSpokenApplication {
 
 		int size = getFragmentsSize();
 		
+		LogUtils.log("###ZonecommsApplication.clearFragmentsWithoutMain.  fragment size : " + size);
+		
 		for(int i=0; i<size; i++) {
-			((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim();
+			try {
+				((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim();
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
 		}
 		
 		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

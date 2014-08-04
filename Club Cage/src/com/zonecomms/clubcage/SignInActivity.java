@@ -170,7 +170,8 @@ public class SignInActivity extends RecyclingActivity {
 					public void OnAfterSigningIn(boolean successSignIn) {
 						
 						if(successSignIn) {
-							launchToMainActivity();
+							setResult(RESULT_OK);
+							finish();
 						} else {
 							ToastUtils.showToast(R.string.failToSignIn);
 						}
@@ -313,22 +314,6 @@ public class SignInActivity extends RecyclingActivity {
 		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-	}
-	
-	public void launchToMainActivity() {
-		
-		Intent intent = new Intent(this, MainActivity.class);
-		Intent i = getIntent();				//'i' is intent that passed intent from before.
-		
-		if(i!= null) {
-			if(i.getData() != null) {
-				intent.setData(i.getData());
-			}
-		}
-		
-		startActivity(intent);
-		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		finish();
 	}
 
 ///////////////// Interfaces.

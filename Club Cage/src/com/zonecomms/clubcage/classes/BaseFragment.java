@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.zonecomms.clubcage.MainActivity;
@@ -111,6 +112,8 @@ public abstract class BaseFragment extends Fragment {
 		super.onStart();
 		
 		LogUtils.log("###BaseFragment.onStart.  ");
+		
+		FontUtils.setGlobalFont(getActivity(), mThisView, getString(R.string.customFont));
 	}
 	
 	@Override

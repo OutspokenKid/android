@@ -35,6 +35,7 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.MainActivity;
+import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
@@ -200,16 +201,23 @@ public class ProfilePopup extends FrameLayout {
 		});
 	}
 	
-	public void show(String userId) {
+	public void show(final String userId) {
 		
-		if(isAnimating || this.getVisibility() == View.VISIBLE || StringUtils.isEmpty(userId)) {
-			return;
-		}
-		
-		this.setVisibility(View.VISIBLE);
-		this.startAnimation(aaIn);
-		GestureSlidingLayout.setScrollLock(true);
-		downloadUserInfo(userId);
+		ZonecommsApplication.getActivity().checkLoginAndExecute(new OnAfterLoginListener() {
+			
+			@Override
+			public void onAfterLogin() {
+
+				if(isAnimating || getVisibility() == View.VISIBLE || StringUtils.isEmpty(userId)) {
+					return;
+				}
+				
+				setVisibility(View.VISIBLE);
+				startAnimation(aaIn);
+				GestureSlidingLayout.setScrollLock(true);
+				downloadUserInfo(userId);
+			}
+		});
 	}
 	
 	public void hide(final OnAfterHideListener onAfterHideListener) {

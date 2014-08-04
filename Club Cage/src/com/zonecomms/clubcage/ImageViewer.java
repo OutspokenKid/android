@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
 import com.outspoken_kid.activities.ImageViewerActivity;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
@@ -24,6 +25,13 @@ public class ImageViewer extends ImageViewerActivity {
 		super.onCreate(savedInstanceState);
 		
 		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(Color.BLACK);
+	}
+	
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		
+		FontUtils.setGlobalFont(this, layoutResID, getString(R.string.customFont));
 	}
 	
 	@Override

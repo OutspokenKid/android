@@ -2,16 +2,10 @@ package com.zonecomms.clubcage.fragments;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
@@ -40,14 +34,14 @@ public class MainPage extends BaseFragment {
 
 	private ScrollView scrollView;
 	private RelativeLayout mainRelative;
-	private FrameLayout boardMenu;
+//	private FrameLayout boardMenu;
 	private ImageView ivPoster1, ivPoster2;
 	
-	private View coverForMenu;
-
-	private boolean animating;
-	private boolean isWriting;
-	private AlphaAnimation aaIn, aaOut, aaIn2, aaOut2;
+//	private View coverForMenu;
+//
+//	private boolean animating;
+//	private boolean isWriting;
+//	private AlphaAnimation aaIn, aaOut, aaIn2, aaOut2;
 	private int madeCount = 870901;
 	
 	@Override
@@ -180,12 +174,9 @@ public class MainPage extends BaseFragment {
 			
 			@Override
 			public void onClick(View v) {
-				
-				if(MainActivity.myInfo != null && !StringUtils.isEmpty(MainActivity.myInfo.getMember_id())) {
-					String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/userhome?member_id=" 
-										+ MainActivity.myInfo.getMember_id();
-					IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-				}
+
+				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/home";
+				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
 			}
 		});
 		mainRelative.addView(home);
@@ -234,7 +225,9 @@ public class MainPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 
-				showBoardMenu(false);
+				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/freetalk";
+				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//				showBoardMenu(false);
 			}
 		});
 		mainRelative.addView(talk);
@@ -525,23 +518,23 @@ public class MainPage extends BaseFragment {
 		//150 * 9 = 1350
 		//8 * 9 = 72
 		//1350 + 72 = 1422
-		coverForMenu = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getScreenWidth(), ResizeUtils.getSpecificLength(1422));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		coverForMenu.setLayoutParams(rp);
-		coverForMenu.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				hideBoardMenu(true);
-			}
-		});
-		coverForMenu.setVisibility(View.INVISIBLE);
-		coverForMenu.setBackgroundColor(Color.argb(100, 0, 0, 0));
-		mainRelative.addView(coverForMenu);
-		
-		addBoardMenu();
+//		coverForMenu = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(ResizeUtils.getScreenWidth(), ResizeUtils.getSpecificLength(1422));
+//		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+//		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+//		coverForMenu.setLayoutParams(rp);
+//		coverForMenu.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				hideBoardMenu(true);
+//			}
+//		});
+//		coverForMenu.setVisibility(View.INVISIBLE);
+//		coverForMenu.setBackgroundColor(Color.argb(100, 0, 0, 0));
+//		mainRelative.addView(coverForMenu);
+//		
+//		addBoardMenu();
 	}
 
 	@Override
@@ -617,8 +610,8 @@ public class MainPage extends BaseFragment {
 
 	@Override
 	protected int getContentViewId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.id.mainPage_mainFrame;
 	}
 
 	@Override
@@ -630,10 +623,10 @@ public class MainPage extends BaseFragment {
 	@Override
 	public boolean onBackKeyPressed() {
 		
-		if(boardMenu.getVisibility() == View.VISIBLE) {
-			hideBoardMenu(true);
-			return true;
-		}
+//		if(boardMenu.getVisibility() == View.VISIBLE) {
+//			hideBoardMenu(true);
+//			return true;
+//		}
 		
 		return false;
 	}
@@ -678,158 +671,158 @@ public class MainPage extends BaseFragment {
 
 ////////////////////// Custom methdos.
 	
-	public void addBoardMenu() {
-
-		int l = ResizeUtils.getSpecificLength(150);
-		int s = ResizeUtils.getSpecificLength(8);
-
-		boardMenu = new FrameLayout(mContext);
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(l*2 + s, l*2 + s);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
-		boardMenu.setLayoutParams(rp);
-		boardMenu.setBackgroundColor(Color.BLACK);
-		boardMenu.setVisibility(View.INVISIBLE);
-		mainRelative.addView(boardMenu);
-
-		int[] imgResIds = new int[] {
-			R.drawable.img_popup_story,
-			R.drawable.img_popup_review,
-			R.drawable.img_popup_with,
-			R.drawable.img_popup_find,
-		};
-		
-		FrameLayout.LayoutParams fp = null;
-		for(int i=0; i<4; i++) {
-			fp = new FrameLayout.LayoutParams(l, l, Gravity.LEFT);
-			fp.leftMargin = (i%2) * (l + s);
-			fp.topMargin = i<2? 0 : (l + s);
-			
-			View bg = new View(mContext);
-			bg.setLayoutParams(fp);
-			bg.setBackgroundColor(getResources().getColor(R.color.color_main_big));
-			boardMenu.addView(bg);
-			
-			final int I = i;
-			
-			View menu = new View(mContext);
-			menu.setLayoutParams(fp);
-			menu.setBackgroundResource(imgResIds[i]);
-			menu.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-					if(isWriting) {
-						isWriting = false;
-						mActivity.showWriteActivity(I+1);
-					} else {
-						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
-						
-						switch(I) {
-						
-						case 0:
-							uriString += "freetalk";
-							break;
-						case 1:
-							uriString += "review";
-							break;
-						case 2:
-							uriString += "with";
-							break;
-						case 3:
-							uriString += "find";
-							break;
-						}
-						
-						IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-					}
-					
-					hideBoardMenu(false);
-				}
-			});
-			boardMenu.addView(menu);
-		}
-	}
+//	public void addBoardMenu() {
+//
+//		int l = ResizeUtils.getSpecificLength(150);
+//		int s = ResizeUtils.getSpecificLength(8);
+//
+//		boardMenu = new FrameLayout(mContext);
+//		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(l*2 + s, l*2 + s);
+//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
+//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
+//		boardMenu.setLayoutParams(rp);
+//		boardMenu.setBackgroundColor(Color.BLACK);
+//		boardMenu.setVisibility(View.INVISIBLE);
+//		mainRelative.addView(boardMenu);
+//
+//		int[] imgResIds = new int[] {
+//			R.drawable.img_popup_story,
+//			R.drawable.img_popup_review,
+//			R.drawable.img_popup_with,
+//			R.drawable.img_popup_find,
+//		};
+//		
+//		FrameLayout.LayoutParams fp = null;
+//		for(int i=0; i<4; i++) {
+//			fp = new FrameLayout.LayoutParams(l, l, Gravity.LEFT);
+//			fp.leftMargin = (i%2) * (l + s);
+//			fp.topMargin = i<2? 0 : (l + s);
+//			
+//			View bg = new View(mContext);
+//			bg.setLayoutParams(fp);
+//			bg.setBackgroundColor(getResources().getColor(R.color.color_main_big));
+//			boardMenu.addView(bg);
+//			
+//			final int I = i;
+//			
+//			View menu = new View(mContext);
+//			menu.setLayoutParams(fp);
+//			menu.setBackgroundResource(imgResIds[i]);
+//			menu.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					
+//					if(isWriting) {
+//						isWriting = false;
+//						mActivity.showWriteActivity(I+1);
+//					} else {
+//						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
+//						
+//						switch(I) {
+//	
+//						case 0:
+//							uriString += "freetalk";
+//							break;
+//						case 1:
+//							uriString += "review";
+//							break;
+//						case 2:
+//							uriString += "with";
+//							break;
+//						case 3:
+//							uriString += "find";
+//							break;
+//						}
+//						
+//						IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//					}
+//					
+//					hideBoardMenu(false);
+//				}
+//			});
+//			boardMenu.addView(menu);
+//		}
+//	}
+//	
+//	public void showBoardMenu(boolean isWriting) {
+//
+//		if(animating || boardMenu.getVisibility() == View.VISIBLE) {
+//			return;
+//		}
+//		
+//		this.isWriting = isWriting;
+//
+//		if(aaIn == null || aaIn2 == null) {
+//			aaIn = new AlphaAnimation(0, 1);
+//			aaIn.setDuration(200);
+//			aaIn.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {
+//					animating = true;
+//				}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {
+//					animating = false;
+//				}
+//			});
+//		}
+//		
+//		if(aaIn2 == null) {
+//			aaIn2 = new AlphaAnimation(0, 1);
+//			aaIn2.setDuration(200);
+//		}
+//		
+//		boardMenu.setVisibility(View.VISIBLE);
+//		boardMenu.startAnimation(aaIn);
+//		coverForMenu.setVisibility(View.VISIBLE);
+//		coverForMenu.startAnimation(aaIn2);
+//	}
+//	
+//	public void hideBoardMenu(boolean needAnim) {
+//		
+//		if(animating || boardMenu.getVisibility() != View.VISIBLE) {
+//			return;
+//		}
+//		
+//		if(aaOut == null) {
+//			aaOut = new AlphaAnimation(1, 0);
+//			aaOut.setDuration(200);
+//			aaOut.setAnimationListener(new AnimationListener() {
+//				
+//				@Override
+//				public void onAnimationStart(Animation animation) {
+//					animating = true;
+//				}
+//				
+//				@Override
+//				public void onAnimationRepeat(Animation animation) {}
+//				
+//				@Override
+//				public void onAnimationEnd(Animation animation) {
+//					animating = false;
+//				}
+//			});
+//		}
+//		
+//		if(aaOut2 == null) {
+//			aaOut2 = new AlphaAnimation(1, 0);
+//			aaOut2.setDuration(200);
+//		}
+//		
+//		boardMenu.setVisibility(View.INVISIBLE);
+//		coverForMenu.setVisibility(View.INVISIBLE);
+//		if(needAnim) {
+//			boardMenu.startAnimation(aaOut);
+//			coverForMenu.startAnimation(aaOut2);
+//		}
+//	}
 	
-	public void showBoardMenu(boolean isWriting) {
-
-		if(animating || boardMenu.getVisibility() == View.VISIBLE) {
-			return;
-		}
-		
-		this.isWriting = isWriting;
-
-		if(aaIn == null || aaIn2 == null) {
-			aaIn = new AlphaAnimation(0, 1);
-			aaIn.setDuration(200);
-			aaIn.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {
-					animating = true;
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					animating = false;
-				}
-			});
-		}
-		
-		if(aaIn2 == null) {
-			aaIn2 = new AlphaAnimation(0, 1);
-			aaIn2.setDuration(200);
-		}
-		
-		boardMenu.setVisibility(View.VISIBLE);
-		boardMenu.startAnimation(aaIn);
-		coverForMenu.setVisibility(View.VISIBLE);
-		coverForMenu.startAnimation(aaIn2);
-	}
-	
-	public void hideBoardMenu(boolean needAnim) {
-		
-		if(animating || boardMenu.getVisibility() != View.VISIBLE) {
-			return;
-		}
-		
-		if(aaOut == null) {
-			aaOut = new AlphaAnimation(1, 0);
-			aaOut.setDuration(200);
-			aaOut.setAnimationListener(new AnimationListener() {
-				
-				@Override
-				public void onAnimationStart(Animation animation) {
-					animating = true;
-				}
-				
-				@Override
-				public void onAnimationRepeat(Animation animation) {}
-				
-				@Override
-				public void onAnimationEnd(Animation animation) {
-					animating = false;
-				}
-			});
-		}
-		
-		if(aaOut2 == null) {
-			aaOut2 = new AlphaAnimation(1, 0);
-			aaOut2.setDuration(200);
-		}
-		
-		boardMenu.setVisibility(View.INVISIBLE);
-		coverForMenu.setVisibility(View.INVISIBLE);
-		if(needAnim) {
-			boardMenu.startAnimation(aaOut);
-			coverForMenu.startAnimation(aaOut2);
-		}
-	}
-
 	public void setScrollToTop() {
 		
 		scrollView.scrollTo(0, 0);

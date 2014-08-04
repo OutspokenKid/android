@@ -1,4 +1,4 @@
-package com.example.androidvolleytest;
+package com.zonecomms.clubcage;
 
 import java.util.ArrayList;
 
@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -28,16 +29,21 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.OutSpokenApplication;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.common.adapters.CircleListAdapter;
+import com.zonecomms.common.models.Post;
+import com.zonecomms.common.models.StartupInfo.BgInfo;
+import com.zonecomms.common.views.CircleHeaderView;
+import com.zonecomms.common.views.ImagePlayViewer;
 
-public class MainActivity extends Activity {
+public class CircleMainActivity extends Activity {
 
 	private static final int ANIM_DURATION = 2000;
 	public static final int MENU_BUTTON_LENGTH = 50;
@@ -50,11 +56,11 @@ public class MainActivity extends Activity {
 	private FrameLayout frameForMenu, frameForHome, frameForWrite, frameForN; 
 	private SwipeRefreshLayout swipeLayout;
 	private ListView listView;
-	private ListAdapter listAdapter;
+	private CircleListAdapter listAdapter;
 	private CircleHeaderView circleHeaderView;
 	
 	private ArrayList<Post> posts = new ArrayList<Post>();
-	private BgInfos bgInfos;
+	private BgInfo bgInfo;
 	private boolean isInit;
 	
 	private AlphaAnimation aaIn, aaOut;
@@ -64,8 +70,10 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        OutSpokenApplication.initWithActivity(this);
+        setContentView(R.layout.activity_circlemain);
+        
+        ZonecommsApplication.initWithActivity(this);
+		ZonecommsApplication.setupResources(this);
         
         bindViews();
         setVariables();
@@ -75,22 +83,29 @@ public class MainActivity extends Activity {
         setListeners();
     }
     
+    @Override
+    public void setContentView(int layoutResID) {
+    	super.setContentView(layoutResID);
+    	
+    	FontUtils.setGlobalFont(this, layoutResID, getString(R.string.customFont));
+    }
+    
     public void bindViews() {
 
-    	menuCover = findViewById(R.id.menuCover);
-    	menuScroll = (ScrollView) findViewById(R.id.menuScroll);
-    	menuLinear = (LinearLayout) findViewById(R.id.menuLinear);
-    	imagePlayViewer = (ImagePlayViewer) findViewById(R.id.imagePlayViewer);
-    	tvTitles[0] = (TextView) findViewById(R.id.tvTitle1);
-    	tvTitles[1] = (TextView) findViewById(R.id.tvTitle2);
+    	menuCover = findViewById(R.id.circleMainActivity_menuCover);
+    	menuScroll = (ScrollView) findViewById(R.id.circleMainActivity_menuScroll);
+    	menuLinear = (LinearLayout) findViewById(R.id.circleMainActivity_menuLinear);
+    	imagePlayViewer = (ImagePlayViewer) findViewById(R.id.circleMainActivity_imagePlayViewer);
+    	tvTitles[0] = (TextView) findViewById(R.id.circleMainActivity_tvTitle1);
+    	tvTitles[1] = (TextView) findViewById(R.id.circleMainActivity_tvTitle2);
     
-    	frameForMenu = (FrameLayout) findViewById(R.id.frameForMenu);
-    	frameForHome = (FrameLayout) findViewById(R.id.frameForHome);
-    	frameForWrite = (FrameLayout) findViewById(R.id.frameForWrite);
-    	frameForN = (FrameLayout) findViewById(R.id.frameForN);
+    	frameForMenu = (FrameLayout) findViewById(R.id.circleMainActivity_frameForMenu);
+    	frameForHome = (FrameLayout) findViewById(R.id.circleMainActivity_frameForHome);
+    	frameForWrite = (FrameLayout) findViewById(R.id.circleMainActivity_frameForWrite);
+    	frameForN = (FrameLayout) findViewById(R.id.circleMainActivity_frameForN);
     	
-    	swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
-    	listView = (ListView) findViewById(R.id.listView);
+    	swipeLayout = (SwipeRefreshLayout) findViewById(R.id.circleMainActivity_swipe_container);
+    	listView = (ListView) findViewById(R.id.circleMainActivity_listView);
     }
     
     public void setVariables() {
@@ -135,16 +150,23 @@ public class MainActivity extends Activity {
 		taOut.setDuration(ANIM_DURATION/5);
 		taOut.setAnimationListener(al);
 		taOut.setInterpolator(this, android.R.anim.accelerate_decelerate_interpolator);
+		
+    	bgInfo = MainActivity.startupInfo.getBgInfo();
     	
-    	bgInfos = (BgInfos) getIntent().getSerializableExtra("bgInfos");
-    	imagePlayViewer.setImageUrls(bgInfos.urls);
+    	if(bgInfo == null){
+    		LogUtils.log("###where.setVariables.  bgInfo is null.");
+    	} else {
+    		LogUtils.log("###where.setVariables.  bgInfo.url.size : " + bgInfo.urls.size());
+    	}
+    	
+    	imagePlayViewer.setImageUrls(bgInfo.urls);
     }
     
     public void createPage() {
     	
     	circleHeaderView = new CircleHeaderView(this);
     	
-    	listAdapter = new ListAdapter(this, circleHeaderView, getLayoutInflater(), posts);
+    	listAdapter = new CircleListAdapter(this, circleHeaderView, getLayoutInflater(), posts);
     	listView.setAdapter(listAdapter);
     	listView.setDivider(new ColorDrawable(Color.LTGRAY));
     	listView.setDividerHeight(1);
@@ -173,10 +195,10 @@ public class MainActivity extends Activity {
     	ResizeUtils.viewResize(60, 60, frameForWrite, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 81, 0});
     	ResizeUtils.viewResize(60, 60, frameForN, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 17, 0});
     	
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.menu), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.home), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.write), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.n), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_menu), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_home), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_write), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_n), 2, Gravity.CENTER, null);
     	
     	FontUtils.setFontSize(tvTitles[0], 36);
     	FontUtils.setFontSize(tvTitles[1], 36);
@@ -240,7 +262,7 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("Home button clicked.");
+				launchToMainActivity();
 			}
 		});
     	
@@ -390,7 +412,7 @@ public class MainActivity extends Activity {
 					//Set titleBars.
 			    	setTitleBarText("STORY");
 			    	
-			    	String colorText = "#b2" + bgInfos.colors.get(0).replace("#", "");
+			    	String colorText = "#b2" + bgInfo.colors.get(0).replace("#", "");
 			    	int color = Color.parseColor(colorText);
 			    	
 					tvTitles[0].setBackgroundColor(color);
@@ -470,8 +492,8 @@ public class MainActivity extends Activity {
     	
     	ImagePlayViewer.imageIndex++;
 		
-		String colorText = "#b2" + bgInfos.colors.get(
-    			ImagePlayViewer.imageIndex % bgInfos.colors.size()).replace("#", "");
+		String colorText = "#b2" + bgInfo.colors.get(
+    			ImagePlayViewer.imageIndex % bgInfo.colors.size()).replace("#", "");
     	int color = Color.parseColor(colorText);
 		
 		imagePlayViewer.showNext();
@@ -505,4 +527,18 @@ public class MainActivity extends Activity {
     	
     	menuScroll.setBackgroundColor(color);
     }
+
+    public void launchToMainActivity() {
+		
+		Intent intent = new Intent(this, MainActivity.class);
+		Intent i = getIntent();				//'i' is intent that passed intent from before.
+		
+		if(i!= null && i.getData() != null) {
+			intent.setData(i.getData());
+		}
+		
+		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
+	}
 }

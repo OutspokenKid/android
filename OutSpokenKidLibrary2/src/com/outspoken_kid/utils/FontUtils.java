@@ -1,5 +1,6 @@
 package com.outspoken_kid.utils;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -7,9 +8,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-
 
 /**
  * v1.0.1
@@ -21,6 +24,7 @@ import android.widget.TextView;
 public class FontUtils {
 	
 	public static final int NONE = 0, BOLD = 1, ITELIC = 2, UNDERLINE = 4;
+	private static Typeface mTypeface;
 	
 	private int fontSize = 0;
 	private int[] fontColor = null; 		//a r g b (0~255).
@@ -199,5 +203,60 @@ public class FontUtils {
 			public void afterTextChanged(Editable s) {
 			}
 		});
+	}
+	
+	/**
+	 * 커스텀 폰트 적용.
+	 * http://t.dittos.pe.kr/post/9665021933
+	 * 
+	 * 에서 퍼옴.
+	 * 감사합니다!
+	 */
+	
+	//Activity 전용.
+	public static void setGlobalFont(Activity activity, int rootResId, String fontFileName) {
+		
+		try {
+			ViewGroup root = (ViewGroup) LayoutInflater.from(activity).inflate(rootResId, null);
+			
+			if(mTypeface == null) {
+				mTypeface = Typeface.createFromAsset(activity.getAssets(), fontFileName);
+			}
+
+			setGlobalFont(root);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	//Fragment 전용.
+	public static void setGlobalFont(Activity activity, View view, String fontFileName) {
+
+		try {
+			ViewGroup root = (ViewGroup) view;
+			
+			if(mTypeface == null) {
+				mTypeface = Typeface.createFromAsset(activity.getAssets(), fontFileName);
+			}
+
+			setGlobalFont(root);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public static void setGlobalFont(ViewGroup root) {
+		
+	    for (int i = 0; i < root.getChildCount(); i++) {
+	        View child = root.getChildAt(i);
+	        if (child instanceof TextView)
+	            ((TextView)child).setTypeface(mTypeface);
+	        else if (child instanceof ViewGroup)
+	            setGlobalFont((ViewGroup)child);
+	    }
 	}
 }

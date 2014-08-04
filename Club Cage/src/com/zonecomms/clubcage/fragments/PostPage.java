@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,15 +17,14 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -38,6 +35,7 @@ import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.MainActivity;
+import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -49,6 +47,7 @@ import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.views.PostInfoLayout;
 import com.zonecomms.common.views.ReplyLoadingView;
 import com.zonecomms.common.views.ReplyLoadingView.OnLoadingViewClickedListener;
+import com.zonecomms.common.views.ViewForReply;
 
 public class PostPage extends BaseFragment {
 
@@ -63,7 +62,9 @@ public class PostPage extends BaseFragment {
 	private LinearLayout contentLayout;
 	private LinearLayout replyLinear;
 	private LinearLayout targetLinear;
+	private FrameLayout writeFrame;
 	private LinearLayout writeLinear;
+	private View writeCover;
 	private HoloStyleEditText editText;
 	private HoloStyleButton btnSubmit;
 	private ReplyLoadingView replyLoadingView;
@@ -89,7 +90,9 @@ public class PostPage extends BaseFragment {
 		contentLayout = (LinearLayout) mThisView.findViewById(R.id.postPage_contentLayout);
 		
 		replyLinear = (LinearLayout) mThisView.findViewById(R.id.postPage_replyLinear);
+		writeFrame = (FrameLayout) mThisView.findViewById(R.id.postPage_writeFrame);
 		writeLinear = (LinearLayout) mThisView.findViewById(R.id.postPage_writeLinear);
+		writeCover = mThisView.findViewById(R.id.postPage_writeCover);
 		editText = (HoloStyleEditText) mThisView.findViewById(R.id.postPage_editText);
 		btnSubmit = (HoloStyleButton) mThisView.findViewById(R.id.postPage_submitButton);
 		targetLinear = (LinearLayout) mThisView.findViewById(R.id.postPage_targetLinear);
@@ -176,7 +179,7 @@ public class PostPage extends BaseFragment {
 					} else if(itemString.equals(getString(R.string.reply_accuse))) {
 						selectedVFR.accuse();
 					} else if(itemString.equals(getString(R.string.reply_delete))) {
-						selectedVFR.delete();
+						deleteReply(selectedVFR.getReply().getReply_nid());
 					}
 
 					selectedVFR = null;
@@ -190,17 +193,33 @@ public class PostPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				LogUtils.log("#####\nisAdmin : " + MainActivity.myInfo.isAdmin() + 
-						"\nid : " + MainActivity.myInfo.getMember_id() +
-						"\npost.id : " + post.getMember().getMember_id() +
-						"\n#####");
+				mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+					
+					@Override
+					public void onAfterLogin() {
+
+						LogUtils.log("#####\nisAdmin : " + MainActivity.myInfo.isAdmin() + 
+								"\nid : " + MainActivity.myInfo.getMember_id() +
+								"\npost.id : " + post.getMember().getMember_id() +
+								"\n#####");
+						
+						if(MainActivity.myInfo.isAdmin()
+								|| MainActivity.myInfo.getMember_id().equals(post.getMember().getMember_id())) {
+							showPopupForPost(true);
+						} else {
+							showPopupForPost(false);
+						}
+					}
+				});
+			}
+		});
+	
+		writeCover.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
 				
-				if(MainActivity.myInfo.isAdmin()
-						|| MainActivity.myInfo.getMember_id().equals(post.getMember().getMember_id())) {
-					showPopupForPost(true);
-				} else {
-					showPopupForPost(false);
-				}
+				mActivity.checkLoginAndExecute(null);
 			}
 		});
 	}
@@ -214,7 +233,7 @@ public class PostPage extends BaseFragment {
 		tvText.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvText, 30);
 		
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, writeLinear, 1, Gravity.LEFT, new int[]{8, 8, 8, 8});
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, writeFrame, 1, Gravity.LEFT, new int[]{8, 8, 8, 8});
 		
 		int m = ResizeUtils.getSpecificLength(8);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ResizeUtils.getSpecificLength(90), 1);
@@ -352,6 +371,12 @@ public class PostPage extends BaseFragment {
 		
 		if(mActivity.getSponserBanner() != null) {
 			mActivity.getSponserBanner().hideBanner();
+		}
+
+		if(MainActivity.myInfo == null) {
+			writeCover.setVisibility(View.VISIBLE);
+		} else {
+			writeCover.setVisibility(View.INVISIBLE);
 		}
 		
 		onRefreshPage();
@@ -560,16 +585,23 @@ public class PostPage extends BaseFragment {
 							ViewForReply vfr = new ViewForReply(mContext);
 							ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, vfr, 
 									1, 0, new int[]{8, 0, 8, 0});
-							vfr.setReply(reply);
+							vfr.setReply(post, reply);
 							vfr.setOnClickListener(new OnClickListener() {
 								
 								@Override
 								public void onClick(View v) {
 									
-									if(!hasMember(reply.getMember())) {
-										targets.add(0, reply.getMember());
-										setTargetViews();
-									}
+									mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+										
+										@Override
+										public void onAfterLogin() {
+
+											if(!hasMember(reply.getMember())) {
+												targets.add(0, reply.getMember());
+												setTargetViews();
+											}
+										}
+									});
 								}
 							});
 							replyViews.add(vfr);
@@ -687,6 +719,62 @@ public class PostPage extends BaseFragment {
 		}
 	}
 
+	public void deleteReply(final int reply_nid) {
+
+		try {
+			String url = ZoneConstants.BASE_URL + "reply/delete" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&reply_nid=" + reply_nid +
+					"&spot_nid=" + post.getSpot_nid();
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					
+					ToastUtils.showToast(R.string.failToDeleteReply);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						int errorCode = objJSON.getInt("errorCode");
+						
+						if(errorCode == 1) {
+							int size = replyLinear.getChildCount();
+							for(int i=0; i<size; i++) {
+								
+								if(replyLinear.getChildAt(i) instanceof ViewForReply) {
+									
+									if(((ViewForReply)replyLinear.getChildAt(i)).getReply().getReply_nid() == reply_nid) {
+										replyLinear.removeViewAt(i);
+									}
+								}
+							}
+							
+							ToastUtils.showToast(R.string.deleteCompleted);
+						} else {
+							ToastUtils.showToast(R.string.failToDeleteReply);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToDeleteReply);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToDeleteReply);
+					}
+				}
+			});
+		} catch(Exception e) {
+			LogUtils.trace(e);
+			ToastUtils.showToast(R.string.failToDeleteReply);
+		}
+	}
+	
 	public boolean hasMember(Member member) {
 		
 		if(StringUtils.isEmpty(member.getMember_id())
@@ -957,371 +1045,5 @@ public class PostPage extends BaseFragment {
 	public void setNeedToShowBottom(boolean needToShowBottom) {
 		
 		isNeedToShowBottom = needToShowBottom;
-	}
-	
-//////////////////////Classes.
-	
-	private class ViewForReply extends RelativeLayout {
-
-		private Reply reply;
-		
-		private ImageView ivImage;
-		private TextView tvNickname;
-		private TextView tvRegdate;
-		private TextView tvText;
-		private LinearLayout targetLinear;
-		
-		public ViewForReply(Context context) {
-			super(context);
-			init();
-		}
-		
-		private void init() {
-			
-			int madeCount = 110612;
-			
-			RelativeLayout.LayoutParams rp = null;
-			int l = ResizeUtils.getSpecificLength(100);
-			int m = ResizeUtils.getSpecificLength(10);
-			
-			View blank = new View(getContext());
-			rp = new RelativeLayout.LayoutParams(1, l + m*2);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			blank.setLayoutParams(rp);
-			this.addView(blank);
-			
-			//id : 0
-			ivImage = new ImageView(getContext());
-			rp = new RelativeLayout.LayoutParams(l, l);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			rp.leftMargin = m;
-			rp.topMargin = m;
-			rp.rightMargin = m;
-			rp.bottomMargin = m;
-			ivImage.setLayoutParams(rp);
-			ivImage.setId(madeCount);
-			ivImage.setScaleType(ScaleType.CENTER_CROP);
-			ivImage.setBackgroundResource(R.drawable.bg_profile);
-			this.addView(ivImage);
-			
-			//id : 1
-			tvNickname = new TextView(getContext());
-			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
-			rp.leftMargin = l + m * 2;
-			tvNickname.setLayoutParams(rp);
-			tvNickname.setId(madeCount + 1);
-			tvNickname.setTextColor(Color.WHITE);
-			tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
-			FontUtils.setFontSize(tvNickname, 30);
-			FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
-			this.addView(tvNickname);
-			
-			//id : 3
-			targetLinear = new LinearLayout(getContext());
-			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
-			rp.addRule(RelativeLayout.BELOW, madeCount + 1);
-			targetLinear.setLayoutParams(rp);
-			targetLinear.setOrientation(LinearLayout.VERTICAL);
-			targetLinear.setId(madeCount + 3);
-			this.addView(targetLinear);
-			
-			//id : 2
-			tvText = new TextView(getContext());
-			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
-			rp.addRule(RelativeLayout.BELOW, madeCount + 3);
-			rp.rightMargin = 50;
-			tvText.setLayoutParams(rp);
-			tvText.setTextColor(Color.WHITE);
-			tvText.setId(madeCount + 2);
-			FontUtils.setFontSize(tvText, 30);
-			this.addView(tvText);
-			
-			tvRegdate = new TextView(getContext());
-			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 1);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			rp.topMargin = m;
-			rp.rightMargin = m;
-			tvRegdate.setLayoutParams(rp);
-			tvRegdate.setTextColor(Color.WHITE);
-			FontUtils.setFontSize(tvRegdate, 26);
-			this.addView(tvRegdate);
-			
-			View bottomBlank = new View(getContext());
-			rp = new RelativeLayout.LayoutParams(1, m);
-			rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 2);
-			rp.addRule(RelativeLayout.BELOW, madeCount + 2);
-			bottomBlank.setLayoutParams(rp);
-			this.addView(bottomBlank);
-			
-			View topLine = new View(getContext());
-			rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			topLine.setLayoutParams(rp);
-			topLine.setBackgroundColor(Color.DKGRAY);
-			this.addView(topLine);
-		}
-		
-		public void setReply(Reply reply) {
-			
-			this.reply = reply;
-			
-			if(reply.getMember() != null) {
-				
-				final Member member = reply.getMember();
-				
-				if(!StringUtils.isEmpty(member.getMember_nickname())) {
-					tvNickname.setText(member.getMember_nickname());
-				}
-				
-				ivImage.setTag(member.getMedia_src());
-				DownloadUtils.downloadBitmap(member.getMedia_src(),
-						new OnBitmapDownloadListener() {
-
-							@Override
-							public void onError(String url) {
-								// TODO Auto-generated method stub		
-							}
-
-							@Override
-							public void onCompleted(String url, Bitmap bitmap) {
-
-								try {
-									LogUtils.log("PostPage.onCompleted."
-											+ "\nurl : " + url);
-
-									if (ivImage != null
-											&& ivImage.getTag() != null
-											&& ivImage.getTag().toString()
-													.equals(url)) {
-										ivImage.setImageBitmap(bitmap);
-									}
-								} catch (Exception e) {
-									LogUtils.trace(e);
-								} catch (OutOfMemoryError oom) {
-									LogUtils.trace(oom);
-								}
-							}
-						});
-				
-				ivImage.setOnClickListener(new OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						mActivity.showProfilePopup(member.getMember_id(), member.getStatus());
-					}
-				});
-				
-				this.setOnLongClickListener(new OnLongClickListener() {
-					
-					@Override
-					public boolean onLongClick(View v) {
-						
-						if(ZonecommsApplication.getTopFragment() != null
-								&& ZonecommsApplication.getTopFragment() instanceof PostPage) {
-							
-							if(MainActivity.myInfo.isAdmin()
-									|| (!StringUtils.isEmpty(member.getMember_id()) 
-											&& member.getMember_id().equals(MainActivity.myInfo.getMember_id()))
-									|| (!StringUtils.isEmpty(post.getMember().getMember_id()) 
-											&& post.getMember().getMember_id().equals(MainActivity.myInfo.getMember_id()))) {
-								((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(true, ViewForReply.this);
-							} else {
-								((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(false, ViewForReply.this);
-							}
-							return true;
-						}
-						
-						return false;
-					}
-				});
-			} else {
-				this.setOnLongClickListener(null);
-			}
-			
-			if(!StringUtils.isEmpty(reply.getReg_dt())) {
-				tvRegdate.setText(reply.getReg_dt());
-			}
-			
-			if(!StringUtils.isEmpty(reply.getContent())) {
-				tvText.setText(reply.getContent());
-			}
-			
-			if(reply.getTarget_member().size() != 0) {
-				setTargetViews();
-			}
-		}
-
-		public void delete() {
-
-			if(reply == null) {
-				ToastUtils.showToast(R.string.failToDeleteReply);
-				return;
-			}
-
-			try {
-				String url = ZoneConstants.BASE_URL + "reply/delete" +
-						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-						"&reply_nid=" + reply.getReply_nid() +
-						"&spot_nid=" + post.getSpot_nid();
-				
-				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-					@Override
-					public void onError(String url) {
-						
-						ToastUtils.showToast(R.string.failToDeleteReply);
-					}
-
-					@Override
-					public void onCompleted(String url, JSONObject objJSON) {
-
-						try {
-							LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
-									+ "\nresult : " + objJSON);
-
-							int errorCode = objJSON.getInt("errorCode");
-							
-							if(errorCode == 1) {
-								removeFromParent();
-								ToastUtils.showToast(R.string.deleteCompleted);
-							} else {
-								ToastUtils.showToast(R.string.failToDeleteReply);
-							}
-						} catch (Exception e) {
-							LogUtils.trace(e);
-							ToastUtils.showToast(R.string.failToDeleteReply);
-						} catch (OutOfMemoryError oom) {
-							LogUtils.trace(oom);
-							ToastUtils.showToast(R.string.failToDeleteReply);
-						}
-					}
-				});
-			} catch(Exception e) {
-				LogUtils.trace(e);
-				ToastUtils.showToast(R.string.failToDeleteReply);
-			}
-		}
-
-		public void accuse() {
-			
-			if(reply == null) {
-				ToastUtils.showToast(R.string.failToAccuseReply);
-				return;
-			}
-			
-			try {
-				String url = ZoneConstants.BASE_URL + "reply/bad" +
-						"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-						"&reply_nid=" + reply.getReply_nid() +
-						"&bad_reason_kind=080";
-
-				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-					@Override
-					public void onError(String url) {
-						
-						ToastUtils.showToast(R.string.failToAccuseReply);
-					}
-
-					@Override
-					public void onCompleted(String url, JSONObject objJSON) {
-
-						try {
-							LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
-									+ "\nresult : " + objJSON);
-
-							int errorCode = objJSON.getInt("errorCode");
-							
-							if(errorCode == 1) {
-								ToastUtils.showToast(R.string.accuseReplyCompleted);
-							} else {
-								ToastUtils.showToast(R.string.failToAccuseReply);
-							}
-						} catch (Exception e) {
-							LogUtils.trace(e);
-							ToastUtils.showToast(R.string.failToAccuseReply);
-						} catch (OutOfMemoryError oom) {
-							LogUtils.trace(oom);
-							ToastUtils.showToast(R.string.failToAccuseReply);
-						}
-					}
-				});
-			} catch(Exception e) {
-				LogUtils.trace(e);
-				ToastUtils.showToast(R.string.failToAccuseReply);
-			}
-		}
-		
-		public void copy() {
-
-			if(reply != null && !StringUtils.isEmpty(reply.getContent())) {
-				if(StringUtils.copyStringToClipboard(mContext, reply.getContent())) {
-					ToastUtils.showToast(R.string.copyReplyCompleted);
-				} else {
-					ToastUtils.showToast(R.string.failToCopyReply);
-				}
-			}
-		}
-		
-		public void removeFromParent() {
-
-			replyLinear.removeView(this);
-		}
-	
-		public void setTargetViews() {
-
-			targetLinear.removeAllViews();
-			
-			if(reply.getTarget_member().size() == 0) {
-				return;
-			}
-			
-			int linearSize = (reply.getTarget_member().size() + 2) / 3;
-			
-			for(int i=0; i<linearSize; i++) {
-				LinearLayout linear = new LinearLayout(mContext);
-				linear.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				linear.setOrientation(LinearLayout.HORIZONTAL);
-				targetLinear.addView(linear);
-				
-				int textSize = i == linearSize - 1 ? reply.getTarget_member().size() - i*3 : 3;
-				
-				for(int j=0; j<textSize; j++) {
-					int index = i*3 + j;
-					
-					final Member MEMBER = reply.getTarget_member().get(index);
-							
-					
-					TextView tv = new TextView(mContext);
-					ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tv, 1, 0, 
-							new int[]{8, 16, 8, 16}, new int[]{6, 6, 6, 6});
-					tv.setMaxWidth(ResizeUtils.getSpecificLength(120));
-					tv.setTextColor(Color.WHITE);
-					tv.setGravity(Gravity.CENTER);
-					tv.setBackgroundColor(Color.DKGRAY);
-					tv.setSingleLine();
-					tv.setEllipsize(TruncateAt.END);
-					tv.setText(MEMBER.getMember_nickname());
-					tv.setOnClickListener(new OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							
-							mActivity.showProfilePopup(MEMBER.getMember_id(), MEMBER.getStatus());
-						}
-					});
-					FontUtils.setFontSize(tv, 20);
-					linear.addView(tv);
-				}
-			}
-		}
 	}
 }

@@ -60,6 +60,7 @@ public class IntroActivity extends Activity {
 			
 			@Override
 			public void onCompleted(String url, Bitmap bitmap) {
+				
 				launchMainActivity();
 			}
 		});
@@ -67,7 +68,7 @@ public class IntroActivity extends Activity {
 	
 	public void launchMainActivity() {
 		
-		Intent intent = new Intent(this, MainActivity.class);
+		Intent intent = new Intent(this, CircleMainActivity.class);
 		intent.putExtra("bgInfos", bgInfos);
 		startActivity(intent);
 		finish();

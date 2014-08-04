@@ -151,7 +151,8 @@
    	<string name="modifyUserInfo">회원 정보 수정</string>
     <string name="mustInput">필수 입력 사항</string>
     <string name="myPost">내 글</string>
-    
+
+    <string name="needSignIn">로그인이 필요한 서비스 입니다</string>
     <string name="nickname">닉네임</string>
     <string name="noContent">내용 없음</string>
     <string name="noMoreReplies">댓글이 없습니다</string>

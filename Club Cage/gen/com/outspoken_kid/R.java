@@ -260,15 +260,15 @@ public final class R {
 		public static final int abc_textfield_searchview_holo_light = 0x7f020054;
 		public static final int abc_textfield_searchview_right_holo_dark = 0x7f020055;
 		public static final int abc_textfield_searchview_right_holo_light = 0x7f020056;
-		public static final int img_browser_back_off = 0x7f020099;
-		public static final int img_browser_back_on = 0x7f02009a;
-		public static final int img_browser_bg = 0x7f02009b;
-		public static final int img_browser_close = 0x7f02009c;
-		public static final int img_browser_forward_off = 0x7f02009d;
-		public static final int img_browser_forward_on = 0x7f02009e;
-		public static final int img_browser_refresh = 0x7f02009f;
-		public static final int wheel_bg = 0x7f0200c8;
-		public static final int wheel_val = 0x7f0200c9;
+		public static final int img_browser_back_off = 0x7f0200a0;
+		public static final int img_browser_back_on = 0x7f0200a1;
+		public static final int img_browser_bg = 0x7f0200a2;
+		public static final int img_browser_close = 0x7f0200a3;
+		public static final int img_browser_forward_off = 0x7f0200a4;
+		public static final int img_browser_forward_on = 0x7f0200a5;
+		public static final int img_browser_refresh = 0x7f0200a6;
+		public static final int wheel_bg = 0x7f0200d2;
+		public static final int wheel_val = 0x7f0200d3;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f05001c;
@@ -300,14 +300,14 @@ public final class R {
 		public static final int icon = 0x7f05002a;
 		public static final int ifRoom = 0x7f05000a;
 		public static final int image = 0x7f050027;
-		public static final int imageviewerActivity_btnSave = 0x7f050041;
-		public static final int imageviewerActivity_cover = 0x7f05003f;
-		public static final int imageviewerActivity_image = 0x7f05003e;
-		public static final int imageviewerActivity_mainLayout = 0x7f05003c;
-		public static final int imageviewerActivity_progress = 0x7f05003d;
-		public static final int imageviewerActivity_thumbnailLinear = 0x7f050043;
-		public static final int imageviewerActivity_thumbnailLinearBg = 0x7f050042;
-		public static final int imageviewerActivity_title = 0x7f050040;
+		public static final int imageviewerActivity_btnSave = 0x7f050051;
+		public static final int imageviewerActivity_cover = 0x7f05004f;
+		public static final int imageviewerActivity_image = 0x7f05004e;
+		public static final int imageviewerActivity_mainLayout = 0x7f05004c;
+		public static final int imageviewerActivity_progress = 0x7f05004d;
+		public static final int imageviewerActivity_thumbnailLinear = 0x7f050053;
+		public static final int imageviewerActivity_thumbnailLinearBg = 0x7f050052;
+		public static final int imageviewerActivity_title = 0x7f050050;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f050029;
 		public static final int middle = 0x7f050012;
@@ -368,8 +368,8 @@ public final class R {
 		public static final int abc_search_dropdown_item_icons_2line = 0x7f030015;
 		public static final int abc_search_view = 0x7f030016;
 		public static final int abc_simple_decor = 0x7f030017;
-		public static final int activity_imageviewer = 0x7f030018;
-		public static final int support_simple_spinner_dropdown_item = 0x7f030036;
+		public static final int activity_imageviewer = 0x7f030019;
+		public static final int support_simple_spinner_dropdown_item = 0x7f030038;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0a0001;

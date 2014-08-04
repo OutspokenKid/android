@@ -24,7 +24,7 @@ import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.Popup;
+import com.zonecomms.common.models.StartupInfo.Popup;
 
 public class NoticePopup extends FrameLayout {
 

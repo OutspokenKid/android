@@ -49,6 +49,7 @@ public class ZoneConstants {
 	public static final int REQUEST_CAMERA = 2;
 	public static final int REQUEST_WRITE = 3;
 	public static final int REQUEST_EDIT = 4;
+	public static final int REQUEST_SIGN = 5;
 
 	//서버와 약속된 타입 넘버.
 	public static final int	TYPE_NOTICE = 1;

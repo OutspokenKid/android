@@ -152,6 +152,7 @@
     <string name="mustInput">You must input this</string>
     <string name="myPost">My post</string>
     
+    <string name="needSignIn">Need login</string>
     <string name="nickname">Nickname</string>
     <string name="noContent">No content</string>
     <string name="noMoreReplies">No more replies</string>

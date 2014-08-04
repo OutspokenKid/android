@@ -37,6 +37,7 @@ import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.NetworkUtils;
@@ -65,12 +66,12 @@ import com.zonecomms.clubcage.fragments.MessagePage;
 import com.zonecomms.clubcage.fragments.PostPage;
 import com.zonecomms.clubcage.fragments.SettingPage;
 import com.zonecomms.clubcage.fragments.UserPage;
-import com.zonecomms.common.models.Banner;
 import com.zonecomms.common.models.Media;
 import com.zonecomms.common.models.MyInfo;
-import com.zonecomms.common.models.Popup;
 import com.zonecomms.common.models.SideMenu;
 import com.zonecomms.common.models.StartupInfo;
+import com.zonecomms.common.models.StartupInfo.Banner;
+import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
@@ -117,6 +118,8 @@ public class MainActivity extends FragmentActivity {
 	private boolean fadePageAnim;
 	private OnAfterUploadImage onAfterUploadImage;
 	
+	private OnAfterLoginListener onAfterLoginListener;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -139,6 +142,13 @@ public class MainActivity extends FragmentActivity {
 		} catch(Exception e) {
 			finish();
 		}
+	}
+	
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		
+		FontUtils.setGlobalFont(this, layoutResID, getString(R.string.customFont));
 	}
 	
 	public void bindViews() {
@@ -190,17 +200,25 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onWriteButtonClicked() {
 				
-				BaseFragment bf = ZonecommsApplication.getTopFragment();
-				
-				try {
-					if(bf instanceof MainPage) {
-						((MainPage) bf).showBoardMenu(true);
-					} else {
-						showWriteActivity(((GridPage)ZonecommsApplication.getTopFragment()).getBoardIndex());
+				checkLoginAndExecute(new OnAfterLoginListener() {
+					
+					@Override
+					public void onAfterLogin() {
+
+						try {
+//							BaseFragment bf = ZonecommsApplication.getTopFragment();
+							
+//							if(bf instanceof MainPage) {
+//								((MainPage) bf).showBoardMenu(true);
+								showWriteActivity(1);
+//							} else {
+//								showWriteActivity(((GridPage)ZonecommsApplication.getTopFragment()).getBoardIndex());
+//							}
+						} catch(Exception e) {
+							LogUtils.trace(e);
+						}
 					}
-				} catch(Exception e) {
-					LogUtils.trace(e);
-				}
+				});
 			}
 		});
 		
@@ -454,6 +472,20 @@ public class MainActivity extends FragmentActivity {
 				}
 			}
 			break;
+			
+		case ZoneConstants.REQUEST_SIGN:
+
+			if(resultCode == RESULT_OK) {
+				
+				if(onAfterLoginListener != null) {
+					onAfterLoginListener.onAfterLogin();
+				}
+				
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 120, getProfileView(), 1, 0, null);
+			}
+			
+			onAfterLoginListener = null;
+			break;
 		}
 	}
 	
@@ -531,10 +563,6 @@ public class MainActivity extends FragmentActivity {
 				} catch(Exception e) {
 					LogUtils.trace(e);
 				}
-			}
-			
-			if(MainActivity.myInfo == null) {
-				reloadMyInfo();
 			}
 			
 			if(sponserBanner != null && sponserBanner.getVisibility() == View.VISIBLE) {
@@ -983,9 +1011,9 @@ public class MainActivity extends FragmentActivity {
 				R.string.schedule,
 				R.string.event,
 				R.string.board_story,
-				R.string.board_review,
-				R.string.board_with,
-				R.string.board_findPeople,
+//				R.string.board_review,
+//				R.string.board_with,
+//				R.string.board_findPeople,
 				R.string.image,
 				R.string.video,
 				R.string.showMember,
@@ -998,9 +1026,9 @@ public class MainActivity extends FragmentActivity {
 				R.drawable.btn_side_schedule,
 				R.drawable.btn_side_event,
 				R.drawable.btn_side_story,
-				R.drawable.btn_side_story,
-				R.drawable.btn_side_story,
-				R.drawable.btn_side_story,
+//				R.drawable.btn_side_story,
+//				R.drawable.btn_side_story,
+//				R.drawable.btn_side_story,
 				R.drawable.btn_side_image,
 				R.drawable.btn_side_video,
 				R.drawable.btn_side_member,
@@ -1036,7 +1064,8 @@ public class MainActivity extends FragmentActivity {
 						@Override
 						public void onAfterClose() {
 							
-							if(I >=0 && I<=11) {
+//							if(I >=0 && I<=11) {
+							if(I >=0 && I<=8) {
 								ZonecommsApplication.clearFragmentsWithoutMain();
 							}
 							
@@ -1058,25 +1087,37 @@ public class MainActivity extends FragmentActivity {
 							case 4:
 								uriString += "freetalk";
 								break;
+//							case 5:
+//								uriString += "review";
+//								break;
+//							case 6:
+//								uriString += "with";
+//								break;
+//							case 7:
+//								uriString += "find";
+//								break;
+//							case 8:
+//								uriString += "image";
+//								break;
+//							case 9:
+//								uriString += "video";
+//								break;
+//							case 10:
+//								uriString += "member";
+//								break;
+//							case 11:
+//								uriString += "setting";
+//								break;
 							case 5:
-								uriString += "review";
-								break;
-							case 6:
-								uriString += "with";
-								break;
-							case 7:
-								uriString += "find";
-								break;
-							case 8:
 								uriString += "image";
 								break;
-							case 9:
+							case 6:
 								uriString += "video";
 								break;
-							case 10:
+							case 7:
 								uriString += "member";
 								break;
-							case 11:
+							case 8:
 								uriString += "setting";
 								break;
 							}
@@ -1395,38 +1436,12 @@ public class MainActivity extends FragmentActivity {
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "id");
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
 			MainActivity.myInfo = null;
-			
-			Intent intent = new Intent(this, SignInActivity.class);
-			startActivity(intent);
-			finish();
+
+			ZonecommsApplication.clearFragmentsWithoutMain();
+			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 0, getProfileView(), 1, 0, null);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSignOut);
-		}
-	}
-
-	public void reloadMyInfo() {
-
-		String id = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "id");
-		String pw = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
-
-		if(StringUtils.isEmpty(id) || StringUtils.isEmpty(pw)) {
-			ToastUtils.showToast(R.string.restartApp);
-			ZonecommsApplication.getActivity().finish();
-		} else{
-			SignInActivity.OnAfterSigningInListener osl = new SignInActivity.OnAfterSigningInListener() {
-
-				@Override
-				public void OnAfterSigningIn(boolean successSignIn) {
-
-					ZonecommsApplication.getActivity().hideCover();
-					ZonecommsApplication.getActivity().hideLoadingView();
-				}
-			};
-
-			ZonecommsApplication.getActivity().showCover();
-			ZonecommsApplication.getActivity().showLoadingView();
-			SignInActivity.signIn(id, pw, osl);
 		}
 	}
 	
@@ -1461,6 +1476,31 @@ public class MainActivity extends FragmentActivity {
 			animationLoaded = false;
 		}
 	}
+
+	public void checkLoginAndExecute(final OnAfterLoginListener listener) {
+
+		if(myInfo == null) {
+			showAlertDialog(getString(R.string.signIn), getString(R.string.needSignIn), 
+					new OnPositiveClickedListener() {
+				
+				@Override
+				public void onPositiveClicked() {
+					
+					onAfterLoginListener = listener;
+					launchToSignInActivity();
+				}
+			}, true);
+		} else {
+			listener.onAfterLogin();
+		}
+	}
+	
+	public void launchToSignInActivity() {
+
+		Intent intent = new Intent(this, SignInActivity.class);
+		startActivityForResult(intent, ZoneConstants.REQUEST_SIGN);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+	}
 	
 /////////////////////////// Interfaces.
 	
@@ -1472,5 +1512,10 @@ public class MainActivity extends FragmentActivity {
 	public interface OnAfterCheckNAppListener {
 		
 		public void onAfterCheckNApp();
+	}
+	
+	public interface OnAfterLoginListener {
+		
+		public void onAfterLogin();
 	}
 }

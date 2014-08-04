@@ -3,6 +3,7 @@ package com.zonecomms.clubcage;
 import java.net.URLDecoder;
 
 import com.outspoken_kid.utils.LogUtils;
+import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 
@@ -83,7 +84,7 @@ public class IntentHandlerActivity extends Activity {
 		}
 	}
 	
-	public static void actionByUri(Uri uri) {
+	public static void actionByUri(final Uri uri) {
 
 		try {
 			String scheme = uri.getScheme();
@@ -104,31 +105,65 @@ public class IntentHandlerActivity extends Activity {
 				ZonecommsApplication.getActivity().showAlertDialog(null, message, null, false);
 			} else if(scheme.equals(ZoneConstants.PAPP_ID)) {
 
-				MainActivity mActivity = ZonecommsApplication.getActivity();
+				final MainActivity mActivity = ZonecommsApplication.getActivity();
 				
 				//인포메이션.
 				if(url.equals("android.zonecomms.com/information")) {
 					mActivity.showInformationPage();
+				
+				//마이 홈.
+				} else if(url.equals("android.zonecomms.com/home")) {
+					mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+						
+						@Override
+						public void onAfterLogin() {
+
+							String member_id = MainActivity.myInfo.getMember_id();
+							String index = uri.getQueryParameter("index");
+							
+							int menuIndex = 0;
+							
+							if(!StringUtils.isEmpty(index)) {
+								try {
+									menuIndex = Integer.parseInt(index);
+								} catch(Exception e) {
+									menuIndex = 0;
+								}
+							} else{
+								menuIndex = 0;
+							}
+							
+							mActivity.showUserPage(member_id, menuIndex);
+						}
+					});
 					
 				//유저 홈.
 				} else if(url.equals("android.zonecomms.com/userhome")) {
-					String member_id = uri.getQueryParameter("member_id");
-					String index = uri.getQueryParameter("index");
 					
-					int menuIndex = 0;
-					
-					if(!StringUtils.isEmpty(index)) {
-						try {
-							menuIndex = Integer.parseInt(index);
-						} catch(Exception e) {
-							menuIndex = 0;
+					mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+						
+						@Override
+						public void onAfterLogin() {
+
+							String member_id = uri.getQueryParameter("member_id");
+							String index = uri.getQueryParameter("index");
+							
+							int menuIndex = 0;
+							
+							if(!StringUtils.isEmpty(index)) {
+								try {
+									menuIndex = Integer.parseInt(index);
+								} catch(Exception e) {
+									menuIndex = 0;
+								}
+							} else{
+								menuIndex = 0;
+							}
+							
+							mActivity.showUserPage(member_id, menuIndex);
 						}
-					} else{
-						menuIndex = 0;
-					}
-					
-					mActivity.showUserPage(member_id, menuIndex);
-					
+					});
+
 				//공지사항.
 				} else if(url.equals("android.zonecomms.com/notice")) {
 					mActivity.showListPage("NOTICE");
@@ -142,19 +177,20 @@ public class IntentHandlerActivity extends Activity {
 					
 				//왁자지껄.
 				} else if(url.equals("android.zonecomms.com/freetalk")) {
-					mActivity.showGridPage(2, "TALK", 1);
+//					mActivity.showGridPage(2, "TALK", 1);
+					mActivity.showGridPage(2, "STORY", 1);
 					
-				//생생후기.
-				} else if(url.equals("android.zonecomms.com/review")) {
-					mActivity.showGridPage(2, "TALK", 2);
-					
-				//함께가기.
-				} else if(url.equals("android.zonecomms.com/with")) {
-					mActivity.showGridPage(2, "TALK", 3);
-					
-				//공개수배.
-				} else if(url.equals("android.zonecomms.com/find")) {
-					mActivity.showGridPage(2, "TALK", 4);
+//				//생생후기.
+//				} else if(url.equals("android.zonecomms.com/review")) {
+//					mActivity.showGridPage(2, "TALK", 2);
+//					
+//				//함께가기.
+//				} else if(url.equals("android.zonecomms.com/with")) {
+//					mActivity.showGridPage(2, "TALK", 3);
+//					
+//				//공개수배.
+//				} else if(url.equals("android.zonecomms.com/find")) {
+//					mActivity.showGridPage(2, "TALK", 4);
 					
 				//이미지.
 				} else if(url.equals("android.zonecomms.com/image")) {
@@ -170,11 +206,26 @@ public class IntentHandlerActivity extends Activity {
 					
 				//멤버 보기.
 				} else if(url.equals("android.zonecomms.com/member")) {
-					mActivity.showGridPage(4, "MEMBER", 0);
+					
+					mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+						
+						@Override
+						public void onAfterLogin() {
+							
+							mActivity.showGridPage(4, "MEMBER", 0);
+						}
+					});
 					
 				//환경설정.
 				} else if(url.equals("android.zonecomms.com/setting")) {
-					mActivity.showSettingPage();
+					mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+						
+						@Override
+						public void onAfterLogin() {
+							
+							mActivity.showSettingPage();
+						}
+					});
 					
 				//글 상세보기.
 				} else if(url.equals("android.zonecomms.com/post")) {

@@ -30,7 +30,7 @@ public abstract class RecyclingActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ViewUnbindHelper.unbindReferences(this, getContentViewId());
+//		ViewUnbindHelper.unbindReferences(this, getContentViewId());
 	}
 
 	public void setLoadingView(int resId) {

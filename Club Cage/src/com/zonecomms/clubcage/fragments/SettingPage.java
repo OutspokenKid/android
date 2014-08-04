@@ -164,7 +164,9 @@ public class SettingPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 
-				mActivity.showAlertDialog(getString(R.string.signOut), getString(R.string.wannaSignOut), new OnPositiveClickedListener() {
+				mActivity.showAlertDialog(getString(R.string.signOut), 
+						getString(R.string.wannaSignOut), 
+						new OnPositiveClickedListener() {
 					
 					@Override
 					public void onPositiveClicked() {

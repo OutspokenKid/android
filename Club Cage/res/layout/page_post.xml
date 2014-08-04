@@ -53,23 +53,35 @@
 		
 		</ScrollView>
 		
-		<LinearLayout
-	        android:id="@+id/postPage_writeLinear"
+		<FrameLayout 
+		    android:id="@+id/postPage_writeFrame"
 			android:layout_width="0dp"
-	        android:layout_height="0dp"
-	        android:orientation="horizontal" >
-	        
-	        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
-	            android:id="@+id/postPage_editText"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp" />
-	        
-	        <com.outspoken_kid.views.holo_dark.HoloStyleButton
-	            android:id="@+id/postPage_submitButton"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp" />
-	        
-	    </LinearLayout>
+	        android:layout_height="0dp" >
+
+		    <LinearLayout
+		        android:id="@+id/postPage_writeLinear"
+				android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:orientation="horizontal" >
+		        
+		        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+		            android:id="@+id/postPage_editText"
+		            android:layout_width="0dp"
+		            android:layout_height="0dp" />
+		        
+		        <com.outspoken_kid.views.holo_dark.HoloStyleButton
+		            android:id="@+id/postPage_submitButton"
+		            android:layout_width="0dp"
+		            android:layout_height="0dp" />
+		        
+		    </LinearLayout>
+		    
+		    <View 
+		        android:id="@+id/postPage_writeCover"
+				android:layout_width="match_parent"
+		        android:layout_height="match_parent" />
+		    		    
+		</FrameLayout>
 	
 	</LinearLayout>
 	

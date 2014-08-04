@@ -20,7 +20,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
-import com.zonecomms.common.models.Banner;
+import com.zonecomms.common.models.StartupInfo.Banner;
 
 public class SponserBanner extends FrameLayout {
 

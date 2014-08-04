@@ -251,7 +251,7 @@ public class InformationPage extends BaseFragment {
 		
 		String url = ZoneConstants.BASE_URL + "link/list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"?link_type=7" +
+				"&link_type=7" +
 				"&image_size=" + ResizeUtils.getSpecificLength(640);
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
