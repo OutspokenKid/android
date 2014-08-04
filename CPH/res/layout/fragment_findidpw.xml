@@ -30,7 +30,18 @@
 	        android:id="@+id/findIdPwPage_relative" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content" >
-		    
+
+			<!-- 저작권 표시. -->
+		
+			<ImageView 
+		        android:id="@+id/findIdPwPage_ivCopyright"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentBottom="true"
+		    	android:layout_centerHorizontal="true"
+		    	android:src="@drawable/img_reserved"
+		    	android:scaleType="centerInside" />
+	        		    
 		    <!-- 전화번호 입력. -->
 		    
 		    <EditText 
@@ -86,17 +97,6 @@
 		    	android:layout_centerHorizontal="true"
 		    	android:visibility="invisible"
 		    	android:background="@drawable/btn_certification" />
-		    
-		    <!-- 저작권 표시. -->
-		
-			<ImageView 
-		        android:id="@+id/findIdPwPage_ivCopyright"
-		        android:layout_width="0dp"
-		    	android:layout_height="0dp"
-		    	android:layout_alignParentBottom="true"
-		    	android:layout_centerHorizontal="true"
-		    	android:src="@drawable/img_reserved"
-		    	android:scaleType="centerInside" />
 		    
 		</RelativeLayout>
 	    

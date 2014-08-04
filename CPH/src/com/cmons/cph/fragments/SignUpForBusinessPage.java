@@ -1,13 +1,14 @@
 package com.cmons.cph.fragments;
 
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.cmons.classes.BaseFragmentForSignUp;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
+import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForBusinessPage extends BaseFragmentForSignUp {
@@ -20,7 +21,7 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 	@Override
 	protected void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForTermPage_titleBar);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForBusinessPage_titleBar);
 		btnWholesale = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnWholesale);
 		btnRetailOffline = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnRetailOffline);
 		btnRetailOnline = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnRetailOnline);
@@ -35,8 +36,8 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 	@Override
 	protected void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_login, 162, 92);
-		titleBar.setTitleText(R.string.findId);
+		titleBar.addBackButton(R.drawable.btn_back_terms, 162, 92);
+		titleBar.setTitleText(R.string.selectBusiness);
 	}
 
 	@Override
@@ -56,7 +57,7 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setBusiness(SignUpActivity.BUSINESS_WHOLESALE);
+				mActivity.showPositionPage(SignUpActivity.BUSINESS_WHOLESALE);
 			}
 		});
 		
@@ -65,7 +66,7 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setBusiness(SignUpActivity.BUSINESS_RETAIL_OFFLINE);
+				mActivity.showPositionPage(SignUpActivity.BUSINESS_RETAIL_OFFLINE);
 			}
 		});
 		
@@ -74,7 +75,7 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setBusiness(SignUpActivity.BUSINESS_RETAIL_ONLINE);
+				mActivity.showPositionPage(SignUpActivity.BUSINESS_RETAIL_ONLINE);
 			}
 		});
 	}
@@ -85,29 +86,31 @@ public class SignUpForBusinessPage extends BaseFragmentForSignUp {
 		//titleBar.
 		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
+		RelativeLayout.LayoutParams rp = null;
+		
 		//shadow.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_titleShadow).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForBusinessPage_titleShadow).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(14);
 		
 		//btnWholesale.
 		rp = (RelativeLayout.LayoutParams) btnWholesale.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		
 		//btnRetailOffline.
 		rp = (RelativeLayout.LayoutParams) btnRetailOffline.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
 		//btnRetailOnline.
 		rp = (RelativeLayout.LayoutParams) btnRetailOnline.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_ivCopyright).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForBusinessPage_ivCopyright).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(352);
 		rp.height = ResizeUtils.getSpecificLength(18);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);

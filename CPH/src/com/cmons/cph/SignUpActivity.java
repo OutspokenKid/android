@@ -1,18 +1,16 @@
 package com.cmons.cph;
 
 import android.os.Bundle;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.TextView;
 
 import com.cmons.classes.BaseFragmentActivity;
 import com.cmons.cph.fragments.SignUpForBusinessPage;
+import com.cmons.cph.fragments.SignUpForCategoryPage;
 import com.cmons.cph.fragments.SignUpForPersonalPage;
 import com.cmons.cph.fragments.SignUpForPositionPage;
 import com.cmons.cph.fragments.SignUpForSearchPage;
 import com.cmons.cph.fragments.SignUpForTermsPage;
 import com.cmons.cph.fragments.SignUpForWritePage;
-import com.outspoken_kid.model.FontInfo;
-import com.outspoken_kid.utils.ResizeUtils;
+import com.cmons.cph.models.Wholesale;
 
 public class SignUpActivity extends BaseFragmentActivity {
 
@@ -38,22 +36,10 @@ public class SignUpActivity extends BaseFragmentActivity {
 	public static final int POSITION_OWNER = 0;
 	public static final int POSITION_EMPLOYEE1 = 1;
 	public static final int POSITION_EMPLOYEE2 = 2;
-
-	private int businessType;
-	private int positionType;
-
-	private TextView tvTitle;
-	private SignUpForTermsPage mSignUpForTermsPage;
-	private SignUpForBusinessPage mSignUpForBusinessPage;
-	private SignUpForPositionPage mSignUpForPositionPage;
-	private SignUpForSearchPage mSignUpForSearchPage;
-	private SignUpForWritePage mSignUpForWritePage;
-	private SignUpForPersonalPage mSignUpForPersonalPage;
 	
 	@Override
 	protected void bindViews() {
 
-		tvTitle = (TextView) findViewById(R.id.signUpActivity_tvTitle);
 	}
 
 	@Override
@@ -62,15 +48,12 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void createPage() {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	protected void setSizes() {
 
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 1, 0, null);
-		FontInfo.setFontSize(tvTitle, 36);
 	}
 
 	@Override
@@ -81,14 +64,16 @@ public class SignUpActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void downloadInfo() {
-		// TODO Auto-generated method stub
 
+		setPage(true);
 	}
 
 	@Override
 	protected void setPage(boolean successDownload) {
-		// TODO Auto-generated method stub
 
+		if(getFragmentsSize() == 0) {
+			showTermsPage();
+		}
 	}
 
 	@Override
@@ -100,7 +85,7 @@ public class SignUpActivity extends BaseFragmentActivity {
 	@Override
 	protected int getFragmentFrameId() {
 
-		return 0;
+		return R.id.signUpActivity_fragmentFrame;
 	}
 	
 	@Override
@@ -115,92 +100,110 @@ public class SignUpActivity extends BaseFragmentActivity {
 	}
 	
 	@Override
-	protected void onResumeFragments() {
-		super.onResumeFragments();
+	public void onBackPressed() {
 		
-		if(mSignUpForTermsPage == null) {
-			mSignUpForTermsPage = new SignUpForTermsPage();
+		if(getFragmentsSize() > 1){
+			closeTopPage();
+		} else {
+			super.onBackPressed();
 		}
-		
-		startPage(mSignUpForTermsPage, null);
 	}
 	
 /////////////////////////// Custom methods.
 	
-	public void agree() {
+	public void showTermsPage() {
 		
-		if(mSignUpForBusinessPage == null) {
-			mSignUpForBusinessPage = new SignUpForBusinessPage();
-		}
-		
-		startPage(mSignUpForBusinessPage, null);
+		startPage(new SignUpForTermsPage(), null);
 	}
 	
-	public void setBusiness(int type) {
+	public void showBusinessPage() {
+		
+		startPage(new SignUpForBusinessPage(), null);
+	}
+	
+	public void showPositionPage(int type) {
 
-		this.businessType = type;
-		
-		if(mSignUpForPositionPage == null) {
-			mSignUpForPositionPage = new SignUpForPositionPage();
-		}
-		
 		Bundle bundle = new Bundle();
 		bundle.putInt("type", type);
 		
-		startPage(mSignUpForPositionPage, bundle);
+		startPage(new SignUpForPositionPage(), bundle);
 	}
 	
 	public void setPosition(int type) {
 		
-		this.positionType = type;
-
-		int userType = getType();
-		Bundle bundle = new Bundle();
-		bundle.putInt("type", userType);
-		
-		switch(userType) {
+		switch(type) {
 
 		case BUSINESS_WHOLESALE + POSITION_OWNER:
+			showCategoryPage(type);
+			break;
+			
 		case BUSINESS_WHOLESALE + POSITION_EMPLOYEE1:
 		case BUSINESS_WHOLESALE + POSITION_EMPLOYEE2:
 		case BUSINESS_RETAIL_OFFLINE + POSITION_EMPLOYEE1:
 		case BUSINESS_RETAIL_OFFLINE + POSITION_EMPLOYEE2:
 		case BUSINESS_RETAIL_ONLINE + POSITION_EMPLOYEE1:
 		case BUSINESS_RETAIL_ONLINE + POSITION_EMPLOYEE2:
-			
-			if(mSignUpForSearchPage == null) {
-				mSignUpForSearchPage = new SignUpForSearchPage();
-			}
-			
-			startPage(mSignUpForSearchPage, bundle);
+			showSearchPage(type, null);
 			break;
 		
 		case BUSINESS_RETAIL_OFFLINE + POSITION_OWNER:
 		case BUSINESS_RETAIL_ONLINE + POSITION_OWNER:
-			
-			if(mSignUpForWritePage == null) {
-				mSignUpForWritePage = new SignUpForWritePage();
-			}
-
-			startPage(mSignUpForWritePage, bundle);
+			showWritePage(type);
 			break;
 		}
 	}
 	
-	public void showPersonalPage(int type) {
+	public void showCategoryPage(int type) {
 		
 		Bundle bundle = new Bundle();
 		bundle.putInt("type", type);
 		
-		if(mSignUpForPersonalPage == null) {
-			mSignUpForPersonalPage = new SignUpForPersonalPage();
-		}
-		
-		startPage(mSignUpForPersonalPage, bundle);
+		startPage(new SignUpForCategoryPage(), bundle);
 	}
 	
-	public int getType() {
+	public void showSearchPage(int type, String categoryString) {
 		
-		return businessType + positionType;
+		Bundle bundle = new Bundle();
+		bundle.putInt("type", type);
+		bundle.putString("categoryString", categoryString);
+		
+		startPage(new SignUpForSearchPage(), bundle);
 	}
+	
+	public void showWritePage(int type) {
+		
+		Bundle bundle = new Bundle();
+		bundle.putInt("type", type);
+		
+		startPage(new SignUpForWritePage(), bundle);
+	}
+	
+	public void showPersonalPage(int type, Wholesale wholesale, String categoryString) {
+		
+		Bundle bundle = new Bundle();
+		bundle.putInt("type", type);
+		bundle.putSerializable("wholesale", wholesale);
+		bundle.putString("categoryString", categoryString);
+		
+		startPage(new SignUpForPersonalPage(), bundle);
+	}
+	
+	public void launchMainActivity() {
+		
+//		Intent intent = new Intent(this, WholesaleActivity.class);
+//		startActivity(intent);
+	}
+
+	public void showLoadingView() {
+		
+	}
+	
+	public void hideLoadingView() {
+		
+	}
+	
+//	public int getType() {
+//		
+//		return businessType + positionType;
+//	}
 }

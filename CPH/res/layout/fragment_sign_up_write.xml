@@ -1,114 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:fillViewport="true" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/signUpForWritePage_mainLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#fff" >
 
-    <RelativeLayout
-        android:id="@+id/signUpActivity_relativeTerms"
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForWritePage_ivBg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff" >
-
-        <!-- 상호명 -->
-        <TextView
-            android:id="@+id/signUpForWritePage_tvCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/companyName"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForWriteCompanyName"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 주소 -->
-        <TextView
-            android:id="@+id/signUpForWritePage_tvCompanyAddress"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/address"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyAddress"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForWriteCompanyAddress"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 대표자 성함 -->
-        <TextView
-            android:id="@+id/signUpForWritePage_tvCompanyOwnerName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/ownerName"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyOwnerName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForWriteCompanyOwnerName"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 사업자 등록번호 -->
-        <TextView
-            android:id="@+id/signUpForWritePage_tvCompanyRegistration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/registrationNumber"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyRegistration1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyRegistration2"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <EditText
-            android:id="@+id/signUpForWritePage_etCompanyRegistration3"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:inputType="number"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <Button
-            android:id="@+id/signUpForWritePage_btnNext"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/next" />
-    </RelativeLayout>
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
     
-</ScrollView>
+    <!-- 저작권 표시. -->
+
+    <ImageView
+        android:id="@+id/signUpForWritePage_ivCopyright"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_reserved" />
+    
+    <!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForWritePage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:fillViewport="true" 
+	    android:layout_below="@id/signUpForWritePage_titleBar" >
+	
+	    <RelativeLayout
+	        android:id="@+id/signUpForWritePage_relativeTerms"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <!-- 상호명 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvCompanyName"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignParentTop="true"
+	            android:layout_alignParentLeft="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/companyName"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
+	            android:layout_below="@id/signUpForWritePage_tvCompanyName"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForWriteCompanyName"
+	            android:inputType="text"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <!-- 주소 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvCompanyAddress"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyName"
+	            android:layout_below="@id/signUpForWritePage_etCompanyName"
+	            android:gravity="center_vertical"
+	            android:text="@string/address"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyAddress"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyAddress"
+	            android:layout_below="@id/signUpForWritePage_tvCompanyAddress"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForWriteCompanyAddress"
+	            android:inputType="text"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <!-- 대표자 성함 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvCompanyOwnerName"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyAddress"
+	            android:layout_below="@id/signUpForWritePage_etCompanyAddress"
+	            android:gravity="center_vertical"
+	            android:text="@string/ownerName"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyOwnerName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyOwnerName"
+	            android:layout_below="@id/signUpForWritePage_tvCompanyOwnerName"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForWriteCompanyOwnerName"
+	            android:inputType="text"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <!-- 사업자 등록번호 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvCompanyRegistration"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyOwnerName"
+	            android:layout_below="@id/signUpForWritePage_etCompanyOwnerName"
+	            android:gravity="center_vertical"
+	            android:text="@string/registrationNumber"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyRegistration1"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyRegistration"
+	            android:layout_below="@id/signUpForWritePage_tvCompanyRegistration"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:inputType="number"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyRegistration2"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForWritePage_etCompanyRegistration1"
+	            android:layout_toRightOf="@id/signUpForWritePage_etCompanyRegistration1"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:inputType="number"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyRegistration3"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForWritePage_etCompanyRegistration2"
+	            android:layout_toRightOf="@id/signUpForWritePage_etCompanyRegistration2"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:inputType="number"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <Button
+	            android:id="@+id/signUpForWritePage_btnNext"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyRegistration1"
+	            android:layout_below="@id/signUpForWritePage_etCompanyRegistration1"
+	            android:background="@drawable/btn_next" />
+	        
+	    </RelativeLayout>
+	    
+	</ScrollView>
+	
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForWritePage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+</RelativeLayout>

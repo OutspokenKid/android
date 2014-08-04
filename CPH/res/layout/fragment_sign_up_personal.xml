@@ -1,171 +1,294 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:fillViewport="true" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/signUpForPersonalPage_mainLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#fff" >
 
-    <RelativeLayout
-        android:id="@+id/signUpForPersonalPage_relativeBusiness"
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForPersonalPage_ivBg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#fff" >
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+    <!-- 저작권 표시. -->
 
-        <!-- 상호명 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/companyName"
-            android:textColor="#000" />
+    <ImageView
+        android:id="@+id/signUpForPersonalPage_ivCopyright"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_reserved" />
+    
+    <!-- 타이틀바. -->
 
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:inputType="text"
-            android:textColor="#000" />
-
-        <!-- 매장 전화번호 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvCompanyPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etCompanyPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:inputType="phone"
-            android:textColor="#000" />
-
-        <!-- 매장 위치 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvCompanyLocation"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etCompanyLocation"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:inputType="text"
-            android:textColor="#000" />
-
-        <!-- 아이디 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvId"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/id"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etId"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForId"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <Button
-            android:id="@+id/signUpForPersonalPage_btnCheckId"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/checkDuplication" />
-
-        <!-- 비밀번호 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvPw"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/id"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etPw"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForPw"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 비밀번호 확인 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvConfirmPw"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/confirmPw"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etConfirmPw"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForPw"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 휴대폰 번호 -->
-        <TextView
-            android:id="@+id/signUpForPersonalPage_tvPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/phoneNumber"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForPhone"
-            android:inputType="phone"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 인증번호 입력 -->
-        <EditText
-            android:id="@+id/signUpForPersonalPage_etVerification"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForVerification"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <!-- 인증번호 발송 -->
-        <Button
-            android:id="@+id/signUpForPersonalPage_btnSendVerification"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/sendVerification" />
-
-        <!-- 완료 -->
-        <Button
-            android:id="@+id/signUpForPersonalPage_btnComplete"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/complete" />
-    </RelativeLayout>
-
-</ScrollView>
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForPersonalPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+	<ScrollView
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/signUpForPersonalPage_titleBar"
+	    android:fillViewport="true" >
+	
+	    <RelativeLayout
+	        android:id="@+id/signUpForPersonalPage_relativeBusiness"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <!-- 상호명 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyName1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/companyName"
+	            android:textColor="#fff" />
+	
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyName2"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyName1"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyName1"
+	            android:textColor="#000"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 매장 전화번호 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyPhone1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyName2"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyName2"
+	            android:gravity="center_vertical"
+	            android:textColor="#fff" />
+	
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyPhone2"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyPhone1"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyPhone1"
+	            android:textColor="#000" 
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 매장 위치 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyLocation1"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyPhone2"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyPhone2"
+	            android:gravity="center_vertical"
+	            android:textColor="#fff" />
+	
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCompanyLocation2"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyLocation1"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyLocation1"
+	            android:textColor="#000" 
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 아이디 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvId"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/id"
+	            android:textColor="#fff" />
+	        
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCheckId"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForPersonalPage_tvId"
+	            android:layout_toRightOf="@id/signUpForPersonalPage_tvId"
+	            android:textColor="#f00"
+	            android:gravity="center_vertical" />
+	
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etId"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvId"
+	            android:layout_below="@id/signUpForPersonalPage_tvId"
+	            android:hint="@string/hintForId"
+	            android:inputType="text"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 비밀번호 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvPw"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_etId"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_etId"
+	            android:gravity="center_vertical"
+	            android:text="@string/pw"
+	            android:textColor="#fff" />
+	        
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCheckPw"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForPersonalPage_tvPw"
+	            android:layout_toRightOf="@id/signUpForPersonalPage_tvPw"
+	            android:textColor="#f00"
+	            android:gravity="center_vertical" />
+	        
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etPw"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvPw"
+	            android:layout_below="@id/signUpForPersonalPage_tvPw"
+	            android:hint="@string/hintForPw"
+	            android:inputType="textPassword"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 비밀번호 확인 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvConfirmPw"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_etPw"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_etPw"
+	            android:gravity="center_vertical"
+	            android:text="@string/confirmPw"
+	            android:textColor="#fff" />
+	
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvCheckConfirmPw"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:layout_toRightOf="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:textColor="#f00"
+	            android:gravity="center_vertical" />
+	        
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etConfirmPw"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:layout_below="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:hint="@string/hintForPw"
+				android:inputType="textPassword"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 휴대폰 번호 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvPhone"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_etConfirmPw"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_etConfirmPw"
+	            android:gravity="center_vertical"
+	            android:text="@string/phoneNumber"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etPhone"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvPhone"
+	            android:layout_below="@id/signUpForPersonalPage_tvPhone"
+	            android:hint="@string/hintForPhone"
+	            android:inputType="phone"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 인증번호 입력 -->
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etCertification"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_etPhone"
+	            android:layout_below="@id/signUpForPersonalPage_etPhone"
+	            android:hint="@string/hintForCertification"
+	            android:inputType="text"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	
+	        <!-- 인증번호 발송 -->
+	        
+	        <Button
+	            android:id="@+id/signUpForPersonalPage_btnSendCertification"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForPersonalPage_etCertification"
+	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
+	            android:background="@drawable/btn_send" />
+	        
+	        <!-- 인증하기 -->
+	        
+	        <Button
+	            android:id="@+id/signUpForPersonalPage_btnCertify"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForPersonalPage_etCertification"
+	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
+	            android:background="@drawable/btn_send" />
+	
+	        <!-- 완료 -->
+	        <Button
+	            android:id="@+id/signUpForPersonalPage_btnComplete"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_etCertification"
+	            android:layout_below="@id/signUpForPersonalPage_etCertification"
+	            android:background="@drawable/btn_complete" />
+	    
+	    </RelativeLayout>
+	
+	</ScrollView>
+	
+	<!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForPersonalPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+	
+</RelativeLayout>

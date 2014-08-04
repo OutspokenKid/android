@@ -19,35 +19,38 @@
 	    android:id="@+id/signUpForPositionPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
-    
-    <Button
-        android:id="@+id/signUpForPositionPage_btnOwner"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_below="@id/signUpForPositionPage_titleBar" />
+	
+	<!-- 저작권 표시. -->
 
-    <Button
-        android:id="@+id/signUpForPositionPage_btnEmployee1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_below="@id/signUpForPositionPage_btnOwner" />
-
-    <Button
-        android:id="@+id/signUpForPositionPage_btnEmployee2"
-        android:layout_width="0dp"
-        android:layout_height="0dp" 
-        android:layout_below="@id/signUpForPositionPage_btnEmployee1" />
-    
-     <!-- 저작권 표시. -->
-
-	<ImageView 
+    <ImageView
         android:id="@+id/signUpForPositionPage_ivCopyright"
         android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentBottom="true"
-    	android:layout_centerHorizontal="true"
-    	android:src="@drawable/img_reserved"
-    	android:scaleType="centerInside" />
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_reserved" />
+    
+    <Button
+        android:id="@+id/signUpForPositionPage_btnPosition1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/signUpForPositionPage_titleBar"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/signUpForPositionPage_btnPosition2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/signUpForPositionPage_btnPosition1"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/signUpForPositionPage_btnPosition3"
+        android:layout_width="0dp"
+        android:layout_height="0dp" 
+        android:layout_below="@id/signUpForPositionPage_btnPosition2"
+        android:layout_centerHorizontal="true" />
     
     <!-- 그림자. -->
     

@@ -1,74 +1,88 @@
 package com.cmons.cph.fragments;
 
-import android.view.ViewGroup.LayoutParams;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.cmons.classes.BaseFragmentActivity.OnPositiveClickedListener;
 import com.cmons.classes.BaseFragmentForSignUp;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
-import com.outspoken_kid.model.FontInfo;
+import com.cmons.cph.models.Wholesale;
+import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForPersonalPage extends BaseFragmentForSignUp {
 
-	private TextView tvCompanyName;
-	private EditText etCompanyName;
+	private TitleBar titleBar;
 	
-	private TextView tvCompanyPhone;
-	private EditText etCompanyPhone;
+	private TextView tvCompanyName1;
+	private TextView tvCompanyName2;
 	
-	private TextView tvCompanyLocation;
-	private EditText etCompanyLocation;
+	private TextView tvCompanyPhone1;
+	private TextView tvCompanyPhone2;
+	
+	private TextView tvCompanyLocation1;
+	private TextView tvCompanyLocation2;
 	
 	private TextView tvId;
+	private TextView tvCheckId;
 	private EditText etId;
-	private Button btnCheckId;
 	
 	private TextView tvPw;
+	private TextView tvCheckPw;
 	private EditText etPw;
 	
 	private TextView tvPwConfirm;
+	private TextView tvCheckConfirmPw;
 	private EditText etPwConfirm;
 	
 	private TextView tvPhone;
 	private EditText etPhone;
-	private EditText etVerification;
-	private Button btnSendVerification;
+	private EditText etCertification;
+	private Button btnSendCertification;
 	
 	private Button btnComplete;
 	
 	private int type;
+	private Wholesale wholesale;
+	private String categoryString;
 	
 	@Override
 	protected void bindViews() {
 
-		tvCompanyName = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyName);
-		etCompanyName = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etCompanyName);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForPersonalPage_titleBar);
 		
-		tvCompanyPhone = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyPhone);
-		etCompanyPhone = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etCompanyPhone);
+		tvCompanyName1 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyName1);
+		tvCompanyName2 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyName2);
 		
-		tvCompanyLocation = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyLocation);
-		etCompanyLocation = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etCompanyLocation);
+		tvCompanyPhone1 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyPhone1);
+		tvCompanyPhone2 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyPhone2);
+		
+		tvCompanyLocation1 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyLocation1);
+		tvCompanyLocation2 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyLocation2);
 		
 		tvId = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvId);
+		tvCheckId = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCheckId);
 		etId = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etId);
-		btnCheckId = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnCheckId);
 		
 		tvPw = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvPw);
+		tvCheckPw = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCheckPw);
 		etPw = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etPw);
 		
 		tvPwConfirm = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvConfirmPw);
+		tvCheckConfirmPw = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCheckConfirmPw);
 		etPwConfirm = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etConfirmPw);
 		
 		tvPhone = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvPhone);
 		etPhone = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etPhone);
 		
-		etVerification = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etVerification);
-		btnSendVerification = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnSendVerification);
+		etCertification = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etCertification);
+		btnSendCertification = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnSendCertification);
 		
 		btnComplete = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnComplete);
 	}
@@ -76,185 +90,252 @@ public class SignUpForPersonalPage extends BaseFragmentForSignUp {
 	@Override
 	protected void setVariables() {
 
-		if(getArguments() != null && getArguments().containsKey("type")) {
-			type = getArguments().getInt("type");
+		if(getArguments() != null) {
+			
+			if(getArguments().containsKey("type")) {
+				type = getArguments().getInt("type");
+			}
+			
+			wholesale = (Wholesale) getArguments().getSerializable("wholesale");
+			categoryString = getArguments().getString("categoryString");
 		}
 	}
 
 	@Override
 	protected void createPage() {
 
+		View bottomBlank = new View(mContext);
+		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(10, ResizeUtils.getSpecificLength(110));
+		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_btnComplete);
+		bottomBlank.setLayoutParams(rp);
+		((RelativeLayout) mThisView.findViewById(R.id.signUpForPersonalPage_relativeBusiness)).addView(bottomBlank);
+		
 		switch(type) {
 		
 		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_OWNER:
 		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE1:
 		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE2:
-			tvCompanyPhone.setText(R.string.phoneNumberForWholesale);
-			tvCompanyLocation.setText(R.string.addressForWholesale);
+			tvCompanyPhone1.setText(R.string.phoneNumberForWholesale);
+			tvCompanyLocation1.setText(R.string.addressForWholesale);
+
+			tvCompanyName1.setVisibility(View.VISIBLE);
+			tvCompanyName2.setVisibility(View.VISIBLE);
+			tvCompanyPhone1.setVisibility(View.VISIBLE);
+			tvCompanyName2.setVisibility(View.VISIBLE);
+			tvCompanyLocation1.setVisibility(View.VISIBLE);
+			tvCompanyLocation2.setVisibility(View.VISIBLE);
 			break;
 		
 		default:
-			tvCompanyPhone.setText(R.string.phoneNumberForRetail);
-			tvCompanyLocation.setText(R.string.addressForRetail);
+			tvCompanyPhone1.setText(R.string.phoneNumberForRetail);
+			tvCompanyLocation1.setText(R.string.addressForRetail);
+			
+			tvCompanyName1.setVisibility(View.INVISIBLE);
+			tvCompanyName2.setVisibility(View.INVISIBLE);
+			tvCompanyPhone1.setVisibility(View.INVISIBLE);
+			tvCompanyPhone2.setVisibility(View.INVISIBLE);
+			tvCompanyLocation1.setVisibility(View.INVISIBLE);
+			tvCompanyLocation2.setVisibility(View.INVISIBLE);
 		}
 		
-		etCompanyName.setText("C-MONS");
-		etCompanyPhone.setText("02-0000-0000");
-		etCompanyLocation.setText("강남구 역삼동 개나리아파트 201호");
+		tvCompanyName2.setText(wholesale.getName());
+		tvCompanyPhone2.setText(wholesale.getPhone_number());
+		tvCompanyLocation2.setText(wholesale.getLocation());
+		
+		titleBar.addBackButton(R.drawable.btn_back_findcompany, 162, 92);
+		titleBar.setTitleText(R.string.inputUserInfo);
 	}
 
 	@Override
 	protected void setListeners() {
-		// TODO Auto-generated method stub
 
+		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				getActivity().getSupportFragmentManager().popBackStack();
+			}
+		});
+		
+		btnSendCertification.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(
+						getString(R.string.notice), 
+						getString(R.string.sendCertificationCompleted), 
+						new OnPositiveClickedListener() {
+							
+							@Override
+							public void onPositiveClicked() {
+								//To to.
+							}
+						});
+			}
+		});
+		
+		btnComplete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				((SignUpActivity) getActivity()).launchMainActivity();
+			}
+		});
 	}
 
 	@Override
 	protected void setSizes() {
 
+		//titleBar.
+		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
+		
 		RelativeLayout.LayoutParams rp = null;
 		
-		int textViewWidth = LayoutParams.WRAP_CONTENT;
-		int textViewHeight = ResizeUtils.getSpecificLength(80);
-		int textViewMarginLeft = ResizeUtils.getSpecificLength(40);
-		int textViewMarginTop = ResizeUtils.getSpecificLength(40);
-		
-		int editTextWidth = ResizeUtils.getSpecificLength(500);
-		int editTextHeight = ResizeUtils.getSpecificLength(80);
-		int editTextMarginTop = ResizeUtils.getSpecificLength(40);
-
-		int smallEditTextWidth = ResizeUtils.getSpecificLength(300);
-		int smallEditTextHeight = ResizeUtils.getSpecificLength(80);
-		
-		int buttonWidth = ResizeUtils.getSpecificLength(240);
-		int buttonHeight = ResizeUtils.getSpecificLength(80);
-		int buttonMarginTop = ResizeUtils.getSpecificLength(40);
-		
-		int smallButtonWidth = ResizeUtils.getSpecificLength(220);
-		int smallButtonHeight = ResizeUtils.getSpecificLength(80);
-		int smallButtonMarginLeft = ResizeUtils.getSpecificLength(20);
+		//shadow.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPersonalPage_titleShadow).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(14);
 		
 		//tvCompanyName.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.leftMargin = textViewMarginLeft;
-		rp.topMargin = textViewMarginTop * 2;
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		tvCompanyName.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvCompanyName1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.leftMargin = ResizeUtils.getSpecificLength(70);
+		rp.topMargin = ResizeUtils.getSpecificLength(74);
 		
 		//etCompanyName.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvCompanyName);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvCompanyName);
-		etCompanyName.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvCompanyName2.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvCompanyPhone.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etCompanyName);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etCompanyName);
-		tvCompanyPhone.setLayoutParams(rp);
-				
+		rp = (RelativeLayout.LayoutParams) tvCompanyPhone1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		
 		//etCompanyPhone.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvCompanyPhone);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvCompanyPhone);
-		etCompanyPhone.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvCompanyPhone2.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvCompanyLocation.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etCompanyPhone);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etCompanyPhone);
-		tvCompanyLocation.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvCompanyLocation1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etCompanyLocation.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvCompanyLocation);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvCompanyLocation);
-		etCompanyLocation.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvCompanyLocation2.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvId.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etCompanyLocation);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etCompanyLocation);
-		tvId.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvId.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.leftMargin = ResizeUtils.getSpecificLength(70);
+		
+		switch(type) {
+				
+		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_OWNER:
+		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE1:
+		case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE2:
+			rp.topMargin = ResizeUtils.getSpecificLength(712);
+			break;
+		
+		default:
+			rp.topMargin = ResizeUtils.getSpecificLength(74);
+		}
+		
+		//tvCheckId.
+		rp = (RelativeLayout.LayoutParams) tvCheckId.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etId.
-		rp = new RelativeLayout.LayoutParams(smallEditTextWidth, smallEditTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvId);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvId);
-		etId.setLayoutParams(rp);
-		
-		//btnCheckId.
-		rp = new RelativeLayout.LayoutParams(smallButtonWidth, smallButtonHeight);
-		rp.leftMargin = smallButtonMarginLeft;
-		rp.addRule(RelativeLayout.ALIGN_TOP, R.id.signUpForPersonalPage_etId);
-		rp.addRule(RelativeLayout.RIGHT_OF, R.id.signUpForPersonalPage_etId);
-		btnCheckId.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPw.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etId);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etId);
-		tvPw.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvPw.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		
+		//tvCheckPw.
+		rp = (RelativeLayout.LayoutParams) tvCheckPw.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPw.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvPw);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvPw);
-		etPw.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) etPw.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPwConfirm.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etPw);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etPw);
-		tvPwConfirm.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvPwConfirm.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		
+		//tvCheckConfirmPw.
+		rp = (RelativeLayout.LayoutParams) tvCheckConfirmPw.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPwConfirm.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvConfirmPw);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvConfirmPw);
-		etPwConfirm.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) etPwConfirm.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPhone.
-		rp = new RelativeLayout.LayoutParams(textViewWidth, textViewHeight);
-		rp.topMargin = textViewMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etConfirmPw);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etConfirmPw);
-		tvPhone.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) tvPhone.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPhone.
-		rp = new RelativeLayout.LayoutParams(editTextWidth, editTextHeight);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_tvPhone);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_tvPhone);
-		etPhone.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
-		//etVerification.
-		rp = new RelativeLayout.LayoutParams(smallEditTextWidth, smallEditTextHeight);
-		rp.topMargin = editTextMarginTop;
-		rp.addRule(RelativeLayout.ALIGN_LEFT, R.id.signUpForPersonalPage_etPhone);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_etPhone);
-		etVerification.setLayoutParams(rp);
+		//etCertification.
+		rp = (RelativeLayout.LayoutParams) etCertification.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(325);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		//btnSendVerification.
-		rp = new RelativeLayout.LayoutParams(smallButtonWidth, smallButtonHeight);
-		rp.leftMargin = smallButtonMarginLeft;
-		rp.addRule(RelativeLayout.ALIGN_TOP, R.id.signUpForPersonalPage_etVerification);
-		rp.addRule(RelativeLayout.RIGHT_OF, R.id.signUpForPersonalPage_etVerification);
-		btnSendVerification.setLayoutParams(rp);
+		//btnSendCertification.
+		rp = (RelativeLayout.LayoutParams) btnSendCertification.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(234);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		rp.leftMargin = ResizeUtils.getSpecificLength(23);
 		
 		//btnComplete.
-		rp = new RelativeLayout.LayoutParams(buttonWidth, buttonHeight);
-		rp.topMargin = buttonMarginTop;
-		rp.addRule(RelativeLayout.CENTER_HORIZONTAL, R.id.signUpForPersonalPage_btnSendVerification);
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_btnSendVerification);
-		btnComplete.setLayoutParams(rp);
+		rp = (RelativeLayout.LayoutParams) btnComplete.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(74);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		FontInfo.setFontSize(btnSendVerification, 26);
+		FontUtils.setFontSize(tvCompanyName1, 34);
+		FontUtils.setFontSize(tvCompanyName2, 30);
+		FontUtils.setFontSize(tvCompanyPhone1, 34);
+		FontUtils.setFontSize(tvCompanyPhone2, 30);
+		FontUtils.setFontSize(tvCompanyLocation1, 34);
+		FontUtils.setFontSize(tvCompanyLocation2, 30);
+		
+		FontUtils.setFontSize(tvId, 34);
+		FontUtils.setFontSize(tvPw, 34);
+		FontUtils.setFontSize(tvPwConfirm, 34);
+		FontUtils.setFontSize(tvPhone, 34);
+		
+		FontUtils.setFontSize(tvCheckId, 30);
+		FontUtils.setFontSize(tvCheckPw, 30);
+		FontUtils.setFontSize(tvCheckConfirmPw, 30);
+		
+		FontUtils.setFontSize(etCertification, 30);
+		
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPersonalPage_ivCopyright).getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(352);
+		rp.height = ResizeUtils.getSpecificLength(18);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 
 	@Override

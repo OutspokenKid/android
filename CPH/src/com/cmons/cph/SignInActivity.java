@@ -1,12 +1,17 @@
 package com.cmons.cph;
 
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.cmons.classes.BaseFragmentActivity;
-import com.cmons.classes.CphApplication;
+import com.cmons.classes.CphConstants;
 import com.cmons.cph.fragments.FindIdPwPage;
 import com.cmons.cph.fragments.SignInPage;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SignInActivity extends BaseFragmentActivity {
@@ -47,7 +52,7 @@ public class SignInActivity extends BaseFragmentActivity {
 	@Override
 	protected void setPage(boolean successDownload) {
 
-		if(CphApplication.getFragmentsSize() == 0) {
+		if(getFragmentsSize() == 0) {
 			showSignInPage();
 		}
 	}
@@ -112,13 +117,50 @@ public class SignInActivity extends BaseFragmentActivity {
 			ToastUtils.showToast(R.string.signingIn);
 			signingIn = true;
 		}
-		
-		signingIn = false;
+
+		try {
+			String url = CphConstants.BASE_API_URL + "/users/login" +
+					"?user[id]=" + id +
+					"&user[pw]=" + pw;
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+					
+					signingIn = false;
+					
+					LogUtils.log("from.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					signingIn = false;
+					
+					try {
+						LogUtils.log("from.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						//Create user object.
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			signingIn = false;
+		} catch (Error e) {
+			LogUtils.trace(e);
+			signingIn = false;
+		}
 	}
 	
 	public void launchMainActivity() {
 		
-		Intent intent = new Intent(this, MainActivity.class);
-		startActivity(intent);
+//		Intent intent = new Intent(this, WholesaleActivity.class);
+//		startActivity(intent);
 	}
 }

@@ -1,7 +1,7 @@
 package com.cmons.cph.views;
 
 import com.cmons.cph.R;
-import com.outspoken_kid.model.FontInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 import android.content.Context;
@@ -56,7 +56,7 @@ public class TitleBar extends RelativeLayout {
 		tvTitle.setLayoutParams(rp);
 		tvTitle.setGravity(Gravity.CENTER_VERTICAL);
 		tvTitle.setTextColor(Color.WHITE);
-		FontInfo.setFontSize(tvTitle, 30);
+		FontUtils.setFontSize(tvTitle, 30);
 		this.addView(tvTitle);
 	}
 	

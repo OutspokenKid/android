@@ -5,19 +5,16 @@
     android:layout_height="match_parent" >
     
     <!-- 배경. -->
-	    
+    
     <ImageView 
-        android:id="@+id/signInActivity_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_signin_main" />
+    	android:src="@drawable/bg_signin_main"
+    	android:scaleType="centerCrop" />
     
-    <FrameLayout 
+    <FrameLayout
         android:id="@+id/signInActivity_fragmentFrame"
-    	android:layout_width="match_parent"
+        android:layout_width="match_parent"
     	android:layout_height="match_parent" />
     
 </FrameLayout>
-
-

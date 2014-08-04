@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cmons.cph.R;
@@ -163,6 +164,17 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
 	public void closeTopPage() {
 		
 		getSupportFragmentManager().popBackStack();
+	}
+	
+	public void clearFragmentsWithoutMain() {
+
+		int size = getFragmentsSize();
+		
+		for(int i=0; i<size; i++) {
+			((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim();
+		}
+		
+		getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
 	
 //////////////////////////// Interfaces.

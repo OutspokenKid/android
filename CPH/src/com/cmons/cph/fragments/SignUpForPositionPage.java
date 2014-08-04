@@ -1,31 +1,32 @@
 package com.cmons.cph.fragments;
 
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.cmons.classes.BaseFragmentForSignUp;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
+import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForPositionPage extends BaseFragmentForSignUp {
 
 	private TitleBar titleBar;
-	private Button btnOwner;
-	private Button btnEmployee1;
-	private Button btnEmployee2;
+	private Button btnPosition1;
+	private Button btnPosition2;
+	private Button btnPosition3;
 	
 	private int type;
 	
 	@Override
 	protected void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForTermPage_titleBar);
-		btnOwner = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnOwner);
-		btnEmployee1 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnEmployee1);
-		btnEmployee2 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnEmployee2);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForPositionPage_titleBar);
+		btnPosition1 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition1);
+		btnPosition2 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition2);
+		btnPosition3 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition3);
 	}
 
 	@Override
@@ -39,18 +40,22 @@ public class SignUpForPositionPage extends BaseFragmentForSignUp {
 	@Override
 	protected void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_login, 162, 92);
-		titleBar.setTitleText(R.string.findId);
+		titleBar.addBackButton(R.drawable.btn_back_business, 162, 92);
+		titleBar.setTitleText(R.string.selectPosition);
 		
 		switch(type) {
 		
 		case SignUpActivity.BUSINESS_WHOLESALE:
-			btnEmployee2.setText(R.string.employee_designer);
+			btnPosition1.setBackgroundResource(R.drawable.btn_owner);
+			btnPosition2.setBackgroundResource(R.drawable.btn_employee);
+			btnPosition3.setBackgroundResource(R.drawable.btn_designer);
 			break;
 			
 		case SignUpActivity.BUSINESS_RETAIL_OFFLINE:
 		case SignUpActivity.BUSINESS_RETAIL_ONLINE:
-			btnEmployee2.setText(R.string.employee_md);
+			btnPosition1.setBackgroundResource(R.drawable.btn_owner);
+			btnPosition2.setBackgroundResource(R.drawable.btn_employee);
+			btnPosition3.setBackgroundResource(R.drawable.btn_md);
 			break;
 		}
 	}
@@ -67,30 +72,30 @@ public class SignUpForPositionPage extends BaseFragmentForSignUp {
 			}
 		});
 		
-		btnOwner.setOnClickListener(new OnClickListener() {
+		btnPosition1.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setPosition(SignUpActivity.POSITION_OWNER);
+				mActivity.setPosition(type + SignUpActivity.POSITION_OWNER);
 			}
 		});
 		
-		btnEmployee1.setOnClickListener(new OnClickListener() {
+		btnPosition2.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setPosition(SignUpActivity.POSITION_EMPLOYEE1);
+				mActivity.setPosition(type + SignUpActivity.POSITION_EMPLOYEE1);
 			}
 		});
 		
-		btnEmployee2.setOnClickListener(new OnClickListener() {
+		btnPosition3.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.setPosition(SignUpActivity.POSITION_EMPLOYEE2);
+				mActivity.setPosition(type + SignUpActivity.POSITION_EMPLOYEE2);
 			}
 		});
 	}
@@ -101,29 +106,31 @@ public class SignUpForPositionPage extends BaseFragmentForSignUp {
 		//titleBar.
 		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
+		RelativeLayout.LayoutParams rp = null;
+		
 		//shadow.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_titleShadow).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPositionPage_titleShadow).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(14);
 		
 		//btnOwner.
-		rp = (RelativeLayout.LayoutParams) btnOwner.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPosition1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		
 		//btnEmployee1.
-		rp = (RelativeLayout.LayoutParams) btnEmployee1.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPosition2.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
 		//btnEmployee2.
-		rp = (RelativeLayout.LayoutParams) btnEmployee2.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPosition3.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_ivCopyright).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPositionPage_ivCopyright).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(352);
 		rp.height = ResizeUtils.getSpecificLength(18);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);

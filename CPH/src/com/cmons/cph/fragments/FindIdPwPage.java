@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments;
 
+import org.json.JSONObject;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,10 +14,16 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.cmons.classes.BaseFragment;
 import com.cmons.classes.BaseFragmentActivity.OnPositiveClickedListener;
+import com.cmons.classes.CphConstants;
 import com.cmons.cph.R;
 import com.cmons.cph.SignInActivity;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class FindIdPwPage extends BaseFragment {
 
@@ -23,6 +31,8 @@ public class FindIdPwPage extends BaseFragment {
 	public static final int TYPE_FIND_PW = 1;
 	
 	private int type;
+	private String timeResponseKey;
+	private String certifyingPhoneNumber;
 
 	private TitleBar titleBar;
 	private EditText etPhone;
@@ -193,20 +203,89 @@ public class FindIdPwPage extends BaseFragment {
 	}
 
 	public void checkPhone() {
+
+		if(etPhone.getText() == null
+				|| StringUtils.isEmpty(etPhone.getText().toString())) {
+			ToastUtils.showToast(R.string.wrongPhoneNumber);
+			return;
+		}
 		
-		btnSend.setVisibility(View.INVISIBLE);
-		etCertification.setVisibility(View.VISIBLE);
-		btnCertify.setVisibility(View.VISIBLE);
+		certifyingPhoneNumber = etPhone.getText().toString();
+		
+		String url = CphConstants.BASE_API_URL + "users/auth/request" +
+				"?no_sms=0" +
+				"&phone_number=" + certifyingPhoneNumber;
+
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("FindIdPwPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.wrongPhoneNumber);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						timeResponseKey = objJSON.getString("tempResponseKey");
+						btnSend.setVisibility(View.INVISIBLE);
+						etCertification.setVisibility(View.VISIBLE);
+						btnCertify.setVisibility(View.VISIBLE);
+						
+						ToastUtils.showToast(R.string.sendCertificationCompleted);
+					} else {
+						ToastUtils.showToast(R.string.wrongPhoneNumber);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void checkCertification() {
 		
-		certify();
-	}
-	
-	public void certify() {
+		if(timeResponseKey.equals(etCertification.getText().toString())) {
+			
+			String url = CphConstants.BASE_API_URL + "users/auth/response" +
+					"?phone_number=" + certifyingPhoneNumber +
+					"&response_key=" + timeResponseKey;
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-		showAlert();
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("FindIdPwPage.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.wrongCertificationNumber);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						showAlert();
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} else {
+			ToastUtils.showToast(R.string.wrongCertificationNumber);
+		}
 	}
 	
 	public void showAlert() {

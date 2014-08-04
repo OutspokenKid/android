@@ -9,6 +9,17 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content" >
 	
+        <!-- 저작권 표시. -->
+	
+		<ImageView 
+	        android:id="@+id/signInPage_ivCopyright"
+	        android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentBottom="true"
+	    	android:layout_centerHorizontal="true"
+	    	android:src="@drawable/img_reserved"
+	    	android:scaleType="centerInside" />
+        
 	    <!-- 로고. -->
 	    
 	    <View 
@@ -91,17 +102,6 @@
 	    	android:layout_alignTop="@id/signInPage_btnFindId"
 	    	android:layout_toRightOf="@id/signInPage_btnFindId"
 	    	android:background="@drawable/btn_findpw" />
-	    
-	    <!-- 저작권 표시. -->
-	
-		<ImageView 
-	        android:id="@+id/signInPage_ivCopyright"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true"
-	    	android:src="@drawable/img_reserved"
-	    	android:scaleType="centerInside" />
 	    
 	</RelativeLayout>
     

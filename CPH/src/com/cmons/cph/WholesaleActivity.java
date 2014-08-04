@@ -2,7 +2,7 @@ package com.cmons.cph;
 
 import com.cmons.classes.BaseFragmentActivity;
 
-public class MainActivity extends BaseFragmentActivity {
+public class WholesaleActivity extends BaseFragmentActivity {
 
 	@Override
 	protected void bindViews() {

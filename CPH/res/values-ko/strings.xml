@@ -5,6 +5,7 @@
     <string name="agree">동의</string>
     <string name="app_name">CPH</string>
 
+    <string name="categoryText">매장 분류는 다중 선택이 가능합니다</string>
     <string name="checkDuplication">중복 확인</string>
     <string name="companyName">상호명</string>
     <string name="complete">완료</string>
@@ -24,16 +25,18 @@
     <string name="hintForSearchCompanyName">상호명을 입력해주세요</string>
     <string name="hintForSearchCompanyPhone">전화번호를 입력해주세요</string>
     <string name="hintForSearchCompanyRegistration">사업자 등록번호를 입력해주세요</string>
-    <string name="hintForVerification">인증 번호 입력</string>
+    <string name="hintForCertification">인증 번호 입력</string>
     <string name="hintForWriteCompanyName">상호명 입력</string>
     <string name="hintForWriteCompanyAddress">주소 입력</string>
     <string name="hintForWriteCompanyOwnerName">성함 입력</string>
     
     <string name="id">아이디</string>
     <string name="inputPhone">전화번호 입력</string>
-    <string name="inputCompanyInfo">회사 정보를 입력해주세요</string>
-    <string name="inputUserInfo">사용자 정보를 입력해주세요</string>
+    <string name="inputCompanyInfo">매장 정보 입력</string>
+    <string name="inputUserInfo">회원 정보 입력</string>
     <string name="inputCertification">인증번호 입력</string>
+
+    <string name="line">열</string>
     
     <string name="next">다음</string>
     <string name="notice">알림</string>
@@ -52,23 +55,31 @@
     <string name="roomNumber">호</string>
 
     <string name="search">검색</string>
-    <string name="searchCompany">상호명 검색</string>
+    <string name="searchCompany">매장 검색</string>
     <string name="searchCompanyName">상호명 검색</string>
     <string name="searchCompanyPhone">전화번호 검색</string>
     <string name="searchCompanyLocation">매장 위치 검색</string>
     <string name="searchCompanyRegistration">사업자 등록번호 검색</string>
+    <string name="selectBusiness">업종 선택</string>
+    <string name="selectCategory">매장 분류 선택</string>
+    <string name="selectPosition">직급 선택</string>
     <string name="sendIdCompleted">회원가입시 입력한 휴대번호로 아이디가 발송되었습니다</string>
     <string name="sendPwCompleted">회원가입시 입력한 휴대번호로 비밀번호가 발송되었습니다</string>
-    <string name="sendVerification">인증번호 발송</string>
+    <string name="sendCertification">인증번호 발송</string>
+    <string name="sendCertificationCompleted">인증번호가 휴대전화로 발송되었습니다</string>
     <string name="signIn">로그인</string>
     <string name="signingIn">로그인 중..</string>
     <string name="signUp">회원가입</string>
     
-    <string name="terms">Terms...</string>
+    <string name="terms">약관</string>
     
-    <string name="verify">인증</string>
+    <string name="certify">인증</string>
     
     <string name="wholesale">도매</string>
+    <string name="wrongCategory">Select category</string>
+    <string name="wrongCertificationNumber">잘못된 인증번호입니다.</string>
     <string name="wrongId">아이디를 올바르게 입력해주세요(6 ~ 64자)</string>
+    <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
+    <string name="wrongSearchKeyword">검색어를 입력해주세요</string>
 </resources>

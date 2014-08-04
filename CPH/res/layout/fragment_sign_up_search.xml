@@ -1,121 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#fff"
-    android:fillViewport="true" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/signUpForSearchPage_mainLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#fff" >
 
-    <RelativeLayout
-        android:id="@+id/signUpForSearchPage_relativeSearchInfo"
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForSearchPage_ivBg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff" >
+    	android:layout_height="match_parent"
+    	android:scaleType="centerCrop"
+    	android:src="@drawable/bg_find_main" />
+    
+    <!-- 저작권 표시. -->
 
-        <!-- 상호명 -->
+    <ImageView
+        android:id="@+id/signUpForSearchPage_ivCopyright"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_reserved" />
+    
+    <!-- 타이틀바. -->
 
-        <TextView
-            android:id="@+id/signUpForSearchPage_tvCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/searchCompanyName"
-            android:textColor="#000" />
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForSearchPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:fillViewport="true"
+	    android:layout_below="@id/signUpForSearchPage_titleBar" >
+	
+	    <RelativeLayout
+	        android:id="@+id/signUpForSearchPage_relativeSearchInfo"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <!-- 상호명 -->
+	
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvCompanyName"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignParentTop="true"
+	            android:layout_alignParentLeft="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyName"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForSearchPage_etCompanyName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_tvCompanyName"
+	            android:layout_below="@id/signUpForSearchPage_tvCompanyName"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForSearchCompanyName"
+	            android:inputType="text"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_etCompanyName"
+	            android:layout_toRightOf="@id/signUpForSearchPage_etCompanyName"
+	            android:background="@drawable/btn_search" />
+	
+	        <!-- 전화번호 검색 -->
+	
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvCompanyPhone"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_etCompanyName"
+	            android:layout_below="@id/signUpForSearchPage_etCompanyName"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyPhone"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForSearchPage_etCompanyPhone"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_tvCompanyPhone"
+	            android:layout_below="@id/signUpForSearchPage_tvCompanyPhone"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForSearchCompanyPhone"
+	            android:inputType="phone"
+	            android:background="#b2ffffff"
+	            android:textColor="#4a4a4a"
+	    		android:textColorHint="#4a4a4a"  />
+	
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyPhone"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_etCompanyPhone"
+	            android:layout_toRightOf="@id/signUpForSearchPage_etCompanyPhone"
+	            android:background="@drawable/btn_search" />
+	
+	        <!-- 매장 위치 검색 -->
+	
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvCompanyLocation"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_etCompanyPhone"
+	            android:layout_below="@id/signUpForSearchPage_etCompanyPhone"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyLocation"
+	            android:textColor="#fff" />
+	
+	        <!-- 층. -->
+	        
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyFloor"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_tvCompanyLocation"
+	            android:layout_below="@id/signUpForSearchPage_tvCompanyLocation"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/btn_dropdown" />
+	        
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvFloor"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_alignLeft="@id/signUpForSearchPage_btnCompanyFloor"
+	            android:layout_above="@id/signUpForSearchPage_btnCompanyFloor"
+	            android:gravity="center"
+	            android:text="@string/floor"
+	            android:textSize="12sp"
+	            android:textColor="#fff" />
+	        
+	        <!-- 열. -->
 
-        <EditText
-            android:id="@+id/signUpForSearchPage_etCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForSearchCompanyName"
-            android:inputType="text"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
+			<Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyLine"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_btnCompanyFloor"
+	            android:layout_toRightOf="@id/signUpForSearchPage_btnCompanyFloor"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/btn_dropdown" />	        
+	        
+			<TextView
+	            android:id="@+id/signUpForSearchPage_tvLine"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_alignLeft="@id/signUpForSearchPage_btnCompanyLine"
+	            android:layout_above="@id/signUpForSearchPage_btnCompanyLine"
+	            android:gravity="center"
+	            android:text="@string/line"
+	            android:textSize="12sp"
+	            android:textColor="#fff" />
+			
+	        <!-- 호. -->
+	
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyRoomNumber"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_btnCompanyLine"
+	            android:layout_toRightOf="@id/signUpForSearchPage_btnCompanyLine"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/btn_dropdown" />
+	        
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvRoomNumber"
+	            android:layout_width="0dp"
+	            android:layout_height="wrap_content"
+	            android:layout_alignLeft="@id/signUpForSearchPage_btnCompanyRoomNumber"
+	            android:layout_above="@id/signUpForSearchPage_btnCompanyRoomNumber"
+	            android:gravity="center"
+	            android:text="@string/roomNumber"
+	            android:textSize="12sp"
+	            android:textColor="#fff" />
+	
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyLocation"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_btnCompanyRoomNumber"
+	            android:layout_toRightOf="@id/signUpForSearchPage_btnCompanyRoomNumber"
+	            android:background="@drawable/btn_search" />
+	
+	        <!-- 사업자 등록번호 검색 -->
+	
+	        <TextView
+	            android:id="@+id/signUpForSearchPage_tvCompanyRegistration"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_etCompanyPhone"
+	            android:layout_below="@id/signUpForSearchPage_etCompanyPhone"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyRegistration"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForSearchPage_etCompanyRegistration"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForSearchPage_tvCompanyRegistration"
+	            android:layout_below="@id/signUpForSearchPage_tvCompanyRegistration"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForSearchCompanyRegistration"
+	            android:inputType="number"
+	            android:background="#b2ffffff"
+	            android:textColor="#4a4a4a"
+	    		android:textColorHint="#4a4a4a"  />
+	
+	        <Button
+	            android:id="@+id/signUpForSearchPage_btnCompanyRegistration"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/signUpForSearchPage_etCompanyRegistration"
+	            android:layout_toRightOf="@id/signUpForSearchPage_etCompanyRegistration"
+	            android:background="@drawable/btn_search" />
+	    </RelativeLayout>
+	
+	</ScrollView>
+    	
+    <!-- 그림자. -->
+    
+    <View 
+        android:id="@+id/signUpForSearchPage_titleShadow" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
+	    android:background="@drawable/bg_titlebar_shadow"/>
+    
+    <View
+        android:id="@+id/signUpForSearchPage_cover" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" 
+	    android:background="#a000"
+	    android:visibility="invisible" />
+    
+    <FrameLayout
+        android:id="@+id/signUpForSearchPage_listFrame"
+        android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_centerInParent="true"
+	    android:background="@drawable/bg_signup_popup"
+	    android:visibility="invisible" >
 
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyName"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/search" />
-
-        <!-- 전화번호 검색 -->
-
-        <TextView
-            android:id="@+id/signUpForSearchPage_tvCompanyPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/searchCompanyPhone"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForSearchPage_etCompanyPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForSearchCompanyPhone"
-            android:inputType="phone"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyPhone"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/search" />
-
-        <!-- 매장 위치 검색 -->
-
-        <TextView
-            android:id="@+id/signUpForSearchPage_tvCompanyLocation"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/searchCompanyLocation"
-            android:textColor="#000" />
-
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyFloor"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/floor" />
-
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyRoomNumber"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/roomNumber" />
-
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyLocation"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/search" />
-
-        <!-- 사업자 등록번호 검색 -->
-
-        <TextView
-            android:id="@+id/signUpForSearchPage_tvCompanyRegistration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:text="@string/searchCompanyRegistration"
-            android:textColor="#000" />
-
-        <EditText
-            android:id="@+id/signUpForSearchPage_etCompanyRegistration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:gravity="center_vertical"
-            android:hint="@string/hintForSearchCompanyRegistration"
-            android:inputType="number"
-            android:textColor="#000"
-            android:textColorHint="#aaa" />
-
-        <Button
-            android:id="@+id/signUpForSearchPage_btnCompanyRegistration"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:text="@string/search" />
-    </RelativeLayout>
-
-</ScrollView>
+        <ListView 
+	        android:id="@+id/signUpForSearchPage_listView" 
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"  />
+        
+        <Button 
+            android:id="@+id/signUpForSearchPage_btnClose" 
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:layout_gravity="right|top"
+		    android:background="@drawable/btn_signup_close" />
+        
+    </FrameLayout>
+    
+</RelativeLayout>
