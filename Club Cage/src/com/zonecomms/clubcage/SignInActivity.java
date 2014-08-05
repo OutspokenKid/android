@@ -13,12 +13,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -27,12 +28,12 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
-import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
 import com.zonecomms.common.models.MyInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class SignInActivity extends RecyclingActivity {
+public class SignInActivity extends ZonecommsRecyclingActivity {
 	
 	private static SignInActivity signInActivity;
 
@@ -102,6 +103,24 @@ public class SignInActivity extends RecyclingActivity {
 		} else {
 			super.onBackPressed();
 		}
+	}
+	
+	@Override
+	protected View getLoadingView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 ///////////// Custom methods.

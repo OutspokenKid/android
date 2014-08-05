@@ -19,7 +19,7 @@
 		    android:layout_height="match_parent"
 		    android:background="@drawable/mask_profile" />
 	    
-	    <com.android.volley.toolbox.NetworkImageView
+	    <com.outspoken_kid.views.OutspokenImageView
 		    android:id="@+id/list_circlepost_ivProfile" 
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
@@ -48,12 +48,12 @@
 	    android:maxLines="4"
 	    android:textColor="#000" />
 	
-	<com.android.volley.toolbox.NetworkImageView
-	    android:id="@+id/list_circlepost_ivImage" 
+	<android.support.v4.view.ViewPager 
+	    android:id="@+id/list_circlepost_viewPager" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
-	    android:visibility="gone"
-	    android:scaleType="centerCrop" />
+	    android:clipToPadding="false"
+	    android:visibility="gone" />
 	
 	<View
 	    android:id="@+id/list_circlepost_bottomBg" 

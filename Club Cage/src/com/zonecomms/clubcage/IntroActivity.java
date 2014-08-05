@@ -212,12 +212,17 @@ public class IntroActivity extends Activity {
 			@Override
 			public void onError(String url) {
 
+				LogUtils.log("###IntroActivity.downloadStartupInfo.onError.  \nurl : " + url);
+				
 				selectAccount();
 			}
 			
 			@Override
 			public void onCompleted(String url, JSONObject objJSON) {
 
+				LogUtils.log("###IntroActivity.downloadStartupInfo.onCompleted.  " +
+						"\nurl : " + url + "\nresult : " + objJSON);
+				
 				try {
 					MainActivity.startupInfo = new StartupInfo(objJSON);
 					

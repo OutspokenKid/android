@@ -6,6 +6,8 @@ package com.zonecomms.clubcage;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 
@@ -58,5 +60,29 @@ public class ImageViewer extends ImageViewerActivity {
 	protected int getSaveButtonBackgroundResId() {
 
 		return R.drawable.btn_save;
+	}
+
+	@Override
+	protected int getCustomFontResId() {
+
+		return R.string.customFont;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected View getLoadingView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

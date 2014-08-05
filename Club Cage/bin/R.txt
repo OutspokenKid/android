@@ -458,7 +458,6 @@ int id listMode 0x7f050001
 int id listPage_listView 0x7f0500ce
 int id listPage_mainLayout 0x7f0500cd
 int id list_circlepost_bottomBg 0x7f050095
-int id list_circlepost_ivImage 0x7f050094
 int id list_circlepost_ivProfile 0x7f050090
 int id list_circlepost_more 0x7f05009a
 int id list_circlepost_moreBg 0x7f050099
@@ -470,6 +469,7 @@ int id list_circlepost_tvContent 0x7f050093
 int id list_circlepost_tvNickname 0x7f050091
 int id list_circlepost_tvRegdate 0x7f050092
 int id list_circlepost_tvReply 0x7f050097
+int id list_circlepost_viewPager 0x7f050094
 int id list_group_profile 0x7f05009b
 int id list_group_tvGroupName 0x7f05009c
 int id list_group_tvIntroduce 0x7f05009d

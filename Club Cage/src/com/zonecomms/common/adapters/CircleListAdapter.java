@@ -3,6 +3,8 @@ package com.zonecomms.common.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,17 +13,19 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
+import com.calciumion.widget.BasePagerAdapter;
 import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.OutspokenImageView;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.common.models.Media;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.views.CircleHeaderView;
 
@@ -115,15 +119,16 @@ public class CircleListAdapter extends BaseAdapter {
 	
 	public class ViewHolderForCirclePost {
 
+		private Context context;
 		public Post post;
 		
 		public FrameLayout profileFrame;
 		public View profileBg;
-		public NetworkImageView ivProfile;
+		public OutspokenImageView ivProfile;
 		public TextView tvNickname;
 		public TextView tvRegdate;
 		public TextView tvContent;
-		public NetworkImageView ivImage;
+		public ViewPager viewPager;
 		public View bottomBg;
 		public FrameLayout replyFrame;
 		public TextView tvReply;
@@ -133,13 +138,15 @@ public class CircleListAdapter extends BaseAdapter {
 		
 		public void bindViews(View convertView) {
 			
+			context = convertView.getContext();
+			
 			profileFrame = (FrameLayout) convertView.findViewById(R.id.list_circlepost_profileFrame);
 			profileBg = convertView.findViewById(R.id.list_circlepost_profileBg);
-			ivProfile = (NetworkImageView) convertView.findViewById(R.id.list_circlepost_ivProfile);
+			ivProfile = (OutspokenImageView) convertView.findViewById(R.id.list_circlepost_ivProfile);
 			tvNickname = (TextView) convertView.findViewById(R.id.list_circlepost_tvNickname);
 			tvRegdate = (TextView) convertView.findViewById(R.id.list_circlepost_tvRegdate);
 			tvContent = (TextView) convertView.findViewById(R.id.list_circlepost_tvContent);
-			ivImage = (NetworkImageView) convertView.findViewById(R.id.list_circlepost_ivImage);
+			viewPager = (ViewPager) convertView.findViewById(R.id.list_circlepost_viewPager);
 			bottomBg = convertView.findViewById(R.id.list_circlepost_bottomBg);
 			replyFrame = (FrameLayout) convertView.findViewById(R.id.list_circlepost_replyFrame);
 			tvReply = (TextView) convertView.findViewById(R.id.list_circlepost_tvReply);
@@ -187,19 +194,20 @@ public class CircleListAdapter extends BaseAdapter {
 			tvContent.setLayoutParams(rp);
 			FontUtils.setFontSize(tvContent, 30);
 			
-			//ivImage.
+			//viewPager.
 			rp = new RelativeLayout.LayoutParams(
-					ResizeUtils.getSpecificLength(600), 
+					LayoutParams.MATCH_PARENT, 
 					ResizeUtils.getSpecificLength(640));
 			rp.addRule(RelativeLayout.BELOW, R.id.list_circlepost_tvContent);
-			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			rp.rightMargin = margin;
 			rp.bottomMargin = margin;
-			ivImage.setLayoutParams(rp);
+			viewPager.setLayoutParams(rp);
+			int defaultGap = ResizeUtils.getSpecificLength(20);
+			viewPager.setPadding(defaultGap, 0, defaultGap, 0);
+			viewPager.setPageMargin(defaultGap/2);
 			
 			//bottomBg.
 			rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(68));
-			rp.addRule(RelativeLayout.BELOW, R.id.list_circlepost_ivImage);
+			rp.addRule(RelativeLayout.BELOW, R.id.list_circlepost_viewPager);
 			bottomBg.setLayoutParams(rp);
 
 			//ReplyFrame.
@@ -232,22 +240,21 @@ public class CircleListAdapter extends BaseAdapter {
 		
 		public void setListeners() {
 
-			moreFrame.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-					ToastUtils.showToast("More clicked");
-				}
-			});
+//			moreFrame.setOnClickListener(new OnClickListener() {
+//				
+//				@Override
+//				public void onClick(View v) {
+//					
+//					ToastUtils.showToast("More clicked");
+//				}
+//			});
 		}
 	
 		public void setValues(Post post) {
 
 			if(!StringUtils.isEmpty(post.getMember().getMedia_src())) {
 				ivProfile.setVisibility(View.VISIBLE);
-				DownloadUtils.downloadImage(ivProfile, post.getMember().getMedia_src());
-				
+				ivProfile.setImageUrl(post.getMember().getMedia_src());
 			} else {
 				ivProfile.setVisibility(View.GONE);
 			}
@@ -256,12 +263,13 @@ public class CircleListAdapter extends BaseAdapter {
 			tvRegdate.setText(post.getReg_dt());
 			tvContent.setText(post.getContent());
 			
-			if(!StringUtils.isEmpty(post.getMedia_src())) {
-				ivImage.setVisibility(View.VISIBLE);
-				DownloadUtils.downloadImage(ivImage, post.getMedia_src());
-				
+			if(post.getMedias() == null
+					|| post.getMedias().length == 0) {
+				viewPager.setVisibility(View.GONE);
 			} else {
-				ivImage.setVisibility(View.GONE);
+				viewPager.setAdapter(new CirclePagerAdapter(context, post.getMedias()));
+				viewPager.getAdapter().notifyDataSetChanged();
+				viewPager.setVisibility(View.VISIBLE);
 			}
 			
 			if(post.getReply_cnt() > 99) {
@@ -291,6 +299,78 @@ public class CircleListAdapter extends BaseAdapter {
 			
 			//moreBg.
 			moreBg.setBackgroundColor(color);
+		}
+	}
+	
+	public class CirclePagerAdapter extends BasePagerAdapter {
+
+		private Context context;
+		private Media[] medias;
+		
+		public CirclePagerAdapter(Context context, Media[] medias) {
+			
+			this.context = context;
+			this.medias = medias; 
+		}
+		
+		@Override
+		protected Object getItem(int position) {
+			
+			if(medias != null) {
+				return medias[position];
+			} else {
+				return 0;
+			}
+		}
+
+		@Override
+		protected View getView(Object object, View convertView, ViewGroup parent) {
+
+			/*
+			http://112.169.61.103/externalapi/public/
+			spot/detail
+			?ver=13&lng=ko&os=android&device=android&
+			device_token=c02c705e98588f724ca046ac59cafece65501e36
+			&sb_id=clubcage
+			&image_size=1080
+			&spot_nid=1885
+
+
+			
+			*/
+			
+			LogUtils.log("###CircleListAdapter.getView.  get object");
+			
+			OutspokenImageView ivImage;
+			
+			if(convertView == null) {
+				ivImage = new OutspokenImageView(context);
+				ivImage.setScaleType(ScaleType.CENTER_CROP);
+				ivImage.setBackgroundColor(Color.CYAN);
+			} else {
+				ivImage = (OutspokenImageView) convertView;
+			}
+			
+			String imageUrl = ((Media)object).getMedia_src();
+			ivImage.setImageUrl(imageUrl);
+			
+			return ivImage;
+		}
+
+		@Override
+		public int getCount() {
+			
+			if(medias != null) {
+				return medias.length;
+			} else{
+				return 0;
+			}
+		}
+		
+		@Override
+		public float getPageWidth(int position) {
+	
+			return 1;	
 		}
 	}
 }

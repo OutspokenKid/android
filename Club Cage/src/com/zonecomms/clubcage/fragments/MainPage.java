@@ -16,6 +16,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.OutspokenImageView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
@@ -35,7 +36,7 @@ public class MainPage extends BaseFragment {
 	private ScrollView scrollView;
 	private RelativeLayout mainRelative;
 //	private FrameLayout boardMenu;
-	private ImageView ivPoster1, ivPoster2;
+	private OutspokenImageView ivPoster1, ivPoster2;
 	
 //	private View coverForMenu;
 //
@@ -373,7 +374,7 @@ public class MainPage extends BaseFragment {
 ///////////////////////////////////////////////////////
 		
 		//Poster1.			id : 7
-		ivPoster1 = new ImageView(mContext);
+		ivPoster1 = new OutspokenImageView(mContext);
 		ivPoster1.setId(madeCount + 7); 
 		ivPoster1.setScaleType(ScaleType.CENTER_CROP);
 		ivPoster1.setBackgroundResource(R.drawable.bg_poster);
@@ -404,6 +405,7 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
+						ivPoster1.setImageUrl(url);
 						ivPoster1.setTag(url);
 						DownloadUtils.downloadBitmap(url,
 								new OnBitmapDownloadListener() {
@@ -443,7 +445,7 @@ public class MainPage extends BaseFragment {
 		mainRelative.addView(ivPoster1);
 		
 		//Poster2.
-		ivPoster2 = new ImageView(mContext);
+		ivPoster2 = new OutspokenImageView(mContext);
 		ivPoster2.setScaleType(ScaleType.CENTER_CROP);
 		ivPoster2.setBackgroundResource(R.drawable.bg_poster);
 		rp = new RelativeLayout.LayoutParams(l*2 + s, l*3 + s*2);
@@ -470,6 +472,7 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void run() {
 						String url = mainSchedule.getMedias()[0].getMedia_src();
+						ivPoster2.setImageUrl(url);
 						ivPoster2.setTag(url);
 						DownloadUtils.downloadBitmap(url,
 								new OnBitmapDownloadListener() {
@@ -558,6 +561,7 @@ public class MainPage extends BaseFragment {
 			String url = MainActivity.myInfo.getMember_media_src();
 			
 			if(mActivity.getProfileView() != null) {
+				
 				if(!StringUtils.isEmpty(url) && mActivity.getProfileView().getIcon() != null) {
 					mActivity.getProfileView().getIcon().setTag(url);
 					DownloadUtils.downloadBitmap(url,
@@ -649,6 +653,7 @@ public class MainPage extends BaseFragment {
 				imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
 			}
 		}, 1000);
+		mActivity.getTitleBar().showCircleButton();
 		mActivity.getTitleBar().hideHomeButton();
 		mActivity.getTitleBar().showWriteButton();
 		

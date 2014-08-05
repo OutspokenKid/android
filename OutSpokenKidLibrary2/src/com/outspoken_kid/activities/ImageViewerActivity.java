@@ -51,7 +51,7 @@ import com.outspoken_kid.views.PinchImageView.OnScrollChangedListener;
  * 1.2 - Fix the bugs.
  * 1.1 - ViewPager is adapted with thumbnails.
  */
-public abstract class ImageViewerActivity extends RecyclingActivity {
+public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 
 	protected static final int MODE_NONE = 0;
 	protected static final int MODE_DRAG = 1;
@@ -157,7 +157,6 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 		
 		FontUtils.setFontSize(tvTitle, 32);
 		limitDist = ResizeUtils.getSpecificLength(30);
-		downloadKey = "IMAGEVIEWERACTIVITY";
 		
 		fade_in = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
 		fade_out = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);

@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -23,6 +24,8 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -36,6 +39,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.adapters.CircleListAdapter;
 import com.zonecomms.common.models.Post;
@@ -59,9 +63,12 @@ public class CircleMainActivity extends Activity {
 	private CircleListAdapter listAdapter;
 	private CircleHeaderView circleHeaderView;
 	
-	private ArrayList<Post> posts = new ArrayList<Post>();
+	private ArrayList<Post> models = new ArrayList<Post>();
 	private BgInfo bgInfo;
 	private boolean isInit;
+	private boolean isDownloading;
+	private boolean isLastList;
+	private int lastIndexno;
 	
 	private AlphaAnimation aaIn, aaOut;
 	private TranslateAnimation taIn, taOut;
@@ -81,6 +88,19 @@ public class CircleMainActivity extends Activity {
         
         setSizes();
         setListeners();
+        
+    	final Intent intent = getIntent();				//'i' is intent that passed intent from before.
+		
+		if(intent!= null && intent.getData() != null) {
+			swipeLayout.post(new Runnable() {
+				
+				@Override
+				public void run() {
+					
+					launchToMainActivity(intent.getData());
+				}
+			});
+		}
     }
     
     @Override
@@ -166,8 +186,9 @@ public class CircleMainActivity extends Activity {
     	
     	circleHeaderView = new CircleHeaderView(this);
     	
-    	listAdapter = new CircleListAdapter(this, circleHeaderView, getLayoutInflater(), posts);
+    	listAdapter = new CircleListAdapter(this, circleHeaderView, getLayoutInflater(), models);
     	listView.setAdapter(listAdapter);
+    	listView.setCacheColorHint(Color.TRANSPARENT);
     	listView.setDivider(new ColorDrawable(Color.LTGRAY));
     	listView.setDividerHeight(1);
     	
@@ -241,6 +262,30 @@ public class CircleMainActivity extends Activity {
 						imagePlayViewer.setNeedPlayImage(true);
 					}
 				}
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
+			}
+		});
+    	
+    	listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				try {
+					if(position > 0) {
+						String uriString = ZoneConstants.PAPP_ID + 
+								"://android.zonecomms.com/post?spot_nid=" + 
+								models.get(position - 1).getSpot_nid();
+						launchToMainActivity(Uri.parse(uriString));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
 			}
 		});
     	
@@ -262,7 +307,7 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 
-				launchToMainActivity();
+				launchToMainActivity(null);
 			}
 		});
     	
@@ -390,13 +435,20 @@ public class CircleMainActivity extends Activity {
 
     public void onRefreshPage() {
     	
+    	isDownloading = false;
+    	isLastList = false;
+    	lastIndexno = 0;
+    	models.clear();
+		listAdapter.notifyDataSetChanged();
     	swipeLayout.setRefreshing(false);
     	showNext();
+    	downloadInfo();
     }
     
     @Override
     protected void onResume() {
     	super.onResume();
+    	
     	menuScroll.setVisibility(View.INVISIBLE);
 		menuCover.setVisibility(View.INVISIBLE);
 		animating = false;
@@ -419,7 +471,7 @@ public class CircleMainActivity extends Activity {
 					circleHeaderView.setTitleBarColor(color);
 					changeMenuColor(color);
 					listAdapter.changeColor(color);
-					downloadPosts();
+					downloadInfo();
 				
 				} else {
 					showNext();
@@ -445,37 +497,103 @@ public class CircleMainActivity extends Activity {
     	}
     }
     
-    public void downloadPosts() {
+    public void downloadInfo() {
 
-    	String url = "http://112.169.61.103/externalapi/public/sb/partner_spot_list?sb_id=massclub&board_nid=1&last_sb_spot_nid=0&image_size=640";
+    	if(isDownloading || isLastList) {
+			return;
+		}
+    	
+    	/*
+    	
+    	http://112.169.61.103/externalapi/public/
+    	sb/partner_spot_list
+    	?sb_id=clubcage
+    	&board_nid=1
+    	&last_sb_spot_nid=0
+    	&image_size=640
+
+		http://112.169.61.103/externalapi/public/
+		sb/partner_spot_list
+		?sb_id=clubcage
+		&board_nid=1
+		&last_sb_spot_nid=1388
+		&image_size=640
+    	
+    	*/
+    	
+    	isDownloading = true;
+    	
+    	String url = ZoneConstants.BASE_URL + "sb/partner_spot_list?" +
+    			"sb_id=" + ZoneConstants.PAPP_ID +
+    			"&board_nid=1" +
+    			"&last_sb_spot_nid=" + lastIndexno +
+    			"&image_size=640";
+    	
     	DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
-				LogUtils.log("###MainActivity.onError.  \nurl : " + url);
-				ToastUtils.showToast("서버에서 정보를 받아오지 못했습니다");
+				
+				LogUtils.log("###CircleMainPage.Error.  \nurl : " + url);
+				setPage(false);
 			}
 			
 			@Override
 			public void onCompleted(String url, JSONObject objJSON) {
-			
+
+				LogUtils.log("###CircleMainPage.onCompleted.  \nurl : " + url +
+						"\nresult  :  " + objJSON);
+				
 				try {
 					JSONArray arJSON = objJSON.getJSONArray("data");
 					
 					int size = arJSON.length();
-					for(int i=0; i<size; i++) {
-						posts.add(new Post(arJSON.getJSONObject(i)));
+					
+					if(size > 0) {
+						for(int i=0; i<size; i++) {
+							models.add(new Post(arJSON.getJSONObject(i)));
+						}
+					} else {
+						isLastList = true;
+						ToastUtils.showToast(R.string.lastPage);
 					}
 					
 					listAdapter.notifyDataSetChanged();
-					showContainer();
+					
+					if(swipeLayout.getVisibility() != View.VISIBLE) {
+						showContainer();
+					} else {
+						showNext();
+					}
+					
+					setPage(true);
 				} catch (Exception e) {
 					LogUtils.trace(e);
+					setPage(false);
 				} catch (Error e) {
 					LogUtils.trace(e);
+					setPage(false);
 				}
 			}
 		});
+    }
+    
+    public void setPage(boolean successDownload) {
+    
+    	isDownloading = false;
+    	
+    	if(successDownload) {
+
+			if(models != null && models.size() > 0) {
+				lastIndexno = models.get(models.size() - 1).getIndexno();
+			}
+			
+			if(listAdapter != null) {
+				listAdapter.notifyDataSetChanged();
+			}
+		} else {
+			ToastUtils.showToast(R.string.failToLoadList);
+		}
     }
     
     public void showTitleBar() {
@@ -528,17 +646,11 @@ public class CircleMainActivity extends Activity {
     	menuScroll.setBackgroundColor(color);
     }
 
-    public void launchToMainActivity() {
+    public void launchToMainActivity(Uri uri) {
 		
 		Intent intent = new Intent(this, MainActivity.class);
-		Intent i = getIntent();				//'i' is intent that passed intent from before.
-		
-		if(i!= null && i.getData() != null) {
-			intent.setData(i.getData());
-		}
-		
+		intent.setData(uri);
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		finish();
 	}
 }

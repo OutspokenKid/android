@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
@@ -33,6 +34,7 @@ public abstract class BaseFragment extends Fragment {
 	protected boolean isDownloading;
 	protected boolean isRefreshing;
 	protected boolean disableExitAnim;
+	protected boolean isLast;
 
 	protected abstract void bindViews();
 	protected abstract void setVariables();
@@ -233,17 +235,24 @@ public abstract class BaseFragment extends Fragment {
 	public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
 		
 		if(disableExitAnim) {
-			disableExitAnim = false;
-			Animation a = new Animation() {};
-			a.setDuration(0);
-			return a;
+			
+			if(isLast && !enter) {
+				return AnimationUtils.loadAnimation(mContext, R.anim.slide_out_to_bottom);
+				
+			} else {
+				disableExitAnim = false;
+				Animation a = new Animation() {};
+				a.setDuration(0);
+				return a;
+			}
 		}
 		
 		return super.onCreateAnimation(transit, enter, nextAnim);
 	}
 	
-	public void disableExitAnim() {
+	public void disableExitAnim(boolean isLast) {
 		
+		this.isLast = isLast;
 		disableExitAnim = true;
 	}
 

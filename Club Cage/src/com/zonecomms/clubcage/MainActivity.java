@@ -272,11 +272,6 @@ public class MainActivity extends FragmentActivity {
 		
 		setAnimationDrawable();
 		
-		if(ZonecommsApplication.getFragmentsSize() == 0) {
-			showMainPage();
-			checkPopup();
-		}
-		
 		final Intent i = getIntent();				//'i' is intent that passed intent from before.
 		
 		if(i!= null && i.getData() != null) {
@@ -287,7 +282,11 @@ public class MainActivity extends FragmentActivity {
 					IntentHandlerActivity.actionByUri(i.getData());
 				}
 			}, 500);
+		} else {
+			showMainPage();
 		}
+		
+		checkPopup();
 	}
 	
 	@Override
@@ -1437,7 +1436,8 @@ public class MainActivity extends FragmentActivity {
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
 			MainActivity.myInfo = null;
 
-			ZonecommsApplication.clearFragmentsWithoutMain();
+			ZonecommsApplication.clearFragmentsWithLastAnim();
+			
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 0, getProfileView(), 1, 0, null);
 		} catch(Exception e) {
 			LogUtils.trace(e);

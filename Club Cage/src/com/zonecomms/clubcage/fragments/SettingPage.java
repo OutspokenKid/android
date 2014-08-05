@@ -427,6 +427,7 @@ public class SettingPage extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
+		mActivity.getTitleBar().hideCircleButton();
 		mActivity.getTitleBar().showHomeButton();
 		mActivity.getTitleBar().hideWriteButton();
 		

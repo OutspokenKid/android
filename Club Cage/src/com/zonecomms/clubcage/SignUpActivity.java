@@ -32,10 +32,10 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -47,14 +47,14 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.SignInActivity.OnAfterSigningInListener;
-import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.CustomDatePicker;
 
-public class SignUpActivity extends RecyclingActivity {
+public class SignUpActivity extends ZonecommsRecyclingActivity {
 
 	public static SignInActivity signInActivity;
 	
@@ -122,8 +122,6 @@ public class SignUpActivity extends RecyclingActivity {
 		pGender = (HoloStyleSpinnerPopup) findViewById(R.id.signUpActivity_pGender);
 		
 		pPhoto = (HoloStyleSpinnerPopup) findViewById(R.id.signUpActivity_pPhoto);
-		
-		loadingView = findViewById(R.id.signUpActivity_loadingView);
 	}
 
 	@Override
@@ -326,6 +324,27 @@ public class SignUpActivity extends RecyclingActivity {
 		} else {
 			ToastUtils.showToast(R.string.canceled);
 		}
+	}
+	
+	@Override
+	protected View getLoadingView() {
+
+		View loadingView = findViewById(R.id.signUpActivity_loadingView);
+		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
+		
+		return loadingView;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 ///////////// Custom methods.

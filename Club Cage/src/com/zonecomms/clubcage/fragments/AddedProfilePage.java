@@ -378,6 +378,10 @@ public class AddedProfilePage extends BaseFragment {
 		if(mActivity.getSponserBanner() != null) {
 			mActivity.getSponserBanner().hideBanner();
 		}
+		
+		mActivity.getTitleBar().hideCircleButton();
+		mActivity.getTitleBar().showHomeButton();
+		mActivity.getTitleBar().hideWriteButton();
 	}
 	
 	@Override

@@ -80,7 +80,7 @@ public class ImagePlayViewer extends FrameLayout {
 	}
 	
 	public void setImageUrls(ArrayList<String> imageUrls) {
-
+		
 		//서버에서 이미지가 한장만 오는 경우는 없고, 잘못된 이미지가 올라가 있는 경우가 없다고 가정.
 		//모드 설정.
 		if(imageUrls.size() == 2){
@@ -281,9 +281,16 @@ public class ImagePlayViewer extends FrameLayout {
 	
 	public void clear() {
 
-		nextBitmap.recycle();
-		ViewUnbindHelper.unbindReferences(imageViews[0]);
-		ViewUnbindHelper.unbindReferences(imageViews[1]);
+		try {
+			ViewUnbindHelper.unbindReferences(imageViews[0]);
+			ViewUnbindHelper.unbindReferences(imageViews[1]);
+			nextBitmap.recycle();
+			nextBitmap = null;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 
 	public boolean isSliding() {

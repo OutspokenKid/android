@@ -18,6 +18,7 @@ import android.text.Selection;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -27,11 +28,11 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -39,14 +40,14 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.zonecomms.clubcage.classes.RecyclingActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
-public class WriteActivity extends RecyclingActivity {
+public class WriteActivity extends ZonecommsRecyclingActivity {
 
 	private TextView tvTitle;
 	private View btnComplete;
@@ -90,8 +91,6 @@ public class WriteActivity extends RecyclingActivity {
 		btnPhoto = (Button) findViewById(R.id.writeActivity_btnPhoto);
 		spinner = (HoloStyleSpinnerPopup) findViewById(R.id.writeActivity_spinner);
 		cover = findViewById(R.id.writeActivity_cover);
-		
-		setLoadingView(R.id.writeActivity_loadingView);
 	}
 
 	@Override
@@ -115,8 +114,6 @@ public class WriteActivity extends RecyclingActivity {
 				tvTitle.setText(getString(titleResIds[board_nid]) + " " + getString(R.string.write));
 			}
 		}
-		
-		downloadKey = "WRITEACTIVITY" + board_nid;
 	}
 
 	@Override
@@ -297,6 +294,15 @@ public class WriteActivity extends RecyclingActivity {
 		} else {
 			super.onBackPressed();
 		}
+	}
+	
+	@Override
+	protected View getLoadingView() {
+
+		View loadingView = findViewById(R.id.writeActivity_loadingView);
+		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
+		
+		return loadingView;
 	}
 	
 	@Override
@@ -526,5 +532,17 @@ public class WriteActivity extends RecyclingActivity {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSendPost);
 		}
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

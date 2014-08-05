@@ -95,16 +95,37 @@ public class ZonecommsApplication extends OutSpokenApplication {
 		
 		return 0;
 	}
-
+	
 	public static void clearFragmentsWithoutMain() {
 
-		int size = getFragmentsSize();
-		
-		LogUtils.log("###ZonecommsApplication.clearFragmentsWithoutMain.  fragment size : " + size);
+		int size = getFragmentsSize();	
 		
 		for(int i=0; i<size; i++) {
 			try {
-				((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim();
+				((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+	}
+	
+	public static void clearFragmentsWithLastAnim() {
+
+		int size = getFragmentsSize();
+		
+		for(int i=0; i<size; i++) {
+			try {
+				if(i == 0) {
+					//Do nothing.
+				} else if(i == size - 1) {
+					((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+				} else {
+					((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+				}
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {

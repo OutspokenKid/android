@@ -239,6 +239,7 @@ public class ListPage extends BaseListFragment {
 	public void onResume() {
 		super.onResume();
 		
+		mActivity.getTitleBar().hideCircleButton();
 		mActivity.getTitleBar().showHomeButton();
 		mActivity.getTitleBar().hideWriteButton();
 		

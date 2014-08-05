@@ -661,6 +661,7 @@ public class UserPage extends BaseFragment {
 
 		LogUtils.log("###USerPage.onResume.  mode : " + mode);
 		
+		mActivity.getTitleBar().hideCircleButton();
 		mActivity.getTitleBar().showHomeButton();
 		mActivity.getTitleBar().hideWriteButton();
 		

@@ -1302,7 +1302,6 @@ containing a value of this type.
         public static final int listPage_listView=0x7f0500ce;
         public static final int listPage_mainLayout=0x7f0500cd;
         public static final int list_circlepost_bottomBg=0x7f050095;
-        public static final int list_circlepost_ivImage=0x7f050094;
         public static final int list_circlepost_ivProfile=0x7f050090;
         public static final int list_circlepost_more=0x7f05009a;
         public static final int list_circlepost_moreBg=0x7f050099;
@@ -1314,6 +1313,7 @@ containing a value of this type.
         public static final int list_circlepost_tvNickname=0x7f050091;
         public static final int list_circlepost_tvRegdate=0x7f050092;
         public static final int list_circlepost_tvReply=0x7f050097;
+        public static final int list_circlepost_viewPager=0x7f050094;
         public static final int list_group_profile=0x7f05009b;
         public static final int list_group_tvGroupName=0x7f05009c;
         public static final int list_group_tvIntroduce=0x7f05009d;

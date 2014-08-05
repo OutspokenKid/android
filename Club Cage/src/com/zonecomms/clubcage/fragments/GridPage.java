@@ -337,6 +337,7 @@ public class GridPage extends BaseListFragment {
 	public void onResume() {
 		super.onResume();
 		
+		mActivity.getTitleBar().hideCircleButton();
 		mActivity.getTitleBar().showHomeButton();
 		
 		if(boardIndex != 0) {

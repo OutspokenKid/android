@@ -1,6 +1,7 @@
 package com.zonecomms.common.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
@@ -13,12 +14,14 @@ import android.widget.TextView;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubcage.CircleMainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 
 public class TitleBar extends LinearLayout {
 
 	private Button btnSideMenu;
+	private Button btnCircle;
 	private Button btnHome;
 	private Button btnWrite;
 	private Button btnN;
@@ -61,6 +64,22 @@ public class TitleBar extends LinearLayout {
 		this.addView(btnSideMenu);
 		
 		//btnHome.
+		btnCircle = new Button(getContext());
+		ResizeUtils.viewResize(70, 70, btnCircle, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
+		btnCircle.setBackgroundResource(R.drawable.btn_save);
+		btnCircle.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+
+				Intent intent = new Intent(getContext(), CircleMainActivity.class);
+				getContext().startActivity(intent);
+				ZonecommsApplication.getActivity().finish();
+			}
+		});
+		this.addView(btnCircle);
+		
+		//btnHome.
 		btnHome = new Button(getContext());
 		ResizeUtils.viewResize(70, 70, btnHome, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
 		btnHome.setBackgroundResource(R.drawable.btn_top_home);
@@ -69,7 +88,7 @@ public class TitleBar extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 
-				ZonecommsApplication.clearFragmentsWithoutMain();
+				ZonecommsApplication.clearFragmentsWithLastAnim();
 			}
 		});
 		this.addView(btnHome);
@@ -150,6 +169,20 @@ public class TitleBar extends LinearLayout {
 		this.tvTitle = tvTitle;
 	}
 	
+	public void showCircleButton() {
+		
+		if(btnCircle.getVisibility() != View.VISIBLE) {
+			btnCircle.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void hideCircleButton() {
+		
+		if(btnCircle.getVisibility() == View.VISIBLE) {
+			btnCircle.setVisibility(View.GONE);
+		}
+	}
+	
 	public void showHomeButton() {
 		
 		if(btnHome.getVisibility() != View.VISIBLE) {
@@ -160,7 +193,7 @@ public class TitleBar extends LinearLayout {
 	public void hideHomeButton() {
 		
 		if(btnHome.getVisibility() == View.VISIBLE) {
-			btnHome.setVisibility(View.INVISIBLE);
+			btnHome.setVisibility(View.GONE);
 		}
 	}
 	

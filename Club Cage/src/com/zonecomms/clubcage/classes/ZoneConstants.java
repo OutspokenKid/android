@@ -24,7 +24,7 @@ public class ZoneConstants {
 	
 	//구글 플레이 콘솔의 프로젝트 아이디.
 	public static final String GCM_SENDER_ID = "726585413534";
-
+	
 	//앱 내부에서 사용되는 리스트 또는 그리드 아이템의 타입을 나타내는 코드.
 	public static final int ITEM_NONE = 0;
 	public static final int ITEM_POST = 1;
