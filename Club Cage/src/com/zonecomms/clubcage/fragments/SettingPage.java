@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.InputType;
@@ -19,9 +20,9 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -38,15 +39,13 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.outspoken_kid.views.holo_dark.HoloStyleTextView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity;
-import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class SettingPage extends BaseFragment {
+public class SettingPage extends ZonecommsFragment {
 
 	private boolean isOnMain = true;
 	
@@ -81,19 +80,19 @@ public class SettingPage extends BaseFragment {
 	private CheckBox cbVibration;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		mainLayout = (FrameLayout) mThisView.findViewById(R.id.settingPage_mainLayout);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 		
 		title = getString(R.string.setting);
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		pEmail = new HoloStyleSpinnerPopup(mContext);
 		pEmail.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -116,7 +115,7 @@ public class SettingPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		
 		tvPw.setOnClickListener(new OnClickListener() {
 			
@@ -164,15 +163,14 @@ public class SettingPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 
-				mActivity.showAlertDialog(getString(R.string.signOut), 
-						getString(R.string.wannaSignOut), 
-						new OnPositiveClickedListener() {
-					
-					@Override
-					public void onPositiveClicked() {
-						mActivity.signOut();
-					}
-				});
+				mainActivity.showAlertDialog(R.string.signOut, R.string.wannaSignOut, 
+						R.string.confirm, new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								mainActivity.signOut();
+							}
+						});
 			}
 		});
 
@@ -182,7 +180,7 @@ public class SettingPage extends BaseFragment {
 			public void onClick(View v) {
 				
 				String url = ZoneConstants.URL_FOR_LEAVEMEMBER + 
-						"?member_id=" + MainActivity.myInfo.getMember_id();
+						"?member_id=" + ZonecommsApplication.myInfo.getMember_id();
 				webBrowser.open(url, null);
 			}
 		});
@@ -323,7 +321,7 @@ public class SettingPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForEditPw, 2, 0, null);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForEditPush, 2, 0, null);
 		
@@ -356,52 +354,46 @@ public class SettingPage extends BaseFragment {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 		
-		mActivity.hideLoadingView();
-		mActivity.hideCover();
+		mainActivity.hideLoadingView();
+		mainActivity.hideCover();
 		
 		if(successDownload) {
-			tvId.setText(MainActivity.myInfo.getMember_id());
+			tvId.setText(ZonecommsApplication.myInfo.getMember_id());
 			tvPw.setText("**********");
 			
-			String strEmail = MainActivity.myInfo.getMember_email();
+			String strEmail = ZonecommsApplication.myInfo.getMember_email();
 			
 			if(!StringUtils.isEmpty(strEmail) && strEmail.contains("@")) {
 				etEmail.getEditText().setText(strEmail.split("@")[0]);
 				spEmail.setText(strEmail.split("@")[1]);
 			}
 			
-			etPhoneNumber.getEditText().setText(MainActivity.myInfo.getMobile_no());
+			etPhoneNumber.getEditText().setText(ZonecommsApplication.myInfo.getMobile_no());
 		} else {
 			ToastUtils.showToast(R.string.failToLoadUserInfo);
 		}
 	}
 
 	@Override
-	protected String getTitleText() {
+	public String getTitleText() {
 
 		return title;
 	}
 
 	@Override
-	protected int getContentViewId() {
+	public int getContentViewId() {
 		
-		return R.id.settingPage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
-
-		return R.layout.page_setting;
+		return R.layout.page_user;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 
 		if(webBrowser.getVisibility() == View.VISIBLE) {
 			webBrowser.handleBackKey();
@@ -416,9 +408,15 @@ public class SettingPage extends BaseFragment {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -427,29 +425,18 @@ public class SettingPage extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 		
 		setPage(true);
 	}
 	
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void finish(boolean needAnim, boolean isBeforeMain) {
 		
@@ -815,7 +802,7 @@ public class SettingPage extends BaseFragment {
 			
 			@Override
 			public void onActionWithKeyword() {
-				mActivity.signOut();
+				mainActivity.signOut();
 			}
 		});
 		mainLayout.addView(webBrowser);
@@ -990,8 +977,8 @@ public class SettingPage extends BaseFragment {
 
 	public void submit(final String email, final String phoneNumber) {
 		
-		mActivity.showLoadingView();
-		mActivity.showCover();
+		mainActivity.showLoadingView();
+		mainActivity.showCover();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "member/update/mobile_email" +
@@ -1018,10 +1005,10 @@ public class SettingPage extends BaseFragment {
 
 						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
-							MainActivity.myInfo.setMobile_no(phoneNumber);
-							MainActivity.myInfo.setMember_email(email);
-							mActivity.closeTopPage();
-							ZonecommsApplication.getTopFragment().onRefreshPage();
+							ZonecommsApplication.myInfo.setMobile_no(phoneNumber);
+							ZonecommsApplication.myInfo.setMember_email(email);
+							mainActivity.closeTopPage();
+							mainActivity.getTopFragment().refreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitBaseProfile);

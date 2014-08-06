@@ -1,10 +1,9 @@
 package com.zonecomms.common.models;
 
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
-
-import com.outspoken_kid.utils.StringUtils;
 
 public class UploadImageInfo {
 

@@ -9,7 +9,7 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.common.adapters.GridAdapter;
 
-public abstract class BaseListFragment extends BaseFragment {
+public abstract class ZonecommsListFragment extends ZonecommsFragment {
 
 	protected int lastIndexno;
 	protected boolean isLastList;
@@ -28,7 +28,7 @@ public abstract class BaseListFragment extends BaseFragment {
 	}
 	
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		super.setPage(successDownload);
 
@@ -47,24 +47,13 @@ public abstract class BaseListFragment extends BaseFragment {
 	}
 	
 	@Override
-	protected String getTitleText() {
-		
-		if(title == null) {
-			title = getString(R.string.app_name); 
-		}
-		
-		return title;
-	}
-	
-	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 
 		if(isRefreshing) {
 			return;
 		}
 
 		isLastList = false;
-		isRefreshing = true;
 		lastIndexno = 0;
 		models.clear();
 		targetAdapter.notifyDataSetChanged();
@@ -72,5 +61,7 @@ public abstract class BaseListFragment extends BaseFragment {
 		if(targetAdapter instanceof GridAdapter) {
 			((GridAdapter)targetAdapter).clearHardCache();
 		}
+		
+		super.refreshPage();
 	}
 }

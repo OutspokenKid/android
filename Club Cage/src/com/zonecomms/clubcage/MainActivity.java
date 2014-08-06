@@ -8,7 +8,6 @@ import java.util.Calendar;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,13 +19,12 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -37,7 +35,6 @@ import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.NetworkUtils;
@@ -53,9 +50,9 @@ import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
 import com.outspoken_kid.views.SoftKeyboardDetector;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnHiddenSoftKeyboardListener;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnShownSoftKeyboardListener;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragmentActivity;
 import com.zonecomms.clubcage.fragments.AddedProfilePage;
 import com.zonecomms.clubcage.fragments.BaseProfilePage;
 import com.zonecomms.clubcage.fragments.GridPage;
@@ -67,9 +64,7 @@ import com.zonecomms.clubcage.fragments.PostPage;
 import com.zonecomms.clubcage.fragments.SettingPage;
 import com.zonecomms.clubcage.fragments.UserPage;
 import com.zonecomms.common.models.Media;
-import com.zonecomms.common.models.MyInfo;
 import com.zonecomms.common.models.SideMenu;
-import com.zonecomms.common.models.StartupInfo;
 import com.zonecomms.common.models.StartupInfo.Banner;
 import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.models.UploadImageInfo;
@@ -85,10 +80,8 @@ import com.zonecomms.common.views.TitleBar.OnNButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnSideMenuButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnWriteButtonClickedListener;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends ZonecommsFragmentActivity {
 
-	public static MyInfo myInfo;
-	public static StartupInfo startupInfo;
 	public static boolean isGoToLeaveMember;
 	
 	private Context context;
@@ -121,34 +114,20 @@ public class MainActivity extends FragmentActivity {
 	private OnAfterLoginListener onAfterLoginListener;
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
+		context = this;
 		super.onCreate(savedInstanceState);
 		
 		try {
-			setContentView(R.layout.activity_main);
 			ZonecommsApplication.initWithActivity(this);
 			ZonecommsApplication.setupResources(this);
-			context = this;
-			
-			bindViews();
-			setVariables();
-			createPage();
-			setListeners();
-			setSizes();
-			
-			downloadInfo();
+			setPage(true);
 			
 			checkGCM();
 		} catch(Exception e) {
+			LogUtils.trace(e);
 			finish();
 		}
-	}
-	
-	@Override
-	public void setContentView(int layoutResID) {
-		super.setContentView(layoutResID);
-		
-		FontUtils.setGlobalFont(this, layoutResID, getString(R.string.customFont));
 	}
 	
 	public void bindViews() {
@@ -181,6 +160,7 @@ public class MainActivity extends FragmentActivity {
 		try {
 			addSideViewsToSideMenu();
 		} catch(Exception e) {
+			LogUtils.trace(e);
 			finish();
 		}
 	}
@@ -206,13 +186,13 @@ public class MainActivity extends FragmentActivity {
 					public void onAfterLogin() {
 
 						try {
-//							BaseFragment bf = ZonecommsApplication.getTopFragment();
+//							BaseFragment bf = getTopFragment();
 							
 //							if(bf instanceof MainPage) {
 //								((MainPage) bf).showBoardMenu(true);
 								showWriteActivity(1);
 //							} else {
-//								showWriteActivity(((GridPage)ZonecommsApplication.getTopFragment()).getBoardIndex());
+//								showWriteActivity(((GridPage)getTopFragment()).getBoardIndex());
 //							}
 						} catch(Exception e) {
 							LogUtils.trace(e);
@@ -236,7 +216,6 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onShownSoftKeyboard() {
 				try {
-					ZonecommsApplication.getTopFragment().onSoftKeyboardShown();
 				} catch(Exception e) {
 				}
 			}
@@ -248,7 +227,6 @@ public class MainActivity extends FragmentActivity {
 			public void onHiddenSoftKeyboard() {
 				
 				try {
-					ZonecommsApplication.getTopFragment().onSoftKeyboardHidden();
 				} catch(Exception e) {
 				}
 			}
@@ -264,13 +242,17 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	public void downloadInfo() {
-		
-		setPage();
 	}
 	
-	public void setPage() {
+	public void setPage(boolean successDownload) {
 		
 		setAnimationDrawable();
+		checkVersion();
+		
+//		if(getFragmentsSize() == 0) {
+//			showMainPage();
+//			checkPopup();
+//		}
 		
 		final Intent i = getIntent();				//'i' is intent that passed intent from before.
 		
@@ -285,8 +267,6 @@ public class MainActivity extends FragmentActivity {
 		} else {
 			showMainPage();
 		}
-		
-		checkPopup();
 	}
 	
 	@Override
@@ -299,7 +279,9 @@ public class MainActivity extends FragmentActivity {
 			case KeyEvent.KEYCODE_MENU :
 
 				try {
-					if(GestureSlidingLayout.isOpenToLeft()) {
+					if(getTopFragment().onMenuPressed()) {
+						//Do nothing.
+					} else if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
 					} else {
 						gestureSlidingLayout.open(true, null);
@@ -320,12 +302,11 @@ public class MainActivity extends FragmentActivity {
 						noticePopup.hide(null);
 					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
 						profilePopup.hide(null);
-//					} else if(ZonecommsApplication.getTopFragment() != null 
-//							&& ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
-//						//Do nothing.
-					} else if(ZonecommsApplication.getTopFragment().onBackKeyPressed()) {
-						LogUtils.log("###########################.onKeyDown.  ;aldkfjals;dkfjs.");
-					} else if(ZonecommsApplication.getFragmentsSize() > 1){
+					} else if(getTopFragment().onBackPressed()) {
+						//Do nothing.
+					} else if(getTopFragment() instanceof MainPage) {
+						finish();
+					} else if(getFragmentsSize() > 1){
 						closeTopPage();
 					} else {
 						finish();
@@ -344,8 +325,70 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@Override
+	public int getContentViewId() {
+
+		return R.layout.activity_main;
+	}
+
+	@Override
+	public View getLoadingView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getFragmentFrameResId() {
+
+		return R.id.mainActivity_fragmentFrame;
+	}
+
+	@Override
+	public void setCustomAnimations(FragmentTransaction ft) {
+		
+		//Set Animation.
+		if(fadePageAnim) {
+			fadePageAnim = false;
+			//Exclude animation when open page.
+			ft.setCustomAnimations(0, 0, 
+					R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
+			
+		} else if(getFragmentsSize() == 0) {
+			//MainPage.
+		} else if(getTopFragment() != null
+				&& getTopFragment() instanceof MainPage) {
+			ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, 
+					R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
+		} else {
+			ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
+					R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+		}
+	}
+	
+	@Override
 	public void finish() {
 		super.finish();
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		
+		ZonecommsApplication.setActivity(null);
+		LogUtils.log("###MainActivity.finish.  ");
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
 		ViewUnbindHelper.unbindReferences(this, R.id.mainActivity_gestureSlidingLayout);
 	}
 
@@ -447,10 +490,10 @@ public class MainActivity extends FragmentActivity {
 		case ZoneConstants.REQUEST_WRITE:
 			
 			if(resultCode == RESULT_OK) {
-				if(ZonecommsApplication.getTopFragment() != null
-						&& ZonecommsApplication.getTopFragment() instanceof GridPage) {
-					GridPage gridPage = (GridPage)ZonecommsApplication.getTopFragment();
-					gridPage.onRefreshPage();
+				if(getTopFragment() != null
+						&& getTopFragment() instanceof GridPage) {
+					GridPage gridPage = (GridPage)getTopFragment();
+					gridPage.refreshPage();
 				}
 				
 				if(data != null && data.hasExtra("spot_nid")) {
@@ -466,8 +509,8 @@ public class MainActivity extends FragmentActivity {
 		case ZoneConstants.REQUEST_EDIT:
 			
 			if(resultCode == RESULT_OK) {
-				if(ZonecommsApplication.getTopFragment() != null) {
-					((PostPage)ZonecommsApplication.getTopFragment()).onRefreshPage();
+				if(getTopFragment() != null) {
+					((PostPage)getTopFragment()).refreshPage();
 				}
 			}
 			break;
@@ -616,11 +659,11 @@ public class MainActivity extends FragmentActivity {
 	public void showMainPage() {
 		
 		try {
-			if(ZonecommsApplication.getFragmentsSize() == 0) {
+			if(getFragmentsSize() == 0) {
 				MainPage mp = new MainPage();
 				startPage(mp, null);
 			} else {
-				ZonecommsApplication.clearFragmentsWithoutMain();
+				clearFragments();
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -770,48 +813,6 @@ public class MainActivity extends FragmentActivity {
 			bundle.putString("activeLocation", activeLocation);
 			
 			startPage(pp, bundle);
-		} catch(Exception e) {
-			LogUtils.trace(e);
-		}
-	}
-	
-	public void startPage(BaseFragment fragment, Bundle bundle) {
-
-		try {
-			if(bundle != null) {
-				fragment.setArguments(bundle);
-			}
-
-			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
-			//Set Animation.
-			if(fadePageAnim) {
-				fadePageAnim = false;
-				//Exclude animation when open page.
-				ft.setCustomAnimations(0, 0, 
-						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
-				
-			} else if(ZonecommsApplication.getFragmentsSize() == 0) {
-				//MainPage.
-			} else if(ZonecommsApplication.getTopFragment() != null
-					&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
-				ft.setCustomAnimations(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top, 
-						R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
-			} else {
-				ft.setCustomAnimations(R.anim.slide_in_from_right, R.anim.slide_out_to_left,
-						R.anim.slide_in_from_left, R.anim.slide_out_to_right);
-			}
-			
-			if(ZonecommsApplication.getFragmentsSize() == 0) {
-				ft.add(R.id.mainActivity_fragmentFrame, fragment);
-			} else {
-				ft.replace(R.id.mainActivity_fragmentFrame, fragment, fragment.getFragmentTag());
-				ft.addToBackStack(fragment.getFragmentTag());
-			}
-			
-			ft.commitAllowingStateLoss();
-			
-			SoftKeyboardUtils.hideKeyboard(this, gestureSlidingLayout);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}
@@ -975,8 +976,8 @@ public class MainActivity extends FragmentActivity {
 		
 		startActivity(intent);
 		
-		if(ZonecommsApplication.getTopFragment() != null
-				&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
+		if(getTopFragment() != null
+				&& getTopFragment() instanceof MainPage) {
 			overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
 		} else {
 			overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
@@ -987,8 +988,8 @@ public class MainActivity extends FragmentActivity {
 		
 		startActivityForResult(intent, requestCode);
 		
-		if(ZonecommsApplication.getTopFragment() != null
-				&& ZonecommsApplication.getTopFragment() instanceof MainPage) {
+		if(getTopFragment() != null
+				&& getTopFragment() instanceof MainPage) {
 			overridePendingTransition(R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
 		} else {
 			overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
@@ -998,6 +999,19 @@ public class MainActivity extends FragmentActivity {
 	public TitleBar getTitleBar() {
 		
 		return titleBar;
+	}
+	
+	public void showTitleBar() {
+		
+		if(titleBar != null) {
+			titleBar.setVisibility(View.VISIBLE);
+		}
+	}
+	public void hideTitleBar() {
+		
+		if(titleBar != null) {
+			titleBar.setVisibility(View.GONE);
+		}
 	}
 
 	public void addSideViewsToSideMenu() {
@@ -1045,7 +1059,7 @@ public class MainActivity extends FragmentActivity {
 			final int I = i;
 			SideView sideView = new SideView(context);
 			
-			if(i==0 && (myInfo == null || StringUtils.isEmpty(myInfo.getMember_id()))) {
+			if(i==0 && (ZonecommsApplication.myInfo == null || StringUtils.isEmpty(ZonecommsApplication.myInfo.getMember_id()))) {
 				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 0, sideView, 1, 0, null);
 			} else {
 				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 120, sideView, 1, 0, null);
@@ -1065,14 +1079,14 @@ public class MainActivity extends FragmentActivity {
 							
 //							if(I >=0 && I<=11) {
 							if(I >=0 && I<=8) {
-								ZonecommsApplication.clearFragmentsWithoutMain();
+								clearFragmentsWithoutAnim();
 							}
 							
 							String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
 							
 							switch(I) {
 							case 0:
-								uriString += "userhome?member_id=" + MainActivity.myInfo.getMember_id();
+								uriString += "userhome?member_id=" + ZonecommsApplication.myInfo.getMember_id();
 								break;
 							case 1:
 								uriString += "notice";
@@ -1184,10 +1198,54 @@ public class MainActivity extends FragmentActivity {
 		
 		noticePopup.show(popup);
 	}
+	
+	public void checkVersion() {
+		
+		String url = ZoneConstants.BASE_URL + "common/androidAppStore" +
+				"?sb_id=" + ZoneConstants.PAPP_ID;
 
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainActivity.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					int version = com.outspoken_kid.utils.AppInfoUtils.getVersionCode();
+					
+					if(version < objJSON.getJSONObject("data").getInt("version_nid")) {
+						showAlertDialog(R.string.notice, R.string.wannaUpdate, 
+								R.string.update, R.string.cancel, 
+								new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								
+								IntentUtils.showMarket(context, "com.zonecomms." + ZoneConstants.PAPP_ID);
+							}
+						}, null);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void checkPopup() {
 		
-		if(startupInfo != null && startupInfo.getPopup() != null) {
+		if(ZonecommsApplication.startupInfo != null && ZonecommsApplication.startupInfo.getPopup() != null) {
 			int lastIndexno = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastIndexno");
 			int lastDate = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastDate");
 			int lastMonth = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastMonth");
@@ -1195,62 +1253,22 @@ public class MainActivity extends FragmentActivity {
 			int currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
 			int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
 			
-			if(lastIndexno != startupInfo.getPopup().getNotice_nid() && 
+			if(lastIndexno != ZonecommsApplication.startupInfo.getPopup().getNotice_nid() && 
 					lastDate != currentDate && lastMonth != currentMonth ) {
 				gestureSlidingLayout.postDelayed(new Runnable() {
 					
 					@Override
 					public void run() {
-						showNoticePopup(startupInfo.getPopup());
+						showNoticePopup(ZonecommsApplication.startupInfo.getPopup());
 					}
 				}, 1000);
 			}
 		}
 	}
 	
-	public void showAlertDialog(String title, String message, 
-			final OnPositiveClickedListener onPositiveClickedListener) {
-		
-		showAlertDialog(title, message, onPositiveClickedListener, true);
-	}
-	
-	public void showAlertDialog(String title, String message, 
-			final OnPositiveClickedListener onPositiveClickedListener,
-			boolean needCancel) {
-		
-		try {
-			AlertDialog.Builder adb = new AlertDialog.Builder(this);
-			adb.setTitle(title);
-			adb.setPositiveButton(Html.fromHtml("<B>Ok</B>"), new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-					if(onPositiveClickedListener != null) {
-						
-						try {
-							onPositiveClickedListener.onPositiveClicked();
-						} catch(Exception e) {
-							LogUtils.trace(e);
-						}
-					}
-				}
-			});
-			
-			if(needCancel) {
-				adb.setNegativeButton(Html.fromHtml("<B>Cancel</B>"), null);
-			}
-			adb.setCancelable(true);
-			adb.setOnCancelListener(null);
-			adb.setMessage(message);
-			adb.show();
-		} catch(Exception e) {
-			LogUtils.trace(e);
-		}
-	}
-	
+	@Override
 	public void showLoadingView() {
-		
+
 		if(animationLoaded) {
 			try {
 				ivAnimationLoadingView.setVisibility(View.VISIBLE);
@@ -1266,6 +1284,7 @@ public class MainActivity extends FragmentActivity {
 		}
 	}
 	
+	@Override
 	public void hideLoadingView() {
 		
 		if(animationLoaded
@@ -1312,10 +1331,10 @@ public class MainActivity extends FragmentActivity {
 
 		String title = "N";
 		String message = "";
-		OnPositiveClickedListener opcl = new OnPositiveClickedListener() {
+		DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
 			
 			@Override
-			public void onPositiveClicked() {
+			public void onClick(DialogInterface dialog, int which) {
 				
 				if(installed) {
 					String id = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "id");
@@ -1329,6 +1348,7 @@ public class MainActivity extends FragmentActivity {
 				} else {
 					IntentUtils.showMarket(context, packageName);
 				}
+				
 			}
 		};
 		
@@ -1338,13 +1358,13 @@ public class MainActivity extends FragmentActivity {
 			message = getString(R.string.wannaMoveToStore);
 		}
 		
-		showAlertDialog(title, message, opcl);
+		showAlertDialog(title, message, getString(R.string.confirm), getString(R.string.cancel), ocl, null);
 	}
 	
 	public SponserBanner getSponserBanner() {
 
-		if(sponserBanner == null && startupInfo != null) {
-			addSponserBanner(startupInfo.getBanners());
+		if(sponserBanner == null && ZonecommsApplication.startupInfo != null) {
+			addSponserBanner(ZonecommsApplication.startupInfo.getBanners());
 		}
 		
 		return sponserBanner;
@@ -1406,7 +1426,7 @@ public class MainActivity extends FragmentActivity {
 		
 		try{
 			String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
-					"?member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8") +
+					"?member_id=" + URLEncoder.encode(ZonecommsApplication.myInfo.getMember_id(), "utf-8") +
 					"&device_token=" +
 					"&registration_id=" +
 					"&sb_id=" + ZoneConstants.PAPP_ID;
@@ -1434,9 +1454,9 @@ public class MainActivity extends FragmentActivity {
 			
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "id");
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
-			MainActivity.myInfo = null;
+			ZonecommsApplication.myInfo = null;
 
-			ZonecommsApplication.clearFragmentsWithLastAnim();
+			clearFragments();
 			
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 0, getProfileView(), 1, 0, null);
 		} catch(Exception e) {
@@ -1450,8 +1470,8 @@ public class MainActivity extends FragmentActivity {
 	public void setAnimationDrawable() {
 		
 		try {
-			int size = startupInfo.getLoadingImageSet().getDrawables().length;
-			int time = startupInfo.getLoadingImageSet().getTime();
+			int size = ZonecommsApplication.startupInfo.getLoadingImageSet().getDrawables().length;
+			int time = ZonecommsApplication.startupInfo.getLoadingImageSet().getTime();
 			
 			if(size == 0 || time == 0) {
 				return;
@@ -1460,7 +1480,7 @@ public class MainActivity extends FragmentActivity {
 			animationDrawable = new AnimationDrawable();
 
 			for(int i=0; i<size; i++) {
-				animationDrawable.addFrame(startupInfo.getLoadingImageSet().getDrawables()[i], time);
+				animationDrawable.addFrame(ZonecommsApplication.startupInfo.getLoadingImageSet().getDrawables()[i], time);
 			}
 			animationDrawable.setOneShot(false);
 			
@@ -1479,17 +1499,17 @@ public class MainActivity extends FragmentActivity {
 
 	public void checkLoginAndExecute(final OnAfterLoginListener listener) {
 
-		if(myInfo == null) {
-			showAlertDialog(getString(R.string.signIn), getString(R.string.needSignIn), 
-					new OnPositiveClickedListener() {
+		if(ZonecommsApplication.myInfo == null) {
+			DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
 				
 				@Override
-				public void onPositiveClicked() {
-					
+				public void onClick(DialogInterface dialog, int which) {
+
 					onAfterLoginListener = listener;
 					launchToSignInActivity();
 				}
-			}, true);
+			};
+			showAlertDialog(R.string.signIn, R.string.needSignIn, R.string.confirm, R.string.cancel, ocl, null);
 		} else {
 			listener.onAfterLogin();
 		}
@@ -1501,13 +1521,31 @@ public class MainActivity extends FragmentActivity {
 		startActivityForResult(intent, ZoneConstants.REQUEST_SIGN);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
+
+	@Override
+	public void clearFragments() {
+		
+		if(getFragmentsSize() == 1 && !(getTopFragment() instanceof MainPage)) {
+			
+			try {
+				FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+				ft.setCustomAnimations(R.anim.slide_in_from_top, R.anim.slide_out_to_bottom,
+						R.anim.slide_in_from_bottom, R.anim.slide_out_to_top);
+				
+				MainPage mp = new MainPage();
+				ft.replace(getFragmentFrameResId(), mp, mp.getFragmentTag());
+				ft.addToBackStack(mp.getFragmentTag());
+				
+				ft.commitAllowingStateLoss();
+			} catch(Exception e) {
+				LogUtils.trace(e);
+			}
+		} else {
+			super.clearFragments();
+		}
+	}
 	
 /////////////////////////// Interfaces.
-	
-	public interface OnPositiveClickedListener {
-		
-		public void onPositiveClicked();
-	}
 
 	public interface OnAfterCheckNAppListener {
 		

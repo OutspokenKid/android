@@ -16,10 +16,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class ImagePlayViewer extends FrameLayout {
@@ -166,7 +165,7 @@ public class ImagePlayViewer extends FrameLayout {
 			public void onAnimationEnd(Animation animation) {
 				
 				imageViews[(imageIndex + 1) % 2].setVisibility(View.INVISIBLE);
-				ViewUnbindHelper.unbindReferences(imageViews[(imageIndex + 1) % 2]);
+//				ViewUnbindHelper.unbindReferences(imageViews[(imageIndex + 1) % 2]);
 			}
 		});
 		imageViews[(imageIndex + 1) % 2].startAnimation(aaOut);
@@ -282,10 +281,10 @@ public class ImagePlayViewer extends FrameLayout {
 	public void clear() {
 
 		try {
-			ViewUnbindHelper.unbindReferences(imageViews[0]);
-			ViewUnbindHelper.unbindReferences(imageViews[1]);
-			nextBitmap.recycle();
-			nextBitmap = null;
+//			ViewUnbindHelper.unbindReferences(imageViews[0]);
+//			ViewUnbindHelper.unbindReferences(imageViews[1]);
+//			nextBitmap.recycle();
+//			nextBitmap = null;
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

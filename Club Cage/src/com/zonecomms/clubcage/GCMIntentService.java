@@ -159,13 +159,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if(msg_type == null) {
 			return;
 		}
-		
-		if(ZonecommsApplication.getFragmentsSize() != 0) {
+
+		if(ZonecommsApplication.getActivity() != null 
+				&& ZonecommsApplication.getActivity().getFragmentsSize() != 0) {
+			
+			LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is running.");
 			
 			if("010".equals(msg_type)
 					&& member_id != null
-					&& ZonecommsApplication.getTopFragment() instanceof MessagePage) {
-				final MessagePage mp = (MessagePage) ZonecommsApplication.getTopFragment();
+					&& ZonecommsApplication.getActivity().getTopFragment() instanceof MessagePage) {
+				final MessagePage mp = (MessagePage) ZonecommsApplication.getActivity().getTopFragment();
 				
 				if(mp.getFriend_member_id() != null
 						&& mp.getFriend_member_id().equals(member_id)) {
@@ -173,23 +176,25 @@ public class GCMIntentService extends GCMBaseIntentService {
 						
 						@Override
 						public void run() {
-							mp.onRefreshPage();
+							mp.refreshPage();
 						}
 					});
 				}
 			} else if(("021".equals(msg_type))
-					&& ZonecommsApplication.getTopFragment() instanceof PostPage
-					&& ((PostPage)ZonecommsApplication.getTopFragment()).getSpotNid() == spot_nid) {
+					&& ZonecommsApplication.getActivity().getTopFragment() instanceof PostPage
+					&& ((PostPage)ZonecommsApplication.getActivity().getTopFragment()).getSpotNid() == spot_nid) {
 				ZonecommsApplication.getActivity().runOnUiThread(new Runnable() {
 					
 					@Override
 					public void run() {
-						((PostPage)ZonecommsApplication.getTopFragment()).setNeedToShowBottom(true);
-						ZonecommsApplication.getTopFragment().onRefreshPage();
+						((PostPage)ZonecommsApplication.getActivity().getTopFragment()).setNeedToShowBottom(true);
+						ZonecommsApplication.getActivity().getTopFragment().refreshPage();
 					}
 				});
 			}
 		} else {
+			
+			LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is not running.");
 
 			String uriString = "";
 			
@@ -209,6 +214,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	public void showNotification(Context context, String push_msg, String uriString) {
+		
+		LogUtils.log("###GCMIntentService.showNotification.  " +
+				"\npush_msg : " + push_msg + "\nuriString : " + uriString);
 		
 		try {
 			if(notiManager == null) {

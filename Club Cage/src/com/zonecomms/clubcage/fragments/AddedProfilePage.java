@@ -12,9 +12,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -24,15 +24,14 @@ import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class AddedProfilePage extends BaseFragment {
+public class AddedProfilePage extends ZonecommsFragment {
 
 	private String[] arStatus;
 	
@@ -55,17 +54,19 @@ public class AddedProfilePage extends BaseFragment {
 	private HoloStyleEditText etActive;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 		innerFrame = (FrameLayout) mThisView.findViewById(R.id.addedProfilePage_innerFrame);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
+		
+		title = getString(R.string.addedProfile);
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		spStatus = new HoloStyleSpinnerButton(mContext);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 70, spStatus, 2, Gravity.LEFT|Gravity.TOP, 
@@ -172,20 +173,20 @@ public class AddedProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 
 		int p = ResizeUtils.getSpecificLength(40);
 		innerFrame.setPadding(p, p, p, p);
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		String url = ZoneConstants.BASE_URL + "member/mstatus_list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
@@ -218,7 +219,7 @@ public class AddedProfilePage extends BaseFragment {
 					
 					String url2 = ZoneConstants.BASE_URL + "member/info" +
 							"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-							"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
+							"&mystory_member_id=" + ZonecommsApplication.myInfo.getMember_id() +
 							"&image_size=" + ResizeUtils.getSpecificLength(308);
 					
 					DownloadUtils.downloadJSONString(url2,
@@ -275,12 +276,12 @@ public class AddedProfilePage extends BaseFragment {
 		});
 		
 		isDownloading = true;
-		mActivity.showLoadingView();
-		mActivity.showCover();
+		mainActivity.showLoadingView();
+		mainActivity.showCover();
 	}
 
 	@Override
-	protected void setPage(boolean downloadSuccess) {
+	public void setPage(boolean downloadSuccess) {
 		
 		innerFrame.setVisibility(View.VISIBLE);
 		
@@ -334,25 +335,19 @@ public class AddedProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected String getTitleText() {
-
-		return getString(R.string.addedProfile);
-	}
-
-	@Override
-	protected int getContentViewId() {
+	public void refreshPage() {
+		// TODO Auto-generated method stub
 		
-		return R.id.addedProfilePage_innerFrame;
 	}
-
+	
 	@Override
-	protected int getLayoutResId() {
-
+	public int getContentViewId() {
+		
 		return R.layout.page_addedprofile;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 		
 		if(pStatus.getVisibility() == View.VISIBLE) {
 			pStatus.hidePopup();
@@ -361,10 +356,11 @@ public class AddedProfilePage extends BaseFragment {
 		
 		return false;
 	}
-
+	
 	@Override
-	public void onRefreshPage() {
+	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override
@@ -375,25 +371,14 @@ public class AddedProfilePage extends BaseFragment {
 			downloadInfo();
 		}
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
-	}
-	
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 	}
 
 	@Override
@@ -474,8 +459,8 @@ public class AddedProfilePage extends BaseFragment {
 
 						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
-							mActivity.closeTopPage();
-							ZonecommsApplication.getTopFragment().onRefreshPage();
+							mainActivity.closeTopPage();
+							mainActivity.getTopFragment().refreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitAddedProfile);
@@ -493,11 +478,12 @@ public class AddedProfilePage extends BaseFragment {
 				}
 			});
 			ToastUtils.showToast(R.string.submittingToServer);
-			mActivity.showLoadingView();
-			mActivity.showCover();
+			mainActivity.showLoadingView();
+			mainActivity.showCover();
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 		}
 	}
+
 }

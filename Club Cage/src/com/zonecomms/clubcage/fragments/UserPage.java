@@ -35,10 +35,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -46,10 +46,10 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.MessageSample;
@@ -59,10 +59,9 @@ import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
-public class UserPage extends BaseFragment {
+public class UserPage extends ZonecommsFragment {
 
 	private static final int ANIM_DURATION = 300;
-	private static int madeCount = 130222;
 
 	private FrameLayout mainLayout;
 	private SwipeRefreshLayout swipeRefreshLayoutForGrid;
@@ -97,14 +96,14 @@ public class UserPage extends BaseFragment {
 	private boolean isAnimating;
 	private boolean isInfoHidden;
 	private boolean isUploadingProfileImage;
-	protected boolean isLastList;
-	protected String url;
+	public boolean isLastList;
+	public String url;
 	
-	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
+	public ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	private ArrayList<BaseModel> modelsForList = new ArrayList<BaseModel>();
 	private ArrayList<BaseModel> modelsForGrid = new ArrayList<BaseModel>();
 	
-	protected BaseAdapter targetAdapter;
+	public BaseAdapter targetAdapter;
 	private GridAdapter gridAdapter;
 	private ListAdapter listAdapter;
 	
@@ -115,13 +114,13 @@ public class UserPage extends BaseFragment {
 	private View[] bgMenus = new View[4];
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		mainLayout = (FrameLayout) mThisView.findViewById(R.id.userPage_mainLayout);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 		LogUtils.log("###UserPage.setVariables.  menuIndex :  " + mode);
 		
@@ -148,7 +147,7 @@ public class UserPage extends BaseFragment {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		relative = new RelativeLayout(mContext);
 		relative.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -266,7 +265,7 @@ public class UserPage extends BaseFragment {
 				}
 				
 				try {
-					if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())) {
+					if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())) {
 						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/baseprofile";
 						IntentHandlerActivity.actionByUri(Uri.parse(uriString));
 					}
@@ -292,7 +291,7 @@ public class UserPage extends BaseFragment {
 			public void onClick(View v) {
 				
 				//Napp -> userhome -> story.
-				mActivity.checkNApp("napp://android.zonecomms.com/userhome?member_id=" + userId + "&menuindex=1");
+				mainActivity.checkNApp("napp://android.zonecomms.com/userhome?member_id=" + userId + "&menuindex=1");
 			}
 		});
 		relative.addView(postCountFrame);
@@ -326,10 +325,10 @@ public class UserPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())) {
+				if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())) {
 					String uriString = "napp://android.zonecomms.com/friend?userId=" + 
 											myStoryInfo.getMystory_member_id();
-					mActivity.checkNApp(uriString);
+					mainActivity.checkNApp(uriString);
 				}
 			}
 		});
@@ -401,7 +400,7 @@ public class UserPage extends BaseFragment {
 				public void onClick(View v) {
 
 					if(I == 3 && myStoryInfo != null && !StringUtils.isEmpty(myStoryInfo.getMystory_member_id()) 
-							&& !myStoryInfo.getMystory_member_id().equals(MainActivity.myInfo.getMember_id())) {
+							&& !myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message" +
 								"?member_id=" + myStoryInfo.getMystory_member_id();  
 						IntentHandlerActivity.actionByUri(Uri.parse(uriString));
@@ -526,23 +525,23 @@ public class UserPage extends BaseFragment {
 				};
 				
 				isUploadingProfileImage = true;
-				mActivity.imageUploadSetting(filePath, fileName, true, oaui);
-				mActivity.startActivityForResult(intent, requestCode);
+				mainActivity.imageUploadSetting(filePath, fileName, true, oaui);
+				mainActivity.startActivityForResult(intent, requestCode);
 			}
 		});
 		mainLayout.addView(pPhoto);
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		if(mode == 1 || mode == 2) {
 			loadPosts();
@@ -550,11 +549,11 @@ public class UserPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		LogUtils.log("###where.setPage.  hideLoadingView");
-		mActivity.hideCover();
-		mActivity.hideLoadingView();
+		mainActivity.hideCover();
+		mainActivity.hideLoadingView();
 		isRefreshing = false;
 		isDownloading = false;
 		
@@ -586,7 +585,7 @@ public class UserPage extends BaseFragment {
 	}
 	
 	@Override
-	protected String getTitleText() {
+	public String getTitleText() {
 		
 		if(StringUtils.isEmpty(title)) {
 			title = "Loading..";
@@ -596,19 +595,13 @@ public class UserPage extends BaseFragment {
 	}
 
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.userPage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_user;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
 			pPhoto.hidePopup();
@@ -617,9 +610,15 @@ public class UserPage extends BaseFragment {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 
 		if(isRefreshing) {
 			return;
@@ -661,12 +660,13 @@ public class UserPage extends BaseFragment {
 
 		LogUtils.log("###USerPage.onResume.  mode : " + mode);
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 	
 		if(mode == 0) {
@@ -674,18 +674,6 @@ public class UserPage extends BaseFragment {
 		} else {
 			loadProfile();
 		}
-	}
-	
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 ////////////////////////// Custom methods.	
@@ -820,7 +808,7 @@ public class UserPage extends BaseFragment {
 		
 		swipeRefreshLayoutForGrid = new SwipeRefreshLayout(mContext);
 		
-		gridAdapter = new GridAdapter(mContext, mActivity, modelsForGrid, true);
+		gridAdapter = new GridAdapter(mContext, mainActivity, modelsForGrid, true);
 		gridView = new GridView(mContext);
 		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		gridView.setAdapter(gridAdapter);
@@ -886,7 +874,7 @@ public class UserPage extends BaseFragment {
 			public void onRefresh() {
 				
 				swipeRefreshLayoutForGrid.setRefreshing(true);
-				onRefreshPage();
+				refreshPage();
 			}
 		});
 		contentFrame.addView(swipeRefreshLayoutForGrid);
@@ -896,7 +884,7 @@ public class UserPage extends BaseFragment {
 
 		swipeRefreshLayoutForList = new SwipeRefreshLayout(mContext);
 		
-		listAdapter = new ListAdapter(mContext, mActivity, modelsForList, true);
+		listAdapter = new ListAdapter(mContext, mainActivity, modelsForList, true);
 		listView = new ListView(mContext);
 		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
@@ -958,7 +946,7 @@ public class UserPage extends BaseFragment {
 			public void onRefresh() {
 				
 				swipeRefreshLayoutForList.setRefreshing(true);
-				onRefreshPage();
+				refreshPage();
 			}
 		});
 		contentFrame.addView(swipeRefreshLayoutForList);
@@ -973,9 +961,9 @@ public class UserPage extends BaseFragment {
 		isRefreshing = false;
 		isDownloading = false;
 		isLastList = false;
-		mActivity.showLoadingView();
+		mainActivity.showLoadingView();
 		
-		mActivity.showCover();
+		mainActivity.showCover();
 		
 		if(targetAdapter != null) {
 			lastIndexno = 0;
@@ -1077,13 +1065,13 @@ public class UserPage extends BaseFragment {
 
 		if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_nickname())) {
 			
-			if(myStoryInfo.getMystory_member_nickname().equals(MainActivity.myInfo.getMember_nickname())) {
+			if(myStoryInfo.getMystory_member_nickname().equals(ZonecommsApplication.myInfo.getMember_nickname())) {
 				title = "MY HOME";
 			} else {
 				title = myStoryInfo.getMystory_member_nickname();
 			}
 			
-			mActivity.getTitleBar().setTitleText(title);
+			mainActivity.getTitleBar().setTitleText(title);
 			
 			tvNickname.setText(myStoryInfo.getMystory_member_nickname());
 		}
@@ -1091,7 +1079,7 @@ public class UserPage extends BaseFragment {
 		if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_id())) {
 			tvId.setText("(" + myStoryInfo.getMystory_member_id() + ")");
 			
-			if(myStoryInfo.getMystory_member_id().equals(MainActivity.myInfo.getMember_id())) {
+			if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 				
 				ivImage.setOnClickListener(new OnClickListener() {
 					
@@ -1129,7 +1117,7 @@ public class UserPage extends BaseFragment {
 					
 					@Override
 					public void onClick(View v) {
-						mActivity.showImageViewerActivity(myStoryInfo.getMystory_member_nickname(), 
+						mainActivity.showImageViewerActivity(myStoryInfo.getMystory_member_nickname(), 
 								new String[] {myStoryInfo.getMystory_member_profile()}, null, 0);
 					}
 				});
@@ -1206,31 +1194,31 @@ public class UserPage extends BaseFragment {
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getIlike())) {
 			tvInterested.setText(myStoryInfo.getIlike());
-		} else if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
+		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 			tvInterested.setText(R.string.touchHere);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getJob())) {
 			tvJob.setText(myStoryInfo.getJob());
-		} else if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
+		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 			tvJob.setText(R.string.touchHere);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getJobname())) {
 			tvCompany.setText(myStoryInfo.getJobname());
-		} else if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
+		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 			tvCompany.setText(R.string.touchHere);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getAddress())) {
 			tvLiveLocation.setText(myStoryInfo.getAddress());
-		} else if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
+		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 			tvLiveLocation.setText(R.string.touchHere);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getPlayground())) {
 			tvActiveLocation.setText(myStoryInfo.getPlayground());
-		} else if(MainActivity.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
+		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 			tvActiveLocation.setText(R.string.touchHere);
 		}
 	}
@@ -1316,7 +1304,7 @@ public class UserPage extends BaseFragment {
 		
 		String url = null;
 		
-		if(userId.equals(MainActivity.myInfo.getMember_id())) {
+		if(userId.equals(ZonecommsApplication.myInfo.getMember_id())) {
 			url = ZoneConstants.BASE_URL + "microspot/relationList" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
@@ -1359,7 +1347,7 @@ public class UserPage extends BaseFragment {
 						isLastList = true;
 						ToastUtils.showToast(R.string.lastPage);
 						
-						if(!userId.equals(MainActivity.myInfo.getMember_id())) {
+						if(!userId.equals(ZonecommsApplication.myInfo.getMember_id())) {
 							
 							String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message" +
 									"?member_id=" + myStoryInfo.getMystory_member_id();  

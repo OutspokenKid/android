@@ -2,16 +2,18 @@ package com.zonecomms.clubcage.classes;
 
 import android.app.Activity;
 import android.content.res.Resources;
-import android.support.v4.app.FragmentManager;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.views.holo_dark.HoloConstants;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.common.models.MyInfo;
+import com.zonecomms.common.models.StartupInfo;
 
 public class ZonecommsApplication extends OutSpokenApplication {
 	
+	public static MyInfo myInfo;
+	public static StartupInfo startupInfo;
 	private static MainActivity mainActivity;
 
 	public static void initWithActivity(Activity activity) {
@@ -47,92 +49,8 @@ public class ZonecommsApplication extends OutSpokenApplication {
 		return mainActivity;
 	}
 	
-	public static BaseFragment getTopFragment() {
+	public static void setActivity(MainActivity mainActivity) {
 		
-		try {
-			//메인 페이지 시작 전.
-			if(getFragmentsSize() == 0) {
-				return null;
-				
-			//메인 페이지.
-			} else if(getFragmentsSize() == 1) {
-				return (BaseFragment) mainActivity.getSupportFragmentManager().getFragments().get(0);
-				
-			//다른 최상단 페이지.
-			} else {
-				String fragmentTag = mainActivity.getSupportFragmentManager()
-			    		.getBackStackEntryAt(mainActivity.getSupportFragmentManager().getBackStackEntryCount() - 1)
-			    		.getName();
-
-			    return (BaseFragment) mainActivity.getSupportFragmentManager().findFragmentByTag(fragmentTag);
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {	
-			LogUtils.trace(e);
-		}
-		
-		return null;
-	}
-	
-	public static int getFragmentsSize() {
-		
-		try {
-			//메인 실행 전.
-			if(mainActivity.getSupportFragmentManager().getFragments() == null) {
-				return 0;
-				
-			//메인 실행 후.
-			} else {
-				int entrySize = mainActivity.getSupportFragmentManager().getBackStackEntryCount();
-				return entrySize + 1;
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
-		
-		return 0;
-	}
-	
-	public static void clearFragmentsWithoutMain() {
-
-		int size = getFragmentsSize();	
-		
-		for(int i=0; i<size; i++) {
-			try {
-				((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
-			}
-		}
-		
-		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-	}
-	
-	public static void clearFragmentsWithLastAnim() {
-
-		int size = getFragmentsSize();
-		
-		for(int i=0; i<size; i++) {
-			try {
-				if(i == 0) {
-					//Do nothing.
-				} else if(i == size - 1) {
-					((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
-				} else {
-					((BaseFragment)mainActivity.getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
-				}
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
-			}
-		}
-		
-		mainActivity.getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		ZonecommsApplication.mainActivity = mainActivity;
 	}
 }

@@ -1,0 +1,154 @@
+package com.outspoken_kid.activities;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
+
+import com.outspoken_kid.interfaces.OutspokenActivityInterface;
+import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
+
+public abstract class BaseActivity extends Activity 
+		implements OutspokenActivityInterface {
+
+	public abstract void onMenuPressed();
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(getContentViewId());
+		
+		bindViews();
+		setVariables();
+		createPage();
+		setListeners();
+		setSizes();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		downloadInfo();
+	}
+	
+	@Override
+	public void setContentView(int layoutResID) {
+		super.setContentView(layoutResID);
+		
+		try {
+			if(getCustomFontResId() != 0) {
+				FontUtils.setGlobalFont(this, layoutResID, getString(getCustomFontResId()));
+			}			
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void showLoadingView() {
+		
+		if(getLoadingView() != null && getLoadingView().getVisibility() != View.VISIBLE) {
+			getLoadingView().setVisibility(View.VISIBLE);
+			
+			if(getLoadingViewAnimIn() != null) {
+				getLoadingView().startAnimation(getLoadingViewAnimIn());
+			}
+		}
+	}
+	
+	public void hideLoadingView() {
+		
+		if(getLoadingView() != null && getLoadingView().getVisibility() == View.VISIBLE) {
+			getLoadingView().setVisibility(View.INVISIBLE);
+			
+			if(getLoadingViewAnimOut() != null) {
+				getLoadingView().startAnimation(getLoadingViewAnimOut());
+			}
+		}
+	}
+	
+	@Override
+	public void showAlertDialog(int title, int message, int positive,
+			DialogInterface.OnClickListener onPositive) {
+
+		showAlertDialog(title, message, positive, 0, 
+				onPositive, null);
+	}
+
+	@Override
+	public void showAlertDialog(String title, String message, String positive,
+			DialogInterface.OnClickListener onPositive) {
+
+		showAlertDialog(title, message, positive, null, 
+				onPositive, null);
+	}
+	
+	@Override
+	public void showAlertDialog(int title, int message, int positive, 
+			int negative, DialogInterface.OnClickListener onPositive,
+			DialogInterface.OnClickListener onNegative) {
+
+		showAlertDialog(getString(title), getString(message), getString(positive), 
+				getString(negative), onPositive, onNegative);
+	}
+	
+	@Override
+	public void showAlertDialog(String title, String message, String positive, 
+			String negative, DialogInterface.OnClickListener onPositive,
+			DialogInterface.OnClickListener onNegative) {
+
+		try {
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle(title);
+			adb.setPositiveButton(positive, onPositive);
+			
+			if(negative != null) {
+				adb.setNegativeButton(negative, onNegative);
+			}
+			adb.setCancelable(true);
+			adb.setOnCancelListener(null);
+			adb.setMessage(message);
+			adb.show();
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+		if (event.getAction() == KeyEvent.ACTION_DOWN) {
+
+			switch (keyCode) {
+
+			case KeyEvent.KEYCODE_MENU:
+
+				try {
+					onMenuPressed();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				}
+				break;
+
+			case KeyEvent.KEYCODE_BACK:
+
+				try {
+					onBackPressed();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				}
+				break;
+
+			default:
+				return super.onKeyDown(keyCode, event);
+			}
+		}
+		return true;
+	}
+
+}

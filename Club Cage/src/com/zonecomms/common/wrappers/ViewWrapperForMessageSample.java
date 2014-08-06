@@ -2,6 +2,7 @@ package com.zonecomms.common.wrappers;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils.TruncateAt;
@@ -14,15 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
@@ -141,16 +141,19 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 			public boolean onLongClick(View v) {
 
 				if(messageSample.getRelation_nid() != 0) {
-					String title = row.getContext().getString(R.string.deleteMessage);
-					String message = row.getContext().getString(R.string.wannaDelete);
-					OnPositiveClickedListener opcl = new OnPositiveClickedListener() {
+					DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
 						
 						@Override
-						public void onPositiveClicked() {
+						public void onClick(DialogInterface dialog, int which) {
+
 							deleteMessage(messageSample.getRelation_nid());
 						}
 					};
-					ZonecommsApplication.getActivity().showAlertDialog(title, message, opcl);
+					ZonecommsApplication.getActivity().showAlertDialog(
+							R.string.deleteMessage, 
+							R.string.wannaDelete,
+							R.string.confirm,
+							ocl);
 				}
 				return false;
 			}
@@ -188,7 +191,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 
 					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
 						ToastUtils.showToast(R.string.deleteCompleted);
-						ZonecommsApplication.getTopFragment().onRefreshPage();
+						ZonecommsApplication.getActivity().getTopFragment().refreshPage();
 					} else {
 						ToastUtils.showToast(R.string.failToDeleteMessage);
 					}

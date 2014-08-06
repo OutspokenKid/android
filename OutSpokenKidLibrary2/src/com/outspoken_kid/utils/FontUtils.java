@@ -259,4 +259,9 @@ public class FontUtils {
 	            setGlobalFont((ViewGroup)child);
 	    }
 	}
+
+	public static void setGlobalFont(TextView textView) {
+		
+		textView.setTypeface(mTypeface);
+	}
 }

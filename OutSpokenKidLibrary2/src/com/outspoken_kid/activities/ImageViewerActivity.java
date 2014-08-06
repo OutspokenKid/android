@@ -51,7 +51,7 @@ import com.outspoken_kid.views.PinchImageView.OnScrollChangedListener;
  * 1.2 - Fix the bugs.
  * 1.1 - ViewPager is adapted with thumbnails.
  */
-public abstract class ImageViewerActivity extends BaseRecyclingActivity {
+public abstract class ImageViewerActivity extends BaseActivity {
 
 	protected static final int MODE_NONE = 0;
 	protected static final int MODE_DRAG = 1;
@@ -103,7 +103,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 	
 		mainLayout = (FrameLayout) findViewById(R.id.imageviewerActivity_mainLayout);
 		tvTitle = (TextView) findViewById(R.id.imageviewerActivity_title);
@@ -112,7 +112,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 		if(getIntent() != null) {
 			if(getIntent().hasExtra("title")) {
@@ -163,7 +163,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		if(imageResId != 0) {
 			((PinchImageView) findViewById(R.id.imageviewerActivity_image)).setImageResource(imageResId);
@@ -189,7 +189,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 
 		if(!StringUtils.isEmpty(title)) {
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.TOP, null);
@@ -201,7 +201,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 
 	@SuppressLint("ClickableViewAccessibility") 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 		if(imageResId != 0) {
 			cover.setOnClickListener(new OnClickListener() {
@@ -331,13 +331,13 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
-		setPage();
+		setPage(true);
 	}
 
 	@Override
-	protected void setPage() {
+	public void setPage(boolean successDownload) {
 		
 		if(tvTitle != null && !StringUtils.isEmpty(title)) {
 			setTitle(title);
@@ -381,7 +381,7 @@ public abstract class ImageViewerActivity extends BaseRecyclingActivity {
 	}
 
 	@Override
-	protected int getContentViewId() {
+	public int getContentViewId() {
 
 		return R.id.imageviewerActivity_mainLayout;
 	}

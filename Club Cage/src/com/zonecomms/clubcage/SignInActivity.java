@@ -13,7 +13,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,11 +28,12 @@ import com.outspoken_kid.views.WebBrowser;
 import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
+import com.zonecomms.clubcage.classes.ZonecommsActivity;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MyInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class SignInActivity extends ZonecommsRecyclingActivity {
+public class SignInActivity extends ZonecommsActivity {
 	
 	private static SignInActivity signInActivity;
 
@@ -46,53 +46,47 @@ public class SignInActivity extends ZonecommsRecyclingActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sign_in);
-		
-		bindViews();
-		setVariables();
-		createPage();
-		setSizes();
-		setListeners();
-		
+
 		signInActivity = this;
 	}
 
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		innerLinear = (LinearLayout) findViewById(R.id.signInActivity_innerLinear);
 		webBrowser = (WebBrowser) findViewById(R.id.signInActivity_webBrowser);
 	}
 	
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		addViewsForInnerLinear();
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 	}
 	
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 	}
 
 	@Override
-	protected void setPage() {
+	public void setPage(boolean successDownload) {
 	}
 	
 	@Override
-	protected int getContentViewId() {
-		return R.id.signInActivity_mainLayout;
+	public int getContentViewId() {
+	
+		return R.layout.activity_sign_in;
 	}
 	
 	@Override
@@ -106,19 +100,13 @@ public class SignInActivity extends ZonecommsRecyclingActivity {
 	}
 	
 	@Override
-	protected View getLoadingView() {
+	public void onMenuPressed() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
-
+	
 	@Override
-	protected Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected Animation getLoadingViewAnimOut() {
+	public View getLoadingView() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -275,8 +263,8 @@ public class SignInActivity extends ZonecommsRecyclingActivity {
 							return;
 						}
 						
-						MainActivity.myInfo = new MyInfo();
-						MainActivity.myInfo.setUserInfo(objJSON);
+						ZonecommsApplication.myInfo = new MyInfo();
+						ZonecommsApplication.myInfo.setUserInfo(objJSON);
 						
 						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "id", id);
 						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "pw", pw);

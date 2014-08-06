@@ -55,6 +55,7 @@ public class ReplyLoadingView extends LinearLayout {
 		tvText = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvText, 1, Gravity.CENTER_VERTICAL, null);
 		tvText.setTextColor(Color.WHITE);
+		FontUtils.setGlobalFont(tvText);
 		FontUtils.setFontSize(tvText, 30);
 		this.addView(tvText);
 		

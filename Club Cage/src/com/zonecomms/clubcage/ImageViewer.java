@@ -3,6 +3,7 @@
  */
 package com.zonecomms.clubcage;
 
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -40,7 +41,6 @@ public class ImageViewer extends ImageViewerActivity {
 	protected LayoutParams getSaveButtonLayoutParams() {
 
 		try {
-
 			int width = ResizeUtils.getSpecificLength(70);
 			int height = ResizeUtils.getSpecificLength(70);
 			FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(width, height);
@@ -61,28 +61,47 @@ public class ImageViewer extends ImageViewerActivity {
 
 		return R.drawable.btn_save;
 	}
-
+	
 	@Override
-	protected int getCustomFontResId() {
+	public int getCustomFontResId() {
 
 		return R.string.customFont;
 	}
 
 	@Override
-	protected Animation getLoadingViewAnimIn() {
+	public void onBackPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onMenuPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public View getLoadingView() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected Animation getLoadingViewAnimOut() {
+	public Animation getLoadingViewAnimIn() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	protected View getLoadingView() {
+	public Animation getLoadingViewAnimOut() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void showAlertDialog(String title, String message, String positive,
+			OnClickListener onPositive) {
+		// TODO Auto-generated method stub
+		
 	}
 }

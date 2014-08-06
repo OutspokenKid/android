@@ -2,8 +2,8 @@ package com.zonecomms.common.utils;
 
 import java.net.URLEncoder;
 
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 
 public class AppInfoUtils {
 	
@@ -29,9 +29,9 @@ public class AppInfoUtils {
 			if(mode == NONE) {
 				//No.
 				
-			} else if(mode == WITHOUT_SB_ID && MainActivity.myInfo != null) {
+			} else if(mode == WITHOUT_SB_ID && ZonecommsApplication.myInfo != null) {
 				//Need member_id.
-				str += "&member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8");
+				str += "&member_id=" + URLEncoder.encode(ZonecommsApplication.myInfo.getMember_id(), "utf-8");
 				
 			} else if(mode == WITHOUT_MEMBER_ID) {
 				//Need sb_id.
@@ -42,8 +42,8 @@ public class AppInfoUtils {
 				
 				str += "&sb_id=" + ZoneConstants.PAPP_ID;
 				
-				if(MainActivity.myInfo != null) {
-					str += "&member_id=" + URLEncoder.encode(MainActivity.myInfo.getMember_id(), "utf-8");
+				if(ZonecommsApplication.myInfo != null) {
+					str += "&member_id=" + URLEncoder.encode(ZonecommsApplication.myInfo.getMember_id(), "utf-8");
 				}
 			}
 			

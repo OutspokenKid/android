@@ -2,6 +2,7 @@ package com.zonecomms.common.wrappers;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,15 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.zonecomms.clubcage.MainActivity;
-import com.zonecomms.clubcage.MainActivity.OnPositiveClickedListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
@@ -87,7 +86,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 				if(!StringUtils.isEmpty(message.getPost_member_id())) {
 //////////////////////////////////////////////////////////////////////////					
 					//내가 보낸 메세지
-					if(message.getPost_member_id().equals(MainActivity.myInfo.getMember_id())) {
+					if(message.getPost_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 						imageBg.setVisibility(View.GONE);
 						ivProfile.setVisibility(View.GONE);
 						tvNickname.setVisibility(View.GONE);
@@ -139,23 +138,26 @@ public class ViewWrapperForMessage extends ViewWrapper {
 	@Override
 	public void setListeners() {
 
-		if(MainActivity.myInfo.getMember_id().equals(message.getPost_member_id())) {
+		if(ZonecommsApplication.myInfo.getMember_id().equals(message.getPost_member_id())) {
 			row.setOnLongClickListener(new OnLongClickListener() {
 				
 				@Override
 				public boolean onLongClick(View v) {
 
 					if(message.getMicrospot_nid() != 0) {
-						String title = row.getContext().getString(R.string.deleteMessage);
-						String messageString = row.getContext().getString(R.string.wannaDelete);
-						OnPositiveClickedListener opcl = new OnPositiveClickedListener() {
+						DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
 							
 							@Override
-							public void onPositiveClicked() {
+							public void onClick(DialogInterface dialog, int which) {
+
 								deleteMessage(message.getMicrospot_nid());
 							}
 						};
-						ZonecommsApplication.getActivity().showAlertDialog(title, messageString, opcl);
+						ZonecommsApplication.getActivity().showAlertDialog(
+								R.string.deleteMessage, 
+								R.string.wannaDelete,
+								R.string.confirm,
+								ocl);
 					}
 					return false;
 				}
@@ -204,7 +206,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 
 					if(objJSON.has("errorCode") && objJSON.getInt("errorCode") == 1) {
 						ToastUtils.showToast(R.string.deleteCompleted);
-						ZonecommsApplication.getTopFragment().onRefreshPage();
+						ZonecommsApplication.getActivity().getTopFragment().refreshPage();
 					} else {
 						ToastUtils.showToast(R.string.failToDeleteMessage);
 					}

@@ -232,6 +232,7 @@
 
 	<string name="unknown">알 수 없음</string>
 	<string name="unusableNumber">사용할 수 없는 번호입니다</string>
+	<string name="update">업데이트</string>
 	<string name="updatingGallery">사진 업데이트 중..</string>
 	<string name="updateGalleryCompleted">사진 업데이트 완료</string>
 	<string name="uploadPhoto">사진 올리기</string>
@@ -249,6 +250,7 @@
 	<string name="wannaSaveImage">해당 이미지를 저장하시겠습니까?</string>
 	<string name="wannaScrap">스크랩하시겠습니까?</string>
 	<string name="wannaSignOut">로그아웃하시겠습니까?</string>
+	<string name="wannaUpdate">현재 앱은 최신버전이 아닙니다.\n업데이트 하시겠습니까?</string>
 	<string name="willBeUpdated">추 후 업데이트 예정입니다</string>
 	<string name="withdrawnMember">탈퇴한 회원입니다</string>
 	<string name="withMe">내가 나와 한 메세지?</string>

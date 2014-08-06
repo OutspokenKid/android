@@ -17,14 +17,14 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsListFragment;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.models.Notice;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class ListPage extends BaseListFragment {
+public class ListPage extends ZonecommsListFragment {
 
 	private static int MAX_LOADING_COUNT = 12;
 	
@@ -32,17 +32,17 @@ public class ListPage extends BaseListFragment {
 	private ListView listView;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.listPage_mainLayout);
 		listView = (ListView) mThisView.findViewById(R.id.listPage_listView);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		swipeRefreshLayout.setColorSchemeColors(
         		Color.argb(255, 255, 102, 153), 
@@ -56,11 +56,11 @@ public class ListPage extends BaseListFragment {
 			public void onRefresh() {
 
 				swipeRefreshLayout.setRefreshing(true);
-				onRefreshPage();
+				refreshPage();
 			}
 		});
         
-		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
+		ListAdapter listAdapter = new ListAdapter(mContext, mainActivity, models, false);
 		listView.setAdapter(listAdapter);
 		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
@@ -83,17 +83,17 @@ public class ListPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 		
 		if(isDownloading || isLastList) {
 			return;
@@ -190,7 +190,7 @@ public class ListPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		if(isRefreshing && listView != null) {
 			listView.postDelayed(new Runnable() {
@@ -211,26 +211,19 @@ public class ListPage extends BaseListFragment {
 	}
 
 	@Override
-	public void onRefreshPage() {
-
-		super.onRefreshPage();
-		downloadInfo();
-	}
-	
-	@Override
-	protected int getContentViewId() {
-
-		return R.id.listPage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_list;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -239,24 +232,13 @@ public class ListPage extends BaseListFragment {
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().downloadBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().downloadBanner();
 		}
-	}
-
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
 	}
 }

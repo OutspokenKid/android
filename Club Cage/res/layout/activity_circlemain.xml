@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/circleMainActivity_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -27,7 +28,6 @@
         android:id="@+id/circleMainActivity_tvTitle1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:textColor="#fff" />
     
@@ -35,7 +35,6 @@
         android:id="@+id/circleMainActivity_tvTitle2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
         android:gravity="center"
         android:visibility="invisible"
         android:textColor="#fff" />
@@ -109,4 +108,4 @@
             android:background="@drawable/btn_top_renewal_n" />
     </FrameLayout>
     
-</merge>
+</FrameLayout>

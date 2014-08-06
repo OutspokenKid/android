@@ -58,6 +58,7 @@ public class SideView extends FrameLayout {
 		tvTitle.setTextColor(Color.WHITE);
 		tvTitle.setEllipsize(TruncateAt.END);
 		tvTitle.setGravity(Gravity.CENTER_VERTICAL);
+		FontUtils.setGlobalFont(tvTitle);
 		FontUtils.setFontSize(tvTitle, 30);
 		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		this.addView(tvTitle);

@@ -1,6 +1,7 @@
 package com.zonecomms.clubcage;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,20 +33,23 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.adapters.CircleListAdapter;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.StartupInfo.BgInfo;
+import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.views.CircleHeaderView;
 import com.zonecomms.common.views.ImagePlayViewer;
+import com.zonecomms.common.views.NoticePopup;
 
 public class CircleMainActivity extends Activity {
 
@@ -62,8 +66,9 @@ public class CircleMainActivity extends Activity {
 	private ListView listView;
 	private CircleListAdapter listAdapter;
 	private CircleHeaderView circleHeaderView;
+	private NoticePopup noticePopup;
 	
-	private ArrayList<Post> models = new ArrayList<Post>();
+	private ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	private BgInfo bgInfo;
 	private boolean isInit;
 	private boolean isDownloading;
@@ -126,6 +131,9 @@ public class CircleMainActivity extends Activity {
     	
     	swipeLayout = (SwipeRefreshLayout) findViewById(R.id.circleMainActivity_swipe_container);
     	listView = (ListView) findViewById(R.id.circleMainActivity_listView);
+    	
+    	FontUtils.setGlobalFont(tvTitles[0]);
+    	FontUtils.setGlobalFont(tvTitles[1]);
     }
     
     public void setVariables() {
@@ -171,7 +179,7 @@ public class CircleMainActivity extends Activity {
 		taOut.setAnimationListener(al);
 		taOut.setInterpolator(this, android.R.anim.accelerate_decelerate_interpolator);
 		
-    	bgInfo = MainActivity.startupInfo.getBgInfo();
+    	bgInfo = ZonecommsApplication.startupInfo.getBgInfo();
     	
     	if(bgInfo == null){
     		LogUtils.log("###where.setVariables.  bgInfo is null.");
@@ -200,6 +208,7 @@ public class CircleMainActivity extends Activity {
         swipeLayout.setEnabled(true);
         
         addMenus();
+        checkPopup();
     }
     
     public void setSizes() {
@@ -278,7 +287,7 @@ public class CircleMainActivity extends Activity {
 					if(position > 0) {
 						String uriString = ZoneConstants.PAPP_ID + 
 								"://android.zonecomms.com/post?spot_nid=" + 
-								models.get(position - 1).getSpot_nid();
+								((Post)models.get(position - 1)).getSpot_nid();
 						launchToMainActivity(Uri.parse(uriString));
 					}
 				} catch (Exception e) {
@@ -439,9 +448,6 @@ public class CircleMainActivity extends Activity {
     	isLastList = false;
     	lastIndexno = 0;
     	models.clear();
-		listAdapter.notifyDataSetChanged();
-    	swipeLayout.setRefreshing(false);
-    	showNext();
     	downloadInfo();
     }
     
@@ -483,8 +489,6 @@ public class CircleMainActivity extends Activity {
     @Override
     protected void onDestroy() {
     	super.onDestroy();
-    	imagePlayViewer.clear();
-    	ViewUnbindHelper.unbindReferences(this, R.layout.activity_main);
     }
     
     @Override
@@ -502,24 +506,6 @@ public class CircleMainActivity extends Activity {
     	if(isDownloading || isLastList) {
 			return;
 		}
-    	
-    	/*
-    	
-    	http://112.169.61.103/externalapi/public/
-    	sb/partner_spot_list
-    	?sb_id=clubcage
-    	&board_nid=1
-    	&last_sb_spot_nid=0
-    	&image_size=640
-
-		http://112.169.61.103/externalapi/public/
-		sb/partner_spot_list
-		?sb_id=clubcage
-		&board_nid=1
-		&last_sb_spot_nid=1388
-		&image_size=640
-    	
-    	*/
     	
     	isDownloading = true;
     	
@@ -573,6 +559,8 @@ public class CircleMainActivity extends Activity {
 				} catch (Error e) {
 					LogUtils.trace(e);
 					setPage(false);
+				} finally  {
+					swipeLayout.setRefreshing(false);
 				}
 			}
 		});
@@ -652,5 +640,53 @@ public class CircleMainActivity extends Activity {
 		intent.setData(uri);
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+	}
+
+	public void checkPopup() {
+		
+		if(ZonecommsApplication.startupInfo != null && ZonecommsApplication.startupInfo.getPopup() != null) {
+			int lastIndexno = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastIndexno");
+			int lastDate = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastDate");
+			int lastMonth = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastMonth");
+			
+			int currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+			int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
+			
+			if(lastIndexno != ZonecommsApplication.startupInfo.getPopup().getNotice_nid() && 
+					lastDate != currentDate && lastMonth != currentMonth ) {
+				swipeLayout.postDelayed(new Runnable() {
+					
+					@Override
+					public void run() {
+						showNoticePopup(ZonecommsApplication.startupInfo.getPopup());
+					}
+				}, 1000);
+			}
+		}
+	}
+
+	public void addNoticePopup() {
+		
+		noticePopup = new NoticePopup(this);
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, noticePopup, 2, 0, null);
+		((FrameLayout) findViewById(R.id.circleMainActivity_mainLayout)).addView(noticePopup);
+	}
+	
+	public void showNoticePopup(Popup popup) {
+		
+		if(noticePopup == null) {
+			addNoticePopup();
+		}
+		
+		noticePopup.show(popup);
+	}
+
+	@Override
+	public void finish() {
+		super.finish();
+		
+		if(ZonecommsApplication.getActivity() != null) {
+			ZonecommsApplication.getActivity().finish();
+		}
 	}
 }

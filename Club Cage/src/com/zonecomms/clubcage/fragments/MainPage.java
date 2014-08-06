@@ -18,10 +18,10 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.OutspokenImageView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.models.Notice;
 
 /**
@@ -31,7 +31,7 @@ import com.zonecomms.common.models.Notice;
  * @author HyungGunKim
  *
  */
-public class MainPage extends BaseFragment {
+public class MainPage extends ZonecommsFragment {
 
 	private ScrollView scrollView;
 	private RelativeLayout mainRelative;
@@ -46,21 +46,21 @@ public class MainPage extends BaseFragment {
 	private int madeCount = 870901;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		scrollView = (ScrollView) mThisView.findViewById(R.id.mainPage_scrollView);
 		mainRelative = (RelativeLayout) mThisView.findViewById(R.id.mainPage_mainRelative);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		//Set TitleBar.
-		mActivity.getTitleBar().hideHomeButton();
+		mainActivity.getTitleBar().hideHomeButton();
 		
 		//Set menus.
 		RelativeLayout.LayoutParams rp;
@@ -385,10 +385,10 @@ public class MainPage extends BaseFragment {
 		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		ivPoster1.setLayoutParams(rp);
 		
-		if(MainActivity.startupInfo != null && MainActivity.startupInfo.getSchedules() != null
-				&& MainActivity.startupInfo.getSchedules().length >= 1) {
+		if(ZonecommsApplication.startupInfo != null && ZonecommsApplication.startupInfo.getSchedules() != null
+				&& ZonecommsApplication.startupInfo.getSchedules().length >= 1) {
 			
-			final Notice mainSchedule = MainActivity.startupInfo.getSchedules()[0];
+			final Notice mainSchedule = ZonecommsApplication.startupInfo.getSchedules()[0];
 			
 			if(mainSchedule != null) {
 				ivPoster1.setOnClickListener(new OnClickListener() {
@@ -396,7 +396,7 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void onClick(View v) {
 						
-						mActivity.showImageViewerActivity(mainSchedule.getNotice_title(), mainSchedule.getMedias(), 0);
+						mainActivity.showImageViewerActivity(mainSchedule.getNotice_title(), mainSchedule.getMedias(), 0);
 					}
 				});
 				
@@ -452,10 +452,10 @@ public class MainPage extends BaseFragment {
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 7);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 7);
 		ivPoster2.setLayoutParams(rp);
-		if(MainActivity.startupInfo != null && MainActivity.startupInfo.getSchedules() != null
-				&& MainActivity.startupInfo.getSchedules().length >= 2) {
+		if(ZonecommsApplication.startupInfo != null && ZonecommsApplication.startupInfo.getSchedules() != null
+				&& ZonecommsApplication.startupInfo.getSchedules().length >= 2) {
 			
-			final Notice mainSchedule = MainActivity.startupInfo.getSchedules()[1];
+			final Notice mainSchedule = ZonecommsApplication.startupInfo.getSchedules()[1];
 
 			if(mainSchedule != null) {
 				ivPoster2.setOnClickListener(new OnClickListener() {
@@ -463,7 +463,7 @@ public class MainPage extends BaseFragment {
 					@Override
 					public void onClick(View v) {
 						
-						mActivity.showImageViewerActivity(mainSchedule.getNotice_title(), mainSchedule.getMedias(), 0);
+						mainActivity.showImageViewerActivity(mainSchedule.getNotice_title(), mainSchedule.getMedias(), 0);
 					}
 				});
 				
@@ -541,29 +541,29 @@ public class MainPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 	}
 
 	@Override
-	protected void setPage(boolean downloadSuccess) {
+	public void setPage(boolean downloadSuccess) {
 		
-		if(MainActivity.myInfo != null && !StringUtils.isEmpty(MainActivity.myInfo.getMember_media_src())) {
-			String url = MainActivity.myInfo.getMember_media_src();
+		if(ZonecommsApplication.myInfo != null && !StringUtils.isEmpty(ZonecommsApplication.myInfo.getMember_media_src())) {
+			String url = ZonecommsApplication.myInfo.getMember_media_src();
 			
-			if(mActivity.getProfileView() != null) {
+			if(mainActivity.getProfileView() != null) {
 				
-				if(!StringUtils.isEmpty(url) && mActivity.getProfileView().getIcon() != null) {
-					mActivity.getProfileView().getIcon().setTag(url);
+				if(!StringUtils.isEmpty(url) && mainActivity.getProfileView().getIcon() != null) {
+					mainActivity.getProfileView().getIcon().setTag(url);
 					DownloadUtils.downloadBitmap(url,
 							new OnBitmapDownloadListener() {
 
@@ -581,7 +581,7 @@ public class MainPage extends BaseFragment {
 										LogUtils.log("MainPage.onCompleted."
 												+ "\nurl : " + url);
 
-										ImageView ivImage = mActivity.getProfileView().getIcon();
+										ImageView ivImage = mainActivity.getProfileView().getIcon();
 										
 										if (ivImage != null
 												&& ivImage.getTag() != null
@@ -598,34 +598,28 @@ public class MainPage extends BaseFragment {
 							});
 				}
 				
-				String nickname = MainActivity.myInfo.getMember_nickname();
+				String nickname = ZonecommsApplication.myInfo.getMember_nickname();
 				if(!StringUtils.isEmpty(nickname)) {
-					mActivity.getProfileView().setTitle(nickname);
+					mainActivity.getProfileView().setTitle(nickname);
 				}
 			}
 		}
 	}
 
 	@Override
-	protected String getTitleText() {
+	public String getTitleText() {
 		
 		return getString(R.string.app_name);
 	}
 
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.mainPage_mainFrame;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_main;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 		
 //		if(boardMenu.getVisibility() == View.VISIBLE) {
 //			hideBoardMenu(true);
@@ -634,9 +628,15 @@ public class MainPage extends BaseFragment {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 	}
 	
 	@Override
@@ -653,25 +653,15 @@ public class MainPage extends BaseFragment {
 				imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
 			}
 		}, 1000);
-		mActivity.getTitleBar().showCircleButton();
-		mActivity.getTitleBar().hideHomeButton();
-		mActivity.getTitleBar().showWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().showCircleButton();
+		mainActivity.getTitleBar().hideHomeButton();
+		mainActivity.getTitleBar().showWriteButton();
+		
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
-	}
-	
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
 	}
 
 ////////////////////// Custom methdos.
@@ -720,7 +710,7 @@ public class MainPage extends BaseFragment {
 //					
 //					if(isWriting) {
 //						isWriting = false;
-//						mActivity.showWriteActivity(I+1);
+//						mainActivity.showWriteActivity(I+1);
 //					} else {
 //						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
 //						

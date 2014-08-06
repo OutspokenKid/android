@@ -41,13 +41,14 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
+import com.zonecomms.clubcage.classes.ZonecommsActivity;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
-public class WriteActivity extends ZonecommsRecyclingActivity {
+public class WriteActivity extends ZonecommsActivity {
 
 	private TextView tvTitle;
 	private View btnComplete;
@@ -57,7 +58,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	private HoloStyleSpinnerPopup spinner;
 	private View cover;
 	
-	private int board_nid;
+//	private int board_nid;
 	private int downloadImageCount;
 	private int spot_nid;
 	private boolean isEdit;
@@ -70,19 +71,12 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_write);
 		
-		bindViews();
-		setVariables();
-		createPage();
-		setSizes();
-		setListeners();
-		downloadInfo();
-		setPage();
+		setPage(true);
 	}
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 		tvTitle = (TextView) findViewById(R.id.writeActivity_tvTitle);
 		btnComplete = findViewById(R.id.writeActivity_btnComplete);
@@ -94,30 +88,31 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 		
 		if(getIntent() != null) {
-			board_nid = getIntent().getIntExtra("board_nid", 0);
+//			board_nid = getIntent().getIntExtra("board_nid", 0);
 			spot_nid = getIntent().getIntExtra("spot_nid", 0);
-			
 			member_id = getIntent().getStringExtra("member_id");
 			
-			final int[] titleResIds = new int[] {
-					0,
-					R.string.board_story,
-					R.string.board_review,
-					R.string.board_with,
-					R.string.board_findPeople,
-			};
+//			final int[] titleResIds = new int[] {
+//					0,
+//					R.string.board_story,
+//					R.string.board_review,
+//					R.string.board_with,
+//					R.string.board_findPeople,
+//			};
 			
-			if(board_nid != 0) {
-				tvTitle.setText(getString(titleResIds[board_nid]) + " " + getString(R.string.write));
-			}
+//			if(board_nid != 0) {
+//				tvTitle.setText(getString(titleResIds[board_nid]) + " " + getString(R.string.write));
+//			}
 		}
+		
+		tvTitle.setText(R.string.write);
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		spinner.setTitle(getString(R.string.uploadPhoto));
 		spinner.addItem(getString(R.string.photo_take));
@@ -126,7 +121,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		
 		//ScrollView
 		int p = ResizeUtils.getSpecificLength(8);
@@ -144,7 +139,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		
 		btnComplete.setOnClickListener(new OnClickListener() {
 			
@@ -210,80 +205,15 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setPage() {
+	public int getContentViewId() {
 
-		Intent intent = getIntent();
-		
-		if(intent != null) {
-			
-			isEdit = intent.getBooleanExtra("isEdit", false);
-			
-			if(intent.getStringExtra("content") != null) {
-				editText.setText(intent.getStringExtra("content"));
-				Editable et = editText.getText();
-				Selection.setSelection(et, editText.length());
-			}
-			
-			if(intent.getStringArrayExtra("imageUrls") != null) {
-				final String[] imageUrls = intent.getStringArrayExtra("imageUrls");
-				
-				if(imageUrls != null) {
-					
-					showLoadingView();
-					
-					for(int i=0; i<imageUrls.length; i++) {
-						
-						DownloadUtils.downloadBitmap(imageUrls[i], new OnBitmapDownloadListener() {
-							
-							@Override
-							public void onError(String url) {
-
-								ToastUtils.showToast(R.string.failToLoadBitmap);
-								
-								downloadImageCount ++;
-								
-								if(downloadImageCount == imageUrls.length) {
-									hideLoadingView();
-								}
-							}
-							
-							@Override
-							public void onCompleted(String url, Bitmap bitmap) {
-
-								downloadImageCount ++;
-								
-								if(downloadImageCount == imageUrls.length) {
-									hideLoadingView();
-								}
-								
-								try {
-									UploadImageInfo uii = new UploadImageInfo();
-									uii.setImageUrl(url);
-									uii.setImageWidth(bitmap.getWidth());
-									uii.setImageHeight(bitmap.getHeight());
-									addThumbnailView(bitmap, uii);
-								} catch(Exception e) {
-									LogUtils.trace(e);
-									ToastUtils.showToast(R.string.failToLoadBitmap);
-								}
-							}
-						});
-					}
-				}
-			}
-		}
-	}
-
-	@Override
-	protected int getContentViewId() {
-
-		return R.id.writeActivity_mainFrame;
+		return R.layout.activity_write;
 	}
 	
 	@Override
@@ -297,7 +227,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 	
 	@Override
-	protected View getLoadingView() {
+	public View getLoadingView() {
 
 		View loadingView = findViewById(R.id.writeActivity_loadingView);
 		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
@@ -306,7 +236,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		if(resultCode == RESULT_OK) {
 			
@@ -379,6 +309,89 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 		} else {
 			ToastUtils.showToast(R.string.canceled);
 		}
+	}
+	
+	@Override
+	public Animation getLoadingViewAnimIn() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Animation getLoadingViewAnimOut() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setPage(boolean successDownload) {
+
+		Intent intent = getIntent();
+		
+		if(intent != null) {
+			
+			isEdit = intent.getBooleanExtra("isEdit", false);
+			
+			if(intent.getStringExtra("content") != null) {
+				editText.setText(intent.getStringExtra("content"));
+				Editable et = editText.getText();
+				Selection.setSelection(et, editText.length());
+			}
+			
+			if(intent.getStringArrayExtra("imageUrls") != null) {
+				final String[] imageUrls = intent.getStringArrayExtra("imageUrls");
+				
+				if(imageUrls != null) {
+					
+					showLoadingView();
+					
+					for(int i=0; i<imageUrls.length; i++) {
+						
+						DownloadUtils.downloadBitmap(imageUrls[i], new OnBitmapDownloadListener() {
+							
+							@Override
+							public void onError(String url) {
+
+								ToastUtils.showToast(R.string.failToLoadBitmap);
+								
+								downloadImageCount ++;
+								
+								if(downloadImageCount == imageUrls.length) {
+									hideLoadingView();
+								}
+							}
+							
+							@Override
+							public void onCompleted(String url, Bitmap bitmap) {
+
+								downloadImageCount ++;
+								
+								if(downloadImageCount == imageUrls.length) {
+									hideLoadingView();
+								}
+								
+								try {
+									UploadImageInfo uii = new UploadImageInfo();
+									uii.setImageUrl(url);
+									uii.setImageWidth(bitmap.getWidth());
+									uii.setImageHeight(bitmap.getHeight());
+									addThumbnailView(bitmap, uii);
+								} catch(Exception e) {
+									LogUtils.trace(e);
+									ToastUtils.showToast(R.string.failToLoadBitmap);
+								}
+							}
+						});
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onMenuPressed() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //////////////Custom methods.
@@ -476,7 +489,8 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 			} else {
 				url += ZoneConstants.BASE_URL + "spot/write" +
 						"?concern_kind=010" +
-						"&board_nid=" + board_nid;
+//						"&board_nid=" + board_nid;
+						"&board_nid=1";
 			}
 			
 			url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
@@ -488,7 +502,7 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 			if(isEdit) {
 				url += "&member_id=" + member_id;
 			} else {
-				url += "&member_id=" + MainActivity.myInfo.getMember_id();
+				url += "&member_id=" + ZonecommsApplication.myInfo.getMember_id();
 			}
 
 			cover.setVisibility(View.VISIBLE);
@@ -532,17 +546,5 @@ public class WriteActivity extends ZonecommsRecyclingActivity {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSendPost);
 		}
-	}
-
-	@Override
-	protected Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected Animation getLoadingViewAnimOut() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

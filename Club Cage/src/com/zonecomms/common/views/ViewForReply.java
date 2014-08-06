@@ -22,7 +22,6 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -90,6 +89,7 @@ public class ViewForReply extends RelativeLayout {
 		tvNickname.setId(madeCount + 1);
 		tvNickname.setTextColor(Color.WHITE);
 		tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
+		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvNickname, 30);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		this.addView(tvNickname);
@@ -113,6 +113,7 @@ public class ViewForReply extends RelativeLayout {
 		tvText.setLayoutParams(rp);
 		tvText.setTextColor(Color.WHITE);
 		tvText.setId(madeCount + 2);
+		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvText, 30);
 		this.addView(tvText);
 		
@@ -124,6 +125,7 @@ public class ViewForReply extends RelativeLayout {
 		rp.rightMargin = m;
 		tvRegdate.setLayoutParams(rp);
 		tvRegdate.setTextColor(Color.WHITE);
+		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvRegdate, 26);
 		this.addView(tvRegdate);
 		
@@ -203,17 +205,17 @@ public class ViewForReply extends RelativeLayout {
 						@Override
 						public void onAfterLogin() {
 
-							if(ZonecommsApplication.getTopFragment() != null
-									&& ZonecommsApplication.getTopFragment() instanceof PostPage) {
+							if(ZonecommsApplication.getActivity().getTopFragment() != null
+									&& ZonecommsApplication.getActivity().getTopFragment() instanceof PostPage) {
 								
-								if(MainActivity.myInfo.isAdmin()
+								if(ZonecommsApplication.myInfo.isAdmin()
 										|| (!StringUtils.isEmpty(member.getMember_id()) 
-												&& member.getMember_id().equals(MainActivity.myInfo.getMember_id()))
+												&& member.getMember_id().equals(ZonecommsApplication.myInfo.getMember_id()))
 										|| (!StringUtils.isEmpty(post.getMember().getMember_id()) 
-												&& post.getMember().getMember_id().equals(MainActivity.myInfo.getMember_id()))) {
-									((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(true, ViewForReply.this);
+												&& post.getMember().getMember_id().equals(ZonecommsApplication.myInfo.getMember_id()))) {
+									((PostPage) ZonecommsApplication.getActivity().getTopFragment()).showPopupForReply(true, ViewForReply.this);
 								} else {
-									((PostPage) ZonecommsApplication.getTopFragment()).showPopupForReply(false, ViewForReply.this);
+									((PostPage) ZonecommsApplication.getActivity().getTopFragment()).showPopupForReply(false, ViewForReply.this);
 								}
 							}
 						}

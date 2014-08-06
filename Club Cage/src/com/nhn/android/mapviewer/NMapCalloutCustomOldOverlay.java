@@ -14,7 +14,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.text.TextUtils;
-
 import android.util.Log;
 
 import com.nhn.android.maps.NMapOverlay;

@@ -2,19 +2,19 @@ package com.zonecomms.clubcage;
 
 import java.net.URLDecoder;
 
-import com.outspoken_kid.utils.LogUtils;
-import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
-import com.zonecomms.clubcage.classes.ZonecommsApplication;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.View;
 import android.view.Window;
+
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 
 public class IntentHandlerActivity extends Activity {
 	
@@ -36,7 +36,8 @@ public class IntentHandlerActivity extends Activity {
 	public void handlingIntent(final Intent intent) {
 
 		try {
-			if(ZonecommsApplication.getFragmentsSize() != 0) {
+			if(ZonecommsApplication.getActivity() != null 
+					&& ZonecommsApplication.getActivity().getFragmentsSize() != 0) {
 				Intent mainActivityIntent = new Intent(this, MainActivity.class);
 				mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 				startActivity(mainActivityIntent);
@@ -102,7 +103,8 @@ public class IntentHandlerActivity extends Activity {
 			} else if(scheme.equals("popup")) {
 				String message = uri.getQueryParameter("message");
 				message = URLDecoder.decode(message, "utf-8");
-				ZonecommsApplication.getActivity().showAlertDialog(null, message, null, false);
+				ZonecommsApplication.getActivity().showAlertDialog(null, message, 
+						ZonecommsApplication.getActivity().getString(R.string.confirm), null);
 			} else if(scheme.equals(ZoneConstants.PAPP_ID)) {
 
 				final MainActivity mActivity = ZonecommsApplication.getActivity();
@@ -118,7 +120,7 @@ public class IntentHandlerActivity extends Activity {
 						@Override
 						public void onAfterLogin() {
 
-							String member_id = MainActivity.myInfo.getMember_id();
+							String member_id = ZonecommsApplication.myInfo.getMember_id();
 							String index = uri.getQueryParameter("index");
 							
 							int menuIndex = 0;

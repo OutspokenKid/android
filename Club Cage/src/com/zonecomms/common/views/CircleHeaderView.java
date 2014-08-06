@@ -62,6 +62,7 @@ public class CircleHeaderView extends FrameLayout {
 				Gravity.BOTTOM, null);
 		tvTitles[0].setTextColor(Color.WHITE);
 		tvTitles[0].setGravity(Gravity.CENTER);
+		FontUtils.setGlobalFont(tvTitles[0]);
 		FontUtils.setFontSize(tvTitles[0], 36);
 		this.addView(tvTitles[0]);
 		
@@ -71,6 +72,7 @@ public class CircleHeaderView extends FrameLayout {
 		tvTitles[1].setTextColor(Color.WHITE);
 		tvTitles[1].setGravity(Gravity.CENTER);
 		tvTitles[1].setVisibility(View.INVISIBLE);
+		FontUtils.setGlobalFont(tvTitles[1]);
 		FontUtils.setFontSize(tvTitles[1], 36);
 		this.addView(tvTitles[1]);
 		
@@ -115,7 +117,6 @@ public class CircleHeaderView extends FrameLayout {
 		if(tvTitles[out].getVisibility() == View.VISIBLE) {
 			tvTitles[out].startAnimation(aaOut);
 			tvTitles[out].setVisibility(View.INVISIBLE);
-			
 			tvTitles[in].setBackgroundColor(color);
 			tvTitles[in].startAnimation(aaIn);
 			tvTitles[in].setVisibility(View.VISIBLE);

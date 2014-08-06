@@ -27,10 +27,10 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -41,18 +41,17 @@ import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.models.MyStoryInfo;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.CustomDatePicker;
 
-public class BaseProfilePage extends BaseFragment {
+public class BaseProfilePage extends ZonecommsFragment {
 
 	private FrameLayout innerFrame;
 	
@@ -75,18 +74,18 @@ public class BaseProfilePage extends BaseFragment {
 	private HoloStyleSpinnerPopup pPhoto;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		innerFrame = (FrameLayout) mThisView.findViewById(R.id.baseProfilePage_innerFrame);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 	}
 
 	@SuppressLint("NewApi")
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		FrameLayout imageFrame = new FrameLayout(mContext);
 		ResizeUtils.viewResize(200, 200, imageFrame, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 50, 0, 0});
@@ -256,7 +255,7 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 		pPhoto.setOnItemClickedListener(new OnItemClickedListener() {
 			
@@ -316,8 +315,8 @@ public class BaseProfilePage extends BaseFragment {
 											public void onError(String url) {
 												
 												ToastUtils.showToast(R.string.failToLoadBitmap);
-												mActivity.hideCover();
-												mActivity.hideLoadingView();
+												mainActivity.hideCover();
+												mainActivity.hideLoadingView();
 											}
 
 											@Override
@@ -331,8 +330,8 @@ public class BaseProfilePage extends BaseFragment {
 															+ "\nresult : "
 															+ objJSON);
 
-													mActivity.hideCover();
-													mActivity.hideLoadingView();
+													mainActivity.hideCover();
+													mainActivity.hideLoadingView();
 													
 													if(objJSON.getInt("errorCode") == 1) {
 														ivImage.setImageBitmap(fBitmap);
@@ -356,33 +355,33 @@ public class BaseProfilePage extends BaseFragment {
 					}
 				};
 				
-				mActivity.imageUploadSetting(filePath, fileName, true, oaui);
-				mActivity.startActivityForResult(intent, requestCode);
+				mainActivity.imageUploadSetting(filePath, fileName, true, oaui);
+				mainActivity.startActivityForResult(intent, requestCode);
 			}
 		});
 	}
 	
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		if(isDownloading) {
 			return;
 		}
 		
 		isDownloading = true;
-		mActivity.showLoadingView();
-		mActivity.showCover();
+		mainActivity.showLoadingView();
+		mainActivity.showCover();
 
 		try {
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
+					"&mystory_member_id=" + ZonecommsApplication.myInfo.getMember_id() +
 					"&image_size=" + ResizeUtils.getSpecificLength(308);
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -405,8 +404,8 @@ public class BaseProfilePage extends BaseFragment {
 						
 						myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
 						
-						String monthString = MainActivity.myInfo.getMember_birty_md().substring(0, 2);
-						String dateString = MainActivity.myInfo.getMember_birty_md().substring(2, 4);
+						String monthString = ZonecommsApplication.myInfo.getMember_birty_md().substring(0, 2);
+						String dateString = ZonecommsApplication.myInfo.getMember_birty_md().substring(2, 4);
 						
 						nickname = myStoryInfo.getMystory_member_nickname();
 						gender = myStoryInfo.getMember_gender();
@@ -417,7 +416,7 @@ public class BaseProfilePage extends BaseFragment {
 							gender = getString(R.string.female);
 						}
 						
-						year = Integer.parseInt(MainActivity.myInfo.getMember_birty_yy());
+						year = Integer.parseInt(ZonecommsApplication.myInfo.getMember_birty_yy());
 						month = Integer.parseInt(monthString) - 1;
 						date = Integer.parseInt(dateString);
 						introduce = myStoryInfo.getMystory_title();
@@ -440,10 +439,10 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
-	protected void setPage(boolean downloadSuccess) {
+	public void setPage(boolean downloadSuccess) {
 		
-		mActivity.hideCover();
-		mActivity.hideLoadingView();
+		mainActivity.hideCover();
+		mainActivity.hideLoadingView();
 		
 		if(downloadSuccess) {
 			etNickname.getEditText().setText(nickname);
@@ -463,27 +462,15 @@ public class BaseProfilePage extends BaseFragment {
 			loadProfile();
 		}
 	}
-	
-	@Override
-	protected String getTitleText() {
-
-		return getString(R.string.baseProfile);
-	}
 
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.baseProfilePage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_baseprofile;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
 			pPhoto.hidePopup();
@@ -496,21 +483,15 @@ public class BaseProfilePage extends BaseFragment {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
-
+		return false;
 	}
-
+	
 	@Override
-	public void onSoftKeyboardShown() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -519,13 +500,14 @@ public class BaseProfilePage extends BaseFragment {
 		
 		downloadInfo();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 	}
 
 	@Override
@@ -583,8 +565,8 @@ public class BaseProfilePage extends BaseFragment {
 			
 			ToastUtils.showToast(R.string.submittingToServer);
 			
-			mActivity.showLoadingView();
-			mActivity.showCover();
+			mainActivity.showLoadingView();
+			mainActivity.showCover();
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
@@ -603,10 +585,10 @@ public class BaseProfilePage extends BaseFragment {
 
 						if(objJSON.getInt("errorCode") == 1) {
 							ToastUtils.showToast(R.string.submitCompleted);
-							MainActivity.myInfo.setMember_birty_yy(yearString);
-							MainActivity.myInfo.setMember_birty_md(monthAndDateString);
-							mActivity.closeTopPage();
-							ZonecommsApplication.getTopFragment().onRefreshPage();
+							ZonecommsApplication.myInfo.setMember_birty_yy(yearString);
+							ZonecommsApplication.myInfo.setMember_birty_md(monthAndDateString);
+							mainActivity.closeTopPage();
+							mainActivity.getTopFragment().refreshPage();
 							setPage(true);
 						} else {
 							ToastUtils.showToast(R.string.failToSubmitBaseProfile);
@@ -628,4 +610,5 @@ public class BaseProfilePage extends BaseFragment {
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 		}
 	}
+
 }

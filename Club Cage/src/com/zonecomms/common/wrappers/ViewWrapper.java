@@ -7,9 +7,10 @@ import android.widget.ImageView;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.zonecomms.common.views.WrapperView;
 
 public abstract class ViewWrapper {
@@ -27,6 +28,8 @@ public abstract class ViewWrapper {
 		setItemCode(itemCode);
 		bindViews();
 		setSizes();
+		
+		FontUtils.setGlobalFont(row);
 	}
 
 	public abstract void bindViews();

@@ -34,12 +34,11 @@ import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.Reply;
@@ -49,7 +48,7 @@ import com.zonecomms.common.views.ReplyLoadingView;
 import com.zonecomms.common.views.ReplyLoadingView.OnLoadingViewClickedListener;
 import com.zonecomms.common.views.ViewForReply;
 
-public class PostPage extends BaseFragment {
+public class PostPage extends ZonecommsFragment {
 
 	private static int NUM_OF_REPLY = 10;
 	
@@ -81,7 +80,7 @@ public class PostPage extends BaseFragment {
 	private ArrayList<Member> targets = new ArrayList<Member>();
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		tvText = (TextView) mThisView.findViewById(R.id.postPage_tvText);
 		
@@ -99,7 +98,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
@@ -107,7 +106,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		try {
 			editText.getEditText().setHint(R.string.hintForReply);
@@ -132,7 +131,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		
 		btnSubmit.setOnClickListener(new OnClickListener() {
 			
@@ -193,18 +192,18 @@ public class PostPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+				mainActivity.checkLoginAndExecute(new OnAfterLoginListener() {
 					
 					@Override
 					public void onAfterLogin() {
 
-						LogUtils.log("#####\nisAdmin : " + MainActivity.myInfo.isAdmin() + 
-								"\nid : " + MainActivity.myInfo.getMember_id() +
+						LogUtils.log("#####\nisAdmin : " + ZonecommsApplication.myInfo.isAdmin() + 
+								"\nid : " + ZonecommsApplication.myInfo.getMember_id() +
 								"\npost.id : " + post.getMember().getMember_id() +
 								"\n#####");
 						
-						if(MainActivity.myInfo.isAdmin()
-								|| MainActivity.myInfo.getMember_id().equals(post.getMember().getMember_id())) {
+						if(ZonecommsApplication.myInfo.isAdmin()
+								|| ZonecommsApplication.myInfo.getMember_id().equals(post.getMember().getMember_id())) {
 							showPopupForPost(true);
 						} else {
 							showPopupForPost(false);
@@ -219,13 +218,13 @@ public class PostPage extends BaseFragment {
 			@Override
 			public void onClick(View arg0) {
 				
-				mActivity.checkLoginAndExecute(null);
+				mainActivity.checkLoginAndExecute(null);
 			}
 		});
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, contentLayout, 1, Gravity.LEFT, new int[]{8, 0, 8, 0});
 
@@ -248,7 +247,7 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 		
 		String url = ZoneConstants.BASE_URL + "spot/detail" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
@@ -284,7 +283,7 @@ public class PostPage extends BaseFragment {
 	}
 	
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		if(successDownload) {
 			boardIndex = post.getBoard_nid();
@@ -306,25 +305,19 @@ public class PostPage extends BaseFragment {
 	}
 
 	@Override
-	protected String getTitleText() {
+	public String getTitleText() {
 
 		return getString(R.string.write);
 	}
 
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.postPage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_post;
 	}
-	
+
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 
 		if(spForPost.getVisibility() == View.VISIBLE) {
 			spForPost.hidePopup();
@@ -339,9 +332,15 @@ public class PostPage extends BaseFragment {
 		LogUtils.log("###PostPage.onBackKeyPressed.  false");
 		return false;
 	}
+	
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 
 		ArrayList<View> views = new ArrayList<View>();
 		
@@ -366,43 +365,28 @@ public class PostPage extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 
-		if(MainActivity.myInfo == null) {
+		if(ZonecommsApplication.myInfo == null) {
 			writeCover.setVisibility(View.VISIBLE);
 		} else {
 			writeCover.setVisibility(View.INVISIBLE);
 		}
 		
-		onRefreshPage();
+		refreshPage();
 	}
 	
 	@Override
 	public void onDetach() {
 		
 		super.onDetach();
-	}
-	
-	@Override
-	public void onSoftKeyboardShown() {
-		scrollView.postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
-				scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-			}
-		}, 200);
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		
 	}
 
 	@Override
@@ -470,7 +454,7 @@ public class PostPage extends BaseFragment {
 				@Override
 				public void onClick(View v) {
 					
-					mActivity.showImageViewerActivity(null, post.getMedias(), index);
+					mainActivity.showImageViewerActivity(null, post.getMedias(), index);
 				}
 			});
 			image.setDrawingCacheEnabled(true);
@@ -592,7 +576,7 @@ public class PostPage extends BaseFragment {
 								@Override
 								public void onClick(View v) {
 									
-									mActivity.checkLoginAndExecute(new OnAfterLoginListener() {
+									mainActivity.checkLoginAndExecute(new OnAfterLoginListener() {
 										
 										@Override
 										public void onAfterLogin() {
@@ -647,8 +631,8 @@ public class PostPage extends BaseFragment {
 	
 	public void writeReply(String text) {
 
-		mActivity.showLoadingView();
-		mActivity.showCover();
+		mainActivity.showLoadingView();
+		mainActivity.showCover();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "reply/write" +
@@ -677,8 +661,8 @@ public class PostPage extends BaseFragment {
 				public void onError(String url) {
 					
 					ToastUtils.showToast(R.string.failToSendReply);
-					mActivity.hideLoadingView();
-					mActivity.hideCover();
+					mainActivity.hideLoadingView();
+					mainActivity.hideCover();
 				}
 
 				@Override
@@ -688,8 +672,8 @@ public class PostPage extends BaseFragment {
 						LogUtils.log("PostPage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
-						mActivity.hideLoadingView();
-						mActivity.hideCover();
+						mainActivity.hideLoadingView();
+						mainActivity.hideCover();
 						
 						if(objJSON.getInt("errorCode") == 1) {
 							SoftKeyboardUtils.hideKeyboard(mContext, editText);
@@ -779,7 +763,7 @@ public class PostPage extends BaseFragment {
 	public boolean hasMember(Member member) {
 		
 		if(StringUtils.isEmpty(member.getMember_id())
-				 || member.getMember_id().equals(MainActivity.myInfo.getMember_id())) {
+				 || member.getMember_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 			return true;
 		}
 		
@@ -1018,8 +1002,8 @@ public class PostPage extends BaseFragment {
 								+ "\nresult : " + objJSON);
 
 						ToastUtils.showToast(R.string.deleteCompleted);
-						ZonecommsApplication.getActivity().closeTopPage();
-						ZonecommsApplication.getTopFragment().onRefreshPage();
+						mainActivity.closeTopPage();
+						mainActivity.getTopFragment().refreshPage();
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (OutOfMemoryError oom) {

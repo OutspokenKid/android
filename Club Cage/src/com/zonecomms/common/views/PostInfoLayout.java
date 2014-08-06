@@ -12,9 +12,9 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.R;
@@ -86,6 +86,7 @@ public class PostInfoLayout extends RelativeLayout {
 		tvNicknameWithId.setEllipsize(TruncateAt.END);
 		tvNicknameWithId.setTextColor(Color.WHITE);
 		tvNicknameWithId.setGravity(Gravity.CENTER_VERTICAL);
+		FontUtils.setGlobalFont(tvNicknameWithId);
 		FontUtils.setFontSize(tvNicknameWithId, 30);
 		FontUtils.setFontStyle(tvNicknameWithId, FontUtils.BOLD);
 		this.addView(tvNicknameWithId);
@@ -101,6 +102,7 @@ public class PostInfoLayout extends RelativeLayout {
 		tvRegdate.setEllipsize(TruncateAt.END);
 		tvRegdate.setTextColor(Color.WHITE);
 		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
+		FontUtils.setGlobalFont(tvRegdate);
 		FontUtils.setFontSize(tvRegdate, 30);
 		FontUtils.setFontStyle(tvRegdate, FontUtils.BOLD);
 		this.addView(tvRegdate);

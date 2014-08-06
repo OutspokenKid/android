@@ -3,12 +3,10 @@ package com.zonecomms.common.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
@@ -18,11 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.calciumion.widget.BasePagerAdapter;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OutspokenImageView;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.common.models.Media;
@@ -35,28 +33,28 @@ public class CircleListAdapter extends BaseAdapter {
 	
 	private CircleHeaderView circleHeaderView;
 	private LayoutInflater mInflater;
-	private ArrayList<Post> posts = new ArrayList<Post>();
+	private ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	private ArrayList<View> circleViews = new ArrayList<View>();
 	
 	public CircleListAdapter(Context context, CircleHeaderView circleHeaderView, 
-			LayoutInflater mInflater, ArrayList<Post> posts) {
+			LayoutInflater mInflater, ArrayList<BaseModel> models) {
 
 		this.circleHeaderView = circleHeaderView;
 		this.mInflater = mInflater;
-		this.posts = posts;
+		this.models = models;
 	}
 	
 	@Override
 	public int getCount() {
 
-		return posts.size() + 1;
+		return models.size() + 1;
 	}
 
 	@Override
 	public Object getItem(int position) {
 
-		if(posts.size() + 1 < position) {
-			return posts.get(position + 1);
+		if(models.size() + 1 < position) {
+			return models.get(position + 1);
 		} else{
 			return null;
 		}
@@ -91,7 +89,7 @@ public class CircleListAdapter extends BaseAdapter {
 				viewHolder = (ViewHolderForCirclePost) convertView.getTag();
 			}
 
-			viewHolder.setValues(posts.get(position - 1));
+			viewHolder.setValues((Post)models.get(position - 1));
 			
 			return convertView;
 		}
@@ -153,6 +151,11 @@ public class CircleListAdapter extends BaseAdapter {
 			moreFrame = (FrameLayout) convertView.findViewById(R.id.list_circlepost_moreFrame);
 			moreBg = convertView.findViewById(R.id.list_circlepost_moreBg);
 			more = convertView.findViewById(R.id.list_circlepost_more);
+			
+			FontUtils.setGlobalFont(tvNickname);
+			FontUtils.setGlobalFont(tvRegdate);
+			FontUtils.setGlobalFont(tvContent);
+			FontUtils.setGlobalFont(tvReply);
 		}
 		
 		public void setSizes() {
@@ -239,15 +242,6 @@ public class CircleListAdapter extends BaseAdapter {
 		}
 		
 		public void setListeners() {
-
-//			moreFrame.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View v) {
-//					
-//					ToastUtils.showToast("More clicked");
-//				}
-//			});
 		}
 	
 		public void setValues(Post post) {
@@ -334,9 +328,6 @@ public class CircleListAdapter extends BaseAdapter {
 			&sb_id=clubcage
 			&image_size=1080
 			&spot_nid=1885
-
-
-			
 			*/
 			
 			LogUtils.log("###CircleListAdapter.getView.  get object");
@@ -346,7 +337,6 @@ public class CircleListAdapter extends BaseAdapter {
 			if(convertView == null) {
 				ivImage = new OutspokenImageView(context);
 				ivImage.setScaleType(ScaleType.CENTER_CROP);
-				ivImage.setBackgroundColor(Color.CYAN);
 			} else {
 				ivImage = (OutspokenImageView) convertView;
 			}

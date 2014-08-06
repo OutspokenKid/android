@@ -15,41 +15,39 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsFragment;
 import com.zonecomms.common.models.VIPFloorInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class InformationPage extends BaseFragment {
+public class InformationPage extends ZonecommsFragment {
 
-	private static int madeCount = 2112;
-	
 	private RelativeLayout relative;
 	private LinearLayout VIPInfoLayout;
 	
 	private VIPFloorInfo[] VIPInfos;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 		relative = (RelativeLayout) mThisView.findViewById(R.id.informationPage_relative);
 	}
 
 	@Override
-	protected void setVariables() {
-		// TODO Auto-generated method stub
+	public void setVariables() {
 
+		title = getString(R.string.app_name);
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 		madeCount += 20;
 		
@@ -119,7 +117,7 @@ public class InformationPage extends BaseFragment {
 			@Override
 			public void onClick(View arg0) {
 				
-				mActivity.showLocationWithNaverMap();
+				mainActivity.showLocationWithNaverMap();
 			}
 		});
 		relative.addView(location);
@@ -140,7 +138,7 @@ public class InformationPage extends BaseFragment {
 				
 				try {
 					Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + getString(R.string.textForCall)));
-					mActivity.startActivity(intent);
+					mainActivity.startActivity(intent);
 				} catch(Exception e) {
 					LogUtils.trace(e);
 				}
@@ -198,7 +196,7 @@ public class InformationPage extends BaseFragment {
 			@Override
 			public void onClick(View v) {
 				
-				mActivity.showImageViewerActivity(getString(R.string.app_name), 
+				mainActivity.showImageViewerActivity(getString(R.string.app_name), 
 						R.drawable.img_clubphoto);
 			}
 		});
@@ -233,19 +231,19 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		super.downloadInfo();
 		
@@ -298,7 +296,7 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		super.setPage(successDownload);
 		
@@ -334,7 +332,7 @@ public class InformationPage extends BaseFragment {
 							
 							if(VIPInfos[I].getLink_datas() != null && VIPInfos[I].getLink_datas().length > 0) {
 								VIPFloorInfo vfi = VIPInfos[I];
-								mActivity.showImageViewerActivity(vfi.getTitle(), vfi.getLink_datas(), vfi.getThumbnail(), I);
+								mainActivity.showImageViewerActivity(vfi.getTitle(), vfi.getLink_datas(), vfi.getThumbnail(), I);
 							}
 						}
 					});
@@ -352,59 +350,43 @@ public class InformationPage extends BaseFragment {
 	}
 
 	@Override
-	protected String getTitleText() {
-
-		return getString(R.string.app_name);
-	}
-
-	@Override
-	protected int getContentViewId() {
-
-		return R.id.informationPage_relative;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_information;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
+		
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().downloadBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().downloadBanner();
 		}
 		
 		if(!isDownloading) {
 			downloadInfo();
 		}
-	}
-
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
 	}
 }

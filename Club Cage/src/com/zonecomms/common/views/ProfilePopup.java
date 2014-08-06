@@ -24,17 +24,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.zonecomms.clubcage.IntentHandlerActivity;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -102,6 +101,7 @@ public class ProfilePopup extends FrameLayout {
 		tvNickname.setGravity(Gravity.CENTER);
 		tvNickname.setId(madeCount);
 		tvNickname.setTextColor(Color.WHITE);
+		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvNickname, 30);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		relative.addView(tvNickname);
@@ -114,6 +114,7 @@ public class ProfilePopup extends FrameLayout {
 		tvGenderWithAge.setLayoutParams(rp);
 		tvGenderWithAge.setGravity(Gravity.CENTER_VERTICAL);
 		tvGenderWithAge.setTextColor(Color.WHITE);
+		FontUtils.setGlobalFont(tvGenderWithAge);
 		FontUtils.setFontSize(tvGenderWithAge, 26);
 		relative.addView(tvGenderWithAge);
 		
@@ -422,7 +423,7 @@ public class ProfilePopup extends FrameLayout {
 				try {
 					if(myStoryInfo != null && !StringUtils.isEmpty(myStoryInfo.getMystory_member_id())) {
 						
-						if(myStoryInfo.getMystory_member_id().equals(MainActivity.myInfo.getMember_id())) {
+						if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 							ToastUtils.showToast(R.string.addMe);
 							return;
 						}
@@ -458,7 +459,7 @@ public class ProfilePopup extends FrameLayout {
 				try {
 					if(myStoryInfo != null && !StringUtils.isEmpty(myStoryInfo.getMystory_member_id())) {
 						
-						if(myStoryInfo.getMystory_member_id().equals(MainActivity.myInfo.getMember_id())) {
+						if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 							ToastUtils.showToast(R.string.withMe);
 							return;
 						}

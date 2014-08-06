@@ -6,12 +6,10 @@ import java.net.URLEncoder;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.view.Gravity;
@@ -48,17 +46,16 @@ import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.SignInActivity.OnAfterSigningInListener;
 import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.clubcage.classes.ZonecommsRecyclingActivity;
+import com.zonecomms.clubcage.classes.ZonecommsActivity;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.CustomDatePicker;
 
-public class SignUpActivity extends ZonecommsRecyclingActivity {
+public class SignUpActivity extends ZonecommsActivity {
 
 	public static SignInActivity signInActivity;
 	
-	private Context context;
 	private TextView tvTitle;
 	
 	private String yearString = "1994";
@@ -96,20 +93,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	private UploadImageInfo uii;
 	
 	@Override
- 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sign_up);
-		context = this;
-		
-		bindViews();
-		setVariables();
-		createPage();
-		setSizes();
-		setListeners();
-	}
-	
-	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		
 		tvTitle = (TextView) findViewById(R.id.signUpActivity_tvTitle);
 		frameForClause = (FrameLayout) findViewById(R.id.signUpActivity_frameForClause);
@@ -125,7 +109,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 		pEmail.setTitle("Select you Email");
 		pEmail.addItem(getString(R.string.mail1));
@@ -149,7 +133,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		addViewsForClause();
 		addViewsForMainInfo();
@@ -157,7 +141,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.LEFT|Gravity.TOP, null);
 		FontUtils.setFontSize(tvTitle, 30);
@@ -172,7 +156,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 		pEmail.setOnItemClickedListener(new OnItemClickedListener() {
 			
@@ -183,7 +167,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 					spEmail.setText("");
 					etEmail2.setVisibility(View.VISIBLE);
 					etEmail2.requestFocus();
-					SoftKeyboardUtils.showKeyboard(context, etEmail2);
+					SoftKeyboardUtils.showKeyboard(SignUpActivity.this, etEmail2);
 				} else {
 					etEmail2.setVisibility(View.INVISIBLE);
 				}
@@ -212,21 +196,21 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setPage() {
+	public void setPage(boolean successDownload) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected int getContentViewId() {
+	public int getContentViewId() {
 
-		return R.id.signUpActivity_mainLayout;
+		return R.layout.activity_sign_up;
 	}
 
 	@Override
@@ -250,7 +234,13 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onMenuPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		
 		if(resultCode == RESULT_OK) {
 			
@@ -327,24 +317,12 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 	}
 	
 	@Override
-	protected View getLoadingView() {
+	public View getLoadingView() {
 
 		View loadingView = findViewById(R.id.signUpActivity_loadingView);
 		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
 		
 		return loadingView;
-	}
-
-	@Override
-	protected Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	protected Animation getLoadingViewAnimOut() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 ///////////// Custom methods.
@@ -413,7 +391,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 			}
 		});
 		
-		HoloStyleButton btnAgree = new HoloStyleButton(context);
+		HoloStyleButton btnAgree = new HoloStyleButton(SignUpActivity.this);
 		ResizeUtils.viewResize(360, 60, btnAgree, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{0, 0, 20, 0});
 		btnAgree.setText(getString(R.string.agreeWithClause));
 		FontUtils.setFontSize(btnAgree.getTextView(), 20);
@@ -426,7 +404,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		frameForClause.addView(btnAgree);
 		
-		HoloStyleButton btnDisagree = new HoloStyleButton(context);
+		HoloStyleButton btnDisagree = new HoloStyleButton(SignUpActivity.this);
 		ResizeUtils.viewResize(180, 60, btnDisagree, 2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 0, 0});
 		btnDisagree.setText(getString(R.string.disagreeWithClause));
 		FontUtils.setFontSize(btnDisagree.getTextView(), 20);
@@ -444,42 +422,42 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		
 		FrameLayout frameForMain = (FrameLayout) findViewById(R.id.signUpActivity_frameForMainInfo);
 		
-		etId = new HoloStyleEditText(context);
+		etId = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, etId, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 80, 0, 0});
 		etId.setHint(R.string.hintForId);
 		etId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		FontUtils.setFontSize(etId.getEditText(), 22);
 		frameForMain.addView(etId);
 		
-		etPw = new HoloStyleEditText(context);
+		etPw = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, etPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 180, 0, 0});
 		etPw.setHint(R.string.hintForPw);
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		FontUtils.setFontSize(etPw.getEditText(), 22);
 		frameForMain.addView(etPw);
 		
-		etConfirmPw = new HoloStyleEditText(context);
+		etConfirmPw = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, etConfirmPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 280, 0, 0});
 		etConfirmPw.setHint(R.string.hintForConfirmPw);
 		etConfirmPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		FontUtils.setFontSize(etConfirmPw.getEditText(), 22);
 		frameForMain.addView(etConfirmPw);
 		
-		etEmail = new HoloStyleEditText(context);
+		etEmail = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(270, 70, etEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 380, 0, 0});
 		etEmail.setHint(R.string.hintForEmail);
 		etEmail.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		FontUtils.setFontSize(etEmail.getEditText(), 22);
 		frameForMain.addView(etEmail);
 		
-		TextView tvAt = new TextView(context);
+		TextView tvAt = new TextView(SignUpActivity.this);
 		ResizeUtils.viewResize(60, 60, tvAt, 2, Gravity.LEFT|Gravity.TOP, new int[]{310, 380, 0, 0});
 		tvAt.setText("@");
 		tvAt.setGravity(Gravity.CENTER);
 		FontUtils.setFontSize(tvAt, 40);
 		frameForMain.addView(tvAt);
 		
-		spEmail = new HoloStyleSpinnerButton(context);
+		spEmail = new HoloStyleSpinnerButton(SignUpActivity.this);
 		ResizeUtils.viewResize(230, 70, spEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 380, 0, 0});
 		spEmail.setOnClickListener(new OnClickListener() {
 			
@@ -488,7 +466,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 
 				if(pEmail != null) {
 					
-					SoftKeyboardUtils.hideKeyboard(context, spEmail.getTextView());
+					SoftKeyboardUtils.hideKeyboard(SignUpActivity.this, spEmail.getTextView());
 					spEmail.postDelayed(new Runnable() {
 						
 						@Override
@@ -503,7 +481,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		frameForMain.addView(spEmail);
 		pEmail.setTargetTextView(spEmail.getTextView());
 		
-		etEmail2 = new HoloStyleEditText(context);
+		etEmail2 = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(180, 70, etEmail2, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 380, 0, 0});
 		etEmail2.setHint(R.string.inputDirectly);
 		etEmail2.setVisibility(View.INVISIBLE);
@@ -512,14 +490,14 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		FontUtils.setFontSize(etEmail2.getEditText(), 22);
 		frameForMain.addView(etEmail2);
 		
-		etPhoneNumber = new HoloStyleEditText(context);
+		etPhoneNumber = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, etPhoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 480, 0, 0});
 		etPhoneNumber.setHint(R.string.hintForPhoneNumber);
 		etPhoneNumber.setInputType(InputType.TYPE_CLASS_NUMBER);
 		FontUtils.setFontSize(etPhoneNumber.getEditText(), 22);
 		frameForMain.addView(etPhoneNumber);
 		
-		HoloStyleButton btnInputMoreInfo = new HoloStyleButton(context);
+		HoloStyleButton btnInputMoreInfo = new HoloStyleButton(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, btnInputMoreInfo, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 620, 0, 0});
 		btnInputMoreInfo.setText(R.string.inputMoreInfo);
 		FontUtils.setFontSize(btnInputMoreInfo.getTextView(), 23);
@@ -677,7 +655,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		frameForMain.addView(btnInputMoreInfo);
 		
-		View v = new View(context);
+		View v = new View(SignUpActivity.this);
 		ResizeUtils.viewResize(10, 640, v, 2, Gravity.LEFT|Gravity.TOP, null);
 		frameForMain.addView(v);
 	}
@@ -687,7 +665,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		
 		FrameLayout frameForSub = (FrameLayout) findViewById(R.id.signUpActivity_frameForSubInfo);
 		
-		ivProfile = new ImageView(context);
+		ivProfile = new ImageView(SignUpActivity.this);
 		ResizeUtils.viewResize(300, 300, ivProfile, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 40, 0, 0});
 		ivProfile.setBackgroundResource(R.drawable.configuration_profile_image);
 		ivProfile.setScaleType(ScaleType.CENTER_CROP);
@@ -700,7 +678,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		frameForSub.addView(ivProfile);
 		
-		TextView tv = new TextView(context);
+		TextView tv = new TextView(SignUpActivity.this);
 		ResizeUtils.viewResize(320, LayoutParams.WRAP_CONTENT, tv, 2, Gravity.
 				CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 350, 0, 0});
 		tv.setText(R.string.profilePhotoCondition);
@@ -708,13 +686,13 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		FontUtils.setFontSize(tv, 20);
 		frameForSub.addView(tv);
 		
-		etNickname = new HoloStyleEditText(context);
+		etNickname = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, etNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 410, 0, 0});
 		etNickname.setHint(R.string.hintForNickname);
 		FontUtils.setFontSize(etNickname.getEditText(), 22);
 		frameForSub.addView(etNickname);
 		
-		spGender = new HoloStyleSpinnerButton(context);
+		spGender = new HoloStyleSpinnerButton(SignUpActivity.this);
 		ResizeUtils.viewResize(230, 80, spGender, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 520, 0, 0});
 		frameForSub.addView(spGender);
 		spGender.setText(R.string.selectGender);
@@ -724,7 +702,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 			public void onClick(View v) {
 
 				if(pGender != null) {
-					SoftKeyboardUtils.hideKeyboard(context, spGender.getTextView());
+					SoftKeyboardUtils.hideKeyboard(SignUpActivity.this, spGender.getTextView());
 					spGender.postDelayed(new Runnable() {
 						
 						@Override
@@ -737,7 +715,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		pGender.setTargetTextView(spGender.getTextView());
 		
-		TextView tvBirth = new TextView(context);
+		TextView tvBirth = new TextView(SignUpActivity.this);
 		tvBirth.setText(R.string.birth);
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvBirth, 2, Gravity.LEFT|Gravity.TOP, new int[]{40, 640, 0, 0});
 		tvBirth.setGravity(Gravity.CENTER_VERTICAL);
@@ -745,12 +723,12 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		tvBirth.setTextColor(Color.WHITE);
 		frameForSub.addView(tvBirth);
 		
-		FrameLayout ff = new FrameLayout(context);
+		FrameLayout ff = new FrameLayout(SignUpActivity.this);
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, ff, 2, 
 				Gravity.LEFT|Gravity.TOP, new int[]{0, 680, 0, 0});
 		frameForSub.addView(ff);
 		
-		dpBirth = new CustomDatePicker(context);
+		dpBirth = new CustomDatePicker(SignUpActivity.this);
 		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 	    if (currentapiVersion >= 11) {
 	    	dpBirth.setCalendarViewShown(false);
@@ -768,14 +746,14 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		ff.addView(dpBirth);
 		
-		etIntroduce = new HoloStyleEditText(context);
+		etIntroduce = new HoloStyleEditText(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 90, etIntroduce, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, (currentapiVersion >= 11? 1080 : 960), 0, 0});
 		etIntroduce.setHint(R.string.hintForIntroduce);
 		etIntroduce.getEditText().setSingleLine(false);
 		FontUtils.setFontSize(etIntroduce.getEditText(), 22);
 		frameForSub.addView(etIntroduce);
 		
-		HoloStyleButton btnCompleteSignUp = new HoloStyleButton(context);
+		HoloStyleButton btnCompleteSignUp = new HoloStyleButton(SignUpActivity.this);
 		ResizeUtils.viewResize(540, 70, btnCompleteSignUp, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, (currentapiVersion >= 11? 1180 : 1060), 0, 0});
 		btnCompleteSignUp.setText(R.string.completeSignUp);
 		FontUtils.setFontSize(btnCompleteSignUp.getTextView(), 23);
@@ -843,7 +821,7 @@ public class SignUpActivity extends ZonecommsRecyclingActivity {
 		});
 		frameForSub.addView(btnCompleteSignUp);
 		
-		View v = new View(context);
+		View v = new View(SignUpActivity.this);
 		ResizeUtils.viewResize(10, (currentapiVersion >= 11? 1290 : 1170), v, 2, Gravity.LEFT|Gravity.TOP, null);
 		frameForSub.addView(v);
 	}

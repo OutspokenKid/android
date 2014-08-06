@@ -31,9 +31,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -41,8 +41,8 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsListFragment;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.models.Member;
@@ -50,9 +50,12 @@ import com.zonecomms.common.models.Notice;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class GridPage extends BaseListFragment {
+public class GridPage extends ZonecommsListFragment {
 	
 	private boolean isAnimating;
+	public int lastIndexno;
+	public boolean isLastList;
+	public String url;
 
 	private int numOfColumn;
 	private int menuIndex;
@@ -68,13 +71,13 @@ public class GridPage extends BaseListFragment {
 	private AsyncSearchTask currentTask;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.gridPage_swipeRefreshLayout);
 		gridView = (GridView) mThisView.findViewById(R.id.gridPage_gridView);
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 		numOfColumn = getArguments().getInt("numOfColumn");
 		boardIndex = getArguments().getInt("boardIndex");
@@ -98,7 +101,7 @@ public class GridPage extends BaseListFragment {
 	}
 
 	@TargetApi(Build.VERSION_CODES.GINGERBREAD) @Override
-	protected void createPage() {
+	public void createPage() {
 
 		if(numOfColumn == 0) {
 			numOfColumn = 2;
@@ -121,11 +124,11 @@ public class GridPage extends BaseListFragment {
 			public void onRefresh() {
 
 				swipeRefreshLayout.setRefreshing(true);
-				onRefreshPage();
+				refreshPage();
 			}
 		});
 		
-		GridAdapter gridAdapter = new GridAdapter(mContext, mActivity, models, false);
+		GridAdapter gridAdapter = new GridAdapter(mContext, mainActivity, models, false);
 		gridView.setAdapter(gridAdapter);
 		gridView.setNumColumns(numOfColumn);
 		gridView.setPadding(0, ResizeUtils.getSpecificLength(8), 0, 0);
@@ -153,17 +156,17 @@ public class GridPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		if(isDownloading || isLastList) {
 			return;
@@ -291,7 +294,7 @@ public class GridPage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		if(isRefreshing && gridView != null) {
 			
@@ -307,62 +310,44 @@ public class GridPage extends BaseListFragment {
 		
 		super.setPage(successDownload);
 	}
-
-	@Override
-	public void onRefreshPage() {
-
-		super.onRefreshPage();
-		downloadInfo();
-	}
 	
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.gridPage_mainLayout;
-	}
-	
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_grid;
 	}
 
 	@Override
-	public boolean onBackKeyPressed() {
-
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
 		
 		if(boardIndex != 0) {
-			mActivity.getTitleBar().showWriteButton();
+			mainActivity.getTitleBar().showWriteButton();
 		} else {
-			mActivity.getTitleBar().hideWriteButton();
+			mainActivity.getTitleBar().hideWriteButton();
 		}
 
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().downloadBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().downloadBanner();
 		}
 	}
 
-	@Override
-	public void onSoftKeyboardShown() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 ///////////////////////// Custom methods.
 	
 	public void addMenuForPeople() {
@@ -612,7 +597,7 @@ public class GridPage extends BaseListFragment {
 							topMargin = ResizeUtils.getSpecificLength(0);
 					swipeRefreshLayout.startAnimation(taUp);
 					
-					mActivity.runOnUiThread(new Runnable() {
+					mainActivity.runOnUiThread(new Runnable() {
 						
 						@Override
 						public void run() {
@@ -634,14 +619,14 @@ public class GridPage extends BaseListFragment {
 	public class AsyncSearchTask extends AsyncTask<Void, Void, Void> {
 
 		@Override
-		protected void onPreExecute() {
+		public void onPreExecute() {
 			
-			mActivity.showLoadingView();
+			mainActivity.showLoadingView();
 			ToastUtils.showToast(R.string.searching);
 		}
 		
 		@Override
-		protected Void doInBackground(Void... params) {
+		public Void doInBackground(Void... params) {
 			
 			try {
 				Thread.sleep(1000);
@@ -650,9 +635,10 @@ public class GridPage extends BaseListFragment {
 		}
 		
 		@Override
-		protected void onPostExecute(Void result) {
+		public void onPostExecute(Void result) {
 			
-			onRefreshPage();
+			refreshPage();
 		}
 	}
+
 }

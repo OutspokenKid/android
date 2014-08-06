@@ -24,9 +24,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -36,17 +36,17 @@ import com.outspoken_kid.views.holo_dark.HoloStyleButton;
 import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.BaseListFragment;
 import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.classes.ZonecommsListFragment;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.Message;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 
-public class MessagePage extends BaseListFragment {
+public class MessagePage extends ZonecommsListFragment {
 
 	private RelativeLayout mainLayout;
 	private SwipeRefreshLayout swipeRefreshLayout;
@@ -61,7 +61,7 @@ public class MessagePage extends BaseListFragment {
 	private int numOfNewMessages;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 		mainLayout = (RelativeLayout) mThisView.findViewById(R.id.messagePage_mainLayout);
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.messagePage_swipeRefreshLayout);
@@ -72,7 +72,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 		
 		if(getArguments() != null) {
 			member_id = getArguments().getString("member_id");
@@ -80,7 +80,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 		
 		swipeRefreshLayout.setColorSchemeColors(
         		Color.argb(255, 255, 102, 153), 
@@ -98,7 +98,7 @@ public class MessagePage extends BaseListFragment {
 			}
 		});
 		
-		ListAdapter listAdapter = new ListAdapter(mContext, mActivity, models, false);
+		ListAdapter listAdapter = new ListAdapter(mContext, mainActivity, models, false);
 		listView.setAdapter(listAdapter);
 		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
@@ -188,7 +188,7 @@ public class MessagePage extends BaseListFragment {
 															+ objJSON);
 
 													if(objJSON.getInt("errorCode") == 1) {
-														onRefreshPage();
+														refreshPage();
 													} else {
 														ToastUtils.showToast(R.string.failToLoadBitmap);
 													}
@@ -209,15 +209,15 @@ public class MessagePage extends BaseListFragment {
 					}
 				};
 				
-				mActivity.imageUploadSetting(filePath, fileName, false, oaui);
-				mActivity.startActivityForResult(intent, requestCode);
+				mainActivity.imageUploadSetting(filePath, fileName, false, oaui);
+				mainActivity.startActivityForResult(intent, requestCode);
 			}
 		});
 		mainLayout.addView(pPhoto);
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 		photo.setOnClickListener(new OnClickListener() {
 			
@@ -243,7 +243,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 		
 		ResizeUtils.viewResize(66, 53, photo, 1, Gravity.CENTER_VERTICAL, new int[]{8, 8, 8, 8});
 		
@@ -258,7 +258,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		if(isDownloading) {
 			return;
@@ -266,7 +266,7 @@ public class MessagePage extends BaseListFragment {
 		
 		try {
 			if(models.size() == 0) {
-				mActivity.showLoadingView();
+				mainActivity.showLoadingView();
 			}
 			
 			isDownloading = true;
@@ -316,13 +316,13 @@ public class MessagePage extends BaseListFragment {
 									if(i==0) {
 										lastIndexno = message.getIndexno();
 
-										if(message.getPost_member_id().equals(MainActivity.myInfo.getMember_id())) {
+										if(message.getPost_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 											title = message.getMystory_member_nickname();
 										} else {
 											title = message.getPost_member_nickname();
 										}
 										
-										mActivity.getTitleBar().setTitleText(title);
+										mainActivity.getTitleBar().setTitleText(title);
 									}
 								} catch(Exception e) {
 								}
@@ -342,7 +342,7 @@ public class MessagePage extends BaseListFragment {
 							}
 						} else {
 							if(title.equals("MESSAGE")) {
-								mActivity.getTitleBar().setTitleText(member_id);
+								mainActivity.getTitleBar().setTitleText(member_id);
 							}
 							ToastUtils.showToast(R.string.lastPage);
 							numOfNewMessages = 0;
@@ -364,10 +364,10 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
-		mActivity.hideLoadingView();
-		mActivity.hideCover();
+		mainActivity.hideLoadingView();
+		mainActivity.hideCover();
 		
 		if(!isRefreshing && !isFirstLoading) {
 
@@ -414,7 +414,7 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected String getTitleText() {
+	public String getTitleText() {
 
 		if(StringUtils.isEmpty(title)) {
 			title = "MESSAGE";
@@ -424,19 +424,13 @@ public class MessagePage extends BaseListFragment {
 	}
 
 	@Override
-	protected int getContentViewId() {
-
-		return R.id.messagePage_mainLayout;
-	}
-
-	@Override
-	protected int getLayoutResId() {
+	public int getContentViewId() {
 
 		return R.layout.page_message;
 	}
 	
 	@Override
-	public boolean onBackKeyPressed() {
+	public boolean onBackPressed() {
 		
 		if(pPhoto.getVisibility() == View.VISIBLE) {
 			pPhoto.hidePopup();
@@ -445,10 +439,20 @@ public class MessagePage extends BaseListFragment {
 		}
 		return true;
 	}
+	
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 	@Override
-	public void onRefreshPage() {
-
+	public void refreshPage() {
+		
+		if(isRefreshing) {
+			return;
+		}
+		
 		isRefreshing = true;
 		isFirstLoading = true;
 		numOfNewMessages = 0;
@@ -461,25 +465,16 @@ public class MessagePage extends BaseListFragment {
 	public void onResume() {
 		super.onResume();
 		
-		mActivity.getTitleBar().hideCircleButton();
-		mActivity.getTitleBar().showHomeButton();
-		mActivity.getTitleBar().hideWriteButton();
+		mainActivity.showTitleBar();
+		mainActivity.getTitleBar().hideCircleButton();
+		mainActivity.getTitleBar().showHomeButton();
+		mainActivity.getTitleBar().hideWriteButton();
 		
-		if(mActivity.getSponserBanner() != null) {
-			mActivity.getSponserBanner().hideBanner();
+		if(mainActivity.getSponserBanner() != null) {
+			mainActivity.getSponserBanner().hideBanner();
 		}
 	}
 
-	@Override
-	public void onSoftKeyboardShown() {
-		
-	}
-
-	@Override
-	public void onSoftKeyboardHidden() {
-		
-	}
-	
 	@Override
 	public void finish(boolean needAnim, boolean isBeforeMain) {
 		
@@ -496,8 +491,8 @@ public class MessagePage extends BaseListFragment {
 	
 	public void sendMessage(String input) {
 		
-		mActivity.showLoadingView();
-		mActivity.showCover();
+		mainActivity.showLoadingView();
+		mainActivity.showCover();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "microspot/write" +
@@ -515,8 +510,8 @@ public class MessagePage extends BaseListFragment {
 				public void onError(String url) {
 					
 					ToastUtils.showToast(R.string.failToSendMessage);
-					mActivity.hideLoadingView();
-					mActivity.hideCover();
+					mainActivity.hideLoadingView();
+					mainActivity.hideCover();
 				}
 
 				@Override
@@ -526,7 +521,7 @@ public class MessagePage extends BaseListFragment {
 						LogUtils.log("MessagePage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
-						onRefreshPage();
+						refreshPage();
 						etMessage.getEditText().setText("");
 					} catch (Exception e) {
 						LogUtils.trace(e);

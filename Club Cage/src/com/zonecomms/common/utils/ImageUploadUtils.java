@@ -4,23 +4,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 
-import com.outspoken_kid.utils.BitmapUtils;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ToastUtils;
-import com.zonecomms.clubcage.R;
-import com.zonecomms.clubcage.classes.ZoneConstants;
-import com.zonecomms.common.models.UploadImageInfo;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
+
+import com.outspoken_kid.utils.BitmapUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.common.models.UploadImageInfo;
 
 public class ImageUploadUtils {
 	

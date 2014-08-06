@@ -71,7 +71,7 @@ public class TitleBar extends LinearLayout {
 			
 			@Override
 			public void onClick(View v) {
-
+				
 				Intent intent = new Intent(getContext(), CircleMainActivity.class);
 				getContext().startActivity(intent);
 				ZonecommsApplication.getActivity().finish();
@@ -88,7 +88,7 @@ public class TitleBar extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 
-				ZonecommsApplication.clearFragmentsWithLastAnim();
+				ZonecommsApplication.getActivity().clearFragments();
 			}
 		});
 		this.addView(btnHome);
@@ -100,6 +100,7 @@ public class TitleBar extends LinearLayout {
 		int p = ResizeUtils.getSpecificLength(8);
 		tvTitle.setPadding(p, p, p, p);
 		tvTitle.setEllipsize(TruncateAt.END);
+		FontUtils.setGlobalFont(tvTitle);
 		FontUtils.setFontSize(tvTitle, 36);
 		FontUtils.setFontColor(tvTitle, Color.WHITE);
 		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
