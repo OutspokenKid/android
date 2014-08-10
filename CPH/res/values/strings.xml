@@ -1,11 +1,17 @@
 <resources>
 
     <string name="address">Address</string>
+    <string name="addressForWholesale">Address for wholesale</string>
+    <string name="addressForRetail">Address for retail</string>
     <string name="agree">Agree</string>
     <string name="app_name">CPH</string>
 
     <string name="categoryText">Category text</string>
-    <string name="checkDuplication">Check duplication</string>
+    <string name="certify">Certify</string>
+    <string name="certifyCompleted">Certify completed</string>
+    <string name="check_id">Check id</string>
+    <string name="check_pw">Check pw</string>
+    <string name="check_pwConfirm">Check pw confirm</string>
     <string name="companyName">Company name</string>
     <string name="complete">Complete</string>
     <string name="confirmPw">Confirm password</string>
@@ -14,12 +20,19 @@
     <string name="employee_md">Employee md</string>
     <string name="employee_normal">Employee normal</string>
     
+    <string name="failToFindId">Fail to find ID</string>
+    <string name="failToFindPw">Fail to find Pw</string>
+    <string name="failToSearchShop">Fail to search the shop</string>
+    <string name="failToSignIn">Fail to sign in</string>
+    <string name="failToSignUp">Fail to sign up</string>
     <string name="findId">Find ID</string>
     <string name="findPw">Find Password</string>
     <string name="floor">Floor</string>
     
-    <string name="hintForId">Find ID</string>
-    <string name="hintForPw">Find PW</string>
+    <string name="hintForId">ID</string>
+    <string name="hintForMallUrl">http://</string>
+    <string name="hintForName">Name</string>
+    <string name="hintForPw">PW</string>
     <string name="hintForPhone">Phone number</string>
     <string name="hintForSearchCompanyName">Input company name</string>
     <string name="hintForSearchCompanyPhone">Input company phone</string>
@@ -37,7 +50,11 @@
     
     <string name="line">Line</string>
     
+    <string name="mallUrl">Mall url</string>
+    
+    <string name="name">Name</string>
     <string name="next">Next</string>
+    <string name="noResult_searchWholsale">There is no result.</string>
     <string name="notice">Notice</string>
     
     <string name="owner">Owner</string>
@@ -68,17 +85,21 @@
     <string name="sendCertificationCompleted">Send verification number completed</string>
     <string name="signIn">Sign In</string>
     <string name="signingIn">Signing In..</string>
+    <string name="signingUp">Signing Up..</string>
     <string name="signUp">Sign Up</string>
     
     <string name="terms">Terms</string>
     
-    <string name="verify">Certify</string>
-    
     <string name="wholesale">Wholesale</string>
+    <string name="wrongAddress">Wrong address</string>
     <string name="wrongCategory">Select category</string>
     <string name="wrongCertificationNumber">Wrong certification number</string>
+    <string name="wrongCompanyName">Wrong company name</string>
+    <string name="wrongCompanyOwner">Wrong company owner name</string>
+    <string name="wrongCompanyReg">Wrong company registration</string>
     <string name="wrongId">Wrong ID</string>
     <string name="wrongPhoneNumber">Wrong phone number</string>
     <string name="wrongPw">Wrong PW</string>
-    <string name="wrongSearchKeyword"></string>
+    <string name="wrongSearchKeyword">Input keyword.</string>
+    <string name="wrongMallUrl">Wrong mall url</string>
 </resources>

@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.outspoken_kid.classes.BitmapContainer;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -14,7 +15,8 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class OutspokenImageView extends ImageView {
 
-	private String imageUrl;
+	private String url;
+	private Bitmap bitmap;
 	
 	public OutspokenImageView(Context context) {
 		this(context, null, 0);
@@ -28,20 +30,20 @@ public class OutspokenImageView extends ImageView {
 		super(context, attrs, defStyle);
 	}
 	
-	public void setImageUrl(String imageUrl) {
+	public void setImageUrl(String url) {
 		
-		this.imageUrl = imageUrl;
+		this.url = url;
 		downloadImage();
 	}
 	
 	public void downloadImage() {
 		
 		try {
-			if(!StringUtils.isEmpty(imageUrl)) {
+			if(!StringUtils.isEmpty(url)) {
 			
-				final String IMAGE_URL = imageUrl;
+				final String IMAGE_URL = url;
 				
-				DownloadUtils.downloadBitmap(imageUrl,
+				DownloadUtils.downloadBitmap(url,
 						new OnBitmapDownloadListener() {
 
 							@Override
@@ -60,6 +62,7 @@ public class OutspokenImageView extends ImageView {
 									
 									if (url != null
 											&& url.equals(IMAGE_URL)) {
+										OutspokenImageView.this.bitmap = bitmap;
 										setImageBitmap(bitmap);
 									}
 								} catch (Exception e) {
@@ -69,7 +72,6 @@ public class OutspokenImageView extends ImageView {
 								}
 							}
 						});
-				
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -81,6 +83,12 @@ public class OutspokenImageView extends ImageView {
 	public void clearImage() {
 		
 		try {
+			BitmapContainer bc = BitmapContainer.getContainer(url, bitmap);
+			
+			if(bc != null) {
+				bc.unreference();
+			}
+			
 			Drawable d = getDrawable();
 	        setImageDrawable(null);
 	        setImageBitmap(null);
@@ -104,5 +112,11 @@ public class OutspokenImageView extends ImageView {
 		} else {
             clearImage();
 		}
+	}
+	
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		
 	}
 }

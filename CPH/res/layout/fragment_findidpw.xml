@@ -96,7 +96,7 @@
 		    	android:layout_below="@id/findIdPwPage_etCertification"
 		    	android:layout_centerHorizontal="true"
 		    	android:visibility="invisible"
-		    	android:background="@drawable/btn_certification" />
+		    	android:background="@drawable/btn_certify" />
 		    
 		</RelativeLayout>
 	    

@@ -1,7 +1,5 @@
 package com.zonecomms.common.models;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,7 +16,7 @@ import com.outspoken_kid.utils.LogUtils;
  */
 public class StartupInfo {
 
-	private BgInfo bgInfo;
+	private BgInfo[] bgInfos;
 	private Banner[] banners;
 	private MenuColorSet[] menuColorSets;
 	private LoadingImageSet loadingImageSet;
@@ -71,7 +69,14 @@ public class StartupInfo {
 			}
 			
 			if(objJSON.has("bgInfo")) {
-				setBgInfo(new BgInfo(objJSON.getJSONArray("bgInfo")));
+				
+				JSONArray arJSON = objJSON.getJSONArray("bgInfo");
+				
+				int size = arJSON.length();
+				bgInfos = new BgInfo[size];
+				for(int i=0; i<size; i++) {
+					bgInfos[i] = new BgInfo(arJSON.getJSONObject(i));
+				}
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -119,14 +124,14 @@ public class StartupInfo {
 		return schedules;
 	}
 
-	public BgInfo getBgInfo() {
+	public BgInfo[] getBgInfos() {
 		
-		return bgInfo;
+		return bgInfos;
 	}
 
-	public void setBgInfo(BgInfo bgInfo) {
+	public void setBgInfos(BgInfo[] bgInfos) {
 		
-		this.bgInfo = bgInfo;
+		this.bgInfos = bgInfos;
 	}
 	
 ///////////////////// Classes.
@@ -400,20 +405,15 @@ public class StartupInfo {
 }
 
 	public class BgInfo {
-		
-		public ArrayList<String> colors = new ArrayList<String>();
-		public ArrayList<String> urls = new ArrayList<String>();
 
-		public BgInfo(JSONArray arJSON) {
+		public String color;
+		public String url;
+
+		public BgInfo(JSONObject objJSON) {
 			
 			try {
-				int size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					JSONObject objInfo = arJSON.getJSONObject(i);
-					colors.add(objInfo.getString("colorBG"));
-					urls.add(objInfo.getJSONArray("link_datas").getString(0));
-				}
+					color = objJSON.getString("colorBG");
+					url = objJSON.getJSONArray("link_datas").getString(0);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {

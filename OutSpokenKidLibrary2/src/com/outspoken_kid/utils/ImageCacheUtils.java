@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -226,10 +227,26 @@ public class ImageCacheUtils {
 // 			SingleMediaScanner sms = (new SingleMediaScanner(context, url));
  			
  			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { 
- 				 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); 
- 				 Uri contentUri = Uri.parse(url); 
- 				 mediaScanIntent.setData(contentUri); 
- 				 context.sendBroadcast(mediaScanIntent); 
+// 				 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); 
+// 				 Uri contentUri = Uri.parse(url); 
+// 				 mediaScanIntent.setData(contentUri); 
+// 				 context.sendBroadcast(mediaScanIntent); 
+ 				
+ 	 			MediaScannerConnection.scanFile(context,
+	                new String[] {url}, null,
+	                new MediaScannerConnection.OnScanCompletedListener() {
+
+	                    public void onScanCompleted(String path, Uri uri) {
+	                    	String printString = "###ImageCacheUtil.onScanCompleted.  \npath : " + path;
+	                    	
+	                    	if(uri != null) {
+	                    		printString += "\nuri : " + uri.toString();
+	                    	}
+	                    	
+	                        LogUtils.log(printString);
+	                    }
+	                });
+			
  			} else { 
  				context.sendBroadcast(
  						new Intent(Intent.ACTION_MEDIA_MOUNTED, 

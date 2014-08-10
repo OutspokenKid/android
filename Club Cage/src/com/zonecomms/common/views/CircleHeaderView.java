@@ -28,6 +28,7 @@ public class CircleHeaderView extends FrameLayout {
 	private TextView[] tvTitles = new TextView[2];
 	
 	private AlphaAnimation aaIn, aaOut;
+	private int titleBarIndex = 1;
 	
 	public CircleHeaderView(Context context) {
 		this(context, null, 0);
@@ -100,36 +101,46 @@ public class CircleHeaderView extends FrameLayout {
 		tvTitles[1].setText(text);
 	}
 	
-	public void setTitleBarColor(int color) {
+	public void setTitleBarColor(int index, int color) {
 
-		LogUtils.log("###where.setTitleBarColor.  index : " + (ImagePlayViewer.imageIndex % 2));
+		LogUtils.log("###CircleHeaderView.setTitleBarColor.  index : " + (titleBarIndex));
 		
-		tvTitles[ImagePlayViewer.imageIndex % 2].setBackgroundColor(color);
+		tvTitles[titleBarIndex].setBackgroundColor(color);
 	}
 	
-	public void changeTitleBarColor(int color) {
+	public void changeTitleBarColor(int color, boolean needToPlay) {
 
-		int in = ImagePlayViewer.imageIndex % 2;
-		int out = (ImagePlayViewer.imageIndex + 1) % 2;
+		titleBarIndex++;
 		
-		LogUtils.log("###where.changeTitleBarColor.  in :  " + in + ", out : " + out);
+		int in = titleBarIndex % 2;
+		int out = (in + 1) % 2;
 		
-		if(tvTitles[out].getVisibility() == View.VISIBLE) {
-			tvTitles[out].startAnimation(aaOut);
-			tvTitles[out].setVisibility(View.INVISIBLE);
+		LogUtils.log("###CircleHeaderView.changeTitleBarColor.  needToPlay : " + needToPlay + ", " + in + "번째 타이틀 보여주고, " + out + "번째 타이틀 숨기기");
+		
+		if(needToPlay) {
 			tvTitles[in].setBackgroundColor(color);
-			tvTitles[in].startAnimation(aaIn);
 			tvTitles[in].setVisibility(View.VISIBLE);
+//			tvTitles[in].startAnimation(aaIn);
+			tvTitles[out].setVisibility(View.INVISIBLE);
+//			tvTitles[out].startAnimation(aaOut);
+		} else {
+			tvTitles[in].setBackgroundColor(color);
 		}
 	}
 	
 	public void showTitleBar() {
 		
-		tvTitles[ImagePlayViewer.imageIndex % 2].setVisibility(View.VISIBLE);
+		LogUtils.log("###CircleHeaderView.showTitleBar.  " + (titleBarIndex % 2) + "번째 타이틀 보여주고, " + ((titleBarIndex + 1) %2) + "번째 타이틀 숨기기");
+		
+		tvTitles[titleBarIndex % 2].setVisibility(View.VISIBLE);
+		tvTitles[(titleBarIndex + 1) % 2].setVisibility(View.INVISIBLE);
 	}
 	
 	public void hideTitleBar() {
 		
-		tvTitles[ImagePlayViewer.imageIndex % 2].setVisibility(View.INVISIBLE);
+		LogUtils.log("###CircleHeaderView.hideTitleBar.  둘 다 숨기기.");
+		
+		tvTitles[0].setVisibility(View.INVISIBLE);
+		tvTitles[1].setVisibility(View.INVISIBLE);
 	}
 }

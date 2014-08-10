@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="16" tools:ignore="OldTargetApi"/>
+        android:targetSdkVersion="19" tools:ignore="OldTargetApi"/>
     
     <supports-screens android:largeScreens="true" android:anyDensity="true" />
     

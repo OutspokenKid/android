@@ -1,7 +1,5 @@
 package com.zonecomms.common.views;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -9,13 +7,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
 import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -24,20 +21,15 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class ImagePlayViewer extends FrameLayout {
 
 	public static final int SLIDE_DURATION = 3000;
-	public static int imageIndex;
 	
 	private static final int ANIM_DURATION = 2000;
 	private static final float MOVE_DIST = 0.05f;
 	
-	private static final int MODE_DUAL = 0;
-	private static final int MODE_MORE = 1;
-	
 	private ImageView[] imageViews = new ImageView[2];
 	private Bitmap nextBitmap;
 	
-	private ArrayList<String> imageUrls;
-	private boolean needPlayImage;
-	private int mode;
+	private boolean needToPlayImage;
+	private int imagePlayingIndex;
 	private boolean isSliding;
 	
 	private AlphaAnimation aaIn, aaOut;
@@ -78,165 +70,126 @@ public class ImagePlayViewer extends FrameLayout {
 		aaOut.setDuration(ANIM_DURATION);
 	}
 	
-	public void setImageUrls(ArrayList<String> imageUrls) {
+	public void showNext(String url, String nextUrl) {
 		
-		//서버에서 이미지가 한장만 오는 경우는 없고, 잘못된 이미지가 올라가 있는 경우가 없다고 가정.
-		//모드 설정.
-		if(imageUrls.size() == 2){
-			mode = MODE_DUAL;
-		} else {
-			mode = MODE_MORE;
-		}
-
-		//이미지 url 셋 설정.
-		this.imageUrls = imageUrls;
-		
-		//초기 설정, imageUrls의 url중 첫번째 이미지를 가리키므로 imageIndex = 0.
-		imageIndex = 0;
-		
-		//첫번째 이미지 다운로드, 끝난 후 이미지 세팅.
-		DownloadUtils.downloadBitmap(imageUrls.get(0), new OnBitmapDownloadListener() {
-			
-			@Override
-			public void onError(String url) {
-				//서버에서 에러 안나는 이미지를 보내줬다고 가정.
-			}
-			
-			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
-				imageViews[0].setImageBitmap(bitmap);
-				imageViews[0].setImageMatrix(getBitmapMatrix(bitmap));
-			}
-		});
-	}
-	
-	public void start() {
-
-		slideImage(imageViews[0]);
-	}
-	
-	public void showNext() {
-		
-		if(mode == MODE_DUAL) {
-			changeImageViews();
-		
-		} else {
-			//이전 이미지 숨김 및 Recycle.
-			hideCurrentImageViewAndRecycle();
-			
-			//새로운 이미지 노출.
-			showNewImageView();
-		}
+		downloadImage(url);
+		downloadNextBitmap(nextUrl);
 	 }
-	
-	//MODE_DUAL 일때만 사용.
-	public void changeImageViews() {
+
+	//현재 보여질 이미지 다운로드, 설정.
+	public void downloadImage(final String url) {
 		
-		imageViews[(imageIndex + 1) % 2].setVisibility(View.INVISIBLE);
-		imageViews[imageIndex % 2].setVisibility(View.VISIBLE);
-		imageViews[imageIndex % 2].setImageBitmap(nextBitmap);
-		
-		if(needPlayImage) {
-			aaOut.setAnimationListener(null);
-			imageViews[(imageIndex + 1) % 2].startAnimation(aaOut);
-			imageViews[imageIndex % 2].startAnimation(aaIn);
-			slideImage(imageViews[imageIndex % 2]);
+		//처음일 땐 새로 다운받아야 함.
+		if(nextBitmap == null) {
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+//					LogUtils.log("ImagePlayViewer.onError." + "\nurl : " + url);
+
+					// TODO Auto-generated method stub		
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+//					LogUtils.log("ImagePlayViewer.onCompleted." + "\nurl : " + url);
+					
+					try {
+						imageViews[0].setImageBitmap(bitmap);
+						imageViews[0].setImageMatrix(getBitmapMatrix(bitmap));
+						slide(imageViews[0]);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+			
+		//처음이 아닌 경우 nextBitmap 이용.
 		} else {
-			downloadNextBitmap();
+			LogUtils.log("###ImagePlayViewer.downloadImage.  " + (imagePlayingIndex%2) + "번째 이미지뷰의 이미지를 변경.");
+			imageViews[imagePlayingIndex % 2].setImageBitmap(nextBitmap);
+			imageViews[imagePlayingIndex % 2].setImageMatrix(getBitmapMatrix(nextBitmap));
+			changeImageViews(imagePlayingIndex);
+		}
+		
+		imagePlayingIndex++;
+	}
+	
+	//이미지 뷰 교체 애니메이션
+	public void changeImageViews(int index) {
+		
+		imageViews[(index + 1) % 2].setVisibility(View.INVISIBLE);
+		imageViews[index % 2].setVisibility(View.VISIBLE);
+		
+		if(needToPlayImage) {
+			LogUtils.log("###ImagePlayViewer.changeImageViews.  " + (index%2) + "번째 이미지뷰를 보여주고, " + ((index + 1) %2) + "번째 이미지뷰 숨김.");
+			
+			imageViews[(index + 1) % 2].startAnimation(aaOut);
+			imageViews[index % 2].startAnimation(aaIn);
+			slide(imageViews[index % 2]);
+		} else {
+			//slide 효과.
 		}
 	}
 	
-	//MODE_MORE 일때만 사용.
-	public void hideCurrentImageViewAndRecycle() {
-		
-		LogUtils.log("###where.hideCurrentImageViewAndRecycle.  index : " + ((imageIndex + 1) % 2));
-		
-		aaOut.setAnimationListener(new AnimationListener() {
-			
+	//슬라이드
+	public void slide(final ImageView ivImage) {
+	
+		final Interpolator interpolator = new AccelerateDecelerateInterpolator();
+		final long startTime = System.currentTimeMillis();
+		final long duration = SLIDE_DURATION;
+		final Matrix matrix = new Matrix(ivImage.getImageMatrix());
+		final float totalDist = -ResizeUtils.getScreenWidth() * MOVE_DIST;
+
+		setSliding(true);
+
+		ivImage.post(new Runnable() {
+
+			float r, r0, t, distX;
+
 			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-			
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-			
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				
-				imageViews[(imageIndex + 1) % 2].setVisibility(View.INVISIBLE);
-//				ViewUnbindHelper.unbindReferences(imageViews[(imageIndex + 1) % 2]);
+			public void run() {
+
+				t = (float) (System.currentTimeMillis() - startTime) / duration;
+				t = t > 1.0f ? 1.0f : t;
+				r = interpolator.getInterpolation(t);
+				distX = (r - r0) * totalDist;
+
+				matrix.postTranslate(distX, 0);
+				ivImage.setImageMatrix(matrix);
+
+				r0 = r;
+
+				if (t < 1f) {
+					ivImage.post(this);
+				} else {
+					setSliding(false);
+				}
 			}
 		});
-		imageViews[(imageIndex + 1) % 2].startAnimation(aaOut);
 	}
 	
-	//MODE_MORE 일때만 사용.
-	public void showNewImageView() {
-		
-		LogUtils.log("###where.showNewImageView.  index : " + (imageIndex % 2));
-		
-		imageViews[imageIndex % 2].setImageBitmap(nextBitmap);
-		imageViews[imageIndex % 2].setImageMatrix(getBitmapMatrix(nextBitmap));
-		imageViews[imageIndex % 2].setVisibility(View.VISIBLE);
-		imageViews[imageIndex % 2].startAnimation(aaIn);
-		slideImage(imageViews[imageIndex % 2]);
-
-	}
-	
-	private void slideImage(final ImageView ivImage) {
-		
-		final Interpolator interpolator = new AccelerateDecelerateInterpolator();
-        final long startTime = System.currentTimeMillis();
-        final long duration = SLIDE_DURATION;
-        final Matrix matrix = new Matrix(ivImage.getImageMatrix());
-        final float totalDist = -ResizeUtils.getScreenWidth() * MOVE_DIST;
-        
-        setSliding(true);
-        
-        ivImage.post(new Runnable() {
-
-        	float r, r0, t, distX;
-        	
-            @Override
-            public void run() {
-            	
-                t = (float) (System.currentTimeMillis() - startTime) / duration;
-                t = t > 1.0f ? 1.0f : t;
-                r = interpolator.getInterpolation(t);
-                distX = (r - r0) * totalDist;
-                
-                matrix.postTranslate(distX, 0);
-                ivImage.setImageMatrix(matrix);
-
-                r0 = r;
-                
-                if (t < 1f) {
-                    ivImage.post(this);
-                } else {
-                	setSliding(false);
-                	downloadNextBitmap();
-                }
-            }
-        });
-	}
-	
-	public void downloadNextBitmap() {
+	//nextUrl 이미지 다운로드.
+	public void downloadNextBitmap(String url) {
 
 		//다음 이미지 다운로드.
-		DownloadUtils.downloadBitmap(imageUrls.get((imageIndex+1)%imageUrls.size()),
+		DownloadUtils.downloadBitmap(url,
 				new OnBitmapDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
 				//서버에서 에러 안나는 이미지를 보내줬다고 가정.
-				LogUtils.log("###ImagePlayViewer.onError.  \nurl : " + url);
+//				LogUtils.log("###ImagePlayViewer.onError.  \nurl : " + url);
 			}
 			
 			@Override
 			public void onCompleted(String url, Bitmap bitmap) {
 				
-				LogUtils.log("###ImagePlayViewer.onCompleted.  \nurl : " + url);
+//				LogUtils.log("###ImagePlayViewer.onCompleted.  \nurl : " + url);
 				nextBitmap = bitmap;
 			}
 		});
@@ -273,18 +226,26 @@ public class ImagePlayViewer extends FrameLayout {
 		return null;
 	}
 	
-	public void setNeedPlayImage(boolean needPlayImage) {
+	public void setNeedToPlayImage(boolean needToPlayImage) {
 		
-		this.needPlayImage = needPlayImage;
+		this.needToPlayImage = needToPlayImage;
+	}
+
+	public boolean isNeedToPlayImage() {
+		
+		return needToPlayImage;
 	}
 	
 	public void clear() {
 
 		try {
-//			ViewUnbindHelper.unbindReferences(imageViews[0]);
-//			ViewUnbindHelper.unbindReferences(imageViews[1]);
-//			nextBitmap.recycle();
-//			nextBitmap = null;
+			ViewUnbindHelper.unbindReferences(imageViews[0]);
+			ViewUnbindHelper.unbindReferences(imageViews[1]);
+			
+			if(nextBitmap != null) {
+				nextBitmap.recycle();
+				nextBitmap = null;
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

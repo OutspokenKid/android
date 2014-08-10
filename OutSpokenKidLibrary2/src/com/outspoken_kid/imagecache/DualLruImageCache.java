@@ -25,7 +25,7 @@ public class DualLruImageCache implements ImageCache {
 			int diskCacheSize, CompressFormat compressFormat, int quality) {
 		
 		memoryCache = new BitmapLruImageCache(diskCacheSize);
-		diskCache = new DiskLruImageCache(context, uniqueName, diskCacheSize * 3,
+		diskCache = new DiskLruImageCache(context, uniqueName, diskCacheSize * 5,
 				compressFormat, quality);
 	}
 	

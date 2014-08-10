@@ -68,13 +68,38 @@
 	            android:textColor="#000000"
 	    		android:textColorHint="#4a4a4a" />
 	
+	        <!-- 쇼핑몰 인터넷 주소 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvMallUrl"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyName"
+	            android:layout_below="@id/signUpForWritePage_etCompanyName"
+	            android:gravity="center_vertical"
+	            android:text="@string/mallUrl"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etMallUrl"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvMallUrl"
+	            android:layout_below="@id/signUpForWritePage_tvMallUrl"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForMallUrl"
+	            android:inputType="textUri"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	        
 	        <!-- 주소 -->
 	        <TextView
 	            android:id="@+id/signUpForWritePage_tvCompanyAddress"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyName"
-	            android:layout_below="@id/signUpForWritePage_etCompanyName"
+	            android:layout_alignLeft="@id/signUpForWritePage_etMallUrl"
+	            android:layout_below="@id/signUpForWritePage_etMallUrl"
 	            android:gravity="center_vertical"
 	            android:text="@string/address"
 	            android:textColor="#fff" />

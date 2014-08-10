@@ -1,5 +1,7 @@
 package com.cmons.cph;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -9,6 +11,7 @@ import com.cmons.classes.BaseFragmentActivity;
 import com.cmons.classes.CphConstants;
 import com.cmons.cph.fragments.FindIdPwPage;
 import com.cmons.cph.fragments.SignInPage;
+import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -119,17 +122,17 @@ public class SignInActivity extends BaseFragmentActivity {
 		}
 
 		try {
-			String url = CphConstants.BASE_API_URL + "/users/login" +
-					"?user[id]=" + id +
-					"&user[pw]=" + pw;
+			String url = CphConstants.BASE_API_URL + "users/login" +
+					"?user[id]=" + URLEncoder.encode(id, "utf-8") +
+					"&user[pw]=" + URLEncoder.encode(pw, "utf-8");
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
 					
 					signingIn = false;
-					
-					LogUtils.log("from.onError." + "\nurl : " + url);
+					LogUtils.log("SignInActivity.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToSignIn);
 				}
 
 				@Override
@@ -138,9 +141,17 @@ public class SignInActivity extends BaseFragmentActivity {
 					signingIn = false;
 					
 					try {
-						LogUtils.log("from.onCompleted." + "\nurl : " + url
+						LogUtils.log("SignInActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
+						if(objJSON.has("message")) {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+						
+						if(objJSON.getInt("result") == 1) {
+							User user = new User(objJSON.getJSONObject("user"));
+							launchWholesaleActivity(user);
+						}
 						//Create user object.
 					} catch (Exception e) {
 						LogUtils.trace(e);
@@ -151,16 +162,20 @@ public class SignInActivity extends BaseFragmentActivity {
 			});
 		} catch (Exception e) {
 			LogUtils.trace(e);
+			ToastUtils.showToast(R.string.failToSignIn);
 			signingIn = false;
 		} catch (Error e) {
 			LogUtils.trace(e);
+			ToastUtils.showToast(R.string.failToSignIn);
 			signingIn = false;
 		}
 	}
 	
-	public void launchMainActivity() {
-		
+	public void launchWholesaleActivity(User user) {
+
+		Intent intent = new Intent(this, BlankActivity.class);
 //		Intent intent = new Intent(this, WholesaleActivity.class);
-//		startActivity(intent);
+//		intent.putExtra("user", user);
+		startActivity(intent);
 	}
 }

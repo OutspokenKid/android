@@ -226,7 +226,8 @@ public class IntroActivity extends Activity {
 				try {
 					ZonecommsApplication.startupInfo = new StartupInfo(objJSON);
 					
-					if(ZonecommsApplication.startupInfo.getBgInfo().urls.size() > 0) {
+					if(ZonecommsApplication.startupInfo.getBgInfos() != null
+							&& ZonecommsApplication.startupInfo.getBgInfos().length > 0) {
 						downloadBgs();
 					} else {
 						downloadLoadingImages();
@@ -241,7 +242,7 @@ public class IntroActivity extends Activity {
 	
 	public void downloadBgs() {
 		
-		DownloadUtils.downloadBitmap(ZonecommsApplication.startupInfo.getBgInfo().urls.get(0),
+		DownloadUtils.downloadBitmap(ZonecommsApplication.startupInfo.getBgInfos()[0].url,
 				new OnBitmapDownloadListener() {
 
 					@Override

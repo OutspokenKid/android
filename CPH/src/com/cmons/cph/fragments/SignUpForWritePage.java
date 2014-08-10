@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,6 +14,8 @@ import com.cmons.cph.R;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class SignUpForWritePage extends BaseFragmentForSignUp {
 
@@ -19,6 +23,9 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 	
 	private TextView tvCompanyName;
 	private EditText etCompanyName;
+	
+	private TextView tvMallUrl;
+	private EditText etMallUrl;
 	
 	private TextView tvCompanyAddress;
 	private EditText etCompanyAddress;
@@ -42,6 +49,9 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 		
 		tvCompanyName = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyName);
 		etCompanyName = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyName);
+		
+		tvMallUrl = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvMallUrl);
+		etMallUrl = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etMallUrl);
 		
 		tvCompanyAddress = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyAddress);
 		etCompanyAddress = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyAddress);
@@ -81,6 +91,71 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 	@Override
 	protected void setListeners() {
 
+		etCompanyOwnerName.setNextFocusDownId(R.id.signUpForWritePage_etCompanyRegistration1);
+		
+		etCompanyRegistration1.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				
+				if(etCompanyRegistration1.length() == 3) {
+					etCompanyRegistration2.requestFocus();
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		
+		etCompanyRegistration2.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				if(etCompanyRegistration2.length() == 2) {
+					etCompanyRegistration3.requestFocus();
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		
+		etCompanyRegistration3.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				if(etCompanyRegistration3.length() > 5) {
+					etCompanyRegistration3.setText(s.toString().substring(
+							etCompanyRegistration3.length()-5));
+					etCompanyRegistration3.setSelection(etCompanyRegistration3.length());
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		
 		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -95,7 +170,7 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPersonalPage(type, null, null);
+				checkInfo();
 			}
 		});
 	}
@@ -120,6 +195,16 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 		
 		// etCompanyName.
 		rp = (RelativeLayout.LayoutParams) etCompanyName.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		
+		// tvMallUrl.
+		rp = (RelativeLayout.LayoutParams) tvMallUrl.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		
+		// etMallUrl.
+		rp = (RelativeLayout.LayoutParams) etMallUrl.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
@@ -172,11 +257,13 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		
 		FontUtils.setFontSize(tvCompanyName, 34);
+		FontUtils.setFontSize(tvMallUrl, 34);
 		FontUtils.setFontSize(tvCompanyAddress, 34);
 		FontUtils.setFontSize(tvCompanyOwnerName, 34);
 		FontUtils.setFontSize(tvCompanyRegistration, 34);
 		
 		FontUtils.setFontSize(etCompanyName, 30);
+		FontUtils.setFontSize(etMallUrl, 30);
 		FontUtils.setFontSize(etCompanyAddress, 30);
 		FontUtils.setFontSize(etCompanyOwnerName, 30);
 		FontUtils.setFontSize(etCompanyRegistration1, 30);
@@ -207,4 +294,34 @@ public class SignUpForWritePage extends BaseFragmentForSignUp {
 		return false;
 	}
 
+	public void checkInfo() {
+		
+		if(StringUtils.isEmpty(etCompanyName.getText())) {
+			ToastUtils.showToast(R.string.wrongCompanyName);
+
+		} else if(StringUtils.isEmpty(etMallUrl.getText())) {
+			ToastUtils.showToast(R.string.wrongMallUrl);
+			
+		} else if(StringUtils.isEmpty(etCompanyAddress.getText())) {
+			ToastUtils.showToast(R.string.wrongAddress);
+			
+		} else if(StringUtils.isEmpty(etCompanyOwnerName.getText())) {
+			ToastUtils.showToast(R.string.wrongCompanyOwner);
+			
+		} else if(StringUtils.isEmpty(etCompanyRegistration1.getText())
+				|| StringUtils.isEmpty(etCompanyRegistration2.getText())
+				|| StringUtils.isEmpty(etCompanyRegistration3.getText())) {
+			ToastUtils.showToast(R.string.wrongCompanyReg);
+			
+		} else {
+			mActivity.showPersonalPage(type, 
+					etCompanyOwnerName.getText().toString(), 
+					etCompanyName.getText().toString(),
+					etMallUrl.getText().toString(),
+					etCompanyAddress.getText().toString(),
+					etCompanyRegistration1.getText().toString() 
+						+ etCompanyRegistration2.getText().toString() 
+						+ etCompanyRegistration3.getText().toString());
+		}
+	}
 }

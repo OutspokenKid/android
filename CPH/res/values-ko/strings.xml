@@ -1,11 +1,17 @@
 <resources>
 
+    <string name="address">주소</string>
     <string name="addressForWholesale">매장 위치</string>
     <string name="addressForRetail">사업장 주소</string>
     <string name="agree">동의</string>
     <string name="app_name">CPH</string>
 
     <string name="categoryText">매장 분류는 다중 선택이 가능합니다</string>
+    <string name="certify">인증</string>
+    <string name="certifyCompleted">번호 인증 완료</string>
+    <string name="check_id">영문 숫자 6~64자로 입력해주세요.</string>
+    <string name="check_pw">영문 숫자 6~64자로 입력해주세요.</string>
+    <string name="check_pwConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkDuplication">중복 확인</string>
     <string name="companyName">상호명</string>
     <string name="complete">완료</string>
@@ -15,11 +21,18 @@
     <string name="employee_md">MD</string>
     <string name="employee_normal">직원</string>
     
+    <string name="failToFindId">아이디 찾기 실패</string>
+    <string name="failToFindPw">비밀번호 찾기 실패</string>
+    <string name="failToSearchShop">매장 검색 실패</string>
+    <string name="failToSignIn">로그인 실패</string>
+    <string name="failToSignUp">회원 가입 실패</string>
     <string name="findId">아이디 찾기</string>
     <string name="findPw">비밀번호 찾기</string>
     <string name="floor">층</string>
     
     <string name="hintForId">아이디 입력</string>
+    <string name="hintForMallUrl">http://</string>
+    <string name="hintForName">성함 입력</string>
     <string name="hintForPw">비밀번호 입력</string>
     <string name="hintForPhone">휴대폰번호 입력</string>
     <string name="hintForSearchCompanyName">상호명을 입력해주세요</string>
@@ -37,8 +50,12 @@
     <string name="inputCertification">인증번호 입력</string>
 
     <string name="line">열</string>
+
+    <string name="mallUrl">쇼핑몰 사이트 주소</string>
     
+    <string name="name">성함</string>
     <string name="next">다음</string>
+    <string name="noResult_searchWholsale">알맞은 검색 결과가 없습니다</string>
     <string name="notice">알림</string>
     
     <string name="owner">대표</string>
@@ -69,17 +86,21 @@
     <string name="sendCertificationCompleted">인증번호가 휴대전화로 발송되었습니다</string>
     <string name="signIn">로그인</string>
     <string name="signingIn">로그인 중..</string>
+    <string name="signingUp">회원 가입..</string>
     <string name="signUp">회원가입</string>
     
     <string name="terms">약관</string>
     
-    <string name="certify">인증</string>
-    
     <string name="wholesale">도매</string>
-    <string name="wrongCategory">Select category</string>
+    <string name="wrongAddress">주소를 입력해주세요</string>
+    <string name="wrongCategory">매장 분류를 선택해주세요</string>
     <string name="wrongCertificationNumber">잘못된 인증번호입니다.</string>
+    <string name="wrongCompanyName">상호명을 입력해주세요</string>
+    <string name="wrongCompanyOwner">성함을 입력해주세요</string>
+    <string name="wrongCompanyReg">사업자 등록 번호를 입력해주세요</string>
     <string name="wrongId">아이디를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongSearchKeyword">검색어를 입력해주세요</string>
+    <string name="wrongMallUrl">사이트 주소를 입력해주세요</string>
 </resources>

@@ -201,8 +201,9 @@ public class WriteActivity extends RecyclingActivity {
 				    startActivityForResult(intent, ZoneConstants.REQUEST_CAMERA);
 				    
 				} else if(itemString.equals(getString(R.string.photo_album))){
-					Intent intent = new Intent();
-					intent.setAction(Intent.ACTION_GET_CONTENT);
+//					Intent intent = new Intent();
+//					intent.setAction(Intent.ACTION_GET_CONTENT);
+					Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 					intent.setType("image/*");
 					startActivityForResult(intent, ZoneConstants.REQUEST_GALLERY);
 				}
@@ -245,6 +246,9 @@ public class WriteActivity extends RecyclingActivity {
 				switch(requestCode) {
 				
 				case ZoneConstants.REQUEST_GALLERY:
+					
+					LogUtils.log("###############.onActivityResult.  data : " + data.getDataString());
+					
 					file = new File(ImageUploadUtils.getRealPathFromUri(this, data.getData()));
 					break;
 					

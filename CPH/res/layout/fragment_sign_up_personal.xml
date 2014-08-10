@@ -107,13 +107,38 @@
 	            android:gravity="center"
 	            android:background="#b2ffffff" />
 	
+	        <!-- 이름 -->
+	        <TextView
+	            android:id="@+id/signUpForPersonalPage_tvName"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_tvCompanyLocation2"
+	            android:layout_alignParentLeft="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/name"
+	            android:textColor="#fff" />
+	        
+	        <EditText
+	            android:id="@+id/signUpForPersonalPage_etName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForPersonalPage_tvName"
+	            android:layout_below="@id/signUpForPersonalPage_tvName"
+	            android:hint="@string/hintForId"
+	            android:inputType="text"
+	            android:textColor="#000"
+	            android:textColorHint="#aaa"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:background="#b2ffffff" />
+	        
 	        <!-- 아이디 -->
 	        <TextView
 	            android:id="@+id/signUpForPersonalPage_tvId"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
+	            android:layout_below="@id/signUpForPersonalPage_etName"
 	            android:layout_alignParentLeft="true"
-	            android:layout_alignParentTop="true"
 	            android:gravity="center_vertical"
 	            android:text="@string/id"
 	            android:textColor="#fff" />
@@ -124,7 +149,9 @@
 	            android:layout_height="0dp"
 	            android:layout_alignTop="@id/signUpForPersonalPage_tvId"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_tvId"
+	            android:text="@string/check_id"
 	            android:textColor="#f00"
+	            android:visibility="invisible"
 	            android:gravity="center_vertical" />
 	
 	        <EditText
@@ -158,7 +185,9 @@
 	            android:layout_height="0dp"
 	            android:layout_alignTop="@id/signUpForPersonalPage_tvPw"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_tvPw"
+	            android:text="@string/check_pw"
 	            android:textColor="#f00"
+	            android:visibility="invisible"
 	            android:gravity="center_vertical" />
 	        
 	        <EditText
@@ -192,7 +221,9 @@
 	            android:layout_height="0dp"
 	            android:layout_alignTop="@id/signUpForPersonalPage_tvConfirmPw"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:text="@string/check_pwConfirm"
 	            android:textColor="#f00"
+	            android:visibility="invisible"
 	            android:gravity="center_vertical" />
 	        
 	        <EditText
@@ -267,7 +298,8 @@
 	            android:layout_height="0dp"
 	            android:layout_alignTop="@id/signUpForPersonalPage_etCertification"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
-	            android:background="@drawable/btn_send" />
+	            android:visibility="invisible"
+	            android:background="@drawable/btn_certify_short" />
 	
 	        <!-- 완료 -->
 	        <Button

@@ -1,13 +1,30 @@
 package com.cmons.cph.models;
 
+import org.json.JSONObject;
+
+import com.outspoken_kid.utils.LogUtils;
+
 public class CategoryForSignUp {
 
 	private String id;
 	private String name;
 	private boolean selected;
 	
-	public CategoryForSignUp(String id, String name) {
+	public CategoryForSignUp(JSONObject objJSON) {
 		
+		try {
+			if(objJSON.has("id")) {
+				this.id = objJSON.getString("id");
+			}
+			
+			if(objJSON.has("name")) {
+				this.name = objJSON.getString("name");
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		selected = false;
 	}
 	public boolean isSelected() {

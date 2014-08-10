@@ -56,7 +56,7 @@ public class SignInPage extends BaseFragment {
 
 	@Override
 	protected void setListeners() {
-
+		
 		etPw.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
@@ -177,11 +177,13 @@ public class SignInPage extends BaseFragment {
 	}
 
 	public void checkIdPw() {
-
-		if(StringUtils.checkTextLength(etId, 6, 64) != StringUtils.PASS) {
+		
+		if(StringUtils.checkTextLength(etId, 6, 64) != StringUtils.PASS
+				|| StringUtils.checkForbidContains(etId, false, true, false, true, true, true)) {
 			ToastUtils.showToast(R.string.wrongId);
 			
-		} else if(StringUtils.checkTextLength(etPw, 6, 64) != StringUtils.PASS) {
+		} else if(StringUtils.checkTextLength(etPw, 6, 64) != StringUtils.PASS
+				|| StringUtils.checkForbidContains(etPw, false, true, false, true, true, true)) {
 			ToastUtils.showToast(R.string.wrongPw);
 			
 		} else {

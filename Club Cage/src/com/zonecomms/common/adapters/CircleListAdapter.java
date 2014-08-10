@@ -330,8 +330,6 @@ public class CircleListAdapter extends BaseAdapter {
 			&spot_nid=1885
 			*/
 			
-			LogUtils.log("###CircleListAdapter.getView.  get object");
-			
 			OutspokenImageView ivImage;
 			
 			if(convertView == null) {

@@ -456,7 +456,8 @@ public class UserPage extends ZonecommsFragment {
 				    requestCode = ZoneConstants.REQUEST_CAMERA;
 				    
 				} else if(itemString.equals(getString(R.string.photo_album))){
-					intent.setAction(Intent.ACTION_GET_CONTENT);
+//					intent.setAction(Intent.ACTION_GET_CONTENT);
+					intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 					intent.setType("image/*");
 					requestCode = ZoneConstants.REQUEST_GALLERY;
 				}

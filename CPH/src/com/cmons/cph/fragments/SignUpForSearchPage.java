@@ -29,6 +29,8 @@ import com.cmons.classes.BaseFragmentForSignUp;
 import com.cmons.classes.CphConstants;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
+import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
@@ -49,7 +51,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 	public static final int SEARCH_TYPE_LOCATION_LINE = 5;
 	public static final int SEARCH_TYPE_LOCATION_ROOM = 6;
 	
-	private ArrayList<Wholesale> wholesales = new ArrayList<Wholesale>();
+	private ArrayList<Shop> shops = new ArrayList<Shop>();
 	private ArrayList<String> strings = new ArrayList<String>();
 	
 	private TitleBar titleBar;
@@ -258,7 +260,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 					break;
 
 				default:
-					mActivity.showPersonalPage(type, wholesales.get(position), categoryString);
+					mActivity.showPersonalPage(type, shops.get(position), categoryString);
 					break;
 				}
 			}
@@ -549,7 +551,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 			case SEARCH_TYPE_PHONE:
 			case SEARCH_TYPE_LOCATION:
 			case SEARCH_TYPE_REG:
-				downloadWholesales();
+				downloadShops();
 				break;
 
 			case SEARCH_TYPE_LOCATION_FLOOR:
@@ -594,9 +596,15 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 		}
 	}
 	
-	public void downloadWholesales() {
+	public void downloadShops() {
 		
-		String url = CphConstants.BASE_API_URL + "wholesales/search/";
+		String url = CphConstants.BASE_API_URL;
+		
+		if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+			url += "wholesales/search/";
+		} else{
+			url += "retails/search/";
+		}
 		
 		try {
 			
@@ -633,7 +641,8 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 			public void onError(String url) {
 
 				LogUtils.log("SignUpForSearchPage.onError." + "\nurl : " + url);
-
+				hidePopup();
+				ToastUtils.showToast(R.string.failToSearchShop);
 			}
 
 			@Override
@@ -643,18 +652,48 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 					LogUtils.log("SignUpForSearchPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					JSONArray arJSON = objJSON.getJSONArray("wholesales");
+					JSONArray arJSON = null;
 					
-					int size = arJSON.length();
-					for(int i=0; i<size; i++) {
-						wholesales.add(new Wholesale(arJSON.getJSONObject(i)));
+					if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+						arJSON = objJSON.getJSONArray("wholesales");
+					} else {
+						arJSON = objJSON.getJSONArray("retails");
 					}
 					
-					listAdapter.notifyDataSetChanged();
+					int size = arJSON.length();
+					
+					if(size != 0) {
+						
+						if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+							for(int i=0; i<size; i++) {
+								shops.add(new Wholesale(arJSON.getJSONObject(i)));
+							}
+						} else {
+							for(int i=0; i<size; i++) {
+								shops.add(new Retail(arJSON.getJSONObject(i)));
+							}
+						}
+						
+						listAdapter.notifyDataSetChanged();
+					} else {
+						ToastUtils.showToast(R.string.noResult_searchWholsale);
+						listFrame.postDelayed(new Runnable() {
+
+							@Override
+							public void run() {
+								
+								hidePopup();
+							}
+						}, 1000);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
+					hidePopup();
+					ToastUtils.showToast(R.string.failToSearchShop);
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
+					hidePopup();
+					ToastUtils.showToast(R.string.failToSearchShop);
 				}
 			}
 		});
@@ -673,7 +712,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 		}
 		
 		strings.clear();
-		wholesales.clear();
+		shops.clear();
 		listAdapter.notifyDataSetChanged();
 	}
 
@@ -685,7 +724,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 		public int getCount() {
 
 			if(searchType < SEARCH_TYPE_LOCATION_FLOOR) {
-				return wholesales.size();
+				return shops.size();
 			} else {
 				return strings.size();
 			}
@@ -695,7 +734,7 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 		public Object getItem(int arg0) {
 	
 			if(searchType < SEARCH_TYPE_LOCATION_FLOOR) {
-				return wholesales.get(arg0);
+				return shops.get(arg0);
 			} else {
 				return strings.get(arg0);
 			}
@@ -731,7 +770,8 @@ public class SignUpForSearchPage extends BaseFragmentForSignUp {
 			case SEARCH_TYPE_PHONE:
 			case SEARCH_TYPE_LOCATION:
 			case SEARCH_TYPE_REG:
-				((TextView)convertView).setText(wholesales.get(position).getName());
+				((TextView)convertView).setText(shops.get(position).getName() + 
+						"(" + shops.get(position).getPhone_number() + ")");
 				break;
 				
 			case SEARCH_TYPE_LOCATION_FLOOR:

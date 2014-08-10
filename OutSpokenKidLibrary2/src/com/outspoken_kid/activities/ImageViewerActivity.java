@@ -433,12 +433,18 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	}
 
 	public void saveImage() {
+
+		String imageTitle = "golf_n";
+		
+		if(title != null) {
+			imageTitle += "_" + title;
+		}
 		
 		if(imageResId != 0) {
 			
 			try {
 				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResId);
-				ImageCacheUtils.saveImage(context, bitmap, title + "_" + imageIndex, false);
+				ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + imageIndex, false);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {
@@ -451,7 +457,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 				Bitmap bitmap = imageFrames[imageIndex].getBitmap();
 				
 				if(bitmap != null) {
-					ImageCacheUtils.saveImage(context, bitmap, title + "_" + imageIndex, false);
+					ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + imageIndex, false);
 				}
 			}
 		}

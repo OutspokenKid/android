@@ -27,6 +27,7 @@ import com.outspoken_kid.utils.StringUtils;
 public class ImageUploadUtils {
 	
 	public static String getRealPathFromUri(Context context, Uri uri) {
+		
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);

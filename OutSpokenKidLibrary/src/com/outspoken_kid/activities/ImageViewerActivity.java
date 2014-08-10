@@ -2,6 +2,7 @@ package com.outspoken_kid.activities;
 
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -188,7 +189,7 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 		btnSave.setBackgroundResource(getSaveButtonBackgroundResId());
 	}
 
-	@Override
+	@SuppressLint("ClickableViewAccessibility") @Override
 	protected void setListeners() {
 
 		cover.setOnTouchListener(new OnTouchListener() {
@@ -402,7 +403,13 @@ public abstract class ImageViewerActivity extends RecyclingActivity {
 			Bitmap bitmap = imageFrames[imageIndex].getBitmap();
 			
 			if(bitmap != null) {
-				ImageCacheUtils.saveImage(context, bitmap, title + "_" + imageIndex, false);
+				String imageTitle = "golf_n";
+				
+				if(title != null) {
+					imageTitle += "_" + title;
+				}
+				
+				ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + imageIndex, false);
 			}
 		}
 	}

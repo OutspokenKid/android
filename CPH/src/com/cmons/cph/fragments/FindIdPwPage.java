@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.view.KeyEvent;
@@ -13,10 +15,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.cmons.classes.BaseFragment;
-import com.cmons.classes.BaseFragmentActivity.OnPositiveClickedListener;
 import com.cmons.classes.CphConstants;
 import com.cmons.cph.R;
-import com.cmons.cph.SignInActivity;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -273,7 +273,21 @@ public class FindIdPwPage extends BaseFragment {
 					try {
 						LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
-						showAlert();
+						
+						if(objJSON.getInt("result") == 1
+								&& objJSON.getJSONObject("authResponse") != null) {
+							
+							JSONObject objResponse = objJSON.getJSONObject("authResponse");
+							
+							if(objResponse.getString("phone_number") != null) {
+								findIdPw(objResponse.getString("phone_number"));
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+						
 					} catch (Exception e) {
 						ToastUtils.showToast(R.string.wrongCertificationNumber);
 						LogUtils.trace(e);
@@ -288,24 +302,63 @@ public class FindIdPwPage extends BaseFragment {
 		}
 	}
 	
-	public void showAlert() {
+	public void findIdPw(String phone_number) {
 		
-		String message = null;
-		
-		if(type == TYPE_FIND_ID) {
-			message = getString(R.string.sendIdCompleted);
-		} else{
-			message = getString(R.string.sendPwCompleted);
+		try {
+			String url = CphConstants.BASE_API_URL + "users/find/";
+			
+			if(type == TYPE_FIND_ID) {
+				url += "id";
+			} else {
+				url += "password";
+			}
+					
+			url += "?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
+					"&no_sms=1";
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("FindIdPwPage.onError." + "\nurl : " + url);
+					
+					if(type == TYPE_FIND_ID) {
+						ToastUtils.showToast(R.string.failToFindId);
+					} else {
+						ToastUtils.showToast(R.string.failToFindPw);
+					}
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							if(type == TYPE_FIND_ID) {
+								ToastUtils.showToast(R.string.sendIdCompleted);
+							} else {
+								ToastUtils.showToast(R.string.sendPwCompleted);
+							}
+							
+							getActivity().getSupportFragmentManager().popBackStack();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 		
-		((SignInActivity)getActivity()).showAlertDialog(null, message, 
-				new OnPositiveClickedListener() {
-			
-			@Override
-			public void onPositiveClicked() {
-
-				getActivity().getSupportFragmentManager().popBackStack();
-			}
-		});
 	}
 }

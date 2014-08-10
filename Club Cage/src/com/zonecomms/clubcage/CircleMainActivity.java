@@ -56,6 +56,8 @@ public class CircleMainActivity extends Activity {
 	private static final int ANIM_DURATION = 2000;
 	public static final int MENU_BUTTON_LENGTH = 50;
 	
+	public static int playIndex = 0;
+	
 	private View menuCover;
 	private ScrollView menuScroll;
 	private LinearLayout menuLinear;
@@ -69,10 +71,10 @@ public class CircleMainActivity extends Activity {
 	private NoticePopup noticePopup;
 	
 	private ArrayList<BaseModel> models = new ArrayList<BaseModel>();
-	private BgInfo bgInfo;
-	private boolean isInit;
+	private BgInfo[] bgInfos;
 	private boolean isDownloading;
 	private boolean isLastList;
+	private int titleBarIndex;
 	private int lastIndexno;
 	
 	private AlphaAnimation aaIn, aaOut;
@@ -179,20 +181,13 @@ public class CircleMainActivity extends Activity {
 		taOut.setAnimationListener(al);
 		taOut.setInterpolator(this, android.R.anim.accelerate_decelerate_interpolator);
 		
-    	bgInfo = ZonecommsApplication.startupInfo.getBgInfo();
-    	
-    	if(bgInfo == null){
-    		LogUtils.log("###where.setVariables.  bgInfo is null.");
-    	} else {
-    		LogUtils.log("###where.setVariables.  bgInfo.url.size : " + bgInfo.urls.size());
-    	}
-    	
-    	imagePlayViewer.setImageUrls(bgInfo.urls);
+    	bgInfos = ZonecommsApplication.startupInfo.getBgInfos();
     }
     
     public void createPage() {
     	
     	circleHeaderView = new CircleHeaderView(this);
+    	setTitleBarText("STORY");
     	
     	listAdapter = new CircleListAdapter(this, circleHeaderView, getLayoutInflater(), models);
     	listView.setAdapter(listAdapter);
@@ -264,12 +259,16 @@ public class CircleMainActivity extends Activity {
 					if(-circleHeaderView.getTop() >= CircleHeaderView.diffLength) {
 						showTitleBar();
 						circleHeaderView.hideTitleBar();
-						imagePlayViewer.setNeedPlayImage(false);
+						imagePlayViewer.setNeedToPlayImage(false);
 					} else {
 						hideTitleBar();
 						circleHeaderView.showTitleBar();
-						imagePlayViewer.setNeedPlayImage(true);
+						imagePlayViewer.setNeedToPlayImage(true);
 					}
+				} else if(firstVisibleItem == 2) {
+					showTitleBar();
+					circleHeaderView.hideTitleBar();
+					imagePlayViewer.setNeedToPlayImage(false);
 				}
 				
 				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
@@ -283,6 +282,9 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
+				
+				LogUtils.log("###CircleMainActivity.listView.onItemClick.  position : " + position);
+				
 				try {
 					if(position > 0) {
 						String uriString = ZoneConstants.PAPP_ID + 
@@ -433,11 +435,11 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 				circleHeaderView.showHeader();
-				imagePlayViewer.start();
 			}
 		});
     	taIn.setInterpolator(this, android.R.anim.accelerate_decelerate_interpolator);
     	
+    	showNext();
     	swipeLayout.startAnimation(taIn);
     	swipeLayout.setVisibility(View.VISIBLE);
     }
@@ -464,21 +466,8 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void run() {
 				
-				if(!isInit) {
-					isInit = true;
-
-					//Set titleBars.
-			    	setTitleBarText("STORY");
-			    	
-			    	String colorText = "#b2" + bgInfo.colors.get(0).replace("#", "");
-			    	int color = Color.parseColor(colorText);
-			    	
-					tvTitles[0].setBackgroundColor(color);
-					circleHeaderView.setTitleBarColor(color);
-					changeMenuColor(color);
-					listAdapter.changeColor(color);
+				if(models.size() == 0) {
 					downloadInfo();
-				
 				} else {
 					showNext();
 				}
@@ -489,6 +478,8 @@ public class CircleMainActivity extends Activity {
     @Override
     protected void onDestroy() {
     	super.onDestroy();
+    	
+    	imagePlayViewer.clear();
     }
     
     @Override
@@ -520,15 +511,15 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onError(String url) {
 				
-				LogUtils.log("###CircleMainPage.Error.  \nurl : " + url);
+//				LogUtils.log("###CircleMainPage.Error.  \nurl : " + url);
 				setPage(false);
 			}
 			
 			@Override
 			public void onCompleted(String url, JSONObject objJSON) {
 
-				LogUtils.log("###CircleMainPage.onCompleted.  \nurl : " + url +
-						"\nresult  :  " + objJSON);
+//				LogUtils.log("###CircleMainPage.onCompleted.  \nurl : " + url +
+//						"\nresult  :  " + objJSON);
 				
 				try {
 					JSONArray arJSON = objJSON.getJSONArray("data");
@@ -586,52 +577,67 @@ public class CircleMainActivity extends Activity {
     
     public void showTitleBar() {
     	
-    	tvTitles[ImagePlayViewer.imageIndex % 2].setVisibility(View.VISIBLE);
+    	tvTitles[titleBarIndex % 2].setVisibility(View.VISIBLE);
+    	tvTitles[(titleBarIndex + 1) % 2].setVisibility(View.INVISIBLE);
     }
     
     public void hideTitleBar() {
     	
-    	tvTitles[ImagePlayViewer.imageIndex % 2].setVisibility(View.INVISIBLE);
+    	tvTitles[titleBarIndex % 2].setVisibility(View.INVISIBLE);
+    	tvTitles[(titleBarIndex + 1) % 2].setVisibility(View.INVISIBLE);
     }
  
     public void showNext() {
     	
-    	ImagePlayViewer.imageIndex++;
-		
-		String colorText = "#b2" + bgInfo.colors.get(
-    			ImagePlayViewer.imageIndex % bgInfo.colors.size()).replace("#", "");
+    	if(bgInfos == null || bgInfos.length == 0) {
+    		return;
+    	}
+    	
+    	int currentIndex = playIndex % bgInfos.length;
+    	int nextIndex = (playIndex + 1) % bgInfos.length;
+    	
+    	LogUtils.log("###CircleMainActivity.showNext.  currentIndex : " + currentIndex);
+
+    	//이미지 설정.
+    	imagePlayViewer.showNext(bgInfos[currentIndex].url, bgInfos[nextIndex].url);
+    	
+    	//색 설정.
+    	String colorText = "#b2" + bgInfos[currentIndex].color.replace("#", "");
     	int color = Color.parseColor(colorText);
-		
-		imagePlayViewer.showNext();
-		changeTitleBarColor(color);
-		changeMenuColor(color);
-		listAdapter.changeColor(color);
+    	
+    	//리스트 아이템 설정.
+    	listAdapter.changeColor(color);
+    	
+    	//타이틀바 설정.
+    	if(playIndex == 0) {
+			tvTitles[0].setBackgroundColor(color);
+			circleHeaderView.setTitleBarColor(currentIndex, color);
+    		
+    	} else {
+    		changeTitleBarColor(color);
+    	}
+    	
+    	playIndex++;
     }
     
     public void changeTitleBarColor(int color) {
 
-    	int in = ImagePlayViewer.imageIndex % 2;
+    	titleBarIndex++;
+    	
+    	int in = titleBarIndex % 2;
     	int out = (in + 1) % 2;
-    	
-    	if(tvTitles[out].getVisibility() == View.VISIBLE) {
-    		tvTitles[out].setVisibility(View.INVISIBLE);
-        	tvTitles[out].startAnimation(aaOut);
 
-        	tvTitles[in].setBackgroundColor(color);
-        	tvTitles[in].setVisibility(View.VISIBLE);
-        	tvTitles[in].startAnimation(aaIn);
-        	
-        	circleHeaderView.setTitleBarColor(color);
-        	
-    	} else {
-    		tvTitles[in].setBackgroundColor(color);
-    		circleHeaderView.changeTitleBarColor(color);
+    	tvTitles[in].setBackgroundColor(color);
+    	circleHeaderView.changeTitleBarColor(color, imagePlayViewer.isNeedToPlayImage());
+    	
+    	//타이틀바가 보이는 상태.
+    	if(!imagePlayViewer.isNeedToPlayImage()) {
+    		tvTitles[in].setVisibility(View.VISIBLE);
+    		tvTitles[in].startAnimation(aaIn);
+    		
+        	tvTitles[out].setVisibility(View.INVISIBLE);
+    		tvTitles[out].startAnimation(aaOut);
     	}
-    }
-
-    public void changeMenuColor(int color) {
-    	
-    	menuScroll.setBackgroundColor(color);
     }
 
     public void launchToMainActivity(Uri uri) {

@@ -185,8 +185,6 @@ public class SignUpForCategoryPage extends BaseFragmentForSignUp {
 
 	public void downloadInfo() {
 
-		mActivity.showLoadingView();
-		
 		String url = CphConstants.BASE_API_URL + "wholesales/categories";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -194,26 +192,21 @@ public class SignUpForCategoryPage extends BaseFragmentForSignUp {
 			public void onError(String url) {
 
 				LogUtils.log("SignUpForCategoryPage.onError." + "\nurl : " + url);
-				mActivity.hideLoadingView();
 			}
 
 			@Override
 			public void onCompleted(String url, JSONObject objJSON) {
 
-				mActivity.hideLoadingView();
-				
 				try {
 					LogUtils.log("SignUpForCategoryPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					JSONArray arJSON = objJSON.getJSONArray("wholesale_categories");
-					JSONObject objItem = null;
 					
 					int size = arJSON.length();
 					for(int i=0; i<size; i++) {
 						try {
-							objItem = arJSON.getJSONObject(i);
-							categories.add(new CategoryForSignUp(objItem.getString("id"), objItem.getString("name")));
+							categories.add(new CategoryForSignUp(arJSON.getJSONObject(i)));
 						} catch (Exception e) {
 							LogUtils.trace(e);
 						} catch (Error e) {
