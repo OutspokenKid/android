@@ -248,7 +248,7 @@ public class AddedProfilePage extends BaseFragment {
 						url = ZoneConstants.BASE_URL + "member/info" +
 								"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 								"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
-								"&image_size=" + ResizeUtils.getSpecificLength(308);
+								"&image_size=308";
 						
 						AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 						

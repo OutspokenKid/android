@@ -310,7 +310,7 @@ public class BaseProfilePage extends BaseFragment {
 										"&profile_image=" + uploadImageInfo.getImageUrl() +
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
-										"&image_size=" + ResizeUtils.getSpecificLength(308);
+										"&image_size=308";
 								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
 									
 									@Override
@@ -417,7 +417,7 @@ public class BaseProfilePage extends BaseFragment {
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + MainActivity.myInfo.getMember_id() +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 			
 			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 			

@@ -77,4 +77,5 @@ public class GridAdapter extends ZoneAdapter {
 			return new ViewWrapperForMember(wrapperView, itemCode);
 		}
 		return null;
-	}}
+	}
+}

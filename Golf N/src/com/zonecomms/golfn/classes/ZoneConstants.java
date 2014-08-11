@@ -36,7 +36,7 @@ public class ZoneConstants {
 	public static final int ITEM_TOUR = 7;
 	public static final int ITEM_GETHERING = 8;
 	
-	//리스트, 그리드 페이지의 타입.
+	//페이지 타입.
 	public static final int	TYPE_EVENT = 1;
 	public static final int	TYPE_NEWS = 2;
 	public static final int	TYPE_LESSON = 3;
