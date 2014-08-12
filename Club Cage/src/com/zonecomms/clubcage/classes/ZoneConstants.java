@@ -38,11 +38,16 @@ public class ZoneConstants {
 	public static final int ITEM_MESSAGE = 9;
 	public static final int ITEM_MESSAGESAMPLE = 10;
 	
-	//1. 왁자지껄, 2.생생후기, 3.함께가기, 4.공개수배
-	public static final int BOARD_FREETALK = 1;
-	public static final int BOARD_REVIEW = 2;
-	public static final int BOARD_WITH = 3;
-	public static final int BOARD_FIND = 4;
+	//페이지 타입.
+	public static final int TYPE_NONE = 0;
+	public static final int TYPE_NOTICE = 1;
+	public static final int TYPE_EVENT = 2;
+	public static final int TYPE_STORY = 3;
+	public static final int TYPE_SCHEDULE = 4;
+	public static final int TYPE_MEMBER = 5;
+	public static final int TYPE_PHOTO = 6;
+	public static final int TYPE_MUSIC = 7;
+	public static final int TYPE_VIDEO = 8;
 	
 	//엑티비티를 이동할때 쓰이는 키 값.
 	public static final int REQUEST_GALLERY = 1;
@@ -51,14 +56,6 @@ public class ZoneConstants {
 	public static final int REQUEST_EDIT = 4;
 	public static final int REQUEST_SIGN = 5;
 
-	//서버와 약속된 타입 넘버.
-	public static final int	TYPE_NOTICE = 1;
-	public static final int	TYPE_EVENT = 2;
-	public static final int	TYPE_SCHEDULE = 3;
-	public static final int	TYPE_PHOTO = 1;
-	public static final int	TYPE_VIDEO = 2;
-	public static final int	TYPE_MUSIC = 3;
-	
 	//SharedPreferences의 키 값.
 	public static final String PREFS_SIGN = "signInfo";
 	public static final String PREFS_SPONSER = "sponser";

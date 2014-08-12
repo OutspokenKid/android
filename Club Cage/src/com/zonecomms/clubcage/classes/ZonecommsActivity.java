@@ -1,12 +1,20 @@
 package com.zonecomms.clubcage.classes;
 
-import android.view.animation.Animation;
+import android.os.Bundle;
+import android.view.View;
 
 import com.outspoken_kid.activities.BaseActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.fragments.MainPage;
 
 public abstract class ZonecommsActivity extends BaseActivity {
+
+	protected View loadingView;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 	
 	@Override
 	public int getCustomFontResId() {
@@ -28,14 +36,14 @@ public abstract class ZonecommsActivity extends BaseActivity {
 	}
 	
 	@Override
-	public Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void onBackPressed() {
 
+		finish();
+	}
+	
 	@Override
-	public Animation getLoadingViewAnimOut() {
+	public void onMenuPressed() {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 }

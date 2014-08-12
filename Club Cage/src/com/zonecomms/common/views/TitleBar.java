@@ -63,7 +63,7 @@ public class TitleBar extends LinearLayout {
 		});
 		this.addView(btnSideMenu);
 		
-		//btnHome.
+		//btnCircle.
 		btnCircle = new Button(getContext());
 		ResizeUtils.viewResize(70, 70, btnCircle, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
 		btnCircle.setBackgroundResource(R.drawable.btn_save);
@@ -83,12 +83,13 @@ public class TitleBar extends LinearLayout {
 		btnHome = new Button(getContext());
 		ResizeUtils.viewResize(70, 70, btnHome, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
 		btnHome.setBackgroundResource(R.drawable.btn_top_home);
+		btnHome.setVisibility(View.INVISIBLE);
 		btnHome.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 
-				ZonecommsApplication.getActivity().clearFragments();
+				ZonecommsApplication.getActivity().clearFragments(true);
 			}
 		});
 		this.addView(btnHome);

@@ -276,8 +276,7 @@ public class AddedProfilePage extends ZonecommsFragment {
 		});
 		
 		isDownloading = true;
-		mainActivity.showLoadingView();
-		mainActivity.showCover();
+		showLoadingView();
 	}
 
 	@Override
@@ -478,12 +477,22 @@ public class AddedProfilePage extends ZonecommsFragment {
 				}
 			});
 			ToastUtils.showToast(R.string.submittingToServer);
-			mainActivity.showLoadingView();
-			mainActivity.showCover();
+			showLoadingView();
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitAddedProfile);
 		}
 	}
 
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
 }

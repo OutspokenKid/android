@@ -1,6 +1,7 @@
 package com.outspoken_kid.activities;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,8 @@ import com.outspoken_kid.utils.SoftKeyboardUtils;
 public abstract class BaseFragmentActivity extends FragmentActivity 
 		implements OutspokenActivityInterface {
 
+	protected Context context;
+	
 	public abstract int getFragmentFrameResId();
 	public abstract void setCustomAnimations(FragmentTransaction ft);
 	
@@ -23,6 +26,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(getContentViewId());
+		context = this;
 		
 		bindViews();
 		setVariables();
@@ -52,30 +56,6 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 			LogUtils.trace(e);
 		}
 	}
-
-//	@Override
-//	public void showLoadingView() {
-//
-//		if(getLoadingView() != null && getLoadingView().getVisibility() != View.VISIBLE) {
-//			getLoadingView().setVisibility(View.VISIBLE);
-//			
-//			if(getLoadingViewAnimIn() != null) {
-//				getLoadingView().startAnimation(getLoadingViewAnimIn());
-//			}
-//		}
-//	}
-//
-//	@Override
-//	public void hideLoadingView() {
-//
-//		if(getLoadingView() != null && getLoadingView().getVisibility() == View.VISIBLE) {
-//			getLoadingView().setVisibility(View.INVISIBLE);
-//			
-//			if(getLoadingViewAnimOut() != null) {
-//				getLoadingView().startAnimation(getLoadingViewAnimOut());
-//			}
-//		}
-//	}
 
 	@Override
 	public void showAlertDialog(int title, int message, int positive,
@@ -197,31 +177,22 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		}
 	}
 	
-	public void clearFragmentsWithoutAnim() {
-
-		int size = getFragmentsSize();	
-		for(int i=0; i<size; i++) {
-			try {
-				((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
-			}
-		}
-		
-		getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-	}
-	
-	public void clearFragments() {
+	public void clearFragments(boolean needAnim) {
 
 		int size = getFragmentsSize();
 		for(int i=0; i<size; i++) {
 			try {
-				if(i == 0) {
-					//Do nothing.
-				} else if(i == size - 1) {
-					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+				
+				if(needAnim) {
+					
+					if(i == 0) {
+						//Do nothing.
+					} else if(i == size - 1) {
+						((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+					} else {
+						((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+					}
+					
 				} else {
 					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
 				}
@@ -233,5 +204,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		}
 		
 		getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+	}
+
+	public void closeTopPage() {
+		
+		getSupportFragmentManager().popBackStack();
 	}
 }

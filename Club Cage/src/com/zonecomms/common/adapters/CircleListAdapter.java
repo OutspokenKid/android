@@ -69,30 +69,37 @@ public class CircleListAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		ViewHolderForCirclePost viewHolder;
 		
-		if(position == 0) {
-			return circleHeaderView;
-		} else {
-			if(convertView == null || convertView instanceof CircleHeaderView) {
-				View circleView = mInflater.inflate(R.layout.list_circlepost, parent, false);
-				circleViews.add(circleView);
-				convertView = circleView;
-				
-				viewHolder = new ViewHolderForCirclePost();
-				viewHolder.bindViews(convertView);
-				viewHolder.setSizes();
-				viewHolder.setListeners();
-
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolderForCirclePost) convertView.getTag();
-			}
-
-			viewHolder.setValues((Post)models.get(position - 1));
+		try {
+			ViewHolderForCirclePost viewHolder;
 			
-			return convertView;
+			if(position == 0) {
+				return circleHeaderView;
+			} else {
+				if(convertView == null || convertView instanceof CircleHeaderView) {
+					View circleView = mInflater.inflate(R.layout.list_circlepost, parent, false);
+					circleViews.add(circleView);
+					convertView = circleView;
+					
+					viewHolder = new ViewHolderForCirclePost();
+					viewHolder.bindViews(convertView);
+					viewHolder.setSizes();
+					viewHolder.setListeners();
+
+					convertView.setTag(viewHolder);
+				} else {
+					viewHolder = (ViewHolderForCirclePost) convertView.getTag();
+				}
+
+				viewHolder.setValues((Post)models.get(position - 1));
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
+		
+		return convertView;
 	}
 	
 	public void changeColor(int color) {

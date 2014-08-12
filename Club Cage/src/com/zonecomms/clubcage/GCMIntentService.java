@@ -163,15 +163,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 		if(ZonecommsApplication.getActivity() != null 
 				&& ZonecommsApplication.getActivity().getFragmentsSize() != 0) {
 			
-			LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is running.");
-			
 			if("010".equals(msg_type)
 					&& member_id != null
 					&& ZonecommsApplication.getActivity().getTopFragment() instanceof MessagePage) {
 				final MessagePage mp = (MessagePage) ZonecommsApplication.getActivity().getTopFragment();
 				
 				if(mp.getFriend_member_id() != null
-						&& mp.getFriend_member_id().equals(member_id)) {
+						&& mp.getFriend_member_id().equals(post_member_id)) {
 					ZonecommsApplication.getActivity().runOnUiThread(new Runnable() {
 						
 						@Override
@@ -179,6 +177,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 							mp.refreshPage();
 						}
 					});
+				
+					return;
 				}
 			} else if(("021".equals(msg_type))
 					&& ZonecommsApplication.getActivity().getTopFragment() instanceof PostPage
@@ -191,26 +191,27 @@ public class GCMIntentService extends GCMBaseIntentService {
 						ZonecommsApplication.getActivity().getTopFragment().refreshPage();
 					}
 				});
+				
+				return;
 			}
-		} else {
-			
-			LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is not running.");
-
-			String uriString = "";
-			
-			if("000".equals(msg_type)) {
-				try {
-					uriString = "popup://android.zonecomms.com/?message=" + URLEncoder.encode(push_msg, "utf-8");
-				} catch(Exception e) {
-				}
-			} else if("010".equals(msg_type)) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
-			} else if("021".equals(msg_type)) {
-				uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?spot_nid=" + spot_nid;
-			}
-			
-			showNotification(context, push_msg, uriString);
 		}
+		
+		LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is not running.");
+
+		String uriString = "";
+		
+		if("000".equals(msg_type)) {
+			try {
+				uriString = "popup://android.zonecomms.com/?message=" + URLEncoder.encode(push_msg, "utf-8");
+			} catch(Exception e) {
+			}
+		} else if("010".equals(msg_type)) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
+		} else if("021".equals(msg_type)) {
+			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?spot_nid=" + spot_nid;
+		}
+		
+		showNotification(context, push_msg, uriString);
 	}
 	
 	public void showNotification(Context context, String push_msg, String uriString) {

@@ -8,7 +8,6 @@ import java.util.Calendar;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,7 +23,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -84,8 +82,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 
 	public static boolean isGoToLeaveMember;
 	
-	private Context context;
-	
 	private GestureSlidingLayout gestureSlidingLayout;
 	private ScrollView leftView;
 	private LinearLayout leftViewInner;
@@ -93,7 +89,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	private TitleBar titleBar;
 	private ProfilePopup profilePopup;
 	private NoticePopup noticePopup;
-	private View cover;
 	private View loadingView;
 	private SideView profileView;
 	private SoftKeyboardDetector softKeyboardDetector;
@@ -137,7 +132,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		leftViewInner = (LinearLayout) findViewById(R.id.mainActivity_leftViewInner);
 		topView = (LinearLayout) findViewById(R.id.mainActivity_topView);
 		titleBar = (TitleBar) findViewById(R.id.mainActivity_titleBar);
-		cover = findViewById(R.id.mainActivity_cover);
 		loadingView = findViewById(R.id.mainActivity_loadingView);
 		ivAnimationLoadingView = (ImageView) findViewById(R.id.mainActivity_ivAnimationLoadingView);
 		softKeyboardDetector = (SoftKeyboardDetector) findViewById(R.id.mainActivity_softKeyboardDetector);
@@ -296,8 +290,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				try {
 					if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
-					} else if(cover.getVisibility() == View.VISIBLE) {
-						//Just wait.
 					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
 						noticePopup.hide(null);
 					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
@@ -328,24 +320,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	public int getContentViewId() {
 
 		return R.layout.activity_main;
-	}
-
-	@Override
-	public View getLoadingView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Animation getLoadingViewAnimOut() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -435,7 +409,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	                	options.inSampleSize = 1;
 	                }
 					
-					showCover();
 					showLoadingView();
 					
 					OnAfterUploadImage oaui = new OnAfterUploadImage() {
@@ -444,7 +417,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 						public void onAfterUploadImage(UploadImageInfo uploadImageInfo,
 								Bitmap thumbnail) {
 							
-							hideCover();
 							hideLoadingView();
 							
 							if(onAfterUploadImage != null && thumbnail != null && !thumbnail.isRecycled()) {
@@ -476,7 +448,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				}
 			} else {
 				ToastUtils.showToast(R.string.canceled);
-				hideCover();
 				hideLoadingView();
 				
 				if(onAfterUploadImage != null) {
@@ -555,7 +526,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				}, 2000);
 			} else if(isGoToLeaveMember) {
 				isGoToLeaveMember = false;
-				showCover();
 				showLoadingView();
 				
 				try {
@@ -565,7 +535,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 					String url = ZoneConstants.BASE_URL + "auth/login" +
 							"?id=" + URLEncoder.encode(id, "UTF-8") + 
 							"&password=" + URLEncoder.encode(pw, "UTF-8") + 
-							"&image_size=" + ResizeUtils.getSpecificLength(308) +
+							"&image_size=308" +
 							"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 					
 					DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -573,7 +543,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 						@Override
 						public void onError(String url) {
 
-							hideCover();
 							hideLoadingView();
 						}
 
@@ -586,7 +555,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 										+ "\nurl : " + url
 										+ "\nresult : " + objJSON);
 
-								hideCover();
 								hideLoadingView();
 								
 								if(objJSON.has("errorCode")
@@ -663,22 +631,24 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				MainPage mp = new MainPage();
 				startPage(mp, null);
 			} else {
-				clearFragments();
+				clearFragments(true);
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}
 	}
 	
-	public void showGridPage(int numOfColumn, String title, int boardIndex) {
+//	public void showGridPage(int numOfColumn, String title, int boardIndex) {
+	public void showGridPage(String title, int type) {
 		
 		try {
 			GridPage gp = new GridPage();
 			
 			Bundle bundle = new Bundle();
-			bundle.putInt("numOfColumn", numOfColumn);
+//			bundle.putInt("numOfColumn", numOfColumn);
 			bundle.putString("title", title);
-			bundle.putInt("boardIndex", boardIndex);
+			bundle.putInt("type", type);
+//			bundle.putInt("boardIndex", boardIndex);
 			
 			startPage(gp, bundle);
 		} catch(Exception e) {
@@ -713,13 +683,14 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		}
 	}
 	
-	public void showListPage(String title) {
+	public void showListPage(String title, int type) {
 		
 		try {
 			ListPage lp = new ListPage();
 			
 			Bundle bundle = new Bundle();
 			bundle.putString("title", title);
+			bundle.putInt("type", type);
 			
 			startPage(lp, bundle);
 		} catch(Exception e) {
@@ -1079,7 +1050,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 							
 //							if(I >=0 && I<=11) {
 							if(I >=0 && I<=8) {
-								clearFragmentsWithoutAnim();
+								clearFragments(false);
 							}
 							
 							String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
@@ -1266,7 +1237,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		}
 	}
 	
-	@Override
 	public void showLoadingView() {
 
 		if(animationLoaded) {
@@ -1284,7 +1254,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		}
 	}
 	
-	@Override
 	public void hideLoadingView() {
 		
 		if(animationLoaded
@@ -1302,20 +1271,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		if(loadingView != null && loadingView.getVisibility() == View.VISIBLE) {
 			loadingView.setVisibility(View.INVISIBLE);
-		}
-	}
-	
-	public void showCover() {
-		
-		if(cover != null && cover.getVisibility() != View.VISIBLE) {
-			cover.setVisibility(View.VISIBLE);
-		}
-	}
-	
-	public void hideCover() {
-
-		if(cover != null && cover.getVisibility() == View.VISIBLE) {
-			cover.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -1456,7 +1411,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			SharedPrefsUtils.removeVariableFromPrefs(ZoneConstants.PREFS_SIGN, "pw");
 			ZonecommsApplication.myInfo = null;
 
-			clearFragments();
+			clearFragments(true);
 			
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 0, getProfileView(), 1, 0, null);
 		} catch(Exception e) {
@@ -1523,7 +1478,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	}
 
 	@Override
-	public void clearFragments() {
+	public void clearFragments(boolean needAnim) {
 		
 		if(getFragmentsSize() == 1 && !(getTopFragment() instanceof MainPage)) {
 			
@@ -1541,7 +1496,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				LogUtils.trace(e);
 			}
 		} else {
-			super.clearFragments();
+			super.clearFragments(needAnim);
 		}
 	}
 	

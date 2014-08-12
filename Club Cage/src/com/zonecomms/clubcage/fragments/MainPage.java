@@ -619,6 +619,18 @@ public class MainPage extends ZonecommsFragment {
 	}
 	
 	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+	
+	@Override
 	public boolean onBackPressed() {
 		
 //		if(boardMenu.getVisibility() == View.VISIBLE) {

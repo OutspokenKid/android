@@ -13,7 +13,6 @@ import android.widget.ListView;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubcage.R;
@@ -31,6 +30,8 @@ public class ListPage extends ZonecommsListFragment {
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
 	
+	private int type;
+	
 	@Override
 	public void bindViews() {
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.listPage_mainLayout);
@@ -39,6 +40,10 @@ public class ListPage extends ZonecommsListFragment {
 
 	@Override
 	public void setVariables() {
+		
+		if(getArguments() != null) {
+			type = getArguments().getInt("type");
+		}
 	}
 
 	@Override
@@ -60,7 +65,7 @@ public class ListPage extends ZonecommsListFragment {
 			}
 		});
         
-		ListAdapter listAdapter = new ListAdapter(mContext, mainActivity, models, false);
+		ListAdapter listAdapter = new ListAdapter(mContext, models, false);
 		listView.setAdapter(listAdapter);
 		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
@@ -102,27 +107,37 @@ public class ListPage extends ZonecommsListFragment {
 		super.downloadInfo();
 		
 		url = null;
-
-		if(title.equals("VIDEO")) {
+		
+		switch(type) {
+		
+		case ZoneConstants.TYPE_VIDEO:
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=2"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_link_nid=" + lastIndexno;
-		} else if(title.equals("NOTICE")) {
+			break;
+			
+		case ZoneConstants.TYPE_NOTICE:
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=1"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_notice_nid=" + lastIndexno;
-		} else if(title.equals("EVENT")) {
+			break;
+			
+		case ZoneConstants.TYPE_EVENT:
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=2"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_notice_nid=" + lastIndexno;
-		} else if(title.equals("MUSIC")) {
+			break;
+			
+		case ZoneConstants.TYPE_MUSIC:
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=3"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(150)
+					+ "&image_size=150"
 					+ "&last_link_nid=" + lastIndexno;
+			break;
+		
 		}
 
 		url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
@@ -151,22 +166,26 @@ public class ListPage extends ZonecommsListFragment {
 						if(length > 0) {
 							for(int i=0; i<length; i++) {
 								try {
-									if(title.equals("VIDEO")) {
-										Link link = new Link(arJSON.getJSONObject(i));
-										link.setItemCode(ZoneConstants.ITEM_VIDEO);
-										models.add(link);
-									} else if(title.equals("NOTICE")) {
-										Notice notice = new Notice(arJSON.getJSONObject(i));
-										notice.setItemCode(ZoneConstants.ITEM_NOTICE);
-										models.add(notice);
-									} else if(title.equals("EVENT")) {
+									switch(type) {
+									
+									case ZoneConstants.TYPE_NOTICE:
+									case ZoneConstants.TYPE_EVENT:
 										Notice notice = new Notice(arJSON.getJSONObject(i));
 										notice.setItemCode(ZoneConstants.ITEM_NOTICE);		//공지사항과 같다.
 										models.add(notice);
-									} else if(title.equals("MUSIC")) {
+										break;
+
+									case ZoneConstants.TYPE_VIDEO:
 										Link link = new Link(arJSON.getJSONObject(i));
+										link.setItemCode(ZoneConstants.ITEM_VIDEO);
+										models.add(link);
+										break;
+										
+									case ZoneConstants.TYPE_MUSIC:
+										link = new Link(arJSON.getJSONObject(i));
 										link.setItemCode(ZoneConstants.ITEM_MUSIC);
 										models.add(link);
+										break;
 									}
 								} catch(Exception e) {
 								}
@@ -214,6 +233,18 @@ public class ListPage extends ZonecommsListFragment {
 	public int getContentViewId() {
 
 		return R.layout.page_list;
+	}
+	
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
 	}
 	
 	@Override

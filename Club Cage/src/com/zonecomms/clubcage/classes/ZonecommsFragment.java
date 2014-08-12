@@ -89,13 +89,13 @@ public abstract class ZonecommsFragment extends BaseFragment {
 			LogUtils.trace(e);
 		}
 		
-		mActivity.hideLoadingView();
+		mainActivity.hideLoadingView();
 	}
 	
 	public void checkTitleText() {
 		
 		try {
-			(((MainActivity) mActivity).getTitleBar()).setTitleText(getTitleText());
+			mainActivity.getTitleBar().setTitleText(getTitleText());
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}

@@ -100,7 +100,7 @@ public abstract class ViewWrapper {
 
 	public void setImage(final ImageView ivImage, String url) {
 
-		if(ivImage == null) {
+		if(ivImage == null || url == null || url.length() == 0) {
 			return;
 		}
 

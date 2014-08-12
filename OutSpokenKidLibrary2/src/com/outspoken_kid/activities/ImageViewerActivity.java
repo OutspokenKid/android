@@ -58,7 +58,6 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	
 	protected int limitDist;
 	
-	protected Context context;
 	protected String title;
 	protected String[] imageUrls;
 	protected String[] thumbnailUrls;
@@ -157,6 +156,12 @@ public abstract class ImageViewerActivity extends BaseActivity {
 		
 		FontUtils.setFontSize(tvTitle, 32);
 		limitDist = ResizeUtils.getSpecificLength(30);
+
+		if(context == null) {
+			LogUtils.log("###ImageViewerActivity.setVariables.  context is null.");
+		} else {
+			LogUtils.log("###ImageViewerActivity.setVariables.  context is not null.");
+		}
 		
 		fade_in = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
 		fade_out = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
@@ -383,7 +388,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	@Override
 	public int getContentViewId() {
 
-		return R.id.imageviewerActivity_mainLayout;
+		return R.layout.activity_imageviewer;
 	}
 
 	public void showMenus() {
@@ -462,7 +467,19 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			}
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
 
+		finish();
+	}
+	
+	@Override
+	public void onMenuPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 /////////////////////////////////////////// Classes.
 	
 	public class PagerAdapterForImage extends PagerAdapter {

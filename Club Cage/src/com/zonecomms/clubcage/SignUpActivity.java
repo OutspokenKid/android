@@ -87,6 +87,7 @@ public class SignUpActivity extends ZonecommsActivity {
 	private CustomDatePicker dpBirth;
 	
 	private View cover;
+	private View loadingView;
 	
 	private File filePath;
 	private String fileName;
@@ -146,6 +147,8 @@ public class SignUpActivity extends ZonecommsActivity {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.LEFT|Gravity.TOP, null);
 		FontUtils.setFontSize(tvTitle, 30);
 		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
+		
+		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForClause, 2, 
 				Gravity.LEFT|Gravity.TOP, new int[]{0, 90, 0, 0}, new int[]{40, 40, 40, 40});
@@ -317,13 +320,14 @@ public class SignUpActivity extends ZonecommsActivity {
 		}
 	}
 	
-	@Override
-	public View getLoadingView() {
+	public void showLoadingView() {
 
-		View loadingView = findViewById(R.id.signUpActivity_loadingView);
-		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
-		
-		return loadingView;
+		loadingView.setVisibility(View.VISIBLE);
+	}
+
+	public void hideLoadingView() {
+
+		loadingView.setVisibility(View.INVISIBLE);
 	}
 	
 ///////////// Custom methods.

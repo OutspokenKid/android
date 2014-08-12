@@ -24,21 +24,6 @@
         
     </android.support.v4.widget.SwipeRefreshLayout>
     
-    <TextView
-        android:id="@+id/circleMainActivity_tvTitle1"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textColor="#fff" />
-    
-    <TextView
-        android:id="@+id/circleMainActivity_tvTitle2"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:visibility="invisible"
-        android:textColor="#fff" />
-
     <View 
         android:id="@+id/circleMainActivity_menuCover"
         android:layout_width="match_parent"
@@ -59,6 +44,21 @@
 	        android:orientation="vertical" />
         
     </ScrollView>
+    
+    <TextView
+        android:id="@+id/circleMainActivity_tvTitle1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#fff" />
+    
+    <TextView
+        android:id="@+id/circleMainActivity_tvTitle2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textColor="#fff" />
 
     <FrameLayout
         android:id="@+id/circleMainActivity_frameForMenu"

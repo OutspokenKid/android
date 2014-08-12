@@ -98,7 +98,7 @@ public class MessagePage extends ZonecommsListFragment {
 			}
 		});
 		
-		ListAdapter listAdapter = new ListAdapter(mContext, mainActivity, models, false);
+		ListAdapter listAdapter = new ListAdapter(mContext, models, false);
 		listView.setAdapter(listAdapter);
 		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
@@ -276,7 +276,7 @@ public class MessagePage extends ZonecommsListFragment {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + member_id +
 					"&last_microspot_nid=" + lastIndexno +
-					"&image_size=" + ResizeUtils.getSpecificLength(640);
+					"&image_size=640";
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -368,7 +368,6 @@ public class MessagePage extends ZonecommsListFragment {
 	public void setPage(boolean successDownload) {
 
 		mainActivity.hideLoadingView();
-		mainActivity.hideCover();
 		
 		if(!isRefreshing && !isFirstLoading) {
 
@@ -428,6 +427,18 @@ public class MessagePage extends ZonecommsListFragment {
 	public int getContentViewId() {
 
 		return R.layout.page_message;
+	}
+	
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
 	}
 	
 	@Override
@@ -493,7 +504,6 @@ public class MessagePage extends ZonecommsListFragment {
 	public void sendMessage(String input) {
 		
 		mainActivity.showLoadingView();
-		mainActivity.showCover();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "microspot/write" +
@@ -512,7 +522,6 @@ public class MessagePage extends ZonecommsListFragment {
 					
 					ToastUtils.showToast(R.string.failToSendMessage);
 					mainActivity.hideLoadingView();
-					mainActivity.hideCover();
 				}
 
 				@Override

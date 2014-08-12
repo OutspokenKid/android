@@ -39,14 +39,6 @@
         
     </LinearLayout>
     
-    <View 
-        android:id="@+id/mainActivity_cover"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:clickable="true"
-        android:background="#a000" />
-    
 	<FrameLayout
 	    android:id="@+id/mainActivity_loadingView"
         android:layout_width="50dp"

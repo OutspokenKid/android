@@ -105,12 +105,6 @@ public class SignInActivity extends ZonecommsActivity {
 		
 	}
 	
-	@Override
-	public View getLoadingView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 ///////////// Custom methods.
 	
 	public void addViewsForInnerLinear() {
@@ -231,7 +225,7 @@ public class SignInActivity extends ZonecommsActivity {
 			String url = ZoneConstants.BASE_URL + "auth/login" +
 					"?id=" + URLEncoder.encode(id, "UTF-8") + 
 					"&password=" + URLEncoder.encode(pw, "UTF-8") + 
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -333,4 +327,5 @@ public class SignInActivity extends ZonecommsActivity {
 
 		public void OnAfterSigningIn(boolean successSignIn);
 	}
+
 }

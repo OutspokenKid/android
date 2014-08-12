@@ -18,7 +18,6 @@ import android.text.Selection;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -56,6 +55,7 @@ public class WriteActivity extends ZonecommsActivity {
 	private FrameLayout photoFrame;
 	private Button btnPhoto;
 	private HoloStyleSpinnerPopup spinner;
+	private View loadingView;
 	private View cover;
 	
 //	private int board_nid;
@@ -84,6 +84,7 @@ public class WriteActivity extends ZonecommsActivity {
 		photoFrame = (FrameLayout) findViewById(R.id.writeActivity_photoFrame);
 		btnPhoto = (Button) findViewById(R.id.writeActivity_btnPhoto);
 		spinner = (HoloStyleSpinnerPopup) findViewById(R.id.writeActivity_spinner);
+		loadingView = findViewById(R.id.writeActivity_loadingView);
 		cover = findViewById(R.id.writeActivity_cover);
 	}
 
@@ -136,6 +137,8 @@ public class WriteActivity extends ZonecommsActivity {
 		FontUtils.setFontSize(editText, 36);
 		
 		ResizeUtils.viewResize(66, 53, btnPhoto, 1, Gravity.CENTER_VERTICAL, new int[]{10, 10, 10, 10});
+		
+		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
 	}
 
 	@Override
@@ -226,14 +229,15 @@ public class WriteActivity extends ZonecommsActivity {
 			super.onBackPressed();
 		}
 	}
-	
-	@Override
-	public View getLoadingView() {
 
-		View loadingView = findViewById(R.id.writeActivity_loadingView);
-		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
+	public void showLoadingView() {
 		
-		return loadingView;
+		loadingView.setVisibility(View.VISIBLE);
+	}
+
+	public void hideLoadingView() {
+
+		loadingView.setVisibility(View.INVISIBLE);
 	}
 	
 	@Override
@@ -311,18 +315,6 @@ public class WriteActivity extends ZonecommsActivity {
 			ToastUtils.showToast(R.string.canceled);
 		}
 	}
-	
-	@Override
-	public Animation getLoadingViewAnimIn() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Animation getLoadingViewAnimOut() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public void setPage(boolean successDownload) {
@@ -388,7 +380,7 @@ public class WriteActivity extends ZonecommsActivity {
 			}
 		}
 	}
-
+	
 	@Override
 	public void onMenuPressed() {
 		// TODO Auto-generated method stub

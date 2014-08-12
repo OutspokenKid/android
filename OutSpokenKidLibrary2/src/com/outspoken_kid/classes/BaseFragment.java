@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.interfaces.OutspokenFragmentInterface;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -22,7 +21,6 @@ public abstract class BaseFragment extends Fragment
 
 	protected View mThisView;
 	protected Context mContext;
-	protected BaseFragmentActivity mActivity;
 	
 	protected String fragmentTag;
 	protected boolean isDownloading;
@@ -30,6 +28,8 @@ public abstract class BaseFragment extends Fragment
 	protected boolean disableExitAnim;
 	protected boolean isLastFragment;
 	
+	public abstract void showLoadingView();
+	public abstract void hideLoadingView();
 	public abstract boolean onMenuPressed();
 	public abstract boolean onBackPressed();
 	
@@ -50,6 +50,8 @@ public abstract class BaseFragment extends Fragment
 		super.onCreate(savedInstanceState);
 		
 		LogUtils.log("###BaseFragment.onCreate.  ");
+		
+		mContext = getActivity();
 		setVariables();
 	}
 	
@@ -62,9 +64,6 @@ public abstract class BaseFragment extends Fragment
 		if(container == null) {
 			return null;
 		}
-	
-		mContext = getActivity();
-		mActivity = (BaseFragmentActivity) getActivity();
 		
 		mThisView = inflater.inflate(getContentViewId(), null);
 		return mThisView;
@@ -139,7 +138,7 @@ public abstract class BaseFragment extends Fragment
 	public void downloadInfo() {
 
 		if(!isRefreshing) {
-			mActivity.showLoadingView();
+			showLoadingView();
 		}
 		
 		isDownloading = true;
@@ -148,7 +147,7 @@ public abstract class BaseFragment extends Fragment
 	@Override
 	public void setPage(boolean successDownload) {
 
-		mActivity.hideLoadingView();
+		hideLoadingView();
 		isRefreshing = false;
 		isDownloading = false;
 	}

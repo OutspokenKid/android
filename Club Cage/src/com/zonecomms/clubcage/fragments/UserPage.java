@@ -477,7 +477,7 @@ public class UserPage extends ZonecommsFragment {
 										"&profile_image=" + uploadImageInfo.getImageUrl() +
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
-										"&image_size=" + ResizeUtils.getSpecificLength(308);
+										"&image_size=308";
 								
 								DownloadUtils.downloadJSONString(url,
 										new OnJSONDownloadListener() {
@@ -553,7 +553,6 @@ public class UserPage extends ZonecommsFragment {
 	public void setPage(boolean successDownload) {
 
 		LogUtils.log("###where.setPage.  hideLoadingView");
-		mainActivity.hideCover();
 		mainActivity.hideLoadingView();
 		isRefreshing = false;
 		isDownloading = false;
@@ -599,6 +598,18 @@ public class UserPage extends ZonecommsFragment {
 	public int getContentViewId() {
 
 		return R.layout.page_user;
+	}
+	
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
 	}
 	
 	@Override
@@ -809,7 +820,7 @@ public class UserPage extends ZonecommsFragment {
 		
 		swipeRefreshLayoutForGrid = new SwipeRefreshLayout(mContext);
 		
-		gridAdapter = new GridAdapter(mContext, mainActivity, modelsForGrid, true);
+		gridAdapter = new GridAdapter(mContext, modelsForGrid, true);
 		gridView = new GridView(mContext);
 		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		gridView.setAdapter(gridAdapter);
@@ -885,7 +896,7 @@ public class UserPage extends ZonecommsFragment {
 
 		swipeRefreshLayoutForList = new SwipeRefreshLayout(mContext);
 		
-		listAdapter = new ListAdapter(mContext, mainActivity, modelsForList, true);
+		listAdapter = new ListAdapter(mContext, modelsForList, true);
 		listView = new ListView(mContext);
 		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
@@ -964,8 +975,6 @@ public class UserPage extends ZonecommsFragment {
 		isLastList = false;
 		mainActivity.showLoadingView();
 		
-		mainActivity.showCover();
-		
 		if(targetAdapter != null) {
 			lastIndexno = 0;
 			models.clear();
@@ -1024,7 +1033,7 @@ public class UserPage extends ZonecommsFragment {
 			url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + userId +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -1235,7 +1244,7 @@ public class UserPage extends ZonecommsFragment {
 		url = ZoneConstants.BASE_URL + "sb/posting_list_by_story" +
 				"?member_id=" + userId + 
 				"&last_spot_nid=" + lastIndexno +
-				"&image_size=" + ResizeUtils.getSpecificLength(308) +
+				"&image_size=308" +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 
 		if(mode == 1) {
@@ -1308,14 +1317,14 @@ public class UserPage extends ZonecommsFragment {
 		if(userId.equals(ZonecommsApplication.myInfo.getMember_id())) {
 			url = ZoneConstants.BASE_URL + "microspot/relationList" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 					
 		} else {
 			url = ZoneConstants.BASE_URL + "microspot/message_tap" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + userId +
 					"&last_microspot_nid=0" +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 		}
 
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

@@ -1,8 +1,6 @@
 package com.outspoken_kid.interfaces;
 
 import android.content.DialogInterface;
-import android.view.View;
-import android.view.animation.Animation;
 
 public interface OutspokenActivityInterface {
 
@@ -56,37 +54,6 @@ public interface OutspokenActivityInterface {
 	 * @return Font resource id.
 	 */
 	public int getCustomFontResId();
-	
-	/**
-	 * Create or get loading view.
-	 * 
-	 * @return Loading view instance.
-	 */
-	public View getLoadingView();
-	
-	/**
-	 * Show loading view.
-	 */
-	public void showLoadingView();
-	
-	/**
-	 * Hide loading view.
-	 */
-	public void hideLoadingView();
-	
-	/**
-	 * Create or get loading view animation in.
-	 * 
-	 * @return In animation.
-	 */
-	public Animation getLoadingViewAnimIn();
-	
-	/**
-	 * Create or get loading view animation out.
-	 * 
-	 * @return Out animation.
-	 */
-	public Animation getLoadingViewAnimOut();
 
 	/**
 	 * Show alert dialog.

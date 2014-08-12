@@ -53,15 +53,13 @@ import com.zonecomms.common.utils.AppInfoUtils;
 public class GridPage extends ZonecommsListFragment {
 	
 	private boolean isAnimating;
-	public int lastIndexno;
-	public boolean isLastList;
-	public String url;
 
 	private int numOfColumn;
 	private int menuIndex;
-	private int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
+//	private int boardIndex;		// 1:왁자지껄, 2:생생후기, 3:함께가기, 4:공개수배
 
 	private boolean isEditTextShown;
+	private int type;
 	
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private GridView gridView;
@@ -79,35 +77,44 @@ public class GridPage extends ZonecommsListFragment {
 	@Override
 	public void setVariables() {
 
-		numOfColumn = getArguments().getInt("numOfColumn");
-		boardIndex = getArguments().getInt("boardIndex");
+		if(getArguments() != null) {
+			
+			type = getArguments().getInt("type");
+			
+			if(type == ZoneConstants.TYPE_MEMBER) {
+				numOfColumn = 4;
+			} else {
+				numOfColumn = 2;
+			}
+		}
+		
+		
+//		numOfColumn = getArguments().getInt("numOfColumn");
+//		boardIndex = getArguments().getInt("boardIndex");
 		
 		//1. 왁자지껄, 2.생생후기, 3.함께가기, 4.공개수배
-		switch(boardIndex) {
-		
-		case 1:
-			title = getString(R.string.board_story);
-			break;
-		case 2:
-			title = getString(R.string.board_review);
-			break;
-		case 3:
-			title = getString(R.string.board_with);
-			break;
-		case 4:
-			title = getString(R.string.board_findPeople);
-			break;
-		}
+//		switch(boardIndex) {
+//		
+//		case 1:
+//			title = getString(R.string.board_story);
+//			break;
+//		case 2:
+//			title = getString(R.string.board_review);
+//			break;
+//		case 3:
+//			title = getString(R.string.board_with);
+//			break;
+//		case 4:
+//			title = getString(R.string.board_findPeople);
+//			break;
+//		}
 	}
 
-	@TargetApi(Build.VERSION_CODES.GINGERBREAD) @Override
+	@TargetApi(Build.VERSION_CODES.GINGERBREAD) 
+	@Override
 	public void createPage() {
 
-		if(numOfColumn == 0) {
-			numOfColumn = 2;
-		}
-
-		if(title.equals("MEMBER")) {
+		if(type == ZoneConstants.TYPE_MEMBER) {
 			addMenuForPeople();
 			addSearchBar();
 		}
@@ -128,7 +135,7 @@ public class GridPage extends ZonecommsListFragment {
 			}
 		});
 		
-		GridAdapter gridAdapter = new GridAdapter(mContext, mainActivity, models, false);
+		GridAdapter gridAdapter = new GridAdapter(mContext, models, false);
 		gridView.setAdapter(gridAdapter);
 		gridView.setNumColumns(numOfColumn);
 		gridView.setPadding(0, ResizeUtils.getSpecificLength(8), 0, 0);
@@ -174,12 +181,13 @@ public class GridPage extends ZonecommsListFragment {
 		
 		url = null;
 
-		if(boardIndex != 0) {
+		if(type == ZoneConstants.TYPE_STORY) {
 			url = ZoneConstants.BASE_URL + "sb/partner_spot_list"
-					+ "?board_nid=" + boardIndex
+//					+ "?board_nid=" + boardIndex
+					+ "?board_nid=1"
 					+ "&last_sb_spot_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(308);;
-		} else if(title.equals("MEMBER")) {
+					+ "&image_size=380";
+		} else if(type == ZoneConstants.TYPE_MEMBER) {
 			
 			String keyword = "";
 			
@@ -195,7 +203,7 @@ public class GridPage extends ZonecommsListFragment {
 			url = ZoneConstants.BASE_URL + "sb/member_list"
 					+ "?status=1"
 					+ "&max_sb_member_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(150)
+					+ "&image_size=150"
 					+ "&keyword=" + keyword;
 			
 			switch(menuIndex) {
@@ -216,21 +224,22 @@ public class GridPage extends ZonecommsListFragment {
 				break;
 			}
 			
-		} else if(title.equals("SCHEDULE")){
+		} else if(type == ZoneConstants.TYPE_SCHEDULE){
 			url = ZoneConstants.BASE_URL + "notice/list" 
 					+ "?notice_type=3"
 					+ "&last_notice_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640);
-		} else if(title.equals("PHOTO")) {
+					+ "&image_size=308";
+		} else if(type == ZoneConstants.TYPE_PHOTO) {
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=1"
 					+ "&last_link_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640);
+					+ "&image_size=308";
 		}
 
+		LogUtils.log("###GridPage.downloadInfo.  url : " + url);
+		
 		if(!StringUtils.isEmpty(url)) {
 			super.downloadInfo();
-			
 			
 			url += "&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 			
@@ -255,22 +264,32 @@ public class GridPage extends ZonecommsListFragment {
 						if(length > 0) {
 							for(int i=0; i<length; i++) {
 								try {
-									if(boardIndex != 0) {
+									
+									switch(type) {
+									
+									case ZoneConstants.TYPE_STORY:
 										Post post = new Post(arJSON.getJSONObject(i));
 										post.setItemCode(ZoneConstants.ITEM_POST);
 										models.add(post);
-									} else if(title.equals("MEMBER")) {
+										break;
+										
+									case ZoneConstants.TYPE_MEMBER:
 										Member member = new Member(arJSON.getJSONObject(i));
 										member.setItemCode(ZoneConstants.ITEM_USER);
 										models.add(member);
-									} else if(title.equals("SCHEDULE")){
+										break;
+										
+									case ZoneConstants.TYPE_SCHEDULE:
 										Notice notice = new Notice(arJSON.getJSONObject(i));
 										notice.setItemCode(ZoneConstants.ITEM_SCHEDULE);
 										models.add(notice);
-									} else if(title.equals("PHOTO")) {
+										break;
+										
+									case ZoneConstants.TYPE_PHOTO:
 										Link link = new Link(arJSON.getJSONObject(i));
 										link.setItemCode(ZoneConstants.ITEM_PHOTO);
 										models.add(link);
+										break;
 									}
 								} catch(Exception e) {
 								}
@@ -318,6 +337,18 @@ public class GridPage extends ZonecommsListFragment {
 	}
 
 	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+	
+	@Override
 	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
@@ -337,7 +368,7 @@ public class GridPage extends ZonecommsListFragment {
 		mainActivity.getTitleBar().hideCircleButton();
 		mainActivity.getTitleBar().showHomeButton();
 		
-		if(boardIndex != 0) {
+		if(type == ZoneConstants.TYPE_STORY) {
 			mainActivity.getTitleBar().showWriteButton();
 		} else {
 			mainActivity.getTitleBar().hideWriteButton();
@@ -609,10 +640,10 @@ public class GridPage extends ZonecommsListFragment {
 		}
 	}
 	
-	public int getBoardIndex() {
-		
-		return boardIndex;
-	}
+//	public int getBoardIndex() {
+//		
+//		return boardIndex;
+//	}
 
 //////////////////////// Classes.
 	

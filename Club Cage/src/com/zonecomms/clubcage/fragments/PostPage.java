@@ -251,7 +251,7 @@ public class PostPage extends ZonecommsFragment {
 		
 		String url = ZoneConstants.BASE_URL + "spot/detail" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&image_size=" + ResizeUtils.getSpecificLength(640) +
+				"&image_size=640" +
 				"&spot_nid=" + spot_nid;
 		super.downloadInfo();
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -316,6 +316,18 @@ public class PostPage extends ZonecommsFragment {
 		return R.layout.page_post;
 	}
 
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+	
 	@Override
 	public boolean onBackPressed() {
 
@@ -539,7 +551,7 @@ public class PostPage extends ZonecommsFragment {
 		String url = ZoneConstants.BASE_URL + "reply/list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&spot_nid=" + spot_nid +
-				"&image_size=" + ResizeUtils.getSpecificLength(100) +
+				"&image_size=100" +
 				"&last_reply_nid=" + lastIndexno;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -632,7 +644,6 @@ public class PostPage extends ZonecommsFragment {
 	public void writeReply(String text) {
 
 		mainActivity.showLoadingView();
-		mainActivity.showCover();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "reply/write" +
@@ -662,7 +673,6 @@ public class PostPage extends ZonecommsFragment {
 					
 					ToastUtils.showToast(R.string.failToSendReply);
 					mainActivity.hideLoadingView();
-					mainActivity.hideCover();
 				}
 
 				@Override
@@ -673,7 +683,6 @@ public class PostPage extends ZonecommsFragment {
 								+ "\nresult : " + objJSON);
 
 						mainActivity.hideLoadingView();
-						mainActivity.hideCover();
 						
 						if(objJSON.getInt("errorCode") == 1) {
 							SoftKeyboardUtils.hideKeyboard(mContext, editText);

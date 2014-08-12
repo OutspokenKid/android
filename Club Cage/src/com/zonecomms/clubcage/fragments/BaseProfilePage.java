@@ -316,8 +316,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 											public void onError(String url) {
 												
 												ToastUtils.showToast(R.string.failToLoadBitmap);
-												mainActivity.hideCover();
-												mainActivity.hideLoadingView();
+												hideLoadingView();
 											}
 
 											@Override
@@ -331,8 +330,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 															+ "\nresult : "
 															+ objJSON);
 
-													mainActivity.hideCover();
-													mainActivity.hideLoadingView();
+													hideLoadingView();
 													
 													if(objJSON.getInt("errorCode") == 1) {
 														ivImage.setImageBitmap(fBitmap);
@@ -376,8 +374,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 		}
 		
 		isDownloading = true;
-		mainActivity.showLoadingView();
-		mainActivity.showCover();
+		showLoadingView();
 
 		try {
 			String url = ZoneConstants.BASE_URL + "member/info" +
@@ -442,8 +439,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 	@Override
 	public void setPage(boolean downloadSuccess) {
 		
-		mainActivity.hideCover();
-		mainActivity.hideLoadingView();
+		hideLoadingView();
 		
 		if(downloadSuccess) {
 			etNickname.getEditText().setText(nickname);
@@ -566,8 +562,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 			
 			ToastUtils.showToast(R.string.submittingToServer);
 			
-			mainActivity.showLoadingView();
-			mainActivity.showCover();
+			showLoadingView();
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
@@ -612,4 +607,15 @@ public class BaseProfilePage extends ZonecommsFragment {
 		}
 	}
 
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
 }

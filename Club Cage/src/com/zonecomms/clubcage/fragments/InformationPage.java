@@ -250,7 +250,7 @@ public class InformationPage extends ZonecommsFragment {
 		String url = ZoneConstants.BASE_URL + "link/list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&link_type=7" +
-				"&image_size=" + ResizeUtils.getSpecificLength(640);
+				"&image_size=640";
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -353,6 +353,18 @@ public class InformationPage extends ZonecommsFragment {
 	public int getContentViewId() {
 
 		return R.layout.page_information;
+	}
+	
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
 	}
 	
 	@Override

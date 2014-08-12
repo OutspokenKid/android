@@ -99,6 +99,9 @@ public class CircleMainActivity extends Activity {
     	final Intent intent = getIntent();				//'i' is intent that passed intent from before.
 		
 		if(intent!= null && intent.getData() != null) {
+			
+			LogUtils.log("###CircleMainActivity.onCreate.  intent is not null.");
+			
 			swipeLayout.post(new Runnable() {
 				
 				@Override
@@ -107,6 +110,8 @@ public class CircleMainActivity extends Activity {
 					launchToMainActivity(intent.getData());
 				}
 			});
+		} else {
+			LogUtils.log("###CircleMainActivity.onCreate.  intent is null.");
 		}
     }
     
@@ -139,6 +144,8 @@ public class CircleMainActivity extends Activity {
     }
     
     public void setVariables() {
+    	
+    	playIndex = 0;
     	
 		aaIn = new AlphaAnimation(0, 1);
 		aaIn.setDuration(ANIM_DURATION);
@@ -209,7 +216,7 @@ public class CircleMainActivity extends Activity {
     public void setSizes() {
 
     	ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, menuScroll, 
-    			2, Gravity.TOP, null, new int[]{0, CircleHeaderView.TITLE_BAR_HEIGHT, 0, 0});
+    			2, Gravity.TOP, null);
     	ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, CircleHeaderView.TITLE_BAR_HEIGHT, 
     			tvTitles[0], 2, Gravity.TOP, null);
     	ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, CircleHeaderView.TITLE_BAR_HEIGHT, 
@@ -376,24 +383,73 @@ public class CircleMainActivity extends Activity {
     }
     
     public void addMenus() {
+
+		int topPadding = ResizeUtils.getSpecificLength(CircleHeaderView.TITLE_BAR_HEIGHT);
+		menuScroll.setPadding(0, topPadding, 0, 0);
     	
-    	int size = 15;
+		int[] titleResIds = new int[] {
+				R.string.notice,
+				R.string.schedule,
+				R.string.event,
+				R.string.story,
+				R.string.image,
+				R.string.video,
+				R.string.showMember,
+				R.string.setting
+		};
+		
+		final String[] uriStrings = new String[] {
+				"notice",
+				"schedule",
+				"event",
+				"freetalk",
+				"image",
+				"music",
+				"video",
+				"member",
+				"setting"
+		};
+		
+		final String defaultUriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
+    	int height = ResizeUtils.getSpecificLength(130);
+    	int size = titleResIds.length;
     	for(int i=0; i<size; i++) {
+    		final int INDEX = i;
+    		
 			View line = new View(this);
-			line.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2));
+			line.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1));
 			line.setBackgroundColor(Color.WHITE);
 			menuLinear.addView(line);
     		
     		TextView textView = new TextView(this);
     		textView.setLayoutParams(new LinearLayout.LayoutParams(
-    				LayoutParams.MATCH_PARENT, 
-    				ResizeUtils.getSpecificLength(CircleHeaderView.TITLE_BAR_HEIGHT)));
+    				LayoutParams.MATCH_PARENT, height));
     		textView.setTextColor(Color.WHITE);
-    		textView.setText("Menu text " + (i+1));
+    		textView.setText(titleResIds[i]);
     		textView.setGravity(Gravity.CENTER);
-    		FontUtils.setFontSize(textView, 30);
+    		textView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					
+					try {
+						launchToMainActivity(Uri.parse(defaultUriString + uriStrings[INDEX]));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+			});
+    		FontUtils.setFontSize(textView, 40);
+    		FontUtils.setGlobalFont(textView);
     		menuLinear.addView(textView);
     	}
+    }
+
+    public void setMenuColor(int color) {
+    	
+    	menuScroll.setBackgroundColor(color);
     }
     
     public void showMenuScroll() {
@@ -608,6 +664,9 @@ public class CircleMainActivity extends Activity {
     	//리스트 아이템 설정.
     	listAdapter.changeColor(color);
     	
+    	//메뉴 색 설정.
+    	setMenuColor(color);
+    	
     	//타이틀바 설정.
     	if(playIndex == 0) {
 			tvTitles[0].setBackgroundColor(color);
@@ -694,5 +753,7 @@ public class CircleMainActivity extends Activity {
 		if(ZonecommsApplication.getActivity() != null) {
 			ZonecommsApplication.getActivity().finish();
 		}
+		
+		ZonecommsApplication.setCircleMainActivity(null);
 	}
 }

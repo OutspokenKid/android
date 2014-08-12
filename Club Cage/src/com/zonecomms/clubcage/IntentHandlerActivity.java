@@ -36,16 +36,35 @@ public class IntentHandlerActivity extends Activity {
 	public void handlingIntent(final Intent intent) {
 
 		try {
-			if(ZonecommsApplication.getActivity() != null 
+			if(ZonecommsApplication.getActivity() != null
 					&& ZonecommsApplication.getActivity().getFragmentsSize() != 0) {
+
+				LogUtils.log("###IntentHandlerActivity.handlingIntent.  On mainActivity");
+				
 				Intent mainActivityIntent = new Intent(this, MainActivity.class);
 				mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
 				startActivity(mainActivityIntent);
 				
 				if(intent.getData() != null) {
+					LogUtils.log("###IntentHandlerActivity.handlingIntent.  On mainActivity, has data");
+					actionByUri(intent.getData());
+				}
+				
+			} else  if(ZonecommsApplication.getCircleActivity() != null) {
+				
+				LogUtils.log("###IntentHandlerActivity.handlingIntent.  On cirleMainActivity.");
+				
+				Intent mainActivityIntent = new Intent(this, CircleMainActivity.class);
+				mainActivityIntent.addFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+				startActivity(mainActivityIntent);
+				
+				if(intent.getData() != null) {
+					LogUtils.log("###IntentHandlerActivity.handlingIntent.  On cirleMainActivity, has data.");
 					actionByUri(intent.getData());
 				}
 			} else {
+				LogUtils.log("###IntentHandlerActivity.handlingIntent.  app is not running.");
+				
 				if(IntroActivity.isInIntro) {
 					bg.postDelayed(new Runnable() {
 						
@@ -109,6 +128,16 @@ public class IntentHandlerActivity extends Activity {
 
 				final MainActivity mActivity = ZonecommsApplication.getActivity();
 				
+				
+				if(mActivity == null) {
+					
+					if(ZonecommsApplication.getCircleActivity() != null) {
+						ZonecommsApplication.getCircleActivity().launchToMainActivity(uri);
+					}
+					
+					return;
+				}
+				
 				//인포메이션.
 				if(url.equals("android.zonecomms.com/information")) {
 					mActivity.showInformationPage();
@@ -168,19 +197,21 @@ public class IntentHandlerActivity extends Activity {
 
 				//공지사항.
 				} else if(url.equals("android.zonecomms.com/notice")) {
-					mActivity.showListPage("NOTICE");
+					mActivity.showListPage("NOTICE", ZoneConstants.TYPE_NOTICE);
 					
 				//스케쥴.
 				} else if(url.equals("android.zonecomms.com/schedule")) {
-					mActivity.showGridPage(2, "SCHEDULE", 0);
+//					mActivity.showGridPage(2, "SCHEDULE", 0);
+					mActivity.showGridPage("SCHEDULE", ZoneConstants.TYPE_SCHEDULE);
+					
 				//이벤트.
 				} else if(url.equals("android.zonecomms.com/event")) {
-					mActivity.showListPage("EVENT");
+					mActivity.showListPage("EVENT", ZoneConstants.TYPE_EVENT);
 					
 				//왁자지껄.
 				} else if(url.equals("android.zonecomms.com/freetalk")) {
 //					mActivity.showGridPage(2, "TALK", 1);
-					mActivity.showGridPage(2, "STORY", 1);
+					mActivity.showGridPage("STORY", ZoneConstants.TYPE_STORY);
 					
 //				//생생후기.
 //				} else if(url.equals("android.zonecomms.com/review")) {
@@ -196,15 +227,18 @@ public class IntentHandlerActivity extends Activity {
 					
 				//이미지.
 				} else if(url.equals("android.zonecomms.com/image")) {
-					mActivity.showGridPage(2, "PHOTO", 0);
+//					mActivity.showGridPage(2, "PHOTO", 0);
+					mActivity.showGridPage("PHOTO", ZoneConstants.TYPE_PHOTO);
 					
 				//뮤직.
 				} else if(url.equals("android.zonecomms.com/music")) {
-					mActivity.showListPage("MUSIC");
+//					mActivity.showListPage("MUSIC");
+					mActivity.showListPage("MUSIC", ZoneConstants.TYPE_MUSIC);
 					
 				//비디오.
 				} else if(url.equals("android.zonecomms.com/video")) {
-					mActivity.showListPage("VIDEO");
+//					mActivity.showListPage("VIDEO");
+					mActivity.showListPage("VIDEO", ZoneConstants.TYPE_VIDEO);
 					
 				//멤버 보기.
 				} else if(url.equals("android.zonecomms.com/member")) {
@@ -214,7 +248,8 @@ public class IntentHandlerActivity extends Activity {
 						@Override
 						public void onAfterLogin() {
 							
-							mActivity.showGridPage(4, "MEMBER", 0);
+//							mActivity.showGridPage(4, "MEMBER", 0);
+							mActivity.showGridPage("MEMBER", ZoneConstants.TYPE_MEMBER);
 						}
 					});
 					

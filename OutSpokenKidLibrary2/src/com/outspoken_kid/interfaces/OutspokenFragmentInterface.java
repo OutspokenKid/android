@@ -1,5 +1,6 @@
 package com.outspoken_kid.interfaces;
 
+
 public interface OutspokenFragmentInterface {
 
 	/**
@@ -58,9 +59,24 @@ public interface OutspokenFragmentInterface {
 	 */
 	public int getCustomFontResId();
 	
+	/**
+	 * Get fragment tag.
+	 * 
+	 * @return Fragment tag.
+	 */
 	public String getFragmentTag();
 	
+	/**
+	 * Disable exit anim. Using for ClearFragmentWithOutAnim() in BaseFragmentActivity.
+	 * 
+	 * @param isLastPage If true, don't disable exit anim.
+	 */
 	public void disableExitAnim(boolean isLastPage);
 	
+	/**
+	 * Get animation for exit last page.
+	 * 
+	 * @return Animation resource id.
+	 */
 	public int getLastPageAnimResId();
 }

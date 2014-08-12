@@ -100,6 +100,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 				if(post.getMember() != null) {
 					Member member = post.getMember();
 					setImage(profileImage, member.getMedia_src());
+					
 					String info = "";
 					
 					if(!StringUtils.isEmpty(member.getMember_nickname())) {

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
 import com.outspoken_kid.views.holo_dark.HoloConstants;
+import com.zonecomms.clubcage.CircleMainActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.common.models.MyInfo;
@@ -15,6 +16,7 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	public static MyInfo myInfo;
 	public static StartupInfo startupInfo;
 	private static MainActivity mainActivity;
+	private static CircleMainActivity circleMainActivity;
 
 	public static void initWithActivity(Activity activity) {
 		
@@ -29,6 +31,8 @@ public class ZonecommsApplication extends OutSpokenApplication {
 
 		if(activity instanceof MainActivity) {
 			mainActivity = (MainActivity) activity; 
+		} else if(activity instanceof CircleMainActivity) {
+			circleMainActivity = (CircleMainActivity) activity;
 		}
 		
 		ZoneConstants.PAPP_ID = activity.getString(R.string.sb_id);
@@ -52,5 +56,15 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	public static void setActivity(MainActivity mainActivity) {
 		
 		ZonecommsApplication.mainActivity = mainActivity;
+	}
+	
+	public static CircleMainActivity getCircleActivity() {
+		
+		return circleMainActivity;
+	}
+	
+	public static void setCircleMainActivity(CircleMainActivity circleMainActivity) {
+		
+		ZonecommsApplication.circleMainActivity = circleMainActivity;
 	}
 }

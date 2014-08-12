@@ -360,8 +360,7 @@ public class SettingPage extends ZonecommsFragment {
 	@Override
 	public void setPage(boolean successDownload) {
 		
-		mainActivity.hideLoadingView();
-		mainActivity.hideCover();
+		hideLoadingView();
 		
 		if(successDownload) {
 			tvId.setText(ZonecommsApplication.myInfo.getMember_id());
@@ -389,7 +388,7 @@ public class SettingPage extends ZonecommsFragment {
 	@Override
 	public int getContentViewId() {
 		
-		return R.layout.page_user;
+		return R.layout.page_setting;
 	}
 	
 	@Override
@@ -977,8 +976,7 @@ public class SettingPage extends ZonecommsFragment {
 
 	public void submit(final String email, final String phoneNumber) {
 		
-		mainActivity.showLoadingView();
-		mainActivity.showCover();
+		showLoadingView();
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "member/update/mobile_email" +
@@ -1030,5 +1028,17 @@ public class SettingPage extends ZonecommsFragment {
 			LogUtils.trace(e);
 			ToastUtils.showToast(R.string.failToSubmitBaseProfile);
 		}
+	}
+
+	@Override
+	public void showLoadingView() {
+
+		mainActivity.showLoadingView();
+	}
+
+	@Override
+	public void hideLoadingView() {
+
+		mainActivity.hideLoadingView();
 	}
 }

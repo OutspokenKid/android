@@ -2,10 +2,10 @@ package com.outspoken_kid.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.outspoken_kid.interfaces.OutspokenActivityInterface;
 import com.outspoken_kid.utils.FontUtils;
@@ -14,12 +14,16 @@ import com.outspoken_kid.utils.LogUtils;
 public abstract class BaseActivity extends Activity 
 		implements OutspokenActivityInterface {
 
+	protected Context context;
+	
 	public abstract void onMenuPressed();
+	public abstract void onBackPressed();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(getContentViewId());
+		context = this;
 		
 		bindViews();
 		setVariables();
@@ -47,28 +51,6 @@ public abstract class BaseActivity extends Activity
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
-		}
-	}
-	
-	public void showLoadingView() {
-		
-		if(getLoadingView() != null && getLoadingView().getVisibility() != View.VISIBLE) {
-			getLoadingView().setVisibility(View.VISIBLE);
-			
-			if(getLoadingViewAnimIn() != null) {
-				getLoadingView().startAnimation(getLoadingViewAnimIn());
-			}
-		}
-	}
-	
-	public void hideLoadingView() {
-		
-		if(getLoadingView() != null && getLoadingView().getVisibility() == View.VISIBLE) {
-			getLoadingView().setVisibility(View.INVISIBLE);
-			
-			if(getLoadingViewAnimOut() != null) {
-				getLoadingView().startAnimation(getLoadingViewAnimOut());
-			}
 		}
 	}
 	
