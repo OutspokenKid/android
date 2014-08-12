@@ -27,7 +27,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.views.holo_dark.HoloStyleButton;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;

@@ -67,7 +67,6 @@ public class ListPage extends ZonecommsListFragment {
         
 		ListAdapter listAdapter = new ListAdapter(mContext, models, false);
 		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
 		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setOnScrollListener(new OnScrollListener() {

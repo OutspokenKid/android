@@ -1,4 +1,4 @@
-package com.outspoken_kid.views.holo_dark;
+package com.outspoken_kid.views.holo.holo_dark;
 
 import android.content.Context;
 import android.graphics.Canvas;

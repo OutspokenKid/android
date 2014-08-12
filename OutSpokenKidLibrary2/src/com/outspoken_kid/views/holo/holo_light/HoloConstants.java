@@ -1,4 +1,4 @@
-package com.outspoken_kid.views.holo_dark;
+package com.outspoken_kid.views.holo.holo_light;
 
 import com.outspoken_kid.classes.OutSpokenConstants;
 

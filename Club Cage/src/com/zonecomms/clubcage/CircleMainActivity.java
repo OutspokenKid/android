@@ -334,7 +334,9 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("Write button clicked.");
+				Intent intent = new Intent(CircleMainActivity.this, WriteActivity.class);
+				intent.putExtra("board_nid", 1);
+				startActivityForResult(intent, ZoneConstants.REQUEST_WRITE);
 			}
 		});
     	
@@ -642,7 +644,31 @@ public class CircleMainActivity extends Activity {
     	tvTitles[titleBarIndex % 2].setVisibility(View.INVISIBLE);
     	tvTitles[(titleBarIndex + 1) % 2].setVisibility(View.INVISIBLE);
     }
- 
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		
+		switch(requestCode) {
+
+		case ZoneConstants.REQUEST_WRITE:
+			
+			if(resultCode == RESULT_OK) {
+				
+				if(data != null && data.hasExtra("spot_nid")) {
+					int spot_nid = data.getIntExtra("spot_nid", 0);
+					
+					if(spot_nid != 0) {
+						String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?spot_nid=" 
+								+ spot_nid;
+						launchToMainActivity(Uri.parse(uriString));
+					}
+				}
+			}
+			break;
+		}
+	}
+		
+    
     public void showNext() {
     	
     	if(bgInfos == null || bgInfos.length == 0) {

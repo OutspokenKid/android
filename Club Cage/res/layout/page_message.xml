@@ -5,7 +5,7 @@
     android:id="@+id/messagePage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000" >
+    android:background="#f5f5f5" >
     
     <LinearLayout
         android:id="@+id/messagePage_bottomLinear"
@@ -21,13 +21,13 @@
             android:layout_height="0dp"
             android:background="@drawable/btn_camera" />
         
-        <com.outspoken_kid.views.holo_dark.HoloStyleEditText 
+        <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
             android:id="@+id/messagePage_etMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
         
-        <com.outspoken_kid.views.holo_dark.HoloStyleButton
+        <com.outspoken_kid.views.holo.holo_light.HoloStyleButton
             android:id="@+id/messagePage_btnSend"
             android:layout_width="0dp"
             android:layout_height="0dp" />

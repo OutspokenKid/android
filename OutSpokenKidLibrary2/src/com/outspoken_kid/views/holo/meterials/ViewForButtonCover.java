@@ -1,6 +1,6 @@
-package com.outspoken_kid.views.holo_dark.meterials;
+package com.outspoken_kid.views.holo.meterials;
 
-import com.outspoken_kid.views.holo_dark.HoloConstants;
+import com.outspoken_kid.views.holo.holo_dark.HoloConstants;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -23,7 +23,6 @@ public class ViewForButtonCover extends View {
 		if(paint == null) {
 			paint = new Paint();
 			paint.setAntiAlias(true);
-			paint.setARGB(150, 52, 180, 235);
 			paint.setColor(HoloConstants.COLOR_HOLO_COVER);
 		}
 		

@@ -1,4 +1,4 @@
-package com.outspoken_kid.views.holo_light;
+package com.outspoken_kid.views.holo.holo_light;
 
 import java.util.ArrayList;
 
@@ -20,8 +20,12 @@ import com.outspoken_kid.utils.StringUtils;
 
 /**
  * HoloStyleSpinnerPopup.
+ *
+ * v1.0.1
  * 
  * @author HyungGunKim
+ *
+ * v1.0.1 - Hide titleText when title is null.
  *
  * For use this View,
  * 
@@ -32,7 +36,7 @@ import com.outspoken_kid.utils.StringUtils;
  * 
  * That's all, so simple!
  */
-public class HoloLightStyleSpinnerPopup extends FrameLayout {
+public class HoloStyleSpinnerPopup extends FrameLayout {
 
 	private OnItemClickedListener onItemClickedListener;
 	private TextView targetTextView;
@@ -40,17 +44,18 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 	private ArrayList<String> items = new ArrayList<String>();
 	private LinearLayout popupLinear;
 	
-	public HoloLightStyleSpinnerPopup(Context context) {
+	public HoloStyleSpinnerPopup(Context context) {
 		this(context, null);
 	}
 	
-	public HoloLightStyleSpinnerPopup(Context context, AttributeSet attrs) {
+	public HoloStyleSpinnerPopup(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 	
 	private void init() {
 		this.setBackgroundColor(Color.argb(200, 0, 0, 0));
+		this.setVisibility(View.INVISIBLE);
 		this.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -63,7 +68,7 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 		popupLinear.setLayoutParams(new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER));
 		popupLinear.setOrientation(LinearLayout.VERTICAL);
 		popupLinear.setClickable(true);
-		popupLinear.setBackgroundResource(android.R.drawable.editbox_dropdown_light_frame);
+		popupLinear.setBackgroundResource(android.R.drawable.editbox_dropdown_dark_frame);
 		this.addView(popupLinear);
 	}
 	
@@ -99,23 +104,21 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 		
 		popupLinear.removeAllViews();
 
-		TextView tvTitle = new TextView(getContext());
-		ResizeUtils.viewResize(500, 80, tvTitle, 1, 0, null);
-		tvTitle.setGravity(Gravity.CENTER);
-		if(StringUtils.isEmpty(title)) {
-			tvTitle.setText("Select what you want");
-		} else {
+		if(!StringUtils.isEmpty(title)) {
+			TextView tvTitle = new TextView(getContext());
+			ResizeUtils.viewResize(500, 80, tvTitle, 1, 0, null);
+			tvTitle.setGravity(Gravity.CENTER);
 			tvTitle.setText(title);
+			tvTitle.setTextColor(HoloConstants.COLOR_HOLO_TARGET_ON);
+			FontUtils.setFontSize(tvTitle, 35);
+			FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
+			popupLinear.addView(tvTitle);
+			
+			View blueLine = new View(getContext());
+			blueLine.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 3));
+			blueLine.setBackgroundColor(HoloConstants.COLOR_HOLO_TARGET_ON);
+			popupLinear.addView(blueLine);
 		}
-		tvTitle.setTextColor(Color.rgb(25, 25, 25));
-		FontUtils.setFontSize(tvTitle, 40);
-		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
-		popupLinear.addView(tvTitle);
-		
-		View blueLine = new View(getContext());
-		blueLine.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 3));
-		blueLine.setBackgroundColor(Color.rgb(51, 186, 237));
-		popupLinear.addView(blueLine);
 		
 		if(items == null || items.size() == 0) {
 			View blank = new View(getContext());
@@ -123,11 +126,11 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 			popupLinear.addView(blank);
 		} else {
 			
-			LinearLayout targetLinear = popupLinear;
+			LinearLayout targetLinear = null;
 			
 			if(items.size() > 4) {
 				ScrollView scrollView = new ScrollView(getContext());
-				ResizeUtils.viewResize(500, 500, scrollView, 1, 0, null);
+				ResizeUtils.viewResize(500, LayoutParams.WRAP_CONTENT, scrollView, 1, 0, null);
 				scrollView.setFillViewport(true);
 				popupLinear.addView(scrollView);
 
@@ -137,6 +140,8 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 																		LayoutParams.WRAP_CONTENT));
 				scrollView.addView(innerLayout);
 				targetLinear = innerLayout;
+			} else {
+				targetLinear = popupLinear;
 			}
 
 			int size = items.size();
@@ -156,10 +161,11 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 					tvItem.setText(itemString);
 					tvItem.setGravity(Gravity.CENTER);
 					tvItem.setTextColor(Color.rgb(220, 220, 220));
-					FontUtils.setFontSize(tvItem, 35);
+					FontUtils.setFontSize(tvItem, 32);
 					FontUtils.setFontStyle(tvItem, FontUtils.BOLD);
 					tvItem.setMaxLines(2);
 					tvItem.setEllipsize(TruncateAt.END);
+					tvItem.setBackgroundColor(Color.rgb(68, 68, 68));
 					tvItem.setOnClickListener(new OnClickListener() {
 						
 						@Override
@@ -197,7 +203,7 @@ public class HoloLightStyleSpinnerPopup extends FrameLayout {
 		}
 	}
 
-	public void showPoup() {
+	public void showPopup() {
 		if(this.getVisibility() != View.VISIBLE) {
 			AlphaAnimation aaIn = new AlphaAnimation(0, 1);
 			aaIn.setDuration(200);

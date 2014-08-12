@@ -144,7 +144,7 @@ public final class R {
 		public static final int abc_split_action_bar_is_narrow = 0x7f060002;
 	}
 	public static final class color {
-		public static final int abc_search_url_text_holo = 0x7f070009;
+		public static final int abc_search_url_text_holo = 0x7f07000c;
 		public static final int abc_search_url_text_normal = 0x7f070000;
 		public static final int abc_search_url_text_pressed = 0x7f070002;
 		public static final int abc_search_url_text_selected = 0x7f070001;
@@ -260,15 +260,15 @@ public final class R {
 		public static final int abc_textfield_searchview_holo_light = 0x7f020054;
 		public static final int abc_textfield_searchview_right_holo_dark = 0x7f020055;
 		public static final int abc_textfield_searchview_right_holo_light = 0x7f020056;
-		public static final int img_browser_back_off = 0x7f0200a0;
-		public static final int img_browser_back_on = 0x7f0200a1;
-		public static final int img_browser_bg = 0x7f0200a2;
-		public static final int img_browser_close = 0x7f0200a3;
-		public static final int img_browser_forward_off = 0x7f0200a4;
-		public static final int img_browser_forward_on = 0x7f0200a5;
-		public static final int img_browser_refresh = 0x7f0200a6;
-		public static final int wheel_bg = 0x7f0200d2;
-		public static final int wheel_val = 0x7f0200d3;
+		public static final int img_browser_back_off = 0x7f0200a2;
+		public static final int img_browser_back_on = 0x7f0200a3;
+		public static final int img_browser_bg = 0x7f0200a4;
+		public static final int img_browser_close = 0x7f0200a5;
+		public static final int img_browser_forward_off = 0x7f0200a6;
+		public static final int img_browser_forward_on = 0x7f0200a7;
+		public static final int img_browser_refresh = 0x7f0200a8;
+		public static final int wheel_bg = 0x7f0200d4;
+		public static final int wheel_val = 0x7f0200d5;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f05001c;
@@ -369,7 +369,7 @@ public final class R {
 		public static final int abc_search_view = 0x7f030016;
 		public static final int abc_simple_decor = 0x7f030017;
 		public static final int activity_imageviewer = 0x7f030019;
-		public static final int support_simple_spinner_dropdown_item = 0x7f030039;
+		public static final int support_simple_spinner_dropdown_item = 0x7f030037;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0a0001;

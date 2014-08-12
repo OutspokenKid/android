@@ -8,6 +8,8 @@ import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,10 +32,10 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.holo_dark.HoloStyleButton;
-import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -1012,7 +1014,14 @@ public class PostPage extends ZonecommsFragment {
 
 						ToastUtils.showToast(R.string.deleteCompleted);
 						mainActivity.closeTopPage();
-						mainActivity.getTopFragment().refreshPage();
+
+						new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+								mainActivity.getTopFragment().refreshPage();
+							}
+						}, 1000);
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (OutOfMemoryError oom) {

@@ -1,4 +1,4 @@
-package com.outspoken_kid.views.holo_dark;
+package com.outspoken_kid.views.holo.holo_dark;
 
 import android.R.color;
 import android.content.Context;
@@ -17,9 +17,9 @@ import android.widget.TextView;
 
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.views.holo_dark.meterials.ViewForButtonBg;
-import com.outspoken_kid.views.holo_dark.meterials.ViewForButtonBgPressed;
-import com.outspoken_kid.views.holo_dark.meterials.ViewForButtonCover;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonBg;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
 
 public class HoloStyleButton extends FrameLayout {
 

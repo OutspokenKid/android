@@ -31,13 +31,13 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
 import com.outspoken_kid.views.WebBrowser.OnActionWithKeywordListener;
-import com.outspoken_kid.views.holo_dark.HoloConstants;
-import com.outspoken_kid.views.holo_dark.HoloStyleButton;
-import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerButton;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.outspoken_kid.views.holo_dark.HoloStyleTextView;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerButton;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup.OnItemClickedListener;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleTextView;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -631,7 +631,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForEditPw = new FrameLayout(mContext);
 		frameForEditPw.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		frameForEditPw.setVisibility(View.INVISIBLE);
-		frameForEditPw.setBackgroundColor(Color.BLACK);
+		frameForEditPw.setBackgroundColor(Color.parseColor("#f5f5f5"));
 		frameForEditPw.setClickable(true);
 		mainLayout.addView(frameForEditPw);
 		
@@ -710,7 +710,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForEditPush = new FrameLayout(mContext);
 		frameForEditPush.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		frameForEditPush.setVisibility(View.INVISIBLE);
-		frameForEditPush.setBackgroundColor(Color.BLACK);
+		frameForEditPush.setBackgroundColor(Color.parseColor("#f5f5f5"));
 		frameForEditPush.setClickable(true);
 		mainLayout.addView(frameForEditPush);
 		

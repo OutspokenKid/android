@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="renewal_bg">#f5f5f5</color>
+    <color name="renewal_text">#777777</color>
+    <color name="renewal_hint">#b5b5b5</color>
+    
+</resources>

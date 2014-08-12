@@ -1,4 +1,4 @@
-package com.outspoken_kid.views.holo_dark.meterials;
+package com.outspoken_kid.views.holo.meterials;
 
 import android.content.Context;
 import android.graphics.Canvas;

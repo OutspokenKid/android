@@ -27,11 +27,13 @@ public abstract class ZonecommsActivity extends BaseActivity {
 		
 		super.finish();
 		
-		if(ZonecommsApplication.getActivity().getFragmentsSize() != 0
-				&& ZonecommsApplication.getActivity().getTopFragment() instanceof MainPage) {
-			overridePendingTransition(R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
-		} else {
-			overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+		if(ZonecommsApplication.getActivity() != null) {
+			if(ZonecommsApplication.getActivity().getFragmentsSize() != 0
+					&& ZonecommsApplication.getActivity().getTopFragment() instanceof MainPage) {
+				overridePendingTransition(R.anim.slide_in_from_top, R.anim.slide_out_to_bottom);
+			} else {
+				overridePendingTransition(R.anim.slide_in_from_left, R.anim.slide_out_to_right);
+			}
 		}
 	}
 	

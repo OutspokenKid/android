@@ -1181,7 +1181,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			public void onError(String url) {
 
 				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
-
 			}
 
 			@Override

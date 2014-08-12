@@ -39,7 +39,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.holo_dark.HoloStyleEditText;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsListFragment;

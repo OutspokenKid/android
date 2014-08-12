@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.res.Resources;
 
 import com.outspoken_kid.classes.OutSpokenApplication;
-import com.outspoken_kid.views.holo_dark.HoloConstants;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.zonecomms.clubcage.CircleMainActivity;
 import com.zonecomms.clubcage.MainActivity;
 import com.zonecomms.clubcage.R;

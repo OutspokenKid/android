@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:clickable="true"
-    android:background="#000" >
+    android:background="#f5f5f5" >
 
     <RelativeLayout
         android:id="@+id/informationPage_relative"

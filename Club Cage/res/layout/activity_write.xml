@@ -3,7 +3,7 @@
     android:id="@+id/writeActivity_mainFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000" >
+    android:background="#f5f5f5" >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup
+    <com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup
         android:id="@+id/writeActivity_spinner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

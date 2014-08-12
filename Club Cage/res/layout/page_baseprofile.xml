@@ -10,7 +10,7 @@
 		android:layout_width="match_parent"
 	  	android:layout_height="match_parent"
 	  	android:fillViewport="true"
-	  	android:background="#000" >
+	  	android:background="#f5f5f5" >
 	
 		<FrameLayout
 			android:id="@+id/baseProfilePage_innerFrame"

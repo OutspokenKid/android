@@ -1,8 +1,8 @@
-package com.outspoken_kid.views.holo_dark;
+package com.outspoken_kid.views.holo.holo_dark;
 
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.views.holo_dark.meterials.ViewForButtonBgPressed;
-import com.outspoken_kid.views.holo_dark.meterials.ViewForButtonCover;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
 
 import android.content.Context;
 import android.graphics.Canvas;

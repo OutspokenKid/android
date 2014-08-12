@@ -25,7 +25,8 @@ public class ImageViewer extends ImageViewerActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(Color.BLACK);
+		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(Color.parseColor("#f5f5f5"));
+		
 	}
 	
 	@Override

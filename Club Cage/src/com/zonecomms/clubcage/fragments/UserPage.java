@@ -43,8 +43,8 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
-import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup;
+import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -73,9 +73,7 @@ public class UserPage extends ZonecommsFragment {
 	private FrameLayout imageFrame;
 	private ImageView ivImage;
 	private TextView tvNickname;
-	private TextView tvId;
-	private TextView tvGender;
-	private TextView tvAge;
+	private TextView tvIdGenderAge;
 	private TextView tvIntroduce;
 	private TextView tvPostCount;
 	private TextView tvFriendCount;
@@ -186,76 +184,15 @@ public class UserPage extends ZonecommsFragment {
 															LayoutParams.MATCH_PARENT));
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		imageFrame.addView(ivImage);
-		
+
+		//id : 1
 		View bgForBaseProfile = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(l*2 + s, l/2);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
-		bgForBaseProfile.setBackgroundColor(Color.rgb(55, 55, 55));
 		bgForBaseProfile.setLayoutParams(rp);
 		bgForBaseProfile.setId(madeCount + 1);
-		relative.addView(bgForBaseProfile);
-		
-		//id : 1
-		tvNickname = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/4);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
-		tvNickname.setLayoutParams(rp);
-		tvNickname.setPadding(s, 0, 0, 0);
-		tvNickname.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvNickname, 24);
-		relative.addView(tvNickname);
-		
-		tvId = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/4);
-		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 1);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
-		tvId.setLayoutParams(rp);
-		tvId.setPadding(s, 0, 0, 0);
-		tvId.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvId, 24);
-		relative.addView(tvId);
-
-		tvGender = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/4);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
-		tvGender.setLayoutParams(rp);
-		tvGender.setPadding(0, 0, s, 0);
-		tvGender.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvGender, 24);
-		relative.addView(tvGender);
-		
-		tvAge = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/4);
-		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 1);
-		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
-		tvAge.setLayoutParams(rp);
-		tvAge.setPadding(0, 0, s, 0);
-		tvAge.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvAge, 24);
-		relative.addView(tvAge);
-		
-		tvIntroduce = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, l - ResizeUtils.getSpecificLength(40));
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
-		rp.rightMargin = s;
-		tvIntroduce.setLayoutParams(rp);
-		tvIntroduce.setPadding(s, 0, s, 0);
-		tvIntroduce.setMaxLines(2);
-		tvIntroduce.setTextColor(Color.WHITE);
-		tvIntroduce.setEllipsize(TruncateAt.END);
-		FontUtils.setFontSize(tvIntroduce, 24);
-		relative.addView(tvIntroduce);
-		
-		View coverForBaseProfile = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l*2 + s, l);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
-		coverForBaseProfile.setLayoutParams(rp);
-		coverForBaseProfile.setOnClickListener(new OnClickListener() {
+		bgForBaseProfile.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -274,18 +211,59 @@ public class UserPage extends ZonecommsFragment {
 				}
 			}
 		});
-		relative.addView(coverForBaseProfile);
+		relative.addView(bgForBaseProfile);
+		
+		tvNickname = new TextView(mContext);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
+		tvNickname.setLayoutParams(rp);
+		tvNickname.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		tvNickname.setTextColor(Color.parseColor(getString(R.color.renewal_text)));
+		tvNickname.setGravity(Gravity.CENTER);
+		tvNickname.setMaxWidth(l);
+		tvNickname.setEllipsize(TruncateAt.END);
+		FontUtils.setFontSize(tvNickname, 26);
+		relative.addView(tvNickname);
+		
+		tvIdGenderAge = new TextView(mContext);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
+		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
+		tvIdGenderAge.setLayoutParams(rp);
+		tvIdGenderAge.setPadding(0, 0, ResizeUtils.getSpecificLength(20), 0);
+		tvIdGenderAge.setTextColor(Color.parseColor(getString(R.color.renewal_hint)));
+		tvIdGenderAge.setGravity(Gravity.CENTER);
+		tvIdGenderAge.setMaxWidth(l);
+		tvIdGenderAge.setEllipsize(TruncateAt.END);
+		FontUtils.setFontSize(tvIdGenderAge, 18);
+		relative.addView(tvIdGenderAge);
+		
+		tvIntroduce = new TextView(mContext);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, l/2);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
+		rp.rightMargin = s;
+		tvIntroduce.setLayoutParams(rp);
+		tvIntroduce.setPadding(ResizeUtils.getSpecificLength(20), 0, 
+				ResizeUtils.getSpecificLength(20), 0);
+		tvIntroduce.setTextColor(Color.parseColor(getString(R.color.renewal_text)));
+		tvIntroduce.setMaxLines(2);
+		tvIntroduce.setEllipsize(TruncateAt.END);
+		tvIntroduce.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
+		FontUtils.setFontSize(tvIntroduce, 18);
+		relative.addView(tvIntroduce);
 		
 		//id : 2
-		FrameLayout postCountFrame = new FrameLayout(mContext);
+		tvPostCount = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
 		rp.rightMargin = s;
-		postCountFrame.setLayoutParams(rp);
-		postCountFrame.setId(madeCount + 2);
-		postCountFrame.setBackgroundColor(Color.rgb(15, 117, 188));
-		postCountFrame.setOnClickListener(new OnClickListener() {
+		tvPostCount.setLayoutParams(rp);
+		tvPostCount.setPadding(0, ResizeUtils.getSpecificLength(40), 0, 0);
+		tvPostCount.setId(madeCount + 2);
+		tvPostCount.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -294,33 +272,20 @@ public class UserPage extends ZonecommsFragment {
 				mainActivity.checkNApp("napp://android.zonecomms.com/userhome?member_id=" + userId + "&menuindex=1");
 			}
 		});
-		relative.addView(postCountFrame);
-		
-		tvPostCount = new TextView(mContext);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvPostCount, 
-				2, Gravity.TOP|Gravity.RIGHT, new int[]{0, 10, 10, 0});
+		tvPostCount.setBackgroundResource(R.drawable.bg_home_post);
 		tvPostCount.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvPostCount, 55);
+		tvPostCount.setGravity(Gravity.CENTER);
+		FontUtils.setFontSize(tvPostCount, 36);
 		FontUtils.setFontStyle(tvPostCount, FontUtils.BOLD);
-		postCountFrame.addView(tvPostCount);
+		relative.addView(tvPostCount);
 		
-		//'작성글' 기본 텍스트.
-		TextView tvPostCount2 = new TextView(mContext);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvPostCount2, 
-				2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 10, 10});
-		tvPostCount2.setTextColor(Color.WHITE);
-		tvPostCount2.setText(R.string.post);
-		FontUtils.setFontSize(tvPostCount2, 30);
-		FontUtils.setFontStyle(tvPostCount2, FontUtils.BOLD);
-		postCountFrame.addView(tvPostCount2);
-		
-		FrameLayout friendCountFrame = new FrameLayout(mContext);
+		tvFriendCount = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 2);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
-		friendCountFrame.setLayoutParams(rp);
-		friendCountFrame.setBackgroundColor(Color.rgb(57, 181, 74));
-		friendCountFrame.setOnClickListener(new OnClickListener() {
+		tvFriendCount.setLayoutParams(rp);
+		tvFriendCount.setPadding(0, ResizeUtils.getSpecificLength(40), 0, 0);
+		tvFriendCount.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -332,26 +297,13 @@ public class UserPage extends ZonecommsFragment {
 				}
 			}
 		});
-		relative.addView(friendCountFrame);
-		
-		tvFriendCount = new TextView(mContext);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvFriendCount, 
-				2, Gravity.TOP|Gravity.RIGHT, new int[]{0, 10, 10, 0});
+		tvFriendCount.setBackgroundResource(R.drawable.bg_home_friend);
 		tvFriendCount.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvFriendCount, 55);
+		tvFriendCount.setGravity(Gravity.CENTER);
+		FontUtils.setFontSize(tvFriendCount, 36);
 		FontUtils.setFontStyle(tvFriendCount, FontUtils.BOLD);
-		friendCountFrame.addView(tvFriendCount);
+		relative.addView(tvFriendCount);
 
-		//'친구' 기본 텍스트.
-		TextView tvFriendCount2 = new TextView(mContext);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvFriendCount2, 
-				2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 10, 10});
-		tvFriendCount2.setText(R.string.friend);
-		tvFriendCount2.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvFriendCount2, 30);
-		FontUtils.setFontStyle(tvFriendCount2, FontUtils.BOLD);
-		friendCountFrame.addView(tvFriendCount2);
-		
 		for(int i=0; i<4; i++) {
 			
 			final int I = i;
@@ -367,16 +319,19 @@ public class UserPage extends ZonecommsFragment {
 				rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount);
 				rp.addRule(RelativeLayout.BELOW, madeCount);
 				break;
+				
 			case 1:
 				resId = R.string.menu2;
 				rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 3);
 				rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 3);
 				break;
+				
 			case 2:
 				resId = R.string.menu3;
 				rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
 				rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
 				break;
+				
 			case 3:
 				resId = R.string.menu4;
 				rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 5);
@@ -389,7 +344,13 @@ public class UserPage extends ZonecommsFragment {
 			bgMenu.setText(resId);
 			bgMenu.setLayoutParams(rp);
 			bgMenu.setPadding(0, 0, 0, 0);
-			bgMenu.setBackgroundColor(i==mode?Color.BLACK:Color.rgb(55, 55, 55));
+			
+			if(i == mode) {
+				bgMenu.setBackgroundColor(Color.rgb(119, 119, 119));
+			} else {
+				bgMenu.setBackgroundColor(Color.rgb(217, 217, 217));
+			}
+			
 			bgMenu.setTextColor(Color.WHITE);
 			bgMenu.setGravity(Gravity.CENTER);
 			FontUtils.setFontSize(bgMenu, 28);
@@ -824,7 +785,7 @@ public class UserPage extends ZonecommsFragment {
 		gridView = new GridView(mContext);
 		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		gridView.setAdapter(gridAdapter);
-		gridView.setBackgroundColor(Color.BLACK);
+		gridView.setBackgroundColor(Color.parseColor("#f5f5f5"));
 		
 		gridView.setNumColumns(numOfColumn);
 		gridView.setPadding(0, 0, 0, 0);
@@ -900,7 +861,7 @@ public class UserPage extends ZonecommsFragment {
 		listView = new ListView(mContext);
 		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
+		listView.setBackgroundColor(Color.parseColor("#f5f5f5"));
 		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setOnScrollListener(new OnScrollListener() {
 			
@@ -987,8 +948,8 @@ public class UserPage extends ZonecommsFragment {
 			targetAdapter = null;
 		}
 
-		bgMenus[this.mode].setBackgroundColor(Color.rgb(55, 55, 55));
-		bgMenus[mode].setBackgroundColor(Color.rgb(0, 0, 0));
+		bgMenus[this.mode].setBackgroundColor(Color.rgb(217, 217, 217));
+		bgMenus[mode].setBackgroundColor(Color.rgb(119, 119, 119));
 		
 		this.mode = mode;
 		
@@ -1086,8 +1047,10 @@ public class UserPage extends ZonecommsFragment {
 			tvNickname.setText(myStoryInfo.getMystory_member_nickname());
 		}
 
+		String idGenderAgeString = "";
+		
 		if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_id())) {
-			tvId.setText("(" + myStoryInfo.getMystory_member_id() + ")");
+			idGenderAgeString += myStoryInfo.getMystory_member_id();
 			
 			if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 				
@@ -1141,8 +1104,9 @@ public class UserPage extends ZonecommsFragment {
 			}
 		}
 
-		tvGender.setText(myStoryInfo.getMember_gender());
-		tvAge.setText("" + myStoryInfo.getMember_age());
+		idGenderAgeString += "\n" + myStoryInfo.getMember_gender() +
+				" / " + myStoryInfo.getMember_age();
+		tvIdGenderAge.setText(idGenderAgeString);
 
 		if(!StringUtils.isEmpty(myStoryInfo.getMystory_title())) {
 			tvIntroduce.setText(myStoryInfo.getMystory_title());
