@@ -9,8 +9,8 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cmons.classes.CmonsFragmentForSignUp;
 import com.cmons.cph.R;
+import com.cmons.cph.classes.CmonsFragmentForSignUp;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;

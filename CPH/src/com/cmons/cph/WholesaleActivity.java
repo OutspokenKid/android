@@ -1,6 +1,6 @@
 package com.cmons.cph;
 
-import com.cmons.classes.CmonsFragmentActivity;
+import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
@@ -78,6 +78,16 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 	public int getFragmentFrameResId() {
 
 		return R.id.wholesaleActivity_fragmentFrame;
+	}
+	
+	@Override
+	public void onBackPressed() {
+		
+		if(getTopFragment().onBackPressed()) {
+			//Do nothing.
+		} else {
+			super.onBackPressed();
+		}
 	}
 	
 //////////////////// Custom methods.

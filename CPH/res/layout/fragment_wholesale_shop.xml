@@ -8,30 +8,25 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
 
-    <Button 
-        android:id="@+id/wholesaleShopPage_btnWrite" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentTop="true"
-	    android:background="#0f0" />
-
     <GridView 
         android:id="@+id/wholesaleShopPage_gridView" 
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" />
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleShopPage_titleBar" 
+	    android:cacheColorHint="#0000" />
 
     <RelativeLayout
         android:id="@+id/wholesaleShopPage_menuRelative"
         android:layout_width="match_parent"
-    	android:layout_height="0dp" >
+    	android:layout_height="0dp"
+    	android:visibility="invisible" >
         
         <Button 
 	        android:id="@+id/wholesaleShopPage_btnCategory1" 
 		    android:layout_width="0dp"
 		    android:layout_height="0dp"
 		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentTop="true"
+		    android:layout_centerVertical="true"
 		    android:background="#b00" />
         
         <Button 
@@ -56,6 +51,7 @@
         android:id="@+id/wholesaleShopPage_cover"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
+    	android:visibility="invisible"
     	android:background="#a000" />
     
     <RelativeLayout
@@ -73,6 +69,8 @@
             android:id="@+id/wholesaleShopPage_btnClose"
         	android:layout_width="0dp"
     		android:layout_height="0dp"
+    		android:layout_alignParentTop="true"
+    		android:layout_alignParentRight="true"
     		android:background="#f0f" />
         
     </RelativeLayout>

@@ -2,9 +2,10 @@ package com.cmons.cph.models;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class CategoryForSignUp {
+public class CategoryForSignUp extends BaseModel {
 
 	private String id;
 	private String name;

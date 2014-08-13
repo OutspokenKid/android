@@ -1,6 +1,6 @@
 package com.cmons.cph.fragments.wholesale;
 
-import com.cmons.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForWholesale;
 
 public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 

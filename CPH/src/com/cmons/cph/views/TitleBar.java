@@ -18,6 +18,7 @@ public class TitleBar extends RelativeLayout {
 	private View titleBg;
 	private Button btnBack;
 	private TextView tvTitle;
+	private View titleView;
 	private Button btnNotice;
 	private Button btnAdd;
 	
@@ -61,6 +62,17 @@ public class TitleBar extends RelativeLayout {
 		FontUtils.setFontSize(tvTitle, 30);
 		this.addView(tvTitle);
 		
+		//titleView.
+		titleView = new View(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(121), 
+				ResizeUtils.getSpecificLength(71));
+		rp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		titleView.setLayoutParams(rp);
+		titleView.setBackgroundResource(R.drawable.logo2);
+		this.addView(titleView);
+		
+		//btnNotice.
 		btnNotice = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(92), 
@@ -73,6 +85,7 @@ public class TitleBar extends RelativeLayout {
 		btnNotice.setVisibility(View.INVISIBLE);
 		this.addView(btnNotice);
 		
+		//btnAdd.
 		btnAdd = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(92), 
@@ -106,12 +119,26 @@ public class TitleBar extends RelativeLayout {
 	
 	public void setTitleText(String titleText) {
 		
-		tvTitle.setText(titleText);
+		if(titleText == null) {
+			tvTitle.setVisibility(View.INVISIBLE);
+			titleView.setVisibility(View.VISIBLE);
+		} else{
+			tvTitle.setText(titleText);
+			tvTitle.setVisibility(View.VISIBLE);
+			titleView.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	public void setTitleText(int resId) {
 		
-		tvTitle.setText(resId);
+		if(resId == 0) {
+			tvTitle.setVisibility(View.INVISIBLE);
+			titleView.setVisibility(View.VISIBLE);
+		} else {
+			tvTitle.setText(resId);
+			tvTitle.setVisibility(View.VISIBLE);
+			titleView.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 	public void addButtons(boolean isWholesale) {
@@ -140,9 +167,6 @@ public class TitleBar extends RelativeLayout {
 	}
 	
 	public Button getBtnNotice() {
-		
-		if(btnNotice == null) {
-		}
 		
 		return btnNotice;
 	}

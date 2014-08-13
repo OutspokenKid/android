@@ -1,6 +1,6 @@
 package com.cmons.cph;
 
-import com.cmons.classes.CmonsFragmentActivity;
+import com.cmons.cph.classes.CmonsFragmentActivity;
 
 public class RetailActivity extends CmonsFragmentActivity {
 

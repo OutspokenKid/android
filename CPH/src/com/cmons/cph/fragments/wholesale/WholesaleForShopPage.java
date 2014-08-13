@@ -1,27 +1,35 @@
 package com.cmons.cph.fragments.wholesale;
 
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.cmons.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.R;
+import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.fragments.wholesale.WholesaleMainPage.NoticeAdapter.ViewHolderForNotice;
+import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	
-	private static final int TYPE_TYPE1 = 0;
-	private static final int TYPE_TYPE2 = 1;
-	private static final int TYPE_TYPE3 = 2;
+	private static final int TYPE_MENU1 = 0;
+	private static final int TYPE_MENU2 = 1;
+	private static final int TYPE_MENU3 = 2;
 	
-	private TitleBar titleBar;
-	private Button btnWrite;
 	private GridView gridView;
 	
 	private RelativeLayout menuRelative;
@@ -40,7 +48,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleShopPage_titleBar);
-		btnWrite = (Button) mThisView.findViewById(R.id.wholesaleShopPage_btnWrite);
 		gridView = (GridView) mThisView.findViewById(R.id.wholesaleShopPage_gridView);
 		
 		menuRelative = (RelativeLayout) mThisView.findViewById(R.id.wholesaleShopPage_menuRelative);
@@ -57,6 +64,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
+		title = "매장";
+		
 		AnimationListener al = new AnimationListener() {
 			
 			@Override
@@ -89,14 +98,24 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 
+		titleBar.addBackButton(R.drawable.btn_back_category, 162, 92);
+		titleBar.getBtnAdd().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void setListeners() {
 
-		btnWrite.setOnClickListener(new OnClickListener() {
+		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+
+				getActivity().getSupportFragmentManager().popBackStack();
+			}
+		});
+		
+		titleBar.getBtnAdd().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -110,7 +129,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				showCategoryRelative(TYPE_TYPE1);
+				showCategoryRelative(TYPE_MENU1);
 			}
 		});
 		
@@ -119,7 +138,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				showCategoryRelative(TYPE_TYPE2);
+				showCategoryRelative(TYPE_MENU2);
 			}
 		});
 		
@@ -128,7 +147,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				showCategoryRelative(TYPE_TYPE3);
+				showCategoryRelative(TYPE_MENU3);
 			}
 		});
 		
@@ -153,20 +172,57 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setSizes() {
-		// TODO Auto-generated method stub
+		
+		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 
+		RelativeLayout.LayoutParams rp = null;
+		
+		//menuRelative.
+		rp = (RelativeLayout.LayoutParams) menuRelative.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(96);
+		rp.topMargin = ResizeUtils.getSpecificLength(96);
+		
+		//btnCategory1
+		rp = (RelativeLayout.LayoutParams) btnCategory1.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(100);
+		rp.height = ResizeUtils.getSpecificLength(80);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		
+		//btnCategory2
+		rp = (RelativeLayout.LayoutParams) btnCategory2.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(100);
+		rp.height = ResizeUtils.getSpecificLength(80);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		
+		//btnCategory3
+		rp = (RelativeLayout.LayoutParams) btnCategory3.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(100);
+		rp.height = ResizeUtils.getSpecificLength(80);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		
+		//categoryRelative.
+		rp = (RelativeLayout.LayoutParams) categoryRelative.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.height = ResizeUtils.getSpecificLength(695);
+		categoryRelative.setPadding(ResizeUtils.getSpecificLength(5), 
+				ResizeUtils.getSpecificLength(6), 
+				ResizeUtils.getSpecificLength(6), 
+				ResizeUtils.getSpecificLength(6));
+
+		//ListView.
+		rp = (RelativeLayout.LayoutParams) listView.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(101);
+		
+		//btnClose.
+		rp = (RelativeLayout.LayoutParams) btnClose.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(97);
+		rp.height = rp.width;
 	}
 
 	@Override
 	public int getContentViewId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
-
+		return R.layout.fragment_wholesale_shop;
 	}
 
 	@Override
@@ -206,6 +262,90 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			
 			categoryRelative.startAnimation(aaOut);
 			cover.startAnimation(aaOut);
+		}
+	}
+
+////////////////////Custom classes.
+	
+	public class NoticeAdapter extends BaseAdapter {
+		
+		@Override
+		public int getCount() {
+	
+			return notices.size();
+		}
+	
+		@Override
+		public Object getItem(int arg0) {
+	
+			return notices.get(arg0);
+		}
+	
+		@Override
+		public long getItemId(int arg0) {
+	
+			return arg0;
+		}
+	
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+	
+			ViewHolderForNotice viewHolder = null;
+			
+			if(convertView == null) {
+				convertView = LayoutInflater.from(mContext).inflate(R.layout.list_wholesale_notice, parent, false);
+				
+				viewHolder = new ViewHolderForNotice(convertView);
+				viewHolder.setValues(notices.get(position));
+				
+				convertView.setTag(viewHolder);
+			} else {
+				viewHolder = (ViewHolderForNotice) convertView.getTag();
+			}
+			
+			return convertView;
+		}
+		
+		public class ViewHolderForNotice {
+			
+			public View row;
+			
+			public TextView tvNotice;
+			public TextView tvRegdate;
+			public View icon;
+			
+			public ViewHolderForNotice(View row) {
+				
+				this.row = row;
+				
+				bindViews();
+				setSizes();
+			}
+			
+			public void bindViews() {
+				
+				tvNotice = (TextView) row.findViewById(R.id.list_wholesale_notice_tvNotice);
+				tvRegdate = (TextView) row.findViewById(R.id.list_wholesale_notice_tvRegedit);
+				icon = row.findViewById(R.id.list_wholesale_notice_icon);
+			}
+			
+			public void setSizes() {
+
+				ResizeUtils.viewResize(400, 120, tvNotice, 1, Gravity.CENTER_VERTICAL, null, new int[]{20, 0, 0, 0});
+				ResizeUtils.viewResize(120, 120, tvRegdate, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
+				icon.getLayoutParams().width = ResizeUtils.getSpecificLength(29);
+				icon.getLayoutParams().height = ResizeUtils.getSpecificLength(30);
+				
+				FontUtils.setFontSize(tvNotice, 28);
+				FontUtils.setFontSize(tvRegdate, 20);
+			}
+			
+			public void setValues(Notice notice) {
+			
+				tvNotice.setText("주문요청이 들어왔습니다. 확인해주세요.");
+				tvRegdate.setText("2014.08.13\nPM:11:14");
+				icon.setBackgroundResource(R.drawable.mail_icon_a);
+			}
 		}
 	}
 }

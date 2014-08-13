@@ -1,4 +1,4 @@
-package com.cmons.classes;
+package com.cmons.cph.classes;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;

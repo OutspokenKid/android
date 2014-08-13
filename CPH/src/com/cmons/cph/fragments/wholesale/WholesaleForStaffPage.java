@@ -5,8 +5,8 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.cmons.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.R;
+import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.views.TitleBar;
 
 public class WholesaleForStaffPage extends CmonsFragmentForWholesale {

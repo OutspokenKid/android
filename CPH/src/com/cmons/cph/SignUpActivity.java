@@ -7,8 +7,8 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cmons.classes.CmonsFragmentActivity;
-import com.cmons.classes.CphConstants;
+import com.cmons.cph.classes.CmonsFragmentActivity;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.signup.SignUpForBusinessPage;
 import com.cmons.cph.fragments.signup.SignUpForCategoryPage;
 import com.cmons.cph.fragments.signup.SignUpForPersonalPage;
@@ -220,6 +220,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, WholesaleActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		finish();
 	}
 	
 	public void launchRetailActivity(User user) {
@@ -227,6 +228,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, RetailActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		finish();
 	}
 
 	public void signUpForWholesale(String id, String pw, String role, String userName, 

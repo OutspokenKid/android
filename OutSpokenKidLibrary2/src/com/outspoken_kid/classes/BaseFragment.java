@@ -25,6 +25,7 @@ public abstract class BaseFragment extends Fragment
 	protected String fragmentTag;
 	protected boolean isDownloading;
 	protected boolean isRefreshing;
+	protected boolean isLastList;
 	protected boolean disableExitAnim;
 	protected boolean isLastFragment;
 	
@@ -136,7 +137,7 @@ public abstract class BaseFragment extends Fragment
 	
 	@Override
 	public void downloadInfo() {
-
+		
 		if(!isRefreshing) {
 			showLoadingView();
 		}
@@ -161,6 +162,7 @@ public abstract class BaseFragment extends Fragment
 		
 		isRefreshing = true;
 		isDownloading = false;
+		isLastList = false;
 		
 		downloadInfo();
 	}

@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class User implements Serializable {
+public class User extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -4206121495838797414L;
 	

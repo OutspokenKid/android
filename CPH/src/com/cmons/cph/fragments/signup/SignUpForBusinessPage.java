@@ -5,9 +5,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.cmons.classes.CmonsFragmentForSignUp;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
+import com.cmons.cph.classes.CmonsFragmentForSignUp;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 

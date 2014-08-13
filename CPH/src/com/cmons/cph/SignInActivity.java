@@ -7,14 +7,15 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cmons.classes.CmonsFragmentActivity;
-import com.cmons.classes.CphConstants;
+import com.cmons.cph.classes.CmonsFragmentActivity;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.signin.FindIdPwPage;
 import com.cmons.cph.fragments.signin.SignInPage;
 import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SignInActivity extends CmonsFragmentActivity {
@@ -114,7 +115,7 @@ public class SignInActivity extends CmonsFragmentActivity {
 		startActivity(intent);
 	}
 	
-	public void signIn(String id, String pw) {
+	public void signIn(final String id, final String pw) {
 		
 		if(!signingIn) {
 			ToastUtils.showToast(R.string.signingIn);
@@ -150,9 +151,14 @@ public class SignInActivity extends CmonsFragmentActivity {
 						
 						if(objJSON.getInt("result") == 1) {
 							User user = new User(objJSON.getJSONObject("user"));
+							
+							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "id", id);
+							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "pw", pw);
+							
+							//Check user type.
+							
 							launchWholesaleActivity(user);
 						}
-						//Create user object.
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (OutOfMemoryError oom) {
@@ -176,6 +182,7 @@ public class SignInActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, WholesaleActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		finish();
 	}
 	
 	public void launchRetailActivity(User user) {
@@ -183,5 +190,6 @@ public class SignInActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, RetailActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		finish();
 	}
 }

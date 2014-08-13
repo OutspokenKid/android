@@ -1,6 +1,8 @@
 package com.cmons.cph.fragments.retail;
 
-import com.cmons.classes.CmonsFragment;
+import org.json.JSONObject;
+
+import com.cmons.cph.classes.CmonsFragment;
 
 public class RetailMainPage extends CmonsFragment {
 
@@ -41,12 +43,6 @@ public class RetailMainPage extends CmonsFragment {
 	}
 
 	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
@@ -56,5 +52,12 @@ public class RetailMainPage extends CmonsFragment {
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	
+	@Override
+	public void parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		
 	}
 }

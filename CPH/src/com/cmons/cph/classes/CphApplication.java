@@ -1,4 +1,4 @@
-package com.cmons.classes;
+package com.cmons.cph.classes;
 
 import android.app.Activity;
 import android.graphics.PixelFormat;

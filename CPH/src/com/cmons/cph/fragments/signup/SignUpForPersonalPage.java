@@ -10,10 +10,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cmons.classes.CmonsFragmentForSignUp;
-import com.cmons.classes.CphConstants;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
+import com.cmons.cph.classes.CmonsFragmentForSignUp;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.Wholesale;

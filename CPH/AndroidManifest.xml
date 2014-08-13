@@ -13,7 +13,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:name="com.cmons.classes.CphApplication"
+        android:name="com.cmons.cph.classes.CphApplication"
         android:theme="@style/AppTheme" >
 
         <activity

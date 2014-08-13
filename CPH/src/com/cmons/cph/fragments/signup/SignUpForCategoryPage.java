@@ -17,9 +17,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.cmons.classes.CmonsFragmentForSignUp;
-import com.cmons.classes.CphConstants;
 import com.cmons.cph.R;
+import com.cmons.cph.classes.CmonsFragmentForSignUp;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.CategoryForSignUp;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
