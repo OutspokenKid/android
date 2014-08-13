@@ -7,15 +7,15 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cmons.classes.BaseFragmentActivity;
+import com.cmons.classes.CmonsFragmentActivity;
 import com.cmons.classes.CphConstants;
-import com.cmons.cph.fragments.SignUpForBusinessPage;
-import com.cmons.cph.fragments.SignUpForCategoryPage;
-import com.cmons.cph.fragments.SignUpForPersonalPage;
-import com.cmons.cph.fragments.SignUpForPositionPage;
-import com.cmons.cph.fragments.SignUpForSearchPage;
-import com.cmons.cph.fragments.SignUpForTermsPage;
-import com.cmons.cph.fragments.SignUpForWritePage;
+import com.cmons.cph.fragments.signup.SignUpForBusinessPage;
+import com.cmons.cph.fragments.signup.SignUpForCategoryPage;
+import com.cmons.cph.fragments.signup.SignUpForPersonalPage;
+import com.cmons.cph.fragments.signup.SignUpForPositionPage;
+import com.cmons.cph.fragments.signup.SignUpForSearchPage;
+import com.cmons.cph.fragments.signup.SignUpForTermsPage;
+import com.cmons.cph.fragments.signup.SignUpForWritePage;
 import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -23,7 +23,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class SignUpActivity extends BaseFragmentActivity {
+public class SignUpActivity extends CmonsFragmentActivity {
 
 	/**
 	 * type
@@ -49,38 +49,38 @@ public class SignUpActivity extends BaseFragmentActivity {
 	public static final int POSITION_EMPLOYEE2 = 2;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 	}
 
 	@Override
-	protected void createPage() {
-
-	}
-
-	@Override
-	protected void setSizes() {
+	public void createPage() {
 
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setSizes() {
+
+	}
+
+	@Override
+	public void setListeners() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	protected void downloadInfo() {
+	public void downloadInfo() {
 
 		setPage(true);
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
+	public void setPage(boolean successDownload) {
 
 		if(getFragmentsSize() == 0) {
 			showTermsPage();
@@ -88,13 +88,13 @@ public class SignUpActivity extends BaseFragmentActivity {
 	}
 
 	@Override
-	protected int getXmlResId() {
+	public int getContentViewId() {
 
 		return R.layout.activity_sign_up;
 	}
 
 	@Override
-	protected int getFragmentFrameId() {
+	public int getFragmentFrameResId() {
 
 		return R.id.signUpActivity_fragmentFrame;
 	}
@@ -217,17 +217,15 @@ public class SignUpActivity extends BaseFragmentActivity {
 	
 	public void launchWholesaleActivity(User user) {
 		
-		Intent intent = new Intent(this, BlankActivity.class);
-//		Intent intent = new Intent(this, WholesaleActivity.class);
-//		intent.putExtra("user", user);
+		Intent intent = new Intent(this, WholesaleActivity.class);
+		intent.putExtra("user", user);
 		startActivity(intent);
 	}
 	
 	public void launchRetailActivity(User user) {
 		
-		Intent intent = new Intent(this, BlankActivity.class);
-//		Intent intent = new Intent(this, RetailActivity.class);
-//		intent.putExtra("user", user);
+		Intent intent = new Intent(this, RetailActivity.class);
+		intent.putExtra("user", user);
 		startActivity(intent);
 	}
 

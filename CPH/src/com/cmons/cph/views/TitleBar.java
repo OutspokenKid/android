@@ -49,15 +49,40 @@ public class TitleBar extends RelativeLayout {
 		
 		//tvTitle.
 		tvTitle = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, 
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(92));
 		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.leftMargin = ResizeUtils.getSpecificLength(184);
+		rp.rightMargin = ResizeUtils.getSpecificLength(184);
 		tvTitle.setLayoutParams(rp);
-		tvTitle.setGravity(Gravity.CENTER_VERTICAL);
+		tvTitle.setGravity(Gravity.CENTER);
 		tvTitle.setTextColor(Color.WHITE);
 		FontUtils.setFontSize(tvTitle, 30);
 		this.addView(tvTitle);
+		
+		btnNotice = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(92), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		rp.rightMargin = ResizeUtils.getSpecificLength(92);
+		btnNotice.setLayoutParams(rp);
+		btnNotice.setBackgroundResource(R.drawable.notice2_btn);
+		btnNotice.setVisibility(View.INVISIBLE);
+		this.addView(btnNotice);
+		
+		btnAdd = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(92), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		btnAdd.setLayoutParams(rp);
+		btnAdd.setBackgroundResource(R.drawable.add_btn);
+		btnAdd.setVisibility(View.INVISIBLE);
+		this.addView(btnAdd);
 	}
 	
 	public void addBackButton(int resId, int width, int height) {
@@ -115,6 +140,9 @@ public class TitleBar extends RelativeLayout {
 	}
 	
 	public Button getBtnNotice() {
+		
+		if(btnNotice == null) {
+		}
 		
 		return btnNotice;
 	}

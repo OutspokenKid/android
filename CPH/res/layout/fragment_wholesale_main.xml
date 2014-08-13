@@ -1,86 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
+    android:layout_height="match_parent" >
 
-    <RelativeLayout
-        android:id="@+id/signInPage_relative" 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    
-	    <!-- 메인 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnMain"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentLeft="true"
-	    	android:layout_alignParentTop="true"
-	    	android:background="@drawable/btn_main_main_b" />
-	    
-	    <!-- 알림 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnNotice"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignTop="@id/wholesaleMainPage_btnMain"
-	    	android:layout_toRightOf="@id/wholesaleMainPage_btnMain"
-	    	android:background="@drawable/btn_main_notice_b" />
-	    
-	    <!-- 매장 관리 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnManagement"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignLeft="@id/wholesaleMainPage_btnNotice"
-	    	android:layout_below="@id/wholesaleMainPage_btnNotice"
-	    	android:background="@drawable/btn_main_management_b" />
-	    
-	    <!-- 주문 내역 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnOrder"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignLeft="@id/wholesaleMainPage_btnMain"
-	    	android:layout_below="@id/wholesaleMainPage_btnMain"
-	    	android:background="@drawable/btn_main_order_b" />
-	    
-	    <!-- 샘플 관리 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnSample"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignTop="@id/wholesaleMainPage_btnOrder"
-	    	android:layout_toRightOf="@id/wholesaleMainPage_btnOrder"
-	    	android:background="@drawable/btn_findpw" />
-	    
-	    <!-- 거래처 관리 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnPartner"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignTop="@id/wholesaleMainPage_btnSample"
-	    	android:layout_toRightOf="@id/wholesaleMainPage_btnSample"
-	    	android:background="@drawable/btn_main_partner_b" />
-	    
-	    <!-- 직원 관리 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnStaff"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignLeft="@id/wholesaleMainPage_btnOrder"
-	    	android:layout_below="@id/wholesaleMainPage_btnOrder"
-	    	android:background="@drawable/btn_main_staff_b" />
-	    
-	    <!-- 설정 버튼. -->
-	    <Button
-	        android:id="@+id/wholesaleMainPage_btnSetting"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignLeft="@id/wholesaleMainPage_btnStaff"
-	    	android:layout_below="@id/wholesaleMainPage_btnStaff"
-	    	android:background="@drawable/btn_main_setting_b" />
-	    
-	</RelativeLayout>
+    <!-- bg -->
     
-</ScrollView>
+    <ImageView 
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:src="@drawable/bg2"
+    	android:scaleType="centerCrop" />
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/wholesaleMainPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+    
+    <!-- 샵 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnShop" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/wholesaleMainPage_titleBar"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/shop_info_btn" />
+    
+    <!-- 알림 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnNotice" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleMainPage_btnShop"
+	    android:layout_toRightOf="@id/wholesaleMainPage_btnShop"
+	    android:background="@drawable/notice_btn" />
+    
+    <!-- 매장관리 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnManagement" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignLeft="@id/wholesaleMainPage_btnNotice"
+	    android:layout_below="@id/wholesaleMainPage_btnNotice"
+	    android:background="@drawable/management_btn" />
+    
+    <!-- 주문내역 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnOrder" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignLeft="@id/wholesaleMainPage_btnShop"
+	    android:layout_below="@id/wholesaleMainPage_btnShop"
+	    android:background="@drawable/order_btn" />
+    
+    <!-- 샘플관리 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnSample" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleMainPage_btnOrder"
+	    android:layout_toRightOf="@id/wholesaleMainPage_btnOrder"
+	    android:background="@drawable/sample_btn" />
+    
+    <!-- 거래처관리 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnCustomer" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleMainPage_btnSample"
+	    android:layout_toRightOf="@id/wholesaleMainPage_btnSample"
+	    android:background="@drawable/customer_btn" />
+    
+    <!-- 직원관리 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnStaff" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignLeft="@id/wholesaleMainPage_btnOrder"
+	    android:layout_below="@id/wholesaleMainPage_btnOrder"
+	    android:background="@drawable/staff_btn" />
+    
+    <!-- 설정 -->
+    
+    <Button 
+        android:id="@+id/wholesaleMainPage_btnSetting" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignLeft="@id/wholesaleMainPage_btnStaff"
+	    android:layout_below="@id/wholesaleMainPage_btnStaff"
+	    android:background="@drawable/setting_btn" />
+    
+    <View 
+        android:id="@+id/wholesaleMainPage_cover" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="#a000" />
+
+    <RelativeLayout 
+        android:id="@+id/wholesaleMainPage_noticeRelative" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_centerInParent="true"
+		android:background="@drawable/main_pop_up" >
+        
+        <Button 
+            android:id="@+id/wholesaleMainPage_btnClose" 
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentTop="true"
+	    	android:layout_alignParentRight="true"
+	    	android:background="@drawable/main_pop_up_close_btn" />
+        
+        <ListView 
+            android:id="@+id/wholesaleMainPage_listView" 
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentBottom="true"
+	    	android:layout_centerHorizontal="true" 
+	    	android:cacheColorHint="#0000" />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

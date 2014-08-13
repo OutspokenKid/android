@@ -7,67 +7,67 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.cmons.classes.BaseFragmentActivity;
+import com.cmons.classes.CmonsFragmentActivity;
 import com.cmons.classes.CphConstants;
-import com.cmons.cph.fragments.FindIdPwPage;
-import com.cmons.cph.fragments.SignInPage;
+import com.cmons.cph.fragments.signin.FindIdPwPage;
+import com.cmons.cph.fragments.signin.SignInPage;
 import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class SignInActivity extends BaseFragmentActivity {
+public class SignInActivity extends CmonsFragmentActivity {
 	
 	private boolean signingIn;
 	
 	@Override
-	protected void bindViews() {
+	public void bindViews() {
 
 	}
 
 	@Override
-	protected void setVariables() {
+	public void setVariables() {
 
 	}
 
 	@Override
-	protected void createPage() {
+	public void createPage() {
 
 	}
 
 	@Override
-	protected void setSizes() {
+	public void setSizes() {
 
 	}
 
 	@Override
-	protected void setListeners() {
+	public void setListeners() {
 
 	}
 
 	@Override
-	protected void downloadInfo() {
-
+	public void downloadInfo() {
+		
 		setPage(true);
 	}
 
 	@Override
-	protected void setPage(boolean successDownload) {
-
+	public void setPage(boolean successDownload) {
+		
 		if(getFragmentsSize() == 0) {
 			showSignInPage();
 		}
 	}
-
+	
 	@Override
-	protected int getXmlResId() {
-		
+	public int getContentViewId() {
+
 		return R.layout.activity_sign_in;
 	}
 	
 	@Override
-	protected int getFragmentFrameId() {
+	public int getFragmentFrameResId() {
 
 		return R.id.signInActivity_fragmentFrame;
 	}
@@ -173,9 +173,15 @@ public class SignInActivity extends BaseFragmentActivity {
 	
 	public void launchWholesaleActivity(User user) {
 
-		Intent intent = new Intent(this, BlankActivity.class);
-//		Intent intent = new Intent(this, WholesaleActivity.class);
-//		intent.putExtra("user", user);
+		Intent intent = new Intent(this, WholesaleActivity.class);
+		intent.putExtra("user", user);
+		startActivity(intent);
+	}
+	
+	public void launchRetailActivity(User user) {
+
+		Intent intent = new Intent(this, RetailActivity.class);
+		intent.putExtra("user", user);
 		startActivity(intent);
 	}
 }
