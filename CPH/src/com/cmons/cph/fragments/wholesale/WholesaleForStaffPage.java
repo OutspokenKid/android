@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.wholesale;
 
+import org.json.JSONObject;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -77,12 +79,6 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
@@ -94,6 +90,12 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 		return false;
 	}
 
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 //////////////////// Custom methods.
 	
 	public void changeType(int type) {

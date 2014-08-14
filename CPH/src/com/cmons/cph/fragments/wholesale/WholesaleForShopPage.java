@@ -1,27 +1,20 @@
 package com.cmons.cph.fragments.wholesale;
 
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import org.json.JSONObject;
+
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
-import com.cmons.cph.fragments.wholesale.WholesaleMainPage.NoticeAdapter.ViewHolderForNotice;
-import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class WholesaleForShopPage extends CmonsFragmentForWholesale {
@@ -237,6 +230,12 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		return false;
 	}
 
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 //////////////////// Custom methods.
 	
 	public void showCategoryRelative(int type) {
@@ -266,86 +265,4 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	}
 
 ////////////////////Custom classes.
-	
-	public class NoticeAdapter extends BaseAdapter {
-		
-		@Override
-		public int getCount() {
-	
-			return notices.size();
-		}
-	
-		@Override
-		public Object getItem(int arg0) {
-	
-			return notices.get(arg0);
-		}
-	
-		@Override
-		public long getItemId(int arg0) {
-	
-			return arg0;
-		}
-	
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-	
-			ViewHolderForNotice viewHolder = null;
-			
-			if(convertView == null) {
-				convertView = LayoutInflater.from(mContext).inflate(R.layout.list_wholesale_notice, parent, false);
-				
-				viewHolder = new ViewHolderForNotice(convertView);
-				viewHolder.setValues(notices.get(position));
-				
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolderForNotice) convertView.getTag();
-			}
-			
-			return convertView;
-		}
-		
-		public class ViewHolderForNotice {
-			
-			public View row;
-			
-			public TextView tvNotice;
-			public TextView tvRegdate;
-			public View icon;
-			
-			public ViewHolderForNotice(View row) {
-				
-				this.row = row;
-				
-				bindViews();
-				setSizes();
-			}
-			
-			public void bindViews() {
-				
-				tvNotice = (TextView) row.findViewById(R.id.list_wholesale_notice_tvNotice);
-				tvRegdate = (TextView) row.findViewById(R.id.list_wholesale_notice_tvRegedit);
-				icon = row.findViewById(R.id.list_wholesale_notice_icon);
-			}
-			
-			public void setSizes() {
-
-				ResizeUtils.viewResize(400, 120, tvNotice, 1, Gravity.CENTER_VERTICAL, null, new int[]{20, 0, 0, 0});
-				ResizeUtils.viewResize(120, 120, tvRegdate, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
-				icon.getLayoutParams().width = ResizeUtils.getSpecificLength(29);
-				icon.getLayoutParams().height = ResizeUtils.getSpecificLength(30);
-				
-				FontUtils.setFontSize(tvNotice, 28);
-				FontUtils.setFontSize(tvRegdate, 20);
-			}
-			
-			public void setValues(Notice notice) {
-			
-				tvNotice.setText("주문요청이 들어왔습니다. 확인해주세요.");
-				tvRegdate.setText("2014.08.13\nPM:11:14");
-				icon.setBackgroundResource(R.drawable.mail_icon_a);
-			}
-		}
-	}
 }

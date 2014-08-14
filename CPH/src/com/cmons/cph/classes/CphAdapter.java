@@ -10,6 +10,11 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
+import com.cmons.cph.R;
+import com.cmons.cph.wrappers.ViewWrapperForCategory;
+import com.cmons.cph.wrappers.ViewWrapperForFloor;
+import com.cmons.cph.wrappers.ViewWrapperForLine;
+import com.cmons.cph.wrappers.ViewWrapperForNotice;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -17,15 +22,11 @@ import com.outspoken_kid.utils.LogUtils;
  * @author HyungGunKim
  *
  */
-public abstract class CphAdapter extends BaseAdapter {
+public class CphAdapter extends BaseAdapter {
 
-	private Context context;
-	private LayoutInflater inflater;
+	protected Context context;
+	protected LayoutInflater inflater;
 	protected ArrayList<BaseModel> models;
-	
-	protected abstract int getLayoutResIdByItemCode(int itemCode);
-	protected abstract ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode);
-	protected abstract void setRow(int itemCode, int position, View convertView);
 	
 	public CphAdapter(Context context, LayoutInflater inflater, ArrayList<BaseModel> models) {
 		
@@ -91,7 +92,51 @@ public abstract class CphAdapter extends BaseAdapter {
 			return getBlankView();
 		}
 	}
+
+	public int getLayoutResIdByItemCode(int itemCode) {
+		
+		switch (itemCode) {
+		
+		case CphConstants.ITEM_NOTICE:
+			return R.layout.list_wholesale_notice;
+			
+		case CphConstants.ITEM_CATEGORY:
+			return R.layout.list_signup_category;
+			
+		case CphConstants.ITEM_FLOOR:
+			return R.layout.list_floor;
+			
+		case CphConstants.ITEM_LINE:
+			return R.layout.list_line;
+		}
+		
+		return 0;
+	}
 	
+	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
+		
+		switch (itemCode) {
+		
+		case CphConstants.ITEM_NOTICE:
+			return new ViewWrapperForNotice(convertView, itemCode);
+			
+		case CphConstants.ITEM_CATEGORY:
+			return new ViewWrapperForCategory(convertView, itemCode);
+			
+		case CphConstants.ITEM_FLOOR:
+			return new ViewWrapperForFloor(convertView, itemCode);
+			
+		case CphConstants.ITEM_LINE:
+			return new ViewWrapperForLine(convertView, itemCode);
+		}
+		
+		return null;
+	}
+	
+	public void setRow(int itemCode, int position, View convertView) {
+		
+	}
+
 	public View getBlankView() {
 		
 		if(context == null) {

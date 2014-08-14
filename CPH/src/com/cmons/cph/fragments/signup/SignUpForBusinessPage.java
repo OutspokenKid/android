@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.signup;
 
+import org.json.JSONObject;
+
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -123,7 +125,7 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -136,6 +138,12 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 	
 	@Override
 	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
 	}

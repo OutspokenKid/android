@@ -26,8 +26,9 @@ public abstract class CmonsFragment extends BaseFragment {
 	 * BaseModel로 파싱해서 models에 넣고, 조건에 따라 isLastList 설정.
 	 * 
 	 * @param objJSON Result of downloading.
+	 * @return isLastList.
 	 */
-	public abstract void parseJSON(JSONObject objJSON);
+	public abstract boolean parseJSON(JSONObject objJSON);
 
 	@Override
 	public void onResume() {
@@ -74,7 +75,7 @@ public abstract class CmonsFragment extends BaseFragment {
 					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					parseJSON(objJSON);
+					isLastList = parseJSON(objJSON);
 					setPage(true);
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -110,6 +111,9 @@ public abstract class CmonsFragment extends BaseFragment {
 		isRefreshing = true;
 		isDownloading = false;
 		isLastList = false;
+		pageIndex = 0;
+		models.clear();
+		adapter.notifyDataSetChanged();
 		
 		downloadInfo();
 	}

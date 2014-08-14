@@ -1,35 +1,29 @@
 package com.cmons.cph.fragments.wholesale;
 
-import java.util.ArrayList;
-
 import org.json.JSONObject;
 
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
@@ -51,9 +45,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
-	private int noticePageIndex;
-	private ArrayList<Notice> notices = new ArrayList<Notice>();
-	private NoticeAdapter noticeAdapter;
 	
 	@Override
 	public void onResume() {
@@ -120,8 +111,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 		titleBar.getBtnAdd().setVisibility(View.VISIBLE);
 		
-		noticeAdapter = new NoticeAdapter();
-		listView.setAdapter(noticeAdapter);
+		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
+		listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -352,63 +343,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public void downloadInfo() {
-		
-		if(isDownloading || isLastList) {
-			return;
-		}
-		
-		super.downloadInfo();
-		
-		String url = CphConstants.BASE_API_URL + "wholesales/notices" +
-				"?num=" + CphConstants.LIST_SIZE_WHOLESALE_NOTICE +
-				"&page=" + noticePageIndex;
-		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("WholesaleMainPage.onError." + "\nurl : " + url);
-				setPage(false);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("WholesaleMainPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					for(int i=0; i<10; i++) {
-						notices.add(new Notice());
-					}
-					
-					//isLastList 처리.
-					
-					setPage(true);
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					setPage(false);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					setPage(false);
-				}
-			}
-		});
-	}
-	
-	@Override
-	public void setPage(boolean successDownload) {
-		super.setPage(successDownload);
-
-		if(successDownload) {
-			noticeAdapter.notifyDataSetChanged();
-			noticePageIndex++;
-		}
-	}
 	
 //////////////////// Custom methods.
 
@@ -450,10 +384,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 		if(!animating && noticeRelative.getVisibility() != View.VISIBLE) {
 			
-			noticePageIndex = 0;
-			notices.clear();
-			noticeAdapter.notifyDataSetChanged();
-			downloadInfo();
+			refreshPage();
 			
 			noticeRelative.setVisibility(View.VISIBLE);
 			cover.setVisibility(View.VISIBLE);
@@ -475,87 +406,14 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		}
 	}
 
-////////////////////Custom classes.
 	
-	public class NoticeAdapter extends BaseAdapter {
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 		
-		@Override
-		public int getCount() {
-	
-			return notices.size();
-		}
-	
-		@Override
-		public Object getItem(int arg0) {
-	
-			return notices.get(arg0);
-		}
-	
-		@Override
-		public long getItemId(int arg0) {
-	
-			return arg0;
-		}
-	
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-	
-			ViewHolderForNotice viewHolder = null;
-			
-			if(convertView == null) {
-				convertView = LayoutInflater.from(mContext).inflate(R.layout.list_wholesale_notice, parent, false);
-				
-				viewHolder = new ViewHolderForNotice(convertView);
-				viewHolder.setValues(notices.get(position));
-				
-				convertView.setTag(viewHolder);
-			} else {
-				viewHolder = (ViewHolderForNotice) convertView.getTag();
-			}
-			
-			return convertView;
+		for(int i=0; i<10; i++) {
+			models.add(new Notice());
 		}
 		
-		public class ViewHolderForNotice {
-			
-			public View row;
-			
-			public TextView tvNotice;
-			public TextView tvRegdate;
-			public View icon;
-			
-			public ViewHolderForNotice(View row) {
-				
-				this.row = row;
-				
-				bindViews();
-				setSizes();
-			}
-			
-			public void bindViews() {
-				
-				tvNotice = (TextView) row.findViewById(R.id.list_wholesale_notice_tvNotice);
-				tvRegdate = (TextView) row.findViewById(R.id.list_wholesale_notice_tvRegedit);
-				icon = row.findViewById(R.id.list_wholesale_notice_icon);
-			}
-			
-			public void setSizes() {
-
-				ResizeUtils.viewResize(400, 120, tvNotice, 1, Gravity.CENTER_VERTICAL, null, new int[]{20, 0, 0, 0});
-				ResizeUtils.viewResize(120, 120, tvRegdate, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
-				icon.getLayoutParams().width = ResizeUtils.getSpecificLength(29);
-				icon.getLayoutParams().height = ResizeUtils.getSpecificLength(30);
-				
-				FontUtils.setFontSize(tvNotice, 28);
-				FontUtils.setFontSize(tvRegdate, 20);
-			}
-			
-			public void setValues(Notice notice) {
-			
-				tvNotice.setText("주문요청이 들어왔습니다. 확인해주세요.");
-				tvRegdate.setText("2014.08.13\nPM:11:14");
-				icon.setBackgroundResource(R.drawable.mail_icon_a);
-			}
-		}
+		return false;
 	}
 }

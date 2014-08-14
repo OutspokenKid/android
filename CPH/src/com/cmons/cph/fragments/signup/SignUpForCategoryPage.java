@@ -1,29 +1,20 @@
 package com.cmons.cph.fragments.signup;
 
-import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForSignUp;
+import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.CategoryForSignUp;
 import com.cmons.cph.views.TitleBar;
-import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -35,13 +26,11 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	private Button btnNext;
 	private int type;
 	
-	private ArrayList<CategoryForSignUp> categories = new ArrayList<CategoryForSignUp>();
-	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		if(categories.size() == 0) {
+		if(models.size() == 0) {
 			downloadInfo();
 		}
 	}
@@ -68,7 +57,8 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		titleBar.addBackButton(R.drawable.btn_back_position, 162, 92);
 		titleBar.setTitleText(R.string.selectCategory);
 		
-		listView.setAdapter(new CategoryListAdapter(mActivity.getLayoutInflater(), categories));
+		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
+		listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -82,44 +72,35 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 				getActivity().getSupportFragmentManager().popBackStack();
 			}
 		});
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View convertView, int position,
-					long id) {
-				
-				ViewHolderForCategory holder = (ViewHolderForCategory) convertView.getTag();
-				
-				if(categories.get(position).isSelected()) {
-					categories.get(position).setSelected(false);
-					holder.check.setVisibility(View.INVISIBLE);
-				} else {
-					categories.get(position).setSelected(true);
-					holder.check.setVisibility(View.VISIBLE);
-				}
-			}
-		});
 		
 		btnNext.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
+				CategoryForSignUp categoryForSignUp;
 				String categoryString = "";
 				int selectedCount = 0;
 				
-				int size = categories.size();
+				int size = models.size();
 				for(int i=0; i<size; i++) {
 					
-					if(categories.get(i).isSelected()) {
-						if(!"".equals(categoryString)) {
-							categoryString += ",";
+					try {
+						categoryForSignUp = (CategoryForSignUp) models.get(i);
+						
+						if(categoryForSignUp.isSelected()) {
+							if(!"".equals(categoryString)) {
+								categoryString += ",";
+							}
+							
+							categoryString += categoryForSignUp.getId();
+							
+							selectedCount++;
 						}
-						
-						categoryString += categories.get(i).getId();
-						
-						selectedCount++;
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
 					}
 				}
 				
@@ -172,7 +153,7 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -189,112 +170,37 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		return false;
 	}
 
-	public void downloadInfo() {
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 
-		String url = CphConstants.BASE_API_URL + "wholesales/categories";
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("SignUpForCategoryPage.onError." + "\nurl : " + url);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("wholesale_categories");
+			
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
 				try {
-					LogUtils.log("SignUpForCategoryPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					JSONArray arJSON = objJSON.getJSONArray("wholesale_categories");
-					
-					int size = arJSON.length();
-					for(int i=0; i<size; i++) {
-						try {
-							categories.add(new CategoryForSignUp(arJSON.getJSONObject(i)));
-						} catch (Exception e) {
-							LogUtils.trace(e);
-						} catch (Error e) {
-							LogUtils.trace(e);
-						}
-					}
-					
-					((CategoryListAdapter) listView.getAdapter()).notifyDataSetChanged();
+					models.add(new CategoryForSignUp(arJSON.getJSONObject(i)));
 				} catch (Exception e) {
 					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
-		});
+			
+			return (size < CphConstants.LIST_SIZE_WHOLESALE_NOTICE); 
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
 	}
-	
-	public class CategoryListAdapter extends BaseAdapter {
 
-		private LayoutInflater mInflater;
-		private ArrayList<CategoryForSignUp> categories = new ArrayList<CategoryForSignUp>();
+	@Override
+	public void downloadInfo() {
 		
-		public CategoryListAdapter(LayoutInflater mInflater,
-				ArrayList<CategoryForSignUp> categories) {
-			this.mInflater = mInflater;
-			this.categories = categories;
-		}
-		
-		@Override
-		public int getCount() {
-			
-			return categories.size();
-		}
-
-		@Override
-		public Object getItem(int arg0) {
-
-			return categories.get(arg0);
-		}
-
-		@Override
-		public long getItemId(int arg0) {
-			
-			return arg0;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			
-			ViewHolderForCategory holder;
-			
-			if(convertView == null) {
-				convertView = mInflater.inflate(R.layout.list_signup_category, parent, false);
-				holder = new ViewHolderForCategory();
-						
-				holder.textView = (TextView) convertView.findViewById(R.id.list_signup_category_textView);
-				holder.check = convertView.findViewById(R.id.list_signup_category_check);
-
-				holder.check.getLayoutParams().width = ResizeUtils.getSpecificLength(52);
-				holder.check.getLayoutParams().height = ResizeUtils.getSpecificLength(34);
-				
-				convertView.setTag(holder);
-				
-			} else {
-				holder = (ViewHolderForCategory) convertView.getTag();
-			}
-
-			holder.textView.setText(categories.get(position).getName());
-			
-			if(categories.get(position).isSelected()) {
-				holder.check.setVisibility(View.VISIBLE);
-			} else {
-				holder.check.setVisibility(View.INVISIBLE);
-			}
-			
-			return convertView;
-		}
-	}
-	
-	public class ViewHolderForCategory {
-		
-		public TextView textView;
-		public View check;
+		url = CphConstants.BASE_API_URL + "wholesales/categories";
+		super.downloadInfo();		
 	}
 }

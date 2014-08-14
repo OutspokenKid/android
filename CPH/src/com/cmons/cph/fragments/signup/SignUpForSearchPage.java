@@ -7,17 +7,11 @@ import java.util.Iterator;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -28,14 +22,15 @@ import android.widget.TextView;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
 import com.cmons.cph.classes.CmonsFragmentForSignUp;
+import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Floor;
+import com.cmons.cph.models.Line;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -79,14 +74,13 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	private ListView listView;
 	private Button btnClose;
 	
-	private WholesaleListAdapter listAdapter;
-	
 	private int type;
 	private int searchType;
 	private String categoryString;
-	private ArrayList<Floor> floors = new ArrayList<Floor>();
 	private Floor currentFloor;
 	private Line currentLine;
+	
+	private boolean isDownloadLocation;
 	
 	private AlphaAnimation aaIn, aaOut;
 	
@@ -152,9 +146,10 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		aaOut = new AlphaAnimation(1, 0);
 		aaOut.setDuration(300);
 		
-		listAdapter = new WholesaleListAdapter();
-		listView.setAdapter(listAdapter);
+		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
+		listView.setAdapter(adapter);
 		
+		isDownloadLocation = true;
 		downloadLocation();
 	}
 
@@ -243,8 +238,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 				switch (searchType) {
 				case SEARCH_TYPE_LOCATION_FLOOR:
 					btnCompanyFloor.setText(strings.get(position));
-					currentFloor = floors.get(position);
-					currentFloor.printFloor();
+					currentFloor = (Floor)models.get(position);
 					hidePopup();
 					break;
 					
@@ -420,7 +414,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -441,59 +435,97 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+
+		if(isDownloadLocation) {
+			isDownloadLocation = false;
+			
+			try {
+				Iterator<?> floorKeys = objJSON.keys();
+				
+				while(floorKeys.hasNext()) {
+					Floor floor = new Floor();
+					floor.floorName = floorKeys.next().toString();
+					
+					JSONObject objLine = objJSON.getJSONObject(floor.floorName);
+					Iterator<?> lineKeys = objLine.keys();
+					
+					while(lineKeys.hasNext()) {
+						
+						Line line = new Line();
+						line.lineName = lineKeys.next().toString();
+						JSONArray arJSON = objLine.getJSONArray(line.lineName);
+						
+						int size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							line.roomNumbers.add(arJSON.getString(i));
+						}
+						
+						floor.lines.add(line);
+					}
+					
+					floor.setItemCode(CphConstants.ITEM_FLOOR);
+					models.add(floor);
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (OutOfMemoryError oom) {
+				LogUtils.trace(oom);
+			}
+		} else {
+			try {
+				JSONArray arJSON = null;
+				
+				if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+					arJSON = objJSON.getJSONArray("wholesales");
+				} else {
+					arJSON = objJSON.getJSONArray("retails");
+				}
+				
+				int size = arJSON.length();
+				
+				if(size != 0) {
+					
+					if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+						for(int i=0; i<size; i++) {
+							shops.add(new Wholesale(arJSON.getJSONObject(i)));
+						}
+					} else {
+						for(int i=0; i<size; i++) {
+							shops.add(new Retail(arJSON.getJSONObject(i)));
+						}
+					}
+				} else {
+					ToastUtils.showToast(R.string.noResult_searchWholsale);
+					listFrame.postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+							
+							hidePopup();
+						}
+					}, 1000);
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+				hidePopup();
+				ToastUtils.showToast(R.string.failToSearchShop);
+			} catch (OutOfMemoryError oom) {
+				LogUtils.trace(oom);
+				hidePopup();
+				ToastUtils.showToast(R.string.failToSearchShop);
+			}
+		}
+		
+		return false;
+	}
 	
 	public void downloadLocation() {
 		
-		String url = CphConstants.BASE_API_URL + "wholesales/location_parts";
-		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("SignUpForSearchPage.onError." + "\nurl : " + url);
-
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("SignUpForSearchPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					Iterator<?> floorKeys = objJSON.keys();
-					
-					while(floorKeys.hasNext()) {
-						Floor floor = new Floor();
-						floor.floorName = floorKeys.next().toString();
-						
-						JSONObject objLine = objJSON.getJSONObject(floor.floorName);
-						Iterator<?> lineKeys = objLine.keys();
-						
-						while(lineKeys.hasNext()) {
-							
-							Line line = new Line();
-							line.lineName = lineKeys.next().toString();
-							JSONArray arJSON = objLine.getJSONArray(line.lineName);
-							
-							int size = arJSON.length();
-							for(int i=0; i<size; i++) {
-								line.roomNumbers.add(arJSON.getString(i));
-							}
-							
-							floor.lines.add(line);
-						}
-						
-						floors.add(floor);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-		});
+		url = CphConstants.BASE_API_URL + "wholesales/location_parts";
+		super.downloadInfo();
 	}
 	
 	public void showPopup(int searchType) {
@@ -534,7 +566,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 				}
 			} else {
 				
-				if(floors.size() == 0) {
+				if(models.size() == 0) {
 					return;
 				}
 			}
@@ -561,11 +593,11 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 				break;
 
 			case SEARCH_TYPE_LOCATION_FLOOR:
-				int size = floors.size();
+				int size = models.size();
 				for(int i=0; i<size; i++) {
-					strings.add(floors.get(i).floorName);
+					strings.add(((Floor)models.get(i)).floorName);
 				}
-				listAdapter.notifyDataSetChanged();
+				adapter.notifyDataSetChanged();
 				break;
 				
 			case SEARCH_TYPE_LOCATION_LINE:
@@ -578,7 +610,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 						strings.add(currentFloor.lines.get(i).lineName);
 						LogUtils.log("###where.showPopup.  add line : " + strings.get(i));
 					}
-					listAdapter.notifyDataSetChanged();
+					adapter.notifyDataSetChanged();
 				} else {
 					LogUtils.log("###SignUpForSearchPage.showPopup.  6");
 				}
@@ -591,7 +623,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 					for(int i=0; i<size; i++) {
 						strings.add(currentLine.roomNumbers.get(i));
 					}
-					listAdapter.notifyDataSetChanged();
+					adapter.notifyDataSetChanged();
 				}
 				break;
 			}
@@ -604,7 +636,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	
 	public void downloadShops() {
 		
-		String url = CphConstants.BASE_API_URL;
+		url = CphConstants.BASE_API_URL;
 		
 		if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
 			url += "wholesales/search/";
@@ -641,68 +673,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 			LogUtils.trace(e);
 		}
 		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("SignUpForSearchPage.onError." + "\nurl : " + url);
-				hidePopup();
-				ToastUtils.showToast(R.string.failToSearchShop);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("SignUpForSearchPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					JSONArray arJSON = null;
-					
-					if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
-						arJSON = objJSON.getJSONArray("wholesales");
-					} else {
-						arJSON = objJSON.getJSONArray("retails");
-					}
-					
-					int size = arJSON.length();
-					
-					if(size != 0) {
-						
-						if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
-							for(int i=0; i<size; i++) {
-								shops.add(new Wholesale(arJSON.getJSONObject(i)));
-							}
-						} else {
-							for(int i=0; i<size; i++) {
-								shops.add(new Retail(arJSON.getJSONObject(i)));
-							}
-						}
-						
-						listAdapter.notifyDataSetChanged();
-					} else {
-						ToastUtils.showToast(R.string.noResult_searchWholsale);
-						listFrame.postDelayed(new Runnable() {
-
-							@Override
-							public void run() {
-								
-								hidePopup();
-							}
-						}, 1000);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					hidePopup();
-					ToastUtils.showToast(R.string.failToSearchShop);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					hidePopup();
-					ToastUtils.showToast(R.string.failToSearchShop);
-				}
-			}
-		});
+		super.downloadInfo();
 	}
 	
 	public void hidePopup() {
@@ -719,100 +690,9 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		
 		strings.clear();
 		shops.clear();
-		listAdapter.notifyDataSetChanged();
-	}
-
-////////////////////////// Classes.
-	
-	public class WholesaleListAdapter extends BaseAdapter {
-
-		@Override
-		public int getCount() {
-
-			if(searchType < SEARCH_TYPE_LOCATION_FLOOR) {
-				return shops.size();
-			} else {
-				return strings.size();
-			}
-		}
-	
-		@Override
-		public Object getItem(int arg0) {
-	
-			if(searchType < SEARCH_TYPE_LOCATION_FLOOR) {
-				return shops.get(arg0);
-			} else {
-				return strings.get(arg0);
-			}
-		}
-	
-		@Override
-		public long getItemId(int arg0) {
-	
-			return arg0;
-		}
-	
-		@Override
-		public View getView(int position, View convertView, ViewGroup arg2) {
-	
-			if(convertView == null) {
-				TextView tvWholesale = new TextView(mContext);
-				tvWholesale.setTextColor(Color.BLACK);
-				tvWholesale.setLayoutParams(new AbsListView.LayoutParams(
-						LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(100)));
-				tvWholesale.setPadding(ResizeUtils.getSpecificLength(40), 0, 
-						ResizeUtils.getSpecificLength(40), 0);
-				tvWholesale.setGravity(Gravity.CENTER_VERTICAL);
-				FontUtils.setFontSize(tvWholesale, 30);
-				
-				convertView = tvWholesale;
-			}
-			
-			LogUtils.log("###where.getView.  position : " + position + ", searchType : " + searchType + ", strings.size : " + strings.size());
-
-			switch(searchType) {
-			
-			case SEARCH_TYPE_NAME:
-			case SEARCH_TYPE_PHONE:
-			case SEARCH_TYPE_LOCATION:
-			case SEARCH_TYPE_REG:
-				((TextView)convertView).setText(shops.get(position).getName() + 
-						"(" + shops.get(position).getPhone_number() + ")");
-				break;
-				
-			case SEARCH_TYPE_LOCATION_FLOOR:
-			case SEARCH_TYPE_LOCATION_LINE:
-			case SEARCH_TYPE_LOCATION_ROOM:
-				((TextView)convertView).setText(strings.get(position));
-				break;
-			}
-			
-			return convertView;
-		}
-	}
-	
-	public class Floor {
-		
-		public String floorName;
-		public ArrayList<Line> lines = new ArrayList<Line>();
-		
-		public void printFloor() {
-			
-			String logString = "\nfloorName : " + floorName;
-			
-			int size = lines.size();
-			for(int i=0; i<size; i++) {
-				logString += "\n" + i + " : " + lines.get(i).lineName;
-			}
-			
-			LogUtils.log("###Floor.printFloor.  ======================" +
-					logString);
-		}
-	}
-	
-	public class Line {
-		
-		public String lineName;
-		public ArrayList<String> roomNumbers = new ArrayList<String>();
+		adapter.notifyDataSetChanged();
+		isLastList = false;
+		isDownloading = false;
+		isRefreshing = false;
 	}
 }

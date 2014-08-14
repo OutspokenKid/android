@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.wholesale;
 
+import org.json.JSONObject;
+
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 
 public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
@@ -41,7 +43,7 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -54,6 +56,12 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
 	}

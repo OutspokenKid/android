@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.signup;
 
+import org.json.JSONObject;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -283,7 +285,7 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 	}
 	
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -296,6 +298,12 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 	
 	@Override
 	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
 	}

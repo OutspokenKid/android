@@ -442,7 +442,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -459,6 +459,12 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		return false;
 	}
 
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public boolean checkName() {
 
 		if(StringUtils.checkTextLength(etName, 0, 10) != StringUtils.PASS
