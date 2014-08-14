@@ -59,7 +59,7 @@ public class HoloStyleTextView extends FrameLayout {
 		textView = new TextView(getContext());
 		textView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textView.setBackgroundColor(Color.TRANSPARENT);
-		textView.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
+		textView.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
 		textView.setHintTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		this.addView(textView);
 	}

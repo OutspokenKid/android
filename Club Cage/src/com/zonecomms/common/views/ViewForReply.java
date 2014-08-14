@@ -87,7 +87,7 @@ public class ViewForReply extends RelativeLayout {
 		rp.leftMargin = l + m * 2;
 		tvNickname.setLayoutParams(rp);
 		tvNickname.setId(madeCount + 1);
-		tvNickname.setTextColor(Color.WHITE);
+		tvNickname.setTextColor(getResources().getColor(R.color.renewal_text));
 		tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
 		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvNickname, 30);
@@ -111,7 +111,7 @@ public class ViewForReply extends RelativeLayout {
 		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
 		rp.rightMargin = 50;
 		tvText.setLayoutParams(rp);
-		tvText.setTextColor(Color.WHITE);
+		tvText.setTextColor(getResources().getColor(R.color.renewal_text_dark));
 		tvText.setId(madeCount + 2);
 		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvText, 30);
@@ -124,7 +124,7 @@ public class ViewForReply extends RelativeLayout {
 		rp.topMargin = m;
 		rp.rightMargin = m;
 		tvRegdate.setLayoutParams(rp);
-		tvRegdate.setTextColor(Color.WHITE);
+		tvRegdate.setTextColor(getResources().getColor(R.color.renewal_text_light));
 		FontUtils.setGlobalFont(tvNickname);
 		FontUtils.setFontSize(tvRegdate, 26);
 		this.addView(tvRegdate);

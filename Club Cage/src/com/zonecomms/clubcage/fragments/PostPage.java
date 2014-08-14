@@ -112,10 +112,7 @@ public class PostPage extends ZonecommsFragment {
 		
 		try {
 			editText.getEditText().setHint(R.string.hintForReply);
-			editText.getEditText().setHintTextColor(Color.rgb(120, 120, 120));
-			editText.getEditText().setTextColor(Color.WHITE);
 			editText.getEditText().setSingleLine(false);
-			btnSubmit.setTextColor(Color.WHITE);
 			btnSubmit.setText(R.string.submitReply);
 			
 			postInfoLayout = new PostInfoLayout(mContext);

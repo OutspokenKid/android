@@ -25,7 +25,7 @@
         	android:id="@+id/list_message_tvNickName"
 	        android:layout_width="0dp"
 	    	android:layout_height="0dp"
-	    	android:textColor="#aaa"
+	    	android:textColor="@color/renewal_text"
 	    	android:singleLine="true"
 	    	android:ellipsize="end" />
 
@@ -33,14 +33,13 @@
 	        android:id="@+id/list_message_contentsLinear"
 	        android:layout_width="0dp"
 	    	android:layout_height="0dp"
-	    	android:background="#00f"
 	    	android:orientation="vertical" >
 	        
 	        <TextView 
 		        android:id="@+id/list_message_tvRegdate"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:textColor="#333"
+		    	android:textColor="@color/renewal_text"
 		    	android:singleLine="true"
 		    	android:ellipsize="end" />
 	    	
@@ -48,7 +47,7 @@
 		        android:id="@+id/list_message_tvContent"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:textColor="#000"
+		    	android:textColor="@color/renewal_text_dark"
 		    	android:autoLink="web|email"
 		    	android:visibility="gone" />
 	        

@@ -32,7 +32,7 @@ public class ReplyLoadingView extends LinearLayout {
 
 	public void init() {
 		
-		this.setBackgroundColor(Color.rgb(60, 60, 60));
+		this.setBackgroundColor(Color.rgb(150, 150, 150));
 		this.setOnClickListener(new OnClickListener() {
 			
 			@Override

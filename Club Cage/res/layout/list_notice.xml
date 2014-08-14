@@ -18,7 +18,7 @@
 		        android:id="@+id/list_notice_tvTitle"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:textColor="#fff"
+		    	android:textColor="@color/renewal_text"
 		    	android:singleLine="true"
 		    	android:ellipsize="end" />
 		
@@ -60,8 +60,7 @@
 		        android:id="@+id/list_notice_tvContent"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:background="#000"
-		    	android:textColor="#ddd" />
+		    	android:textColor="@color/renewal_text" />
             
         </LinearLayout>
         

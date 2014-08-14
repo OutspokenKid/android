@@ -85,7 +85,7 @@ public class TitleBar extends LinearLayout {
 		btnHome = new Button(getContext());
 		ResizeUtils.viewResize(70, 70, btnHome, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
 		btnHome.setBackgroundResource(R.drawable.btn_top_home);
-		btnHome.setVisibility(View.INVISIBLE);
+		btnHome.setVisibility(View.GONE);
 		btnHome.setOnClickListener(new OnClickListener() {
 			
 			@Override

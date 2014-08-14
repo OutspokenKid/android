@@ -92,7 +92,9 @@ public abstract class ViewWrapper {
 				newColor = lowColor + (position%6) * difference;		// lowColor ~ (lowColor + 50) = 65 ~ 115
 			}
 			
-			bg.setBackgroundColor(Color.rgb(newColor, newColor, newColor));
+//			bg.setBackgroundColor(Color.rgb(newColor, newColor, newColor));
+			bg.setBackgroundColor(Color.WHITE);
+			
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}

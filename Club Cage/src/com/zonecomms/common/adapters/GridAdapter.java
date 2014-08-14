@@ -72,6 +72,8 @@ public class GridAdapter extends ZoneAdapter {
 		switch(itemCode) {
 		
 		case ZoneConstants.ITEM_POST:
+		case ZoneConstants.ITEM_SCHEDULE:
+		case ZoneConstants.ITEM_PHOTO:
 			
 			if(position % 2 == 0) {
 				wrapperView.setPadding(length, 0, length/2, length);

@@ -28,7 +28,8 @@ public class ZonecommsApplication extends OutSpokenApplication {
 		HoloConstants.COLOR_HOLO_TARGET_ON = res.getColor(R.color.color_line_on);
 		HoloConstants.COLOR_HOLO_TARGET_OFF = res.getColor(R.color.color_line_off);
 		HoloConstants.COLOR_HOLO_TEXT = res.getColor(R.color.renewal_text);
-		HoloConstants.COLOR_HOLO_TEXT_HINT = res.getColor(R.color.renewal_hint);
+		HoloConstants.COLOR_HOLO_TEXT_DARK = res.getColor(R.color.renewal_text_dark);
+		HoloConstants.COLOR_HOLO_TEXT_HINT = res.getColor(R.color.renewal_text_light);
 	}
 	
 	public static void initWithActivity(Activity activity) {

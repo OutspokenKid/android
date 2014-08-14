@@ -43,6 +43,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubcage.IntentHandlerActivity;
@@ -219,7 +220,7 @@ public class UserPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
 		tvNickname.setLayoutParams(rp);
 		tvNickname.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
-		tvNickname.setTextColor(Color.parseColor(getString(R.color.renewal_text)));
+		tvNickname.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
 		tvNickname.setGravity(Gravity.CENTER);
 		tvNickname.setMaxWidth(l);
 		tvNickname.setEllipsize(TruncateAt.END);
@@ -232,7 +233,7 @@ public class UserPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
 		tvIdGenderAge.setLayoutParams(rp);
 		tvIdGenderAge.setPadding(0, 0, ResizeUtils.getSpecificLength(20), 0);
-		tvIdGenderAge.setTextColor(Color.parseColor(getString(R.color.renewal_hint)));
+		tvIdGenderAge.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		tvIdGenderAge.setGravity(Gravity.CENTER);
 		tvIdGenderAge.setMaxWidth(l);
 		tvIdGenderAge.setEllipsize(TruncateAt.END);
@@ -654,7 +655,7 @@ public class UserPage extends ZonecommsFragment {
 	public void addProfileScroll() {
 		
 		int textColor = getResources().getColor(R.color.renewal_text);
-		int hintColor = getResources().getColor(R.color.renewal_hint);
+		int hintColor = getResources().getColor(R.color.renewal_text_light);
 		
 		profileScroll = new ScrollView(mContext);
 		profileScroll.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));

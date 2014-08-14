@@ -3,6 +3,7 @@
 
     <color name="renewal_bg">#f5f5f5</color>
     <color name="renewal_text">#777777</color>
-    <color name="renewal_hint">#b5b5b5</color>
+    <color name="renewal_text_dark">#505050</color>
+    <color name="renewal_text_light">#b5b5b5</color>
     
 </resources>

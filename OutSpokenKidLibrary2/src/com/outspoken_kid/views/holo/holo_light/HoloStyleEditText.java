@@ -66,7 +66,7 @@ public class HoloStyleEditText extends FrameLayout {
 		editText = new EditText(getContext());
 		editText.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		editText.setBackgroundColor(Color.TRANSPARENT);
-		editText.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
+		editText.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
 		editText.setHintTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		editText.setSingleLine();
 		editText.setOnFocusChangeListener(new OnFocusChangeListener() {

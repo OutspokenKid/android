@@ -17,6 +17,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
@@ -30,6 +31,7 @@ public class PostInfoLayout extends RelativeLayout {
 	private TextView tvNicknameWithId;
 	private TextView tvRegdate;
 	private View more;
+	private View colorView;
 	
 	public PostInfoLayout(Context context) {
 		this(context, null, 0);
@@ -46,7 +48,7 @@ public class PostInfoLayout extends RelativeLayout {
 	
 	private void init() {
 		
-		this.setBackgroundColor(Color.rgb(55, 55, 55));
+		this.setBackgroundColor(Color.WHITE);
 
 		int l = ResizeUtils.getSpecificLength(150);
 		int s = ResizeUtils.getSpecificLength(8);
@@ -72,7 +74,7 @@ public class PostInfoLayout extends RelativeLayout {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		blank.setLayoutParams(rp);
 		blank.setId(madeCount + 1);
-		blank.setBackgroundColor(Color.BLACK);
+		blank.setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		this.addView(blank);
 		
 		tvNicknameWithId = new TextView(getContext());
@@ -84,7 +86,7 @@ public class PostInfoLayout extends RelativeLayout {
 		tvNicknameWithId.setPadding(s*2, 0, s*2, 0);
 		tvNicknameWithId.setSingleLine();
 		tvNicknameWithId.setEllipsize(TruncateAt.END);
-		tvNicknameWithId.setTextColor(Color.WHITE);
+		tvNicknameWithId.setTextColor(getResources().getColor(R.color.renewal_text));
 		tvNicknameWithId.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setGlobalFont(tvNicknameWithId);
 		FontUtils.setFontSize(tvNicknameWithId, 30);
@@ -100,7 +102,7 @@ public class PostInfoLayout extends RelativeLayout {
 		tvRegdate.setPadding(s*2, 0, s*2, 0);
 		tvRegdate.setSingleLine();
 		tvRegdate.setEllipsize(TruncateAt.END);
-		tvRegdate.setTextColor(Color.WHITE);
+		tvRegdate.setTextColor(getResources().getColor(R.color.renewal_text));
 		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setGlobalFont(tvRegdate);
 		FontUtils.setFontSize(tvRegdate, 30);
@@ -108,12 +110,29 @@ public class PostInfoLayout extends RelativeLayout {
 		this.addView(tvRegdate);
 		
 		more = new View(getContext());
-		rp = new RelativeLayout.LayoutParams(l, l);
+		rp = new RelativeLayout.LayoutParams(l/3*2, l/3); //100 * 50
 		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		rp.addRule(RelativeLayout.CENTER_VERTICAL);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(15);
 		more.setLayoutParams(rp);
-		more.setBackgroundResource(R.drawable.img_dot);
 		this.addView(more);
+		
+		colorView = new View(getContext());
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(60), 
+				ResizeUtils.getSpecificLength(20));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		rp.rightMargin = ResizeUtils.getSpecificLength(30);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
+		colorView.setLayoutParams(rp);
+		colorView.setBackgroundColor(HoloConstants.COLOR_HOLO_TARGET_ON);
+		this.addView(colorView);
+		
+		View mask = new View(getContext());
+		mask.setLayoutParams(rp);
+		mask.setBackgroundResource(R.drawable.img_dot);
+		this.addView(mask);
 	}
 
 	public void setPostInfo(Post post) {

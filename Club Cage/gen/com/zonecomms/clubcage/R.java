@@ -866,7 +866,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f07000e;
+        public static final int abc_search_url_text_holo=0x7f07000f;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
@@ -885,8 +885,9 @@ containing a value of this type.
          */
         public static final int intro_start=0x7f070003;
         public static final int renewal_bg=0x7f07000b;
-        public static final int renewal_hint=0x7f07000d;
         public static final int renewal_text=0x7f07000c;
+        public static final int renewal_text_dark=0x7f07000d;
+        public static final int renewal_text_light=0x7f07000e;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -1374,28 +1375,26 @@ containing a value of this type.
         public static final int messagePage_bottomLinear=0x7f0500d2;
         public static final int messagePage_btnSend=0x7f0500d5;
         public static final int messagePage_etMessage=0x7f0500d4;
-        public static final int messagePage_line1=0x7f0500d7;
-        public static final int messagePage_line2=0x7f0500d6;
-        public static final int messagePage_listView=0x7f0500d9;
+        public static final int messagePage_listView=0x7f0500d7;
         public static final int messagePage_mainLayout=0x7f0500d1;
         public static final int messagePage_photo=0x7f0500d3;
-        public static final int messagePage_swipeRefreshLayout=0x7f0500d8;
+        public static final int messagePage_swipeRefreshLayout=0x7f0500d6;
         public static final int middle=0x7f050012;
         public static final int never=0x7f050009;
         public static final int none=0x7f050010;
         public static final int normal=0x7f050000;
-        public static final int postPage_contentLayout=0x7f0500dd;
-        public static final int postPage_editText=0x7f0500e2;
-        public static final int postPage_innerLayout=0x7f0500dc;
-        public static final int postPage_mainLayout=0x7f0500da;
-        public static final int postPage_replyLinear=0x7f0500df;
-        public static final int postPage_scrollView=0x7f0500db;
-        public static final int postPage_submitButton=0x7f0500e3;
-        public static final int postPage_targetLinear=0x7f0500e5;
-        public static final int postPage_tvText=0x7f0500de;
-        public static final int postPage_writeCover=0x7f0500e4;
-        public static final int postPage_writeFrame=0x7f0500e0;
-        public static final int postPage_writeLinear=0x7f0500e1;
+        public static final int postPage_contentLayout=0x7f0500db;
+        public static final int postPage_editText=0x7f0500e0;
+        public static final int postPage_innerLayout=0x7f0500da;
+        public static final int postPage_mainLayout=0x7f0500d8;
+        public static final int postPage_replyLinear=0x7f0500dd;
+        public static final int postPage_scrollView=0x7f0500d9;
+        public static final int postPage_submitButton=0x7f0500e1;
+        public static final int postPage_targetLinear=0x7f0500e3;
+        public static final int postPage_tvText=0x7f0500dc;
+        public static final int postPage_writeCover=0x7f0500e2;
+        public static final int postPage_writeFrame=0x7f0500de;
+        public static final int postPage_writeLinear=0x7f0500df;
         public static final int progress_circular=0x7f050018;
         public static final int progress_horizontal=0x7f050019;
         public static final int radio=0x7f05002f;
@@ -1409,7 +1408,7 @@ containing a value of this type.
         public static final int search_plate=0x7f050036;
         public static final int search_src_text=0x7f050037;
         public static final int search_voice_btn=0x7f05003b;
-        public static final int settingPage_mainLayout=0x7f0500e6;
+        public static final int settingPage_mainLayout=0x7f0500e4;
         public static final int shortcut=0x7f05002e;
         public static final int showCustom=0x7f050007;
         public static final int showHome=0x7f050004;
@@ -1437,7 +1436,7 @@ containing a value of this type.
         public static final int top_action_bar=0x7f050020;
         public static final int up=0x7f050021;
         public static final int useLogo=0x7f050003;
-        public static final int userPage_mainLayout=0x7f0500e7;
+        public static final int userPage_mainLayout=0x7f0500e5;
         public static final int withText=0x7f05000c;
         public static final int writeActivity_btnComplete=0x7f050075;
         public static final int writeActivity_btnPhoto=0x7f050079;

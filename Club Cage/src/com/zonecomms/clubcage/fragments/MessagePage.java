@@ -106,7 +106,6 @@ public class MessagePage extends ZonecommsListFragment {
 		
 		targetAdapter = listAdapter;
 		etMessage.getEditText().setSingleLine(false);
-		etMessage.setBackgroundColor(Color.rgb(34, 34, 34));
 		btnSend.setText(R.string.send);
 		
 		pPhoto = new HoloStyleSpinnerPopup(mContext);

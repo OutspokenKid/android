@@ -88,32 +88,42 @@ public class CircleMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circlemain);
         
-        ZonecommsApplication.initWithActivity(this);
-		ZonecommsApplication.setupResources(this);
-        
-        bindViews();
-        setVariables();
-        createPage();
-        
-        setSizes();
-        setListeners();
-        
-    	final Intent intent = getIntent();				//'i' is intent that passed intent from before.
-		
-		if(intent!= null && intent.getData() != null) {
-			
-			LogUtils.log("###CircleMainActivity.onCreate.  intent is not null.");
-			
-			swipeLayout.post(new Runnable() {
-				
-				@Override
-				public void run() {
-					
-					launchToMainActivity(intent.getData());
-				}
-			});
-		} else {
-			LogUtils.log("###CircleMainActivity.onCreate.  intent is null.");
+        try {
+        	ZonecommsApplication.initWithActivity(this);
+    		ZonecommsApplication.setupResources(this);
+            
+            bindViews();
+            setVariables();
+            createPage();
+            
+            setSizes();
+            setListeners();
+            
+        	final Intent intent = getIntent();				//'i' is intent that passed intent from before.
+    		
+    		if(intent!= null && intent.getData() != null) {
+    			
+    			swipeLayout.post(new Runnable() {
+    				
+    				@Override
+    				public void run() {
+    					
+    					launchToMainActivity(intent.getData());
+    				}
+    			});
+    		}
+
+    		//Test.
+    		//HoloConstants 설정. 
+        	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b27a38ff");
+    		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#997a38ff");
+        	
+    		//기존 메인 TitleBar 색 설정.
+    		TitleBar.titleBarColor = Color.parseColor("#b27a38ff");
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
     }
     
@@ -704,8 +714,8 @@ public class CircleMainActivity extends Activity {
     	}
     	
     	//HoloConstants 설정.
-    	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#ff" + bgInfos[currentIndex].color.replace("#", ""));
-		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+    	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#99" + bgInfos[currentIndex].color.replace("#", ""));
     	
 		//기존 메인 TitleBar 색 설정.
 		TitleBar.titleBarColor = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));

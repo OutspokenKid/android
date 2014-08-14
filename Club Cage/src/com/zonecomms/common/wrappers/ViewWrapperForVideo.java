@@ -9,7 +9,6 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.NetworkImageView;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -24,7 +23,7 @@ import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForVideo extends ViewWrapper {
 
-	private NetworkImageView ivThumbnail;
+	private ImageView ivThumbnail;
 	private TextView tvTitle;
 	private Link link;
 
@@ -38,7 +37,7 @@ public class ViewWrapperForVideo extends ViewWrapper {
 	@Override
 	public void bindViews() {
 
-		ivThumbnail = (NetworkImageView) row.findViewById(R.id.list_video_ivThumbnail);
+		ivThumbnail = (ImageView) row.findViewById(R.id.list_video_ivThumbnail);
 		tvTitle = (TextView) row.findViewById(R.id.list_video_tvTitle);
 	}
 
