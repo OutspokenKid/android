@@ -3,9 +3,7 @@ package com.zonecomms.common.wrappers;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.net.Uri;
-import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -68,10 +66,6 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 2, Gravity.RIGHT|Gravity.TOP, null);
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvContent, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{88, 0, 0, 0});
 		ResizeUtils.viewResize(40, 40, newCheck, 2, Gravity.RIGHT|Gravity.BOTTOM, null);
-		
-		tvContent.setTextColor(Color.WHITE);
-		tvContent.setSingleLine();
-		tvContent.setEllipsize(TruncateAt.END);
 		
 		FontUtils.setFontSize(tvNickname, 32);
 		FontUtils.setFontSize(tvRegdate, 24);

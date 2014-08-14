@@ -1,14 +1,12 @@
 package com.outspoken_kid.views.holo.holo_light;
 
-import com.outspoken_kid.classes.OutSpokenConstants;
-
-import android.graphics.Color;
 
 public class HoloConstants {
 
-	public static int COLOR_HOLO_COVER = OutSpokenConstants.COLOR_HOLO_COVER;
-	public static int COLOR_HOLO_TARGET_ON = OutSpokenConstants.COLOR_HOLO_TARGET_ON;
-	public static int COLOR_HOLO_TARGET_OFF = Color.argb(255, 80, 80, 80);
-	public static int COLOR_HOLO_TEXT_HINT = Color.argb(255, 180, 180, 180);
-	public static int COLOR_HOLO_TEXTVIEW = Color.argb(255, 200, 200, 200);
+	public static int COLOR_HOLO_BG = 0;
+	public static int COLOR_HOLO_COVER = 0;
+	public static int COLOR_HOLO_TARGET_ON = 0;
+	public static int COLOR_HOLO_TARGET_OFF = 0;
+	public static int COLOR_HOLO_TEXT_HINT = 0;
+	public static int COLOR_HOLO_TEXT = 0;
 }

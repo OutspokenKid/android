@@ -26,12 +26,12 @@ public class ViewForButtonBgPressed extends View {
 		
 		if(paint2 == null) {
 			paint2 = new Paint();
-			paint2.setARGB(255, 120, 120, 120);
+			paint2.setARGB(255, 180, 180, 180);
 		}
 		
 		if(paint3 == null) {
 			paint3 = new Paint();
-			paint3.setARGB(255, 30, 30, 30);
+			paint3.setARGB(255, 180, 180, 180);
 		}
 		
 		if(rectF == null) {

@@ -1,9 +1,5 @@
 package com.outspoken_kid.views.holo.holo_light;
 
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
-import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -18,6 +14,10 @@ import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
+
 public class HoloStyleSpinnerButton extends FrameLayout {
 
 	private ViewForButtonCover viewForCover;
@@ -26,7 +26,9 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 	private Path path;
 	private TextView textView;
 	private HoloStyleSpinnerPopup popup; 
-	private int l;
+	private int triangleLength;
+	private int length;
+	private int padding;
 	private AlphaAnimation aaIn, aaOut;
 	
 	public HoloStyleSpinnerButton(Context context) {
@@ -44,7 +46,32 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 	}
 	
 	private void init() {
-		setBackgroundColor(Color.BLACK);
+		
+		//QHD
+		if(ResizeUtils.getScreenWidth() >= 1440) {
+			triangleLength = 60;
+			length = 6;
+			padding = 18;
+			
+		//Full HD
+		} else if(ResizeUtils.getScreenWidth() >= 1080) {
+			triangleLength = 40;
+			length = 4;
+			padding = 16;
+			
+		//HD
+		} else if(ResizeUtils.getScreenWidth() >= 720) {
+			triangleLength = 30;
+			length = 3;
+			padding = 9;
+			
+		} else {
+			triangleLength = 20;
+			length = 2;
+			padding = 8;
+		}
+
+		setBackgroundColor(HoloConstants.COLOR_HOLO_BG);
 		setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -73,7 +100,7 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 		textView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		ResizeUtils.setPadding(textView, new int[]{20, 0, 20, 0});
 		textView.setBackgroundColor(Color.TRANSPARENT);
-		textView.setTextColor(Color.WHITE);
+		textView.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		textView.setEllipsize(TruncateAt.END);
 		textView.setHintTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		textView.setSingleLine();
@@ -121,22 +148,36 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 		if(paint == null) {
 			paint = new Paint();
 			paint.setAntiAlias(true);
-			paint.setARGB(255, 80, 80, 80);
-		}
-		
-		if(l == 0) {
-			l = ResizeUtils.getSpecificLength(20);
+//			paint.setARGB(255, 80, 80, 80);
+			paint.setColor(HoloConstants.COLOR_HOLO_TARGET_OFF);
 		}
 		
 		if(path == null) {
+			int triangleEdgeWidth = getMeasuredWidth() - padding - length;
+			int triangleEdgeHeight = getMeasuredHeight() - (padding - 1) - length;
+			
 			path = new Path();
-			path.moveTo(getMeasuredWidth() - 7, getMeasuredHeight() - 7);
-			path.lineTo(getMeasuredWidth() - 7 - l, getMeasuredHeight() - 7);
-			path.lineTo(getMeasuredWidth() - 7, getMeasuredHeight() - 7 - l);
+			path.moveTo(triangleEdgeWidth, triangleEdgeHeight);
+			path.lineTo(triangleEdgeWidth - triangleLength, triangleEdgeHeight);
+			path.lineTo(triangleEdgeWidth, triangleEdgeHeight - triangleLength);
 		}
 		
 		canvas.drawPath(path, paint);
-		canvas.drawLine(7, getMeasuredHeight() - 8, getMeasuredWidth() - 7, getMeasuredHeight() - 8, paint);
+		
+		for(int i=0; i<length; i++) {
+			
+			//padding = 8, i = 0,1
+			
+			//가로.
+			canvas.drawLine(padding + length, 
+					getMeasuredHeight() - padding - i, 
+					getMeasuredWidth() - padding - length, 
+					getMeasuredHeight() - padding - i, paint);
+			
+			//10, h-9, w-10, h-9
+			//10, h-8, w-10, h-8
+		}
+//		canvas.drawLine(7, getMeasuredHeight() - 8, getMeasuredWidth() - 7, getMeasuredHeight() - 8, paint);
 	}
 	
 	public TextView getTextView() {

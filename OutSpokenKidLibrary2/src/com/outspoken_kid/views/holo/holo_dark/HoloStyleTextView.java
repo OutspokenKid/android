@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -47,6 +48,46 @@ public class HoloStyleTextView extends FrameLayout {
 	public void setText(int textResId) {
 		
 		textView.setText(textResId);
+	}
+	
+	public void setTextColor(int color) {
+		
+		textView.setTextColor(color);
+	}
+	
+	public void setGravity(int gravity) {
+		
+		textView.setGravity(gravity);
+	}
+	
+	public void setMaxWidth(int width) {
+		
+		textView.setMaxWidth(width);
+	}
+	
+	public void setMaxLines(int maxlines) {
+		
+		textView.setMaxLines(maxlines);
+	}
+	
+	public void setEllipsize(TruncateAt where) {
+		
+		textView.setEllipsize(where);
+	}
+	
+	public void setHint(String hint) {
+		
+		textView.setHint(hint);
+	}
+	
+	public void setHint(int hint) {
+		
+		textView.setHint(hint);
+	}
+	
+	public void setSingleLine() {
+		
+		textView.setSingleLine();
 	}
 	
 	public TextView getTextView() {

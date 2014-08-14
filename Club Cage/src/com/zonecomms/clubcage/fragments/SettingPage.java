@@ -718,7 +718,7 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(300, 70, tvNotiAll, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 25, 0, 0});
 		tvNotiAll.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiAll.setText(R.string.notificationAll);
-		tvNotiAll.setTextColor(Color.WHITE);
+		tvNotiAll.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvNotiAll, 26);
 		frameForEditPush.addView(tvNotiAll);
 		
@@ -726,7 +726,7 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(300, 70, tvNotiMessage, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 125, 0, 0});
 		tvNotiMessage.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiMessage.setText(R.string.notificationMessage);
-		tvNotiMessage.setTextColor(Color.WHITE);
+		tvNotiMessage.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvNotiMessage, 26);
 		frameForEditPush.addView(tvNotiMessage);
 		
@@ -734,7 +734,7 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(300, 70, tvNotiReply, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 225, 0, 0});
 		tvNotiReply.setGravity(Gravity.CENTER_VERTICAL);
 		tvNotiReply.setText(R.string.notificationReply);
-		tvNotiReply.setTextColor(Color.WHITE);
+		tvNotiReply.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvNotiReply, 26);
 		frameForEditPush.addView(tvNotiReply);
 		
@@ -742,7 +742,7 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(300, 70, tvSound, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 325, 0, 0});
 		tvSound.setGravity(Gravity.CENTER_VERTICAL);
 		tvSound.setText("Sound");
-		tvSound.setTextColor(Color.WHITE);
+		tvSound.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvSound, 26);
 		frameForEditPush.addView(tvSound);
 		
@@ -750,7 +750,7 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(300, 70, tvVibration, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 425, 0, 0});
 		tvVibration.setGravity(Gravity.CENTER_VERTICAL);
 		tvVibration.setText("Vibration");
-		tvVibration.setTextColor(Color.WHITE);
+		tvVibration.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvVibration, 26);
 		frameForEditPush.addView(tvVibration);
 		

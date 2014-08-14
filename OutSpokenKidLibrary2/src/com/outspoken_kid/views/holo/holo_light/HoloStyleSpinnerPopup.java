@@ -68,7 +68,7 @@ public class HoloStyleSpinnerPopup extends FrameLayout {
 		popupLinear.setLayoutParams(new FrameLayout.LayoutParams(-2, -2, Gravity.CENTER));
 		popupLinear.setOrientation(LinearLayout.VERTICAL);
 		popupLinear.setClickable(true);
-		popupLinear.setBackgroundResource(android.R.drawable.editbox_dropdown_dark_frame);
+		popupLinear.setBackgroundResource(android.R.drawable.editbox_dropdown_light_frame);
 		this.addView(popupLinear);
 	}
 	
@@ -109,7 +109,7 @@ public class HoloStyleSpinnerPopup extends FrameLayout {
 			ResizeUtils.viewResize(500, 80, tvTitle, 1, 0, null);
 			tvTitle.setGravity(Gravity.CENTER);
 			tvTitle.setText(title);
-			tvTitle.setTextColor(HoloConstants.COLOR_HOLO_TARGET_ON);
+			tvTitle.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 			FontUtils.setFontSize(tvTitle, 35);
 			FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 			popupLinear.addView(tvTitle);
@@ -160,12 +160,10 @@ public class HoloStyleSpinnerPopup extends FrameLayout {
 					ResizeUtils.viewResize(500, 100, tvItem, 1, 0, null, new int[]{20, 0, 20, 0});
 					tvItem.setText(itemString);
 					tvItem.setGravity(Gravity.CENTER);
-					tvItem.setTextColor(Color.rgb(220, 220, 220));
+					tvItem.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 					FontUtils.setFontSize(tvItem, 32);
-					FontUtils.setFontStyle(tvItem, FontUtils.BOLD);
 					tvItem.setMaxLines(2);
 					tvItem.setEllipsize(TruncateAt.END);
-					tvItem.setBackgroundColor(Color.rgb(68, 68, 68));
 					tvItem.setOnClickListener(new OnClickListener() {
 						
 						@Override
@@ -186,15 +184,17 @@ public class HoloStyleSpinnerPopup extends FrameLayout {
 					
 					//Add lines.
 					if(i != items.size() - 1) {
-						View line1 = new View(getContext());
-						line1.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1));
-						line1.setBackgroundColor(Color.rgb(40, 40, 40));
-						targetLinear.addView(line1);
 						
-						View line2 = new View(getContext());
-						line2.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1));
-						line2.setBackgroundColor(Color.rgb(80, 80, 80));
-						targetLinear.addView(line2);
+						int height = 1;
+						
+						if(ResizeUtils.getScreenWidth() >= 1080) {
+							height = 2;
+						}
+						
+						View line = new View(getContext());
+						line.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, height));
+						line.setBackgroundColor(Color.LTGRAY);
+						targetLinear.addView(line);
 					}
 				} catch(Exception e) {
 					e.printStackTrace();

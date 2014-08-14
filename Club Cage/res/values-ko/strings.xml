@@ -158,6 +158,7 @@
     <string name="noMoreReplies">댓글이 없습니다</string>
     <string name="noname">이름 없음</string>
     <string name="notEnoughMemory">메모리가 부족합니다</string>
+    <string name="nothing">없음</string>
     <string name="notice">공지사항</string>
     <string name="notificationAll">전체 알림</string>
     <string name="notificationMessage">메세지 알림</string>

@@ -100,7 +100,6 @@ public class MessagePage extends ZonecommsListFragment {
 		
 		ListAdapter listAdapter = new ListAdapter(mContext, models, false);
 		listView.setAdapter(listAdapter);
-		listView.setBackgroundColor(Color.BLACK);
 		listView.setDividerHeight(0);
 		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);

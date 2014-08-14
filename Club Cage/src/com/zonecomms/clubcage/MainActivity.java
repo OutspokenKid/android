@@ -1478,6 +1478,8 @@ public class MainActivity extends ZonecommsFragmentActivity {
 
 	@Override
 	public void clearFragments(boolean needAnim) {
+
+		SoftKeyboardUtils.hideKeyboard(getApplicationContext(), gestureSlidingLayout);
 		
 		if(getFragmentsSize() == 1 && !(getTopFragment() instanceof MainPage)) {
 			

@@ -20,6 +20,8 @@ import com.zonecomms.clubcage.classes.ZonecommsApplication;
 
 public class TitleBar extends LinearLayout {
 
+	public static int titleBarColor;
+	
 	private Button btnSideMenu;
 	private Button btnCircle;
 	private Button btnHome;
@@ -44,7 +46,7 @@ public class TitleBar extends LinearLayout {
 		
 		//Set TitleBar.
 		this.setOrientation(LinearLayout.HORIZONTAL);
-		this.setBackgroundResource(R.drawable.bg_top);
+		this.setBackgroundColor(titleBarColor);
 		this.setClickable(true);
 		
 		//btnSideMenu.

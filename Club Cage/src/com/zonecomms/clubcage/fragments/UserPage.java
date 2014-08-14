@@ -653,6 +653,9 @@ public class UserPage extends ZonecommsFragment {
 
 	public void addProfileScroll() {
 		
+		int textColor = getResources().getColor(R.color.renewal_text);
+		int hintColor = getResources().getColor(R.color.renewal_hint);
+		
 		profileScroll = new ScrollView(mContext);
 		profileScroll.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
 		profileScroll.setFillViewport(true);
@@ -666,113 +669,172 @@ public class UserPage extends ZonecommsFragment {
 
 		madeCount += 10;
 		RelativeLayout.LayoutParams rp;
-		int l = ResizeUtils.getSpecificLength(150);
-		int p = ResizeUtils.getSpecificLength(8);
-		int width = l*2 + p;
-		int height = l;
+		int hp = ResizeUtils.getSpecificLength(8);
+		int vp = ResizeUtils.getSpecificLength(50);
+		int tp = ResizeUtils.getSpecificLength(20);
+		int width = LayoutParams.MATCH_PARENT;
+		int height = ResizeUtils.getSpecificLength(80);
 		
 		//현재 상태		id : 0
 		tvStatus = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.rightMargin = p;
-		rp.bottomMargin = p;
+		rp.leftMargin = hp;
+		rp.topMargin = vp;
+		rp.rightMargin = hp;
 		tvStatus.setLayoutParams(rp);
-		tvStatus.setBackgroundResource(R.drawable.bg_home_status);
-		tvStatus.setPadding(p, p, p, p);
+		tvStatus.setId(madeCount);
+		tvStatus.setBackgroundResource(R.drawable.bg_box_1);
+		tvStatus.setPadding(tp, tp, tp, tp);
 		tvStatus.setSingleLine();
 		tvStatus.setEllipsize(TruncateAt.END);
-		tvStatus.setGravity(Gravity.CENTER);
-		tvStatus.setTextColor(Color.WHITE);
-		tvStatus.setId(madeCount);
-		FontUtils.setFontSize(tvStatus, 30);
+		tvStatus.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvStatus.setTextColor(textColor);
+		FontUtils.setFontSize(tvStatus, 26);
 		relative.addView(tvStatus);
 		
-		//관심사
+		TextView tvStatusText = new TextView(mContext);
+		tvStatusText.setLayoutParams(rp);
+		tvStatusText.setPadding(tp, tp, tp, tp);
+		tvStatusText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvStatusText.setText(R.string.status);
+		tvStatusText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvStatusText, 26);
+		relative.addView(tvStatusText);
+		
+		//관심사			id : 1
 		tvInterested = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount);
+		rp.addRule(RelativeLayout.BELOW, madeCount);
+		rp.topMargin = vp;
 		tvInterested.setLayoutParams(rp);
-		tvInterested.setBackgroundResource(R.drawable.bg_home_interested);
-		tvInterested.setPadding(p, p, p, p);
+		tvInterested.setId(madeCount + 1);
+		tvInterested.setBackgroundResource(R.drawable.bg_box_1);
+		tvInterested.setPadding(tp, tp, tp, tp);
 		tvInterested.setSingleLine();
 		tvInterested.setEllipsize(TruncateAt.END);
-		tvInterested.setGravity(Gravity.CENTER);
-		tvInterested.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvInterested, 30);
+		tvInterested.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvInterested.setTextColor(textColor);
+		FontUtils.setFontSize(tvInterested, 26);
 		relative.addView(tvInterested);
 		
-		//직업			id : 1
+		TextView tvInterestedText = new TextView(mContext);
+		tvInterestedText.setLayoutParams(rp);
+		tvInterestedText.setPadding(tp, tp, tp, tp);
+		tvInterestedText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvInterestedText.setText(R.string.interested);
+		tvInterestedText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvInterestedText, 26);
+		relative.addView(tvInterestedText);
+
+		//직업			id : 2
 		tvJob = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.BELOW, madeCount);
-		rp.rightMargin = p;
-		rp.bottomMargin = p;
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
+		rp.topMargin = vp;
 		tvJob.setLayoutParams(rp);
-		tvJob.setBackgroundResource(R.drawable.bg_home_job);
-		tvJob.setPadding(p, p, p, p);
+		tvJob.setId(madeCount + 2);
+		tvJob.setBackgroundResource(R.drawable.bg_box_2);
+		tvJob.setPadding(tp, tp, tp, tp);
 		tvJob.setSingleLine();
 		tvJob.setEllipsize(TruncateAt.END);
-		tvJob.setGravity(Gravity.CENTER);
-		tvJob.setTextColor(Color.WHITE);
-		tvJob.setId(madeCount + 1);
-		FontUtils.setFontSize(tvJob, 30);
+		tvJob.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvJob.setTextColor(textColor);
+		FontUtils.setFontSize(tvJob, 26);
 		relative.addView(tvJob);
 		
-		//직장/학교
+		TextView tvJobText = new TextView(mContext);
+		tvJobText.setLayoutParams(rp);
+		tvJobText.setPadding(tp, tp, tp, tp);
+		tvJobText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvJobText.setText(R.string.job);
+		tvJobText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvJobText, 26);
+		relative.addView(tvJobText);
+
+		//직장/학교		id : 3
 		tvCompany = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 1);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 2);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 2);
 		tvCompany.setLayoutParams(rp);
-		tvCompany.setBackgroundResource(R.drawable.bg_home_company);
-		tvCompany.setPadding(p, p, p, p);
+		tvCompany.setId(madeCount + 3);
+		tvCompany.setBackgroundResource(R.drawable.bg_box_1);
+		tvCompany.setPadding(tp, tp, tp, tp);
 		tvCompany.setSingleLine();
 		tvCompany.setEllipsize(TruncateAt.END);
-		tvCompany.setGravity(Gravity.CENTER);
-		tvCompany.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvCompany, 30);
+		tvCompany.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvCompany.setTextColor(textColor);
+		FontUtils.setFontSize(tvCompany, 26);
 		relative.addView(tvCompany);
 		
-		//사는 곳			id : 2
+		TextView tvCompanyText = new TextView(mContext);
+		tvCompanyText.setLayoutParams(rp);
+		tvCompanyText.setPadding(tp, tp, tp, tp);
+		tvCompanyText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvCompanyText.setText(R.string.company);
+		tvCompanyText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvCompanyText, 26);
+		relative.addView(tvCompanyText);
+
+		//사는 곳			id : 4
 		tvLiveLocation = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
-		rp.rightMargin = p;
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
+		rp.topMargin = vp;
 		tvLiveLocation.setLayoutParams(rp);
-		tvLiveLocation.setBackgroundResource(R.drawable.bg_home_livelocation);
-		tvLiveLocation.setPadding(p, p, p, p);
+		tvLiveLocation.setId(madeCount + 4);
+		tvLiveLocation.setBackgroundResource(R.drawable.bg_box_2);
+		tvLiveLocation.setPadding(tp, tp, tp, tp);
 		tvLiveLocation.setSingleLine();
 		tvLiveLocation.setEllipsize(TruncateAt.END);
-		tvLiveLocation.setGravity(Gravity.CENTER);
-		tvLiveLocation.setTextColor(Color.WHITE);
-		tvLiveLocation.setId(madeCount + 2);
-		FontUtils.setFontSize(tvLiveLocation, 30);
+		tvLiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvLiveLocation.setTextColor(textColor);
+		FontUtils.setFontSize(tvLiveLocation, 26);
 		relative.addView(tvLiveLocation);
 		
-		//활동 지역
+		TextView tvLiveLocationText = new TextView(mContext);
+		tvLiveLocationText.setLayoutParams(rp);
+		tvLiveLocationText.setPadding(tp, tp, tp, tp);
+		tvLiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvLiveLocationText.setText(R.string.liveLocation);
+		tvLiveLocationText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvLiveLocationText, 26);
+		relative.addView(tvLiveLocationText);
+
+		//활동 지역		id : 5
 		tvActiveLocation = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 4);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		tvActiveLocation.setLayoutParams(rp);
-		tvActiveLocation.setBackgroundResource(R.drawable.bg_home_activelocation);
-		tvActiveLocation.setPadding(p, p, p, p);
+		tvActiveLocation.setId(madeCount + 5);
+		tvActiveLocation.setBackgroundResource(R.drawable.bg_box_1);
+		tvActiveLocation.setPadding(tp, tp, tp, tp);
 		tvActiveLocation.setSingleLine();
 		tvActiveLocation.setEllipsize(TruncateAt.END);
-		tvActiveLocation.setGravity(Gravity.CENTER);
-		tvActiveLocation.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvActiveLocation, 30);
+		tvActiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvActiveLocation.setTextColor(textColor);
+		FontUtils.setFontSize(tvActiveLocation, 26);
 		relative.addView(tvActiveLocation);
 		
+		TextView tvActiveLocationText = new TextView(mContext);
+		tvActiveLocationText.setLayoutParams(rp);
+		tvActiveLocationText.setPadding(tp, tp, tp, tp);
+		tvActiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvActiveLocationText.setText(R.string.activeLocation);
+		tvActiveLocationText.setTextColor(hintColor);
+		FontUtils.setFontSize(tvActiveLocationText, 26);
+		relative.addView(tvActiveLocationText);
+		
 		View bottomBlank = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(1, p);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 2);
+		rp = new RelativeLayout.LayoutParams(1, vp);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 5);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 5);
 		bottomBlank.setLayoutParams(rp);
 		relative.addView(bottomBlank);
 	}
@@ -1001,6 +1063,7 @@ public class UserPage extends ZonecommsFragment {
 				@Override
 				public void onError(String url) {
 
+					LogUtils.log("UserPage.onError." + "\nurl : " + url);
 					setPage(false);
 				}
 
@@ -1169,31 +1232,36 @@ public class UserPage extends ZonecommsFragment {
 		if(!StringUtils.isEmpty(myStoryInfo.getIlike())) {
 			tvInterested.setText(myStoryInfo.getIlike());
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
-			tvInterested.setText(R.string.touchHere);
+//			tvInterested.setText(R.string.touchHere);
+			tvInterested.setText(R.string.nothing);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getJob())) {
 			tvJob.setText(myStoryInfo.getJob());
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
-			tvJob.setText(R.string.touchHere);
+//			tvJob.setText(R.string.touchHere);
+			tvJob.setText(R.string.nothing);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getJobname())) {
 			tvCompany.setText(myStoryInfo.getJobname());
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
-			tvCompany.setText(R.string.touchHere);
+//			tvCompany.setText(R.string.touchHere);
+			tvCompany.setText(R.string.nothing);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getAddress())) {
 			tvLiveLocation.setText(myStoryInfo.getAddress());
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
-			tvLiveLocation.setText(R.string.touchHere);
+//			tvLiveLocation.setText(R.string.touchHere);
+			tvLiveLocation.setText(R.string.nothing);
 		}
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getPlayground())) {
 			tvActiveLocation.setText(myStoryInfo.getPlayground());
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
-			tvActiveLocation.setText(R.string.touchHere);
+//			tvActiveLocation.setText(R.string.touchHere);
+			tvActiveLocation.setText(R.string.nothing);
 		}
 	}
 	

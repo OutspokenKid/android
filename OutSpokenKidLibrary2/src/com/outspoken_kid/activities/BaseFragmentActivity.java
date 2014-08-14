@@ -77,7 +77,28 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	public void showAlertDialog(int title, int message, int positive,
 			int negative, OnClickListener onPositive, OnClickListener onNegative) {
 
-		showAlertDialog(getString(title), getString(message), getString(positive), getString(negative), 
+		String titleString = null;
+		String messageString = null;
+		String positiveString = null;
+		String negativeString = null;
+		
+		if(title != 0) {
+			titleString = getString(title);
+		}
+		
+		if(message != 0) {
+			messageString = getString(message);
+		}
+		
+		if(positive != 0) {
+			positiveString = getString(positive);
+		}
+		
+		if(negative != 0) {
+			negativeString = getString(negative);
+		}
+		
+		showAlertDialog(titleString, messageString, positiveString, negativeString, 
 				onPositive, null);
 	}
 	

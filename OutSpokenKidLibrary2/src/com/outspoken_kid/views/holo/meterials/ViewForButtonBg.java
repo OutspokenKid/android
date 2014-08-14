@@ -21,17 +21,17 @@ public class ViewForButtonBg extends View {
 		if(paint1 == null) {
 			paint1 = new Paint();
 			paint1.setAntiAlias(true);
-			paint1.setARGB(255, 60, 60, 60);
+			paint1.setARGB(255, 150, 150, 150);
 		}
 		
 		if(paint2 == null) {
 			paint2 = new Paint();
-			paint2.setARGB(255, 120, 120, 120);
+			paint2.setARGB(255, 180, 180, 180);
 		}
 		
 		if(paint3 == null) {
 			paint3 = new Paint();
-			paint3.setARGB(255, 30, 30, 30);
+			paint3.setARGB(255, 120, 120, 120);
 		}
 		
 		if(rectF == null) {

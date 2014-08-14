@@ -21,7 +21,7 @@
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:gravity="center_vertical"
-    	android:textColor="#aaa"
+    	android:textColor="@color/renewal_text"
     	android:singleLine="true"
     	android:ellipsize="end" />
 
@@ -30,7 +30,7 @@
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:gravity="center_vertical"
-    	android:textColor="#aaa"
+    	android:textColor="@color/renewal_hint"
     	android:singleLine="true"
     	android:ellipsize="end" />
 
@@ -38,7 +38,7 @@
         android:id="@+id/list_messagesample_tvContent"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:textColor="#333"
+    	android:textColor="@color/renewal_hint"
     	android:singleLine="true"
     	android:ellipsize="end" />
 	

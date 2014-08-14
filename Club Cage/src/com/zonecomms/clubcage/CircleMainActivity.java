@@ -41,6 +41,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.adapters.CircleListAdapter;
@@ -50,6 +51,7 @@ import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.views.CircleHeaderView;
 import com.zonecomms.common.views.ImagePlayViewer;
 import com.zonecomms.common.views.NoticePopup;
+import com.zonecomms.common.views.TitleBar;
 
 public class CircleMainActivity extends Activity {
 
@@ -668,7 +670,6 @@ public class CircleMainActivity extends Activity {
 		}
 	}
 		
-    
     public void showNext() {
     	
     	if(bgInfos == null || bgInfos.length == 0) {
@@ -702,6 +703,13 @@ public class CircleMainActivity extends Activity {
     		changeTitleBarColor(color);
     	}
     	
+    	//HoloConstants 설정.
+    	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#ff" + bgInfos[currentIndex].color.replace("#", ""));
+		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+    	
+		//기존 메인 TitleBar 색 설정.
+		TitleBar.titleBarColor = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+		
     	playIndex++;
     }
     
