@@ -54,10 +54,9 @@ public class RetailMainPage extends CmonsFragment {
 		return false;
 	}
 
-	
 	@Override
-	public void parseJSON(JSONObject objJSON) {
+	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
-		
+		return false;
 	}
 }

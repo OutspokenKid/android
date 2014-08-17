@@ -114,7 +114,10 @@ public class SignUpActivity extends CmonsFragmentActivity {
 	public void onBackPressed() {
 		
 		if(getFragmentsSize() > 1){
-			closeTopPage();
+
+			if(!getTopFragment().onBackPressed()) {
+				closeTopPage();
+			}
 		} else {
 			super.onBackPressed();
 		}

@@ -80,7 +80,6 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 	@Override
 	public void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_position, 162, 92);
 		titleBar.setTitleText(R.string.inputCompanyInfo);
 		
 		View bottomBlank = new View(mContext);
@@ -179,9 +178,6 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setSizes() {
-
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		

@@ -13,4 +13,11 @@ public class CphConstants {
 	public static final int ITEM_CATEGORY = 1;
 	public static final int ITEM_FLOOR = 2;
 	public static final int ITEM_LINE = 3;
+	public static final int ITEM_SHOP = 4;
+	public static final int ITEM_PRODUCT = 5;
+	public static final int ITEM_SAMPLE = 6;
+	public static final int ITEM_CUSTOMER = 7;
+	public static final int ITEM_STAFF = 8;
+	public static final int ITEM_ORDER = 9;
+	public static final int ITEM_ORDERSET = 10;
 }

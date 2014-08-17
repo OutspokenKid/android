@@ -9,7 +9,7 @@
     <ImageView 
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:src="@drawable/bg_signin_main"
+    	android:src="@drawable/bg"
     	android:scaleType="centerCrop" />
     
     <FrameLayout

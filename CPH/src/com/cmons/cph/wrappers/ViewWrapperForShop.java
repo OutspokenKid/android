@@ -1,17 +1,14 @@
 package com.cmons.cph.wrappers;
 
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
-import com.cmons.cph.R;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.CategoryForSignUp;
-import com.cmons.cph.models.Floor;
+import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Shop;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -19,7 +16,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ViewWrapperForShop extends ViewWrapper {
 	
-	private Floor floor;
+	private Shop shop;
 	
 	public TextView textView;
 	
@@ -58,17 +55,25 @@ public class ViewWrapperForShop extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof CategoryForSignUp) {
+			if(baseModel instanceof Shop) {
+
+				shop = (Shop) baseModel;
 				
-				categoryForSignUp = (CategoryForSignUp) baseModel;
+				String shopString = shop.getName();
 				
-				textView.setText(categoryForSignUp.getName());
-				
-				if(categoryForSignUp.isSelected()) {
-					check.setVisibility(View.VISIBLE);
-				} else {
-					check.setVisibility(View.INVISIBLE);
+				switch(shop.getType()) {
+				case Shop.TYPE_WHOLESALE:
+					shopString += ((Wholesale)shop).getLocation();
+					break;
+				case Shop.TYPE_RETAIL_OFFLINE:
+					shopString += ((Retail)shop).getAddress();
+					break;
+				case Shop.TYPE_RETAIL_ONLINE:
+					shopString += ((Retail)shop).getMall_url();
+					break;
 				}
+				
+				textView.setText(shopString);
 			} else {
 				setUnusableView();
 			}
@@ -81,22 +86,6 @@ public class ViewWrapperForShop extends ViewWrapper {
 	@Override
 	public void setListeners() {
 		
-		if(categoryForSignUp != null) {
-			row.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-
-					if(categoryForSignUp.isSelected()) {
-						categoryForSignUp.setSelected(false);
-						check.setVisibility(View.INVISIBLE);
-					} else {
-						categoryForSignUp.setSelected(true);
-						check.setVisibility(View.VISIBLE);
-					}
-				}
-			});
-		}
 	}
 	
 	@Override

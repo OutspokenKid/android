@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.signin;
 
+import org.json.JSONObject;
+
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,6 +16,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.SignInActivity;
 import com.cmons.cph.classes.CmonsFragment;
 import com.cmons.cph.classes.CphConstants;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -138,41 +141,29 @@ public class SignInPage extends CmonsFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(110);
 		
 		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(78);
+		rp.topMargin = ResizeUtils.getSpecificLength(180);
 		etId.setPadding(padding, 0, padding, 0);
+		FontUtils.setFontSize(etId, 25);
 		
 		rp = (RelativeLayout.LayoutParams) etPw.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
 		etPw.setPadding(padding, 0, padding, 0);
-		
-		rp = (RelativeLayout.LayoutParams) btnLogin.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
-		
-		rp = (RelativeLayout.LayoutParams) btnSignUp.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		FontUtils.setFontSize(etPw, 25);
 		
 		rp = (RelativeLayout.LayoutParams) btnFindId.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(286);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getScreenWidth()/4;
 		
 		rp = (RelativeLayout.LayoutParams) btnFindPw.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(286);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getScreenWidth()/4;
 		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signInPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
+		rp = (RelativeLayout.LayoutParams) btnLogin.getLayoutParams();
+		rp.height = ResizeUtils.getScreenWidth()/2;
+		
+		rp = (RelativeLayout.LayoutParams) btnSignUp.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(180);
 	}
 	
 	@Override
@@ -182,7 +173,7 @@ public class SignInPage extends CmonsFragment {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -195,6 +186,12 @@ public class SignInPage extends CmonsFragment {
 
 	@Override
 	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
 	}

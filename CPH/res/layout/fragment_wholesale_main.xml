@@ -106,6 +106,52 @@
 			    android:layout_below="@id/wholesaleMainPage_btnStaff"
 			    android:background="@drawable/setting_btn" />
 		    
+		    <!-- 방문자 수 아이콘. -->
+		    <View
+		        android:id="@+id/wholesaleMainPage_hitIcon" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentTop="true"
+			    android:background="@drawable/customer_icon"
+		         />
+		    
+		    <!-- 방문자 수. -->
+		    <TextView 
+		        android:id="@+id/wholesaleMainPage_tvHit" 
+			    android:layout_width="wrap_content"
+			    android:layout_height="0dp"
+			    android:layout_alignParentTop="true"
+			    android:layout_toRightOf="@id/wholesaleMainPage_hitIcon"
+			    android:textColor="#fff"
+			    android:gravity="center_vertical" />
+		    
+		    <!-- 가게 이름 및 주소. -->
+		    <TextView 
+		        android:id="@+id/wholesaleMainPage_tvWholesale" 
+			    android:layout_width="0dp"
+			    android:layout_height="wrap_content"
+			    android:layout_alignLeft="@id/wholesaleMainPage_btnShop"
+			    android:layout_alignBottom="@id/wholesaleMainPage_btnShop"
+			    android:textColor="#fff"
+			    android:gravity="center_horizontal" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleMainPage_arrowLeft" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
+			    android:background="@drawable/arrow1_btn" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleMainPage_arrowRight" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:layout_alignParentRight="true"
+			    android:background="@drawable/arrow2_btn" />
+		    
 		</RelativeLayout>
 	    
 	</ScrollView>

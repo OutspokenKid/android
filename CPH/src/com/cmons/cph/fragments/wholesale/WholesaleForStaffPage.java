@@ -4,44 +4,63 @@ import org.json.JSONObject;
 
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphAdapter;
+import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Staff;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
-
-	private static final int TYPE_REQUEST = 0;
-	private static final int TYPE_STAFF = 1;
 	
-	private TitleBar titleBar;
 	private Button btnRequest;
 	private Button btnStaff;
+	
 	private ListView listView;
 	
-	private int type;
+	private int menuIndex;
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(models.size() == 0) {
+			downloadInfo();
+		}
+	}
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleStaffPage_titleBar);
+		
 		btnRequest = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnRequest);
 		btnStaff = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnStaff);
+		
 		listView = (ListView) mThisView.findViewById(R.id.wholesaleStaffPage_listView);
 	}
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		title = "직원관리";
 	}
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
+		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
+		
+		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
+		listView.setAdapter(adapter);
 	}
 
 	@Override
@@ -52,7 +71,7 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				changeType(TYPE_REQUEST);
+				setMenu(0);
 			}
 		});
 		
@@ -61,21 +80,48 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				changeType(TYPE_STAFF);
+				setMenu(1);
+			}
+		});
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+
+				if(menuIndex == 0) {
+					approval((Staff)models.get(arg2));
+				} else {
+					fire((Staff)models.get(arg2));
+				}
 			}
 		});
 	}
 
 	@Override
 	public void setSizes() {
-		// TODO Auto-generated method stub
 
+		RelativeLayout.LayoutParams rp = null;
+		
+		//ivBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.wholesaleStaffPage_ivBg).getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(96); 
+		
+		//btnRequest.
+		rp = (RelativeLayout.LayoutParams) btnRequest.getLayoutParams();
+		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getSpecificLength(92);
+		
+		//btnStaff.
+		rp = (RelativeLayout.LayoutParams) btnStaff.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
 	}
 
 	@Override
 	public int getContentViewId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.layout.fragment_wholesale_staff;
 	}
 
 	@Override
@@ -92,21 +138,50 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-		// TODO Auto-generated method stub
+		
+		for(int i=0; i<10; i++) {
+			Staff staff = new Staff();
+			staff.setItemCode(CphConstants.ITEM_STAFF);
+			staff.setInRequest(menuIndex == 0);
+			models.add(staff);
+		}
 		return false;
+	}
+
+	@Override
+	public void downloadInfo() {
+		
+		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		super.downloadInfo();
 	}
 	
 //////////////////// Custom methods.
 	
-	public void changeType(int type) {
+	public void setMenu(int menuIndex) {
+		
+		switch (menuIndex) {
+		
+		case 0:
+			btnRequest.setBackgroundResource(R.drawable.sample_recommand_btn_a);
+			btnStaff.setBackgroundResource(R.drawable.staff_list_btn_b);
+			break;
+			
+		case 1:
+			btnRequest.setBackgroundResource(R.drawable.sample_recommand_btn_b);
+			btnStaff.setBackgroundResource(R.drawable.staff_list_btn_a);
+			break;
+		}
+		
+		this.menuIndex = menuIndex;
+		
+		refreshPage();
+	}
+	
+	public void approval(Staff staff) {
 		
 	}
 	
-	public void request() {
-		
-	}
-	
-	public void fire() {
+	public void fire(Staff staff) {
 		
 	}
 }

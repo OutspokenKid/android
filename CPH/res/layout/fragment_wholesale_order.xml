@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/wholesaleOrderPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/wholesaleOrderPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleOrderPage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/order_bg" />
+    
+	<TextView 
+        android:id="@+id/wholesaleOrderPage_tvOrder"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/wholesaleOrderPage_titleBar"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="bottom"
+    	android:textColor="#fff" />
+	
+	<View 
+        android:id="@+id/wholesaleOrderPage_type"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignBottom="@id/wholesaleOrderPage_tvOrder"
+	    android:layout_alignParentRight="true" />
+
+	<Button 
+        android:id="@+id/wholesaleOrderPage_btnCompleted" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/wholesaleOrderPage_tvOrder"
+	    android:layout_alignParentRight="true"
+	    android:background="@drawable/order_complete_b" />
+	
+    <Button 
+        android:id="@+id/wholesaleOrderPage_btnOrder" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/wholesaleOrderPage_tvOrder"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/order_recommand_a" />
+       
+	<Button 
+        android:id="@+id/wholesaleOrderPage_btnStandBy" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleOrderPage_btnOrder"
+	    android:layout_toRightOf="@id/wholesaleOrderPage_btnOrder"
+	    android:background="@drawable/order_wait_b" />
+		
+	<Button 
+        android:id="@+id/wholesaleOrderPage_btnDeposit" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleOrderPage_btnStandBy"
+	    android:layout_toRightOf="@id/wholesaleOrderPage_btnStandBy"
+	    android:background="@drawable/order_done_b" />
+	
+	<TextView 
+        android:id="@+id/wholesaleOrderPage_tvSoldOut"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/wholesaleOrderPage_btnOrder"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+    	android:textColor="#fff" />
+	
+	<Button 
+        android:id="@+id/wholesaleOrderPage_btnConfirm" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentBottom="true"
+	    android:background="@drawable/order_approve_btn" />
+	
+	<TextView 
+        android:id="@+id/wholesaleOrderPage_tvAccount"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_above="@id/wholesaleOrderPage_btnConfirm"
+	    android:layout_alignParentLeft="true"
+    	android:textColor="#fff" />
+	
+	<ListView 
+	    android:id="@+id/wholesaleOrderPage_listView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleOrderPage_tvSoldOut"
+	    android:layout_above="@id/wholesaleOrderPage_tvAccount"
+	    android:layout_alignParentLeft="true" />
+    
+</RelativeLayout>

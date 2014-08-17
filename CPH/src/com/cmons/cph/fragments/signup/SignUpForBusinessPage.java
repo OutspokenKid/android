@@ -38,7 +38,6 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 	@Override
 	public void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_terms, 162, 92);
 		titleBar.setTitleText(R.string.selectBusiness);
 	}
 
@@ -84,9 +83,6 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setSizes() {
-
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		

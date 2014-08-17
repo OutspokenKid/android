@@ -8,44 +8,40 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
 
-    <GridView 
+    <com.outspoken_kid.views.HeaderGridView
         android:id="@+id/wholesaleShopPage_gridView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleShopPage_titleBar" 
+	    android:layout_below="@id/wholesaleShopPage_titleBar"
+	    android:numColumns="3" 
 	    android:cacheColorHint="#0000" />
 
-    <RelativeLayout
-        android:id="@+id/wholesaleShopPage_menuRelative"
+    <LinearLayout
+        android:id="@+id/wholesaleShopPage_menuLinear"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
+    	android:orientation="horizontal"
     	android:visibility="invisible" >
         
         <Button 
 	        android:id="@+id/wholesaleShopPage_btnCategory1" 
 		    android:layout_width="0dp"
-		    android:layout_height="0dp"
-		    android:layout_alignParentLeft="true"
-		    android:layout_centerVertical="true"
-		    android:background="#b00" />
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" />
         
         <Button 
 	        android:id="@+id/wholesaleShopPage_btnCategory2" 
 		    android:layout_width="0dp"
-		    android:layout_height="0dp"
-		    android:layout_alignTop="@id/wholesaleShopPage_btnCategory1"
-		    android:layout_toRightOf="@id/wholesaleShopPage_btnCategory1"
-		    android:background="#0b0" />
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" />
         
         <Button 
 	        android:id="@+id/wholesaleShopPage_btnCategory3" 
 		    android:layout_width="0dp"
-		    android:layout_height="0dp"
-		    android:layout_alignTop="@id/wholesaleShopPage_btnCategory2"
-		    android:layout_toRightOf="@id/wholesaleShopPage_btnCategory2"
-		    android:background="#00b" />
+		    android:layout_height="match_parent"
+		    android:layout_weight="1" />
         
-    </RelativeLayout>
+    </LinearLayout>
 	
     <View 
         android:id="@+id/wholesaleShopPage_cover"

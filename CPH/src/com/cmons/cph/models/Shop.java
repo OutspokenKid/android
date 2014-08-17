@@ -11,6 +11,12 @@ public class Shop extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = -125694241420635627L;
 	
+	public static final int TYPE_WHOLESALE = 0;
+	public static final int TYPE_RETAIL_OFFLINE = 1;
+	public static final int TYPE_RETAIL_ONLINE = 2;
+	
+	protected int type;
+	
 	protected int id;
 	protected String name;
 	protected String phone_number;
@@ -102,5 +108,13 @@ public class Shop extends BaseModel implements Serializable {
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
-
+	public int getType() {
+		
+		return type;
+	}
+	
+	public void setType(int type) {
+		
+		this.type = type;
+	}
 }

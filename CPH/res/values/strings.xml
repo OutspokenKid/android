@@ -15,6 +15,9 @@
     <string name="companyName">Company name</string>
     <string name="complete">Complete</string>
     <string name="confirmPw">Confirm password</string>
+    <string name="currentPw">Current pw</string>
+    
+    <string name="disableSoldout">Disable sold out</string>
     
     <string name="employee_designer">Employee designer</string>
     <string name="employee_md">Employee md</string>
@@ -29,6 +32,11 @@
     <string name="findPw">Find Password</string>
     <string name="floor">Floor</string>
     
+    <string name="hintForChangePw1">hint for changepw1</string>
+    <string name="hintForChangePw2">hint for changepw2</string>
+    <string name="hintForChangePw3">hint for changepw3</string>
+    <string name="hintForEditNoticeTitle">hint for edit notice title</string>
+    <string name="hintForEditNoticeContent">hint for edit notice content</string>
     <string name="hintForId">ID</string>
     <string name="hintForMallUrl">http://</string>
     <string name="hintForName">Name</string>
@@ -37,6 +45,9 @@
     <string name="hintForSearchCompanyName">Input company name</string>
     <string name="hintForSearchCompanyPhone">Input company phone</string>
     <string name="hintForSearchCompanyRegistration">Input company registration</string>
+    <string name="hintForSearchCustomer">Input search keyword</string>
+    <string name="hintForSearchKeyword">Input search keyword</string>
+    <string name="hintForSearchSample">Input search keyword</string>
     <string name="hintForCertification">CertificationNumber</string>
     <string name="hintForWriteCompanyName">Input company name</string>
     <string name="hintForWriteCompanyAddress">Input company address</string>
@@ -53,9 +64,13 @@
     <string name="mallUrl">Mall url</string>
     
     <string name="name">Name</string>
+    <string name="newPw">New pw</string>
+    <string name="newPwConfirm">New pw confirm</string>
     <string name="next">Next</string>
     <string name="noResult_searchWholsale">There is no result.</string>
     <string name="notice">Notice</string>
+    <string name="noticeContent">Notice content</string>
+    <string name="noticeTitle">Notice title</string>
     
     <string name="owner">Owner</string>
     <string name="ownerName">Owner name</string>
@@ -76,6 +91,9 @@
     <string name="searchCompanyPhone">Search company Phone number</string>
     <string name="searchCompanyLocation">Search company location</string>
     <string name="searchCompanyRegistration">Search company registration number</string>
+    <string name="searchCustomer">Search customer</string>
+    <string name="searchOrderList">Search order list</string>
+    <string name="searchSample">Search sample</string>
     <string name="selectBusiness">Select your business</string>
     <string name="selectCategory">Select your category</string>
     <string name="selectPosition">Select your position</string>

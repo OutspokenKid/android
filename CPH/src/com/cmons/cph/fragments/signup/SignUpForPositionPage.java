@@ -42,7 +42,6 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 	@Override
 	public void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_business, 162, 92);
 		titleBar.setTitleText(R.string.selectPosition);
 		
 		switch(type) {
@@ -104,9 +103,6 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setSizes() {
-
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		

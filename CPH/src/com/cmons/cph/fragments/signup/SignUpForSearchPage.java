@@ -33,6 +33,7 @@ import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -131,7 +132,6 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	@Override
 	public void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_category, 162, 92);
 		titleBar.setTitleText(R.string.searchCompany);
 		
 		View bottomBlank = new View(mContext);
@@ -149,7 +149,6 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		
-		isDownloadLocation = true;
 		downloadLocation();
 	}
 
@@ -263,9 +262,6 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setSizes() {
-
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		
@@ -424,6 +420,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 
 		if(listFrame.getVisibility() == View.VISIBLE 
 				|| cover.getVisibility() == View.VISIBLE) {
+			hidePopup();
 			return true;
 		}
 		
@@ -489,12 +486,27 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 				if(size != 0) {
 					
 					if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+						
 						for(int i=0; i<size; i++) {
-							shops.add(new Wholesale(arJSON.getJSONObject(i)));
+							Wholesale wholesale = new Wholesale(arJSON.getJSONObject(i));
+							wholesale.setItemCode(CphConstants.ITEM_SHOP);
+							wholesale.setType(Shop.TYPE_WHOLESALE);
+							shops.add(wholesale);
 						}
-					} else {
+					} else if(type < SignUpActivity.BUSINESS_RETAIL_ONLINE) {
+						
 						for(int i=0; i<size; i++) {
-							shops.add(new Retail(arJSON.getJSONObject(i)));
+							Retail retail = new Retail(arJSON.getJSONObject(i));
+							retail.setType(Shop.TYPE_RETAIL_OFFLINE);
+							shops.add(retail);
+						}
+						
+					} else {
+						
+						for(int i=0; i<size; i++) {
+							Retail retail = new Retail(arJSON.getJSONObject(i));
+							retail.setType(Shop.TYPE_RETAIL_ONLINE);
+							shops.add(retail);
 						}
 					}
 				} else {
@@ -524,6 +536,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	
 	public void downloadLocation() {
 		
+		isDownloadLocation = true;
 		url = CphConstants.BASE_API_URL + "wholesales/location_parts";
 		super.downloadInfo();
 	}
@@ -531,6 +544,8 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	public void showPopup(int searchType) {
 
 		try {
+			SoftKeyboardUtils.hideKeyboard(mContext, titleBar);
+			
 			if(searchType < SEARCH_TYPE_LOCATION) {
 				
 				EditText targetEditText = null;

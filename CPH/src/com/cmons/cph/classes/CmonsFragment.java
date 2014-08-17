@@ -4,17 +4,25 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+
+import com.cmons.cph.R;
+import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 
 public abstract class CmonsFragment extends BaseFragment {
 
 	protected final int NUMBER_OF_LISTITEMS = 10;
-	
+
+	protected TitleBar titleBar;
 	protected String title;
 	
 	protected int pageIndex;
@@ -29,11 +37,40 @@ public abstract class CmonsFragment extends BaseFragment {
 	 * @return isLastList.
 	 */
 	public abstract boolean parseJSON(JSONObject objJSON);
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		if(titleBar != null) {
+			titleBar.setTitleText(title);
+			
+			if(titleBar.getLayoutParams() != null) {
+				titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
+			}
+			
+			titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					getActivity().getSupportFragmentManager().popBackStack();
+				}
+			});
+			
+			titleBar.getHomeButton().setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
 
+					((CmonsFragmentActivity)getActivity()).clearFragments(true);
+				}
+			});
+		}
+	}
+	
 	@Override
 	public void onResume() {
 		super.onResume();
-
 		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
 	}
 	
@@ -74,7 +111,7 @@ public abstract class CmonsFragment extends BaseFragment {
 				try {
 					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
+					
 					isLastList = parseJSON(objJSON);
 					setPage(true);
 				} catch (Exception e) {
@@ -126,8 +163,8 @@ public abstract class CmonsFragment extends BaseFragment {
 
 	@Override
 	public int getLastPageAnimResId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.anim.abc_fade_in;
 	}
 
 	@Override

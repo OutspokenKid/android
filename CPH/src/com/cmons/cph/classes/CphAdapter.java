@@ -12,9 +12,15 @@ import android.widget.BaseAdapter;
 
 import com.cmons.cph.R;
 import com.cmons.cph.wrappers.ViewWrapperForCategory;
+import com.cmons.cph.wrappers.ViewWrapperForCustomer;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
 import com.cmons.cph.wrappers.ViewWrapperForLine;
 import com.cmons.cph.wrappers.ViewWrapperForNotice;
+import com.cmons.cph.wrappers.ViewWrapperForOrder;
+import com.cmons.cph.wrappers.ViewWrapperForOrderSet;
+import com.cmons.cph.wrappers.ViewWrapperForProduct;
+import com.cmons.cph.wrappers.ViewWrapperForSample;
+import com.cmons.cph.wrappers.ViewWrapperForStaff;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -31,6 +37,7 @@ public class CphAdapter extends BaseAdapter {
 	public CphAdapter(Context context, LayoutInflater inflater, ArrayList<BaseModel> models) {
 		
 		this.context = context;
+		this.inflater = inflater;
 		this.models = models;
 	}
 	
@@ -72,8 +79,7 @@ public class CphAdapter extends BaseAdapter {
 				wrapper = getViewWrapperByItemCode(convertView, itemCode);
 				wrapper.setRow(convertView);
 				
-			} else {													//Maybe ListLoadingView.
-
+			} else {
 				wrapper = (ViewWrapper) convertView.getTag();
 				wrapper.setRow(convertView);
 			}
@@ -94,6 +100,8 @@ public class CphAdapter extends BaseAdapter {
 	}
 
 	public int getLayoutResIdByItemCode(int itemCode) {
+
+		LogUtils.log("###CphAdapter.getLayoutResIdByItemCode.  itemCode : " + itemCode);
 		
 		switch (itemCode) {
 		
@@ -108,12 +116,32 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_LINE:
 			return R.layout.list_line;
+			
+		case CphConstants.ITEM_PRODUCT:
+			return R.layout.grid_product;
+			
+		case CphConstants.ITEM_SAMPLE:
+			return R.layout.list_sample;
+			
+		case CphConstants.ITEM_CUSTOMER:
+			return R.layout.list_customer;
+			
+		case CphConstants.ITEM_STAFF:
+			return R.layout.list_staff;
+			
+		case CphConstants.ITEM_ORDER:
+			return R.layout.list_order;
+			
+		case CphConstants.ITEM_ORDERSET:
+			return R.layout.list_orderset;
 		}
 		
 		return 0;
 	}
 	
 	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
+		
+		LogUtils.log("###CphAdapter.getViewWrapperByItemCode.  itemCode : " + itemCode);
 		
 		switch (itemCode) {
 		
@@ -128,13 +156,36 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_LINE:
 			return new ViewWrapperForLine(convertView, itemCode);
+			
+		case CphConstants.ITEM_PRODUCT:
+			return new ViewWrapperForProduct(convertView, itemCode);
+			
+		case CphConstants.ITEM_SAMPLE:
+			return new ViewWrapperForSample(convertView, itemCode);
+			
+		case CphConstants.ITEM_CUSTOMER:
+			return new ViewWrapperForCustomer(convertView, itemCode);
+			
+		case CphConstants.ITEM_STAFF:
+			return new ViewWrapperForStaff(convertView, itemCode);
+			
+		case CphConstants.ITEM_ORDER:
+			return new ViewWrapperForOrder(convertView, itemCode);
+
+		case CphConstants.ITEM_ORDERSET:
+			return new ViewWrapperForOrderSet(convertView, itemCode);
 		}
 		
 		return null;
 	}
 	
 	public void setRow(int itemCode, int position, View convertView) {
+	
+		switch (itemCode) {
 		
+		case CphConstants.ITEM_PRODUCT:
+			break;
+		}
 	}
 
 	public View getBlankView() {

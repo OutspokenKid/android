@@ -17,6 +17,7 @@ public class TitleBar extends RelativeLayout {
 
 	private View titleBg;
 	private Button btnBack;
+	private Button btnHome;
 	private TextView tvTitle;
 	private View titleView;
 	private Button btnNotice;
@@ -47,6 +48,29 @@ public class TitleBar extends RelativeLayout {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		titleBg.setBackgroundResource(R.drawable.bg_titlebar);
 		this.addView(titleBg);
+		
+		//btnBack.
+		btnBack = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(92), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		btnBack.setLayoutParams(rp);
+		btnBack.setBackgroundResource(R.drawable.back1_btn);
+		this.addView(btnBack);
+		
+		//btnHome.
+		btnHome = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(92), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		rp.leftMargin = ResizeUtils.getSpecificLength(92); 
+		btnHome.setLayoutParams(rp);
+		btnHome.setBackgroundResource(R.drawable.home_btn);
+		this.addView(btnHome);
 		
 		//tvTitle.
 		tvTitle = new TextView(getContext());
@@ -98,23 +122,14 @@ public class TitleBar extends RelativeLayout {
 		this.addView(btnAdd);
 	}
 	
-	public void addBackButton(int resId, int width, int height) {
-		
-		btnBack = new Button(getContext());
-		
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(width), 
-				ResizeUtils.getSpecificLength(height));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		btnBack.setLayoutParams(rp);
-		btnBack.setBackgroundResource(resId);
-		this.addView(btnBack);
-	}
-	
 	public Button getBackButton() {
 		
 		return btnBack;
+	}
+	
+	public Button getHomeButton() {
+		
+		return btnHome;
 	}
 	
 	public void setTitleText(String titleText) {
@@ -139,31 +154,6 @@ public class TitleBar extends RelativeLayout {
 			tvTitle.setVisibility(View.VISIBLE);
 			titleView.setVisibility(View.INVISIBLE);
 		}
-	}
-	
-	public void addButtons(boolean isWholesale) {
-
-//		btnNotice = new Button(getContext());
-//		
-//		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
-//				ResizeUtils.getSpecificLength(width), 
-//				ResizeUtils.getSpecificLength(height));
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-//		btnNotice.setLayoutParams(rp);
-//		btnNotice.setNoticegroundResource(resId);
-//		this.addView(btnNotice);
-//		
-//		btnAdd = new Button(getContext());
-//		
-//		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
-//				ResizeUtils.getSpecificLength(width), 
-//				ResizeUtils.getSpecificLength(height));
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-//		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-//		btnAdd.setLayoutParams(rp);
-//		btnAdd.setAddgroundResource(resId);
-//		this.addView(btnAdd);
 	}
 	
 	public Button getBtnNotice() {

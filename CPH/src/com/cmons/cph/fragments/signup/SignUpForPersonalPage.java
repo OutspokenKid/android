@@ -191,7 +191,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			}
 		}
 		
-		titleBar.addBackButton(R.drawable.btn_back_findcompany, 162, 92);
 		titleBar.setTitleText(R.string.inputUserInfo);
 	}
 
@@ -279,9 +278,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setSizes() {
-
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		

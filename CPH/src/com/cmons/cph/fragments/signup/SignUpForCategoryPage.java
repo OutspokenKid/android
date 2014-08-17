@@ -13,7 +13,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForSignUp;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.CategoryForSignUp;
+import com.cmons.cph.models.Category;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -54,7 +54,6 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	@Override
 	public void createPage() {
 
-		titleBar.addBackButton(R.drawable.btn_back_position, 162, 92);
 		titleBar.setTitleText(R.string.selectCategory);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
@@ -78,7 +77,7 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 			@Override
 			public void onClick(View view) {
 
-				CategoryForSignUp categoryForSignUp;
+				Category categoryForSignUp;
 				String categoryString = "";
 				int selectedCount = 0;
 				
@@ -86,7 +85,7 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 				for(int i=0; i<size; i++) {
 					
 					try {
-						categoryForSignUp = (CategoryForSignUp) models.get(i);
+						categoryForSignUp = (Category) models.get(i);
 						
 						if(categoryForSignUp.isSelected()) {
 							if(!"".equals(categoryString)) {
@@ -116,9 +115,6 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	@Override
 	public void setSizes() {
 
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
-		
 		RelativeLayout.LayoutParams rp = null;
 		
 		//shadow.
@@ -174,12 +170,14 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	public boolean parseJSON(JSONObject objJSON) {
 
 		try {
-			JSONArray arJSON = objJSON.getJSONArray("wholesale_categories");
+			JSONArray arJSON = objJSON.getJSONArray("categories");
 			
 			int size = arJSON.length();
 			for(int i=0; i<size; i++) {
 				try {
-					models.add(new CategoryForSignUp(arJSON.getJSONObject(i)));
+					Category category = new Category(arJSON.getJSONObject(i));
+					category.setItemCode(CphConstants.ITEM_CATEGORY);
+					models.add(category);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {
@@ -200,7 +198,7 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/categories";
+		url = CphConstants.BASE_API_URL + "categories";
 		super.downloadInfo();		
 	}
 }

@@ -9,17 +9,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content" >
 	
-        <!-- 저작권 표시. -->
-	
-		<ImageView 
-	        android:id="@+id/signInPage_ivCopyright"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true"
-	    	android:src="@drawable/img_reserved"
-	    	android:scaleType="centerInside" />
-        
 	    <!-- 로고. -->
 	    
 	    <View 
@@ -34,54 +23,32 @@
 	    
 	    <EditText 
 	        android:id="@+id/signInPage_etId"
-	        android:layout_width="0dp"
+	        android:layout_width="match_parent"
 	    	android:layout_height="0dp"
 	    	android:layout_below="@id/signInPage_logo"
-	    	android:layout_centerHorizontal="true"
-	    	android:background="#b2ffffff"
+	    	android:background="@drawable/text_box"
 	    	android:singleLine="true"
 	    	android:textColor="#4a4a4a"
 	    	android:textColorHint="#4a4a4a"
 	    	android:imeOptions="actionNext"
 	    	android:hint="@string/id"
-	    	android:gravity="left|center_vertical" />
+	    	android:gravity="center" />
 	    
 	    <!-- 비밀번호 입력. -->
 	    
 	    <EditText 
 	        android:id="@+id/signInPage_etPw"
-	        android:layout_width="0dp"
+	        android:layout_width="match_parent"
 	    	android:layout_height="0dp"
 	    	android:layout_below="@id/signInPage_etId"
-	    	android:layout_centerHorizontal="true"
-	    	android:background="#b2ffffff"
+	    	android:background="@drawable/text_box2"
 	    	android:singleLine="true"
-	    	android:textColor="#4a4a4a"
-	    	android:textColorHint="#4a4a4a"
+	    	android:textColor="#fff"
+	    	android:textColorHint="#fff"
 	    	android:hint="@string/pw"
 	    	android:imeOptions="actionDone"
 	    	android:inputType="textPassword"
-	    	android:gravity="left|center_vertical" />
-	    
-	    <!-- 로그인 버튼. -->
-	    
-	    <Button
-	        android:id="@+id/signInPage_btnLogin"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_below="@id/signInPage_etPw"
-	    	android:layout_centerHorizontal="true"
-	    	android:background="@drawable/btn_login" />
-	    
-	    <!-- 회원가입 버튼. -->
-	    
-	    <Button
-	        android:id="@+id/signInPage_btnSignUp"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_below="@id/signInPage_btnLogin"
-	    	android:layout_centerHorizontal="true"
-	    	android:background="@drawable/btn_signup" />
+	    	android:gravity="center" />
 	    
 	    <!-- 아이디 찾기 버튼. -->
 	    
@@ -89,9 +56,9 @@
 	        android:id="@+id/signInPage_btnFindId"
 	        android:layout_width="0dp"
 	    	android:layout_height="0dp"
-	    	android:layout_below="@id/signInPage_btnSignUp"
-	    	android:layout_alignLeft="@id/signInPage_btnSignUp"
-	    	android:background="@drawable/btn_findid" />
+	    	android:layout_below="@id/signInPage_etPw"
+	    	android:layout_alignParentLeft="true"
+	    	android:background="@drawable/lost_id_btn" />
 	    
 	    <!-- 비밀번호 찾기 버튼. -->
 	    
@@ -99,9 +66,28 @@
 	        android:id="@+id/signInPage_btnFindPw"
 	        android:layout_width="0dp"
 	    	android:layout_height="0dp"
+	    	android:layout_below="@id/signInPage_btnFindId"
+	    	android:layout_alignParentLeft="true"
+	    	android:background="@drawable/lost_pass_btn" />
+	    
+	    <!-- 로그인 버튼. -->
+	    
+	    <Button
+	        android:id="@+id/signInPage_btnLogin"
+	        android:layout_width="match_parent"
+	    	android:layout_height="0dp"
 	    	android:layout_alignTop="@id/signInPage_btnFindId"
 	    	android:layout_toRightOf="@id/signInPage_btnFindId"
-	    	android:background="@drawable/btn_findpw" />
+	    	android:background="@drawable/login_btn" />
+	    
+	    <!-- 회원가입 버튼. -->
+	    
+	    <Button
+	        android:id="@+id/signInPage_btnSignUp"
+	        android:layout_width="match_parent"
+	    	android:layout_height="0dp"
+	    	android:layout_below="@id/signInPage_btnFindPw"
+	    	android:background="@drawable/signup_btn" />
 	    
 	</RelativeLayout>
     

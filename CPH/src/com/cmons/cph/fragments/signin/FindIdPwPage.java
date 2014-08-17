@@ -60,8 +60,6 @@ public class FindIdPwPage extends CmonsFragment {
 
 	@Override
 	public void createPage() {
-
-		titleBar.addBackButton(R.drawable.btn_back_login, 162, 92);
 		
 		if(type == TYPE_FIND_ID) {
 			titleBar.setTitleText(R.string.findId);
@@ -141,9 +139,6 @@ public class FindIdPwPage extends CmonsFragment {
 		int padding = ResizeUtils.getSpecificLength(30);
 		RelativeLayout.LayoutParams rp = null;
 		
-		//titleBar.
-		titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(96);
-		
 		//Shadow.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_titleShadow).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(14);
@@ -191,7 +186,7 @@ public class FindIdPwPage extends CmonsFragment {
 	}
 
 	@Override
-	public void onRefreshPage() {
+	public void refreshPage() {
 		// TODO Auto-generated method stub
 
 	}
@@ -208,6 +203,12 @@ public class FindIdPwPage extends CmonsFragment {
 		return false;
 	}
 
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	public void checkPhone() {
 
 		if(etPhone.getText() == null
@@ -367,4 +368,5 @@ public class FindIdPwPage extends CmonsFragment {
 		}
 		
 	}
+
 }

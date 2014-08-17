@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/wholesaleSettingPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/wholesaleSettingPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleSettingPage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/setting_bg" />
+    
+    <ScrollView 
+        android:id="@+id/wholesaleSettingPage_scrollView"
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/wholesaleSettingPage_titleBar" >
+    
+        <RelativeLayout
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+    		
+    		<!-- 내 정보 관리. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnInfo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignParentLeft="true"
+	    		android:layout_alignParentTop="true"
+                android:background="@drawable/my_info_btn" />
+
+            <!-- 전체공지사항. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnNotice"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/wholesaleSettingPage_btnInfo"
+                android:background="@drawable/setting_notice_btn" />
+            
+            <!-- 건의하기. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnSuggest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/wholesaleSettingPage_btnNotice"
+                android:layout_toRightOf="@id/wholesaleSettingPage_btnNotice"
+                android:background="@drawable/setting_suggest_btn" />
+
+            <!-- 알림설정. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnNotification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignLeft="@id/wholesaleSettingPage_btnSuggest"
+                android:layout_below="@id/wholesaleSettingPage_btnSuggest"
+                android:background="@drawable/setting_notification_btn" />
+            
+            <!-- 회원탈퇴. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnWithdraw"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignLeft="@id/wholesaleSettingPage_btnNotice"
+                android:layout_below="@id/wholesaleSettingPage_btnNotice"
+                android:background="@drawable/setting_withdraw_btn" />
+
+            <!-- 로그아웃. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnSignout"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/wholesaleSettingPage_btnWithdraw"
+                android:layout_toRightOf="@id/wholesaleSettingPage_btnWithdraw"
+                android:background="@drawable/setting_logout_btn" />
+            	
+        </RelativeLayout>
+        
+	</ScrollView>
+    
+</RelativeLayout>

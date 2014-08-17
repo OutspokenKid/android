@@ -1,12 +1,14 @@
 package com.cmons.cph;
 
 import com.cmons.cph.classes.CmonsFragmentActivity;
-import com.cmons.cph.fragments.wholesale.WholesaleForCustomerPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSamplePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForShopPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForStaffPage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
 import com.cmons.cph.models.User;
 
@@ -107,10 +109,16 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 		startPage(new WholesaleForManagementPage(), null);
 	}
 	
+	public void showOrderListPage() {
+		
+		startPage(new WholesaleForOrderListPage(), null);
+	}
+	
 	public void showOrderPage() {
 		
 		startPage(new WholesaleForOrderPage(), null);
 	}
+	
 	
 	public void showSamplePage() {
 		
@@ -119,12 +127,12 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 	
 	public void showCustomerPage() {
 		
-		startPage(new WholesaleForCustomerPage(), null);
+		startPage(new WholesaleForCustomerListPage(), null);
 	}
 	
 	public void showStaffPage() {
 		
-		startPage(new WholesaleForCustomerPage(), null);
+		startPage(new WholesaleForStaffPage(), null);
 	}
 	
 	public void showSettingPage() {

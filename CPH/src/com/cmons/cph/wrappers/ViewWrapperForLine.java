@@ -6,14 +6,14 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.CategoryForSignUp;
+import com.cmons.cph.models.Category;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class ViewWrapperForLine extends ViewWrapper {
 	
-	private CategoryForSignUp categoryForSignUp;
+	private Category categoryForSignUp;
 	
 	public TextView textView;
 	public View check;
@@ -50,9 +50,9 @@ public class ViewWrapperForLine extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof CategoryForSignUp) {
+			if(baseModel instanceof Category) {
 				
-				categoryForSignUp = (CategoryForSignUp) baseModel;
+				categoryForSignUp = (Category) baseModel;
 				
 				textView.setText(categoryForSignUp.getName());
 				

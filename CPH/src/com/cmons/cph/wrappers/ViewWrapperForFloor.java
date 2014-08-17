@@ -1,16 +1,11 @@
 package com.cmons.cph.wrappers;
 
-import android.graphics.Color;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.TextView;
 
-import com.cmons.cph.R;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.CategoryForSignUp;
 import com.cmons.cph.models.Floor;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
@@ -58,17 +53,10 @@ public class ViewWrapperForFloor extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof CategoryForSignUp) {
+			if(baseModel instanceof Floor) {
 				
-				categoryForSignUp = (CategoryForSignUp) baseModel;
-				
-				textView.setText(categoryForSignUp.getName());
-				
-				if(categoryForSignUp.isSelected()) {
-					check.setVisibility(View.VISIBLE);
-				} else {
-					check.setVisibility(View.INVISIBLE);
-				}
+				floor = (Floor)baseModel;
+				textView.setText(floor.floorName);
 			} else {
 				setUnusableView();
 			}
@@ -80,23 +68,6 @@ public class ViewWrapperForFloor extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-		
-		if(categoryForSignUp != null) {
-			row.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-
-					if(categoryForSignUp.isSelected()) {
-						categoryForSignUp.setSelected(false);
-						check.setVisibility(View.INVISIBLE);
-					} else {
-						categoryForSignUp.setSelected(true);
-						check.setVisibility(View.VISIBLE);
-					}
-				}
-			});
-		}
 	}
 	
 	@Override
