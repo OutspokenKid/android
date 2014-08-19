@@ -187,10 +187,6 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		
 		RelativeLayout.LayoutParams rp = null;
 		
-		//ivBg.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.wholesaleCustomerListPage_ivBg).getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(96); 
-		
 		//btnRequest.
 		rp = (RelativeLayout.LayoutParams) btnRequest.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;

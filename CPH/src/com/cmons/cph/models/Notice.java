@@ -1,12 +1,16 @@
 package com.cmons.cph.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Notice extends BaseModel {
+public class Notice extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = -7847660334452613664L;
+	
 	private int id;
 	private int type;
 	private String author_id;
@@ -17,6 +21,8 @@ public class Notice extends BaseModel {
 	private int wholesale_id;
 	private int retail_id;
 	private String created_at;
+	
+	private boolean read;
 	
 	public Notice() {
 		
@@ -149,5 +155,13 @@ public class Notice extends BaseModel {
 
 	public void setCreated_at(String created_at) {
 		this.created_at = created_at;
+	}
+
+	public boolean isRead() {
+		return read;
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 }

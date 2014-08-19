@@ -10,7 +10,6 @@ import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -84,8 +83,17 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
-	public void setListeners() {
+	public void setListeners() {	
 
+		btnNotice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showNoticeListPage();
+			}
+		});
+		
 		btnSample.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -104,14 +112,6 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setSizes() {
-		
-		FrameLayout.LayoutParams fp = null;
-
-		fp = (FrameLayout.LayoutParams)(mThisView.findViewById(R.id.wholesaleManagementPage_ivBg).getLayoutParams());
-		fp.topMargin = ResizeUtils.getSpecificLength(96);
-		
-		fp = (FrameLayout.LayoutParams)(mThisView.findViewById(R.id.wholesaleManagementPage_scrollView).getLayoutParams());
-		fp.topMargin = ResizeUtils.getSpecificLength(96);
 		
 		RelativeLayout.LayoutParams rp = null;
 		int length = ResizeUtils.getScreenWidth()/2;

@@ -22,6 +22,7 @@ public class TitleBar extends RelativeLayout {
 	private View titleView;
 	private Button btnNotice;
 	private Button btnAdd;
+	private Button btnSubmit;
 	
 	public TitleBar(Context context) {
 		this(context, null, 0);
@@ -120,6 +121,19 @@ public class TitleBar extends RelativeLayout {
 		btnAdd.setBackgroundResource(R.drawable.add_btn);
 		btnAdd.setVisibility(View.INVISIBLE);
 		this.addView(btnAdd);
+		
+		//btnSubmit.
+		btnSubmit = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(160), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+		rp.rightMargin = ResizeUtils.getSpecificLength(92);
+		btnSubmit.setLayoutParams(rp);
+		btnSubmit.setBackgroundResource(R.drawable.completion_btn);
+		btnSubmit.setVisibility(View.INVISIBLE);
+		this.addView(btnSubmit);
 	}
 	
 	public Button getBackButton() {
@@ -164,5 +178,10 @@ public class TitleBar extends RelativeLayout {
 	public Button getBtnAdd() {
 		
 		return btnAdd;
+	}
+	
+	public Button getBtnSubmit() {
+		
+		return btnSubmit;
 	}
 }

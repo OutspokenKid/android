@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -16,13 +16,15 @@
         android:id="@+id/wholesaleManagementPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleManagementPage_titleBar"
 	    android:scaleType="centerCrop"
 	    android:src="@drawable/shop_bg" />
     
     <ScrollView
         android:id="@+id/wholesaleManagementPage_scrollView"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" >
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleManagementPage_titleBar" >
 	    
 	    <RelativeLayout
 		    android:layout_width="match_parent"
@@ -89,5 +91,5 @@
 
     </ScrollView>
     
-</FrameLayout>
+</RelativeLayout>
     

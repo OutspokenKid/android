@@ -1,8 +1,10 @@
 package com.cmons.cph.wrappers;
 
+import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
@@ -42,10 +44,15 @@ public class ViewWrapperForNotice extends ViewWrapper {
 	public void setSizes() {
 
 		try {
-			ResizeUtils.viewResize(400, 120, tvNotice, 1, Gravity.CENTER_VERTICAL, null, new int[]{20, 0, 0, 0});
-			ResizeUtils.viewResize(120, 120, tvRegdate, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
-			icon.getLayoutParams().width = ResizeUtils.getSpecificLength(29);
-			icon.getLayoutParams().height = ResizeUtils.getSpecificLength(30);
+			row.setLayoutParams(new AbsListView.LayoutParams(
+					LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(128)));
+			
+			int p = ResizeUtils.getSpecificLength(20);
+			tvNotice.setPadding(p, 0, p, 0);
+			
+			tvRegdate.getLayoutParams().width = ResizeUtils.getSpecificLength(120);
+			
+			ResizeUtils.viewResize(29, 30, icon, 1, Gravity.CENTER_VERTICAL, new int[]{20, 0, 20, 0});
 			
 			FontUtils.setFontSize(tvNotice, 28);
 			FontUtils.setFontSize(tvRegdate, 20);
@@ -62,8 +69,16 @@ public class ViewWrapperForNotice extends ViewWrapper {
 			if(baseModel instanceof Notice) {
 				notice = (Notice) baseModel;
 				tvNotice.setText("주문요청이 들어왔습니다. 확인해주세요.");
-				tvRegdate.setText("2014.08.13\nPM:11:14");
-				icon.setBackgroundResource(R.drawable.mail_icon_a);
+				
+				if(notice.isRead()) {
+					tvNotice.setTextColor(Color.rgb(120, 120, 120));
+					tvRegdate.setText("읽음");
+					icon.setBackgroundResource(R.drawable.mail_icon_b);
+				} else {
+					tvNotice.setTextColor(Color.BLACK);
+					tvRegdate.setText("2014.08.13\nPM:11:14");
+					icon.setBackgroundResource(R.drawable.mail_icon_a);
+				}
 			} else {
 				setUnusableView();
 			}
@@ -75,16 +90,6 @@ public class ViewWrapperForNotice extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-		
-		if(notice != null) {
-			row.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					
-				}
-			});
-		}
 	}
 	
 	@Override

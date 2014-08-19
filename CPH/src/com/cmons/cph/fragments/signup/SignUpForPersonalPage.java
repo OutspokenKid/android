@@ -510,8 +510,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 
 	public void checkPhone() {
 
-		if(etPhone.getText() == null
-				|| StringUtils.isEmpty(etPhone.getText().toString())) {
+		if(StringUtils.checkTextLength(etPhone, 6, 15) != StringUtils.PASS) {
 			ToastUtils.showToast(R.string.wrongPhoneNumber);
 			return;
 		}

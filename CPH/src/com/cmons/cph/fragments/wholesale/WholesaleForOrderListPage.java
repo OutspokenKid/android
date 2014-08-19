@@ -39,7 +39,10 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void onResume() {
 		super.onResume();
-		downloadInfo();
+		
+		if(models.size() == 0) {
+			downloadInfo();
+		}
 	}
 	
 	@Override
@@ -158,12 +161,6 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public int getContentViewId() {
 
 		return R.layout.fragment_wholesale_orderlist;
-	}
-
-	@Override
-	public void refreshPage() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

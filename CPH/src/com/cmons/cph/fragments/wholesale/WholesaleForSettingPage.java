@@ -2,15 +2,22 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
-import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 
@@ -36,8 +43,8 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		title = "설정";
 	}
 
 	@Override
@@ -49,8 +56,69 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		btnInfo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showChangeInfoPage();
+			}
+		});
+		
+		btnNotice.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+
+				mActivity.showNoticeListPage();
+			}
+		});
+		
+		btnNotification.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showNotificationSettingPage();
+			}
+		});
+	
+		btnSignout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.signOut, R.string.wannaSignOut, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						signOut();
+					}
+				}, null);
+			}
+		});
+		
+		btnWithdraw.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.withdraw, R.string.wannaWithdraw, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						withdraw();
+					}
+				}, null);
+			}
+		});
 	}
 
 	@Override
@@ -113,5 +181,77 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+//////////////////// Custom methods.
+	
+	public void signOut() {
+
+		//http://cph.minsangk.com/users/logout
+		url = CphConstants.BASE_API_URL + "logout";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					ToastUtils.showToast(objJSON.getString("result"));
+					
+					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
+					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
+					
+					mActivity.launchSignInActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void withdraw() {
+		
+		//http://cph.minsangk.com/users/logout
+		url = CphConstants.BASE_API_URL + "logout";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					ToastUtils.showToast(objJSON.getString("result"));
+					
+					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
+					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
+					
+					mActivity.launchSignInActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

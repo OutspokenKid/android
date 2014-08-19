@@ -228,7 +228,8 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	}
 
 	public void closeTopPage() {
-		
+
+		LogUtils.log("###BaseFragmentActivity.closeTopPage.  ");
 		getSupportFragmentManager().popBackStack();
 	}
 }

@@ -266,6 +266,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					long id) {
 				
 				hideNoticeRelative();
+				
+				mActivity.showNoticePage((Notice)models.get(position));
 			}
 		});
 	}

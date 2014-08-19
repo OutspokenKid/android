@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/wholesaleWritePage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/wholesaleWritePage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleWritePage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/myshop_bg" />
+
+    <ScrollView
+        android:id="@+id/wholesaleWritePage_scrollView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleWritePage_titleBar" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+	    	android:layout_height="wrap_content" >
+            
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvStatus"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:text="@string/productSelling"
+		        android:textColor="#fff"
+		        android:gravity="center" />
+            
+            <View
+                android:id="@+id/wholesaleWritePage_checkbox"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/myshop_checkbox_a" /> 
+            
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvSoldOut"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_checkbox"
+		        android:layout_toLeftOf="@id/wholesaleWritePage_checkbox"
+		        android:text="@string/soldOut"
+		        android:textColor="#fff"
+		        android:gravity="center" />
+            
+            <!-- 상품 사진 등록. -->
+            
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvImageText"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvStatus"
+		        android:text="@string/productPhotoUpload"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+            <ImageView 
+                android:id="@+id/wholesaleWritePage_ivImage1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvImageText"
+		        android:layout_alignParentLeft="true"
+		        android:scaleType="centerCrop"
+		        android:background="@drawable/myshop_pic_add1" />
+            
+            <ImageView 
+                android:id="@+id/wholesaleWritePage_ivImage2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_ivImage1"
+		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage1"
+		        android:scaleType="centerCrop"
+		        android:background="@drawable/myshop_pic_add2" />
+            
+            <ImageView 
+                android:id="@+id/wholesaleWritePage_ivImage3"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_ivImage2"
+		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage2"
+		        android:scaleType="centerCrop"
+		        android:background="@drawable/myshop_pic_add3" />
+		    
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvImageSizeText"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_ivImage1"
+		        android:text="@string/productPhotoUploadDesc"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical" />
+            
+            <!-- 상품명 -->
+            
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvNameText"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvImageSizeText"
+		        android:text="@string/productName"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <EditText
+		        android:id="@+id/wholesaleWritePage_etName"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/wholesaleWritePage_tvNameText"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:hint="@string/hintForProductName"
+			    android:textColor="#000"
+			    android:textColorHint="#555" />
+		    
+		    <!-- 상품가격. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvPriceText"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_etName"
+		        android:text="@string/productPrice"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <EditText
+		        android:id="@+id/wholesaleWritePage_etPrice"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/wholesaleWritePage_tvPriceText"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:hint="@string/hintForProductPrice"
+			    android:textColor="#000"
+			    android:textColorHint="#555" />
+		    
+		    <!-- 상품분류. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvCategory"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_etPrice"
+		        android:text="@string/productCategory"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnCategory"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvCategory"
+		        android:background="@drawable/text_box"
+		        android:text="@string/hintForProductCategory"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 상품색상. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvColor"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_btnCategory"
+		        android:text="@string/productColor"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnColor"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvColor"
+		        android:background="@drawable/text_box"
+		        android:text="@string/hintForProductColor"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 상품사이즈. -->
+
+			<TextView
+		        android:id="@+id/wholesaleWritePage_tvSize"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_btnColor"
+		        android:text="@string/productSize"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnSize"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvSize"
+		        android:background="@drawable/text_box"
+		        android:text="@string/hintForProductSize"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 혼용률. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvMixtureRate"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_btnSize"
+		        android:text="@string/productMixtureRate"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <EditText
+		        android:id="@+id/wholesaleWritePage_etMixtureRate"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/wholesaleWritePage_tvMixtureRate"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:hint="@string/hintForProductMixtureRage"
+			    android:textColor="#000"
+			    android:textColorHint="#555" />
+		    
+		    <!-- 상품설명. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvDescription"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:text="@string/productDescription"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <EditText
+		        android:id="@+id/wholesaleWritePage_etDescription"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/wholesaleWritePage_tvDescription"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:hint="@string/hintForProductDescription"
+			    android:textColor="#000"
+			    android:textColorHint="#555" />
+		    
+		    <!-- 공개여부. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvPublic"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:text="@string/productPublic"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnPublic1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvPublic"
+		        android:background="@drawable/myshop_open1_a" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnPublic2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_btnPublic1"
+		        android:layout_toRightOf="@id/wholesaleWritePage_btnPublic1"
+		        android:background="@drawable/myshop_open2_b" />
+		    
+		    <!-- 거래처알림. -->
+            
+            <TextView
+		        android:id="@+id/wholesaleWritePage_tvNotification"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:text="@string/productNotification"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnNotification"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvPublic"
+		        android:background="@drawable/myshop_notification_a" />
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnPullUp"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvPublic"
+		        android:background="@drawable/myshop_notification_a" />
+            
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvNotificationText"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_btnNotification"
+		        android:text="@string/productNotificationDesc"
+		        android:textColor="#fff"
+		        android:gravity="top" />
+		    
+		    <!-- 상품 삭제. -->
+		    
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnDelete"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvNotificationText"
+		        android:background="@drawable/myshop_delete_btn" />
+		    
+        </RelativeLayout>
+        
+    </ScrollView>
+    
+</RelativeLayout>

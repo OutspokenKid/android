@@ -39,15 +39,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	private int menuIndex;
 	
 	@Override
-	public void onResume() {
-		super.onResume();
-		
-		if(models.size() == 0) {
-			setMenu(0);
-		}
-	}
-	
-	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleOrderPage_titleBar);
@@ -79,6 +70,8 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
+		setMenu(0);
+		
 		SpannableStringBuilder sp1 = new SpannableStringBuilder("2014년 08월 31일 PM 06:45\n\n");
 		sp1.setSpan(new RelativeSizeSpan(0.8f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvOrder.append(sp1); 
@@ -101,42 +94,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
-
-		btnOrder.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(0);
-			}
-		});
-		
-		btnStandBy.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(1);
-			}
-		});
-		
-		btnDeposit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(2);
-			}
-		});
-		
-		btnCompleted.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(3);
-			}
-		});
 	
 		listView.setOnItemClickListener(new OnItemClickListener() {
 

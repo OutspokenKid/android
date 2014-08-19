@@ -138,7 +138,7 @@ public class SignInPage extends CmonsFragment {
 		rp = (RelativeLayout.LayoutParams) logo.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(369);
 		rp.height = ResizeUtils.getSpecificLength(210);
-		rp.topMargin = ResizeUtils.getSpecificLength(110);
+		rp.topMargin = ResizeUtils.getSpecificLength(150);
 		
 		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);

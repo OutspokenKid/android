@@ -6,6 +6,7 @@ public class CphConstants {
 	
 	public static final String PREFS_SIGN = "sign";
 	public static final String PREFS_NOTICE = "notice";
+	public static final String PREFS_NOTIFICATION = "notification";
 	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	

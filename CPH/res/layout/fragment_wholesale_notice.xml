@@ -6,40 +6,90 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleStaffPage_titleBar" 
+	    android:id="@+id/wholesaleNoticePage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
     
-    <!-- 승인 요청. -->
-    
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnRequest" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleStaffPage_titleBar"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/shop_info_btn" />
-    
-    <!-- 직원. -->
-    
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnStaff" 
+    <ImageView 
+        android:id="@+id/wholesaleNoticePage_ivBg" 
 	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleStaffPage_btnRequest"
-	    android:layout_toRightOf="@id/wholesaleStaffPage_btnRequest"
-	    android:background="@drawable/notice_btn" />
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleNoticePage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/setting_bg2" />
+
+    <TextView
+        android:id="@+id/wholesaleNoticePage_tvTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleNoticePage_titleBar"
+        android:text="@string/noticeTitle"
+        android:textColor="#fff"
+        android:gravity="bottom" />
     
-    <!-- 리스트뷰. -->
+    <EditText
+        android:id="@+id/wholesaleNoticePage_etTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/wholesaleNoticePage_tvTitleText"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center"
+	    android:hint="@string/hintForEditNoticeTitle"
+	    android:textColor="#000"
+	    android:textColorHint="#555" />
     
-    <ListView 
-            android:id="@+id/wholesaleStaffPage_listView" 
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true" 
-	    	android:cacheColorHint="#0000" />
+    <TextView
+        android:id="@+id/wholesaleNoticePage_tvTitle"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/wholesaleNoticePage_tvTitleText"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center"
+	    android:textColor="#000" />
+    
+    <Button
+        android:id="@+id/wholesaleNoticePage_btnPush"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/wholesaleNoticePage_etTitle"
+        android:layout_toRightOf="@id/wholesaleNoticePage_etTitle"
+        android:background="@drawable/setting_notification_btn" />
+    
+    <TextView
+        android:id="@+id/wholesaleNoticePage_tvContentText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleNoticePage_etTitle"
+        android:text="@string/noticeContent"
+        android:textColor="#fff"
+        android:gravity="bottom" />
+    
+    <EditText
+        android:id="@+id/wholesaleNoticePage_etContent"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/wholesaleNoticePage_tvContentText"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/txt_box3"
+	    android:hint="@string/hintForEditNoticeContent"
+	    android:gravity="left|top"
+	    android:textColor="#000"
+	    android:textColorHint="#555" />
+    
+    <TextView
+        android:id="@+id/wholesaleNoticePage_tvContent"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/wholesaleNoticePage_tvContentText"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="left|top"
+	    android:textColor="#000" />
     
 </RelativeLayout>

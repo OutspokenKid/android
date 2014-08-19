@@ -6,6 +6,7 @@
     <string name="agree">동의</string>
     <string name="app_name">CPH</string>
 
+    <string name="cancel">취소</string>
     <string name="categoryText">매장 분류는 다중 선택이 가능합니다</string>
     <string name="certify">인증</string>
     <string name="certifyCompleted">번호 인증 완료</string>
@@ -15,6 +16,7 @@
     <string name="checkDuplication">중복 확인</string>
     <string name="companyName">상호명</string>
     <string name="complete">완료</string>
+    <string name="confirm">확인</string>
     <string name="confirmPw">비밀번호 확인</string>
     <string name="currentPw">현재 비밀번호</string>
     
@@ -24,6 +26,8 @@
     <string name="employee_md">MD</string>
     <string name="employee_normal">직원</string>
     
+    <string name="failToChangePhoneNumber">전화번호 변경 실패</string>
+    <string name="failToChangePw">비밀번호 변경 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>
     <string name="failToSearchShop">매장 검색 실패</string>
@@ -33,6 +37,7 @@
     <string name="findPw">비밀번호 찾기</string>
     <string name="floor">층</string>
 
+    <string name="hintForChangePhoneNumber">변경될 휴대폰번호 입력</string>
     <string name="hintForChangePw1">현재 비밀번호 입력</string>
     <string name="hintForChangePw2">새 비밀번호 입력</string>
     <string name="hintForChangePw3">새 비밀번호 확인</string>
@@ -43,6 +48,13 @@
     <string name="hintForName">성함 입력</string>
     <string name="hintForPw">비밀번호 입력</string>
     <string name="hintForPhone">휴대폰번호 입력</string>
+    <string name="hintForProductCategory">상품의 분류를 선택해주세요</string>
+    <string name="hintForProductColor">상품의 색상을 선택해주세요</string>
+    <string name="hintForProductDescription">상품설명을 입력해주세요</string>
+    <string name="hintForProductMixtureRage">직접 입력 (예 : 면 80% 나일론 20%)</string>
+    <string name="hintForProductName">상품명을 입력해주세요</string>
+    <string name="hintForProductPrice">상품의 가격을 입력해주세요</string>
+    <string name="hintForProductSize">상품의 사이즈를 선택해주세요</string>
     <string name="hintForSearchCompanyName">상호명을 입력해주세요</string>
     <string name="hintForSearchCompanyPhone">전화번호를 입력해주세요</string>
     <string name="hintForSearchCompanyRegistration">사업자 등록번호를 입력해주세요</string>
@@ -79,6 +91,21 @@
     <string name="phoneNumber">휴대폰 번호</string>
     <string name="phoneNumberForWholesale">매장 전화번호</string>
     <string name="phoneNumberForRetail">사업장 전화번호</string>
+    <string name="productCategory">상품 분류</string>
+    <string name="productColor">상품 색상</string>
+    <string name="productDescription">상품 설명</string>
+    <string name="productMixtureRate">혼용률\</string>
+    <string name="productName">상품명</string>
+    <string name="productNotification">거래처 알림</string>
+    <string name="productNotificationDesc">거래처 알림을 켜면 새로운 상품이 등록될 때 거래처로 알림이 발송됩니다.</string>
+    <string name="productPrice">상품 가격</string>
+    <string name="productPullUpDesc">최신순 정렬 시 상품이 최상단으로 올라갑니다.</string>
+    <string name="productPhotoUpload">상품 사진 등록</string>
+    <string name="productPhotoUploadDesc">편집된 사진을 올리실 때는 360 x 562 사이즈로 올려주세요.</string>
+    <string name="productPublic">공개 여부</string>
+    <string name="productSelling">판매 중인 상품입니다</string>
+    <string name="productSize">상품 사이즈</string>
+    <string name="productSoldOut">품절된 상품입니다</string>
     <string name="pw">비밀번호</string>
     
     <string name="registrationNumber">사업자 등록번호</string>
@@ -102,21 +129,30 @@
     <string name="sendPwCompleted">회원가입시 입력한 휴대번호로 비밀번호가 발송되었습니다</string>
     <string name="sendCertification">인증번호 발송</string>
     <string name="sendCertificationCompleted">인증번호가 휴대전화로 발송되었습니다</string>
+	<string name="settingDoNotDisturb">방해금지 모드를 활성화 하면 설정된 시간동안 알림 메세지를 받을 수 없으며, 종료 시간에 일괄 발송됩니다.</string>
+    <string name="settingNotification">푸시 알림에 대한 설정은 환경설정 -> 응용프로그램 -> 응용프로그램관리에서도 설정할 수 있습니다.</string>
     <string name="signIn">로그인</string>
     <string name="signingIn">로그인 중..</string>
     <string name="signingUp">회원 가입..</string>
+    <string name="signOut">로그아웃</string>
     <string name="signUp">회원가입</string>
+    <string name="soldOut">품절</string>
     
     <string name="terms">약관</string>
-    
+
+    <string name="wannaSignOut">로그아웃 하시겠습니까?</string>
+    <string name="wannaWithdraw">회원 탈퇴하시겠습니까?</string>
     <string name="wholesale">도매</string>
+    <string name="withdraw">회원탈퇴</string>
     <string name="wrongAddress">주소를 입력해주세요</string>
     <string name="wrongCategory">매장 분류를 선택해주세요</string>
     <string name="wrongCertificationNumber">잘못된 인증번호입니다.</string>
     <string name="wrongCompanyName">상호명을 입력해주세요</string>
     <string name="wrongCompanyOwner">성함을 입력해주세요</string>
     <string name="wrongCompanyReg">사업자 등록 번호를 입력해주세요</string>
+    <string name="wrongCurrentPw">현재 비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongId">아이디를 올바르게 입력해주세요(6 ~ 64자)</string>
+    <string name="wrongNewPw">새 비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongSearchKeyword">검색어를 입력해주세요</string>

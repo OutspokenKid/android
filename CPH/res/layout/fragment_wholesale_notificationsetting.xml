@@ -6,40 +6,64 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleStaffPage_titleBar" 
+	    android:id="@+id/wholesaleNotificationSettingPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true" />
     
-    <!-- 승인 요청. -->
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/wholesaleNotificationSettingPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleNoticePage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/setting_bg2" />
+    
+    <!-- 알림 설정. -->
     
     <Button 
-        android:id="@+id/wholesaleStaffPage_btnRequest" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleStaffPage_titleBar"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/shop_info_btn" />
-    
-    <!-- 직원. -->
-    
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnStaff" 
+        android:id="@+id/wholesaleNotificationSettingPage_btnNotification" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleStaffPage_btnRequest"
-	    android:layout_toRightOf="@id/wholesaleStaffPage_btnRequest"
-	    android:background="@drawable/notice_btn" />
+	    android:layout_below="@id/wholesaleNotificationSettingPage_titleBar" />
     
-    <!-- 리스트뷰. -->
+    <TextView
+        android:id="@+id/wholesaleNotificationSettingPage_tvNotification"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleNotificationSettingPage_btnNotification"
+        android:text="@string/settingNotification"
+        android:textColor="#fff"
+        android:gravity="center_vertical" />
     
-    <ListView 
-            android:id="@+id/wholesaleStaffPage_listView" 
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true" 
-	    	android:cacheColorHint="#0000" />
+    <!-- 방해금지. -->
+    
+    <Button 
+        android:id="@+id/wholesaleNotificationSettingPage_btnDoNotDisturb" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/wholesaleNotificationSettingPage_tvNotification"
+	    android:background="@drawable/disturb_btn" />
+    
+    <TextView
+        android:id="@+id/wholesaleNotificationSettingPage_tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/wholesaleNotificationSettingPage_btnDoNotDisturb"
+        android:layout_alignParentRight="true"
+        android:textColor="#fff"
+        android:gravity="center" />
+    
+    <TextView
+        android:id="@+id/wholesaleNotificationSettingPage_tvDoNotDisturb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleNotificationSettingPage_btnDoNotDisturb"
+        android:text="@string/settingDoNotDisturb"
+        android:textColor="#fff"
+        android:gravity="top|left" />
     
 </RelativeLayout>

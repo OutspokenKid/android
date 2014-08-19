@@ -1,8 +1,17 @@
 package com.cmons.cph;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import com.cmons.cph.classes.CmonsFragmentActivity;
+import com.cmons.cph.fragments.wholesale.WholesaleForChangeInfoPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForChangePasswordPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForChangePhoneNumberPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForNoticeListPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForNoticePage;
+import com.cmons.cph.fragments.wholesale.WholesaleForNotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSamplePage;
@@ -10,11 +19,12 @@ import com.cmons.cph.fragments.wholesale.WholesaleForSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForShopPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForStaffPage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
+import com.cmons.cph.models.Notice;
 import com.cmons.cph.models.User;
 
 public class WholesaleActivity extends CmonsFragmentActivity {
 
-	private User user;
+	public User user;
 	
 	@Override
 	public void bindViews() {
@@ -119,7 +129,6 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 		startPage(new WholesaleForOrderPage(), null);
 	}
 	
-	
 	public void showSamplePage() {
 		
 		startPage(new WholesaleForSamplePage(), null);
@@ -143,5 +152,45 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 	public void showWritePage() {
 		
 		//.
+	}
+
+	public void showNoticeListPage() {
+		
+		startPage(new WholesaleForNoticeListPage(), null);
+	}
+	
+	public void showNoticePage(Notice notice) {
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("notice", notice);
+		
+		startPage(new WholesaleForNoticePage(), bundle);
+	}
+	
+	public void showNotificationSettingPage() {
+		
+		startPage(new WholesaleForNotificationSettingPage(), null);
+	}
+	
+	public void showChangeInfoPage() {
+		
+		startPage(new WholesaleForChangeInfoPage(), null);
+	}
+	
+	public void showChangePasswordPage() {
+		
+		startPage(new WholesaleForChangePasswordPage(), null);
+	}
+	
+	public void showChangePhoneNumberPage() {
+		
+		startPage(new WholesaleForChangePhoneNumberPage(), null);
+	}
+
+	public void launchSignInActivity() {
+		
+		Intent intent = new Intent(this, SignInActivity.class);
+		startActivity(intent);
+		finish();
 	}
 }

@@ -6,6 +6,7 @@
     <string name="agree">Agree</string>
     <string name="app_name">CPH</string>
 
+    <string name="cancel">Cancel</string>
     <string name="categoryText">Category text</string>
     <string name="certify">Certify</string>
     <string name="certifyCompleted">Certify completed</string>
@@ -14,6 +15,7 @@
     <string name="check_pwConfirm">Check pw confirm</string>
     <string name="companyName">Company name</string>
     <string name="complete">Complete</string>
+    <string name="confirm">OK</string>
     <string name="confirmPw">Confirm password</string>
     <string name="currentPw">Current pw</string>
     
@@ -23,6 +25,8 @@
     <string name="employee_md">Employee md</string>
     <string name="employee_normal">Employee normal</string>
     
+	<string name="failToChangePhoneNumber">Fail to change PhoneNumber</string>
+    <string name="failToChangePw">Fail to change Pw</string>
     <string name="failToFindId">Fail to find ID</string>
     <string name="failToFindPw">Fail to find Pw</string>
     <string name="failToSearchShop">Fail to search the shop</string>
@@ -31,7 +35,8 @@
     <string name="findId">Find ID</string>
     <string name="findPw">Find Password</string>
     <string name="floor">Floor</string>
-    
+
+    <string name="hintForChangePhoneNumber">hint for changephonenumber</string>
     <string name="hintForChangePw1">hint for changepw1</string>
     <string name="hintForChangePw2">hint for changepw2</string>
     <string name="hintForChangePw3">hint for changepw3</string>
@@ -42,6 +47,13 @@
     <string name="hintForName">Name</string>
     <string name="hintForPw">PW</string>
     <string name="hintForPhone">Phone number</string>
+    <string name="hintForProductCategory">hint for product category</string>
+    <string name="hintForProductColor">hint for product color</string>
+    <string name="hintForProductDescription">hint for product desc</string>
+    <string name="hintForProductMixtureRage">hint for product mixture rate</string>
+    <string name="hintForProductName">hint for product name</string>
+    <string name="hintForProductPrice">hint for product price</string>
+    <string name="hintForProductSize">hint for product size</string>
     <string name="hintForSearchCompanyName">Input company name</string>
     <string name="hintForSearchCompanyPhone">Input company phone</string>
     <string name="hintForSearchCompanyRegistration">Input company registration</string>
@@ -78,6 +90,22 @@
     <string name="phoneNumber">Phone number</string>
     <string name="phoneNumberForWholesale">Phone number</string>
     <string name="phoneNumberForRetail">Phone number</string>
+    <string name="productDescription">product description</string>
+    
+    <string name="productPrice">product price</string>
+    <string name="productCategory">product category</string>
+    <string name="productColor">product color</string>
+    <string name="productMixtureRate">product mixture rate</string>
+    <string name="productName">product name</string>
+    <string name="productNotification">product notification</string>
+    <string name="productNotificationDesc">product notification desc</string>
+    <string name="productPullUpDesc">product pull up desc</string>
+    <string name="productPhotoUpload">upload product photo</string>
+    <string name="productPhotoUploadDesc">upload product photo desc</string>
+    <string name="productPublic">product public</string>
+    <string name="productSelling">product selling</string>
+    <string name="productSize">product size</string>
+    <string name="productSoldOut">product sold out</string>
     <string name="pw">Password</string>
     
     <string name="registrationNumber">Registration number</string>
@@ -101,21 +129,30 @@
     <string name="sendPwCompleted">Send pw completed</string>
     <string name="sendCertification">Send verification number</string>
     <string name="sendCertificationCompleted">Send verification number completed</string>
+    <string name="settingDoNotDisturb">Setting about disturb</string>
+    <string name="settingNotification">Setting about notification</string>
     <string name="signIn">Sign In</string>
     <string name="signingIn">Signing In..</string>
     <string name="signingUp">Signing Up..</string>
+    <string name="signOut">Sign out</string>
     <string name="signUp">Sign Up</string>
-    
+	<string name="soldOut">Sold out</string>
+	    
     <string name="terms">Terms</string>
     
+    <string name="wannaSignOut">Do you want to sign out?</string>
+    <string name="wannaWithdraw">Do you want to withdraw?</string>
     <string name="wholesale">Wholesale</string>
+    <string name="withdraw">withdraw</string>
     <string name="wrongAddress">Wrong address</string>
     <string name="wrongCategory">Select category</string>
     <string name="wrongCertificationNumber">Wrong certification number</string>
     <string name="wrongCompanyName">Wrong company name</string>
     <string name="wrongCompanyOwner">Wrong company owner name</string>
     <string name="wrongCompanyReg">Wrong company registration</string>
+    <string name="wrongCurrentPw">wrong current pw</string>
     <string name="wrongId">Wrong ID</string>
+    <string name="wrongNewPw">wrong new pw</string>
     <string name="wrongPhoneNumber">Wrong phone number</string>
     <string name="wrongPw">Wrong PW</string>
     <string name="wrongSearchKeyword">Input keyword.</string>
