@@ -36,6 +36,7 @@ public class ListPage extends ZonecommsListFragment {
 	public void bindViews() {
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.listPage_mainLayout);
 		listView = (ListView) mThisView.findViewById(R.id.listPage_listView);
+		listView.setCacheColorHint(Color.TRANSPARENT);
 	}
 
 	@Override
@@ -271,5 +272,16 @@ public class ListPage extends ZonecommsListFragment {
 		if(mainActivity.getSponserBanner() != null) {
 			mainActivity.getSponserBanner().downloadBanner();
 		}
+	}
+
+	@Override
+	public void refreshPage() {
+		
+		if(isRefreshing) {
+			return;
+		}
+		
+		super.refreshPage();
+		downloadInfo();
 	}
 }

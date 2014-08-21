@@ -1,13 +1,11 @@
 package com.outspoken_kid.utils;
 
-import java.util.ArrayList;
-
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.AsyncTask;
+import android.os.Build;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -18,103 +16,32 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 import com.android.volley.toolbox.StringRequest;
-import com.outspoken_kid.classes.CacheCheckThread;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.imagecache.ImageCacheManager;
-import com.outspoken_kid.model.ImageLoadTask;
 
 public class DownloadUtils {
 
-	private static ArrayList<ImageLoadTask> tasks = new ArrayList<ImageLoadTask>();
-	private static Handler cacheHandler = new Handler() {
-		
-		public void handleMessage(Message msg) {
+	public static DownloadUtils instance;
 
-			Bundle bundle = msg.getData();
-			String url = bundle.getString("url");
-			Bitmap bitmap = null;
-			ImageLoadTask task = getImageLoadTask(url);
-
-			if(bundle.containsKey("bitmap")) {
-				bitmap = (Bitmap) bundle.get("bitmap");
-			}
-			
-			if(bitmap != null && !bitmap.isRecycled()) {
-				task.onBitmapDownloadListener.onCompleted(url, bitmap);
-			} else {
-				downloadBitmap(task);
-			}
-		};
+	public static DownloadUtils getInstance() {
 		
-		public synchronized ImageLoadTask getImageLoadTask(String url) {
-			
-			if(url == null) {
-				return null;
-			}
-			
-			for(int i=0; i<tasks.size(); i++) {
-				
-				if(url.equals(tasks.get(i).url)) {
-					
-					ImageLoadTask ilt = tasks.get(i);
-					tasks.remove(ilt);
-					return ilt;
-				}
-			}
-			
-			return null;
+		if(instance == null) {
+			instance = new DownloadUtils();
 		}
+		
+		return instance;
+	}
 	
-		public void downloadBitmap(final ImageLoadTask ilt) {
-			
-			Response.Listener<Bitmap> onResponseListener = new Response.Listener<Bitmap>() {
+	public void executeDownloadTask(String url, final OnBitmapDownloadListener onBitmapDownloadListener) {
+		
+		(new AsyncGetBitmap(url, onBitmapDownloadListener)).execute();
+	}
+	
+	public void executeCacheTask(String url, Bitmap bitmap) {
 
-				@Override
-				public void onResponse(Bitmap bitmap) {
-					
-					if(bitmap != null && !bitmap.isRecycled()) {
-						ImageCacheManager.getInstance().putBitmap(ilt.url, bitmap);
-						
-						if(ilt.onBitmapDownloadListener != null) {
-							ilt.onBitmapDownloadListener.onCompleted(ilt.url, bitmap);
-						}
-					} else{
-						if(ilt.onBitmapDownloadListener != null) {
-							ilt.onBitmapDownloadListener.onError(ilt.url);
-						}
-					}
-				}
-			};
-			Response.ErrorListener onErrorListener = new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError arg0) {
-					
-					if(ilt.onBitmapDownloadListener != null) {
-						ilt.onBitmapDownloadListener.onError(ilt.url);
-					}
-				}
-			};
-			
-			try {
-				ImageRequest imageRequest = new ImageRequest(ilt.url, onResponseListener, 0, 0,
-						Bitmap.Config.ARGB_8888, onErrorListener);
-				RequestManager.getRequestQueue().add(imageRequest);
-			} catch (Exception e) {
-				LogUtils.trace(e);
-				
-				if(ilt.onBitmapDownloadListener != null) {
-					ilt.onBitmapDownloadListener.onError(ilt.url);
-				}
-			} catch (Error e) {
-				LogUtils.trace(e);
-				
-				if(ilt.onBitmapDownloadListener != null) {
-					ilt.onBitmapDownloadListener.onError(ilt.url);
-				}
-			}
-		}
-	};
+		(new AsyncPutBitmap(url, bitmap)).execute();
+	}
+	
 	
 	/**
 	 * Download image to NetworkImageView.
@@ -184,12 +111,12 @@ public class DownloadUtils {
 	 * @param url
 	 * @param onBitmapDownloadListener
 	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
 	public static void downloadBitmap(final String url, 
 			final OnBitmapDownloadListener onBitmapDownloadListener) {
 		
 		try {
-			tasks.add(new ImageLoadTask(url, onBitmapDownloadListener));
-			(new CacheCheckThread(url, cacheHandler)).run();
+			getInstance().executeDownloadTask(url, onBitmapDownloadListener);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 			
@@ -248,6 +175,114 @@ public class DownloadUtils {
 				onStringDownloadListener.onError(url);
 			}
 		}
+	}
+	
+/////////////////////////// Classes.
+	
+	public class AsyncGetBitmap extends AsyncTask<String, Void, Bitmap> {
+
+		private String url;
+		private OnBitmapDownloadListener onBitmapDownloadListener;
+		
+		public AsyncGetBitmap(String url, OnBitmapDownloadListener onBitmapDownloadListener) {
+			this.url = url;
+			this.onBitmapDownloadListener = onBitmapDownloadListener;
+		}
+		
+		@Override
+		protected Bitmap doInBackground(String... arg0) {
+			
+			try {
+				return ImageCacheManager.getInstance().getBitmap(arg0[0]);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Bitmap bitmap) {
+			
+			if(bitmap != null && !bitmap.isRecycled()) {
+				onBitmapDownloadListener.onCompleted(url, bitmap);
+			} else {
+				downloadBitmap();
+			}
+		}
+		
+		public void downloadBitmap() {
+			
+			Response.Listener<Bitmap> onResponseListener = new Response.Listener<Bitmap>() {
+
+				@Override
+				public void onResponse(Bitmap bitmap) {
+					
+					if(bitmap != null && !bitmap.isRecycled()) {
+						
+						if(onBitmapDownloadListener != null) {
+							onBitmapDownloadListener.onCompleted(url, bitmap);
+						}
+						
+						getInstance().executeCacheTask(url, bitmap);
+					} else{
+						if(onBitmapDownloadListener != null) {
+							onBitmapDownloadListener.onError(url);
+						}
+					}
+				}
+			};
+			Response.ErrorListener onErrorListener = new Response.ErrorListener() {
+
+				@Override
+				public void onErrorResponse(VolleyError arg0) {
+					
+					if(onBitmapDownloadListener != null) {
+						onBitmapDownloadListener.onError(url);
+					}
+				}
+			};
+			
+			try {
+				ImageRequest imageRequest = new ImageRequest(url, onResponseListener, 0, 0,
+						Bitmap.Config.ARGB_8888, onErrorListener);
+				RequestManager.getRequestQueue().add(imageRequest);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+				
+				if(onBitmapDownloadListener != null) {
+					onBitmapDownloadListener.onError(url);
+				}
+			} catch (Error e) {
+				LogUtils.trace(e);
+				
+				if(onBitmapDownloadListener != null) {
+					onBitmapDownloadListener.onError(url);
+				}
+			}
+		}
+	}
+	
+	public class AsyncPutBitmap extends AsyncTask<Void, Void, Void> {
+
+		public String url;
+		public Bitmap bitmap;
+		
+		public AsyncPutBitmap(String url, Bitmap bitmap) {
+
+			this.url = url;
+			this.bitmap = bitmap;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			ImageCacheManager.getInstance().putBitmap(url, bitmap);
+			return null;
+		}
+		
 	}
 	
 /////////////////////////// Interfaces.

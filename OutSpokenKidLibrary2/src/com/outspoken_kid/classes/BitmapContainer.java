@@ -28,11 +28,7 @@ public class BitmapContainer {
 				return containers.get(url);
 			} else {
 				BitmapContainer bc = new BitmapContainer(url, bitmap);
-				
-				if(!containers.containsKey(url)) {
-					containers.put(url, bc);
-				}
-				
+				containers.put(url, bc);
 				return bc;
 			}
 		} catch (Exception e) {

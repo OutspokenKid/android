@@ -114,20 +114,25 @@ public class HoloStyleEditText extends FrameLayout {
 		}
 		
 		if(editText.isFocused()) {
+
+//			lengthOn = 6;
+//			lengthOff = 4;
+//			padding = 16;
 			
 			for(int i=0; i<lengthOn; i++) {
 				
-				//padding = 8, i = 0,1,2
-				
 				//가로.
-				canvas.drawLine(padding + lengthOn, 
+				canvas.drawLine(padding + lengthOn - 1,					 
 						getMeasuredHeight() - padding - i, 
-						getMeasuredWidth() - padding - lengthOn, 
+						getMeasuredWidth() - padding - lengthOn -1, 
 						getMeasuredHeight() - padding - i, paint);
 				
-				//11, h-10, w-11, h-10
-				//11, h-9, w-11, h-9
-				//11, h-8, w-11, h-8
+				//21, h-16, w-21, h-16
+				//21, h-17, w-21, h-17
+				//21, h-18, w-21, h-18
+				//21, h-19, w-21, h-19
+				//21, h-20, w-21, h-20
+				//21, h-21, w-21, h-21
 				
 				//왼쪽.
 				canvas.drawLine(padding + i, 
@@ -135,9 +140,12 @@ public class HoloStyleEditText extends FrameLayout {
 						padding + i, 
 						getMeasuredHeight() - (padding - 1), paint);
 				
-				//8, h-16, 8, h-8
-				//9, h-16, 8, h-8
-				//10, h-16, 8, h-8
+				//16, h-32, 16, h-15
+				//17, h-32, 17, h-15
+				//18, h-32, 18, h-15
+				//19, h-32, 19, h-15
+				//20, h-32, 20, h-15
+				//21, h-32, 21, h-15
 				
 				//오른쪽.
 				canvas.drawLine(getMeasuredWidth() - (padding + 1) - i, 
@@ -171,9 +179,9 @@ public class HoloStyleEditText extends FrameLayout {
 				//padding = 8, i = 0,1
 				
 				//가로.
-				canvas.drawLine(padding + lengthOff, 
+				canvas.drawLine(padding + lengthOff - 1, 
 						getMeasuredHeight() - padding - i, 
-						getMeasuredWidth() - padding - lengthOff, 
+						getMeasuredWidth() - padding - lengthOff - 1, 
 						getMeasuredHeight() - padding - i, paint2);
 				
 				//10, h-9, w-10, h-9

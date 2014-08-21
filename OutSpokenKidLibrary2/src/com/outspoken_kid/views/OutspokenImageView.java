@@ -9,8 +9,8 @@ import android.widget.ImageView;
 
 import com.outspoken_kid.classes.BitmapContainer;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
 
 public class OutspokenImageView extends ImageView {
@@ -31,6 +31,10 @@ public class OutspokenImageView extends ImageView {
 	}
 	
 	public void setImageUrl(String url) {
+
+		if(url != null && !url.equals(this.url)) {
+			clearImage();
+		}
 		
 		this.url = url;
 		downloadImage();
@@ -40,8 +44,6 @@ public class OutspokenImageView extends ImageView {
 		
 		try {
 			if(!StringUtils.isEmpty(url)) {
-			
-				final String IMAGE_URL = url;
 				
 				DownloadUtils.downloadBitmap(url,
 						new OnBitmapDownloadListener() {
@@ -60,8 +62,7 @@ public class OutspokenImageView extends ImageView {
 //											"\nurl : " + url +
 //											"\ntag : " + getTag());
 									
-									if (url != null
-											&& url.equals(IMAGE_URL)) {
+									if (url.equals(OutspokenImageView.this.url)) {
 										OutspokenImageView.this.bitmap = bitmap;
 										setImageBitmap(bitmap);
 									}
@@ -72,6 +73,8 @@ public class OutspokenImageView extends ImageView {
 								}
 							}
 						});
+			} else {
+				clearImage();
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -117,6 +120,5 @@ public class OutspokenImageView extends ImageView {
 	@Override
 	protected void onDetachedFromWindow() {
 		super.onDetachedFromWindow();
-		
 	}
 }

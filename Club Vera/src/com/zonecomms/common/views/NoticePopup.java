@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils.TruncateAt;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -241,6 +242,7 @@ public class NoticePopup extends FrameLayout {
 		tvContent.setPadding(p, p, p, p);
 		tvContent.setTextColor(Color.WHITE);
 		tvContent.setText(content);
+		tvContent.setAutoLinkMask(Linkify.WEB_URLS|Linkify.EMAIL_ADDRESSES);
 		FontUtils.setFontSize(tvContent, 26);
 		innerLinear.addView(tvContent);
 	}
