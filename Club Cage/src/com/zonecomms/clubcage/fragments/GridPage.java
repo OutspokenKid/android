@@ -75,7 +75,8 @@ public class GridPage extends ZonecommsListFragment {
 
 	@Override
 	public void setVariables() {
-
+		super.setVariables();
+		
 		if(getArguments() != null) {
 			
 			type = getArguments().getInt("type");
@@ -386,7 +387,6 @@ public class GridPage extends ZonecommsListFragment {
 		}
 		
 		super.refreshPage();
-		
 		downloadInfo();
 	}
 	
@@ -533,7 +533,6 @@ public class GridPage extends ZonecommsListFragment {
 					
 					if(editText.getVisibility() == View.VISIBLE) {
 						isLastList = false;
-						isRefreshing = true;
 						lastIndexno = 0;
 						models.clear();
 						targetAdapter.notifyDataSetChanged();
@@ -606,7 +605,6 @@ public class GridPage extends ZonecommsListFragment {
 							((RelativeLayout.LayoutParams)swipeRefreshLayout.getLayoutParams()).
 									topMargin = ResizeUtils.getSpecificLength(78);
 							isLastList = false;
-							isRefreshing = true;
 							lastIndexno = 0;
 							models.clear();
 							targetAdapter.notifyDataSetChanged();
@@ -699,9 +697,8 @@ public class GridPage extends ZonecommsListFragment {
 		
 		@Override
 		public void onPostExecute(Void result) {
-			
+
 			refreshPage();
 		}
 	}
-
 }

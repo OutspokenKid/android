@@ -73,6 +73,7 @@ public class MessagePage extends ZonecommsListFragment {
 
 	@Override
 	public void setVariables() {
+		super.setVariables();
 		
 		if(getArguments() != null) {
 			member_id = getArguments().getString("member_id");

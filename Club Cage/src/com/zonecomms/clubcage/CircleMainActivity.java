@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -36,6 +37,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -43,15 +45,18 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
+import com.zonecomms.clubcage.fragments.MainPage;
 import com.zonecomms.common.adapters.CircleListAdapter;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.StartupInfo.BgInfo;
 import com.zonecomms.common.models.StartupInfo.Popup;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.views.CircleHeaderView;
 import com.zonecomms.common.views.ImagePlayViewer;
 import com.zonecomms.common.views.NoticePopup;
@@ -340,9 +345,15 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onClick(View view) {
 
-				Intent intent = new Intent(CircleMainActivity.this, WriteActivity.class);
-				intent.putExtra("board_nid", 1);
-				startActivityForResult(intent, ZoneConstants.REQUEST_WRITE);
+				checkLoginAndExecute(new OnAfterLoginListener() {
+					
+					@Override
+					public void onAfterLogin() {
+						Intent intent = new Intent(CircleMainActivity.this, WriteActivity.class);
+						intent.putExtra("board_nid", 1);
+						startActivityForResult(intent, ZoneConstants.REQUEST_WRITE);
+					}
+				});
 			}
 		});
     	
@@ -399,7 +410,7 @@ public class CircleMainActivity extends Activity {
 				R.string.myHome,
 				R.string.notice,
 				R.string.schedule,
-				R.string.event,
+				R.string.guest,
 				R.string.story,
 				R.string.image,
 				R.string.video,
@@ -411,7 +422,7 @@ public class CircleMainActivity extends Activity {
 				"home",
 				"notice",
 				"schedule",
-				"event",
+				"guest",
 				"freetalk",
 				"image",
 				"video",
@@ -420,7 +431,7 @@ public class CircleMainActivity extends Activity {
 		};
 		
 		final String defaultUriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/";
-    	int height = ResizeUtils.getSpecificLength(130);
+    	int height = ResizeUtils.getSpecificLength(80);
     	int size = titleResIds.length;
     	for(int i=0; i<size; i++) {
     		final int INDEX = i;
@@ -461,7 +472,7 @@ public class CircleMainActivity extends Activity {
 					}
 				}
 			});
-    		FontUtils.setFontSize(textView, 40);
+    		FontUtils.setFontSize(textView, 28);
     		FontUtils.setGlobalFont(textView);
     		menuLinear.addView(textView);
     	}
@@ -701,6 +712,7 @@ public class CircleMainActivity extends Activity {
 			}
 			
 			onAfterLoginListener = null;
+			checkGCM();
 			break;
 		}
 	}
@@ -741,9 +753,56 @@ public class CircleMainActivity extends Activity {
     	//HoloConstants 설정.
     	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
 		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#99" + bgInfos[currentIndex].color.replace("#", ""));
-    	
-		//기존 메인 TitleBar 색 설정.
-		TitleBar.titleBarColor = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+
+		if(playIndex == 0) {
+			//기존 메인 TitleBar 색 설정.
+			TitleBar.titleBarColor = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+			
+			//기존 메인 버튼 색 설정.
+			
+			//  => 15% 더 밝게.
+			int red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.15f), 255);
+			int green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.15f), 255);
+			int blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.15f), 255);
+			
+			MainPage.colorBig = Color.rgb(red, green, blue);
+			
+			//  => 30% 더 밝게.
+			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.3f), 255);
+			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.3f), 255);
+			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.3f), 255);
+			
+			MainPage.colorSmall = Color.rgb(red, green, blue);
+			
+//			int color1 = 0, color2 = 0, color3 = 0, color4 = 0;
+//			
+//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.2f), 255);
+//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.2f), 255);
+//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.2f), 255);
+//			
+//			color1 = Color.rgb(red, green, blue);
+//			
+//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.4f), 255);
+//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.4f), 255);
+//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.4f), 255);
+//			
+//			color2 = Color.rgb(red, green, blue);
+//			
+//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.6f), 255);
+//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.6f), 255);
+//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.6f), 255);
+//			
+//			color3 = Color.rgb(red, green, blue);
+//			
+//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.8f), 255);
+//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.8f), 255);
+//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.8f), 255);
+//			
+//			color4 = Color.rgb(red, green, blue);
+//			
+//			//리스트 로딩 색 설정.
+//			swipeLayout.setColorSchemeColors(color1, color2, color3, color4);
+		}
 		
     	playIndex++;
     }
@@ -958,5 +1017,131 @@ public class CircleMainActivity extends Activity {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+	
+	public void checkGCM() {
+		
+		try {
+			GCMRegistrar.checkDevice(this);
+			GCMRegistrar.checkManifest(this);
+			final String regId = GCMRegistrar.getRegistrationId(this);
+
+			if(regId == null || regId.equals("")) {
+				GCMRegistrar.register(this, ZoneConstants.GCM_SENDER_ID);
+			} else {
+				updateInfo(regId);
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void updateInfo(String regId) {
+		
+		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
+				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+				"&registration_id=" + regId;
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+				
+				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainActivity.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void showDownloadPage(String uri, String packageName) {
+		
+		try {
+			if(uri == null) {
+				ToastUtils.showToast(R.string.invalidUri);
+			} else if(uri.contains("http://") || uri.contains("https://")) {
+				IntentHandlerActivity.actionByUri(Uri.parse(uri));
+			} else if(uri.contains("market://")) {
+				// 마켓으로 연결
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(uri));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				startActivity(intent);
+			} else if(uri.contains("tstore://")) {
+				
+				Intent intent = new Intent(Intent.ACTION_VIEW);
+				intent.setData(Uri.parse(uri));
+				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				
+				if(getPackageManager().queryIntentActivities(intent, 
+						PackageManager.MATCH_DEFAULT_ONLY).size() > 0 ) {
+					startActivity(intent);
+				} else {
+					ToastUtils.showToast(getResources().getString(R.string.thereIsNoTStore));
+					Intent i = new Intent(Intent.ACTION_VIEW);
+		    		i.setData(Uri.parse("http://m.tstore.co.kr"));
+		    		startActivity(i);
+				}
+			} else {
+				ToastUtils.showToast(R.string.invalidUri);
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void showDeviceBrowser(String url) {
+		
+		if(url == null || url.equals("")) {
+			ToastUtils.showToast(R.string.failToLoadWebBrowser);
+		} else {
+			try {
+				Uri uri = Uri.parse(url);
+			    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			    startActivity(intent);
+			} catch(Exception e) {
+				LogUtils.trace(e);
+				ToastUtils.showToast(R.string.failToLoadWebBrowser);
+			}
+		}
+	}
+	
+	public void showImageViewerActivity(String title, String[] imageUrls, String [] thumbnailUrls, int index) {
+		
+		if(imageUrls == null || imageUrls.length == 0) {
+			return;
+		}
+		
+		Intent intent = new Intent(this, ImageViewer.class);
+
+		if(!StringUtils.isEmpty(title)) {
+			intent.putExtra("title", title);
+		}
+		
+		if(imageUrls != null && imageUrls.length != 0) {
+			intent.putExtra("imageUrls", imageUrls);
+		}
+		
+		if(thumbnailUrls != null && thumbnailUrls.length != 0) {
+			intent.putExtra("thumbnailUrls", thumbnailUrls);
+		}
+
+		intent.putExtra("index", index);
+		
+		startActivity(intent);
+		overridePendingTransition(R.anim.slide_in_from_bottom, android.R.anim.fade_out);
 	}
 }

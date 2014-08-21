@@ -44,7 +44,6 @@
 
     <string name="edit">수정</string>
     <string name="emailAddress">이메일 주소</string>
-    <string name="event">이벤트</string>
 
     <string name="failToAccuse">신고 실패</string>
     <string name="failToAccuseReply">댓글 신고 실패</string>
@@ -94,6 +93,7 @@
     <string name="group_manage">모임 관리</string>
     <string name="group_newPost">모임 새 글</string>
     <string name="group_search">모임 검색</string>
+    <string name="guest">게스트</string>
 
     <string name="hintForConfirmNewPw">새 비밀번호를 다시 입력해주세요</string>
     <string name="hintForCurrentPw">현재 비밀번호를 입력해주세요</string>

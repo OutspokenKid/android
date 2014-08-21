@@ -61,6 +61,7 @@ public class AddedProfilePage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
+		super.setVariables();
 		
 		title = getString(R.string.addedProfile);
 	}

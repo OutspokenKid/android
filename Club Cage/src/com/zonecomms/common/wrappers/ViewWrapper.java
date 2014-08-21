@@ -11,13 +11,16 @@ import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
 public abstract class ViewWrapper {
 
-	private static final int lowColor = 65;
-	private static final int highColor = 125;
-	private static final int difference = 10;
+	protected final int[] alphas = new int[] {
+			76, 63, 50, 37, 24, 37, 50, 63
+	};
+
+	protected static int red, green, blue;
 	
 	protected WrapperView row;
 	protected View bg;
@@ -66,35 +69,24 @@ public abstract class ViewWrapper {
 		}
 
 		try {
-			int newColor = 0;
+			int originalColor = TitleBar.titleBarColor;
 			
-			/**		/6		%6		nc
-			 * 0	0		0		65
-			 * 1	0		1		75
-			 * 2	0		2		85
-			 * 3	0		3		95
-			 * 4	0		4		105
-			 * 5	0		5		115
-			 * 6	1		0		125
-			 * 7	1		1		115
-			 * 8	1		2		105
-			 * 9	1		3		95
-			 * 10	1		4		85
-			 * 11	1		5		75
-			 * 12	2		0		65
-			 * 13	2		1		75
-			 * 14	2		2		85
-			 * 15	2		3		95
-			 */
-			if( (position/6) %2 == 0) {
-				newColor = highColor - (position%6) * difference;		// highColor ~ (highColor - 50) = 125 ~ 75
-			} else {
-				newColor = lowColor + (position%6) * difference;		// lowColor ~ (lowColor + 50) = 65 ~ 115
+			if(red == 0) {
+				red = Color.red(originalColor);
 			}
 			
-//			bg.setBackgroundColor(Color.rgb(newColor, newColor, newColor));
-			bg.setBackgroundColor(Color.WHITE);
+			if(green == 0) {
+				green = Color.green(originalColor);
+			}
 			
+			if(blue == 0) {
+				blue = Color.blue(originalColor);
+			}
+			
+			int alpha = alphas[position % 8];
+			
+			int newColor = Color.argb(alpha, red, green, blue);
+			bg.setBackgroundColor(newColor);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}
@@ -102,7 +94,13 @@ public abstract class ViewWrapper {
 
 	public void setImage(final ImageView ivImage, String url) {
 
-		if(ivImage == null || url == null || url.length() == 0) {
+		if(ivImage == null) {
+			return;
+		}
+		
+		if(url == null || url.length() == 0) {
+			ivImage.setImageBitmap(null);
+			ivImage.setVisibility(View.INVISIBLE);
 			return;
 		}
 

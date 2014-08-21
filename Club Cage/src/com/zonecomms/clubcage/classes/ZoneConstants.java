@@ -33,7 +33,6 @@ public class ZoneConstants {
 	public static final int ITEM_VIDEO = 4;
 	public static final int ITEM_USER = 5;
 	public static final int ITEM_PHOTO = 6;
-	public static final int ITEM_EVENT = 7;
 	public static final int ITEM_MUSIC = 8;
 	public static final int ITEM_MESSAGE = 9;
 	public static final int ITEM_MESSAGESAMPLE = 10;
@@ -41,7 +40,7 @@ public class ZoneConstants {
 	//페이지 타입.
 	public static final int TYPE_NONE = 0;
 	public static final int TYPE_NOTICE = 1;
-	public static final int TYPE_EVENT = 2;
+	public static final int TYPE_GUEST = 2;
 	public static final int TYPE_STORY = 3;
 	public static final int TYPE_SCHEDULE = 4;
 	public static final int TYPE_MEMBER = 5;

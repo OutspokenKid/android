@@ -39,6 +39,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerButton;
@@ -101,6 +102,7 @@ public class SignUpActivity extends ZonecommsActivity {
 		scrollForMainInfo = (ScrollView) findViewById(R.id.signUpActivity_scrollForMainInfo);
 		scrollForSubInfo = (ScrollView) findViewById(R.id.signUpActivity_scrollForSubInfo);
 		
+		loadingView = findViewById(R.id.signUpActivity_loadingView);
 		cover = findViewById(R.id.signUpActivity_cover);
 		
 		pEmail = (HoloStyleSpinnerPopup) findViewById(R.id.signUpActivity_pEmail);
@@ -148,7 +150,7 @@ public class SignUpActivity extends ZonecommsActivity {
 		FontUtils.setFontSize(tvTitle, 30);
 		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 		
-		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
+		ResizeUtils.viewResize(120, 150, loadingView, 2, Gravity.CENTER, null);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForClause, 2, 
 				Gravity.LEFT|Gravity.TOP, new int[]{0, 90, 0, 0}, new int[]{40, 40, 40, 40});
@@ -725,7 +727,7 @@ public class SignUpActivity extends ZonecommsActivity {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvBirth, 2, Gravity.LEFT|Gravity.TOP, new int[]{40, 640, 0, 0});
 		tvBirth.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvBirth, 25);
-		tvBirth.setTextColor(Color.WHITE);
+		tvBirth.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		frameForSub.addView(tvBirth);
 		
 		FrameLayout ff = new FrameLayout(SignUpActivity.this);

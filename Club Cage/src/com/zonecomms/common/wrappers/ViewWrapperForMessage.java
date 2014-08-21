@@ -93,7 +93,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 
 						ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 1, Gravity.RIGHT, new int[]{0, 0, 8, 0});
 						ResizeUtils.viewResize(400, LayoutParams.WRAP_CONTENT, contentsLinear, 1,Gravity.RIGHT, null);
-						contentsLinear.setBackgroundResource(R.drawable.img_message_send);
+						contentsLinear.setBackgroundResource(R.drawable.talk02_01);
 						
 //////////////////////////////////////////////////////////////////////////
 					//다른 유저가 보낸 메세지.
@@ -105,7 +105,7 @@ public class ViewWrapperForMessage extends ViewWrapper {
 						ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvNickname, 1, Gravity.LEFT, new int[]{88, 0, 0, 0});
 						ResizeUtils.viewResize(400, LayoutParams.WRAP_CONTENT, contentsLinear, 1, Gravity.TOP|Gravity.LEFT, new int[]{88, 8, 0, 0});
 						ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 1, Gravity.LEFT, new int[]{8, 0, 0, 0});
-						contentsLinear.setBackgroundResource(R.drawable.img_message_receive);
+						contentsLinear.setBackgroundResource(R.drawable.talk01_01);
 						
 						tvNickname.setText(message.getPost_member_nickname());
 						setImage(ivProfile, message.getPost_media_src());

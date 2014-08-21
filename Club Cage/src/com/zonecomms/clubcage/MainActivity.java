@@ -113,8 +113,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			ZonecommsApplication.initWithActivity(this);
 			ZonecommsApplication.setupResources(this);
 			setPage(true);
-			
-			checkGCM();
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			finish();
@@ -487,6 +485,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			}
 			
 			onAfterLoginListener = null;
+			checkGCM();
 			break;
 		}
 	}
@@ -701,6 +700,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		try {
 			SettingPage sp = new SettingPage();
+			
 			startPage(sp, null);
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -982,7 +982,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				R.string.id,
 				R.string.notice,
 				R.string.schedule,
-				R.string.event,
+				R.string.guest,
 				R.string.board_story,
 //				R.string.board_review,
 //				R.string.board_with,
@@ -997,7 +997,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				R.drawable.bg_profile,
 				R.drawable.btn_side_notice,
 				R.drawable.btn_side_schedule,
-				R.drawable.btn_side_event,
+				R.drawable.btn_side_guest,
 				R.drawable.btn_side_story,
 //				R.drawable.btn_side_story,
 //				R.drawable.btn_side_story,
@@ -1055,7 +1055,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 								uriString += "schedule";
 								break;
 							case 3:
-								uriString += "event";
+								uriString += "guest";
 								break;
 							case 4:
 								uriString += "freetalk";

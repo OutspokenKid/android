@@ -10,7 +10,8 @@
         android:id="@+id/mainActivity_leftView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+        android:background="#6e6e6e" >
 
         <LinearLayout
 	        android:id="@+id/mainActivity_leftViewInner"

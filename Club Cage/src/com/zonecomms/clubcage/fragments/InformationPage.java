@@ -20,6 +20,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.zonecomms.clubcage.IntentHandlerActivity;
 import com.zonecomms.clubcage.R;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -42,14 +43,15 @@ public class InformationPage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
-
+		super.setVariables();
+		
 		title = getString(R.string.app_name);
 	}
 
 	@Override
 	public void createPage() {
 
-		madeCount += 20;
+madeCount += 20;
 		
 		int l = ResizeUtils.getSpecificLength(150);
 		int s = ResizeUtils.getSpecificLength(8);
@@ -77,14 +79,14 @@ public class InformationPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
 		textContainer.setLayoutParams(rp);
-		textContainer.setBackgroundColor(Color.rgb(55, 55, 55));
+		textContainer.setBackgroundColor(Color.WHITE);
 		relative.addView(textContainer);
 		
 		//Name.
 		TextView tvName = new TextView(mContext);
 		tvName.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
 				Gravity.TOP|Gravity.LEFT));
-		tvName.setTextColor(Color.WHITE);
+		tvName.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		tvName.setText(R.string.app_name);
 		tvName.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvName, 30);
@@ -95,7 +97,7 @@ public class InformationPage extends ZonecommsFragment {
 		TextView tvAddress = new TextView(mContext);
 		tvAddress.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
 				Gravity.BOTTOM|Gravity.LEFT));
-		tvAddress.setTextColor(Color.WHITE);
+		tvAddress.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		tvAddress.setText(R.string.clubAddress);
 		tvAddress.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvAddress, 30);
@@ -209,7 +211,7 @@ public class InformationPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		VIPInfoLayout.setLayoutParams(rp);
 		VIPInfoLayout.setId(madeCount + 5);
-		VIPInfoLayout.setBackgroundColor(Color.rgb(55, 55, 55));
+		VIPInfoLayout.setBackgroundColor(Color.WHITE);
 		VIPInfoLayout.setPadding(p, 0, p, 0);
 		VIPInfoLayout.setVisibility(View.GONE);
 		relative.addView(VIPInfoLayout);
@@ -221,10 +223,10 @@ public class InformationPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.BELOW, madeCount + 5);
 		rp.bottomMargin = s;
 		tvIntroduce.setLayoutParams(rp);
-		tvIntroduce.setBackgroundColor(Color.rgb(55, 55, 55));
+		tvIntroduce.setBackgroundColor(Color.WHITE);
 		tvIntroduce.setPadding(p, p, p, p);
 		tvIntroduce.setText(R.string.textForIntroduce);
-		tvIntroduce.setTextColor(Color.WHITE);
+		tvIntroduce.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvIntroduce, 26);
 		FontUtils.setFontStyle(tvIntroduce, FontUtils.BOLD);
 		relative.addView(tvIntroduce);

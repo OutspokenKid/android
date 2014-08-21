@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubcage.CircleMainActivity;
@@ -143,6 +145,8 @@ public class TitleBar extends LinearLayout {
 	}
 	
 	public void setTitleText(String title) {
+
+		LogUtils.log("###TitleBar.setTitleText.  title : " + title);
 		
 		if(!StringUtils.checkNullOrDefault(title, "")) {
 			tvTitle.setText(title);

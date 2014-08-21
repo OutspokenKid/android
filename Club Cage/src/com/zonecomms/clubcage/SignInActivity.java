@@ -5,7 +5,6 @@ import java.net.URLEncoder;
 import org.json.JSONObject;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
@@ -22,9 +21,11 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -104,6 +105,14 @@ public class SignInActivity extends ZonecommsActivity {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void finish() {
+		
+		SoftKeyboardUtils.hideKeyboard(this, logo);
+		
+		super.finish();
+	}
 	
 ///////////// Custom methods.
 	
@@ -137,7 +146,7 @@ public class SignInActivity extends ZonecommsActivity {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, tvNId, 1, 0, null);
 		tvNId.setGravity(Gravity.CENTER_HORIZONTAL);
 		tvNId.setText(R.string.introduceNId);
-		tvNId.setTextColor(Color.WHITE);
+		tvNId.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		FontUtils.setFontSize(tvNId, 32);
 		innerLinear.addView(tvNId);
 		

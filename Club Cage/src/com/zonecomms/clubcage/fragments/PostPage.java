@@ -101,7 +101,8 @@ public class PostPage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
-
+		super.setVariables();
+		
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
 		}

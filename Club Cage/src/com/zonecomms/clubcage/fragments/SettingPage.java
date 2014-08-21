@@ -87,8 +87,8 @@ public class SettingPage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
-		
-		title = getString(R.string.setting);
+		super.setVariables();
+		title = "SETTING";
 	}
 
 	@Override

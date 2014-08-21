@@ -121,6 +121,8 @@ public class UserPage extends ZonecommsFragment {
 	@Override
 	public void setVariables() {
 
+		super.setVariables();
+		
 		LogUtils.log("###UserPage.setVariables.  menuIndex :  " + mode);
 		
 		if(getArguments() != null) {

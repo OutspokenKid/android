@@ -80,6 +80,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
+		super.setVariables();
 	}
 
 	@SuppressLint("NewApi")

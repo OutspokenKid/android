@@ -156,7 +156,12 @@ public class ProfilePopup extends FrameLayout {
 				if(myStoryInfo != null && !StringUtils.isEmpty(myStoryInfo.getMystory_member_profile())) {
 					String title = myStoryInfo.getMystory_member_nickname();
 					String[] imageUrls = new String[]{myStoryInfo.getMystory_member_profile()};
-					ZonecommsApplication.getActivity().showImageViewerActivity(title, imageUrls, null, 0);
+					
+					if(ZonecommsApplication.getCircleActivity() != null) {
+						ZonecommsApplication.getCircleActivity().showImageViewerActivity(title, imageUrls, null, 0);
+					} else {
+						ZonecommsApplication.getActivity().showImageViewerActivity(title, imageUrls, null, 0);
+					}
 				}
 			}
 		});

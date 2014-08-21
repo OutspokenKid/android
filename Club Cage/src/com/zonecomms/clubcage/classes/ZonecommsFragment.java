@@ -49,6 +49,7 @@ public abstract class ZonecommsFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		
+		LogUtils.log("###ZonecommsFragment.onResume.  ");
 		checkTitleText();
 	}
 	
@@ -94,6 +95,8 @@ public abstract class ZonecommsFragment extends BaseFragment {
 	
 	public void checkTitleText() {
 		
+		LogUtils.log("###ZonecommsFragment.checkTitleText.  ");
+		
 		try {
 			mainActivity.getTitleBar().setTitleText(getTitleText());
 		} catch(Exception e) {
@@ -102,6 +105,8 @@ public abstract class ZonecommsFragment extends BaseFragment {
 	}
 
 	public String getTitleText() {
+		
+		LogUtils.log("###ZonecommsFragment.getTitleText.  title : " + title);
 		
 		if(title == null) {
 			title = getString(R.string.app_name);

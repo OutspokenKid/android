@@ -40,6 +40,7 @@ public class ListPage extends ZonecommsListFragment {
 
 	@Override
 	public void setVariables() {
+		super.setVariables();
 		
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
@@ -123,7 +124,7 @@ public class ListPage extends ZonecommsListFragment {
 					+ "&last_notice_nid=" + lastIndexno;
 			break;
 			
-		case ZoneConstants.TYPE_EVENT:
+		case ZoneConstants.TYPE_GUEST:
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=2"
 					+ "&image_size=640"
@@ -168,7 +169,7 @@ public class ListPage extends ZonecommsListFragment {
 									switch(type) {
 									
 									case ZoneConstants.TYPE_NOTICE:
-									case ZoneConstants.TYPE_EVENT:
+									case ZoneConstants.TYPE_GUEST:
 										Notice notice = new Notice(arJSON.getJSONObject(i));
 										notice.setItemCode(ZoneConstants.ITEM_NOTICE);		//공지사항과 같다.
 										models.add(notice);

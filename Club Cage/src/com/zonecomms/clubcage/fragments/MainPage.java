@@ -33,6 +33,9 @@ import com.zonecomms.common.models.Notice;
  */
 public class MainPage extends ZonecommsFragment {
 
+	public static int colorBig;
+	public static int colorSmall;
+	
 	private ScrollView scrollView;
 	private RelativeLayout mainRelative;
 //	private FrameLayout boardMenu;
@@ -54,6 +57,7 @@ public class MainPage extends ZonecommsFragment {
 
 	@Override
 	public void setVariables() {
+		super.setVariables();
 	}
 
 	@Override
@@ -99,7 +103,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.BELOW, madeCount);
 		bgForNotice.setLayoutParams(rp);
 		
-		bgForNotice.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForNotice.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForNotice);
 		
 		//Notice.			id : 1
@@ -122,33 +126,33 @@ public class MainPage extends ZonecommsFragment {
 		});
 		mainRelative.addView(notice);
 		
-		View bgForEvent = new View(mContext);
+		View bgForGuest = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.rightMargin = s;
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 1);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		bgForEvent.setLayoutParams(rp);
-		bgForEvent.setBackgroundColor(getResources().getColor(R.color.color_main_small));
-		mainRelative.addView(bgForEvent);
+		bgForGuest.setLayoutParams(rp);
+		bgForGuest.setBackgroundColor(colorSmall);
+		mainRelative.addView(bgForGuest);
 		
-		//Event.			id : 2
-		View event = new View(mContext);
+		//Guest.			id : 2
+		View guest = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.rightMargin = s;
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 1);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		event.setLayoutParams(rp);
-		event.setId(madeCount + 2);
-		event.setBackgroundResource(R.drawable.img_event);
-		event.setOnClickListener(new OnClickListener() {
+		guest.setLayoutParams(rp);
+		guest.setId(madeCount + 2);
+		guest.setBackgroundResource(R.drawable.img_guest);
+		guest.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/event";
+				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/guest";
 				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
 			}
 		});
-		mainRelative.addView(event);
+		mainRelative.addView(guest);
 		
 		View bgForHome = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
@@ -157,7 +161,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
 		bgForHome.setLayoutParams(rp);
-		bgForHome.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForHome.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForHome);
 		
 		//Home.			id : 3
@@ -187,7 +191,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 3);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 3);
 		bgForSetting.setLayoutParams(rp);
-		bgForSetting.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForSetting.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForSetting);
 		
 		View setting = new View(mContext);
@@ -212,7 +216,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
 		bgForTalk.setLayoutParams(rp);
-		bgForTalk.setBackgroundColor(getResources().getColor(R.color.color_main_big));
+		bgForTalk.setBackgroundColor(colorBig);
 		mainRelative.addView(bgForTalk);
 
 		View talk = new View(mContext);
@@ -240,7 +244,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
 		bgForSchedule.setLayoutParams(rp);
-		bgForSchedule.setBackgroundColor(getResources().getColor(R.color.color_main_big));
+		bgForSchedule.setBackgroundColor(colorBig);
 		mainRelative.addView(bgForSchedule);
 		
 		//Schedule.			id : 4
@@ -269,7 +273,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
 		bgForMember.setLayoutParams(rp);
-		bgForMember.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForMember.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForMember);
 		
 		//photo.				id : 5
@@ -297,7 +301,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 5);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 5);
 		bgForPhoto.setLayoutParams(rp);
-		bgForPhoto.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForPhoto.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForPhoto);
 		
 		View photo = new View(mContext);
@@ -323,7 +327,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 5);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 5);
 		bgForMusic.setLayoutParams(rp);
-		bgForMusic.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForMusic.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForMusic);
 		
 		//Music.			id : 6
@@ -351,7 +355,7 @@ public class MainPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 6);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 6);
 		bgForVideo.setLayoutParams(rp);
-		bgForVideo.setBackgroundColor(getResources().getColor(R.color.color_main_small));
+		bgForVideo.setBackgroundColor(colorSmall);
 		mainRelative.addView(bgForVideo);
 		
 		//Video.
@@ -707,7 +711,7 @@ public class MainPage extends ZonecommsFragment {
 //			
 //			View bg = new View(mContext);
 //			bg.setLayoutParams(fp);
-//			bg.setBackgroundColor(getResources().getColor(R.color.color_main_big));
+//			bg.setBackgroundColor(colorBig);
 //			boardMenu.addView(bg);
 //			
 //			final int I = i;

@@ -116,9 +116,19 @@ public class IntentHandlerActivity extends Activity {
 					+ "\nhost : " + host + "\nurl : " + url + "\nPAppId :" + ZoneConstants.PAPP_ID + "\n=========");
 			
 			if(scheme.equals("http")||scheme.equals("https")) {
-				ZonecommsApplication.getActivity().showDeviceBrowser(uri.toString());
+				
+				if(ZonecommsApplication.getCircleActivity() != null) {
+					ZonecommsApplication.getCircleActivity().showDeviceBrowser(uri.toString());
+				} else {
+					ZonecommsApplication.getActivity().showDeviceBrowser(uri.toString());
+				}
 			} else if(scheme.equals("market") || scheme.equals("tstore")) {
-				ZonecommsApplication.getActivity().showDownloadPage(uri.toString(), null);
+				
+				if(ZonecommsApplication.getCircleActivity() != null) {
+					ZonecommsApplication.getCircleActivity().showDownloadPage(uri.toString(), null);
+				} else {
+					ZonecommsApplication.getActivity().showDownloadPage(uri.toString(), null);
+				}
 			} else if(scheme.equals("popup")) {
 				String message = uri.getQueryParameter("message");
 				message = URLDecoder.decode(message, "utf-8");
@@ -211,8 +221,8 @@ public class IntentHandlerActivity extends Activity {
 					mActivity.showGridPage("SCHEDULE", ZoneConstants.TYPE_SCHEDULE);
 					
 				//이벤트.
-				} else if(url.equals("android.zonecomms.com/event")) {
-					mActivity.showListPage("EVENT", ZoneConstants.TYPE_EVENT);
+				} else if(url.equals("android.zonecomms.com/guest")) {
+					mActivity.showListPage("GUEST", ZoneConstants.TYPE_GUEST);
 					
 				//왁자지껄.
 				} else if(url.equals("android.zonecomms.com/freetalk")) {

@@ -43,8 +43,7 @@
 
     <string name="edit">Edit</string>
     <string name="emailAddress">E-mail address</string>
-    <string name="event">Event</string>
-
+    
     <string name="failToAccuse">Fail to accuse this post</string>
     <string name="failToAccuseReply">Fail to accuse this reply</string>
     <string name="failToCopyReply">Fail to copy this reply</string>
@@ -93,7 +92,8 @@
     <string name="group_manage">Manage groups</string>
     <string name="group_newPost">New post by groups</string>
     <string name="group_search">Search groups</string>
-
+	<string name="guest">Guest</string>
+    
     <string name="hintForConfirmNewPw">Confirm new password</string>
     <string name="hintForCurrentPw">Current password</string>
     <string name="hintForId">Id (4 ~ 20)</string>
