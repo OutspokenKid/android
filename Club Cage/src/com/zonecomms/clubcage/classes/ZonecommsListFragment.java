@@ -12,7 +12,6 @@ import com.zonecomms.common.adapters.GridAdapter;
 public abstract class ZonecommsListFragment extends ZonecommsFragment {
 
 	protected int lastIndexno;
-	protected boolean isLastList;
 	protected String url;
 	
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
@@ -48,20 +47,18 @@ public abstract class ZonecommsListFragment extends ZonecommsFragment {
 	
 	@Override
 	public void refreshPage() {
-
+		
 		if(isRefreshing) {
 			return;
 		}
-
-		isLastList = false;
+		
+		super.refreshPage();
+		
 		lastIndexno = 0;
 		models.clear();
-		targetAdapter.notifyDataSetChanged();
 		
 		if(targetAdapter instanceof GridAdapter) {
 			((GridAdapter)targetAdapter).clearHardCache();
 		}
-		
-		super.refreshPage();
 	}
 }

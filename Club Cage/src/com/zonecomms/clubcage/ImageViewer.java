@@ -40,8 +40,8 @@ public class ImageViewer extends ImageViewerActivity {
 	protected LayoutParams getSaveButtonLayoutParams() {
 
 		try {
-			int width = ResizeUtils.getSpecificLength(70);
-			int height = ResizeUtils.getSpecificLength(70);
+			int width = ResizeUtils.getSpecificLength(60);
+			int height = ResizeUtils.getSpecificLength(82);
 			FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(width, height);
 			fp.gravity = Gravity.TOP | Gravity.RIGHT;
 			fp.setMargins(0, ResizeUtils.getSpecificLength(10), 
@@ -58,7 +58,7 @@ public class ImageViewer extends ImageViewerActivity {
 	@Override
 	protected int getSaveButtonBackgroundResId() {
 
-		return R.drawable.btn_save;
+		return R.drawable.topicon_save_01;
 	}
 	
 	@Override

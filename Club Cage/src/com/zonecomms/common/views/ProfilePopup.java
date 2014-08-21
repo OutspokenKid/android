@@ -204,21 +204,41 @@ public class ProfilePopup extends FrameLayout {
 	
 	public void show(final String userId) {
 		
-		ZonecommsApplication.getActivity().checkLoginAndExecute(new OnAfterLoginListener() {
-			
-			@Override
-			public void onAfterLogin() {
-
-				if(isAnimating || getVisibility() == View.VISIBLE || StringUtils.isEmpty(userId)) {
-					return;
-				}
+		//In circle main.
+		if(ZonecommsApplication.getActivity() == null) {
+			ZonecommsApplication.getCircleActivity().checkLoginAndExecute(new OnAfterLoginListener() {
 				
-				setVisibility(View.VISIBLE);
-				startAnimation(aaIn);
-				GestureSlidingLayout.setScrollLock(true);
-				downloadUserInfo(userId);
-			}
-		});
+				@Override
+				public void onAfterLogin() {
+
+					if(isAnimating || getVisibility() == View.VISIBLE || StringUtils.isEmpty(userId)) {
+						return;
+					}
+					
+					setVisibility(View.VISIBLE);
+					startAnimation(aaIn);
+					downloadUserInfo(userId);
+				}
+			});
+			
+		//In main.
+		} else {
+			ZonecommsApplication.getActivity().checkLoginAndExecute(new OnAfterLoginListener() {
+				
+				@Override
+				public void onAfterLogin() {
+
+					if(isAnimating || getVisibility() == View.VISIBLE || StringUtils.isEmpty(userId)) {
+						return;
+					}
+					
+					setVisibility(View.VISIBLE);
+					startAnimation(aaIn);
+					GestureSlidingLayout.setScrollLock(true);
+					downloadUserInfo(userId);
+				}
+			});
+		}
 	}
 	
 	public void hide(final OnAfterHideListener onAfterHideListener) {
@@ -259,7 +279,7 @@ public class ProfilePopup extends FrameLayout {
 	public void downloadUserInfo(String userId) {
 
 		try {
-			ZonecommsApplication.getActivity().showLoadingView();
+//			ZonecommsApplication.getActivity().showLoadingView();
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + URLEncoder.encode(userId, "UTF-8") +
@@ -273,7 +293,7 @@ public class ProfilePopup extends FrameLayout {
 				public void onError(String url) {
 					
 					ToastUtils.showToast(R.string.failToLoadUserInfo);
-					ZonecommsApplication.getActivity().hideLoadingView();
+//					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					LogUtils.log("ProfilePopup.onErrorRaised.  url : " + url);
 					progress.setVisibility(View.INVISIBLE);
@@ -283,7 +303,7 @@ public class ProfilePopup extends FrameLayout {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					LogUtils.log("ProfilePopup.onCompleted.  url : " + url + "\nresult : " + objJSON);
-					ZonecommsApplication.getActivity().hideLoadingView();
+//					ZonecommsApplication.getActivity().hideLoadingView();
 					
 					try {
 						if(objJSON.has("result")) {

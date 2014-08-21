@@ -1,5 +1,6 @@
 package com.zonecomms.clubcage;
 
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -7,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -42,6 +45,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.zonecomms.clubcage.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubcage.classes.ZoneConstants;
 import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.adapters.CircleListAdapter;
@@ -51,6 +55,7 @@ import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.views.CircleHeaderView;
 import com.zonecomms.common.views.ImagePlayViewer;
 import com.zonecomms.common.views.NoticePopup;
+import com.zonecomms.common.views.ProfilePopup;
 import com.zonecomms.common.views.TitleBar;
 
 public class CircleMainActivity extends Activity {
@@ -65,12 +70,16 @@ public class CircleMainActivity extends Activity {
 	private LinearLayout menuLinear;
 	private ImagePlayViewer imagePlayViewer;
 	private TextView[] tvTitles = new TextView[2];
-	private FrameLayout frameForMenu, frameForHome, frameForWrite, frameForN; 
+	private View menu;
+	private View home;
+	private View write;
+	private View n;
 	private SwipeRefreshLayout swipeLayout;
 	private ListView listView;
 	private CircleListAdapter listAdapter;
 	private CircleHeaderView circleHeaderView;
 	private NoticePopup noticePopup;
+	private ProfilePopup profilePopup;
 	
 	private ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	private BgInfo[] bgInfos;
@@ -82,6 +91,8 @@ public class CircleMainActivity extends Activity {
 	private AlphaAnimation aaIn, aaOut;
 	private TranslateAnimation taIn, taOut;
 	private boolean animating;
+	
+	private OnAfterLoginListener onAfterLoginListener;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,19 +110,7 @@ public class CircleMainActivity extends Activity {
             setSizes();
             setListeners();
             
-        	final Intent intent = getIntent();				//'i' is intent that passed intent from before.
-    		
-    		if(intent!= null && intent.getData() != null) {
-    			
-    			swipeLayout.post(new Runnable() {
-    				
-    				@Override
-    				public void run() {
-    					
-    					launchToMainActivity(intent.getData());
-    				}
-    			});
-    		}
+        	handleIntent();
 
     		//Test.
     		//HoloConstants 설정. 
@@ -143,10 +142,10 @@ public class CircleMainActivity extends Activity {
     	tvTitles[0] = (TextView) findViewById(R.id.circleMainActivity_tvTitle1);
     	tvTitles[1] = (TextView) findViewById(R.id.circleMainActivity_tvTitle2);
     
-    	frameForMenu = (FrameLayout) findViewById(R.id.circleMainActivity_frameForMenu);
-    	frameForHome = (FrameLayout) findViewById(R.id.circleMainActivity_frameForHome);
-    	frameForWrite = (FrameLayout) findViewById(R.id.circleMainActivity_frameForWrite);
-    	frameForN = (FrameLayout) findViewById(R.id.circleMainActivity_frameForN);
+    	menu = findViewById(R.id.circleMainActivity_menu);
+    	home = findViewById(R.id.circleMainActivity_home);
+    	write = findViewById(R.id.circleMainActivity_write);
+    	n = findViewById(R.id.circleMainActivity_n);
     	
     	swipeLayout = (SwipeRefreshLayout) findViewById(R.id.circleMainActivity_swipe_container);
     	listView = (ListView) findViewById(R.id.circleMainActivity_listView);
@@ -234,15 +233,10 @@ public class CircleMainActivity extends Activity {
     	ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, CircleHeaderView.TITLE_BAR_HEIGHT, 
     			tvTitles[1], 2, Gravity.TOP, null);
     	
-    	ResizeUtils.viewResize(60, 60, frameForMenu, 2, Gravity.LEFT|Gravity.TOP, new int[]{17, 11, 0, 0});
-    	ResizeUtils.viewResize(60, 60, frameForHome, 2, Gravity.LEFT|Gravity.TOP, new int[]{81, 11, 0, 0});
-    	ResizeUtils.viewResize(60, 60, frameForWrite, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 81, 0});
-    	ResizeUtils.viewResize(60, 60, frameForN, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 11, 17, 0});
-    	
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_menu), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_home), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_write), 2, Gravity.CENTER, null);
-    	ResizeUtils.viewResize(34, 34, findViewById(R.id.circleMainActivity_n), 2, Gravity.CENTER, null);
+    	ResizeUtils.viewResize(60, 82, menu, 2, Gravity.LEFT|Gravity.TOP, new int[]{10, 0, 0, 0});
+    	ResizeUtils.viewResize(60, 82, home, 2, Gravity.LEFT|Gravity.TOP, new int[]{80, 0, 0, 0});
+    	ResizeUtils.viewResize(60, 82, write, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 0, 80, 0});
+    	ResizeUtils.viewResize(60, 82, n, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 0, 10, 0});
     	
     	FontUtils.setFontSize(tvTitles[0], 36);
     	FontUtils.setFontSize(tvTitles[1], 36);
@@ -319,7 +313,7 @@ public class CircleMainActivity extends Activity {
 			}
 		});
     	
-    	frameForMenu.setOnClickListener(new OnClickListener() {
+    	menu.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -332,7 +326,7 @@ public class CircleMainActivity extends Activity {
 			}
 		});
     	
-    	frameForHome.setOnClickListener(new OnClickListener() {
+    	home.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -341,7 +335,7 @@ public class CircleMainActivity extends Activity {
 			}
 		});
     	
-    	frameForWrite.setOnClickListener(new OnClickListener() {
+    	write.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -352,7 +346,7 @@ public class CircleMainActivity extends Activity {
 			}
 		});
     	
-    	frameForN.setOnClickListener(new OnClickListener() {
+    	n.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -402,6 +396,7 @@ public class CircleMainActivity extends Activity {
 		menuScroll.setPadding(0, topPadding, 0, 0);
     	
 		int[] titleResIds = new int[] {
+				R.string.myHome,
 				R.string.notice,
 				R.string.schedule,
 				R.string.event,
@@ -413,12 +408,12 @@ public class CircleMainActivity extends Activity {
 		};
 		
 		final String[] uriStrings = new String[] {
+				"home",
 				"notice",
 				"schedule",
 				"event",
 				"freetalk",
 				"image",
-				"music",
 				"video",
 				"member",
 				"setting"
@@ -447,7 +442,18 @@ public class CircleMainActivity extends Activity {
 				public void onClick(View view) {
 					
 					try {
-						launchToMainActivity(Uri.parse(defaultUriString + uriStrings[INDEX]));
+						if(INDEX == 0 || INDEX == 7 || INDEX == 8) {
+							checkLoginAndExecute(new OnAfterLoginListener() {
+								
+								@Override
+								public void onAfterLogin() {
+									
+									launchToMainActivity(Uri.parse(defaultUriString + uriStrings[INDEX]));
+								}
+							});
+						} else{
+							launchToMainActivity(Uri.parse(defaultUriString + uriStrings[INDEX]));
+						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (Error e) {
@@ -557,6 +563,8 @@ public class CircleMainActivity extends Activity {
     	
     	if(menuScroll.getVisibility() == View.VISIBLE) {
     		hideMenuScroll();
+    	} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
+			profilePopup.hide(null);
     	} else {
     		super.onBackPressed();
     	}
@@ -581,17 +589,19 @@ public class CircleMainActivity extends Activity {
 			@Override
 			public void onError(String url) {
 				
-//				LogUtils.log("###CircleMainPage.Error.  \nurl : " + url);
+				LogUtils.log("###CircleMainPage.Error.  \nurl : " + url);
 				setPage(false);
 			}
 			
 			@Override
 			public void onCompleted(String url, JSONObject objJSON) {
 
-//				LogUtils.log("###CircleMainPage.onCompleted.  \nurl : " + url +
-//						"\nresult  :  " + objJSON);
+				LogUtils.log("###CircleMainPage.onCompleted.  \nurl : " + url +
+						"\nresult  :  " + objJSON);
 				
 				try {
+					boolean isFirstLoading = models.size() == 0;
+					
 					JSONArray arJSON = objJSON.getJSONArray("data");
 					
 					int size = arJSON.length();
@@ -607,10 +617,13 @@ public class CircleMainActivity extends Activity {
 					
 					listAdapter.notifyDataSetChanged();
 					
-					if(swipeLayout.getVisibility() != View.VISIBLE) {
-						showContainer();
-					} else {
-						showNext();
+					if(isFirstLoading) {
+						
+						if(swipeLayout.getVisibility() != View.VISIBLE) {
+							showContainer();
+						} else {
+							showNext();
+						}
 					}
 					
 					setPage(true);
@@ -676,6 +689,18 @@ public class CircleMainActivity extends Activity {
 					}
 				}
 			}
+			break;
+			
+		case ZoneConstants.REQUEST_SIGN:
+
+			if(resultCode == RESULT_OK) {
+				
+				if(onAfterLoginListener != null) {
+					onAfterLoginListener.onAfterLogin();
+				}
+			}
+			
+			onAfterLoginListener = null;
 			break;
 		}
 	}
@@ -790,14 +815,148 @@ public class CircleMainActivity extends Activity {
 		noticePopup.show(popup);
 	}
 
+	public void addProfilePopup() {
+
+		profilePopup = new ProfilePopup(this);
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, profilePopup, 2, 0, null);
+		((FrameLayout) findViewById(R.id.circleMainActivity_mainLayout)).addView(profilePopup);
+	}
+	
+	public void showProfilePopup(String userId, int status) {
+		
+		if(status == -1 || status == -9) {
+			ToastUtils.showToast(R.string.withdrawnMember);
+			return;
+		}
+		
+		if(profilePopup == null) {
+			addProfilePopup();
+		}
+		
+		profilePopup.show(userId);
+	}
+
+	public void checkLoginAndExecute(final OnAfterLoginListener listener) {
+
+		if(ZonecommsApplication.myInfo == null) {
+			DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					onAfterLoginListener = listener;
+					launchToSignInActivity();
+				}
+			};
+			showAlertDialog(R.string.signIn, R.string.needSignIn, R.string.confirm, R.string.cancel, ocl, null);
+		} else {
+			listener.onAfterLogin();
+		}
+	}
+	
+	public void launchToSignInActivity() {
+
+		Intent intent = new Intent(this, SignInActivity.class);
+		startActivityForResult(intent, ZoneConstants.REQUEST_SIGN);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+	}
+
+	public void showAlertDialog(int title, int message, int positive,
+			int negative, 
+			DialogInterface.OnClickListener onPositive, 
+			DialogInterface.OnClickListener onNegative) {
+
+		String titleString = null;
+		String messageString = null;
+		String positiveString = null;
+		String negativeString = null;
+		
+		if(title != 0) {
+			titleString = getString(title);
+		}
+		
+		if(message != 0) {
+			messageString = getString(message);
+		}
+		
+		if(positive != 0) {
+			positiveString = getString(positive);
+		}
+		
+		if(negative != 0) {
+			negativeString = getString(negative);
+		}
+		
+		showAlertDialog(titleString, messageString, positiveString, negativeString, 
+				onPositive, null);
+	}
+	
+	public void showAlertDialog(String title, String message, String positive,
+			String negative, 
+			DialogInterface.OnClickListener onPositive, 
+			DialogInterface.OnClickListener onNegative) {
+
+		try {
+			AlertDialog.Builder adb = new AlertDialog.Builder(this);
+			adb.setTitle(title);
+			adb.setPositiveButton(positive, onPositive);
+			
+			if(negative != null) {
+				adb.setNegativeButton(negative, onNegative);
+			}
+			adb.setCancelable(true);
+			adb.setOnCancelListener(null);
+			adb.setMessage(message);
+			adb.show();
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 	@Override
 	public void finish() {
 		super.finish();
 		
 		if(ZonecommsApplication.getActivity() != null) {
 			ZonecommsApplication.getActivity().finish();
+			ZonecommsApplication.setActivity(null);
 		}
 		
 		ZonecommsApplication.setCircleMainActivity(null);
+	}
+
+	public void handleIntent() {
+
+		try {
+			final Intent intent = getIntent();				//'i' is intent that passed intent from before.
+			
+			if(intent!= null && intent.getData() != null) {
+				
+				Uri uri = intent.getData();
+				LogUtils.log("###CircleMainActivity.onCreate.handleUri  url : " + uri);
+				
+				if(!intent.getData().getScheme().equals("popup")) {
+					swipeLayout.post(new Runnable() {
+	    				
+	    				@Override
+	    				public void run() {
+	    					
+	    					launchToMainActivity(intent.getData());
+	    				}
+	    			});
+				} else {
+					String message = intent.getData().getQueryParameter("message");
+					message = URLDecoder.decode(message, "utf-8");
+					
+					showAlertDialog(null, message, getString(R.string.confirm), null, null, null);
+				}
+				
+				intent.setData(null);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }

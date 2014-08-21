@@ -67,7 +67,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvTitle, 2, 
 				Gravity.CENTER_VERTICAL, new int[]{30, 0, 60, 0});
-		FontUtils.setFontSize(tvTitle, 30);
+		FontUtils.setFontSize(tvTitle, 28);
 
 		ResizeUtils.viewResize(624, 0, ivImage, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0});
 		

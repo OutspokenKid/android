@@ -1012,7 +1012,8 @@ public class UserPage extends ZonecommsFragment {
 		}
 
 		bgMenus[this.mode].setBackgroundColor(Color.rgb(217, 217, 217));
-		bgMenus[mode].setBackgroundColor(Color.rgb(119, 119, 119));
+//		bgMenus[mode].setBackgroundColor(Color.rgb(119, 119, 119));
+		bgMenus[mode].setBackgroundColor(HoloConstants.COLOR_HOLO_TARGET_ON);
 		
 		this.mode = mode;
 		
@@ -1196,6 +1197,9 @@ public class UserPage extends ZonecommsFragment {
 
 						@Override
 						public void onError(String url) {
+							LogUtils.log("UserPage.onError." + "\nurl : "
+									+ url);
+							
 							ivImage.setVisibility(View.VISIBLE);
 							progress.setVisibility(View.INVISIBLE);
 						}
@@ -1211,6 +1215,7 @@ public class UserPage extends ZonecommsFragment {
 										&& ivImage.getTag() != null
 										&& ivImage.getTag().toString()
 												.equals(url)) {
+									ivImage.setImageBitmap(bitmap);
 									ivImage.setVisibility(View.VISIBLE);
 									progress.setVisibility(View.INVISIBLE);
 								}

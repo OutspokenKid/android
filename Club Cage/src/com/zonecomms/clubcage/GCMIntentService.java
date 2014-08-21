@@ -2,6 +2,8 @@ package com.zonecomms.clubcage;
 
 import java.net.URLEncoder;
 
+import org.json.JSONObject;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.zonecomms.clubcage.classes.ZoneConstants;
@@ -126,7 +129,20 @@ public class GCMIntentService extends GCMBaseIntentService {
 			String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&registration_id=" + regId;
-			DownloadUtils.downloadJSONString(url, null);
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+				
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("###GCMIntentService.onError.  \nurl : " + url);
+				}
+				
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					LogUtils.log("###GCMIntentService.onCompleted.  \nresult : " + objJSON);
+				}
+			});
 		} catch(Exception e) {
 			//Do nothing.
 		}

@@ -150,6 +150,7 @@
    	<string name="message">Message</string>
    	<string name="modifyUserInfo">Modify user info</string>
     <string name="mustInput">You must input this</string>
+    <string name="myHome">My home</string>
     <string name="myPost">My post</string>
     
     <string name="needSignIn">Need login</string>

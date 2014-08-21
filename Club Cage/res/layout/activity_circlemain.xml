@@ -60,52 +60,28 @@
         android:visibility="invisible"
         android:textColor="#fff" />
 
-    <FrameLayout
-        android:id="@+id/circleMainActivity_frameForMenu"
+    <View
+        android:id="@+id/circleMainActivity_menu"
         android:layout_width="0dp"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_menu_01" />
 
-        <View
-            android:id="@+id/circleMainActivity_menu"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/btn_top_renewal_menu" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/circleMainActivity_frameForHome"
+    <View
+        android:id="@+id/circleMainActivity_home"
         android:layout_width="0dp"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_metro_01" />
 
-        <View
-            android:id="@+id/circleMainActivity_home"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/btn_top_renewal_home" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/circleMainActivity_frameForWrite"
+    <View
+        android:id="@+id/circleMainActivity_write"
         android:layout_width="0dp"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_write_01" />
 
-        <View
-            android:id="@+id/circleMainActivity_write"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/btn_top_renewal_write" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/circleMainActivity_frameForN"
+    <View
+        android:id="@+id/circleMainActivity_n"
         android:layout_width="0dp"
-        android:layout_height="0dp" >
-
-        <View
-            android:id="@+id/circleMainActivity_n"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:background="@drawable/btn_top_renewal_n" />
-    </FrameLayout>
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_n_01" />
     
 </FrameLayout>

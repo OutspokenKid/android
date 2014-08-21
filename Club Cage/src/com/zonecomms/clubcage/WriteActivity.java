@@ -130,7 +130,7 @@ public class WriteActivity extends ZonecommsActivity {
 		
 		//titleBar.
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, findViewById(R.id.writeActivity_titleBar), 1, 0, null);
-		ResizeUtils.viewResize(70, 70, btnComplete, 2, Gravity.RIGHT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 20, 0});
+		ResizeUtils.viewResize(60, 82, btnComplete, 2, Gravity.RIGHT|Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
 		FontUtils.setFontSize((TextView)findViewById(R.id.writeActivity_tvTitle), 40);
 		
 		//EditText.
@@ -138,7 +138,7 @@ public class WriteActivity extends ZonecommsActivity {
 		
 		ResizeUtils.viewResize(66, 53, btnPhoto, 1, Gravity.CENTER_VERTICAL, new int[]{10, 10, 10, 10});
 		
-		ResizeUtils.viewResize(50, 120, loadingView, 2, Gravity.CENTER, null);
+		ResizeUtils.viewResize(120, 150, loadingView, 2, Gravity.CENTER, null);
 	}
 
 	@Override
@@ -517,22 +517,30 @@ public class WriteActivity extends ZonecommsActivity {
 
 					LogUtils.log("WriteActivity.onCompleted.  url : " + url + "\nresult : " + objJSON.toString());
 					
-					ToastUtils.showToast(R.string.postingCompleted);
-					SoftKeyboardUtils.hideKeyboard(editText.getContext(), editText);
-					
 					int spot_nid = 0;
+					String message = null;
 					
 					try {
-						spot_nid = Integer.parseInt(objJSON.getString("data"));
+						
+						if(objJSON.getInt("errorCode") == 1) {
+							spot_nid = Integer.parseInt(objJSON.getString("data"));
+							
+							SoftKeyboardUtils.hideKeyboard(editText.getContext(), editText);
+							
+							Intent intent = new Intent();
+							intent.putExtra("spot_nid", spot_nid);
+							
+							message = getString(R.string.postingCompleted);
+							setResult(RESULT_OK, intent);
+							finish();
+						} else {
+							message = objJSON.getString("errorMsg");
+						}
 					} catch(Exception e) {
-						LogUtils.trace(e);	
+						LogUtils.trace(e);
+					} finally {
+						ToastUtils.showToast(message);
 					}
-					
-					Intent intent = new Intent();
-					intent.putExtra("spot_nid", spot_nid);
-					
-					setResult(RESULT_OK, intent);
-					finish();
 				}
 			});
 		} catch(Exception e) {

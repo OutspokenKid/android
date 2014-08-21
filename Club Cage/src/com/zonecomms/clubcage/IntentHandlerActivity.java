@@ -122,8 +122,14 @@ public class IntentHandlerActivity extends Activity {
 			} else if(scheme.equals("popup")) {
 				String message = uri.getQueryParameter("message");
 				message = URLDecoder.decode(message, "utf-8");
-				ZonecommsApplication.getActivity().showAlertDialog(null, message, 
-						ZonecommsApplication.getActivity().getString(R.string.confirm), null);
+				
+				if(ZonecommsApplication.getCircleActivity() != null) {
+					ZonecommsApplication.getCircleActivity().showAlertDialog(null, message, 
+							ZonecommsApplication.getActivity().getString(R.string.confirm), null, null, null);
+				} else {
+					ZonecommsApplication.getActivity().showAlertDialog(null, message, 
+							ZonecommsApplication.getActivity().getString(R.string.confirm), null);
+				}
 			} else if(scheme.equals(ZoneConstants.PAPP_ID)) {
 
 				final MainActivity mActivity = ZonecommsApplication.getActivity();

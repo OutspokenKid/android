@@ -28,7 +28,7 @@
                 android:id="@+id/writeActivity_btnComplete"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="@drawable/btn_submit" />
+                android:background="@drawable/topicon_post_01" />
         </FrameLayout>
 
         <ScrollView
@@ -50,15 +50,12 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:background="#fff"
-                    android:hint="@string/hintForPosting"
                     android:inputType="textMultiLine"
                     android:paddingBottom="10dp"
                     android:paddingLeft="20dp"
                     android:paddingRight="20dp"
                     android:paddingTop="10dp"
-                    android:textColor="#333"
-                    android:textColorHint="#888"
-                    android:textCursorDrawable="@null" />
+                    android:textColor="#333" />
 
                 <FrameLayout
                     android:id="@+id/writeActivity_photoFrame"
@@ -135,11 +132,11 @@
             android:background="@drawable/rounded_corner_to_loadingview1" />
 
         <View
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="41dp"
             android:layout_gravity="top|center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="@drawable/btn_top_n" />
+            android:background="@drawable/topicon_n_01" />
 
         <ProgressBar
             android:layout_width="15dp"

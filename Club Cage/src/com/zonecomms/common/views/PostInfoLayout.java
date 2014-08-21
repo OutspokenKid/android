@@ -110,17 +110,15 @@ public class PostInfoLayout extends RelativeLayout {
 		this.addView(tvRegdate);
 		
 		more = new View(getContext());
-		rp = new RelativeLayout.LayoutParams(l/3*2, l/3); //100 * 50
+		rp = new RelativeLayout.LayoutParams(l, l/2); //150 * 75
 		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(15);
 		more.setLayoutParams(rp);
 		this.addView(more);
 		
 		colorView = new View(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(60), 
-				ResizeUtils.getSpecificLength(20));
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(50), 
+				ResizeUtils.getSpecificLength(10));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		rp.rightMargin = ResizeUtils.getSpecificLength(30);
@@ -131,7 +129,7 @@ public class PostInfoLayout extends RelativeLayout {
 		
 		View mask = new View(getContext());
 		mask.setLayoutParams(rp);
-		mask.setBackgroundResource(R.drawable.img_dot);
+		mask.setBackgroundResource(R.drawable.mask_more2);
 		this.addView(mask);
 	}
 

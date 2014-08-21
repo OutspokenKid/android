@@ -16,7 +16,8 @@
     
     <string name="baseProfile">기본 프로필</string>
     <string name="birth">생년월일</string>
-    <string name="board_story">왁자지껄</string>
+<!--     <string name="board_story">왁자지껄</string> -->
+	<string name="board_story">스토리</string>
     <string name="board_review">생생후기</string>
     <string name="board_with">함께가기</string>
     <string name="board_findPeople">공개수배</string>
@@ -150,6 +151,7 @@
    	<string name="message">메세지</string>
    	<string name="modifyUserInfo">회원 정보 수정</string>
     <string name="mustInput">필수 입력 사항</string>
+    <string name="myHome">마이홈</string>
     <string name="myPost">내 글</string>
 
     <string name="needSignIn">로그인이 필요한 서비스 입니다</string>

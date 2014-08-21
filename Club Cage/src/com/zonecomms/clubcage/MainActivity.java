@@ -3,7 +3,6 @@ package com.zonecomms.clubcage;
 import java.io.File;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import org.json.JSONObject;
 
@@ -64,12 +63,10 @@ import com.zonecomms.clubcage.fragments.UserPage;
 import com.zonecomms.common.models.Media;
 import com.zonecomms.common.models.SideMenu;
 import com.zonecomms.common.models.StartupInfo.Banner;
-import com.zonecomms.common.models.StartupInfo.Popup;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
-import com.zonecomms.common.views.NoticePopup;
 import com.zonecomms.common.views.ProfilePopup;
 import com.zonecomms.common.views.SideView;
 import com.zonecomms.common.views.SponserBanner;
@@ -88,7 +85,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	private LinearLayout topView;
 	private TitleBar titleBar;
 	private ProfilePopup profilePopup;
-	private NoticePopup noticePopup;
 	private View loadingView;
 	private SideView profileView;
 	private SoftKeyboardDetector softKeyboardDetector;
@@ -243,11 +239,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		setAnimationDrawable();
 		checkVersion();
 		
-//		if(getFragmentsSize() == 0) {
-//			showMainPage();
-//			checkPopup();
-//		}
-		
 		final Intent i = getIntent();				//'i' is intent that passed intent from before.
 		
 		if(i!= null && i.getData() != null) {
@@ -290,13 +281,11 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				try {
 					if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
-					} else if(noticePopup != null && noticePopup.getVisibility() == View.VISIBLE) {
-						noticePopup.hide(null);
 					} else if(profilePopup != null && profilePopup.getVisibility() == View.VISIBLE) {
 						profilePopup.hide(null);
-					} else if(getTopFragment().onBackPressed()) {
+					} else if(getTopFragment() != null && getTopFragment().onBackPressed()) {
 						//Do nothing.
-					} else if(getTopFragment() instanceof MainPage) {
+					} else if(getTopFragment() != null && getTopFragment() instanceof MainPage) {
 						finish();
 					} else if(getFragmentsSize() > 1){
 						closeTopPage();
@@ -1153,22 +1142,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		profilePopup.show(userId);
 	}
-
-	public void addNoticePopup() {
-		
-		noticePopup = new NoticePopup(context);
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, noticePopup, 2, 0, null);
-		gestureSlidingLayout.addView(noticePopup);
-	}
-	
-	public void showNoticePopup(Popup popup) {
-		
-		if(noticePopup == null) {
-			addNoticePopup();
-		}
-		
-		noticePopup.show(popup);
-	}
 	
 	public void checkVersion() {
 		
@@ -1211,29 +1184,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				}
 			}
 		});
-	}
-	
-	public void checkPopup() {
-		
-		if(ZonecommsApplication.startupInfo != null && ZonecommsApplication.startupInfo.getPopup() != null) {
-			int lastIndexno = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastIndexno");
-			int lastDate = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastDate");
-			int lastMonth = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_POPUP, "lastMonth");
-			
-			int currentDate = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-			int currentMonth = Calendar.getInstance().get(Calendar.MONTH);
-			
-			if(lastIndexno != ZonecommsApplication.startupInfo.getPopup().getNotice_nid() && 
-					lastDate != currentDate && lastMonth != currentMonth ) {
-				gestureSlidingLayout.postDelayed(new Runnable() {
-					
-					@Override
-					public void run() {
-						showNoticePopup(ZonecommsApplication.startupInfo.getPopup());
-					}
-				}, 1000);
-			}
-		}
 	}
 	
 	public void showLoadingView() {
@@ -1351,7 +1301,8 @@ public class MainActivity extends ZonecommsFragmentActivity {
 
 			@Override
 			public void onError(String url) {
-				// TODO Auto-generated method stub		
+				
+				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
 			}
 
 			@Override

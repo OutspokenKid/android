@@ -14,7 +14,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -25,11 +24,11 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -64,7 +63,7 @@ public class GridPage extends ZonecommsListFragment {
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private GridView gridView;
 	private HoloStyleEditText editText;
-	private TextView[] menus;
+	private ImageView[] menus;
 	
 	private AsyncSearchTask currentTask;
 	
@@ -213,11 +212,11 @@ public class GridPage extends ZonecommsListFragment {
 				break;
 				
 			case 1:
-				url += "&gender=f";
+				url += "&gender=m";
 				break;
 				
 			case 2:
-				url += "&gender=m";
+				url += "&gender=f";
 				break;
 				
 			case 3:
@@ -379,45 +378,65 @@ public class GridPage extends ZonecommsListFragment {
 		}
 	}
 
+	@Override
+	public void refreshPage() {
+		
+		if(isRefreshing) {
+			return;
+		}
+		
+		super.refreshPage();
+		
+		downloadInfo();
+	}
+	
 ///////////////////////// Custom methods.
 	
 	public void addMenuForPeople() {
 		
-		int length = ResizeUtils.getScreenWidth()/4;
+		int length = ResizeUtils.getSpecificLength(150);
 		int p = ResizeUtils.getSpecificLength(8);
 
 		LinearLayout linear = (LinearLayout) mThisView.findViewById(R.id.gridPage_menuLinear);
 		linear.setVisibility(View.VISIBLE);
-		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(length, length);
 		
-		menus = new TextView[4];
+		menus = new ImageView[4];
 		
 		for(int i=0; i<4; i++) {
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, length, 1);
+			lp.topMargin = p;
 			
-			FrameLayout frame = new FrameLayout(mContext);
-			frame.setLayoutParams(lp);
+			ImageView v = new ImageView(mContext);
+			v.setLayoutParams(lp);
+			v.setScaleType(ScaleType.FIT_XY);
 			
-			if(i % 4 == 0) {
-				frame.setPadding(p, p, p/2, 0);
-			} else if(i % 4 != 3) {
-				frame.setPadding(p/2, p, p/2, 0);
+			if(i == 0) {
+				v.setPadding(p, 0, p/2, 0);
+			} else if(i != 3) {
+				v.setPadding(p/2, 0, p/2, 0);
 			} else {
-				frame.setPadding(p/2, p, p, 0);
+				v.setPadding(p/2, 0, p, 0);
 			}
 			
-			linear.addView(frame);
+			switch(i) {
 			
-			TextView v = new TextView(mContext);
-			v.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			v.setBackgroundColor(i==menuIndex?Color.BLACK:Color.rgb(55, 55, 55));
-			v.setTextColor(Color.WHITE);
-			v.setGravity(Gravity.CENTER);
-			v.setPadding(0, 0, 0, 0);
-			FontUtils.setFontStyle(v, FontUtils.BOLD);
-			FontUtils.setFontSize(v, 26);
-			frame.addView(v);
-
-			menus[i] = v;
+			case 0:
+				v.setImageResource(R.drawable.btn_memberall_p_01);
+				break;
+				
+			case 1:
+				v.setImageResource(R.drawable.btn_memberman_n_01);
+				break;
+				
+			case 2:
+				v.setImageResource(R.drawable.btn_memberwom_n_01);
+				break;
+				
+			case 3:
+				v.setImageResource(R.drawable.btn_membersearch_n_01);
+				break;
+			}
 			
 			final int I = i;
 			v.setOnClickListener(new OnClickListener() {
@@ -425,9 +444,38 @@ public class GridPage extends ZonecommsListFragment {
 				@Override
 				public void onClick(View v) {
 				
-					menus[menuIndex].setBackgroundColor(Color.rgb(55, 55, 55));
+					switch(I) {
+					
+					case 0:
+						menus[0].setImageResource(R.drawable.btn_memberall_p_01);
+						menus[1].setImageResource(R.drawable.btn_memberman_n_01);
+						menus[2].setImageResource(R.drawable.btn_memberwom_n_01);
+						menus[3].setImageResource(R.drawable.btn_membersearch_n_01);
+						break;
+						
+					case 1:
+						menus[0].setImageResource(R.drawable.btn_memberall_n_01);
+						menus[1].setImageResource(R.drawable.btn_memberman_p_01);
+						menus[2].setImageResource(R.drawable.btn_memberwom_n_01);
+						menus[3].setImageResource(R.drawable.btn_membersearch_n_01);
+						break;
+						
+					case 2:
+						menus[0].setImageResource(R.drawable.btn_memberall_n_01);
+						menus[1].setImageResource(R.drawable.btn_memberman_n_01);
+						menus[2].setImageResource(R.drawable.btn_memberwom_p_01);
+						menus[3].setImageResource(R.drawable.btn_membersearch_n_01);
+						break;
+						
+					case 3:
+						menus[0].setImageResource(R.drawable.btn_memberall_n_01);
+						menus[1].setImageResource(R.drawable.btn_memberman_n_01);
+						menus[2].setImageResource(R.drawable.btn_memberwom_n_01);
+						menus[3].setImageResource(R.drawable.btn_membersearch_n_01);
+						break;
+					}
+					
 					menuIndex = I;
-					menus[menuIndex].setBackgroundColor(Color.BLACK);	
 					
 					if(I != 3) {
 						hideSearchBar();
@@ -446,24 +494,8 @@ public class GridPage extends ZonecommsListFragment {
 				}
 			});
 			
-			switch(i) {
-			
-			case 0:
-				v.setText(R.string.all);
-				break;
-				
-			case 1:
-				v.setText(R.string.female);
-				break;
-				
-			case 2:
-				v.setText(R.string.male);
-				break;
-				
-			case 3:
-				v.setText(R.string.search);
-				break;
-			}
+			linear.addView(v);
+			menus[i] = v;
 		}
 	}
 

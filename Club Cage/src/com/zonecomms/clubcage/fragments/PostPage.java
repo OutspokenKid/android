@@ -1010,13 +1010,28 @@ public class PostPage extends ZonecommsFragment {
 								+ "\nresult : " + objJSON);
 
 						ToastUtils.showToast(R.string.deleteCompleted);
-						mainActivity.closeTopPage();
-
+						
+						final boolean singlePage = ZonecommsApplication.getActivity().getFragmentsSize() <= 1; 
+						
+						if(singlePage) {
+							LogUtils.log("###!!!!!!!!!!!!!!!!!.onCompleted.  ");
+							getActivity().finish();
+						} else {
+							LogUtils.log("###22222222222222222.onCompleted.  fragmentSize : " + 
+									ZonecommsApplication.getActivity().getFragmentsSize());
+							mainActivity.closeTopPage();
+						}
+						
 						new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
 							
 							@Override
 							public void run() {
-								mainActivity.getTopFragment().refreshPage();
+								
+								if(singlePage) {
+									ZonecommsApplication.getCircleActivity().onRefreshPage();
+								} else {
+									mainActivity.getTopFragment().refreshPage();
+								}
 							}
 						}, 1000);
 					} catch (Exception e) {

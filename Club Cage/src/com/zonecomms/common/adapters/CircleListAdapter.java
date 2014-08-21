@@ -3,11 +3,14 @@ package com.zonecomms.common.adapters;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
@@ -22,7 +25,10 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.OutspokenImageView;
+import com.zonecomms.clubcage.ImageViewer;
 import com.zonecomms.clubcage.R;
+import com.zonecomms.clubcage.classes.ZoneConstants;
+import com.zonecomms.clubcage.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Media;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.views.CircleHeaderView;
@@ -126,6 +132,7 @@ public class CircleListAdapter extends BaseAdapter {
 
 		private Context context;
 		public Post post;
+		public View row;
 		
 		public FrameLayout profileFrame;
 		public View profileBg;
@@ -144,6 +151,7 @@ public class CircleListAdapter extends BaseAdapter {
 		public void bindViews(View convertView) {
 			
 			context = convertView.getContext();
+			row = convertView;
 			
 			profileFrame = (FrameLayout) convertView.findViewById(R.id.list_circlepost_profileFrame);
 			profileBg = convertView.findViewById(R.id.list_circlepost_profileBg);
@@ -249,10 +257,42 @@ public class CircleListAdapter extends BaseAdapter {
 		}
 		
 		public void setListeners() {
+			
+			profileFrame.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					ZonecommsApplication.getCircleActivity().showProfilePopup(
+							post.getMember().getMember_id(), 
+							post.getMember().getStatus());
+				}
+			});
+			
+			row.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					try {
+						String uriString = ZoneConstants.PAPP_ID + 
+								"://android.zonecomms.com/post?spot_nid=" + 
+								post.getSpot_nid();
+						ZonecommsApplication.getCircleActivity()
+								.launchToMainActivity(Uri.parse(uriString));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+			});
 		}
 	
 		public void setValues(Post post) {
 
+			this.post = post;
+			
 			if(!StringUtils.isEmpty(post.getMember().getMedia_src())) {
 				ivProfile.setVisibility(View.VISIBLE);
 				ivProfile.setImageUrl(post.getMember().getMedia_src());
@@ -325,7 +365,7 @@ public class CircleListAdapter extends BaseAdapter {
 		}
 
 		@Override
-		protected View getView(Object object, View convertView, ViewGroup parent) {
+		protected View getView(final Object object, View convertView, ViewGroup parent) {
 
 			/*
 			http://112.169.61.103/externalapi/public/
@@ -345,6 +385,35 @@ public class CircleListAdapter extends BaseAdapter {
 			} else {
 				ivImage = (OutspokenImageView) convertView;
 			}
+			
+			ivImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Intent intent = new Intent(context, ImageViewer.class);
+
+					int size = medias.length;
+					String[] imageUrls = new String[size];
+					String[] thumbnailUrls = new String[size];
+					
+					for(int i=0; i<size; i++) {
+						imageUrls[i] = medias[i].getMedia_src();
+						thumbnailUrls[i] = medias[i].getThumbnail();
+					}
+					
+					if(imageUrls != null && imageUrls.length != 0) {
+						intent.putExtra("imageUrls", imageUrls);
+					}
+					
+					if(thumbnailUrls != null && thumbnailUrls.length != 0) {
+						intent.putExtra("thumbnailUrls", thumbnailUrls);
+					}
+
+					intent.putExtra("index", getItemPosition(object));
+					context.startActivity(intent);
+				}
+			});
 			
 			String imageUrl = ((Media)object).getMedia_src();
 			ivImage.setImageUrl(imageUrl);

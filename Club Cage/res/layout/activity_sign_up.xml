@@ -104,11 +104,11 @@
 	        android:background="@drawable/rounded_corner_to_loadingview1" />
         
 	    <View 
-	        android:layout_width="35dp"
-        	android:layout_height="35dp"
+	        android:layout_width="30dp"
+        	android:layout_height="41dp"
         	android:layout_marginTop="10dp"
         	android:layout_gravity="top|center_horizontal"
-        	android:background="@drawable/btn_top_n" />
+        	android:background="@drawable/topicon_n_01" />
 
 	    <ProgressBar 
 	    	android:layout_width="15dp"

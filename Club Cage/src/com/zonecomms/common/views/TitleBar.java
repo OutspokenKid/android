@@ -51,8 +51,8 @@ public class TitleBar extends LinearLayout {
 		
 		//btnSideMenu.
 		btnSideMenu = new Button(getContext());
-		ResizeUtils.viewResize(70, 70, btnSideMenu, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
-		btnSideMenu.setBackgroundResource(R.drawable.btn_top_menu);
+		ResizeUtils.viewResize(60, 82, btnSideMenu, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
+		btnSideMenu.setBackgroundResource(R.drawable.topicon_menu_01);
 		btnSideMenu.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -67,8 +67,8 @@ public class TitleBar extends LinearLayout {
 		
 		//btnCircle.
 		btnCircle = new Button(getContext());
-		ResizeUtils.viewResize(70, 70, btnCircle, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
-		btnCircle.setBackgroundResource(R.drawable.btn_save);
+		ResizeUtils.viewResize(60, 82, btnCircle, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
+		btnCircle.setBackgroundResource(R.drawable.topicon_home_01);
 		btnCircle.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -83,8 +83,8 @@ public class TitleBar extends LinearLayout {
 		
 		//btnHome.
 		btnHome = new Button(getContext());
-		ResizeUtils.viewResize(70, 70, btnHome, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
-		btnHome.setBackgroundResource(R.drawable.btn_top_home);
+		ResizeUtils.viewResize(60, 82, btnHome, 1, Gravity.CENTER_VERTICAL, new int[]{10, 0, 0, 0});
+		btnHome.setBackgroundResource(R.drawable.topicon_metro_01);
 		btnHome.setVisibility(View.GONE);
 		btnHome.setOnClickListener(new OnClickListener() {
 			
@@ -111,8 +111,8 @@ public class TitleBar extends LinearLayout {
 		
 		//btnWrite.
 		btnWrite = new Button(getContext());
-		ResizeUtils.viewResize(70, 70, btnWrite, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
-		btnWrite.setBackgroundResource(R.drawable.btn_top_write);
+		ResizeUtils.viewResize(60, 82, btnWrite, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
+		btnWrite.setBackgroundResource(R.drawable.topicon_write_01);
 		btnWrite.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -127,8 +127,8 @@ public class TitleBar extends LinearLayout {
 		
 		//btnN.
 		btnN = new Button(getContext());
-		ResizeUtils.viewResize(70, 70, btnN, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
-		btnN.setBackgroundResource(R.drawable.btn_top_n);
+		ResizeUtils.viewResize(60, 82, btnN, 1, Gravity.CENTER_VERTICAL, new int[]{0, 0, 10, 0});
+		btnN.setBackgroundResource(R.drawable.topicon_n_01);
 		btnN.setOnClickListener(new OnClickListener() {
 			
 			@Override

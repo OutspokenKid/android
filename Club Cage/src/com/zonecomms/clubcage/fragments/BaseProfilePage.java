@@ -3,7 +3,6 @@ package com.zonecomms.clubcage.fragments;
 
 import java.io.File;
 import java.net.URLEncoder;
-import java.sql.Date;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +10,6 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -36,6 +34,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerButton;
@@ -125,7 +124,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 70, tvNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 290, 0, 0});
 		tvNickname.setGravity(Gravity.CENTER_VERTICAL);
 		tvNickname.setText(R.string.nickname);
-		tvNickname.setTextColor(Color.WHITE);
+		tvNickname.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		FontUtils.setFontSize(tvNickname, 25);
 		innerFrame.addView(tvNickname);
 		
@@ -155,7 +154,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvBirth, 2, Gravity.LEFT|Gravity.TOP, new int[]{40, 510, 0, 0});
 		tvBirth.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvBirth, 25);
-		tvBirth.setTextColor(Color.WHITE);
+		tvBirth.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		innerFrame.addView(tvBirth);
 		
 		FrameLayout ff = new FrameLayout(mContext);
@@ -168,7 +167,6 @@ public class BaseProfilePage extends ZonecommsFragment {
 	    if (currentapiVersion >= 11) {
 	    	dpBirth.setCalendarViewShown(false);
 	    	dpBirth.setMaxDate(System.currentTimeMillis());
-	    	dpBirth.setMinDate((new Date(0)).getTime());
 	    }
 		ff.addView(dpBirth);
 		
@@ -178,7 +176,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 		tvIntroduce.setGravity(Gravity.CENTER_VERTICAL);
 		tvIntroduce.setText(R.string.introduce);
 		FontUtils.setFontSize(tvIntroduce, 25);
-		tvIntroduce.setTextColor(Color.WHITE);
+		tvIntroduce.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		innerFrame.addView(tvIntroduce);
 		
 		etIntroduce = new HoloStyleEditText(mContext);
