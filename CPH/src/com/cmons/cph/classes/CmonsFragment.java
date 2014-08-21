@@ -145,12 +145,18 @@ public abstract class CmonsFragment extends BaseFragment {
 			return;
 		}
 		
-		isRefreshing = true;
-		isDownloading = false;
-		isLastList = false;
-		pageIndex = 0;
-		models.clear();
-		adapter.notifyDataSetChanged();
+		try {
+			isRefreshing = true;
+			isDownloading = false;
+			isLastList = false;
+			pageIndex = 0;
+			models.clear();
+			adapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		
 		downloadInfo();
 	}

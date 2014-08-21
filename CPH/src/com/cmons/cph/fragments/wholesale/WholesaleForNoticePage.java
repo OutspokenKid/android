@@ -185,8 +185,13 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 		
 		String readListString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_NOTICE, "readList");
 
-		if(!readListString.contains(notice.getId() + ",")) {
-			readListString += notice.getId() + ",";
+		if(readListString != null) {
+
+			if(!readListString.contains(notice.getId() + ",")) {
+				readListString += notice.getId() + ",";
+			}
+		} else {
+			readListString = notice.getId() + ",";
 		}
 		
 		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTICE, "readList", readListString);

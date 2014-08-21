@@ -1,5 +1,6 @@
 package com.cmons.cph.fragments.wholesale;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.view.View;
@@ -13,6 +14,8 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 
@@ -92,23 +95,36 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 
-		for(int i=0; i<10; i++) {
-			Notice notice = new Notice();
-			notice.setItemCode(CphConstants.ITEM_NOTICE);
+		try {
+			String readListString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_NOTICE, "readList");
 			
-			if(i>5) {
-				notice.setRead(true);
+			JSONArray arJSON = objJSON.getJSONArray("notices");
+
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Notice notice = new Notice(arJSON.getJSONObject(i));
+				notice.setItemCode(CphConstants.ITEM_NOTICE);
+
+				if(readListString != null && readListString.contains("" + notice.getId())) {
+					notice.setRead(true);
+				} else {
+					notice.setRead(false);
+				}
+				
+				models.add(notice);
 			}
-			
-			models.add(notice);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
-		return false;
+		return true;
 	}
 	
 	@Override
 	public void downloadInfo() {
 
-		url = CphConstants.BASE_API_URL + "products";
+		url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
 		super.downloadInfo();
 	}
 }
