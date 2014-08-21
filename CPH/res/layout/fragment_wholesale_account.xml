@@ -6,40 +6,83 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleStaffPage_titleBar" 
+	    android:id="@+id/wholesaleAccountPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true" />
     
-    <!-- 승인 요청. -->
+    <!-- 배경. -->
     
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnRequest" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleStaffPage_titleBar"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/shop_info_btn" />
+    <ImageView 
+        android:id="@+id/wholesaleAccountPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleAccountPage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/shop_bg" />
     
-    <!-- 직원. -->
-    
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnStaff" 
+    <TextView 
+        android:id="@+id/wholesaleAccountPage_tvAccountText" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleStaffPage_btnRequest"
-	    android:layout_toRightOf="@id/wholesaleStaffPage_btnRequest"
-	    android:background="@drawable/notice_btn" />
+	    android:layout_below="@id/wholesaleAccountPage_titleBar"
+	    android:text="@string/addAccount"
+	    android:gravity="bottom|left"
+	    android:textColor="#fff" />
+    
+    <!-- 은행. -->
+    
+    <Button 
+        android:id="@+id/wholesaleAccountPage_btnBank" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/wholesaleAccountPage_tvAccountText"
+	    android:layout_alignParentLeft="true"
+	    android:text="@string/bank"
+	    android:textColor="#fff"
+	    android:background="@drawable/local_btn" />
+    
+    <EditText
+        android:id="@+id/wholesaleAccountPage_etName"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/wholesaleAccountPage_btnBank"
+    	android:layout_toRightOf="@id/wholesaleAccountPage_btnBank"
+	    android:background="@drawable/txt_box8"
+	    android:gravity="center"
+	    android:hint="@string/hintForAccountName"
+	    android:textColor="#000"
+	    android:textColorHint="#555" />
+    
+    <!-- 추가. -->
+    
+    <Button 
+        android:id="@+id/wholesaleAccountPage_btnAdd" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/wholesaleAccountPage_etName"
+    	android:layout_toRightOf="@id/wholesaleAccountPage_etName"
+	    android:background="@drawable/shop_add_btn" />
+    
+    <EditText
+        android:id="@+id/wholesaleAccountPage_etAccount"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/wholesaleAccountPage_btnBank"
+	    android:background="@drawable/text_box"
+	    android:gravity="center"
+	    android:hint="@string/hintForAccount"
+	    android:textColor="#000"
+	    android:textColorHint="#555" />
     
     <!-- 리스트뷰. -->
     
     <ListView 
-            android:id="@+id/wholesaleStaffPage_listView" 
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true" 
-	    	android:cacheColorHint="#0000" />
+		android:id="@+id/wholesaleAccountPage_listView" 
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/wholesaleAccountPage_etAccount"
+    	android:cacheColorHint="#0000" />
     
 </RelativeLayout>

@@ -123,6 +123,19 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		}
 	}
 	
+
+	@Override
+	public void showLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hideLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 /////////////////////////// Custom methods.
 	
 	public void showTermsPage() {

@@ -1,16 +1,22 @@
 package com.cmons.cph.models;
 
+import java.io.Serializable;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Product extends BaseModel {
+public class Product extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = 8159757973801962712L;
+	
 	private int id;
 	private int category_id;
 	private int wholesale_id;
 	private String name;
+	private String price;
 	private String colors;
 	private String sizes;
 	private String mixture_rate;
@@ -19,7 +25,11 @@ public class Product extends BaseModel {
 	private String created_at;
 	private String updated_at;
 	private int favorited_cnt;
-	private int order_cnt;
+	private int ordered_cnt;
+	private int purchased_cnt;
+	private int customers_only;
+	private int status;
+	private String[] product_images;
 	
 	public Product() {
 	}
@@ -41,6 +51,10 @@ public class Product extends BaseModel {
 			
 			if(objJSON.has("name")) {
 				this.name = objJSON.getString("name");
+			}
+
+			if(objJSON.has("price")) {
+				this.price = objJSON.getString("price");
 			}
 			
 			if(objJSON.has("colors")) {
@@ -75,8 +89,30 @@ public class Product extends BaseModel {
 				this.favorited_cnt = objJSON.getInt("favorited_cnt");
 			}
 			
-			if(objJSON.has("order_cnt")) {
-				this.order_cnt = objJSON.getInt("order_cnt");
+			if(objJSON.has("ordered_cnt")) {
+				this.ordered_cnt = objJSON.getInt("ordered_cnt");
+			}
+			
+			if(objJSON.has("purchased_cnt")) {
+				this.purchased_cnt = objJSON.getInt("purchased_cnt");
+			}
+			
+			if(objJSON.has("customers_only")) {
+				this.customers_only = objJSON.getInt("customers_only");
+			}
+			
+			if(objJSON.has("status")) {
+				this.status = objJSON.getInt("status");
+			}
+			
+			if(objJSON.has("product_images")) {
+				
+				JSONArray arJSON = objJSON.getJSONArray("product_images");
+				int size = arJSON.length();
+				product_images = new String[size];
+				for(int i=0; i<size; i++) {
+					product_images[i] = arJSON.getString(i);
+				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -157,10 +193,50 @@ public class Product extends BaseModel {
 	public void setFavorited_cnt(int favorited_cnt) {
 		this.favorited_cnt = favorited_cnt;
 	}
-	public int getOrder_cnt() {
-		return order_cnt;
+	public int getOrdered_cnt() {
+		return ordered_cnt;
 	}
-	public void setOrder_cnt(int order_cnt) {
-		this.order_cnt = order_cnt;
+	public void setOrdered_cnt(int ordered_cnt) {
+		this.ordered_cnt = ordered_cnt;
+	}
+
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public int getPurchased_cnt() {
+		return purchased_cnt;
+	}
+
+	public void setPurchased_cnt(int purchased_cnt) {
+		this.purchased_cnt = purchased_cnt;
+	}
+
+	public int getCustomers_only() {
+		return customers_only;
+	}
+
+	public void setCustomers_only(int customers_only) {
+		this.customers_only = customers_only;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public String[] getProduct_images() {
+		return product_images;
+	}
+
+	public void setProduct_images(String[] product_images) {
+		this.product_images = product_images;
 	}
 }

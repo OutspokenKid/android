@@ -1,5 +1,6 @@
 package com.cmons.cph.fragments.wholesale;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.text.Spannable;
@@ -26,8 +27,12 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
@@ -161,7 +166,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showWritePage();
+				mActivity.showWritePage(null);
 			}
 		});
 		
@@ -401,14 +406,120 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+
+		checkNewMessage();
+		
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("notices");
+			
+			int size = arJSON.length();
+			
+			for(int i=0; i<size; i++) {
+				Notice notice = new Notice(arJSON.getJSONObject(i));
+				notice.setItemCode(CphConstants.ITEM_NOTICE);
+				models.add(new Notice());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
+	
+	@Override
 	public void downloadInfo() {
 		
 		url = CphConstants.BASE_API_URL + "wholesales/notices";
-		super.downloadInfo();
+		
+		if(isDownloading || isLastList) {
+			return;
+		}
+		
+		if(!isRefreshing) {
+			showLoadingView();
+		}
+		
+		isDownloading = true;
+		
+		if(url.contains("?")) {
+			url += "&";
+		} else {
+			url += "?";
+		}
+		
+		url += "num=0";
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CmonsFragment.onError." + "\nurl : " + url);
+				setPage(false);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					isLastList = parseJSON(objJSON);
+					setPage(true);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					setPage(false);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					setPage(false);
+				}
+			}
+		});
 	}
 	
 //////////////////// Custom methods.
 
+	public void checkNewMessage() {
+		
+		int nonReadCount = models.size();
+		
+		String readListString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_NOTICE, "readList");
+		
+		if(readListString != null) {
+			String[] readList = (readListString).split(",");
+			
+			Notice notice;
+			boolean isRead;
+			
+			for(int i=0; i<models.size(); i++) {
+
+				notice = (Notice) models.get(i);
+				isRead = false;
+				
+				for(String read : readList) {
+					
+					//읽은적 있음.
+					if(read.equals("" + notice.getId())) {
+						isRead = true;
+						nonReadCount--;
+						break;
+					}
+				}
+				
+				notice.setRead(isRead);
+			}
+		}
+		
+		//새로운 메시지가 있느냐의 여부에 따라 titleBar.getNotice() 노출 결정.
+		if(nonReadCount > 0) {
+			titleBar.getBtnNotice().setVisibility(View.VISIBLE);
+		}
+	}
+	
 	public void showNoticeRelative() {
 
 		if(!animating && noticeRelative.getVisibility() != View.VISIBLE) {
@@ -433,20 +544,5 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			noticeRelative.startAnimation(aaOut);
 			cover.startAnimation(aaOut);
 		}
-	}
-	
-	@Override
-	public boolean parseJSON(JSONObject objJSON) {
-
-		//새로운 메시지가 있느냐의 여부에 따라 titleBar.getNotice() 노출 결정.
-		titleBar.getBtnNotice().setVisibility(View.VISIBLE);
-		
-		for(int i=0; i<10; i++) {
-			Notice notice = new Notice();
-			notice.setItemCode(CphConstants.ITEM_NOTICE);
-			models.add(new Notice());
-		}
-		
-		return false;
 	}
 }

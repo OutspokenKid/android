@@ -16,7 +16,6 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
@@ -127,10 +126,6 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public void setSizes() {
 
 		RelativeLayout.LayoutParams rp = null;
-		
-		//ivBg.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.wholesaleOrderListPage_ivBg).getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(96); 
 		
 		//btnOnGoing.
 		rp = (RelativeLayout.LayoutParams) btnOnGoing.getLayoutParams();

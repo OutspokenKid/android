@@ -69,4 +69,16 @@ public class RetailActivity extends CmonsFragmentActivity {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public void showLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hideLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
 }

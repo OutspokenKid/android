@@ -1,12 +1,17 @@
 <resources>
 
+    <string name="add">add</string>
+    <string name="addAccount">add account</string>
     <string name="address">Address</string>
     <string name="addressForWholesale">Address for wholesale</string>
     <string name="addressForRetail">Address for retail</string>
     <string name="agree">Agree</string>
     <string name="app_name">CPH</string>
 
+    <string name="bank">bank</string>
+    
     <string name="cancel">Cancel</string>
+    <string name="canceled">Canceled</string>
     <string name="categoryText">Category text</string>
     <string name="certify">Certify</string>
     <string name="certifyCompleted">Certify completed</string>
@@ -29,6 +34,8 @@
     <string name="failToChangePw">Fail to change Pw</string>
     <string name="failToFindId">Fail to find ID</string>
     <string name="failToFindPw">Fail to find Pw</string>
+    <string name="failToLoadBitmap">Fail to load bitmap</string>
+    <string name="failToLoadBitmap_OutOfMemory">Fail to load bitmap, because of OutOfMemory</string>
     <string name="failToSearchShop">Fail to search the shop</string>
     <string name="failToSignIn">Fail to sign in</string>
     <string name="failToSignUp">Fail to sign up</string>
@@ -36,6 +43,8 @@
     <string name="findPw">Find Password</string>
     <string name="floor">Floor</string>
 
+    <string name="hintForAccount">hint for account</string>
+    <string name="hintForAccountName">hint for accountName</string>
     <string name="hintForChangePhoneNumber">hint for changephonenumber</string>
     <string name="hintForChangePw1">hint for changepw1</string>
     <string name="hintForChangePw2">hint for changepw2</string>
@@ -131,6 +140,7 @@
     <string name="sendCertificationCompleted">Send verification number completed</string>
     <string name="settingDoNotDisturb">Setting about disturb</string>
     <string name="settingNotification">Setting about notification</string>
+    <string name="shopProfileImageDescription">shop profile desc</string>
     <string name="signIn">Sign In</string>
     <string name="signingIn">Signing In..</string>
     <string name="signingUp">Signing Up..</string>

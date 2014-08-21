@@ -94,6 +94,24 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			}
 		});
 		
+		btnProfile.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showProfileImagePage();
+			}
+		});
+
+		btnAccount.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAccountPage();
+			}
+		});
+			
 		btnSample.setOnClickListener(new OnClickListener() {
 
 			@Override

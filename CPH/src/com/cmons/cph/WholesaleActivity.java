@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cmons.cph.classes.CmonsFragmentActivity;
+import com.cmons.cph.fragments.wholesale.WholesaleForAccountPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForChangeInfoPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForChangePasswordPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForChangePhoneNumberPage;
@@ -14,12 +15,15 @@ import com.cmons.cph.fragments.wholesale.WholesaleForNoticePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForNotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForProfileImagePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSamplePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForShopPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForStaffPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForWritePage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
 import com.cmons.cph.models.Notice;
+import com.cmons.cph.models.Product;
 import com.cmons.cph.models.User;
 
 public class WholesaleActivity extends CmonsFragmentActivity {
@@ -101,6 +105,18 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 			super.onBackPressed();
 		}
 	}
+
+	@Override
+	public void showLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hideLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 //////////////////// Custom methods.
 	
@@ -149,9 +165,17 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 		startPage(new WholesaleForSettingPage(), null);
 	}
 	
-	public void showWritePage() {
+	public void showWritePage(Product product) {
+
+		Bundle bundle = null;
 		
-		//.
+		if(product != null) {
+			
+			bundle = new Bundle();
+			bundle.putSerializable("product", product);
+		}
+		
+		startPage(new WholesaleForWritePage(), bundle);
 	}
 
 	public void showNoticeListPage() {
@@ -187,6 +211,16 @@ public class WholesaleActivity extends CmonsFragmentActivity {
 		startPage(new WholesaleForChangePhoneNumberPage(), null);
 	}
 
+	public void showProfileImagePage() {
+		
+		startPage(new WholesaleForProfileImagePage(), null);
+	}
+
+	public void showAccountPage() {
+		
+		startPage(new WholesaleForAccountPage(), null);
+	}
+	
 	public void launchSignInActivity() {
 		
 		Intent intent = new Intent(this, SignInActivity.class);

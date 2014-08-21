@@ -2,14 +2,35 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.utils.ImageUploadUtils.OnAfterUploadImage;
+import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
+	private ImageView ivImage;
+	private Button btnUpload;
+	private TextView tvProfileDesc;
+	
 	@Override
 	public void bindViews() {
-		// TODO Auto-generated method stub
 
+		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleProfileImagePage_titleBar);
+		
+		ivImage = (ImageView) mThisView.findViewById(R.id.wholesaleProfileImagePage_ivImage);
+		btnUpload = (Button) mThisView.findViewById(R.id.wholesaleProfileImagePage_btnUpload);
+		tvProfileDesc = (TextView) mThisView.findViewById(R.id.wholesaleProfileImagePage_tvImageText);
 	}
 
 	@Override
@@ -26,20 +47,50 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		btnUpload.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showUploadPhotoPopup(new OnAfterUploadImage() {
+					
+					@Override
+					public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
+						
+						if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
+							ivImage.setImageBitmap(thumbnail);
+						}
+					}
+				});
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
-		// TODO Auto-generated method stub
-
+		
+		RelativeLayout.LayoutParams rp = null;
+		
+		//ivImage.
+		rp = (RelativeLayout.LayoutParams) ivImage.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(440);
+		
+		//btnUpload.
+		rp = (RelativeLayout.LayoutParams) btnUpload.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(180);
+		
+		//tvProfileDesc
+		rp = (RelativeLayout.LayoutParams) tvProfileDesc.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(74);
+		FontUtils.setFontSize(tvProfileDesc, 20);
+		tvProfileDesc.setPadding(ResizeUtils.getSpecificLength(10), 0, 0, 0);
 	}
 
 	@Override
 	public int getContentViewId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.layout.fragment_wholesale_profileimage;
 	}
 
 	@Override
@@ -65,5 +116,4 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

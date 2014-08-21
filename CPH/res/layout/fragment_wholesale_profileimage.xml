@@ -6,40 +6,52 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleStaffPage_titleBar" 
+	    android:id="@+id/wholesaleProfileImagePage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
     
-    <!-- 승인 요청. -->
+    <ImageView 
+        android:id="@+id/wholesaleProfileImagePage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleProfileImagePage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/shop_bg" />
+
+    <!-- 매장 사진. -->
     
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnRequest" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleStaffPage_titleBar"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/shop_info_btn" />
-    
-    <!-- 직원. -->
-    
-    <Button 
-        android:id="@+id/wholesaleStaffPage_btnStaff" 
+    <ImageView 
+        android:id="@+id/wholesaleProfileImagePage_ivImage" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleStaffPage_btnRequest"
-	    android:layout_toRightOf="@id/wholesaleStaffPage_btnRequest"
-	    android:background="@drawable/notice_btn" />
+	    android:layout_below="@id/wholesaleProfileImagePage_titleBar"
+	    android:scaleType="centerCrop"
+	    android:src="@drawable/picture_default" />
     
-    <!-- 리스트뷰. -->
+    <!-- 사진 올리기. -->
     
-    <ListView 
-            android:id="@+id/wholesaleStaffPage_listView" 
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentBottom="true"
-	    	android:layout_centerHorizontal="true" 
-	    	android:cacheColorHint="#0000" />
+    <Button
+        android:id="@+id/wholesaleProfileImagePage_btnUpload"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleProfileImagePage_ivImage"
+        android:background="@drawable/picture_upload_btn" />
+    
+    <!-- 사진 설명. -->
+    
+    <TextView
+        android:id="@+id/wholesaleProfileImagePage_tvImageText"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/wholesaleProfileImagePage_btnUpload"
+        android:text="@string/shopProfileImageDescription"
+        android:textColor="#fff"
+        android:gravity="center_vertical" />
+    
+    
     
 </RelativeLayout>

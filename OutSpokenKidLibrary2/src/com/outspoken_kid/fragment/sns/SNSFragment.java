@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 import com.outspoken_kid.model.SNSUserInfo;
 
@@ -31,12 +32,15 @@ public abstract class SNSFragment extends Fragment {
 		FrameLayout frame = new FrameLayout(getActivity());
 		
 		loginButton = getLoginButton(getActivity());
+		loginButton.setLayoutParams(new FrameLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		frame.addView(loginButton);
 		
 		coverImage = new View(getActivity());
-		frame.addView(coverImage);
-
+		coverImage.setLayoutParams(new FrameLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		coverImage.setBackgroundResource(getLoginImageResId());
+		frame.addView(coverImage);
 		logout();
 		
 		return frame;

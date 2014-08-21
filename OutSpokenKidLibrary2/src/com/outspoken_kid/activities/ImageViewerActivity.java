@@ -196,10 +196,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	@Override
 	public void setSizes() {
 
-		if(!StringUtils.isEmpty(title)) {
-			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.TOP, null);
-		}
-		
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.TOP, null);
 		btnSave.setLayoutParams(getSaveButtonLayoutParams());
 		btnSave.setBackgroundResource(getSaveButtonBackgroundResId());
 	}
@@ -403,7 +400,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			btnSave.startAnimation(fade_in);
 		}
 		
-		if(imageResId != 0 
+		if(imageResId == 0 
 				&& viewPagerForThumbnails != null 
 				&& viewPagerForThumbnails.getVisibility() != View.VISIBLE) {
 			viewPagerForThumbnails.setVisibility(View.VISIBLE);
@@ -426,7 +423,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			btnSave.startAnimation(fade_out);
 		}
 		
-		if(imageResId != 0 
+		if(imageResId == 0 
 				&& viewPagerForThumbnails != null 
 				&& viewPagerForThumbnails.getVisibility() == View.VISIBLE) {
 			viewPagerForThumbnails.setVisibility(View.INVISIBLE);

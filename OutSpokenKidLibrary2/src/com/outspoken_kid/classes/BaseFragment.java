@@ -163,8 +163,6 @@ public abstract class BaseFragment extends Fragment
 		isRefreshing = true;
 		isDownloading = false;
 		isLastList = false;
-		
-		downloadInfo();
 	}
 	
 	@Override

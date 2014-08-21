@@ -7,32 +7,51 @@
         android:id="@+id/grid_product_ivImage"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:background="#aaa"
+    	android:background="@drawable/list_default"
     	android:scaleType="centerCrop" />
     
     <TextView 
         android:id="@+id/grid_product_tvTitle"
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
-    	android:layout_alignParentTop="true"
-    	android:background="#555"
-    	android:textColor="#fff" />
+    	android:layout_alignParentBottom="true"
+    	android:background="@drawable/myshop_list_cell"
+    	android:gravity="center_vertical"
+    	android:maxLines="2"
+    	android:ellipsize="end"
+    	android:textColor="#585858" />
+    
+    <TextView 
+        android:id="@+id/grid_product_tvPrice"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignParentBottom="true"
+    	android:gravity="top|center_horizontal"
+    	android:textColor="#585858" />
     
     <TextView 
         android:id="@+id/grid_product_tvBuyCount"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:layout_below="@id/grid_product_tvTitle"
-    	android:layout_alignParentRight="true"
-    	android:background="#555"
-    	android:textColor="#fff" />
+    	android:layout_above="@id/grid_product_tvPrice"
+    	android:layout_alignRight="@id/grid_product_tvPrice"
+    	android:textColor="#ff5454" />
+
+    <View 
+        android:id="@+id/grid_product_heartIcon"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/grid_product_tvBuyCount"
+    	android:layout_toLeftOf="@id/grid_product_tvBuyCount"
+    	android:background="@drawable/myshop_heart2_icon" />
     
-    <TextView 
-        android:id="@+id/grid_product_tvPrice"
-        android:layout_width="match_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_alignParentBottom="true"
-    	android:background="#555"
-    	android:textColor="#fff" />
+    <Button 
+        android:id="@+id/grid_product_replyIcon"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentTop="true"
+    	android:layout_alignParentRight="true"
+    	android:background="@drawable/myshop_comment_btn_a" />
     
 </RelativeLayout>

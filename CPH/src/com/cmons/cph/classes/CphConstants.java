@@ -8,6 +8,9 @@ public class CphConstants {
 	public static final String PREFS_NOTICE = "notice";
 	public static final String PREFS_NOTIFICATION = "notification";
 	
+	public static final int REQUEST_CAMERA = 0;
+	public static final int REQUEST_ALBUM = 1;
+	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	
 	public static final int ITEM_NOTICE = 0;
@@ -21,4 +24,5 @@ public class CphConstants {
 	public static final int ITEM_STAFF = 8;
 	public static final int ITEM_ORDER = 9;
 	public static final int ITEM_ORDERSET = 10;
+	public static final int ITEM_ACCOUNT = 11;
 }

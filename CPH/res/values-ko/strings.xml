@@ -1,12 +1,17 @@
 <resources>
 
+    <string name="add">추가</string>
+    <string name="addAccount">계좌번호 추가</string>
     <string name="address">주소</string>
     <string name="addressForWholesale">매장 위치</string>
     <string name="addressForRetail">사업장 주소</string>
     <string name="agree">동의</string>
     <string name="app_name">CPH</string>
 
+    <string name="bank">은행</string>
+    
     <string name="cancel">취소</string>
+    <string name="canceled">취소되었습니다</string>
     <string name="categoryText">매장 분류는 다중 선택이 가능합니다</string>
     <string name="certify">인증</string>
     <string name="certifyCompleted">번호 인증 완료</string>
@@ -30,6 +35,8 @@
     <string name="failToChangePw">비밀번호 변경 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>
+    <string name="failToLoadBitmap">이미지를 불러오지 못했습니다</string>
+    <string name="failToLoadBitmap_OutOfMemory">메모리가 부족하여 이미지를 불러오지 못했습니다</string>
     <string name="failToSearchShop">매장 검색 실패</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원 가입 실패</string>
@@ -37,6 +44,8 @@
     <string name="findPw">비밀번호 찾기</string>
     <string name="floor">층</string>
 
+    <string name="hintForAccount">계좌번호 입력</string>
+    <string name="hintForAccountName">예금주 입력</string>
     <string name="hintForChangePhoneNumber">변경될 휴대폰번호 입력</string>
     <string name="hintForChangePw1">현재 비밀번호 입력</string>
     <string name="hintForChangePw2">새 비밀번호 입력</string>
@@ -51,7 +60,7 @@
     <string name="hintForProductCategory">상품의 분류를 선택해주세요</string>
     <string name="hintForProductColor">상품의 색상을 선택해주세요</string>
     <string name="hintForProductDescription">상품설명을 입력해주세요</string>
-    <string name="hintForProductMixtureRage">직접 입력 (예 : 면 80% 나일론 20%)</string>
+    <string name="hintForProductMixtureRage">직접 입력, 예 : 면 80% 나일론 20%</string>
     <string name="hintForProductName">상품명을 입력해주세요</string>
     <string name="hintForProductPrice">상품의 가격을 입력해주세요</string>
     <string name="hintForProductSize">상품의 사이즈를 선택해주세요</string>
@@ -131,6 +140,7 @@
     <string name="sendCertificationCompleted">인증번호가 휴대전화로 발송되었습니다</string>
 	<string name="settingDoNotDisturb">방해금지 모드를 활성화 하면 설정된 시간동안 알림 메세지를 받을 수 없으며, 종료 시간에 일괄 발송됩니다.</string>
     <string name="settingNotification">푸시 알림에 대한 설정은 환경설정 -> 응용프로그램 -> 응용프로그램관리에서도 설정할 수 있습니다.</string>
+    <string name="shopProfileImageDescription">편집된 사진을 올리실 때는 720x440 사이즈로 올려주세요.</string>
     <string name="signIn">로그인</string>
     <string name="signingIn">로그인 중..</string>
     <string name="signingUp">회원 가입..</string>

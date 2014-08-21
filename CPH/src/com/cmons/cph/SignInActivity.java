@@ -93,6 +93,18 @@ public class SignInActivity extends CmonsFragmentActivity {
 			super.onBackPressed();
 		}
 	}
+
+	@Override
+	public void showLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hideLoadingView() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 ///////////////////////// Custom methods.
 	

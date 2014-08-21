@@ -52,7 +52,7 @@
             
             <TextView
 		        android:id="@+id/wholesaleWritePage_tvSoldOut"
-		        android:layout_width="0dp"
+		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/wholesaleWritePage_checkbox"
 		        android:layout_toLeftOf="@id/wholesaleWritePage_checkbox"
@@ -110,7 +110,7 @@
             <!-- 상품명 -->
             
             <TextView
-		        android:id="@+id/wholesaleWritePage_tvNameText"
+		        android:id="@+id/wholesaleWritePage_tvName"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/wholesaleWritePage_tvImageSizeText"
@@ -122,7 +122,7 @@
 		        android:id="@+id/wholesaleWritePage_etName"
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
-		    	android:layout_below="@id/wholesaleWritePage_tvNameText"
+		    	android:layout_below="@id/wholesaleWritePage_tvName"
 			    android:background="@drawable/text_box"
 			    android:gravity="center"
 			    android:hint="@string/hintForProductName"
@@ -132,7 +132,7 @@
 		    <!-- 상품가격. -->
 		    
 		    <TextView
-		        android:id="@+id/wholesaleWritePage_tvPriceText"
+		        android:id="@+id/wholesaleWritePage_tvPrice"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/wholesaleWritePage_etName"
@@ -144,7 +144,7 @@
 		        android:id="@+id/wholesaleWritePage_etPrice"
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
-		    	android:layout_below="@id/wholesaleWritePage_tvPriceText"
+		    	android:layout_below="@id/wholesaleWritePage_tvPrice"
 			    android:background="@drawable/text_box"
 			    android:gravity="center"
 			    android:hint="@string/hintForProductPrice"
@@ -253,7 +253,7 @@
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/wholesaleWritePage_tvDescription"
 			    android:background="@drawable/text_box"
-			    android:gravity="center"
+			    android:gravity="center_horizontal|top"
 			    android:hint="@string/hintForProductDescription"
 			    android:textColor="#000"
 			    android:textColorHint="#555" />
@@ -264,7 +264,7 @@
 		        android:id="@+id/wholesaleWritePage_tvPublic"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:layout_below="@id/wholesaleWritePage_etDescription"
 		        android:text="@string/productPublic"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
@@ -290,7 +290,7 @@
 		        android:id="@+id/wholesaleWritePage_tvNotification"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:layout_below="@id/wholesaleWritePage_btnPublic1"
 		        android:text="@string/productNotification"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
@@ -299,14 +299,14 @@
 		        android:id="@+id/wholesaleWritePage_btnNotification"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_tvPublic"
+		        android:layout_below="@id/wholesaleWritePage_tvNotification"
 		        android:background="@drawable/myshop_notification_a" />
 		    
 		    <Button
 		        android:id="@+id/wholesaleWritePage_btnPullUp"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_tvPublic"
+		        android:layout_below="@id/wholesaleWritePage_tvNotification"
 		        android:background="@drawable/myshop_notification_a" />
             
 		    <TextView

@@ -11,8 +11,9 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -27,19 +28,13 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.HeaderGridView;
 
 public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	
-	private static final int TYPE_MENU1 = 0;
-	private static final int TYPE_MENU2 = 1;
-	private static final int TYPE_MENU3 = 2;
-	
 	private HeaderViewForShop headerView;
 	private HeaderGridView gridView;
-	
-	private LinearLayout menuLinear;
-	private Button btnCategory1, btnCategory2, btnCategory3;
 	
 	private View cover;
 	private RelativeLayout categoryRelative;
@@ -63,11 +58,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleShopPage_titleBar);
 		gridView = (HeaderGridView) mThisView.findViewById(R.id.wholesaleShopPage_gridView);
-		
-		menuLinear = (LinearLayout) mThisView.findViewById(R.id.wholesaleShopPage_menuLinear);
-		btnCategory1 = (Button) mThisView.findViewById(R.id.wholesaleShopPage_btnCategory1);
-		btnCategory2 = (Button) mThisView.findViewById(R.id.wholesaleShopPage_btnCategory2);
-		btnCategory3 = (Button) mThisView.findViewById(R.id.wholesaleShopPage_btnCategory3);
 		
 		cover = mThisView.findViewById(R.id.wholesaleShopPage_cover);
 		categoryRelative = (RelativeLayout) mThisView.findViewById(R.id.wholesaleShopPage_categoryRelative);
@@ -118,7 +108,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		titleBar.getBtnAdd().setVisibility(View.VISIBLE);
 		
 		headerView = new HeaderViewForShop(mContext);
-		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, 500);
+		headerView.init(mActivity);
+		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		headerView.setLayoutParams(al);
 		gridView.addHeaderView(headerView);
 		
@@ -140,24 +131,17 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, 
 					int visibleItemCount, int totalItemCount) {
+			}
+		});
 
-				if(firstVisibleItem < 3) {
+		gridView.setOnItemClickListener(new OnItemClickListener() {
 
-					LogUtils.log("###where.onScroll.  -top : " + (-headerView.getTop()) +
-							", diffLength : " + headerView.diffLength
-							);
-					
-					if(-headerView.getTop() >= headerView.diffLength) {
-						menuLinear.setVisibility(View.VISIBLE);
-//						circleHeaderView.hideTitleBar();
-					} else {
-						menuLinear.setVisibility(View.INVISIBLE);
-//						circleHeaderView.showTitleBar();
-					}
-				} else if(firstVisibleItem == 3) {
-					menuLinear.setVisibility(View.VISIBLE);
-//					circleHeaderView.hideTitleBar();
-				}
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+
+				ToastUtils.showToast("click " + arg2);
+				mActivity.showWritePage((Product)models.get(arg2));
 			}
 		});
 		
@@ -175,34 +159,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showWritePage();
-			}
-		});
-		
-		btnCategory1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				showCategoryRelative(TYPE_MENU1);
-			}
-		});
-		
-		btnCategory2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				showCategoryRelative(TYPE_MENU2);
-			}
-		});
-		
-		btnCategory3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				showCategoryRelative(TYPE_MENU3);
+				mActivity.showWritePage(null);
 			}
 		});
 		
@@ -229,16 +186,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	public void setSizes() {
 
 		RelativeLayout.LayoutParams rp = null;
-		LinearLayout.LayoutParams lp = null;
-		
-		//menuLinear.
-		rp = (RelativeLayout.LayoutParams) menuLinear.getLayoutParams();
-		rp.height = headerView.diffLength;
-		rp.topMargin = ResizeUtils.getSpecificLength(96);
-		
-		//btnCategory1
-		//btnCategory2
-		//btnCategory3
 		
 		//categoryRelative.
 		rp = (RelativeLayout.LayoutParams) categoryRelative.getLayoutParams();
@@ -290,13 +237,11 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		try {
 			JSONArray arJSON = objJSON.getJSONArray("products");
 			
-			for(int j=0; j<5; j++) {
-				int size = arJSON.length();
-				for(int i=0; i<size; i++) {
-					Product product = new Product(arJSON.getJSONObject(i));
-					product.setItemCode(CphConstants.ITEM_PRODUCT);
-					models.add(product);
-				}
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Product product = new Product(arJSON.getJSONObject(i));
+				product.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(product);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

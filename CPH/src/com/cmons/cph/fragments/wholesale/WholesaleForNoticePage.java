@@ -11,12 +11,17 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 
+	private Notice notice;
+	
 	private TextView tvTitleText;
 	private EditText etTitle;
 	private TextView tvTitle;
@@ -45,8 +50,9 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
-		if(getArguments() != null) {
-			isEdit = getArguments().getBoolean("isEdit");
+		if(getArguments() != null && getArguments().containsKey("notice")) {
+			notice = (Notice) getArguments().getSerializable("notice");
+			isEdit = true;
 		}
 		
 		if(isEdit) {
@@ -54,6 +60,8 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 		} else {
 			title = "공지사항";
 		}
+		
+		checkReadList();
 	}
 
 	@Override
@@ -165,5 +173,22 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+//////////////////// Custom methods.
+	
+	public void checkReadList() {
+
+		if(notice == null) {
+			return;
+		}
+		
+		String readListString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_NOTICE, "readList");
+
+		if(!readListString.contains(notice.getId() + ",")) {
+			readListString += notice.getId() + ",";
+		}
+		
+		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTICE, "readList", readListString);
 	}
 }
