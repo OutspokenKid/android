@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/circleMainActivity_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.zonecomms.common.views.ImagePlayViewer
+        android:id="@+id/circleMainActivity_imagePlayViewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/circleMainActivity_swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="#0000" >
+
+        <ListView
+            android:id="@+id/circleMainActivity_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0000" />
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+    <View 
+        android:id="@+id/circleMainActivity_menuCover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+    
+    <ScrollView
+        android:id="@+id/circleMainActivity_menuScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="invisible" >
+
+        <LinearLayout 
+	        android:id="@+id/circleMainActivity_menuLinear"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" />
+        
+    </ScrollView>
+    
+    <TextView
+        android:id="@+id/circleMainActivity_tvTitle1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textColor="#fff" />
+    
+    <TextView
+        android:id="@+id/circleMainActivity_tvTitle2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textColor="#fff" />
+
+    <View
+        android:id="@+id/circleMainActivity_menu"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_menu_01" />
+
+    <View
+        android:id="@+id/circleMainActivity_home"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_metro_01" />
+
+    <View
+        android:id="@+id/circleMainActivity_write"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_write_01" />
+
+    <View
+        android:id="@+id/circleMainActivity_n"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/topicon_n_01" />
+    
+</FrameLayout>

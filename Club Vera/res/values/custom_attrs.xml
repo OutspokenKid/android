@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Customize -->
+    <string name="app_name">VERA</string>
+    <string name="clubAddress">Address of Vera..</string>
+    <string name="textForCafe">http://cafe.naver.com/hybridclubvera</string>
+	<string name="textForCall">023380957</string>
+	<string name="textForFacebook">http://www.facebook.com/clubverakorea</string>
+	<string name="textForIntroduce">Text for introtuce.\nText for introtuce.\nText for introtuce.</string>
+	
+	<!-- For NaverMap. -->	
+	<string name="naverMapKey">1b4074a32aa9dccf797262dff9f7b1fa</string>
+	<string name="latitude">37.554387</string>
+	<string name="longitude">126.921952</string>
+	
+	<!-- Length of logo at IntroActivity.java -->
+	<string name="logo_width">458</string>
+	<string name="logo_height">91</string>
+
+	<!-- sb_id. -->
+	<string name="sb_id">clubvera</string>
+	
+	<!-- Domain -->
+	<string name="domain">http://www.napp.co.kr</string>
+<!-- 	<string name="domain">http://112.169.61.103</string> -->
+	
+	<!-- Custom font. -->
+	<string name="customFont">NanumGothic.otf</string>
+
+	<!-- Colors of bg_intro.xml -->
+	<color name="intro_start">#ffffff</color>
+	<color name="intro_center">#ffffff</color>
+	<color name="intro_end">#ffffff</color>
+	
+	<!-- Colors of main menu. -->
+	<color name="color_main_big">#a7a9ab</color>
+	<color name="color_main_small">#d1d3d4</color>
+	
+	<!-- Color of button cover, select brighter color bitween color_main_big and color_main_small-->
+	<color name="color_line_on">#bd1547</color>
+	<color name="color_line_off">#99bd1547</color>
+	<color name="color_button_cover">#99bd1547</color>
+		
+	
+	
+</resources>

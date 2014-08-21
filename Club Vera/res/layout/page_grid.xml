@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gridPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="#f5f5f5" >
+ 
+    <LinearLayout
+        android:id="@+id/gridPage_menuLinear"
+		android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/gridPage_swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_below="@id/gridPage_menuLinear" >
+
+        <GridView
+            android:id="@+id/gridPage_gridView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true" />
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+</RelativeLayout>

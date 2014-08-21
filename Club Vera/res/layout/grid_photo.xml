@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zonecomms.common.views.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_post" />
+
+    <ImageView
+        android:id="@+id/grid_photo_ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+    
+    <TextView 
+        android:id="@+id/grid_photo_tvTitle"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:background="#a000"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+
+</com.zonecomms.common.views.WrapperView>
