@@ -52,16 +52,18 @@ public class ViewWrapperForMusic extends ViewWrapper {
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 150, bg, 2, Gravity.CENTER_VERTICAL, null);
 		
-		ResizeUtils.viewResize(150, 150, row.findViewById(R.id.list_music_imageBg), 2, Gravity.CENTER_VERTICAL, null);
+		ResizeUtils.viewResize(150, 150, row.findViewById(R.id.list_music_imageBg), 2, 
+				Gravity.CENTER_VERTICAL, null);
 		ResizeUtils.viewResize(150, 150, ivImage, 2, Gravity.CENTER_VERTICAL, null);
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 50, tvTitle, 2, Gravity.LEFT, new int[]{160, 25, 60, 0});
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 50, tvSubTitle, 2, Gravity.LEFT, new int[]{160, 75, 60, 0});
-		
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 40, tvTitle, 2, 
+				Gravity.LEFT|Gravity.TOP, new int[]{166, 20, 60, 0});
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 40, tvSubTitle, 2, 
+				Gravity.LEFT|Gravity.BOTTOM, new int[]{166, 0, 60, 20});
 		ResizeUtils.viewResize(25, 42, row.findViewById(R.id.list_music_arrow), 2, 
 				Gravity.CENTER_VERTICAL|Gravity.RIGHT, new int[]{0, 0, 20, 0});
 		
-		FontUtils.setFontSize(tvTitle, 32);
-		FontUtils.setFontSize(tvSubTitle, 32);
+		FontUtils.setFontSize(tvTitle, 28);
+		FontUtils.setFontSize(tvSubTitle, 24);
 	}
 
 	@Override

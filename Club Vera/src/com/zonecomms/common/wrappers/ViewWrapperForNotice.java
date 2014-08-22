@@ -25,6 +25,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 	private static ViewWrapperForNotice openedNotice;
 	
 	private TextView tvTitle;
+	private TextView tvRegdate;
 	private View arrow;
 	private LinearLayout contentLinear;
 	private TextView tvContent;
@@ -46,6 +47,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 		bg = row.findViewById(R.id.list_notice_headerLayout);
 		
 		tvTitle = (TextView) row.findViewById(R.id.list_notice_tvTitle);
+		tvRegdate = (TextView) row.findViewById(R.id.list_notice_tvRegdate);
 		arrow = row.findViewById(R.id.list_notice_arrow);
 		contentLinear = (LinearLayout) row.findViewById(R.id.list_notice_contentLinear);
 		tvContent = (TextView) row.findViewById(R.id.list_notice_tvContent);
@@ -65,9 +67,13 @@ public class ViewWrapperForNotice extends ViewWrapper {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 150, row.findViewById(R.id.list_notice_headerLayout), 1, 0, null);
 		ResizeUtils.viewResize(41, 24, arrow, 2, Gravity.CENTER_VERTICAL|Gravity.RIGHT, new int[]{0, 0, 20, 0});
 
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvTitle, 2, 
-				Gravity.CENTER_VERTICAL, new int[]{30, 0, 60, 0});
-		FontUtils.setFontSize(tvTitle, 28);
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 75, tvTitle, 2, 
+				Gravity.LEFT|Gravity.TOP, new int[]{30, 0, 60, 0});
+		FontUtils.setFontSize(tvTitle, 26);
+		
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 75, tvRegdate, 2, 
+				Gravity.LEFT|Gravity.BOTTOM, new int[]{30, 0, 60, 0});
+		FontUtils.setFontSize(tvRegdate, 24);
 
 		ResizeUtils.viewResize(624, 0, ivImage, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0});
 		
@@ -89,6 +95,10 @@ public class ViewWrapperForNotice extends ViewWrapper {
 				
 				if(!StringUtils.isEmpty(notice.getNotice_title())) {
 					tvTitle.setText(notice.getNotice_title());
+				}
+				
+				if(!StringUtils.isEmpty(notice.getReg_dt())) {
+					tvRegdate.setText(notice.getReg_dt());
 				}
 
 				if(!StringUtils.isEmpty(notice.getContent())) {

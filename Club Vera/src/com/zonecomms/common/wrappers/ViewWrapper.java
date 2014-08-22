@@ -10,7 +10,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
@@ -106,7 +105,7 @@ public abstract class ViewWrapper {
 
 		ivImage.setVisibility(View.INVISIBLE);
 		
-		ivImage.setTag(url);
+		final String CURRENT_URL = url;
 		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
@@ -117,11 +116,7 @@ public abstract class ViewWrapper {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					String tag = ivImage.getTag().toString();
-					
-					//태그가 다른 경우 아무 것도 하지 않음.
-					if(!StringUtils.isEmpty(tag)
-							&& tag.equals(url)) {
+					if(CURRENT_URL.equals(url)) {
 						
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);

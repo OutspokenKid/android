@@ -20,6 +20,16 @@
 		    	android:layout_height="0dp"
 		    	android:textColor="@color/renewal_text"
 		    	android:singleLine="true"
+		    	android:gravity="center_vertical"
+		    	android:ellipsize="end" />
+            
+            <TextView 
+		        android:id="@+id/list_notice_tvRegdate"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:textColor="@color/renewal_text"
+		    	android:singleLine="true"
+		    	android:gravity="center_vertical"
 		    	android:ellipsize="end" />
 		
 		    <View

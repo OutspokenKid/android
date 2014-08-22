@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -15,7 +14,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.OutspokenImageView;
 import com.zonecomms.clubvera.IntentHandlerActivity;
 import com.zonecomms.clubvera.R;
@@ -560,54 +558,6 @@ public class MainPage extends ZonecommsFragment {
 
 	@Override
 	public void setPage(boolean downloadSuccess) {
-		
-		if(ZonecommsApplication.myInfo != null && !StringUtils.isEmpty(ZonecommsApplication.myInfo.getMember_media_src())) {
-			String url = ZonecommsApplication.myInfo.getMember_media_src();
-			
-			if(mainActivity.getProfileView() != null) {
-				
-				if(!StringUtils.isEmpty(url) && mainActivity.getProfileView().getIcon() != null) {
-					mainActivity.getProfileView().getIcon().setTag(url);
-					DownloadUtils.downloadBitmap(url,
-							new OnBitmapDownloadListener() {
-
-								@Override
-								public void onError(String url) {
-									
-									LogUtils.log("MainPage.onError."
-											+ "\nurl : " + url);
-								}
-
-								@Override
-								public void onCompleted(String url, Bitmap bitmap) {
-
-									try {
-										LogUtils.log("MainPage.onCompleted."
-												+ "\nurl : " + url);
-
-										ImageView ivImage = mainActivity.getProfileView().getIcon();
-										
-										if (ivImage != null
-												&& ivImage.getTag() != null
-												&& ivImage.getTag().toString()
-														.equals(url)) {
-											ivImage.setImageBitmap(bitmap);
-										}
-									} catch (Exception e) {
-										LogUtils.trace(e);
-									} catch (OutOfMemoryError oom) {
-										LogUtils.trace(oom);
-									}
-								}
-							});
-				}
-				
-				String nickname = ZonecommsApplication.myInfo.getMember_nickname();
-				if(!StringUtils.isEmpty(nickname)) {
-					mainActivity.getProfileView().setTitle(nickname);
-				}
-			}
-		}
 	}
 
 	@Override
@@ -658,8 +608,6 @@ public class MainPage extends ZonecommsFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
-		setPage(true);
 		
 		mThisView.postDelayed(new Runnable() {
 			

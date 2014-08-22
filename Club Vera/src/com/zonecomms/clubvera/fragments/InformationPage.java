@@ -100,7 +100,7 @@ public class InformationPage extends ZonecommsFragment {
 		tvAddress.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		tvAddress.setText(R.string.clubAddress);
 		tvAddress.setPadding(p, p, p, p);
-		FontUtils.setFontSize(tvAddress, 30);
+		FontUtils.setFontSize(tvAddress, 26);
 		FontUtils.setFontStyle(tvAddress, FontUtils.BOLD);
 		textContainer.addView(tvAddress);
 		
@@ -224,6 +224,7 @@ public class InformationPage extends ZonecommsFragment {
 		rp.bottomMargin = s;
 		tvIntroduce.setLayoutParams(rp);
 		tvIntroduce.setBackgroundColor(Color.WHITE);
+		tvIntroduce.setLineSpacing(0, 1.5f);
 		tvIntroduce.setPadding(p, p, p, p);
 		tvIntroduce.setText(R.string.textForIntroduce);
 		tvIntroduce.setTextColor(HoloConstants.COLOR_HOLO_TEXT);

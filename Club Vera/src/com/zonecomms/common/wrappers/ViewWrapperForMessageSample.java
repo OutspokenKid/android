@@ -58,16 +58,16 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 	public void setSizes() {
 
 		int p = ResizeUtils.getSpecificLength(8);
-		row.setPadding(p, p, p, p);
+		row.setPadding(p, 0, p, p);
 		
-		ResizeUtils.viewResize(80, 80, imageBg, 2, Gravity.LEFT, null);
-		ResizeUtils.viewResize(80, 80, ivProfile, 2, Gravity.LEFT, null);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{88, 0, 0, 0});
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 2, Gravity.RIGHT|Gravity.TOP, null);
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvContent, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{88, 0, 0, 0});
+		ResizeUtils.viewResize(150, 150, imageBg, 2, Gravity.LEFT, null);
+		ResizeUtils.viewResize(150, 150, ivProfile, 2, Gravity.LEFT, null);
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{166, 20, 0, 0});
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 20, 0, 0});
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvContent, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{166, 0, 0, 20});
 		ResizeUtils.viewResize(40, 40, newCheck, 2, Gravity.RIGHT|Gravity.BOTTOM, null);
 		
-		FontUtils.setFontSize(tvNickname, 32);
+		FontUtils.setFontSize(tvNickname, 28);
 		FontUtils.setFontSize(tvRegdate, 24);
 		FontUtils.setFontSize(tvContent, 24);
 	}

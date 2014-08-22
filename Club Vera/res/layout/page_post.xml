@@ -75,12 +75,12 @@
 		            android:layout_height="0dp" />
 		        
 		    </LinearLayout>
-		    
+
 		    <View 
 		        android:id="@+id/postPage_writeCover"
 				android:layout_width="match_parent"
 		        android:layout_height="match_parent" />
-		    		    
+		    	    
 		</FrameLayout>
 	
 	</LinearLayout>
@@ -91,5 +91,13 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:background="#a333" />
+
+    <View 
+        android:id="@+id/postPage_line"
+		android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_gravity="bottom"
+        android:background="#ff0"
+         />
     
 </FrameLayout>

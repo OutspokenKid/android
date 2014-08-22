@@ -76,21 +76,22 @@ public class ViewForReply extends RelativeLayout {
 		ivImage.setLayoutParams(rp);
 		ivImage.setId(madeCount);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		ivImage.setBackgroundResource(R.drawable.bg_profile);
+		ivImage.setBackgroundResource(R.drawable.bg_profile_65);
 		this.addView(ivImage);
 		
 		//id : 1
 		tvNickname = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		rp.leftMargin = l + m * 2;
+		rp.topMargin = m;
 		tvNickname.setLayoutParams(rp);
 		tvNickname.setId(madeCount + 1);
 		tvNickname.setTextColor(getResources().getColor(R.color.renewal_text));
 		tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
 		FontUtils.setGlobalFont(tvNickname);
-		FontUtils.setFontSize(tvNickname, 30);
+		FontUtils.setFontSize(tvNickname, 26);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		this.addView(tvNickname);
 		
@@ -114,7 +115,7 @@ public class ViewForReply extends RelativeLayout {
 		tvText.setTextColor(getResources().getColor(R.color.renewal_text_dark));
 		tvText.setId(madeCount + 2);
 		FontUtils.setGlobalFont(tvNickname);
-		FontUtils.setFontSize(tvText, 30);
+		FontUtils.setFontSize(tvText, 26);
 		this.addView(tvText);
 		
 		tvRegdate = new TextView(getContext());
@@ -126,7 +127,7 @@ public class ViewForReply extends RelativeLayout {
 		tvRegdate.setLayoutParams(rp);
 		tvRegdate.setTextColor(getResources().getColor(R.color.renewal_text_light));
 		FontUtils.setGlobalFont(tvNickname);
-		FontUtils.setFontSize(tvRegdate, 26);
+		FontUtils.setFontSize(tvRegdate, 24);
 		this.addView(tvRegdate);
 		
 		View bottomBlank = new View(getContext());

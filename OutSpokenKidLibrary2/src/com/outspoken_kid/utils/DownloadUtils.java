@@ -179,7 +179,7 @@ public class DownloadUtils {
 	
 /////////////////////////// Classes.
 	
-	public class AsyncGetBitmap extends AsyncTask<String, Void, Bitmap> {
+	public class AsyncGetBitmap extends AsyncTask<Void, Void, Bitmap> {
 
 		private String url;
 		private OnBitmapDownloadListener onBitmapDownloadListener;
@@ -190,10 +190,10 @@ public class DownloadUtils {
 		}
 		
 		@Override
-		protected Bitmap doInBackground(String... arg0) {
+		protected Bitmap doInBackground(Void... v) {
 			
 			try {
-				return ImageCacheManager.getInstance().getBitmap(arg0[0]);
+				return ImageCacheManager.getInstance().getBitmap(url);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {

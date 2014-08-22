@@ -121,8 +121,6 @@ public class CircleMainActivity extends Activity {
             setSizes();
             setListeners();
             
-        	handleIntent();
-
     		//Test.
     		//HoloConstants 설정. 
         	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b27a38ff");
@@ -535,6 +533,8 @@ public class CircleMainActivity extends Activity {
     	showNext();
     	swipeLayout.startAnimation(taIn);
     	swipeLayout.setVisibility(View.VISIBLE);
+    	
+    	handleIntent();
     }
 
     public void onRefreshPage() {
@@ -739,25 +739,26 @@ public class CircleMainActivity extends Activity {
     	
     	//색 설정.
     	String colorText = "#b2" + bgInfos[currentIndex].color.replace("#", "");
-    	int color = Color.parseColor(colorText);
+    	int Alphacolor = Color.parseColor(colorText);
+    	int NonAlphaColor = Color.parseColor(bgInfos[currentIndex].color);
     	
     	//리스트 아이템 설정.
-    	listAdapter.changeColor(color);
+    	listAdapter.changeColor(NonAlphaColor);
     	
     	//메뉴 색 설정.
-    	setMenuColor(color);
+    	setMenuColor(NonAlphaColor);
     	
     	//타이틀바 설정.
     	if(playIndex == 0) {
-			tvTitles[0].setBackgroundColor(color);
-			circleHeaderView.setTitleBarColor(currentIndex, color);
+			tvTitles[0].setBackgroundColor(NonAlphaColor);
+			circleHeaderView.setTitleBarColor(currentIndex, Alphacolor);
     		
     	} else {
-    		changeTitleBarColor(color);
+    		changeTitleBarColor(Alphacolor, NonAlphaColor);
     	}
     	
     	//HoloConstants 설정.
-    	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b2" + bgInfos[currentIndex].color.replace("#", ""));
+    	HoloConstants.COLOR_HOLO_TARGET_ON = Alphacolor;
 		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#99" + bgInfos[currentIndex].color.replace("#", ""));
     	
 		
@@ -780,49 +781,20 @@ public class CircleMainActivity extends Activity {
 			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.3f), 255);
 			
 			MainPage.colorSmall = Color.rgb(red, green, blue);
-
-//			int color1 = 0, color2 = 0, color3 = 0, color4 = 0;
-//			
-//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.3f), 255);
-//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.2f), 255);
-//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.2f), 255);
-//			
-//			color1 = Color.rgb(red, green, blue);
-//			
-//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.6f), 255);
-//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.4f), 255);
-//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.4f), 255);
-//			
-//			color2 = Color.rgb(red, green, blue);
-//			
-//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 1.9f), 255);
-//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.6f), 255);
-//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.6f), 255);
-//			
-//			color3 = Color.rgb(red, green, blue);
-//			
-//			red = Math.min((int)((float)Color.red(TitleBar.titleBarColor) * 2.1f), 255);
-//			green = Math.min((int)((float)Color.green(TitleBar.titleBarColor) * 1.8f), 255);
-//			blue = Math.min((int)((float)Color.blue(TitleBar.titleBarColor) * 1.8f), 255);
-//			
-//			color4 = Color.rgb(red, green, blue);
-//			
-//			//리스트 로딩 색 설정.
-//			swipeLayout.setColorSchemeColors(color1, color2, color3, color4);
 		}
 		
     	playIndex++;
     }
     
-    public void changeTitleBarColor(int color) {
+    public void changeTitleBarColor(int alphaColor, int nonAlphaColor) {
 
     	titleBarIndex++;
     	
     	int in = titleBarIndex % 2;
     	int out = (in + 1) % 2;
 
-    	tvTitles[in].setBackgroundColor(color);
-    	circleHeaderView.changeTitleBarColor(color, imagePlayViewer.isNeedToPlayImage());
+    	tvTitles[in].setBackgroundColor(nonAlphaColor);
+    	circleHeaderView.changeTitleBarColor(alphaColor, imagePlayViewer.isNeedToPlayImage());
     	
     	//타이틀바가 보이는 상태.
     	if(!imagePlayViewer.isNeedToPlayImage()) {
@@ -1000,6 +972,15 @@ public class CircleMainActivity extends Activity {
 				
 				Uri uri = intent.getData();
 				LogUtils.log("###CircleMainActivity.onCreate.handleUri  url : " + uri);
+
+				String uriString = uri.toString();
+				
+				if(uriString.contains("null://")) {
+					uriString.replace("null://", ZoneConstants.PAPP_ID + "://");
+					uri = Uri.parse(uriString);
+					
+					LogUtils.log("###CircleMainActivity.onCreate.handleUri.changeUri.  url : " + uri);
+				}
 				
 				if(!intent.getData().getScheme().equals("popup")) {
 					swipeLayout.post(new Runnable() {
@@ -1016,8 +997,6 @@ public class CircleMainActivity extends Activity {
 					
 					showAlertDialog(null, message, getString(R.string.confirm), null, null, null);
 				}
-				
-				intent.setData(null);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

@@ -471,7 +471,7 @@ public class GridPage extends ZonecommsListFragment {
 						menus[0].setImageResource(R.drawable.btn_memberall_n_01);
 						menus[1].setImageResource(R.drawable.btn_memberman_n_01);
 						menus[2].setImageResource(R.drawable.btn_memberwom_n_01);
-						menus[3].setImageResource(R.drawable.btn_membersearch_n_01);
+						menus[3].setImageResource(R.drawable.btn_membersearch_p_01);
 						break;
 					}
 					

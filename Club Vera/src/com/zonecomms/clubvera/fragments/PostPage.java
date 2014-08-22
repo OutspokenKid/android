@@ -47,6 +47,7 @@ import com.zonecomms.common.models.Reply;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.views.PostInfoLayout;
 import com.zonecomms.common.views.ReplyLoadingView;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.ReplyLoadingView.OnLoadingViewClickedListener;
 import com.zonecomms.common.views.ViewForReply;
 
@@ -66,6 +67,7 @@ public class PostPage extends ZonecommsFragment {
 	private FrameLayout writeFrame;
 	private LinearLayout writeLinear;
 	private View writeCover;
+	private View line;
 	private HoloStyleEditText editText;
 	private HoloStyleButton btnSubmit;
 	private ReplyLoadingView replyLoadingView;
@@ -94,6 +96,7 @@ public class PostPage extends ZonecommsFragment {
 		writeFrame = (FrameLayout) mThisView.findViewById(R.id.postPage_writeFrame);
 		writeLinear = (LinearLayout) mThisView.findViewById(R.id.postPage_writeLinear);
 		writeCover = mThisView.findViewById(R.id.postPage_writeCover);
+		line = mThisView.findViewById(R.id.postPage_line);
 		editText = (HoloStyleEditText) mThisView.findViewById(R.id.postPage_editText);
 		btnSubmit = (HoloStyleButton) mThisView.findViewById(R.id.postPage_submitButton);
 		targetLinear = (LinearLayout) mThisView.findViewById(R.id.postPage_targetLinear);
@@ -102,6 +105,8 @@ public class PostPage extends ZonecommsFragment {
 	@Override
 	public void setVariables() {
 		super.setVariables();
+
+		title = "STORY";
 		
 		if(getArguments() != null) {
 			spot_nid = getArguments().getInt("spot_nid");
@@ -112,7 +117,6 @@ public class PostPage extends ZonecommsFragment {
 	public void createPage() {
 		
 		try {
-			editText.getEditText().setHint(R.string.hintForReply);
 			editText.getEditText().setSingleLine(false);
 			btnSubmit.setText(R.string.submitReply);
 			
@@ -125,6 +129,8 @@ public class PostPage extends ZonecommsFragment {
 			
 			spForReply = new HoloStyleSpinnerPopup(mContext);
 			((FrameLayout) mThisView.findViewById(R.id.postPage_mainLayout)).addView(spForReply);
+			
+			line.setBackgroundColor(TitleBar.titleBarColor);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}
@@ -232,7 +238,7 @@ public class PostPage extends ZonecommsFragment {
 		tvText.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvText, 30);
 		
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, writeFrame, 1, Gravity.LEFT, new int[]{8, 8, 8, 8});
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, writeFrame, 1, Gravity.LEFT, new int[]{8, 0, 8, 8});
 		
 		int m = ResizeUtils.getSpecificLength(8);
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, ResizeUtils.getSpecificLength(90), 1);
@@ -242,6 +248,9 @@ public class PostPage extends ZonecommsFragment {
 		
 		ResizeUtils.viewResize(120, 80, btnSubmit, 1, Gravity.CENTER_VERTICAL, new int[]{0, 8, 8, 8});
 		FontUtils.setFontSize(btnSubmit.getTextView(), 20);
+		
+		FrameLayout.LayoutParams fp = (FrameLayout.LayoutParams)line.getLayoutParams();
+		fp.bottomMargin = ResizeUtils.getSpecificLength(107);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, targetLinear, 2, Gravity.BOTTOM, new int[]{0, 0, 0, 108});
 	}
@@ -302,12 +311,6 @@ public class PostPage extends ZonecommsFragment {
 		}
 		
 		super.setPage(successDownload);
-	}
-
-	@Override
-	public String getTitleText() {
-
-		return getString(R.string.write);
 	}
 
 	@Override

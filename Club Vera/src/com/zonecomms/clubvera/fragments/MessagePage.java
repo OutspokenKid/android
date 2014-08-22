@@ -45,6 +45,7 @@ import com.zonecomms.common.models.Message;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
+import com.zonecomms.common.views.TitleBar;
 
 public class MessagePage extends ZonecommsListFragment {
 
@@ -110,6 +111,7 @@ public class MessagePage extends ZonecommsListFragment {
 		btnSend.setText(R.string.send);
 		
 		pPhoto = new HoloStyleSpinnerPopup(mContext);
+		pPhoto.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		pPhoto.setTitle(getString(R.string.uploadPhoto));
 		pPhoto.addItem(getString(R.string.photo_take));
 		pPhoto.addItem(getString(R.string.photo_album));
@@ -214,6 +216,8 @@ public class MessagePage extends ZonecommsListFragment {
 			}
 		});
 		mainLayout.addView(pPhoto);
+		
+		mThisView.findViewById(R.id.messagePage_line).setBackgroundColor(TitleBar.titleBarColor);
 	}
 
 	@Override
@@ -248,6 +252,7 @@ public class MessagePage extends ZonecommsListFragment {
 		ResizeUtils.viewResize(66, 53, photo, 1, Gravity.CENTER_VERTICAL, new int[]{8, 8, 8, 8});
 		
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1);
+		lp.gravity = Gravity.BOTTOM;
 		etMessage.setLayoutParams(lp);
 		etMessage.getEditText().setMinimumHeight(ResizeUtils.getSpecificLength(60));
 		etMessage.getEditText().setMaxHeight(ResizeUtils.getSpecificLength(150));

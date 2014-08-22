@@ -141,7 +141,7 @@ public abstract class ZoneAdapter extends BaseAdapter {
 	
 	public View getBlankView() {
 		
-		if(context == null) {
+		if(context != null) {
 			View blankView = new View(context);
 			blankView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, 0));
 			return blankView;

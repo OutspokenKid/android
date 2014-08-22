@@ -110,6 +110,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 						"\npost_member_id : " + post_member_id +
 						"\nspot_nid : " + spot_nid +
 						"\n########################");
+
+				String id = SharedPrefsUtils.getStringFromPrefs(ZoneConstants.PREFS_SIGN, "id");
+				
+				//로그인이 안되어있는 경우 전체 푸시가 아니면 제한.
+				if((id == null || id.length() == 0) && !push_msg.equals("000")) {
+					return;
+				}
 				
 				handleMessage(context, push_msg, msg_type, member_id, post_member_id, spot_nid);
 			}

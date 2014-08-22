@@ -31,6 +31,7 @@ import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -239,15 +240,21 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		final Intent i = getIntent();				//'i' is intent that passed intent from before.
 		
-		if(i!= null && i.getData() != null) {
+		if(i != null && i.getData() != null) {
+			
+			LogUtils.log("###MainActivity.setPage.  data : " + i.getDataString());
 			gestureSlidingLayout.postDelayed(new Runnable() {
 				
 				@Override
 				public void run() {
+					
+					//clubvera://android.zonecomms.com/message?member_id=qqqqqq
 					IntentHandlerActivity.actionByUri(i.getData());
 				}
 			}, 500);
 		} else {
+			LogUtils.log("###MainActivity.setPage.  data is null");
+			
 			showMainPage();
 		}
 	}
@@ -495,6 +502,8 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		super.onResume();
 		
 		try {
+			checkProfileView();
+			
 			if(NetworkUtils.checkNetworkStatus(this) == NetworkUtils.TYPE_NONE) {
 				
 				gestureSlidingLayout.postDelayed(new Runnable() {
@@ -993,7 +1002,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			};
 		
 		int[] iconResIds = new int[]{
-				R.drawable.bg_profile,
+				R.drawable.bg_profile_65,
 				R.drawable.btn_side_notice,
 				R.drawable.btn_side_schedule,
 				R.drawable.btn_side_guest,
@@ -1448,6 +1457,57 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			}
 		} else {
 			super.clearFragments(needAnim);
+		}
+	}
+
+	public void checkProfileView() {
+		
+		if(ZonecommsApplication.myInfo != null && !StringUtils.isEmpty(ZonecommsApplication.myInfo.getMember_media_src())) {
+			String url = ZonecommsApplication.myInfo.getMember_media_src();
+			
+			if(getProfileView() != null) {
+				
+				if(!StringUtils.isEmpty(url) && getProfileView().getIcon() != null) {
+					getProfileView().getIcon().setTag(url);
+					DownloadUtils.downloadBitmap(url,
+							new OnBitmapDownloadListener() {
+
+								@Override
+								public void onError(String url) {
+									
+									LogUtils.log("MainPage.onError."
+											+ "\nurl : " + url);
+								}
+
+								@Override
+								public void onCompleted(String url, Bitmap bitmap) {
+
+									try {
+										LogUtils.log("MainPage.onCompleted."
+												+ "\nurl : " + url);
+
+										ImageView ivImage = getProfileView().getIcon();
+										
+										if (ivImage != null
+												&& ivImage.getTag() != null
+												&& ivImage.getTag().toString()
+														.equals(url)) {
+											ivImage.setImageBitmap(bitmap);
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
+				}
+				
+				String nickname = ZonecommsApplication.myInfo.getMember_nickname();
+				if(!StringUtils.isEmpty(nickname)) {
+					getProfileView().setTitle(nickname);
+				}
+			}
 		}
 	}
 	

@@ -925,6 +925,7 @@ public class UserPage extends ZonecommsFragment {
 		listView = new ListView(mContext);
 		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
+		listView.setDividerHeight(0);
 		listView.setBackgroundColor(Color.parseColor("#f5f5f5"));
 		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setOnScrollListener(new OnScrollListener() {
