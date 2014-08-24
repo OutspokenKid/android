@@ -13,35 +13,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleShopPage_titleBar"
-	    android:numColumns="2"
 	    android:cacheColorHint="#0000" />
 
-    <View 
-        android:id="@+id/wholesaleShopPage_cover"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:visibility="invisible"
-    	android:background="#a000" />
-    
-    <RelativeLayout
-        android:id="@+id/wholesaleShopPage_categoryRelative"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:visibility="invisible" >
-	    
-        <ListView 
-        	android:id="@+id/wholesaleShopPage_listView"
-        	android:layout_width="match_parent"
-    		android:layout_height="match_parent" />
-        
-        <Button 
-            android:id="@+id/wholesaleShopPage_btnClose"
-        	android:layout_width="0dp"
-    		android:layout_height="0dp"
-    		android:layout_alignParentTop="true"
-    		android:layout_alignParentRight="true"
-    		android:background="#f0f" />
-        
-    </RelativeLayout>
-    
 </RelativeLayout>

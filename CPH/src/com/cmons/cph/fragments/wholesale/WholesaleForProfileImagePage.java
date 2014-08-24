@@ -12,10 +12,16 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
@@ -23,10 +29,20 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	private Button btnUpload;
 	private TextView tvProfileDesc;
 	
+	private String selectedImageUrl;
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		downloadProfile();
+	}
+	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleProfileImagePage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleProfileImagePage_ivBg);
 		
 		ivImage = (ImageView) mThisView.findViewById(R.id.wholesaleProfileImagePage_ivImage);
 		btnUpload = (Button) mThisView.findViewById(R.id.wholesaleProfileImagePage_btnUpload);
@@ -35,19 +51,33 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		title = "매장 프로필 사진";
 	}
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
+		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void setListeners() {
 
+		titleBar.getBtnSubmit().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(selectedImageUrl != null) {
+					uploadImage();
+				} else {
+					mActivity.closeTopPage();
+				}
+			}
+		});
+		
 		btnUpload.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -61,6 +91,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 						if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
 							ivImage.setImageBitmap(thumbnail);
 						}
+						
+						selectedImageUrl = resultString;
 					}
 				});
 			}
@@ -113,7 +145,83 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-		// TODO Auto-generated method stub
+		
 		return false;
+	}
+	
+//////////////////// Custom methods.
+	
+	public void downloadProfile() {
+
+		ivImage.setTag(mActivity.wholesale.getRep_image_url());
+		DownloadUtils.downloadBitmap(mActivity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForProfileImagePage.onError." + "\nurl : " + url);
+
+				// TODO Auto-generated method stub		
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("WholesaleForProfileImagePage.onCompleted." + "\nurl : " + url);
+
+					if(ivImage != null) {
+						ivImage.setImageBitmap(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void uploadImage() {
+
+		String url = CphConstants.BASE_API_URL + "wholesales/update/rep_image_url" +
+				"?rep_image_url=" + selectedImageUrl;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForProfileImagePage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToChangeProfileImage);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForProfileImagePage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_changeShopProfile);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToChangeProfileImage);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToChangeProfileImage);
+				}
+			}
+		});
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.shop_bg;
 	}
 }

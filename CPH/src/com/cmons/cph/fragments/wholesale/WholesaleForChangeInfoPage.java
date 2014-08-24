@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
@@ -21,6 +22,7 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangeInfoPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangeInfoPage_ivBg);
 		
 		btnChangePassword = (Button) mThisView.findViewById(R.id.wholesaleChangeInfoPage_btnChangePassword);
 		btnChangePhoneNumber = (Button) mThisView.findViewById(R.id.wholesaleChangeInfoPage_btnChangePhoneNumber);
@@ -104,5 +106,11 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg2;
 	}
 }

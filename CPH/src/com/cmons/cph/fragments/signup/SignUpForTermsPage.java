@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
@@ -21,6 +22,8 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForTermsPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForTermsPage_ivBg);
+		
 		btnAgree = (Button) mThisView.findViewById(R.id.signUpForTermsPage_btnAgree);
 	}
 
@@ -78,11 +81,6 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(74);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(100);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForTermsPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -113,5 +111,11 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

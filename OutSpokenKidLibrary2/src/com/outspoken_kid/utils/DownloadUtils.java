@@ -22,7 +22,7 @@ import com.outspoken_kid.imagecache.ImageCacheManager;
 public class DownloadUtils {
 
 	public static DownloadUtils instance;
-
+	
 	public static DownloadUtils getInstance() {
 		
 		if(instance == null) {
@@ -41,7 +41,6 @@ public class DownloadUtils {
 
 		(new AsyncPutBitmap(url, bitmap)).execute();
 	}
-	
 	
 	/**
 	 * Download image to NetworkImageView.
@@ -78,6 +77,8 @@ public class DownloadUtils {
 
 				@Override
 				public void onErrorResponse(VolleyError arg0) {
+					
+					arg0.printStackTrace();
 					
 					if(onJSONDownloadListener != null) {
 						onJSONDownloadListener.onError(url);

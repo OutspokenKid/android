@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +21,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -36,6 +38,7 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangePasswordPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_ivBg);
 		
 		tvCurrentPassword = (TextView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_tvCurrentPassword);
 		etCurrentPassword = (EditText) mThisView.findViewById(R.id.wholesaleChangePasswordPage_etCurrentPassword);
@@ -58,7 +61,6 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
-		titleBar.getBtnSubmit().setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -163,9 +165,11 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 	public void submit() {
 		
 		try {
+			final String pw = etNewPassword.getText().toString();
+			
 			url = CphConstants.BASE_API_URL + "users/update/password" +
 					"?old=" + URLEncoder.encode(etCurrentPassword.getText().toString(), "utf-8") +
-					"?new=" + URLEncoder.encode(etNewPassword.getText().toString(), "utf-8");
+					"&new=" + URLEncoder.encode(pw, "utf-8");
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -173,6 +177,7 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 				public void onError(String url) {
 
 					LogUtils.log("from.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToChangePw);
 				}
 
 				@Override
@@ -182,21 +187,30 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 						LogUtils.log("from.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
-						ToastUtils.showToast(objJSON.getString("message"));
-
 						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_changePw);
+							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "pw", pw);
 							mActivity.closeTopPage();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToChangePw);
 					} catch (OutOfMemoryError oom) {
 						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToChangePw);
 					}
 				}
 			});
 		} catch (UnsupportedEncodingException e) {
-
 			LogUtils.trace(e);
 		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg2;
 	}
 }

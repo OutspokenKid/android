@@ -68,7 +68,9 @@ public class ViewWrapperForNotice extends ViewWrapper {
 		try {
 			if(baseModel instanceof Notice) {
 				notice = (Notice) baseModel;
-				tvNotice.setText("주문요청이 들어왔습니다. 확인해주세요.");
+				tvNotice.setText(notice.getTitle());
+				
+				LogUtils.log("###where.setValues.  notice.title : " + notice.getTitle());
 				
 				if(notice.isRead()) {
 					tvNotice.setTextColor(Color.rgb(120, 120, 120));
@@ -76,7 +78,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 					icon.setBackgroundResource(R.drawable.mail_icon_b);
 				} else {
 					tvNotice.setTextColor(Color.BLACK);
-					tvRegdate.setText("2014.08.13\nPM:11:14");
+					tvRegdate.setText(notice.getCreated_at());
 					icon.setBackgroundResource(R.drawable.mail_icon_a);
 				}
 			} else {

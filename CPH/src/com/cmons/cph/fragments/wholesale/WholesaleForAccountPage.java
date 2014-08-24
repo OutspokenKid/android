@@ -2,6 +2,7 @@ package com.cmons.cph.fragments.wholesale;
 
 import java.net.URLEncoder;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 
@@ -37,12 +40,20 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 
 	private ListView listView;
 	
-	private int bankIndex;
+	private int bankIndex = -1;
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		downloadInfo();
+	}
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleAccountPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleAccountPage_ivBg);
 		
 		tvAccountText = (TextView) mThisView.findViewById(R.id.wholesaleAccountPage_tvAccountText);
 		btnBank = (Button) mThisView.findViewById(R.id.wholesaleAccountPage_btnBank);
@@ -99,6 +110,19 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 		
 			@Override
 			public void onClick(View view) {
+
+				if(bankIndex == -1) {
+					ToastUtils.showToast(R.string.wrongBank);
+					return;
+					
+				} else if(etName.getText() == null || etName.getText().length() == 0) {
+					ToastUtils.showToast(R.string.wrongName);
+					return;
+					
+				} else if(etAccount.getText() == null || etAccount.getText().length() == 0) {
+					ToastUtils.showToast(R.string.wrongAccount);
+					return;
+				}
 				
 				addAccount();
 			}
@@ -110,13 +134,15 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				
+				final int clickedIndex = arg2;
+				
 				mActivity.showAlertDialog("계좌 삭제", "해당 계좌를 삭제하시겠습니까?\n\n", 
 						"확인", "취소", new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface arg0, int arg1) {
 						
-						deleteAccount(((Account)models.get(arg1)));
+						deleteAccount(((Account)models.get(clickedIndex)));
 					}
 				}, null);
 			}
@@ -163,12 +189,6 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
-	public void refreshPage() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public boolean onMenuPressed() {
 		// TODO Auto-generated method stub
 		return false;
@@ -182,6 +202,21 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
+
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("accounts");
+
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Account account = new Account(arJSON.getJSONObject(i));
+				account.setItemCode(CphConstants.ITEM_ACCOUNT);
+				models.add(account);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		
 		return false;
 	}
@@ -189,7 +224,7 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 
-		url = CphConstants.BASE_API_URL + "wholesales/accounts";
+		url = CphConstants.BASE_API_URL + "wholesales/accounts?num=0";
 		super.downloadInfo();
 	}
 	
@@ -237,7 +272,7 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 		
 		try {
 			String url = CphConstants.BASE_API_URL + "wholesales/accounts/delete" +
-					"?account_id=" + account.getAccount_id();
+					"?account_id=" + account.getId();
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
@@ -267,5 +302,11 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.shop_bg;
 	}
 }

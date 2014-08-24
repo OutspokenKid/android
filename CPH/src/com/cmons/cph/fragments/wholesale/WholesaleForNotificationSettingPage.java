@@ -2,10 +2,16 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
+import android.app.TimePickerDialog;
+import android.app.TimePickerDialog.OnTimeSetListener;
+import android.content.DialogInterface;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
@@ -21,10 +27,14 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 	private TextView tvTime;
 	private TextView tvDoNotDisturb;
 	
+	private boolean allowNotification;
+	private int startHour, startMinute, endHour, endMinute;
+	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_ivBg);
 		
 		btnNotification = (Button) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_btnNotification);
 		tvNotification = (TextView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_tvNotification);
@@ -46,8 +56,11 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
 		//알림 설정.
-		//setting_notification_btn_b
-		btnNotification.setBackgroundResource(R.drawable.setting_notification2_btn_b);
+		if(allowNotification) {
+			btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);
+		} else{
+			btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_a);
+		}
 		
 		//시간 설정.
 		tvTime.setText("AM 11:00\nPM 03:00");
@@ -55,8 +68,49 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		btnNotification.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				allowNotification = !allowNotification;
+				
+				if(allowNotification) {
+					btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);
+				} else{
+					btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_a);
+				}
+				
+				setNotificationSetting(allowNotification);
+			}
+		});
+
+		btnDoNotDisturb.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				String title = "시간 선택";
+				String[] strings = new String[] {
+						"시작시간",
+						"종료시간"
+				};
+				
+				mActivity.showSelectDialog(title, strings, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						if(which == 0) {
+							setStartTime();
+						} else {
+							setEndTime();
+						}
+					}
+				});
+			}
+		});
 	}
 
 	@Override
@@ -125,4 +179,88 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 		return false;
 	}
 
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg2;
+	}
+
+//////////////////// Custom classes.
+	
+	public void setNotificationSetting(boolean allow) {
+		
+	}
+	
+	public void setStartTime() {
+		
+		TimePickerDialog.OnTimeSetListener otsl = new OnTimeSetListener() {
+			
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+				startHour = hourOfDay;
+				startMinute = minute;
+				checkTime();
+			}
+		};
+		
+		new TimePickerDialog(mContext, otsl, 0, 0, false).show();
+	}
+	
+	public void setEndTime() {
+		
+		TimePickerDialog.OnTimeSetListener otsl = new OnTimeSetListener() {
+			
+			@Override
+			public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+				endHour = hourOfDay;
+				endMinute = minute;
+				checkTime();
+			}
+		};
+		
+		new TimePickerDialog(mContext, otsl, 0, 0, false).show();
+	}
+	
+	public void checkTime() {
+		
+		String text = "";
+
+		text += getTimeText(startHour, startMinute);
+		text += "\n";
+		text += getTimeText(endHour, endMinute);
+		
+		tvTime.setText(text);
+	}
+	
+	public String getTimeText(int hour, int minute) {
+		
+		String text = "";
+		
+		hour %= 24;
+		minute %= 60;
+		
+		if(hour < 12) {
+			text += "AM ";
+			
+			if(hour == 0) {
+				text += "12:";
+			} else {
+				text += hour + ":";
+			}
+		} else if(hour == 12) {
+			text += "PM " + hour + ":";
+		} else {
+			text += "PM " + (hour - 12) + ":";
+		}
+		
+		if(minute < 10) {
+			text += "0" + minute;
+		} else {
+			text += minute;
+		}
+		
+		return text;
+	}
 }

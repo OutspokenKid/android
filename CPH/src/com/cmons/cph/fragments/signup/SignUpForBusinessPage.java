@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
@@ -24,6 +25,8 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForBusinessPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForBusinessPage_ivBg);
+		
 		btnWholesale = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnWholesale);
 		btnRetailOffline = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnRetailOffline);
 		btnRetailOnline = (Button) mThisView.findViewById(R.id.signUpForBusinessPage_btnRetailOnline);
@@ -107,11 +110,6 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(148);
 		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForBusinessPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -142,5 +140,11 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

@@ -59,4 +59,10 @@ public class RetailMainPage extends CmonsFragment {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public int getBgResourceId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

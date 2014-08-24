@@ -66,4 +66,9 @@ public class WholesaleForMyInfoPage extends CmonsFragmentForWholesale {
 		return false;
 	}
 
+	@Override
+	public int getBgResourceId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

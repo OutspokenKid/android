@@ -4,7 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -21,6 +23,8 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 
 	private ListView listView;
 	
+	private boolean isAppNotice;
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -34,6 +38,7 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleNoticeListPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleNoticeListPage_ivBg);
 		
 		listView = (ListView) mThisView.findViewById(R.id.wholesaleNoticeListPage_listView);
 	}
@@ -41,7 +46,15 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
-		title = "전체공지사항";
+		if(getArguments() != null) {
+			isAppNotice = getArguments().getBoolean("isAppNotice");
+		}
+		
+		if(isAppNotice) {
+			title = "전체 공지사항";
+		} else {
+			title = "매장 공지사항";
+		}
 	}
 
 	@Override
@@ -58,13 +71,34 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setListeners() {
 		
+		titleBar.getBtnWrite().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showNoticePage(null, true, false);
+			}
+		});
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				mActivity.showNoticePage((Notice)models.get(arg2));
+				if(isAppNotice) {
+					mActivity.showNoticePage((Notice)models.get(arg2), false, true);
+				} else {
+					
+					//대표.
+					if(mActivity.user.getRole() % 100 == 0) {
+						mActivity.showNoticePage((Notice)models.get(arg2), true, false);
+						
+					//대표 아님.
+					} else {
+						mActivity.showNoticePage((Notice)models.get(arg2), false, false);
+					}
+				}
 			}
 		});
 	}
@@ -126,5 +160,11 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 
 		url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
 		super.downloadInfo();
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg;
 	}
 }

@@ -1,14 +1,21 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
+import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -16,7 +23,8 @@ import android.view.animation.Animation.AnimationListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,13 +34,15 @@ import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
+import com.cmons.cph.models.Product;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
@@ -46,9 +56,14 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private Button btnSetting;
 	private TextView tvHit;
 	private TextView tvWholesale;
+	
+	private ViewPager viewPager;
+	private TextView tvBestTitle;
+	private TextView tvBestSellingCount;
+	private View badge;
+	private TextView tvRank;
 	private Button arrowLeft;
 	private Button arrowRight;
-	
 	private View cover;
 	private RelativeLayout noticeRelative;
 	private Button btnClose;
@@ -57,16 +72,30 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
 	
+	private ArrayList<Product> products = new ArrayList<Product>();
+	private PagerAdapterForProducts pagerAdapter;
+	private boolean needPlay;
+	private boolean isPlaying; 
+	
 	@Override
 	public void onResume() {
 		super.onResume();
 		downloadInfo();
+		downloadProducts();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		needPlay = false;
 	}
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleMainPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleMainPage_ivBg);
 		
 		btnShop = (Button) mThisView.findViewById(R.id.wholesaleMainPage_btnShop);
 		btnNotice = (Button) mThisView.findViewById(R.id.wholesaleMainPage_btnNotice);
@@ -79,6 +108,12 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		
 		tvHit = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvHit);
 		tvWholesale = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvWholesale);
+		
+		viewPager = (ViewPager)  mThisView.findViewById(R.id.wholesaleMainPage_viewPager);
+		tvBestTitle = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvBestTitle);
+		tvBestSellingCount = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvBestSellingCount);
+		badge = mThisView.findViewById(R.id.wholesaleMainPage_badge);
+		tvRank = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvRank);
 		arrowLeft = (Button) mThisView.findViewById(R.id.wholesaleMainPage_arrowLeft);
 		arrowRight = (Button) mThisView.findViewById(R.id.wholesaleMainPage_arrowRight);
 		
@@ -126,21 +161,22 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 		titleBar.getBackButton().setVisibility(View.INVISIBLE);
 		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
-		titleBar.getBtnAdd().setVisibility(View.VISIBLE);
 		
+		tvHit.setText("오늘 방문 " + mActivity.wholesale.getToday_visited_cnt());
 		
-		tvHit.setText("매장방문 200");
-		
-		SpannableStringBuilder sp1 = new SpannableStringBuilder("씨몬즈");
-		sp1.setSpan(new RelativeSizeSpan(1.8f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		SpannableStringBuilder sp1 = new SpannableStringBuilder(mActivity.wholesale.getName());
+		sp1.setSpan(new RelativeSizeSpan(1.5f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp1); 
 		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화 1층 특가5호");
+		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화몰 " + mActivity.wholesale.getLocation());
 		sp2.setSpan(new RelativeSizeSpan(1.0f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp2);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		
+		pagerAdapter = new PagerAdapterForProducts();
+		viewPager.setAdapter(pagerAdapter);
 	}
 
 	@Override
@@ -271,18 +307,37 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					long id) {
 				
 				hideNoticeRelative();
+//				mActivity.showNoticePage((Notice)models.get(position), false, false);
+			}
+		});
+
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(final int position) {
+
+				LogUtils.log("###viewPager.onPageSelected.  position : " + position);
+				tvBestTitle.setText(products.get(position).getName());
+				tvBestSellingCount.setText("구매 : " + products.get(position).getOrdered_cnt());
+				tvRank.setText((position + 1) + "위");
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
 				
-				mActivity.showNoticePage((Notice)models.get(position));
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}
 
 	@Override
 	public void setSizes() {
-
-		((FrameLayout.LayoutParams)mThisView.findViewById(
-				R.id.wholesaleMainPage_scrollView).getLayoutParams())
-				.topMargin = ResizeUtils.getSpecificLength(96); 
 		
 		RelativeLayout.LayoutParams rp = null;
 		
@@ -345,7 +400,39 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) tvWholesale.getLayoutParams();
 		rp.width = length_long;
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
-		FontUtils.setFontSize(tvWholesale, 30);
+		FontUtils.setFontSize(tvWholesale, 22);
+		
+		//pagerBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.
+				findViewById(R.id.wholesaleMainPage_pagerBg).getLayoutParams();
+		rp.height = length_long;
+		
+		//viewPager.
+		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
+		rp.height = length_long;
+		
+		//tvBestTitle.
+		rp = (RelativeLayout.LayoutParams) tvBestTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
+		FontUtils.setFontSize(tvBestTitle, 26);
+		
+		//tvBestSellingCount.
+		rp = (RelativeLayout.LayoutParams) tvBestSellingCount.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
+		FontUtils.setFontSize(tvBestSellingCount, 28);
+		
+		//badge.
+		rp = (RelativeLayout.LayoutParams) badge.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(97);
+		rp.height = ResizeUtils.getSpecificLength(23);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		
+		//tvRank.
+		rp = (RelativeLayout.LayoutParams) tvRank.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(97);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		FontUtils.setFontSize(tvBestSellingCount, 30);
 		
 		//arrowLeft.
 		rp = (RelativeLayout.LayoutParams) arrowLeft.getLayoutParams();
@@ -361,11 +448,14 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = length_short - ResizeUtils.getSpecificLength(33);
 		
-		//cover
-		((FrameLayout.LayoutParams)cover.getLayoutParams()).topMargin = ResizeUtils.getSpecificLength(96);
-		
 		//noticeRelative.
-		ResizeUtils.viewResize(630, 711, noticeRelative, 2, Gravity.TOP|Gravity.LEFT, new int[]{62, 58, 0, 0});
+		rp = (RelativeLayout.LayoutParams) noticeRelative.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(630);
+		rp.height = ResizeUtils.getSpecificLength(711);
+		rp.leftMargin = ResizeUtils.getSpecificLength(62);
+		rp.topMargin = ResizeUtils.getSpecificLength(58);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		
 		//btnClose.
 		rp = (RelativeLayout.LayoutParams) btnClose.getLayoutParams();
@@ -418,7 +508,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			for(int i=0; i<size; i++) {
 				Notice notice = new Notice(arJSON.getJSONObject(i));
 				notice.setItemCode(CphConstants.ITEM_NOTICE);
-				models.add(new Notice());
+				models.add(notice);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -483,6 +573,110 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 //////////////////// Custom methods.
 
+	public void downloadProducts() {
+		
+		if(products.size() > 0) {
+			viewPager.setCurrentItem(0);
+			mThisView.findViewById(R.id.wholesaleMainPage_pagerBg).setVisibility(View.INVISIBLE);
+			viewPager.setVisibility(View.VISIBLE);
+			tvBestTitle.setVisibility(View.VISIBLE);
+			tvBestSellingCount.setVisibility(View.VISIBLE);
+			badge.setVisibility(View.VISIBLE);
+			tvRank.setVisibility(View.VISIBLE);
+			
+			needPlay = true;
+			
+			if(!isPlaying) {
+				playPager();
+			}
+			
+			return;
+		}
+		
+		String url = CphConstants.BASE_API_URL + "products/weekly_best" +
+				"?wholesale_id=" + mActivity.wholesale.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleMainPage.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleMainPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						JSONArray arJSON = objJSON.getJSONArray("products");
+						
+						int size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							Product product = new Product(arJSON.getJSONObject(i));
+							product.setItemCode(CphConstants.ITEM_PRODUCT);
+							products.add(product);
+						}
+
+						LogUtils.log("###.onCompleted.  products.size : " + products.size());
+						
+						if(size > 0) {
+							pagerAdapter.notifyDataSetChanged();
+							viewPager.setCurrentItem(0);
+							tvBestTitle.setText(products.get(0).getName());
+							tvBestSellingCount.setText("구매 : " + products.get(0).getOrdered_cnt());
+							tvRank.setText("1위");
+							
+							mThisView.findViewById(R.id.wholesaleMainPage_pagerBg).setVisibility(View.INVISIBLE);
+							viewPager.setVisibility(View.VISIBLE);
+							tvBestTitle.setVisibility(View.VISIBLE);
+							tvBestSellingCount.setVisibility(View.VISIBLE);
+							badge.setVisibility(View.VISIBLE);
+							tvRank.setVisibility(View.VISIBLE);
+							
+							needPlay = true;
+							
+							if(!isPlaying) {
+								playPager();
+							}
+						}
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void playPager() {
+		
+		isPlaying = true;
+		
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				if(!needPlay) {
+					isPlaying = false;
+					return;
+				}
+				
+				if(products != null &&products.size() > 0) {
+					
+					int position = viewPager.getCurrentItem();
+					viewPager.setCurrentItem((position + 1) % products.size(), true);
+				}
+				
+				playPager();
+			}
+		}, 3000);
+	}
+	
 	public void checkNewMessage() {
 		
 		int nonReadCount = models.size();
@@ -517,6 +711,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		//새로운 메시지가 있느냐의 여부에 따라 titleBar.getNotice() 노출 결정.
 		if(nonReadCount > 0) {
 			titleBar.getBtnNotice().setVisibility(View.VISIBLE);
+		} else {
+			titleBar.getBtnNotice().setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -543,6 +739,87 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			
 			noticeRelative.startAnimation(aaOut);
 			cover.startAnimation(aaOut);
+		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.main_bg;
+	}
+
+//////////////////// Classes.
+	
+	public class PagerAdapterForProducts extends PagerAdapter {
+		
+		@Override
+		public int getCount() {
+			
+			return products.size();
+		}
+		
+		@Override
+		public Object instantiateItem(ViewGroup container, final int position) {
+
+			final String imageUrl = products.get(position).getProduct_images()[0];
+			
+			LogUtils.log("###WholesaleMainPage.instantiateItem.  position : " + position + 
+					", url : " + imageUrl);
+			
+			final ImageView ivImage = new ImageView(mContext);
+			ivImage.setScaleType(ScaleType.CENTER_CROP);
+			ivImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					mActivity.showProductPage(products.get(position));
+				}
+			});
+			container.addView(ivImage);
+
+			DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("instantiateItem.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("instantiateItem.onCompleted." + "\nurl : " + url);
+						ivImage.setImageBitmap(bitmap);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+			
+			return ivImage;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+
+			try {
+				View v = (View) object;
+				container.removeView(v);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+
+			return arg0 == arg1;
 		}
 	}
 }

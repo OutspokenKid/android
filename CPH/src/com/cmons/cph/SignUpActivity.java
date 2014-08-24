@@ -277,6 +277,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_signUp);
 							User user = new User(objJSON.getJSONObject("user"));
 							launchWholesaleActivity(user);
 						} else {
@@ -333,6 +334,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_signUp);
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {
@@ -385,6 +387,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_signUp);
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {

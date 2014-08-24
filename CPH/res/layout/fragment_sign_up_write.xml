@@ -11,19 +11,7 @@
         android:id="@+id/signUpForWritePage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_find_main" />
-    
-    <!-- 저작권 표시. -->
-
-    <ImageView
-        android:id="@+id/signUpForWritePage_ivCopyright"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/img_reserved" />
+    	android:scaleType="centerCrop" />
     
     <!-- 타이틀바. -->
 
@@ -199,7 +187,7 @@
 	            android:layout_height="0dp"
 	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyRegistration1"
 	            android:layout_below="@id/signUpForWritePage_etCompanyRegistration1"
-	            android:background="@drawable/btn_next" />
+	            android:background="@drawable/step_btn" />
 	        
 	    </RelativeLayout>
 	    
@@ -212,6 +200,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
-	    android:background="@drawable/bg_titlebar_shadow"/>
+	    android:background="@drawable/shadow"/>
     
 </RelativeLayout>

@@ -11,19 +11,7 @@
         android:id="@+id/signUpForPersonalPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_find_main" />
-    
-    <!-- 저작권 표시. -->
-
-    <ImageView
-        android:id="@+id/signUpForPersonalPage_ivCopyright"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerInside"
-        android:src="@drawable/img_reserved" />
+    	android:scaleType="centerCrop" />
     
     <!-- 타이틀바. -->
 
@@ -288,7 +276,7 @@
 	            android:layout_height="0dp"
 	            android:layout_alignTop="@id/signUpForPersonalPage_etCertification"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
-	            android:background="@drawable/btn_send" />
+	            android:background="@drawable/num_send_btn" />
 	        
 	        <!-- 인증하기 -->
 	        
@@ -299,7 +287,7 @@
 	            android:layout_alignTop="@id/signUpForPersonalPage_etCertification"
 	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
 	            android:visibility="invisible"
-	            android:background="@drawable/btn_certify_short" />
+	            android:background="@drawable/certification_btn" />
 	
 	        <!-- 완료 -->
 	        <Button
@@ -308,7 +296,7 @@
 	            android:layout_height="0dp"
 	            android:layout_alignLeft="@id/signUpForPersonalPage_etCertification"
 	            android:layout_below="@id/signUpForPersonalPage_etCertification"
-	            android:background="@drawable/btn_complete" />
+	            android:background="@drawable/completion_btn" />
 	    
 	    </RelativeLayout>
 	
@@ -321,6 +309,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
-	    android:background="@drawable/bg_titlebar_shadow"/>
+	    android:background="@drawable/shadow"/>
 	
 </RelativeLayout>

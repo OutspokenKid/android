@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,6 +49,7 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForWritePage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForWritePage_ivBg);
 		
 		tvCompanyName = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyName);
 		etCompanyName = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyName);
@@ -267,11 +269,6 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 		FontUtils.setFontSize(etCompanyRegistration1, 30);
 		FontUtils.setFontSize(etCompanyRegistration2, 30);
 		FontUtils.setFontSize(etCompanyRegistration3, 30);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForWritePage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 
 	@Override
@@ -333,5 +330,11 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 						+ etCompanyRegistration2.getText().toString() 
 						+ etCompanyRegistration3.getText().toString());
 		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

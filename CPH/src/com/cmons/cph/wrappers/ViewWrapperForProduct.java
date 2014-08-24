@@ -1,6 +1,7 @@
 package com.cmons.cph.wrappers;
 
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -8,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.WholesaleActivity;
 import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Product;
 import com.outspoken_kid.model.BaseModel;
@@ -120,7 +122,19 @@ public class ViewWrapperForProduct extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-		
+	
+		if(product != null) {
+			row.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+				
+					if(WholesaleActivity.getInstance() != null) {
+						WholesaleActivity.getInstance().showProductPage(product);
+					}
+				}
+			});
+		}
 	}
 	
 	@Override

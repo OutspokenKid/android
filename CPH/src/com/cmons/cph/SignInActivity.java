@@ -125,6 +125,7 @@ public class SignInActivity extends CmonsFragmentActivity {
 		
 		Intent intent = new Intent(this, SignUpActivity.class);
 		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
 	
 	public void signIn(final String id, final String pw) {
@@ -157,11 +158,10 @@ public class SignInActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignInActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
-						if(objJSON.has("message")) {
-							ToastUtils.showToast(objJSON.getString("message"));
-						}
-						
 						if(objJSON.getInt("result") == 1) {
+
+							ToastUtils.showToast(R.string.complete_signIn);
+							
 							User user = new User(objJSON.getJSONObject("user"));
 							
 							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "id", id);
@@ -170,6 +170,8 @@ public class SignInActivity extends CmonsFragmentActivity {
 							//Check user type.
 							
 							launchWholesaleActivity(user);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
@@ -194,6 +196,7 @@ public class SignInActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, WholesaleActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		finish();
 	}
 	
@@ -202,6 +205,7 @@ public class SignInActivity extends CmonsFragmentActivity {
 		Intent intent = new Intent(this, RetailActivity.class);
 		intent.putExtra("user", user);
 		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		finish();
 	}
 }

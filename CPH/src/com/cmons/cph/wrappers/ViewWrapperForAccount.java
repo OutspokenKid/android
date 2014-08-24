@@ -21,7 +21,7 @@ public class ViewWrapperForAccount extends ViewWrapper {
 	public ViewWrapperForAccount(View row, int itemCode) {
 		super(row, itemCode);
 	}
-
+	
 	@Override
 	public void bindViews() {
 
@@ -51,12 +51,14 @@ public class ViewWrapperForAccount extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof Category) {
+			if(baseModel instanceof Account) {
 				
 				account = (Account) baseModel;
+
+				LogUtils.log("###View.setValues.  account.bank : " + account.getBank());
 				
 				textView.setText(account.getBank() + 
-						" " + account.getAccount_id() + 
+						" " + account.getNumber() + 
 						"(" + account.getDepositor() + ")");
 			} else {
 				setUnusableView();

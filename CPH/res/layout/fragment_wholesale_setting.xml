@@ -19,8 +19,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleSettingPage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/setting_bg" />
+	    android:scaleType="centerCrop" />
     
     <ScrollView 
         android:id="@+id/wholesaleSettingPage_scrollView"
@@ -52,46 +51,46 @@
                 android:layout_below="@id/wholesaleSettingPage_btnInfo"
                 android:background="@drawable/setting_notice_btn" />
             
+			<!-- 알림설정. -->
+
+            <Button
+                android:id="@+id/wholesaleSettingPage_btnNotification"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+				android:layout_alignTop="@id/wholesaleSettingPage_btnNotice"
+                android:layout_toRightOf="@id/wholesaleSettingPage_btnNotice"                
+                android:background="@drawable/setting_notification_btn" />
+            
             <!-- 건의하기. -->
 
             <Button
                 android:id="@+id/wholesaleSettingPage_btnSuggest"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/wholesaleSettingPage_btnNotice"
-                android:layout_toRightOf="@id/wholesaleSettingPage_btnNotice"
+                android:layout_alignLeft="@id/wholesaleSettingPage_btnNotification"
+                android:layout_below="@id/wholesaleSettingPage_btnNotification"
                 android:background="@drawable/setting_suggest_btn" />
 
-            <!-- 알림설정. -->
+			<!-- 로그아웃. -->
 
             <Button
-                android:id="@+id/wholesaleSettingPage_btnNotification"
-                android:layout_width="match_parent"
+                android:id="@+id/wholesaleSettingPage_btnSignout"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_alignLeft="@id/wholesaleSettingPage_btnSuggest"
-                android:layout_below="@id/wholesaleSettingPage_btnSuggest"
-                android:background="@drawable/setting_notification_btn" />
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/wholesaleSettingPage_btnNotice"
+                android:background="@drawable/setting_logout_btn" />
+            
             
             <!-- 회원탈퇴. -->
 
             <Button
                 android:id="@+id/wholesaleSettingPage_btnWithdraw"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignLeft="@id/wholesaleSettingPage_btnNotice"
-                android:layout_below="@id/wholesaleSettingPage_btnNotice"
-                android:background="@drawable/setting_withdraw_btn" />
-
-            <!-- 로그아웃. -->
-
-            <Button
-                android:id="@+id/wholesaleSettingPage_btnSignout"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/wholesaleSettingPage_btnWithdraw"
-                android:layout_toRightOf="@id/wholesaleSettingPage_btnWithdraw"
-                android:background="@drawable/setting_logout_btn" />
+                android:layout_alignTop="@id/wholesaleSettingPage_btnSignout"
+                android:layout_toRightOf="@id/wholesaleSettingPage_btnSignout"
+                android:background="@drawable/setting_withdraw_btn" />
             	
         </RelativeLayout>
         

@@ -6,10 +6,10 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +42,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleOrderPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleOrderPage_ivBg);
 		
 		tvOrder = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvOrder);
 		type = mThisView.findViewById(R.id.wholesaleOrderPage_type);
@@ -210,7 +211,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
 			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
 			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			btnConfirm.setBackgroundResource(R.drawable.order_approve_btn);
 			break;
 			
 		case 1:
@@ -218,7 +218,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			btnStandBy.setBackgroundResource(R.drawable.order_wait_a);
 			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
 			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			btnConfirm.setBackgroundResource(R.drawable.order_progressing_btn);
 			break;
 			
 		case 2:
@@ -226,7 +225,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
 			btnDeposit.setBackgroundResource(R.drawable.order_done_a);
 			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			btnConfirm.setBackgroundResource(R.drawable.order_complete_btn);
 			break;
 			
 		case 3:
@@ -234,12 +232,17 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
 			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
 			btnCompleted.setBackgroundResource(R.drawable.order_complete_a);
-			btnConfirm.setBackgroundResource(R.drawable.order_complete_btn);
 			break;
 		}
 
 		this.menuIndex = menuIndex;
 
 		refreshPage();
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.order_bg;
 	}
 }

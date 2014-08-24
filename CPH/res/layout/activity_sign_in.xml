@@ -1,20 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/signInActivity_mainLayout"
+    android:id="@+id/signInActivity_fragmentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-    
-    <!-- 배경. -->
-    
-    <ImageView 
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:src="@drawable/bg"
-    	android:scaleType="centerCrop" />
-    
-    <FrameLayout
-        android:id="@+id/signInActivity_fragmentFrame"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent" />
     
 </FrameLayout>

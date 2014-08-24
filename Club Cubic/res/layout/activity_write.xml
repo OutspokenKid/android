@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/writeActivity_mainFrame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:id="@+id/writeActivity_titleBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/bg_top" >
+
+            <TextView
+                android:id="@+id/writeActivity_tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/write"
+                android:textColor="#fff" />
+
+            <View
+                android:id="@+id/writeActivity_btnComplete"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/topicon_post_01" />
+        </FrameLayout>
+
+        <ScrollView
+            android:id="@+id/writeActivity_scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#fff"
+            android:fillViewport="true" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <EditText
+                    android:id="@+id/writeActivity_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="#fff"
+                    android:inputType="textMultiLine"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
+                    android:textColor="#333" />
+
+                <FrameLayout
+                    android:id="@+id/writeActivity_photoFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#aaa"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/writeActivity_btnPhoto"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/btn_camera" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#888" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:background="#ddd" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup
+        android:id="@+id/writeActivity_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
+
+    <View
+        android:id="@+id/writeActivity_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a000"
+        android:clickable="true"
+        android:visibility="invisible" />
+
+    <FrameLayout
+        android:id="@+id/writeActivity_loadingView"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="invisible"
+        android:weightSum="1" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|left"
+            android:background="@drawable/rounded_corner_to_loadingview2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="top|left"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/rounded_corner_to_loadingview1" />
+
+        <View
+            android:layout_width="30dp"
+            android:layout_height="41dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/topicon_n_01" />
+
+        <ProgressBar
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_gravity="top|center_horizontal"
+            android:layout_marginTop="50dp" />
+    </FrameLayout>
+
+</FrameLayout>

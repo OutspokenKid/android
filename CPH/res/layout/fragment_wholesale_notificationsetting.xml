@@ -19,8 +19,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleNoticePage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/setting_bg2" />
+	    android:scaleType="centerCrop" />
     
     <!-- 알림 설정. -->
     

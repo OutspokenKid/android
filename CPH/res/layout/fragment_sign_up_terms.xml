@@ -9,8 +9,7 @@
         android:id="@+id/signUpForTermsPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_find_main" />
+    	android:scaleType="centerCrop" />
     
 	<!-- 타이틀바. -->
 
@@ -19,17 +18,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
 	
-    <!-- 저작권 표시. -->
-
-	<ImageView 
-        android:id="@+id/signUpForTermsPage_ivCopyright"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentBottom="true"
-    	android:layout_centerHorizontal="true"
-    	android:src="@drawable/img_reserved"
-    	android:scaleType="centerInside" />
-    
     <ScrollView
         android:id="@+id/signUpForTermsPage_scrollView" 
 	    android:layout_width="match_parent"
@@ -56,7 +44,7 @@
     	android:layout_height="0dp"
     	android:layout_alignParentBottom="true"
     	android:layout_centerHorizontal="true"
-    	android:background="@drawable/btn_agree" />
+    	android:background="@drawable/agreement_btn" />
     
     <!-- 그림자. -->
     
@@ -65,6 +53,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/signUpForTermsPage_titleBar" 
-	    android:background="@drawable/bg_titlebar_shadow"/>
+	    android:background="@drawable/shadow"/>
     
 </RelativeLayout>

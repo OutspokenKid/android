@@ -2,6 +2,7 @@ package com.outspoken_kid.classes;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.PixelFormat;
 
@@ -18,7 +19,7 @@ import com.outspoken_kid.utils.ToastUtils;
  * @author Trey Robinson
  *
  */
-public class OutSpokenApplication extends Application {
+public abstract class OutSpokenApplication extends Application {
 	
 	protected static int DISK_IMAGECACHE_SIZE = 1024*1024*10;
 	protected static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
@@ -35,9 +36,6 @@ public class OutSpokenApplication extends Application {
 	 */
 	protected void init() {
 		
-		RequestManager.init(this);
-		createImageCache();
-		
 		SharedPrefsUtils.setContext(this);
 		ToastUtils.setContext(this);
         AppInfoUtils.setAllInfos(this);
@@ -45,6 +43,8 @@ public class OutSpokenApplication extends Application {
 	
 	public static void initWithActivity(Activity activity) {
 
+		RequestManager.init(activity.getApplicationContext());
+		createImageCache(activity.getApplicationContext());
 		ResizeUtils.setBasicValues(activity, 640);
 		activity.getWindow().setFormat(PixelFormat.RGBA_8888);
 	}
@@ -52,17 +52,17 @@ public class OutSpokenApplication extends Application {
 	/**
 	 * Create the image cache. Uses Memory Cache by default. Change to Disk for a Disk based LRU implementation.  
 	 */
-	protected void createImageCache(){
+	protected static void createImageCache(Context context){
 
-//		ImageCacheManager.getInstance().init(this,
+//		ImageCacheManager.getInstance().init(activity,
 //				this.getPackageCodePath()
 //				, DISK_IMAGECACHE_SIZE
 //				, DISK_IMAGECACHE_COMPRESS_FORMAT
 //				, DISK_IMAGECACHE_QUALITY
 //				, CacheType.MEMORY);
 		
-		ImageCacheManager.getInstance().init(this,
-				this.getPackageCodePath()
+		ImageCacheManager.getInstance().init(context,
+				context.getPackageCodePath()
 				, DISK_IMAGECACHE_SIZE
 				, DISK_IMAGECACHE_COMPRESS_FORMAT
 				, DISK_IMAGECACHE_QUALITY

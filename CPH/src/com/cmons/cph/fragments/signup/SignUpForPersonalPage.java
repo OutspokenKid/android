@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.signup;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -75,6 +78,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForPersonalPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForPersonalPage_ivBg);
 		
 		tvCompanyName1 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyName1);
 		tvCompanyName2 = (TextView) mThisView.findViewById(R.id.signUpForPersonalPage_tvCompanyName2);
@@ -424,11 +428,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		FontUtils.setFontSize(tvCheckConfirmPw, 22);
 		
 		FontUtils.setFontSize(etCertification, 30);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPersonalPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -517,61 +516,18 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		phone_number = etPhone.getText().toString();
 		
-		String url = CphConstants.BASE_API_URL + "users/auth/request" +
-				"?no_sms=0" +
-				"&phone_number=" + phone_number;
+		try {
+			String url = CphConstants.BASE_API_URL + "users/auth/request" +
+					"?no_sms=0" +
+					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.wrongPhoneNumber);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						timeResponseKey = objJSON.getString("tempResponseKey");
-						
-						btnSendCertification.setVisibility(View.INVISIBLE);
-						btnCertify.setVisibility(View.VISIBLE);
-						
-						ToastUtils.showToast(R.string.sendCertificationCompleted);
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.wrongPhoneNumber);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					ToastUtils.showToast(R.string.wrongPhoneNumber);
-				}
-			}
-		});
-	}
-	
-	public void checkCertification() {
-		
-		if(timeResponseKey.equals(etCertification.getText().toString())) {
-			
-			String url = CphConstants.BASE_API_URL + "users/auth/response" +
-					"?phone_number=" + phone_number +
-					"&response_key=" + timeResponseKey;
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
 
 					LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
-					ToastUtils.showToast(R.string.wrongCertificationNumber);
+					ToastUtils.showToast(R.string.wrongPhoneNumber);
 				}
 
 				@Override
@@ -580,25 +536,80 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 					try {
 						LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
+
 						
 						if(objJSON.getInt("result") == 1) {
-							JSONObject objResponse = objJSON.getJSONObject("authResponse");
-							phone_number = objResponse.getString("phone_number");
-							phone_auth_key = objResponse.getString("phone_auth_key");
+							ToastUtils.showToast(R.string.complete_checkPhone);
+							timeResponseKey = objJSON.getString("tempResponseKey");
 							
-							ToastUtils.showToast(R.string.certifyCompleted);
+							btnSendCertification.setVisibility(View.INVISIBLE);
+							btnCertify.setVisibility(View.VISIBLE);
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
 					} catch (Exception e) {
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
 						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.wrongPhoneNumber);
 					} catch (OutOfMemoryError oom) {
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
 						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.wrongPhoneNumber);
 					}
 				}
 			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void checkCertification() {
+		
+		if(timeResponseKey.equals(etCertification.getText().toString())) {
+			
+			try {
+				String url = CphConstants.BASE_API_URL + "users/auth/response" +
+						"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
+						"&response_key=" + timeResponseKey;
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+					}
+
+					@Override
+					public void onCompleted(String url, JSONObject objJSON) {
+
+						try {
+							LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+
+							
+							if(objJSON.getInt("result") == 1) {
+								ToastUtils.showToast(R.string.complete_certification);
+								JSONObject objResponse = objJSON.getJSONObject("authResponse");
+								phone_number = objResponse.getString("phone_number");
+								phone_auth_key = objResponse.getString("phone_auth_key");
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} catch (Exception e) {
+							ToastUtils.showToast(R.string.wrongCertificationNumber);
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							ToastUtils.showToast(R.string.wrongCertificationNumber);
+							LogUtils.trace(oom);
+						}
+					}
+				});
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
 		} else {
 			ToastUtils.showToast(R.string.wrongCertificationNumber);
 		}
@@ -675,5 +686,11 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

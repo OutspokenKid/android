@@ -18,8 +18,7 @@
         android:id="@+id/wholesaleStaffPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/staff_bg" />
+	    android:scaleType="centerCrop" />
     
     <Button 
         android:id="@+id/wholesaleStaffPage_btnRequest" 

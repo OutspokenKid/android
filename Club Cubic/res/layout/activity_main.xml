@@ -1,0 +1,95 @@
+<com.outspoken_kid.views.GestureSlidingLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainActivity_gestureSlidingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/renewal_bg" >
+    
+    <ScrollView
+        android:id="@+id/mainActivity_leftView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:background="#6e6e6e" >
+
+        <LinearLayout
+	        android:id="@+id/mainActivity_leftViewInner"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" />
+        
+    </ScrollView>
+    
+    <LinearLayout
+        android:id="@+id/mainActivity_topView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        
+        <com.zonecomms.common.views.TitleBar
+            android:id="@+id/mainActivity_titleBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+        
+        <FrameLayout
+            android:id="@+id/mainActivity_fragmentFrame"
+            android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:clickable="true"
+        	android:background="#000" />
+        
+    </LinearLayout>
+    
+	<FrameLayout
+	    android:id="@+id/mainActivity_loadingView"
+        android:layout_width="50dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:weightSum="1"
+        android:orientation="vertical"
+        android:visibility="invisible" >
+        
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="top|left"
+	        android:background="@drawable/rounded_corner_to_loadingview2" />
+	    
+	    <View
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_gravity="top|left"
+	        android:layout_marginLeft="2dp"
+	        android:layout_marginTop="2dp"
+	        android:layout_marginRight="2dp"
+	        android:layout_marginBottom="2dp"
+	        android:background="@drawable/rounded_corner_to_loadingview1" />
+        
+	    <View 
+	        android:layout_width="30dp"
+        	android:layout_height="41dp"
+        	android:layout_marginTop="10dp"
+        	android:layout_gravity="top|center_horizontal"
+        	android:background="@drawable/topicon_n_01" />
+
+	    <ProgressBar 
+	    	android:layout_width="15dp"
+        	android:layout_height="15dp"
+        	android:layout_marginTop="50dp"
+        	android:layout_gravity="top|center_horizontal" />	    
+	    
+	</FrameLayout>
+	
+	<ImageView
+	    android:id="@+id/mainActivity_ivAnimationLoadingView"
+	    android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible" />
+
+	<com.outspoken_kid.views.SoftKeyboardDetector
+        android:id="@+id/mainActivity_softKeyboardDetector"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent" />	
+
+</com.outspoken_kid.views.GestureSlidingLayout>

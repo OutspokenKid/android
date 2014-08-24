@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/messagePage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/renewal_bg" >
+    
+    <LinearLayout
+        android:id="@+id/messagePage_bottomLinear"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_alignParentBottom="true"
+    	android:orientation="horizontal"
+    	android:background="@color/renewal_bg" >
+        
+        <View
+            android:id="@+id/messagePage_photo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/btn_camera" />
+        
+        <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+            android:id="@+id/messagePage_etMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" 
+            android:layout_gravity="center_vertical"/>
+        
+        <com.outspoken_kid.views.holo.holo_light.HoloStyleButton
+            android:id="@+id/messagePage_btnSend"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+        
+    </LinearLayout>
+    
+    <View
+        android:id="@+id/messagePage_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignTop="@id/messagePage_bottomLinear" />
+
+	<android.support.v4.widget.SwipeRefreshLayout
+		android:id="@+id/messagePage_swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:layout_above="@id/messagePage_bottomLinear" >
+
+        <ListView
+            android:id="@+id/messagePage_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+          
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+</RelativeLayout>

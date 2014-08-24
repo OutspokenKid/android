@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -38,6 +39,8 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	@Override
 	public void bindViews() {
 
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForCategoryPage_ivBg);
+		
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForCategoryPage_titleBar);
 		listView = (ListView) mThisView.findViewById(R.id.signUpForCategoryPage_listView);
 		btnNext = (Button) mThisView.findViewById(R.id.signUpForCategoryPage_btnNext);
@@ -135,11 +138,6 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(74);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(100);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForCategoryPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -200,5 +198,11 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		
 		url = CphConstants.BASE_API_URL + "categories";
 		super.downloadInfo();		
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

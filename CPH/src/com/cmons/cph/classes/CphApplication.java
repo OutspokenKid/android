@@ -9,11 +9,17 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class CphApplication extends OutSpokenApplication {
 
+	@Override
+	public void onCreate() {
+		super.onCreate();
+	}
+	
 	public static void initWithActivity(Activity activity) {
-		
-		ResizeUtils.setBasicValues(activity, 720);
-		activity.getWindow().setFormat(PixelFormat.RGBA_8888);
 
 		RequestManager.initForUsingCookie(activity.getApplicationContext());
+//		RequestManager.init(activity.getApplicationContext());
+		createImageCache(activity.getApplicationContext());
+		ResizeUtils.setBasicValues(activity, 720);
+		activity.getWindow().setFormat(PixelFormat.RGBA_8888);
 	}
 }

@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -49,7 +50,9 @@ public class SignInPage extends CmonsFragment {
 	
 	@Override
 	public void bindViews() {
-
+		
+		ivBg = (ImageView) mThisView.findViewById(R.id.signInPage_ivBg);
+		
 		logo = mThisView.findViewById(R.id.signInPage_logo);
 		etId = (EditText) mThisView.findViewById(R.id.signInPage_etId);
 		etPw = (EditText) mThisView.findViewById(R.id.signInPage_etPw);
@@ -209,5 +212,11 @@ public class SignInPage extends CmonsFragment {
 		} else {
 			((SignInActivity) getActivity()).signIn(etId.getText().toString(), etPw.getText().toString());
 		}
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg;
 	}
 }

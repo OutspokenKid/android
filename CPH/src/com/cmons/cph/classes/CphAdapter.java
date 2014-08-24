@@ -11,6 +11,7 @@ import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
 import com.cmons.cph.R;
+import com.cmons.cph.wrappers.ViewWrapperForAccount;
 import com.cmons.cph.wrappers.ViewWrapperForCategory;
 import com.cmons.cph.wrappers.ViewWrapperForCustomer;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
@@ -134,6 +135,9 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_ORDERSET:
 			return R.layout.list_orderset;
+			
+		case CphConstants.ITEM_ACCOUNT:
+			return R.layout.list_account;
 		}
 		
 		return 0;
@@ -174,6 +178,9 @@ public class CphAdapter extends BaseAdapter {
 
 		case CphConstants.ITEM_ORDERSET:
 			return new ViewWrapperForOrderSet(convertView, itemCode);
+			
+		case CphConstants.ITEM_ACCOUNT:
+			return new ViewWrapperForAccount(convertView, itemCode);
 		}
 		
 		return null;

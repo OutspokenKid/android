@@ -1,11 +1,14 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,6 +40,7 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_ivBg);
 		
 		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_tvPhoneNumber);
 		etPhoneNumber = (EditText) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_etPhoneNumber);
@@ -151,63 +155,20 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 			return;
 		}
 		
-		phone_number = etPhoneNumber.getText().toString();
-		
-		String url = CphConstants.BASE_API_URL + "users/auth/request" +
-				"?no_sms=0" +
-				"&phone_number=" + phone_number;
-
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.wrongPhoneNumber);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						timeResponseKey = objJSON.getString("tempResponseKey");
-						
-						btnSendCertification.setVisibility(View.INVISIBLE);
-						btnCertify.setVisibility(View.VISIBLE);
-						
-						ToastUtils.showToast(R.string.sendCertificationCompleted);
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.wrongPhoneNumber);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					ToastUtils.showToast(R.string.wrongPhoneNumber);
-				}
-			}
-		});
-	}
-	
-	public void checkCertification() {
-		
-		if(timeResponseKey.equals(etCertify.getText().toString())) {
+		try {
+			phone_number = etPhoneNumber.getText().toString();
 			
-			String url = CphConstants.BASE_API_URL + "users/auth/response" +
-					"?phone_number=" + phone_number +
-					"&response_key=" + timeResponseKey;
+			String url = CphConstants.BASE_API_URL + "users/auth/request" +
+					"?no_sms=0" +
+					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
+
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
 
 					LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
-					ToastUtils.showToast(R.string.wrongCertificationNumber);
+					ToastUtils.showToast(R.string.wrongPhoneNumber);
 				}
 
 				@Override
@@ -216,25 +177,77 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 					try {
 						LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
-						
+
 						if(objJSON.getInt("result") == 1) {
-							JSONObject objResponse = objJSON.getJSONObject("authResponse");
-							phone_number = objResponse.getString("phone_number");
-							phone_auth_key = objResponse.getString("phone_auth_key");
-							
-							changePhoneNumber();
+							ToastUtils.showToast(R.string.complete_checkPhone);
+							timeResponseKey = objJSON.getString("tempResponseKey");
+							btnSendCertification.setVisibility(View.INVISIBLE);
+							btnCertify.setVisibility(View.VISIBLE);
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
 					} catch (Exception e) {
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
 						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.wrongPhoneNumber);
 					} catch (OutOfMemoryError oom) {
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
 						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.wrongPhoneNumber);
 					}
 				}
 			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void checkCertification() {
+		
+		if(timeResponseKey.equals(etCertify.getText().toString())) {
+			
+			try {
+				String url = CphConstants.BASE_API_URL + "users/auth/response" +
+						"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
+						"&response_key=" + timeResponseKey;
+				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+					}
+
+					@Override
+					public void onCompleted(String url, JSONObject objJSON) {
+
+						try {
+							LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
+									+ "\nresult : " + objJSON);
+							
+							if(objJSON.getInt("result") == 1) {
+								JSONObject objResponse = objJSON.getJSONObject("authResponse");
+								phone_number = objResponse.getString("phone_number");
+								phone_auth_key = objResponse.getString("phone_auth_key");
+								changePhoneNumber();
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} catch (Exception e) {
+							ToastUtils.showToast(R.string.wrongCertificationNumber);
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							ToastUtils.showToast(R.string.wrongCertificationNumber);
+							LogUtils.trace(oom);
+						}
+					}
+				});
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
 		} else {
 			ToastUtils.showToast(R.string.wrongCertificationNumber);
 		}
@@ -261,10 +274,11 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 					LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					ToastUtils.showToast(objJSON.getString("message"));
-					
 					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_changePhoneNumber);
 						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -275,5 +289,11 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 				}
 			}
 		});
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg2;
 	}
 }

@@ -1,17 +1,18 @@
 package com.cmons.cph.views;
 
-import com.cmons.cph.R;
-import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.ResizeUtils;
-
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.cmons.cph.R;
+import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class TitleBar extends RelativeLayout {
 
@@ -23,6 +24,9 @@ public class TitleBar extends RelativeLayout {
 	private Button btnNotice;
 	private Button btnAdd;
 	private Button btnSubmit;
+	private Button btnWrite;
+	private Button btnReply;
+	private Button btnEdit;
 	
 	public TitleBar(Context context) {
 		this(context, null, 0);
@@ -47,7 +51,7 @@ public class TitleBar extends RelativeLayout {
 		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 				LayoutParams.MATCH_PARENT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		titleBg.setBackgroundResource(R.drawable.bg_titlebar);
+		titleBg.setBackgroundResource(R.drawable.navigation_bar);
 		this.addView(titleBg);
 		
 		//btnBack.
@@ -84,7 +88,9 @@ public class TitleBar extends RelativeLayout {
 		tvTitle.setLayoutParams(rp);
 		tvTitle.setGravity(Gravity.CENTER);
 		tvTitle.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvTitle, 30);
+		tvTitle.setSingleLine();
+		tvTitle.setEllipsize(TruncateAt.END);
+		FontUtils.setFontSize(tvTitle, 28);
 		this.addView(tvTitle);
 		
 		//titleView.
@@ -96,44 +102,6 @@ public class TitleBar extends RelativeLayout {
 		titleView.setLayoutParams(rp);
 		titleView.setBackgroundResource(R.drawable.logo2);
 		this.addView(titleView);
-		
-		//btnNotice.
-		btnNotice = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(92), 
-				ResizeUtils.getSpecificLength(92));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		rp.rightMargin = ResizeUtils.getSpecificLength(92);
-		btnNotice.setLayoutParams(rp);
-		btnNotice.setBackgroundResource(R.drawable.notice2_btn);
-		btnNotice.setVisibility(View.INVISIBLE);
-		this.addView(btnNotice);
-		
-		//btnAdd.
-		btnAdd = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(92), 
-				ResizeUtils.getSpecificLength(92));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		btnAdd.setLayoutParams(rp);
-		btnAdd.setBackgroundResource(R.drawable.add_btn);
-		btnAdd.setVisibility(View.INVISIBLE);
-		this.addView(btnAdd);
-		
-		//btnSubmit.
-		btnSubmit = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(160), 
-				ResizeUtils.getSpecificLength(92));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		rp.rightMargin = ResizeUtils.getSpecificLength(92);
-		btnSubmit.setLayoutParams(rp);
-		btnSubmit.setBackgroundResource(R.drawable.completion_btn);
-		btnSubmit.setVisibility(View.INVISIBLE);
-		this.addView(btnSubmit);
 	}
 	
 	public Button getBackButton() {
@@ -172,16 +140,106 @@ public class TitleBar extends RelativeLayout {
 	
 	public Button getBtnNotice() {
 		
+		if(btnNotice == null) {
+			btnNotice = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.rightMargin = ResizeUtils.getSpecificLength(92);
+			btnNotice.setLayoutParams(rp);
+			btnNotice.setBackgroundResource(R.drawable.notice2_btn);
+			btnNotice.setVisibility(View.INVISIBLE);
+			this.addView(btnNotice);
+		}
+		
 		return btnNotice;
 	}
 	
 	public Button getBtnAdd() {
+
+		if(btnAdd == null) {
+			btnAdd = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnAdd.setLayoutParams(rp);
+			btnAdd.setBackgroundResource(R.drawable.add_btn);
+			this.addView(btnAdd);
+		}
 		
 		return btnAdd;
 	}
 	
 	public Button getBtnSubmit() {
 		
+		if(btnSubmit == null) {
+			btnSubmit = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnSubmit.setLayoutParams(rp);
+			btnSubmit.setBackgroundResource(R.drawable.completion_btn);
+			this.addView(btnSubmit);
+		}
+		
 		return btnSubmit;
+	}
+
+	public Button getBtnWrite() {
+
+		if(btnWrite == null) {
+			btnWrite = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnWrite.setLayoutParams(rp);
+			btnWrite.setBackgroundResource(R.drawable.add_notice_btn);
+			this.addView(btnWrite);
+		}
+		
+		return btnWrite;
+	}
+
+	public Button getBtnReply() {
+
+		if(btnReply == null) {
+			btnReply = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.rightMargin = ResizeUtils.getSpecificLength(92);
+			btnReply.setLayoutParams(rp);
+			btnReply.setBackgroundResource(R.drawable.myshop_viewer_comment_btn);
+			this.addView(btnReply);
+		}
+		
+		return btnReply;
+	}
+	
+	public Button getBtnEdit() {
+
+		if(btnEdit == null) {
+			btnEdit = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnEdit.setLayoutParams(rp);
+			btnEdit.setBackgroundResource(R.drawable.myshop_viewer_setting_btn);
+			this.addView(btnEdit);
+		}
+		
+		return btnEdit;
 	}
 }

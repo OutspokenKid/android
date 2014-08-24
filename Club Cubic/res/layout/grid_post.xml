@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.zonecomms.common.views.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View
+        android:id="@+id/grid_post_imageBg"
+    	android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    	android:background="@drawable/bg_post" />
+    
+    <ImageView
+        android:id="@+id/grid_post_ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+    
+    <View
+        android:id="@+id/grid_post_bg"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:background="#8000" />
+    
+    <View
+        android:id="@+id/grid_post_profileBg"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:background="@drawable/bg_profile_65" />
+    
+    <ImageView
+        android:id="@+id/grid_post_profileImage"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp" 
+    	android:scaleType="centerCrop" />
+    
+    <TextView 
+        android:id="@+id/grid_post_tvInfo"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="left|center_vertical"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <TextView 
+        android:id="@+id/grid_post_tvReplyCount"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="right|center_vertical"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <TextView 
+        android:id="@+id/grid_post_tvRegdate"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="left|center_vertical"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <View
+        android:id="@+id/grid_post_horizontalLine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#ddd" />
+    
+    <TextView 
+        android:id="@+id/grid_post_tvText"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="left|center_vertical"
+    	android:textColor="#fff"
+    	android:maxLines="2"
+    	android:ellipsize="end" />
+    
+</com.zonecomms.common.views.WrapperView>

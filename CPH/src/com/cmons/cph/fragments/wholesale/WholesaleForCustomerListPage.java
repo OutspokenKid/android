@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleCustomerListPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleCustomerListPage_ivBg);
 		
 		btnRequest = (Button) mThisView.findViewById(R.id.wholesaleCustomerListPage_btnRequest);
 		btnPartner = (Button) mThisView.findViewById(R.id.wholesaleCustomerListPage_btnPartner);
@@ -368,4 +370,9 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		popupRelative.startAnimation(aaOut);
 	}
 
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.order_bg;
+	}
 }

@@ -9,8 +9,7 @@
         android:id="@+id/findIdPwPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_find_main" />
+    	android:scaleType="centerCrop" />
     
     <!-- 타이틀바. -->
 
@@ -30,17 +29,6 @@
 	        android:id="@+id/findIdPwPage_relative" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content" >
-
-			<!-- 저작권 표시. -->
-		
-			<ImageView 
-		        android:id="@+id/findIdPwPage_ivCopyright"
-		        android:layout_width="0dp"
-		    	android:layout_height="0dp"
-		    	android:layout_alignParentBottom="true"
-		    	android:layout_centerHorizontal="true"
-		    	android:src="@drawable/img_reserved"
-		    	android:scaleType="centerInside" />
 	        		    
 		    <!-- 전화번호 입력. -->
 		    
@@ -67,7 +55,7 @@
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/findIdPwPage_etPhone"
 		    	android:layout_centerHorizontal="true"
-		    	android:background="@drawable/btn_send_certification" />
+		    	android:background="@drawable/num_send_btn" />
 		    
 		    <!-- 인증번호 입력. -->
 		    
@@ -96,7 +84,7 @@
 		    	android:layout_below="@id/findIdPwPage_etCertification"
 		    	android:layout_centerHorizontal="true"
 		    	android:visibility="invisible"
-		    	android:background="@drawable/btn_certify" />
+		    	android:background="@drawable/certification_btn" />
 		    
 		</RelativeLayout>
 	    
@@ -109,6 +97,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/findIdPwPage_titleBar" 
-	    android:background="@drawable/bg_titlebar_shadow"/>
+	    android:background="@drawable/shadow"/>
     
 </RelativeLayout>

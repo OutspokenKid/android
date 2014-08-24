@@ -1,6 +1,6 @@
 package com.cmons.cph.classes;
 
-import android.os.Bundle;
+import android.app.Activity;
 
 import com.cmons.cph.WholesaleActivity;
 
@@ -9,11 +9,11 @@ public abstract class CmonsFragmentForWholesale extends CmonsFragment {
 	protected WholesaleActivity mActivity;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		
 		if(mActivity == null) {
-			mActivity = (WholesaleActivity) getActivity();
+			mActivity = (WholesaleActivity) activity;
 		}
 	}
 }

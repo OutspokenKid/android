@@ -13,15 +13,15 @@ public class User extends BaseModel implements Serializable {
 	
 	private String id;
 	private String type;
-	private String role;
+	private int role;
 	private String name;
 	private String platform;
 	private String device_token;
 	private String phone_number;
-	private String wholesale_id;
-	private String retail_id;
-	private String created_at;
-	private String status;
+	private int wholesale_id;
+	private int retail_id;
+	private long created_at;
+	private int status;
 
 	public User(){
 	}
@@ -38,7 +38,7 @@ public class User extends BaseModel implements Serializable {
 			}
 			
 			if(objJSON.has("role")) {
-				this.role = objJSON.getString("role");
+				this.role = objJSON.getInt("role");
 			}
 			
 			if(objJSON.has("name")) {
@@ -58,19 +58,19 @@ public class User extends BaseModel implements Serializable {
 			}
 			
 			if(objJSON.has("wholesale_id")) {
-				this.wholesale_id = objJSON.getString("wholesale_id");
+				this.wholesale_id = objJSON.getInt("wholesale_id");
 			}
 			
 			if(objJSON.has("retail_id")) {
-				this.retail_id = objJSON.getString("retail_id");
+				this.retail_id = objJSON.getInt("retail_id");
 			}
 			
 			if(objJSON.has("created_at")) {
-				this.created_at = objJSON.getString("created_at");
+				this.created_at = objJSON.getLong("created_at");
 			}
 			
 			if(objJSON.has("status")) {
-				this.status = objJSON.getString("status");
+				this.status = objJSON.getInt("status");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -95,11 +95,11 @@ public class User extends BaseModel implements Serializable {
 		this.type = type;
 	}
 
-	public String getRole() {
+	public int getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(int role) {
 		this.role = role;
 	}
 
@@ -135,35 +135,35 @@ public class User extends BaseModel implements Serializable {
 		this.phone_number = phone_number;
 	}
 
-	public String getWholesale_id() {
+	public int getWholesale_id() {
 		return wholesale_id;
 	}
 
-	public void setWholesale_id(String wholesale_id) {
+	public void setWholesale_id(int wholesale_id) {
 		this.wholesale_id = wholesale_id;
 	}
 
-	public String getRetail_id() {
+	public int getRetail_id() {
 		return retail_id;
 	}
 
-	public void setRetail_id(String retail_id) {
+	public void setRetail_id(int retail_id) {
 		this.retail_id = retail_id;
 	}
 
-	public String getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(String created_at) {
+	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
 
-	public String getStatus() {
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 }

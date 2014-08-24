@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -68,6 +69,7 @@ public class WholesaleForSamplePage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleSamplePage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleSamplePage_ivBg);
 		
 		btnRequest = (Button) mThisView.findViewById(R.id.wholesaleSamplePage_btnRequest);
 		btnApproval = (Button) mThisView.findViewById(R.id.wholesaleSamplePage_btnApproval);
@@ -436,5 +438,11 @@ public class WholesaleForSamplePage extends CmonsFragmentForWholesale {
 		
 		popupRelative.setVisibility(View.INVISIBLE);
 		popupRelative.startAnimation(aaOut);
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.sample_bg;
 	}
 }

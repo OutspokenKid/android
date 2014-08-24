@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -48,6 +49,7 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleOrderListPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleOrderListPage_ivBg);
 		
 		btnOnGoing = (Button) mThisView.findViewById(R.id.wholesaleOrderListPage_btnOnGoing);
 		btnFinished = (Button) mThisView.findViewById(R.id.wholesaleOrderListPage_btnFinished);
@@ -203,5 +205,11 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		this.menuIndex = menuIndex;
 		
 		refreshPage();
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.order_bg;
 	}
 }

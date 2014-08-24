@@ -7,6 +7,7 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -40,6 +41,7 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleStaffPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleStaffPage_ivBg);
 		
 		btnRequest = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnRequest);
 		btnStaff = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnStaff);
@@ -183,5 +185,11 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	
 	public void fire(Staff staff) {
 		
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.staff_bg;
 	}
 }

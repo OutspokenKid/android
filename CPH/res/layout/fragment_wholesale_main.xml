@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
     <!-- bg -->
 		    
-    <ImageView 
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:src="@drawable/bg2"
-    	android:scaleType="centerCrop" />
-
     <com.cmons.cph.views.TitleBar
 	    android:id="@+id/wholesaleMainPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
     
+    <ImageView
+        android:id="@+id/wholesaleMainPage_ivBg" 
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/wholesaleMainPage_titleBar"
+    	android:scaleType="centerCrop" />
+    
     <ScrollView
         android:id="@+id/wholesaleMainPage_scrollView"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_below="@id/wholesaleMainPage_titleBar"
 	    android:fillViewport="true" >
 	    
 	    <RelativeLayout
@@ -136,13 +138,71 @@
 			    android:textColor="#fff"
 			    android:gravity="center_horizontal" />
 		    
+		    <View
+		        android:id="@+id/wholesaleMainPage_pagerBg" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:background="@drawable/no_item" />
+		    
+		    <android.support.v4.view.ViewPager
+		        android:id="@+id/wholesaleMainPage_viewPager" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:visibility="invisible" />
+		    
+		    <TextView
+		        android:id="@+id/wholesaleMainPage_tvBestTitle"  
+		        android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:textColor="#000"
+			    android:background="#afff"
+			    android:visibility="invisible"
+			    android:gravity="center" />
+		    
+		    <TextView
+		        android:id="@+id/wholesaleMainPage_tvBestSellingCount"  
+		        android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnSetting"
+			    android:layout_alignBottom="@id/wholesaleMainPage_btnSetting"
+			    android:textColor="#000"
+			    android:background="#afff"
+			    android:visibility="invisible"
+			    android:gravity="center" />
+		    
+		    <View 
+		        android:id="@+id/wholesaleMainPage_badge"  
+		        android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
+			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
+			    android:visibility="invisible"
+			    android:background="@drawable/weekly_best_icon" />
+
+		    <TextView
+		        android:id="@+id/wholesaleMainPage_tvRank"  
+		        android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignLeft="@id/wholesaleMainPage_badge"
+			    android:layout_below="@id/wholesaleMainPage_badge"
+			    android:textColor="#f00"
+			    android:visibility="invisible"
+			    android:gravity="center" />
+		    		    
 		    <Button
 		        android:id="@+id/wholesaleMainPage_arrowLeft" 
 			    android:layout_width="0dp"
 			    android:layout_height="0dp"
 			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
 			    android:layout_toRightOf="@id/wholesaleMainPage_btnStaff"
-			    android:background="@drawable/arrow1_btn" />
+			    android:background="@drawable/arrow1_btn"
+			    android:visibility="invisible" />
 		    
 		    <Button
 		        android:id="@+id/wholesaleMainPage_arrowRight" 
@@ -150,7 +210,8 @@
 			    android:layout_height="0dp"
 			    android:layout_alignTop="@id/wholesaleMainPage_btnStaff"
 			    android:layout_alignParentRight="true"
-			    android:background="@drawable/arrow2_btn" />
+			    android:background="@drawable/arrow2_btn"
+			    android:visibility="invisible" />
 		    
 		</RelativeLayout>
 	    
@@ -188,4 +249,4 @@
         
     </RelativeLayout>
     
-</FrameLayout>
+</RelativeLayout>

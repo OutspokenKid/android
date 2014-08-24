@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -42,6 +43,8 @@ public class FindIdPwPage extends CmonsFragment {
 	
 	@Override
 	public void bindViews() {
+		
+		ivBg = (ImageView) mThisView.findViewById(R.id.findIdPwPage_ivBg);
 		
 		titleBar = (TitleBar) mThisView.findViewById(R.id.findIdPwPage_titleBar);
 		etPhone = (EditText) mThisView.findViewById(R.id.findIdPwPage_etPhone);
@@ -172,11 +175,6 @@ public class FindIdPwPage extends CmonsFragment {
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(74);
 		rp.topMargin = ResizeUtils.getSpecificLength(12);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -219,43 +217,49 @@ public class FindIdPwPage extends CmonsFragment {
 		
 		certifyingPhoneNumber = etPhone.getText().toString();
 		
-		String url = CphConstants.BASE_API_URL + "users/auth/request" +
-				"?no_sms=0" +
-				"&phone_number=" + certifyingPhoneNumber;
+		try {
+			String url = CphConstants.BASE_API_URL + "users/auth/request" +
+					"?no_sms=0" +
+					"&phone_number=" + URLEncoder.encode(certifyingPhoneNumber, "utf-8");
 
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-			@Override
-			public void onError(String url) {
+				@Override
+				public void onError(String url) {
 
-				LogUtils.log("FindIdPwPage.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.wrongPhoneNumber);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						timeResponseKey = objJSON.getString("tempResponseKey");
-						btnSend.setVisibility(View.INVISIBLE);
-						etCertification.setVisibility(View.VISIBLE);
-						btnCertify.setVisibility(View.VISIBLE);
-						
-						ToastUtils.showToast(R.string.sendCertificationCompleted);
-					} else {
-						ToastUtils.showToast(R.string.wrongPhoneNumber);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
+					LogUtils.log("FindIdPwPage.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.wrongPhoneNumber);
 				}
-			}
-		});
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("FindIdPwPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_checkPhone);
+							
+							timeResponseKey = objJSON.getString("tempResponseKey");
+							btnSend.setVisibility(View.INVISIBLE);
+							etCertification.setVisibility(View.VISIBLE);
+							btnCertify.setVisibility(View.VISIBLE);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void checkCertification() {
@@ -321,7 +325,7 @@ public class FindIdPwPage extends CmonsFragment {
 			}
 					
 			url += "?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
-					"&no_sms=1";
+					"&no_sms=0";
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
@@ -369,4 +373,9 @@ public class FindIdPwPage extends CmonsFragment {
 		
 	}
 
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
+	}
 }

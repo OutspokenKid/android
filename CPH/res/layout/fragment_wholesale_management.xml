@@ -17,8 +17,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleManagementPage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/shop_bg" />
+	    android:scaleType="centerCrop" />
     
     <ScrollView
         android:id="@+id/wholesaleManagementPage_scrollView"

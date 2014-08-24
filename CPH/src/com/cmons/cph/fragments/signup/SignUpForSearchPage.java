@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -89,6 +90,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForSearchPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForSearchPage_ivBg);
 		
 		tvCompanyName = (TextView) mThisView.findViewById(R.id.signUpForSearchPage_tvCompanyName);
 		etCompanyName = (EditText) mThisView.findViewById(R.id.signUpForSearchPage_etCompanyName);
@@ -396,11 +398,6 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		FontUtils.setFontSize(etCompanyName, 30);
 		FontUtils.setFontSize(etCompanyPhone, 30);
 		FontUtils.setFontAndHintSize(etCompanyRegistration, 30, 24);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForSearchPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -709,5 +706,11 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		isLastList = false;
 		isDownloading = false;
 		isRefreshing = false;
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }

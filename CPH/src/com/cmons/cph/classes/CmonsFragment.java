@@ -4,9 +4,12 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.views.TitleBar;
@@ -17,15 +20,17 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragment extends BaseFragment {
 
-	protected final int NUMBER_OF_LISTITEMS = 10;
+	public static final int NUMBER_OF_LISTITEMS = 10;
 
 	protected TitleBar titleBar;
+	protected ImageView ivBg;
 	protected String title;
 	
-	protected int pageIndex;
+	protected int pageIndex = 1;
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected CphAdapter adapter;
 	protected String url;
@@ -37,7 +42,9 @@ public abstract class CmonsFragment extends BaseFragment {
 	 * @return isLastList.
 	 */
 	public abstract boolean parseJSON(JSONObject objJSON);
+	public abstract int getBgResourceId(); 
 	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
@@ -66,12 +73,40 @@ public abstract class CmonsFragment extends BaseFragment {
 				}
 			});
 		}
+		
+		 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+			 ivBg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+		 }
 	}
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
+	}
+	
+	@Override
+	public void onStart() {
+		super.onStart();
+		
+		if(ivBg != null &&getBgResourceId() != 0) {
+			try {
+				ivBg.setImageResource(getBgResourceId());
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		if(ivBg != null) {
+			ivBg.setImageDrawable(null);
+		}
 	}
 	
 	@Override
@@ -92,9 +127,12 @@ public abstract class CmonsFragment extends BaseFragment {
 		} else {
 			url += "?";
 		}
+
+		url += "page=" + pageIndex;
 		
-		url += "num=" + NUMBER_OF_LISTITEMS +
-				"&page=" + pageIndex;
+		if(!url.contains("num=0")) {
+			url += "&num=" + NUMBER_OF_LISTITEMS;
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -113,6 +151,11 @@ public abstract class CmonsFragment extends BaseFragment {
 							+ "\nresult : " + objJSON);
 					
 					isLastList = parseJSON(objJSON);
+					
+					if(isLastList && pageIndex > 1) {
+						ToastUtils.showToast(R.string.lastList);
+					}
+					
 					setPage(true);
 				} catch (Exception e) {
 					LogUtils.trace(e);

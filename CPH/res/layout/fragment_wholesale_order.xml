@@ -19,8 +19,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleOrderPage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/order_bg" />
+	    android:scaleType="centerCrop" />
     
 	<TextView 
         android:id="@+id/wholesaleOrderPage_tvOrder"

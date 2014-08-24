@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Common -->
+    <string name="accuse">Accuse</string>
+    <string name="accuseCompleted">Accuse completed</string>
+    <string name="accuseReplyCompleted">Accuse reply completed</string>
+    <string name="activeLocation">Active location</string>
+    <string name="addedProfile">Added profile</string>
+    <string name="addedToFriendList">Added to friend list</string>
+    <string name="addMe">Add me?</string>
+    <string name="agreeWithClause">Agree with clause</string>
+    <string name="all">All</string>
+    <string name="alreadyMember">Already member</string>
+
+    <string name="baseProfile">Base profile</string>
+    <string name="birth">Birth</string>
+    <string name="board_story">Story</string>
+    <string name="board_review">Review</string>
+    <string name="board_with">Go with</string>
+    <string name="board_findPeople">Find people</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="canceled">Canceled</string>
+    <string name="cantUploadMorePhoto">cantUploadMorePhoto</string>
+    <string name="checkNetworkStatus">Please check network status</string>
+    <string name="clause">Claus text</string>
+    <string name="close">Close</string>
+    <string name="company">Company(School)</string>
+    <string name="complete">Complete</string>
+    <string name="completeSignUp">Sign up complete</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirmPassword">Confirm password</string>
+    <string name="copyReplyCompleted">Copy reply completed</string>
+
+    <string name="delete">Delete</string>
+    <string name="deleteCompleted">Delete completed</string>
+    <string name="deletedFromFriendList">Deleted from friend list</string>
+    <string name="deleteMessage">Delete message</string>
+    <string name="disagreeWithClause">Disagree with clause</string>
+    <string name="dontSeeAgainToday">Do not again today</string>
+
+    <string name="edit">Edit</string>
+    <string name="emailAddress">E-mail address</string>
+
+    <string name="failToAccuse">Fail to accuse this post</string>
+    <string name="failToAccuseReply">Fail to accuse this reply</string>
+    <string name="failToCopyReply">Fail to copy this reply</string>
+    <string name="failToDeleteMessage">Fail to delete message</string>
+    <string name="failToDeletePost">Fail to delete this post</string>
+    <string name="failToDeleteReply">Fail to delete this reply</string>
+    <string name="failToDownloadImage">Fail to download image</string>
+    <string name="failToLaunchToNApp">Fail to launch to N-App</string>
+    <string name="failToLoadBitmap">Fail to load bitmap</string>
+    <string name="failToLoadBitmap_OutOfMemory">Fail to load bitmap, because of OutOfMemory</string>
+    <string name="failToLoadUserInfo">Fail to load user info</string>
+    <string name="failToLoadList">Fail to load list</string>
+    <string name="failToLoadMessageList">Fail to load message list</string>
+    <string name="failToLoadPhoto">Fail to load photo</string>
+    <string name="failToLoadPost">Fail to load this post</string>
+    <string name="failToLoadReplies">Fail to load replies</string>
+    <string name="failToLoadUserStatus">Fail to load user status</string>
+    <string name="failToLoadWebBrowser">Fail to load browser</string>
+    <string name="failToSaveImage">Fail to save image</string>
+    <string name="failToScrapPost">Fail to scrap this post</string>
+    <string name="failToSendMessage">Fail to send message</string>
+    <string name="failToSendPost">Fail to send post</string>
+    <string name="failToSendReply">Fail to send reply</string>
+    <string name="failToShowVideo">Fail to open this video</string>
+    <string name="failToSignIn">FailToSignIn</string>
+    <string name="failToSignOut">FailToSignOut</string>
+    <string name="failToSignUp">FailToSignUp</string>
+    <string name="failToSubmitAddedProfile">Fail to submit added profile</string>
+    <string name="failToSubmitBaseProfile">Fail to submit base profile</string>
+    <string name="failToSubmitPassword">Fail to submit password</string>
+    <string name="failToSubmitPushSetting">Fail to submit push setting</string>
+    <string name="female">Femail</string>
+    <string name="femaleInit">F</string>
+    <string name="findIdAndPw">Find Id/Pw</string>
+    <string name="friend">Friend</string>
+    <string name="friend_find">Find friends</string>
+    <string name="friend_list">Friends list</string>
+    <string name="friend_manage">Manage Friends</string>
+    <string name="friend_newPost">New post by friends</string>
+    <string name="friend_search">Search friends</string>
+
+    <string name="gender">Gender</string>
+    <string name="go">Go</string>
+    <string name="group">Group</string>
+	<string name="group_find">Find groups</string>    
+    <string name="group_manage">Manage groups</string>
+    <string name="group_newPost">New post by groups</string>
+    <string name="group_search">Search groups</string>
+    <string name="guest">Guest</string>
+
+    <string name="hintForConfirmNewPw">Confirm new password</string>
+    <string name="hintForCurrentPw">Current password</string>
+    <string name="hintForId">Id (4 ~ 20)</string>
+    <string name="hintForPw">Password (4 ~ 20)</string>
+    <string name="hintForPhoneNumber">PhoneNumber, used to find Id and Pw</string>
+    <string name="hintForConfirmPw">Confirm password</string>
+    <string name="hintForEmail">Email</string>
+    <string name="hintForNewEmail">NewEmail</string>
+    <string name="hintForNewPw">New password</string>
+    <string name="hintForNickname">Nickname(2 ~ 14)</string>
+    <string name="hintForIntroduce">Please introduce yourself</string>
+    <string name="hintForPosting">Hint for post</string>
+    <string name="hintForReply">Hint for reply</string>
+    
+    <string name="id">Id</string>
+    <string name="image">Image</string>
+    <string name="inputDirectly">Input directly</string>
+    <string name="inputMoreInfo">Input more information</string>
+    <string name="inputComplete">Input complete</string>
+    <string name="inputContent">Input contents</string>
+    <string name="interested">Interested</string>
+    <string name="introduce">Introduce</string>
+    <string name="introduceNId">Introduce N id</string>
+    <string name="invalidConfirmPw">Invalid ConfirmPw</string>
+    <string name="invalidEmail">Invalid Email</string>
+    <string name="invalidId">Invalid Id</string>
+    <string name="invalidNickname">Invalid Nickname</string>
+    <string name="invalidPhoneNumber">Invalid PhoneNumber</string>
+    <string name="invalidPw">Invalid Pw</string>
+    <string name="invalidUri">Invalid uri</string>
+
+    <string name="job">Job</string>
+
+    <string name="kakaoTalkId">Kakao talk ID</string>
+    
+    <string name="lastPage">Last page</string>
+    <string name="leaveMember">Leave member</string>
+    <string name="liveLocation">live location</string>
+    <string name="loadingNewList">Loading new list..</string>
+    <string name="loadingReplies">Loading replies..</string>
+    
+    <string name="mail1">naver.com</string>
+    <string name="mail2">daum.net</string>
+    <string name="mail3">hotmail.com</string>
+    <string name="mail4">nate.com</string>
+    <string name="mail5">gmail.com</string>
+    <string name="mail6">yahoo.com</string>
+    <string name="male">Male</string>
+    <string name="maleInit">M</string>
+    <string name="menu1">Profile</string>
+    <string name="menu2">In\nStory</string>
+    <string name="menu3">Other\nStory</string>
+    <string name="menu4">Message</string>
+   	<string name="message">Message</string>
+   	<string name="modifyUserInfo">Modify user info</string>
+    <string name="mustInput">You must input this</string>
+    <string name="myHome">My home</string>
+    <string name="myPost">My post</string>
+    
+    <string name="needSignIn">Need login</string>
+    <string name="nickname">Nickname</string>
+    <string name="noContent">No content</string>
+    <string name="noMoreReplies">No more replies</string>
+    <string name="noname">Noname</string>
+    <string name="notEnoughMemory">Not enough Memory</string>
+    <string name="nothing">Nothing</string>
+    <string name="notice">Notice</string>
+    <string name="notificationAll">Notification all</string>
+    <string name="notificationMessage">Notification message</string>
+    <string name="notificationReply">Notification reply</string>
+    
+    <string name="password">Password</string>
+    <string name="phoneNumber">PhoneNumber</string>
+    <string name="photo_album">Album</string>
+    <string name="photo_take">Take a Photo</string>
+    <string name="post">Post</string>
+    <string name="postingCompleted">Posting completed</string>
+    <string name="postingToSNSWillBeUpdatedLater">posting to SNS will be updated later</string>
+    <string name="preparingService">PreparingService</string>
+    <string name="profile">Profile</string>
+    <string name="profileInfo">Profile info</string>
+    <string name="profileSetting">Profile setting</string>
+    <string name="profilePhotoCondition">Larger image than 200 x 200px \n(jpg, gif, png)</string>
+    <string name="pullToRefresh">Pull to refresh.</string>
+    <string name="pullToLoadNewList">Pull to load new list.</string>
+    <string name="pushSetting">Push setting</string>
+    <string name="putToRefresh">Put to refresh.</string>
+    <string name="putToLoadNewList">Put to load new list.</string>
+    
+    <string name="recentPost">Recent post</string>
+    <string name="recentPostByCategory">&#160;Recent post\n&#160;by theme</string>
+    <string name="refreshing">Refreshing..</string>
+    <string name="reply">Reply</string>
+    <string name="reply_copy">Copy the reply</string>
+    <string name="reply_accuse">Accuse the reply</string>
+    <string name="reply_delete">Delete the reply</string>
+    <string name="replies">Replies</string>
+    <string name="restartApp">Please restart application</string>
+    <string name="retainLastSession">Do you want to retain last session?</string>
+    <string name="review">Review</string>
+    
+    <string name="saveImageCompleted">Completed to save image</string>
+    <string name="schedule">Schedule</string>
+    <string name="scrap">Scrap</string>
+    <string name="scrapCompleted">Scrap completed</string>
+    <string name="search">Search</string>
+    <string name="searching">Searching..</string>
+    <string name="seeMoreReplies">See more replies</string>
+    <string name="selectAccount">Select account</string>
+    <string name="selectBoard">Select board</string>
+    <string name="selectPlease">Select</string>
+    <string name="selectEmail">Select email</string>
+    <string name="selectGender">Select gender</string>
+    <string name="selectYourGender">Select your gender</string>
+    <string name="send">Send</string>
+    <string name="setting">Setting</string>
+    <string name="sharedUserId">zonecomms</string>
+    <string name="showMember">Show member</string>
+    <string name="signBySNSwillBeUpdatedLater">Sign by SNS will be updated later</string>
+    <string name="signIn">Sign in</string>
+    <string name="signInCompleted">Sign in completed</string>
+    <string name="signingIn">Signing in now..</string>
+    <string name="signingUp">Signing up now..</string>
+    <string name="signOut">Sign out</string>
+	<string name="signUp">Sign up</string>
+	<string name="signUpCompleted">Sign up completed</string>
+	<string name="SNSLinkSetting">SNS link setting</string>
+	<string name="status">Status</string>
+	<string name="story">Story</string>
+	<string name="str_done">Done</string>
+	<string name="submit">submit</string>
+	<string name="submitCompleted">Submit completed</string>
+	<string name="submittingToServer">Submitting to server..</string>
+	<string name="submitReply">Submit</string>
+	
+	<string name="thereIsNoTStore">Please install TStore</string>
+	<string name="titleText_notice">Notice</string>
+	<string name="touchHere">Touch here</string>
+
+	<string name="unknown">Unknown</string>
+	<string name="unusableNumber">Unusable number</string>
+	<string name="update">Update</string>
+	<string name="updatingGallery">Updating gallery..</string>
+	<string name="updateGalleryCompleted">Completed to Update gallery</string>
+	<string name="uploadPhoto">Upload photo</string>
+	<string name="uploadProfilePhoto">Upload profile photo</string>
+	
+	<string name="video">Video</string>
+	<string name="VIPTableInfo">VIP Table Info</string>
+	
+	<string name="wait">Wait..</string>
+	<string name="wannaAccuse">Do you want to accuse</string>
+	<string name="wannaDelete">Do you want to delete?</string>
+	<string name="wannaEdit">Do you want to edit this post?</string>
+	<string name="wannaLaunchNApp">Do you want to launch Napp?</string>
+	<string name="wannaMoveToStore">Do you want to move to store?</string>
+	<string name="wannaSaveImage">Do you want to save image?</string>
+	<string name="wannaScrap">Do you want to scrap this post?</string>
+	<string name="wannaSignOut">Do you want to sign out?</string>
+	<string name="wannaUpdate">We have new version.\nDo you want to update?</string>
+	<string name="willBeUpdated">This will be updated</string>
+	<string name="withdrawnMember">Withdrawn member</string>
+	<string name="withMe">With me?</string>
+	<string name="write">Write</string>
+	<string name="writeAtBoard">Write at board</string>
+	
+</resources>

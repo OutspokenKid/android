@@ -1,28 +1,29 @@
 package com.cmons.cph.views;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.WholesaleActivity;
+import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class HeaderViewForShop extends RelativeLayout {
 
 	private static int madeCount = 880627;
-	
-	private int customerType = 0;
-	private int categoryIndex = 0;
-	private int order = 0;
 	
 	private WholesaleActivity activity; 
 	
@@ -43,10 +44,6 @@ public class HeaderViewForShop extends RelativeLayout {
 	private TextView tvTotalProduct;
 	private View totalProductIcon;
 	
-	private String[] customerTypes;
-	private String[] categories;
-	private String[] orders;
-	
 	public HeaderViewForShop(Context context) {
 		this(context, null, 0);
 	}
@@ -62,11 +59,6 @@ public class HeaderViewForShop extends RelativeLayout {
 	public void init(WholesaleActivity activity) {
 
 		this.activity = activity;
-		
-		customerTypes = new String[]{"모두공개", "거래처공개"};
-		categories = new String[]{"전체", "여성의류", "남성의류", "여성신발", "남성신발", 
-				"여성가방", "남성가방", "여성악세사리", "남성악세사리", "유아의류", "유/아동잡화", };
-		orders = new String[]{"최신순", "판매량순"};
 		
 		createViews();
 		setListeners();
@@ -86,6 +78,7 @@ public class HeaderViewForShop extends RelativeLayout {
 				ResizeUtils.getSpecificLength(440));
 		ivImage.setLayoutParams(rp);
 		ivImage.setId(madeCount);
+		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		ivImage.setBackgroundResource(R.drawable.picture_default);
 		addView(ivImage);
 		
@@ -314,18 +307,49 @@ public class HeaderViewForShop extends RelativeLayout {
 	
 	public void setValues() {
 
-		tvPhoneNumber.setText("010-9813-8005");
-		tvLocation.setText("금강빌딩5층");
-		tvHit.setText("Today 5 / Total 100");
-		tvLike.setText("532 찜");
-		tvPartner.setText("거래처 21");
-		tvTotalProduct.setText("총 등록 상품 20개");
+		tvPhoneNumber.setText(activity.wholesale.getPhone_number());
+		tvLocation.setText("청평화몰 " + activity.wholesale.getLocation());
+		tvHit.setText(activity.wholesale.getToday_visited_cnt() + 
+				" / " + activity.wholesale.getTotal_visited_cnt());
+		tvLike.setText("" + activity.wholesale.getFavorited_cnt());
+		tvPartner.setText("" + activity.wholesale.getCustomers_cnt());
+		tvTotalProduct.setText("총 등록 상품 " + activity.wholesale.getProducts_cnt());
 		
 		btnCustomerType.setText("모두공개");
 		btnCategoryIndex.setText("전체");
 		btnOrder.setText("최신순");
+		
+		downloadProfile();
 	}
 
+	public void downloadProfile() {
+		
+		ivImage.setTag(activity.wholesale.getRep_image_url());
+		DownloadUtils.downloadBitmap(activity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("HeaderViewForShop.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("HeaderViewForShop.onCompleted." + "\nurl : " + url);
+					if(ivImage != null) {
+						ivImage.setImageBitmap(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void setListeners() {
 
 		ivImage.setOnClickListener(new OnClickListener() {
@@ -336,72 +360,28 @@ public class HeaderViewForShop extends RelativeLayout {
 				activity.showProfileImagePage();
 			}
 		});
-	
-		btnCustomerType.setOnClickListener(new OnClickListener() {
+	}
 
-			@Override
-			public void onClick(View view) {
-
-				activity.showSelectDialog(null, customerTypes, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					
-						customerType = which;
-						btnCustomerType.setText(customerTypes[which]);
-					}
-				});
-			}
-		});
+	public Button getBtnCustomerType() {
 		
-		btnCategoryIndex.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				activity.showSelectDialog(null, categories, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					
-						categoryIndex = which;
-						btnCategoryIndex.setText(categories[which]);
-					}
-				});
-			}
-		});
-		
-		btnOrder.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				activity.showSelectDialog(null, orders, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					
-						order = which;
-						btnOrder.setText(orders[which]);
-					}
-				});
-			}
-		});
+		return btnCustomerType;
 	}
 	
-	public int getCustomerType() {
+	public Button getBtnCategoryIndex() {
 		
-		return customerType; 
+		return btnCategoryIndex;
 	}
 	
-	public int getCategoryIndex() {
+	public Button getBtnOrder() {
 		
-		return categoryIndex;
+		return btnOrder;
 	}
-	
-	public int getOrder() {
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
 		
-		return order;
+		ViewUnbindHelper.unbindReferences(this);
 	}
 }
 

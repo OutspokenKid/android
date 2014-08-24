@@ -1,17 +1,17 @@
 package com.outspoken_kid.classes;
 
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.HttpClientStack;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.Volley;
+import com.outspoken_kid.utils.LogUtils;
 
 /**
  * Manager for the queue
@@ -38,41 +38,30 @@ public class RequestManager {
 	 * 			application context
 	 */
 	public static void init(Context context) {
+
+		LogUtils.log("###RequestManager.init.  ");
 		
-		BasicHttpParams mHttpParams = new BasicHttpParams();
-
-	    // Set the timeout in milliseconds until a connection is established.
-	    // The default value is zero, that means the timeout is not used.
-	    int timeoutConnection = 15000;
-	    HttpConnectionParams.setConnectionTimeout(mHttpParams, timeoutConnection);
-	    // Set the default socket timeout (SO_TIMEOUT)
-	    // in milliseconds which is the timeout for waiting for data.
-	    int timeoutSocket = 20000;
-	    HttpConnectionParams.setSoTimeout(mHttpParams, timeoutSocket);
-
+		if(mRequestQueue != null) {
+			return;
+		}
+		
 		mRequestQueue = Volley.newRequestQueue(context);
 	}
 	
 	public static void initForUsingCookie(Context context) {
 
-		BasicHttpParams mHttpParams = new BasicHttpParams();
-
-	    // Set the timeout in milliseconds until a connection is established.
-	    // The default value is zero, that means the timeout is not used.
-	    int timeoutConnection = 15000;
-	    HttpConnectionParams.setConnectionTimeout(mHttpParams, timeoutConnection);
-	    // Set the default socket timeout (SO_TIMEOUT)
-	    // in milliseconds which is the timeout for waiting for data.
-	    int timeoutSocket = 20000;
-	    HttpConnectionParams.setSoTimeout(mHttpParams, timeoutSocket);
-
-	    SchemeRegistry registry = new SchemeRegistry();
-	    registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		if(mRequestQueue != null) {
+			return;
+		}
 	    
-	    /*ClientConnectionManager cm = new ThreadSafeClientConnManager(mHttpParams, registry);*/
-	    DefaultHttpClient defaultHttpClient = new DefaultHttpClient(/*cm,*/ mHttpParams);
+	    DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
 
-	    mRequestQueue = Volley.newRequestQueue(context.getApplicationContext(),new HttpClientStack(defaultHttpClient));
+        final ClientConnectionManager mClientConnectionManager = mDefaultHttpClient.getConnectionManager();
+        final HttpParams mHttpParams = mDefaultHttpClient.getParams();
+        final ThreadSafeClientConnManager mThreadSafeClientConnManager = new ThreadSafeClientConnManager( mHttpParams, mClientConnectionManager.getSchemeRegistry() );
+        mDefaultHttpClient = new DefaultHttpClient( mThreadSafeClientConnManager, mHttpParams );
+        final HttpStack httpStack = new HttpClientStack( mDefaultHttpClient );
+        mRequestQueue = Volley.newRequestQueue(context, httpStack );
 	}
 
 	/**

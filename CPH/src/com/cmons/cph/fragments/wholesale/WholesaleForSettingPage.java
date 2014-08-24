@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
@@ -17,7 +18,6 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 
@@ -32,6 +32,7 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleSettingPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleSettingPage_ivBg);
 		
 		btnInfo = (Button) mThisView.findViewById(R.id.wholesaleSettingPage_btnInfo);
 		btnNotice = (Button) mThisView.findViewById(R.id.wholesaleSettingPage_btnNotice);
@@ -71,7 +72,7 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View arg0) {
 
-				mActivity.showNoticeListPage();
+				mActivity.showNoticeListPage(true);
 			}
 		});
 		
@@ -143,14 +144,14 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
 		rp.height = ResizeUtils.getScreenWidth()/4;
 		
-		//btnWithdraw.
-		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
+		//btnSignout.
+		rp = (RelativeLayout.LayoutParams) btnSignout.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;
 		rp.height = ResizeUtils.getScreenWidth()/4;
 		
-		//btnSignout.
-		rp = (RelativeLayout.LayoutParams) btnSignout.getLayoutParams();
-		rp.height = ResizeUtils.getScreenWidth()/4;
+		//btnWithdraw.
+		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
+		rp.height = ResizeUtils.getScreenWidth()/4;	
 	}
 
 	@Override
@@ -187,8 +188,7 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 	
 	public void signOut() {
 
-		//http://cph.minsangk.com/users/logout
-		url = CphConstants.BASE_API_URL + "logout";
+		url = CphConstants.BASE_API_URL + "users/logout";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -205,11 +205,8 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					ToastUtils.showToast(objJSON.getString("result"));
-					
 					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
 					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
-					
 					mActivity.launchSignInActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -222,15 +219,13 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 	
 	public void withdraw() {
 		
-		//http://cph.minsangk.com/users/logout
-		url = CphConstants.BASE_API_URL + "logout";
+		url = CphConstants.BASE_API_URL + "users/logout";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
 				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
-
 			}
 
 			@Override
@@ -239,12 +234,9 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 				try {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
-					ToastUtils.showToast(objJSON.getString("result"));
 					
 					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
 					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
-					
 					mActivity.launchSignInActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -253,5 +245,11 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 				}
 			}
 		});
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.setting_bg;
 	}
 }

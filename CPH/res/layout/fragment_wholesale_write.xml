@@ -19,8 +19,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleWritePage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/myshop_bg" />
+	    android:scaleType="centerCrop" />
 
     <ScrollView
         android:id="@+id/wholesaleWritePage_scrollView" 
@@ -71,14 +70,29 @@
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
             
+            <Button
+		        android:id="@+id/wholesaleWritePage_btnImage1"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_tvImageText"
+		        android:layout_alignParentLeft="true"
+		        android:background="@drawable/myshop_pic_add1" />
+            
             <ImageView 
                 android:id="@+id/wholesaleWritePage_ivImage1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/wholesaleWritePage_tvImageText"
 		        android:layout_alignParentLeft="true"
-		        android:scaleType="centerCrop"
-		        android:background="@drawable/myshop_pic_add1" />
+		        android:scaleType="centerCrop" />
+            
+            <Button
+		        android:id="@+id/wholesaleWritePage_btnImage2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_ivImage1"
+		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage1"
+		        android:background="@drawable/myshop_pic_add2" />
             
             <ImageView 
                 android:id="@+id/wholesaleWritePage_ivImage2"
@@ -86,8 +100,15 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/wholesaleWritePage_ivImage1"
 		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage1"
-		        android:scaleType="centerCrop"
-		        android:background="@drawable/myshop_pic_add2" />
+		        android:scaleType="centerCrop" />
+            
+            <Button
+		        android:id="@+id/wholesaleWritePage_btnImage3"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/wholesaleWritePage_ivImage2"
+		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage2"
+		        android:background="@drawable/myshop_pic_add3" />
             
             <ImageView 
                 android:id="@+id/wholesaleWritePage_ivImage3"
@@ -95,8 +116,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/wholesaleWritePage_ivImage2"
 		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage2"
-		        android:scaleType="centerCrop"
-		        android:background="@drawable/myshop_pic_add3" />
+		        android:scaleType="centerCrop" />
 		    
             <TextView
 		        android:id="@+id/wholesaleWritePage_tvImageSizeText"
@@ -330,5 +350,40 @@
         </RelativeLayout>
         
     </ScrollView>
+    
+    <RelativeLayout
+        android:id="@+id/wholesaleWritePage_relativePopup"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:background="#a000" >
+        
+        <EditText 
+            android:id="@+id/wholesaleWritePage_etAdd"
+        	android:layout_width="0dp"
+        	android:layout_height="0dp"
+        	android:layout_alignParentTop="true"
+        	android:layout_alignParentLeft="true"
+        	android:textColor="#fff"
+        	android:hint="@string/hintForAdd"
+        	android:textColorHint="#ddd"
+        	android:gravity="center"
+        	android:background="@drawable/txt_box8" />
+        
+        <Button
+            android:id="@+id/wholesaleWritePage_btnAdd"
+            android:layout_width="match_parent"
+        	android:layout_height="0dp"
+        	android:layout_alignTop="@id/wholesaleWritePage_etAdd"
+        	android:layout_toRightOf="@id/wholesaleWritePage_etAdd"
+            android:background="@drawable/shop_add_btn" />
+        
+        <ListView
+            android:id="@+id/wholesaleWritePage_listView"
+            android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+        	android:layout_below="@id/wholesaleWritePage_etAdd" />
+        
+    </RelativeLayout>
     
 </RelativeLayout>

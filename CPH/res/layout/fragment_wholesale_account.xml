@@ -19,8 +19,7 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleAccountPage_titleBar"
-	    android:scaleType="centerCrop"
-	    android:src="@drawable/shop_bg" />
+	    android:scaleType="centerCrop" />
     
     <TextView 
         android:id="@+id/wholesaleAccountPage_tvAccountText" 
@@ -72,6 +71,7 @@
     	android:layout_below="@id/wholesaleAccountPage_btnBank"
 	    android:background="@drawable/text_box"
 	    android:gravity="center"
+	    android:inputType="numberDecimal"
 	    android:hint="@string/hintForAccount"
 	    android:textColor="#000"
 	    android:textColorHint="#555" />

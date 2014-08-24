@@ -13,16 +13,16 @@ public class CphConstants {
 	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	
-	public static final int ITEM_NOTICE = 0;
-	public static final int ITEM_CATEGORY = 1;
-	public static final int ITEM_FLOOR = 2;
-	public static final int ITEM_LINE = 3;
-	public static final int ITEM_SHOP = 4;
-	public static final int ITEM_PRODUCT = 5;
-	public static final int ITEM_SAMPLE = 6;
-	public static final int ITEM_CUSTOMER = 7;
-	public static final int ITEM_STAFF = 8;
-	public static final int ITEM_ORDER = 9;
-	public static final int ITEM_ORDERSET = 10;
-	public static final int ITEM_ACCOUNT = 11;
+	public static final int ITEM_NOTICE = 1;
+	public static final int ITEM_CATEGORY = 2;
+	public static final int ITEM_FLOOR = 3;
+	public static final int ITEM_LINE = 4;
+	public static final int ITEM_SHOP = 5;
+	public static final int ITEM_PRODUCT = 6;
+	public static final int ITEM_SAMPLE = 7;
+	public static final int ITEM_CUSTOMER = 8;
+	public static final int ITEM_STAFF = 9;
+	public static final int ITEM_ORDER = 10;
+	public static final int ITEM_ORDERSET = 11;
+	public static final int ITEM_ACCOUNT = 12;
 }

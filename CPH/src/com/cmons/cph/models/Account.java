@@ -7,7 +7,8 @@ import com.outspoken_kid.utils.LogUtils;
 
 public class Account extends BaseModel {
 
-	private int account_id;
+	private int id;
+	private int wholesale_id;
 	private String bank;
 	private String depositor;
 	private String number;
@@ -18,9 +19,12 @@ public class Account extends BaseModel {
 	public Account(JSONObject objJSON) {
 		
 		try {
+			if(objJSON.has("id")) {
+				this.id = objJSON.getInt("id");
+			}
 			
-			if(objJSON.has("account_id")) {
-				this.account_id = objJSON.getInt("account_id");
+			if(objJSON.has("wholesale_id")) {
+				this.wholesale_id = objJSON.getInt("wholesale_id");
 			}
 			
 			if(objJSON.has("bank")) {
@@ -41,11 +45,17 @@ public class Account extends BaseModel {
 		}
 	}
 	
-	public int getAccount_id() {
-		return account_id;
+	public int getId() {
+		return id;
 	}
-	public void setAccount_id(int account_id) {
-		this.account_id = account_id;
+	public void setId(int id) {
+		this.id = id;
+	}
+	public int getWholesale_id() {
+		return wholesale_id;
+	}
+	public void setWholesale_id(int wholesale_id) {
+		this.wholesale_id = wholesale_id;
 	}
 	public String getBank() {
 		return bank;

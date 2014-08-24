@@ -10,8 +10,7 @@
         android:id="@+id/signUpForBusinessPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:scaleType="centerCrop"
-    	android:src="@drawable/bg_find_main" />
+    	android:scaleType="centerCrop" />
     
 	<!-- 타이틀바. -->
 
@@ -19,25 +18,14 @@
 	    android:id="@+id/signUpForBusinessPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
-
-     <!-- 저작권 표시. -->
-
-	<ImageView 
-        android:id="@+id/signUpForBusinessPage_ivCopyright"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentBottom="true"
-    	android:layout_centerHorizontal="true"
-    	android:src="@drawable/img_reserved"
-    	android:scaleType="centerInside" />
-	
+    
     <Button
         android:id="@+id/signUpForBusinessPage_btnWholesale"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_below="@id/signUpForBusinessPage_titleBar"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_wholesale" />
+        android:background="@drawable/category1_1_btn" />
 
     <Button
         android:id="@+id/signUpForBusinessPage_btnRetailOffline"
@@ -45,7 +33,7 @@
         android:layout_height="0dp"
         android:layout_below="@id/signUpForBusinessPage_btnWholesale"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_offline" />
+        android:background="@drawable/category1_2_btn" />
 
     <Button
         android:id="@+id/signUpForBusinessPage_btnRetailOnline"
@@ -53,7 +41,7 @@
         android:layout_height="0dp" 
         android:layout_below="@id/signUpForBusinessPage_btnRetailOffline"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_online" />
+        android:background="@drawable/category1_3_btn" />
     
     <!-- 그림자. -->
     
@@ -62,6 +50,6 @@
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/signUpForBusinessPage_titleBar" 
-	    android:background="@drawable/bg_titlebar_shadow"/>
+	    android:background="@drawable/shadow"/>
     
 </RelativeLayout>

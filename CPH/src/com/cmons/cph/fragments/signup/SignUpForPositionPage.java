@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
@@ -26,6 +27,8 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForPositionPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForPositionPage_ivBg);
+		
 		btnPosition1 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition1);
 		btnPosition2 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition2);
 		btnPosition3 = (Button) mThisView.findViewById(R.id.signUpForPositionPage_btnPosition3);
@@ -47,16 +50,16 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 		switch(type) {
 		
 		case SignUpActivity.BUSINESS_WHOLESALE:
-			btnPosition1.setBackgroundResource(R.drawable.btn_owner);
-			btnPosition2.setBackgroundResource(R.drawable.btn_employee);
-			btnPosition3.setBackgroundResource(R.drawable.btn_designer);
+			btnPosition1.setBackgroundResource(R.drawable.class1_1_btn);
+			btnPosition2.setBackgroundResource(R.drawable.class1_2_btn);
+			btnPosition3.setBackgroundResource(R.drawable.class1_3_btn);
 			break;
 			
 		case SignUpActivity.BUSINESS_RETAIL_OFFLINE:
 		case SignUpActivity.BUSINESS_RETAIL_ONLINE:
-			btnPosition1.setBackgroundResource(R.drawable.btn_owner);
-			btnPosition2.setBackgroundResource(R.drawable.btn_employee);
-			btnPosition3.setBackgroundResource(R.drawable.btn_md);
+			btnPosition1.setBackgroundResource(R.drawable.class2_1_btn);
+			btnPosition2.setBackgroundResource(R.drawable.class2_2_btn);
+			btnPosition3.setBackgroundResource(R.drawable.class2_3_btn);
 			break;
 		}
 	}
@@ -127,11 +130,6 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(148);
 		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForPositionPage_ivCopyright).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(352);
-		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 	
 	@Override
@@ -162,5 +160,11 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.bg2;
 	}
 }
