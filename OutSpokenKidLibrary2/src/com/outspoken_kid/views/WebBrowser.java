@@ -181,7 +181,11 @@ public class WebBrowser extends FrameLayout {
 			@Override
 			public void onAnimationEnd(Animation animation) {
 			
-				webView.postUrl(url, postData);
+				if(postData != null) {
+					webView.postUrl(url, postData);
+				} else {
+					webView.loadUrl(url);
+				}
 			}
 		});
 		setVisibility(View.VISIBLE);

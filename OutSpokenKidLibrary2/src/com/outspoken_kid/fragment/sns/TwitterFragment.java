@@ -24,8 +24,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 
 import com.outspoken_kid.model.SNSUserInfo;
@@ -96,10 +94,17 @@ public abstract class TwitterFragment extends SNSFragment {
 						"\nkeyword : " + keyword + 
 						"\nurl : " + url +
 						" \n\n########################");
-				
 				getWebBrowser().close();
+				
+				//http://clubvera.twitter.oauth.response/?oauth_token=GpN5ttV3GaZ9OXZ3f6Lb45UoOJPxw3j0&oauth_verifier=beL0EAePg7PmUXCI2ZLMU3bwDEGGBZ4J 
+				Uri uri = Uri.parse(url);
+				Intent intent = new Intent();
+				intent.setData(uri);
+				onNewIntent(intent);
 			}
 		});
+
+        logout();
     }
     
     @Override
