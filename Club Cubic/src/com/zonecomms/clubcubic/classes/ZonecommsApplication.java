@@ -49,7 +49,6 @@ public class ZonecommsApplication extends OutSpokenApplication {
 			circleMainActivity = (CircleMainActivity) activity;
 		}
 
-		
 		ZoneConstants.PAPP_ID = activity.getString(R.string.sb_id);
 		ZoneConstants.DOMAIN = activity.getString(R.string.domain);
 		ZoneConstants.BASE_URL = ZoneConstants.DOMAIN + "/externalapi/public/";

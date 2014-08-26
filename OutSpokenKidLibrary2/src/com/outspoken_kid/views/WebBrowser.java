@@ -2,14 +2,10 @@ package com.outspoken_kid.views;
 
 import java.util.ArrayList;
 
-import com.outspoken_kid.R;
-import com.outspoken_kid.utils.ResizeUtils;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import com.outspoken_kid.utils.StringUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -27,12 +23,17 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.outspoken_kid.R;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+
 /**
- * v1.0.2
+ * v1.0.3
  * 
  * @author HyungGunKim
  *
- * v1.0.2 - Add getCurrentUrl()
+ * v1.0.3 - Add keyword and url in onActionWithKeyword.
+ * v1.0.2 - Add getCurrentUrl().
  * v1.0.1 - Add Navigation bar.
  */
 public class WebBrowser extends FrameLayout {
@@ -58,7 +59,7 @@ public class WebBrowser extends FrameLayout {
 		init();
 	}
 	
-	@SuppressLint("SetJavaScriptEnabled")
+	@SuppressLint({ "SetJavaScriptEnabled", "ClickableViewAccessibility" })
 	public void init() {
 		
 		setBackgroundColor(Color.WHITE);
@@ -300,7 +301,8 @@ public class WebBrowser extends FrameLayout {
 			for(int i=0; i<size; i++) {
 				
 				if(url.contains(actions.get(i).getKeyword())) {
-					actions.get(i).getListener().onActionWithKeyword();
+					actions.get(i).getListener().onActionWithKeyword(
+							actions.get(i).getKeyword(), url);
 				}
 			}
 			
@@ -373,6 +375,6 @@ public class WebBrowser extends FrameLayout {
 	
 	public interface OnActionWithKeywordListener {
 		
-		public void onActionWithKeyword();
+		public void onActionWithKeyword(String keyword, String url);
 	}
 }

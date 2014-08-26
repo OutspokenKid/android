@@ -4,7 +4,7 @@
  * aapt tool from the resource data it found.  It
  * should not be modified by hand.
  */
-package com.facebook.android;
+package com.kakao.sdk;
 
 public final class R {
 	public static final class anim {
@@ -14,6 +14,9 @@ public final class R {
 		public static final int abc_slide_in_top = 0x7f040003;
 		public static final int abc_slide_out_bottom = 0x7f040004;
 		public static final int abc_slide_out_top = 0x7f040005;
+	}
+	public static final class array {
+		public static final int com_kakao_accounts_array = 0x7f0c0000;
 	}
 	public static final class attr {
 		public static final int actionBarDivider = 0x7f01000f;
@@ -165,6 +168,11 @@ public final class R {
 		public static final int com_facebook_usersettingsfragment_connected_shadow_color = 0x7f070007;
 		public static final int com_facebook_usersettingsfragment_connected_text_color = 0x7f070006;
 		public static final int com_facebook_usersettingsfragment_not_connected_text_color = 0x7f070008;
+		public static final int com_kakao_account_button_background = 0x7f07000c;
+		public static final int com_kakao_brown = 0x7f07000a;
+		public static final int com_kakao_button_background_press = 0x7f07000e;
+		public static final int com_kakao_button_text_press = 0x7f07000b;
+		public static final int com_kakao_cancel_button_background = 0x7f07000d;
 	}
 	public static final class dimen {
 		public static final int abc_action_bar_default_height = 0x7f080002;
@@ -198,6 +206,9 @@ public final class R {
 		public static final int com_facebook_tooltip_horizontal_padding = 0x7f080022;
 		public static final int com_facebook_usersettingsfragment_profile_picture_height = 0x7f080018;
 		public static final int com_facebook_usersettingsfragment_profile_picture_width = 0x7f080017;
+		public static final int com_kakao_padding = 0x7f080025;
+		public static final int com_kakao_profile_property_margin = 0x7f080023;
+		public static final int com_kakao_profile_property_text = 0x7f080024;
 		public static final int dialog_fixed_height_major = 0x7f080013;
 		public static final int dialog_fixed_height_minor = 0x7f080014;
 		public static final int dialog_fixed_width_major = 0x7f080011;
@@ -332,6 +343,19 @@ public final class R {
 		public static final int com_facebook_top_background = 0x7f0200b6;
 		public static final int com_facebook_top_button = 0x7f0200b7;
 		public static final int com_facebook_usersettingsfragment_background_gradient = 0x7f0200b8;
+		public static final int kakao_account_button_background = 0x7f0200ef;
+		public static final int kakao_account_logo = 0x7f0200f0;
+		public static final int kakao_cancel_button_background = 0x7f0200f1;
+		public static final int kakao_close_button = 0x7f0200f2;
+		public static final int kakao_default_profile_image = 0x7f0200f3;
+		public static final int kakao_editable_profile = 0x7f0200f4;
+		public static final int kakao_login_bar = 0x7f0200f5;
+		public static final int kakao_login_button_background = 0x7f0200f6;
+		public static final int kakao_login_symbol = 0x7f0200f7;
+		public static final int kakao_profile_boxbg = 0x7f0200f8;
+		public static final int kakaoaccount_icon = 0x7f0200f9;
+		public static final int kakaostory_icon = 0x7f0200fa;
+		public static final int kakaotalk_icon = 0x7f0200fb;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f05001e;
@@ -388,6 +412,7 @@ public final class R {
 		public static final int icon = 0x7f05002c;
 		public static final int ifRoom = 0x7f05000a;
 		public static final int image = 0x7f050029;
+		public static final int kakao_login_activity_progress_bar = 0x7f0500a6;
 		public static final int large = 0x7f05001b;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f05002b;
@@ -466,6 +491,8 @@ public final class R {
 		public static final int com_facebook_search_bar_layout = 0x7f03002b;
 		public static final int com_facebook_tooltip_bubble = 0x7f03002c;
 		public static final int com_facebook_usersettingsfragment = 0x7f03002d;
+		public static final int kakao_internal_login_activity = 0x7f030032;
+		public static final int kakao_login_layout = 0x7f030033;
 		public static final int support_simple_spinner_dropdown_item = 0x7f030048;
 	}
 	public static final class string {
@@ -508,6 +535,22 @@ public final class R {
 		public static final int com_facebook_usersettingsfragment_log_in_button = 0x7f0a0015;
 		public static final int com_facebook_usersettingsfragment_logged_in = 0x7f0a0016;
 		public static final int com_facebook_usersettingsfragment_not_logged_in = 0x7f0a0017;
+		public static final int com_kakao_account_cancel = 0x7f0a0034;
+		public static final int com_kakao_alert_appKey = 0x7f0a0035;
+		public static final int com_kakao_alert_install_kakaotalk = 0x7f0a0036;
+		public static final int com_kakao_cancel_button = 0x7f0a002c;
+		public static final int com_kakao_confirm_logout = 0x7f0a002a;
+		public static final int com_kakao_confirm_unlink = 0x7f0a002e;
+		public static final int com_kakao_kakaostory_account = 0x7f0a0032;
+		public static final int com_kakao_kakaotalk_account = 0x7f0a0031;
+		public static final int com_kakao_login_button = 0x7f0a0028;
+		public static final int com_kakao_logout_button = 0x7f0a0029;
+		public static final int com_kakao_ok_button = 0x7f0a002b;
+		public static final int com_kakao_other_kakaoaccount = 0x7f0a0033;
+		public static final int com_kakao_profile_nickname = 0x7f0a002f;
+		public static final int com_kakao_profile_userId = 0x7f0a0030;
+		public static final int com_kakao_unlink_button = 0x7f0a002d;
+		public static final int core_com_kakao_sdk_loading = 0x7f0a0027;
 	}
 	public static final class style {
 		public static final int TextAppearance_AppCompat_Base_CompactMenu_Dialog = 0x7f0b0063;

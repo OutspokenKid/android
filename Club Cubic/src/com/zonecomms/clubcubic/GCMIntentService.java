@@ -221,7 +221,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 		
 		LogUtils.log("###GCMIntentService.handleMessage.  mainActivity is not running.");
 
-		String uriString = "";
+		String uriString = context.getString(R.string.sb_id);
 		
 		if("000".equals(msg_type)) {
 			try {
@@ -229,9 +229,9 @@ public class GCMIntentService extends GCMBaseIntentService {
 			} catch(Exception e) {
 			}
 		} else if("010".equals(msg_type)) {
-			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/message?member_id=" + post_member_id;
+			uriString += "://android.zonecomms.com/message?member_id=" + post_member_id;
 		} else if("021".equals(msg_type)) {
-			uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/post?spot_nid=" + spot_nid;
+			uriString += "://android.zonecomms.com/post?spot_nid=" + spot_nid;
 		}
 		
 		showNotification(context, push_msg, uriString);

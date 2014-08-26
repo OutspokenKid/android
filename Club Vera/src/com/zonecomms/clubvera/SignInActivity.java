@@ -6,15 +6,28 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.text.InputType;
 import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.outspoken_kid.fragment.sns.FacebookFragment;
+import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
+import com.outspoken_kid.fragment.sns.KakaoFragment;
+import com.outspoken_kid.fragment.sns.KakaoFragment.KakaoUserInfo;
+import com.outspoken_kid.fragment.sns.NaverFragment;
+import com.outspoken_kid.fragment.sns.NaverFragment.NaverUserInfo;
+import com.outspoken_kid.fragment.sns.SNSFragment.OnAfterSignInListener;
+import com.outspoken_kid.fragment.sns.TwitterFragment;
+import com.outspoken_kid.fragment.sns.TwitterFragment.TwitterUserInfo;
+import com.outspoken_kid.model.SNSUserInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -25,16 +38,17 @@ import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
+import com.outspoken_kid.views.WebBrowser.OnActionWithKeywordListener;
 import com.outspoken_kid.views.holo.holo_light.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.zonecomms.clubvera.classes.ZoneConstants;
-import com.zonecomms.clubvera.classes.ZonecommsActivity;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
+import com.zonecomms.clubvera.classes.ZonecommsFragmentActivity;
 import com.zonecomms.common.models.MyInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 
-public class SignInActivity extends ZonecommsActivity {
+public class SignInActivity extends ZonecommsFragmentActivity {
 	
 	private static SignInActivity signInActivity;
 
@@ -63,7 +77,7 @@ public class SignInActivity extends ZonecommsActivity {
 
 	@Override
 	public void createPage() {
-		
+
 		addViewsForInnerLinear();
 	}
 
@@ -73,7 +87,6 @@ public class SignInActivity extends ZonecommsActivity {
 
 	@Override
 	public void setListeners() {
-
 	}
 	
 	@Override
@@ -98,12 +111,6 @@ public class SignInActivity extends ZonecommsActivity {
 		} else {
 			super.onBackPressed();
 		}
-	}
-	
-	@Override
-	public void onMenuPressed() {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -220,7 +227,109 @@ public class SignInActivity extends ZonecommsActivity {
 		btnFind.setText(R.string.findIdAndPw);
 		FontUtils.setFontSize(btnFind.getTextView(), 25);
 		innerLinear.addView(btnFind);
+
+		FrameLayout fbFrame = new FrameLayout(this);
+		ResizeUtils.viewResize(150, 150, fbFrame, 1, Gravity.CENTER_HORIZONTAL, null);
+		fbFrame.setId(10001);
+		innerLinear.addView(fbFrame);
 		
+		FacebookFragment ff = new FacebookFragment() {
+			
+			@Override
+			protected int getLoginImageResId() {
+				
+				return R.drawable.btn_loginf_01;
+			}
+		};
+	    getSupportFragmentManager().beginTransaction().add(fbFrame.getId(), ff, "fbFragment").commit();
+	    ff.setOnAfterSignInListener(new OnAfterSignInListener() {
+			
+			@Override
+			public void OnAfterSignIn(SNSUserInfo userInfo) {
+
+				FBUserInfo fbUserInfo = (FBUserInfo) userInfo;
+				fbUserInfo.printSNSUserInfo();
+			}
+		});
+	    
+	    FrameLayout nvFrame = new FrameLayout(this);
+		ResizeUtils.viewResize(150, 150, nvFrame, 1, Gravity.CENTER_HORIZONTAL, null);
+		nvFrame.setId(10002);
+		innerLinear.addView(nvFrame);
+		
+		NaverFragment nf = new NaverFragment() {
+			
+			@Override
+			protected int getLoginImageResId() {
+				
+				return R.drawable.btn_loginf_01;
+			}
+		};
+	    getSupportFragmentManager().beginTransaction().add(nvFrame.getId(), nf, "nvFragment").commit();
+		nf.setOnAfterSignInListener(new OnAfterSignInListener() {
+			
+			@Override
+			public void OnAfterSignIn(SNSUserInfo userInfo) {
+
+				NaverUserInfo naverUserInfo = (NaverUserInfo) userInfo;
+				naverUserInfo.printSNSUserInfo();
+			}
+		});
+	    
+	    FrameLayout kkFrame = new FrameLayout(this);
+		ResizeUtils.viewResize(150, 150, kkFrame, 1, Gravity.CENTER_HORIZONTAL, null);
+		kkFrame.setId(10003);
+		innerLinear.addView(kkFrame);
+	    
+		KakaoFragment kf = new KakaoFragment() {
+			
+			@Override
+			protected int getLoginImageResId() {
+				
+				return R.drawable.btn_loginf_01;
+			}
+		};
+	    getSupportFragmentManager().beginTransaction().add(kkFrame.getId(), kf, "kkFragment").commit();
+		kf.setOnAfterSignInListener(new OnAfterSignInListener() {
+			
+			@Override
+			public void OnAfterSignIn(SNSUserInfo userInfo) {
+
+				KakaoUserInfo kakaoUserInfo = (KakaoUserInfo) userInfo;
+				kakaoUserInfo.printSNSUserInfo();
+			}
+		});
+		
+		FrameLayout twFrame = new FrameLayout(this);
+		ResizeUtils.viewResize(150, 150, twFrame, 1, Gravity.CENTER_HORIZONTAL, null);
+		twFrame.setId(10004);
+		innerLinear.addView(twFrame);
+	    
+		TwitterFragment tf = new TwitterFragment() {
+			
+			@Override
+			protected int getLoginImageResId() {
+				
+				return R.drawable.btn_loginf_01;
+			}
+
+			@Override
+			public WebBrowser getWebBrowser() {
+
+				return webBrowser;
+			}
+		};
+	    getSupportFragmentManager().beginTransaction().add(twFrame.getId(), tf, "twFragment").commit();
+	    tf.setOnAfterSignInListener(new OnAfterSignInListener() {
+			
+			@Override
+			public void OnAfterSignIn(SNSUserInfo userInfo) {
+
+				TwitterUserInfo twitterUserInfo = (TwitterUserInfo) userInfo;
+				twitterUserInfo.printSNSUserInfo();
+			}
+		});
+	    
 		View bottomBlank = new View(this);
 		bottomBlank.setLayoutParams(new LinearLayout.LayoutParams(1, 0, 1));
 		innerLinear.addView(bottomBlank);
@@ -337,4 +446,15 @@ public class SignInActivity extends ZonecommsActivity {
 		public void OnAfterSigningIn(boolean successSignIn);
 	}
 
+	@Override
+	public int getFragmentFrameResId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setCustomAnimations(FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
 }

@@ -23,6 +23,9 @@ public final class R {
 		public static final int slide_out_to_right = 0x7f04000c;
 		public static final int slide_out_to_top = 0x7f04000d;
 	}
+	public static final class array {
+		public static final int com_kakao_accounts_array = 0x7f0c0000;
+	}
 	public static final class attr {
 		public static final int actionBarDivider = 0x7f01000f;
 		public static final int actionBarItemBackground = 0x7f010010;
@@ -162,7 +165,7 @@ public final class R {
 		public static final int abc_split_action_bar_is_narrow = 0x7f060002;
 	}
 	public static final class color {
-		public static final int abc_search_url_text_holo = 0x7f070016;
+		public static final int abc_search_url_text_holo = 0x7f07001b;
 		public static final int abc_search_url_text_normal = 0x7f070000;
 		public static final int abc_search_url_text_pressed = 0x7f070002;
 		public static final int abc_search_url_text_selected = 0x7f070001;
@@ -173,6 +176,11 @@ public final class R {
 		public static final int com_facebook_usersettingsfragment_connected_shadow_color = 0x7f070007;
 		public static final int com_facebook_usersettingsfragment_connected_text_color = 0x7f070006;
 		public static final int com_facebook_usersettingsfragment_not_connected_text_color = 0x7f070008;
+		public static final int com_kakao_account_button_background = 0x7f07000c;
+		public static final int com_kakao_brown = 0x7f07000a;
+		public static final int com_kakao_button_background_press = 0x7f07000e;
+		public static final int com_kakao_button_text_press = 0x7f07000b;
+		public static final int com_kakao_cancel_button_background = 0x7f07000d;
 	}
 	public static final class dimen {
 		public static final int abc_action_bar_default_height = 0x7f080002;
@@ -206,6 +214,9 @@ public final class R {
 		public static final int com_facebook_tooltip_horizontal_padding = 0x7f080022;
 		public static final int com_facebook_usersettingsfragment_profile_picture_height = 0x7f080018;
 		public static final int com_facebook_usersettingsfragment_profile_picture_width = 0x7f080017;
+		public static final int com_kakao_padding = 0x7f080025;
+		public static final int com_kakao_profile_property_margin = 0x7f080023;
+		public static final int com_kakao_profile_property_text = 0x7f080024;
 		public static final int dialog_fixed_height_major = 0x7f080013;
 		public static final int dialog_fixed_height_minor = 0x7f080014;
 		public static final int dialog_fixed_width_major = 0x7f080011;
@@ -315,7 +326,7 @@ public final class R {
 		public static final int com_facebook_list_section_header_background = 0x7f02009e;
 		public static final int com_facebook_loginbutton_silver = 0x7f02009f;
 		public static final int com_facebook_logo = 0x7f0200a0;
-		public static final int com_facebook_picker_default_separator_color = 0x7f020108;
+		public static final int com_facebook_picker_default_separator_color = 0x7f020115;
 		public static final int com_facebook_picker_item_background = 0x7f0200a1;
 		public static final int com_facebook_picker_list_focused = 0x7f0200a2;
 		public static final int com_facebook_picker_list_longpressed = 0x7f0200a3;
@@ -347,8 +358,21 @@ public final class R {
 		public static final int img_browser_forward_off = 0x7f0200cf;
 		public static final int img_browser_forward_on = 0x7f0200d0;
 		public static final int img_browser_refresh = 0x7f0200d1;
-		public static final int wheel_bg = 0x7f020106;
-		public static final int wheel_val = 0x7f020107;
+		public static final int kakao_account_button_background = 0x7f0200ef;
+		public static final int kakao_account_logo = 0x7f0200f0;
+		public static final int kakao_cancel_button_background = 0x7f0200f1;
+		public static final int kakao_close_button = 0x7f0200f2;
+		public static final int kakao_default_profile_image = 0x7f0200f3;
+		public static final int kakao_editable_profile = 0x7f0200f4;
+		public static final int kakao_login_bar = 0x7f0200f5;
+		public static final int kakao_login_button_background = 0x7f0200f6;
+		public static final int kakao_login_symbol = 0x7f0200f7;
+		public static final int kakao_profile_boxbg = 0x7f0200f8;
+		public static final int kakaoaccount_icon = 0x7f0200f9;
+		public static final int kakaostory_icon = 0x7f0200fa;
+		public static final int kakaotalk_icon = 0x7f0200fb;
+		public static final int wheel_bg = 0x7f020113;
+		public static final int wheel_val = 0x7f020114;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f05001e;
@@ -413,6 +437,7 @@ public final class R {
 		public static final int imageviewerActivity_thumbnailLinear = 0x7f050052;
 		public static final int imageviewerActivity_thumbnailLinearBg = 0x7f050051;
 		public static final int imageviewerActivity_title = 0x7f05004f;
+		public static final int kakao_login_activity_progress_bar = 0x7f0500a6;
 		public static final int large = 0x7f05001b;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f05002b;
@@ -492,7 +517,9 @@ public final class R {
 		public static final int com_facebook_search_bar_layout = 0x7f03002b;
 		public static final int com_facebook_tooltip_bubble = 0x7f03002c;
 		public static final int com_facebook_usersettingsfragment = 0x7f03002d;
-		public static final int support_simple_spinner_dropdown_item = 0x7f030046;
+		public static final int kakao_internal_login_activity = 0x7f030032;
+		public static final int kakao_login_layout = 0x7f030033;
+		public static final int support_simple_spinner_dropdown_item = 0x7f030048;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0a0001;
@@ -534,18 +561,35 @@ public final class R {
 		public static final int com_facebook_usersettingsfragment_log_in_button = 0x7f0a0015;
 		public static final int com_facebook_usersettingsfragment_logged_in = 0x7f0a0016;
 		public static final int com_facebook_usersettingsfragment_not_logged_in = 0x7f0a0017;
-		public static final int completeToSaveImage = 0x7f0a002c;
-		public static final int failToSaveImage = 0x7f0a002d;
-		public static final int failToShowVideoFullScreenMode = 0x7f0a002e;
-		public static final int pullToLoadNewList = 0x7f0a0030;
-		public static final int pullToRefresh = 0x7f0a002f;
-		public static final int pull_to_loading_pull_label = 0x7f0a002a;
-		public static final int pull_to_loading_release_label = 0x7f0a002b;
-		public static final int pull_to_refresh_pull_label = 0x7f0a0027;
-		public static final int pull_to_refresh_refreshing_label = 0x7f0a0029;
-		public static final int pull_to_refresh_release_label = 0x7f0a0028;
-		public static final int putToLoadNewList = 0x7f0a0032;
-		public static final int putToRefresh = 0x7f0a0031;
+		public static final int com_kakao_account_cancel = 0x7f0a0034;
+		public static final int com_kakao_alert_appKey = 0x7f0a0035;
+		public static final int com_kakao_alert_install_kakaotalk = 0x7f0a0036;
+		public static final int com_kakao_cancel_button = 0x7f0a002c;
+		public static final int com_kakao_confirm_logout = 0x7f0a002a;
+		public static final int com_kakao_confirm_unlink = 0x7f0a002e;
+		public static final int com_kakao_kakaostory_account = 0x7f0a0032;
+		public static final int com_kakao_kakaotalk_account = 0x7f0a0031;
+		public static final int com_kakao_login_button = 0x7f0a0028;
+		public static final int com_kakao_logout_button = 0x7f0a0029;
+		public static final int com_kakao_ok_button = 0x7f0a002b;
+		public static final int com_kakao_other_kakaoaccount = 0x7f0a0033;
+		public static final int com_kakao_profile_nickname = 0x7f0a002f;
+		public static final int com_kakao_profile_userId = 0x7f0a0030;
+		public static final int com_kakao_unlink_button = 0x7f0a002d;
+		public static final int completeToSaveImage = 0x7f0a003d;
+		public static final int core_com_kakao_sdk_loading = 0x7f0a0027;
+		public static final int failToSaveImage = 0x7f0a003e;
+		public static final int failToShowVideoFullScreenMode = 0x7f0a003f;
+		public static final int kakao_app_key = 0x7f0a003c;
+		public static final int pullToLoadNewList = 0x7f0a0041;
+		public static final int pullToRefresh = 0x7f0a0040;
+		public static final int pull_to_loading_pull_label = 0x7f0a003a;
+		public static final int pull_to_loading_release_label = 0x7f0a003b;
+		public static final int pull_to_refresh_pull_label = 0x7f0a0037;
+		public static final int pull_to_refresh_refreshing_label = 0x7f0a0039;
+		public static final int pull_to_refresh_release_label = 0x7f0a0038;
+		public static final int putToLoadNewList = 0x7f0a0043;
+		public static final int putToRefresh = 0x7f0a0042;
 	}
 	public static final class style {
 		public static final int AppBaseTheme = 0x7f0b008e;

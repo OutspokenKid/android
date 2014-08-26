@@ -4,6 +4,7 @@
 
     <!-- Customize -->
     <string name="app_name">VERA</string>
+    <string name="app_id">1459537684333113</string>
     <string name="clubAddress">Address of Vera..</string>
     <string name="textForCafe">http://cafe.naver.com/hybridclubvera</string>
 	<string name="textForCall">023380957</string>

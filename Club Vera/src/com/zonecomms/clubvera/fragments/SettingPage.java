@@ -801,7 +801,7 @@ public class SettingPage extends ZonecommsFragment {
 		webBrowser.putAction("withdraw-success", new OnActionWithKeywordListener() {
 			
 			@Override
-			public void onActionWithKeyword() {
+			public void onActionWithKeyword(String keyword, String url) {
 				mainActivity.signOut();
 			}
 		});
