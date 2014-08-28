@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import java.net.URLEncoder;
 
@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -24,7 +24,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale {
+public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 
 	private TextView tvPhoneNumber;
 	private EditText etPhoneNumber;
@@ -39,14 +39,14 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.commonChangePhoneNumberPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.commonChangePhoneNumberPage_ivBg);
 		
-		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_tvPhoneNumber);
-		etPhoneNumber = (EditText) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_etPhoneNumber);
-		etCertify = (EditText) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_etCertify);
-		btnSendCertification = (Button) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_btnSendCertification);
-		btnCertify = (Button) mThisView.findViewById(R.id.wholesaleChangePhoneNumberPage_btnCertify);
+		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.commonChangePhoneNumberPage_tvPhoneNumber);
+		etPhoneNumber = (EditText) mThisView.findViewById(R.id.commonChangePhoneNumberPage_etPhoneNumber);
+		etCertify = (EditText) mThisView.findViewById(R.id.commonChangePhoneNumberPage_etCertify);
+		btnSendCertification = (Button) mThisView.findViewById(R.id.commonChangePhoneNumberPage_btnSendCertification);
+		btnCertify = (Button) mThisView.findViewById(R.id.commonChangePhoneNumberPage_btnCertify);
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
+		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class WholesaleForChangePhoneNumberPage extends CmonsFragmentForWholesale
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_changephonenumber;
+		return R.layout.fragment_common_changephonenumber;
 	}
 
 	@Override

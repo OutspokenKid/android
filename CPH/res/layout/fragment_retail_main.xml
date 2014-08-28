@@ -1,14 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true" >
-
-    <RelativeLayout
-        android:id="@+id/signInPage_relative" 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	    
-	</RelativeLayout>
+    android:layout_height="match_parent" >
     
-</ScrollView>
+    <View
+	    android:id="@+id/retailMainPage_titleBar2" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+
+    <com.outspoken_kid.views.HeaderGridView
+        android:id="@+id/retailMainPage_gridView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailMainPage_titleBar2"
+	    android:cacheColorHint="#0000" />
+
+    <View 
+        android:id="@+id/retailMainPage_cover" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:visibility="invisible"
+	    android:background="#a000" />
+    
+    <RelativeLayout
+        android:id="@+id/retailMainPage_menuRelative"
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailMainPage_titleBar2"
+    	android:visibility="invisible" >
+    	
+        <ImageView
+            android:id="@+id/retailMainPage_ivBg"
+    		android:layout_width="match_parent"
+    		android:layout_height="0dp"
+    		android:layout_alignParentTop="true"
+    		android:scaleType="centerCrop" />
+        
+    	<!-- 알림 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnNotice"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/retail_notice_btn" />
+
+        <!-- 거래처관리 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnCustomer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnNotice"
+            android:layout_toRightOf="@id/retailMainPage_btnNotice"
+            android:background="@drawable/retail_customer_btn" />
+
+        <!-- 검색하기 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnSearch"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnCustomer"
+            android:layout_toRightOf="@id/retailMainPage_btnCustomer"
+            android:background="@drawable/retail_search_btn" />
+
+        <!-- 장바구니 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnBasket"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignLeft="@id/retailMainPage_btnNotice"
+            android:layout_below="@id/retailMainPage_btnNotice"
+            android:background="@drawable/retail_basket_btn" />
+
+        <!-- 즐겨찾기 매장 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnFavoriteShop"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnBasket"
+            android:layout_toRightOf="@id/retailMainPage_btnBasket"
+            android:background="@drawable/retail_favorite_shop_btn" />
+
+        <!-- 즐겨찾기 상품 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnFavoriteProduct"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnFavoriteShop"
+            android:layout_toRightOf="@id/retailMainPage_btnFavoriteShop"
+            android:background="@drawable/retail_favorite_goods_btn" />
+
+        <!-- 업체 관리 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnBusiness"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignLeft="@id/retailMainPage_btnBasket"
+            android:layout_below="@id/retailMainPage_btnBasket"
+            android:background="@drawable/retail_business_btn" />
+
+        <!-- 직원관리 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnStaff"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnBusiness"
+            android:layout_toRightOf="@id/retailMainPage_btnBusiness"
+            android:background="@drawable/retail_staff2_btn" />
+
+        <!-- 설정 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnSetting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnStaff"
+            android:layout_toRightOf="@id/retailMainPage_btnStaff"
+            android:background="@drawable/retail_setting_btn" />
+	
+        <!-- 손잡이 -->
+        
+        <View 
+            android:id="@+id/retailMainPage_handle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@id/retailMainPage_btnBusiness"
+            android:background="@drawable/retail_handele" />
+        
+	</RelativeLayout>
+
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailMainPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <RelativeLayout 
+        android:id="@+id/retailMainPage_noticeRelative" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:visibility="invisible"
+		android:background="@drawable/retail_main_pop_up" >
+        
+        <Button 
+            android:id="@+id/retailMainPage_btnClose" 
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentTop="true"
+	    	android:layout_alignParentRight="true"
+	    	android:background="@drawable/retail_main_pop_up_close_btn" />
+        
+        <ListView 
+            android:id="@+id/retailMainPage_listView" 
+	    	android:layout_width="match_parent"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentBottom="true"
+	    	android:layout_centerHorizontal="true"
+	    	android:cacheColorHint="#0000" />
+        
+    </RelativeLayout>
+    
+</RelativeLayout>

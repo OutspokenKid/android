@@ -3,6 +3,7 @@ package com.cmons.cph.fragments.wholesale;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -60,9 +61,8 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 		
-		if(mActivity.wholesale.getSample_available() == 1) {
+		if(wholesale.getSample_available() == 1) {
 			allowSampleRequest = true;
 		} else {
 			allowSampleRequest = false;
@@ -72,14 +72,14 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 		sp1.setSpan(new RelativeSizeSpan(1.2f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvInfo.append(sp1); 
 		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n\n" + mActivity.wholesale.getPhone_number());
+		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n\n" + wholesale.getPhone_number());
 		tvInfo.append(sp2); 
 		
 		SpannableStringBuilder sp3 = new SpannableStringBuilder("\n\n매장주소");
 		sp3.setSpan(new RelativeSizeSpan(1.2f), 0, sp3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvInfo.append(sp3);
 		
-		SpannableStringBuilder sp4 = new SpannableStringBuilder("\n\n청평화몰 " + mActivity.wholesale.getLocation());
+		SpannableStringBuilder sp4 = new SpannableStringBuilder("\n\n청평화몰 " + wholesale.getLocation());
 		tvInfo.append(sp4);
 		
 		SpannableStringBuilder sp5 = new SpannableStringBuilder(
@@ -102,7 +102,9 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showNoticeListPage(false);
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("isAppNotice", false);
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE_LIST, bundle);
 			}
 		});
 		
@@ -111,7 +113,7 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showProfileImagePage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
 			}
 		});
 
@@ -120,7 +122,7 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showAccountPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ACCOUNT, null);
 			}
 		});
 			
@@ -242,9 +244,9 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 					if(1 == objJSON.getInt("result")) {
 						
 						if(allow) {
-							mActivity.wholesale.setSample_available(1);
+							wholesale.setSample_available(1);
 						} else {
-							mActivity.wholesale.setSample_available(0);
+							wholesale.setSample_available(0);
 						}
 					}
 				} catch (Exception e) {

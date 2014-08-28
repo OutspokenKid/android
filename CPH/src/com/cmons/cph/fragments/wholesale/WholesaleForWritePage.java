@@ -23,7 +23,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.WholesaleActivity.OnAfterSelectCategoryListener;
+import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.models.Category;
 import com.cmons.cph.models.Product;

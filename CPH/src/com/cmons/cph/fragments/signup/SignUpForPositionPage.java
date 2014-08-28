@@ -16,7 +16,6 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 
-	private TitleBar titleBar;
 	private Button btnPosition1;
 	private Button btnPosition2;
 	private Button btnPosition3;
@@ -40,12 +39,14 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 		if(getArguments() != null && getArguments().containsKey("type")) {
 			type = getArguments().getInt("type");
 		}
+		
+		title = getString(R.string.selectPosition);
 	}
 
 	@Override
 	public void createPage() {
-
-		titleBar.setTitleText(R.string.selectPosition);
+		
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
 		switch(type) {
 		
@@ -66,15 +67,6 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setListeners() {
-
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				getActivity().getSupportFragmentManager().popBackStack();
-			}
-		});
 		
 		btnPosition1.setOnClickListener(new OnClickListener() {
 
@@ -115,21 +107,16 @@ public class SignUpForPositionPage extends CmonsFragmentForSignUp {
 		
 		//btnOwner.
 		rp = (RelativeLayout.LayoutParams) btnPosition1.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.height = ResizeUtils.getSpecificLength(180);
 		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		
 		//btnEmployee1.
 		rp = (RelativeLayout.LayoutParams) btnPosition2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		rp.height = ResizeUtils.getSpecificLength(180);
 		
 		//btnEmployee2.
 		rp = (RelativeLayout.LayoutParams) btnPosition3.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		rp.height = ResizeUtils.getSpecificLength(180);
 	}
 	
 	@Override

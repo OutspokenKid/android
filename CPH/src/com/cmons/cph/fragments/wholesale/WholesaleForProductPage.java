@@ -3,6 +3,7 @@ package com.cmons.cph.fragments.wholesale;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -157,7 +158,9 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 				@Override
 				public void onClick(View view) {
 
-					mActivity.showWritePage(product);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("product", product);
+					mActivity.showPage(CphConstants.PAGE_WHOLESALE_WRITE, bundle);
 				}
 			});
 			

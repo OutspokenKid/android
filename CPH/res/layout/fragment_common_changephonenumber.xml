@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleChangePhoneNumberPage_titleBar" 
+	    android:id="@+id/commonChangePhoneNumberPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,26 +15,26 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/wholesaleChangePhoneNumberPage_ivBg" 
+        android:id="@+id/commonChangePhoneNumberPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleChangePhoneNumberPage_titleBar"
+	    android:layout_below="@id/commonChangePhoneNumberPage_titleBar"
 	    android:scaleType="centerCrop" />
 
     <TextView
-        android:id="@+id/wholesaleChangePhoneNumberPage_tvPhoneNumber"
+        android:id="@+id/commonChangePhoneNumberPage_tvPhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/wholesaleChangePhoneNumberPage_titleBar"
+        android:layout_below="@id/commonChangePhoneNumberPage_titleBar"
         android:text="@string/phoneNumber"
         android:textColor="#fff"
         android:gravity="bottom" />
 
     <EditText
-        android:id="@+id/wholesaleChangePhoneNumberPage_etPhoneNumber"
+        android:id="@+id/commonChangePhoneNumberPage_etPhoneNumber"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
-    	android:layout_below="@id/wholesaleChangePhoneNumberPage_tvPhoneNumber"
+    	android:layout_below="@id/commonChangePhoneNumberPage_tvPhoneNumber"
 	    android:layout_alignParentLeft="true"
 	    android:background="@drawable/text_box"
 	    android:gravity="center"
@@ -44,10 +44,10 @@
 	    android:textColorHint="#555" />
 
     <EditText
-        android:id="@+id/wholesaleChangePhoneNumberPage_etCertify"
+        android:id="@+id/commonChangePhoneNumberPage_etCertify"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_below="@id/wholesaleChangePhoneNumberPage_etPhoneNumber"
+    	android:layout_below="@id/commonChangePhoneNumberPage_etPhoneNumber"
 	    android:layout_alignParentLeft="true"
 	    android:background="@drawable/text_box3"
 	    android:gravity="center"
@@ -57,19 +57,19 @@
 	    android:textColorHint="#555" />
     
     <Button 
-        android:id="@+id/wholesaleChangePhoneNumberPage_btnSendCertification" 
+        android:id="@+id/commonChangePhoneNumberPage_btnSendCertification" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleChangePhoneNumberPage_etCertify"
-	    android:layout_toRightOf="@id/wholesaleChangePhoneNumberPage_etCertify"
+	    android:layout_alignTop="@id/commonChangePhoneNumberPage_etCertify"
+	    android:layout_toRightOf="@id/commonChangePhoneNumberPage_etCertify"
 	    android:background="@drawable/num_send_btn" />
     
     <Button 
-        android:id="@+id/wholesaleChangePhoneNumberPage_btnCertify" 
+        android:id="@+id/commonChangePhoneNumberPage_btnCertify" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleChangePhoneNumberPage_etCertify"
-	    android:layout_toRightOf="@id/wholesaleChangePhoneNumberPage_etCertify"
+	    android:layout_alignTop="@id/commonChangePhoneNumberPage_etCertify"
+	    android:layout_toRightOf="@id/commonChangePhoneNumberPage_etCertify"
 	    android:visibility="invisible"
 	    android:background="@drawable/certification_btn" />
     

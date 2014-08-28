@@ -5,26 +5,27 @@
 	android:layout_height="wrap_content"
 	android:background="#fff" >
 
-    <!-- 배경. -->
-	    
-    <ImageView 
-        android:id="@+id/signUpForWritePage_ivBg"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:scaleType="centerCrop" />
-    
-    <!-- 타이틀바. -->
+	<!-- 타이틀바. -->
 
 	<com.cmons.cph.views.TitleBar
 	    android:id="@+id/signUpForWritePage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
     
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForWritePage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/signUpForWritePage_titleBar"
+    	android:scaleType="centerCrop" />
+    
     <ScrollView
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:fillViewport="true" 
-	    android:layout_below="@id/signUpForWritePage_titleBar" >
+	    android:layout_below="@id/signUpForWritePage_titleBar"
+	    android:fillViewport="true" >
 	
 	    <RelativeLayout
 	        android:id="@+id/signUpForWritePage_relativeTerms"
@@ -36,17 +37,17 @@
 	            android:id="@+id/signUpForWritePage_tvCompanyName"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignParentTop="true"
 	            android:layout_alignParentLeft="true"
+	            android:layout_alignParentTop="true"
 	            android:gravity="center_vertical"
 	            android:text="@string/companyName"
 	            android:textColor="#fff" />
 	
 	        <EditText
 	            android:id="@+id/signUpForWritePage_etCompanyName"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForWritePage_tvCompanyName"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -61,7 +62,7 @@
 	            android:id="@+id/signUpForWritePage_tvMallUrl"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyName"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
 	            android:layout_below="@id/signUpForWritePage_etCompanyName"
 	            android:gravity="center_vertical"
 	            android:text="@string/mallUrl"
@@ -69,9 +70,9 @@
 	
 	        <EditText
 	            android:id="@+id/signUpForWritePage_etMallUrl"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_tvMallUrl"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForWritePage_tvMallUrl"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -86,7 +87,7 @@
 	            android:id="@+id/signUpForWritePage_tvCompanyAddress"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etMallUrl"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
 	            android:layout_below="@id/signUpForWritePage_etMallUrl"
 	            android:gravity="center_vertical"
 	            android:text="@string/address"
@@ -94,9 +95,9 @@
 	
 	        <EditText
 	            android:id="@+id/signUpForWritePage_etCompanyAddress"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyAddress"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForWritePage_tvCompanyAddress"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -111,7 +112,7 @@
 	            android:id="@+id/signUpForWritePage_tvCompanyOwnerName"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyAddress"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
 	            android:layout_below="@id/signUpForWritePage_etCompanyAddress"
 	            android:gravity="center_vertical"
 	            android:text="@string/ownerName"
@@ -119,9 +120,9 @@
 	
 	        <EditText
 	            android:id="@+id/signUpForWritePage_etCompanyOwnerName"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyOwnerName"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForWritePage_tvCompanyOwnerName"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -136,17 +137,17 @@
 	            android:id="@+id/signUpForWritePage_tvCompanyRegistration"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyOwnerName"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
 	            android:layout_below="@id/signUpForWritePage_etCompanyOwnerName"
 	            android:gravity="center_vertical"
 	            android:text="@string/registrationNumber"
 	            android:textColor="#fff" />
 	
 	        <EditText
-	            android:id="@+id/signUpForWritePage_etCompanyRegistration1"
-	            android:layout_width="0dp"
+	            android:id="@+id/signUpForWritePage_etCompanyRegistration"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyRegistration"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForWritePage_tvCompanyRegistration"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -154,42 +155,8 @@
 	            android:background="#b2ffffff"
 	            android:textColor="#000000"
 	    		android:textColorHint="#4a4a4a" />
-	
-	        <EditText
-	            android:id="@+id/signUpForWritePage_etCompanyRegistration2"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp"
-	            android:layout_alignTop="@id/signUpForWritePage_etCompanyRegistration1"
-	            android:layout_toRightOf="@id/signUpForWritePage_etCompanyRegistration1"
-	            android:singleLine="true"
-	            android:gravity="center"
-	            android:inputType="number"
-	            android:background="#b2ffffff"
-	            android:textColor="#000000"
-	    		android:textColorHint="#4a4a4a" />
-	
-	        <EditText
-	            android:id="@+id/signUpForWritePage_etCompanyRegistration3"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp"
-	            android:layout_alignTop="@id/signUpForWritePage_etCompanyRegistration2"
-	            android:layout_toRightOf="@id/signUpForWritePage_etCompanyRegistration2"
-	            android:singleLine="true"
-	            android:gravity="center"
-	            android:inputType="number"
-	            android:background="#b2ffffff"
-	            android:textColor="#000000"
-	    		android:textColorHint="#4a4a4a" />
-	
-	        <Button
-	            android:id="@+id/signUpForWritePage_btnNext"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForWritePage_etCompanyRegistration1"
-	            android:layout_below="@id/signUpForWritePage_etCompanyRegistration1"
-	            android:background="@drawable/step_btn" />
-	        
-	    </RelativeLayout>
+
+		</RelativeLayout>
 	    
 	</ScrollView>
 	

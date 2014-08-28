@@ -159,7 +159,6 @@ public class SignInActivity extends CmonsFragmentActivity {
 								+ "\nresult : " + objJSON);
 
 						if(objJSON.getInt("result") == 1) {
-
 							ToastUtils.showToast(R.string.complete_signIn);
 							
 							User user = new User(objJSON.getJSONObject("user"));
@@ -168,8 +167,11 @@ public class SignInActivity extends CmonsFragmentActivity {
 							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "pw", pw);
 							
 							//Check user type.
-							
-							launchWholesaleActivity(user);
+							if(user.getRole() < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+								launchWholesaleActivity(user);
+							} else {
+								launchRetailActivity(user);
+							}
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}

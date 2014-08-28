@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -14,28 +13,24 @@ import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForTermsPage extends CmonsFragmentForSignUp {
-
-	private TitleBar titleBar;
-	private Button btnAgree;
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForTermsPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForTermsPage_ivBg);
-		
-		btnAgree = (Button) mThisView.findViewById(R.id.signUpForTermsPage_btnAgree);
 	}
 
 	@Override
 	public void setVariables() {
 
+		title = getString(R.string.terms);
 	}
 
 	@Override
 	public void createPage() {
 
-		titleBar.setTitleText(R.string.terms);
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -50,7 +45,7 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 			}
 		});
 		
-		btnAgree.setOnClickListener(new OnClickListener() {
+		titleBar.getBtnAgree().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -63,24 +58,15 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 	@Override
 	public void setSizes() {
 		
-		RelativeLayout.LayoutParams rp = null;
-		
-		//shadow.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForTermsPage_titleShadow).getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(14);
-
 		//ScrollView.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForTermsPage_scrollView).getLayoutParams();
-		rp.bottomMargin = ResizeUtils.getSpecificLength(200);
 		int scrollPadding = ResizeUtils.getSpecificLength(26);
 		mThisView.findViewById(R.id.signUpForTermsPage_scrollView).setPadding(
-				scrollPadding, scrollPadding, scrollPadding, 0);
+				scrollPadding, scrollPadding, scrollPadding, scrollPadding);
 		
-		//btnAgree.
-		rp = (RelativeLayout.LayoutParams) btnAgree.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(100);
+		//shadow.
+		RelativeLayout.LayoutParams rp = null;
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForTermsPage_titleShadow).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(14);
 	}
 	
 	@Override

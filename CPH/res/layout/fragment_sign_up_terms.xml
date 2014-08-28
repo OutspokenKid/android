@@ -3,20 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForTermsPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
     <!-- 배경. -->
 	    
     <ImageView 
         android:id="@+id/signUpForTermsPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
+    	android:layout_below="@id/signUpForTermsPage_titleBar"
     	android:scaleType="centerCrop" />
     
 	<!-- 타이틀바. -->
-
-	<com.cmons.cph.views.TitleBar
-	    android:id="@+id/signUpForTermsPage_titleBar" 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp" />
 	
     <ScrollView
         android:id="@+id/signUpForTermsPage_scrollView" 
@@ -35,16 +36,6 @@
             android:textColor="#fff" />
 	    
 	</ScrollView>
-		    
-    <!-- 동의하기 버튼. -->
-    
-    <Button
-        android:id="@+id/signUpForTermsPage_btnAgree"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentBottom="true"
-    	android:layout_centerHorizontal="true"
-    	android:background="@drawable/agreement_btn" />
     
     <!-- 그림자. -->
     

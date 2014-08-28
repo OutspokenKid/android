@@ -5,20 +5,21 @@
 	android:layout_height="wrap_content"
 	android:background="#fff" >
 
+	<!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/signUpForPersonalPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
     <!-- 배경. -->
 	    
     <ImageView 
         android:id="@+id/signUpForPersonalPage_ivBg"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
+    	android:layout_below="@id/signUpForPersonalPage_titleBar"
     	android:scaleType="centerCrop" />
-    
-    <!-- 타이틀바. -->
-
-	<com.cmons.cph.views.TitleBar
-	    android:id="@+id/signUpForPersonalPage_titleBar" 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp" />
     
 	<ScrollView
 	    android:layout_width="match_parent"
@@ -44,10 +45,10 @@
 	
 	        <TextView
 	            android:id="@+id/signUpForPersonalPage_tvCompanyName2"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvCompanyName1"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyName1"
 	            android:textColor="#000"
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -59,16 +60,15 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_below="@id/signUpForPersonalPage_tvCompanyName2"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyName2"
 	            android:gravity="center_vertical"
 	            android:textColor="#fff" />
 	
 	        <TextView
 	            android:id="@+id/signUpForPersonalPage_tvCompanyPhone2"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvCompanyPhone1"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyPhone1"
 	            android:textColor="#000" 
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -80,16 +80,15 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_below="@id/signUpForPersonalPage_tvCompanyPhone2"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyPhone2"
 	            android:gravity="center_vertical"
 	            android:textColor="#fff" />
 	
 	        <TextView
 	            android:id="@+id/signUpForPersonalPage_tvCompanyLocation2"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvCompanyLocation1"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvCompanyLocation1"
 	            android:textColor="#000" 
 	            android:singleLine="true"
 	            android:gravity="center"
@@ -108,9 +107,9 @@
 	        
 	        <EditText
 	            android:id="@+id/signUpForPersonalPage_etName"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvName"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvName"
 	            android:hint="@string/hintForId"
 	            android:inputType="text"
@@ -144,9 +143,9 @@
 	
 	        <EditText
 	            android:id="@+id/signUpForPersonalPage_etId"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvId"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvId"
 	            android:hint="@string/hintForId"
 	            android:inputType="text"
@@ -162,7 +161,6 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_below="@id/signUpForPersonalPage_etId"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_etId"
 	            android:gravity="center_vertical"
 	            android:text="@string/pw"
 	            android:textColor="#fff" />
@@ -180,9 +178,9 @@
 	        
 	        <EditText
 	            android:id="@+id/signUpForPersonalPage_etPw"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvPw"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvPw"
 	            android:hint="@string/hintForPw"
 	            android:inputType="textPassword"
@@ -198,7 +196,6 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_below="@id/signUpForPersonalPage_etPw"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_etPw"
 	            android:gravity="center_vertical"
 	            android:text="@string/confirmPw"
 	            android:textColor="#fff" />
@@ -216,9 +213,9 @@
 	        
 	        <EditText
 	            android:id="@+id/signUpForPersonalPage_etConfirmPw"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvConfirmPw"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvConfirmPw"
 	            android:hint="@string/hintForPw"
 				android:inputType="textPassword"
@@ -234,16 +231,15 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_below="@id/signUpForPersonalPage_etConfirmPw"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_etConfirmPw"
 	            android:gravity="center_vertical"
 	            android:text="@string/phoneNumber"
 	            android:textColor="#fff" />
 	
 	        <EditText
 	            android:id="@+id/signUpForPersonalPage_etPhone"
-	            android:layout_width="0dp"
+	            android:layout_width="match_parent"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_tvPhone"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvPhone"
 	            android:hint="@string/hintForPhone"
 	            android:inputType="phone"
@@ -258,15 +254,15 @@
 	            android:id="@+id/signUpForPersonalPage_etCertification"
 	            android:layout_width="0dp"
 	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_etPhone"
+	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_etPhone"
 	            android:hint="@string/hintForCertification"
 	            android:inputType="text"
 	            android:textColor="#000"
-	            android:textColorHint="#aaa"
+	            android:textColorHint="#ccc"
 	            android:singleLine="true"
 	            android:gravity="center"
-	            android:background="#b2ffffff" />
+	            android:background="@drawable/text_box3" />
 	
 	        <!-- 인증번호 발송 -->
 	        
@@ -288,15 +284,6 @@
 	            android:layout_toRightOf="@id/signUpForPersonalPage_etCertification"
 	            android:visibility="invisible"
 	            android:background="@drawable/certification_btn" />
-	
-	        <!-- 완료 -->
-	        <Button
-	            android:id="@+id/signUpForPersonalPage_btnComplete"
-	            android:layout_width="0dp"
-	            android:layout_height="0dp"
-	            android:layout_alignLeft="@id/signUpForPersonalPage_etCertification"
-	            android:layout_below="@id/signUpForPersonalPage_etCertification"
-	            android:background="@drawable/completion_btn" />
 	    
 	    </RelativeLayout>
 	

@@ -12,6 +12,9 @@ public class Product extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 8159757973801962712L;
 	
+	public static final int TYPE_WHOLESALE = 0;
+	public static final int TYPE_RETAIL = 1;
+	
 	private int id;
 	private int category_id;
 	private int wholesale_id;
@@ -30,6 +33,8 @@ public class Product extends BaseModel implements Serializable {
 	private int customers_only;
 	private int status;
 	private String[] product_images;
+	
+	private int type;
 	
 	public Product() {
 	}
@@ -238,5 +243,13 @@ public class Product extends BaseModel implements Serializable {
 
 	public void setProduct_images(String[] product_images) {
 		this.product_images = product_images;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 }

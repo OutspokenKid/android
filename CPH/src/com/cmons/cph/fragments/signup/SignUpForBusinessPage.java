@@ -16,7 +16,6 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 
-	private TitleBar titleBar;
 	private Button btnWholesale;
 	private Button btnRetailOffline;
 	private Button btnRetailOnline;
@@ -34,27 +33,18 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		title = getString(R.string.selectBusiness);
 	}
 
 	@Override
 	public void createPage() {
-
-		titleBar.setTitleText(R.string.selectBusiness);
+		
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
 	public void setListeners() {
-
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				getActivity().getSupportFragmentManager().popBackStack();
-			}
-		});
 		
 		btnWholesale.setOnClickListener(new OnClickListener() {
 
@@ -95,21 +85,16 @@ public class SignUpForBusinessPage extends CmonsFragmentForSignUp {
 		
 		//btnWholesale.
 		rp = (RelativeLayout.LayoutParams) btnWholesale.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
+		rp.height = ResizeUtils.getSpecificLength(180);
 		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		
 		//btnRetailOffline.
 		rp = (RelativeLayout.LayoutParams) btnRetailOffline.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		rp.height = ResizeUtils.getSpecificLength(180);
 		
 		//btnRetailOnline.
 		rp = (RelativeLayout.LayoutParams) btnRetailOnline.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(148);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		rp.height = ResizeUtils.getSpecificLength(180);
 	}
 	
 	@Override

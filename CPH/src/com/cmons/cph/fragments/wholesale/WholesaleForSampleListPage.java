@@ -30,7 +30,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class WholesaleForSamplePage extends CmonsFragmentForWholesale {
+public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 
 	private Button btnRequest;
 	private Button btnApproval;
@@ -127,7 +127,6 @@ public class WholesaleForSamplePage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
@@ -306,7 +305,7 @@ public class WholesaleForSamplePage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_sample;
+		return R.layout.fragment_wholesale_samplelist;
 	}
 
 	@Override

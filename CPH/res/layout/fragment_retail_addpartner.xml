@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/retailForAddPartnerPage_mainLayout"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="#fff" >
+
+	<!-- 타이틀바. -->
+
+	<com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailForAddPartnerPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/retailForAddPartnerPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/retailForAddPartnerPage_titleBar"
+    	android:scaleType="centerCrop" />
+    
+    <ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailForAddPartnerPage_titleBar"
+	    android:fillViewport="true" >
+	
+	    <RelativeLayout
+	        android:id="@+id/retailForAddPartnerPage_relativeSearchInfo"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <!-- 상호명 -->
+	
+	        <TextView
+	            android:id="@+id/retailForAddPartnerPage_tvCompanyName"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignParentTop="true"
+	            android:layout_alignParentLeft="true"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyName"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/retailForAddPartnerPage_etCompanyName"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@id/retailForAddPartnerPage_tvCompanyName"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForSearchCompanyName"
+	            android:inputType="text"
+	            android:background="#b2ffffff"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	
+	        <Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyName"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/retailForAddPartnerPage_etCompanyName"
+	            android:layout_toRightOf="@id/retailForAddPartnerPage_etCompanyName"
+	            android:background="@drawable/search_btn" />
+	
+	        <!-- 전화번호 검색 -->
+	
+	        <TextView
+	            android:id="@+id/retailForAddPartnerPage_tvCompanyPhone"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/retailForAddPartnerPage_tvCompanyName"
+	            android:layout_below="@id/retailForAddPartnerPage_etCompanyName"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyPhone"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/retailForAddPartnerPage_etCompanyPhone"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@id/retailForAddPartnerPage_tvCompanyPhone"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:hint="@string/hintForSearchCompanyPhone"
+	            android:inputType="phone"
+	            android:background="#b2ffffff"
+	            android:textColor="#4a4a4a"
+	    		android:textColorHint="#4a4a4a"  />
+	
+	        <Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyPhone"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/retailForAddPartnerPage_etCompanyPhone"
+	            android:layout_toRightOf="@id/retailForAddPartnerPage_etCompanyPhone"
+	            android:background="@drawable/search_btn" />
+	
+	        <!-- 매장 위치 검색 -->
+	
+	        <TextView
+	            android:id="@+id/retailForAddPartnerPage_tvCompanyLocation"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/retailForAddPartnerPage_tvCompanyPhone"
+	            android:layout_below="@id/retailForAddPartnerPage_etCompanyPhone"
+	            android:gravity="center_vertical"
+	            android:text="@string/searchCompanyLocation"
+	            android:textColor="#fff" />
+	
+	        <!-- 층. -->
+	        
+	        <Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyFloor"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@id/retailForAddPartnerPage_tvCompanyLocation"
+	            android:text="@string/floor"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/drop_btn" />
+	        
+	        <!-- 열. -->
+
+			<Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyLine"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/retailForAddPartnerPage_btnCompanyFloor"
+	            android:layout_toRightOf="@id/retailForAddPartnerPage_btnCompanyFloor"
+	            android:text="@string/line"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/drop2_btn" />	        
+			
+	        <!-- 호. -->
+	
+	        <Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyRoomNumber"
+	            android:layout_width="0dp"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/retailForAddPartnerPage_btnCompanyLine"
+	            android:layout_toRightOf="@id/retailForAddPartnerPage_btnCompanyLine"
+	            android:text="@string/roomNumber"
+	            android:textColor="#4a4a4a"
+	            android:background="@drawable/drop_btn" />
+	
+	        <Button
+	            android:id="@+id/retailForAddPartnerPage_btnCompanyLocation"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_alignTop="@id/retailForAddPartnerPage_btnCompanyRoomNumber"
+	            android:layout_toRightOf="@id/retailForAddPartnerPage_btnCompanyRoomNumber"
+	            android:background="@drawable/search_btn" />
+	
+	    </RelativeLayout>
+	
+	</ScrollView>
+    
+</RelativeLayout>

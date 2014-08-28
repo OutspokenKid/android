@@ -100,7 +100,6 @@ public class Wholesale extends Shop implements Serializable {
 				this.products_cnt = objJSON.getInt("products_cnt");
 			}
 			
-			
 			if(objJSON.has("category_ids")) {
 				
 				JSONArray arJSON = objJSON.getJSONArray("category_ids");

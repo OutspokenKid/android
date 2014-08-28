@@ -124,7 +124,6 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);

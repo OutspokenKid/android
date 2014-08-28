@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -25,7 +25,7 @@ import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
+public class ChangePasswordPage extends CmonsFragmentForShop {
 
 	private TextView tvCurrentPassword;
 	private EditText etCurrentPassword;
@@ -37,17 +37,17 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangePasswordPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.commonChangePasswordPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.commonChangePasswordPage_ivBg);
 		
-		tvCurrentPassword = (TextView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_tvCurrentPassword);
-		etCurrentPassword = (EditText) mThisView.findViewById(R.id.wholesaleChangePasswordPage_etCurrentPassword);
+		tvCurrentPassword = (TextView) mThisView.findViewById(R.id.commonChangePasswordPage_tvCurrentPassword);
+		etCurrentPassword = (EditText) mThisView.findViewById(R.id.commonChangePasswordPage_etCurrentPassword);
 		
-		tvNewPassword = (TextView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_tvNewPassword);
-		etNewPassword = (EditText) mThisView.findViewById(R.id.wholesaleChangePasswordPage_etNewPassword);
+		tvNewPassword = (TextView) mThisView.findViewById(R.id.commonChangePasswordPage_tvNewPassword);
+		etNewPassword = (EditText) mThisView.findViewById(R.id.commonChangePasswordPage_etNewPassword);
 		
-		tvNewPasswordConfirm = (TextView) mThisView.findViewById(R.id.wholesaleChangePasswordPage_tvNewPasswordConfirm);
-		etNewPasswordConfirm = (EditText) mThisView.findViewById(R.id.wholesaleChangePasswordPage_etNewPasswordConfirm);
+		tvNewPasswordConfirm = (TextView) mThisView.findViewById(R.id.commonChangePasswordPage_tvNewPasswordConfirm);
+		etNewPasswordConfirm = (EditText) mThisView.findViewById(R.id.commonChangePasswordPage_etNewPasswordConfirm);
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class WholesaleForChangePasswordPage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_changepassword;
+		return R.layout.fragment_common_changepassword;
 	}
 
 	@Override

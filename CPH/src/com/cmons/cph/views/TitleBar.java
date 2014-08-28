@@ -17,16 +17,21 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class TitleBar extends RelativeLayout {
 
 	private View titleBg;
+	private Button btnMenu;
 	private Button btnBack;
 	private Button btnHome;
 	private TextView tvTitle;
 	private View titleView;
-	private Button btnNotice;
+	
 	private Button btnAdd;
-	private Button btnSubmit;
-	private Button btnWrite;
-	private Button btnReply;
+	private Button btnAddPartner;
+	private Button btnAgree;
 	private Button btnEdit;
+	private Button btnSubmit;
+	private Button btnNext;
+	private Button btnNotice;
+	private Button btnReply;
+	private Button btnWrite;
 	
 	public TitleBar(Context context) {
 		this(context, null, 0);
@@ -53,6 +58,18 @@ public class TitleBar extends RelativeLayout {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		titleBg.setBackgroundResource(R.drawable.navigation_bar);
 		this.addView(titleBg);
+
+		//btnMenu.
+		btnMenu = new Button(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(92), 
+				ResizeUtils.getSpecificLength(92));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		btnMenu.setLayoutParams(rp);
+		btnMenu.setBackgroundResource(R.drawable.retail_menu_btn);
+		btnMenu.setVisibility(View.INVISIBLE);
+		this.addView(btnMenu);
 		
 		//btnBack.
 		btnBack = new Button(getContext());
@@ -63,6 +80,7 @@ public class TitleBar extends RelativeLayout {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		btnBack.setLayoutParams(rp);
 		btnBack.setBackgroundResource(R.drawable.back1_btn);
+		btnBack.setVisibility(View.INVISIBLE);
 		this.addView(btnBack);
 		
 		//btnHome.
@@ -75,6 +93,7 @@ public class TitleBar extends RelativeLayout {
 		rp.leftMargin = ResizeUtils.getSpecificLength(92); 
 		btnHome.setLayoutParams(rp);
 		btnHome.setBackgroundResource(R.drawable.home_btn);
+		btnHome.setVisibility(View.INVISIBLE);
 		this.addView(btnHome);
 		
 		//tvTitle.
@@ -102,6 +121,11 @@ public class TitleBar extends RelativeLayout {
 		titleView.setLayoutParams(rp);
 		titleView.setBackgroundResource(R.drawable.logo2);
 		this.addView(titleView);
+	}
+
+	public Button getMenuButton() {
+		
+		return btnMenu;
 	}
 	
 	public Button getBackButton() {
@@ -174,6 +198,40 @@ public class TitleBar extends RelativeLayout {
 		return btnAdd;
 	}
 	
+	public Button getBtnAddPartner() {
+
+		if(btnAddPartner == null) {
+			btnAddPartner = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnAddPartner.setLayoutParams(rp);
+			btnAddPartner.setBackgroundResource(R.drawable.add_shop_btn);
+			this.addView(btnAddPartner);
+		}
+		
+		return btnAddPartner;
+	}
+	
+	public Button getBtnAgree() {
+
+		if(btnAgree == null) {
+			btnAgree = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnAgree.setLayoutParams(rp);
+			btnAgree.setBackgroundResource(R.drawable.agreement_btn);
+			this.addView(btnAgree);
+		}
+		
+		return btnAgree;
+	}
+	
 	public Button getBtnSubmit() {
 		
 		if(btnSubmit == null) {
@@ -241,5 +299,22 @@ public class TitleBar extends RelativeLayout {
 		}
 		
 		return btnEdit;
+	}
+
+	public Button getBtnNext() {
+
+		if(btnNext == null) {
+			btnNext = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnNext.setLayoutParams(rp);
+			btnNext.setBackgroundResource(R.drawable.step_btn);
+			this.addView(btnNext);
+		}
+		
+		return btnNext;
 	}
 }

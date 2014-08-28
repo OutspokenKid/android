@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -64,6 +65,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private TextView tvRank;
 	private Button arrowLeft;
 	private Button arrowRight;
+	
 	private View cover;
 	private RelativeLayout noticeRelative;
 	private Button btnClose;
@@ -80,7 +82,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void onResume() {
 		super.onResume();
-		downloadInfo();
+		refreshPage();
 		downloadProducts();
 	}
 	
@@ -159,16 +161,13 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void createPage() {
 
-		titleBar.getBackButton().setVisibility(View.INVISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
+		tvHit.setText("오늘 방문 " + wholesale.getToday_visited_cnt());
 		
-		tvHit.setText("오늘 방문 " + mActivity.wholesale.getToday_visited_cnt());
-		
-		SpannableStringBuilder sp1 = new SpannableStringBuilder(mActivity.wholesale.getName());
+		SpannableStringBuilder sp1 = new SpannableStringBuilder(wholesale.getName());
 		sp1.setSpan(new RelativeSizeSpan(1.5f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp1); 
 		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화몰 " + mActivity.wholesale.getLocation());
+		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화몰 " + wholesale.getLocation());
 		sp2.setSpan(new RelativeSizeSpan(1.0f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp2);
 		
@@ -202,7 +201,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showWritePage(null);
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_WRITE, null);
 			}
 		});
 		
@@ -211,7 +210,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View arg0) {
 				
-				mActivity.showShopPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_SHOP, null);
 			}
 		});
 		
@@ -233,7 +232,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showManagementPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_MANAGEMENT, null);
 			}
 		});
 		
@@ -242,7 +241,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showOrderListPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, null);
 			}
 		});
 		
@@ -251,7 +250,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showSamplePage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_SAMPLE_LIST, null);
 			}
 		});
 		
@@ -260,7 +259,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showCustomerPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_CUSTOMER_LIST, null);
 			}
 		});
 		
@@ -269,7 +268,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showStaffPage();
+				mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, null);
 			}
 		});
 		
@@ -278,7 +277,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showSettingPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_SETTING, null);
 			}
 		});
 		
@@ -307,7 +306,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					long id) {
 				
 				hideNoticeRelative();
-//				mActivity.showNoticePage((Notice)models.get(position), false, false);
 			}
 		});
 
@@ -533,14 +531,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		}
 		
 		isDownloading = true;
-		
-		if(url.contains("?")) {
-			url += "&";
-		} else {
-			url += "?";
-		}
-		
-		url += "num=0";
+		url += "?num=0";
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -594,7 +585,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		}
 		
 		String url = CphConstants.BASE_API_URL + "products/weekly_best" +
-				"?wholesale_id=" + mActivity.wholesale.getId();
+				"?wholesale_id=" + wholesale.getId();
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -773,7 +764,9 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				@Override
 				public void onClick(View view) {
 
-					mActivity.showProductPage(products.get(position));
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("product", products.get(position));
+					mActivity.showPage(CphConstants.PAGE_WHOLESALE_PRODUCT, bundle);
 				}
 			});
 			container.addView(ivImage);

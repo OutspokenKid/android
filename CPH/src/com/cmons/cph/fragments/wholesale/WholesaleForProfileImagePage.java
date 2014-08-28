@@ -30,7 +30,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	private TextView tvProfileDesc;
 	
 	private String selectedImageUrl;
-
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -41,12 +41,12 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleProfileImagePage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleProfileImagePage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.profileImagePage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.profileImagePage_ivBg);
 		
-		ivImage = (ImageView) mThisView.findViewById(R.id.wholesaleProfileImagePage_ivImage);
-		btnUpload = (Button) mThisView.findViewById(R.id.wholesaleProfileImagePage_btnUpload);
-		tvProfileDesc = (TextView) mThisView.findViewById(R.id.wholesaleProfileImagePage_tvImageText);
+		ivImage = (ImageView) mThisView.findViewById(R.id.profileImagePage_ivImage);
+		btnUpload = (Button) mThisView.findViewById(R.id.profileImagePage_btnUpload);
+		tvProfileDesc = (TextView) mThisView.findViewById(R.id.profileImagePage_tvImageText);
 	}
 
 	@Override
@@ -153,8 +153,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	
 	public void downloadProfile() {
 
-		ivImage.setTag(mActivity.wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(mActivity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		ivImage.setTag(wholesale.getRep_image_url());
+		DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {

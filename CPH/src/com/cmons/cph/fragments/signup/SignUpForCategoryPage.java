@@ -3,9 +3,10 @@ package com.cmons.cph.fragments.signup;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,9 +23,7 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 
-	private TitleBar titleBar;
 	private ListView listView;
-	private Button btnNext;
 	private int type;
 	
 	@Override
@@ -39,11 +38,10 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 	@Override
 	public void bindViews() {
 
+		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForCategoryPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.signUpForCategoryPage_ivBg);
 		
-		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForCategoryPage_titleBar);
 		listView = (ListView) mThisView.findViewById(R.id.signUpForCategoryPage_listView);
-		btnNext = (Button) mThisView.findViewById(R.id.signUpForCategoryPage_btnNext);
 	}
 
 	@Override
@@ -52,30 +50,24 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		if(getArguments() != null && getArguments().containsKey("type")) {
 			type = getArguments().getInt("type");
 		}
+		
+		title = getString(R.string.selectCategory);
 	}
 
 	@Override
 	public void createPage() {
-
-		titleBar.setTitleText(R.string.selectCategory);
+		
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
 	}
 
 	@Override
 	public void setListeners() {
 
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				getActivity().getSupportFragmentManager().popBackStack();
-			}
-		});
-		
-		btnNext.setOnClickListener(new OnClickListener() {
+		titleBar.getBtnNext().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -132,12 +124,6 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		//ScrollView.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForCategoryPage_listView).getLayoutParams();
 		rp.bottomMargin = ResizeUtils.getSpecificLength(200);
-		
-		//btnNext.
-		rp = (RelativeLayout.LayoutParams) btnNext.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(100);
 	}
 	
 	@Override

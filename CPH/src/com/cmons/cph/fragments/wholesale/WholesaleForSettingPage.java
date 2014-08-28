@@ -3,6 +3,7 @@ package com.cmons.cph.fragments.wholesale;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -52,7 +53,6 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showChangeInfoPage();
+				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_INFO, null);
 			}
 		});
 		
@@ -72,7 +72,9 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View arg0) {
 
-				mActivity.showNoticeListPage(true);
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("isAppNotice", true);
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE_LIST, null);
 			}
 		});
 		
@@ -81,7 +83,7 @@ public class WholesaleForSettingPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showNotificationSettingPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTIFICATION_SETTING, null);
 			}
 		});
 	

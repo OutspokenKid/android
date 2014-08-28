@@ -1,11 +1,20 @@
 package com.cmons.cph.views;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -13,21 +22,30 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.WholesaleActivity;
+import com.cmons.cph.RetailActivity;
+import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnStringDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
-public class HeaderViewForShop extends RelativeLayout {
+public class HeaderViewForRetailMain extends RelativeLayout {
 
-	private static int madeCount = 880627;
+	private static int madeCount = 870901;
 	
-	private WholesaleActivity activity; 
+	private RetailActivity activity; 
+
+	private ViewPager viewPager;
+	private ArrayList<Wholesale> wholesales = new ArrayList<Wholesale>();
+	private PagerAdapterForWholesale pagerAdapter;
+	private boolean needPlay;
+	private boolean isPlaying;
 	
-	private ImageView ivImage;
 	private TextView tvPhoneNumber;
 	private View phoneNumberIcon;
 	private TextView tvLocation;
@@ -38,25 +56,24 @@ public class HeaderViewForShop extends RelativeLayout {
 	private View likeIcon;
 	private TextView tvPartner;
 	private View partnerIcon;
-	private Button btnCustomerType;
 	private Button btnCategoryIndex;
 	private Button btnOrder;
 	private TextView tvTotalProduct;
 	private View totalProductIcon;
 	
-	public HeaderViewForShop(Context context) {
+	public HeaderViewForRetailMain(Context context) {
 		this(context, null, 0);
 	}
 	
-	public HeaderViewForShop(Context context, AttributeSet attrs) {
+	public HeaderViewForRetailMain(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 	
-	public HeaderViewForShop(Context context, AttributeSet attrs, int defStyle) {
+	public HeaderViewForRetailMain(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 	
-	public void init(WholesaleActivity activity) {
+	public void init(RetailActivity activity) {
 
 		this.activity = activity;
 		
@@ -71,16 +88,18 @@ public class HeaderViewForShop extends RelativeLayout {
 		
 		madeCount += 10;
 		
-		//ivImage.					id : 0
-		ivImage = new ImageView(getContext());
+		//viewPager.					id : 0
+		viewPager = new ViewPager(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(440));
-		ivImage.setLayoutParams(rp);
-		ivImage.setId(madeCount);
-		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		ivImage.setBackgroundResource(R.drawable.picture_default);
-		addView(ivImage);
+		viewPager.setLayoutParams(rp);
+		viewPager.setId(madeCount);
+		viewPager.setBackgroundResource(R.drawable.picture_default);
+		addView(viewPager);
+		
+		pagerAdapter = new PagerAdapterForWholesale();
+		viewPager.setAdapter(pagerAdapter);
 		
 		//tvPhoneNumber.
 		tvPhoneNumber = new TextView(getContext());
@@ -220,50 +239,32 @@ public class HeaderViewForShop extends RelativeLayout {
 		partnerIcon.setBackgroundResource(R.drawable.myshop_business_icon);
 		addView(partnerIcon);
 		
-		//btnCustomerType.			id : 4
-		btnCustomerType = new Button(getContext());
+		//btnCategoryIndex.				id : 4
+		btnCategoryIndex = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(240), 
+				ResizeUtils.getSpecificLength(360), 
 				ResizeUtils.getSpecificLength(92));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.BELOW, madeCount);
-		btnCustomerType.setLayoutParams(rp);
-		btnCustomerType.setId(madeCount + 4);
-		btnCustomerType.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_open1_icon_a, 0, 0, 0);
-		btnCustomerType.setTextColor(Color.WHITE);
-		btnCustomerType.setGravity(Gravity.CENTER);
-		btnCustomerType.setBackgroundResource(R.drawable.myshop_drop1_btn);
-		FontUtils.setFontSize(btnCustomerType, 24);
-		addView(btnCustomerType);
-
-		//btnCategoryIndex.				id : 5
-		btnCategoryIndex = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(240), 
-				ResizeUtils.getSpecificLength(92));
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
 		btnCategoryIndex.setLayoutParams(rp);
-		btnCategoryIndex.setId(madeCount + 5);
-		btnCategoryIndex.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_list_icon, 0, 0, 0);
+		btnCategoryIndex.setId(madeCount + 4);
 		btnCategoryIndex.setTextColor(Color.WHITE);
 		btnCategoryIndex.setGravity(Gravity.CENTER);
-		btnCategoryIndex.setBackgroundResource(R.drawable.myshop_drop2_btn);
+		btnCategoryIndex.setBackgroundResource(R.drawable.retail_drop1_btn);
 		FontUtils.setFontSize(btnCategoryIndex, 24);
 		addView(btnCategoryIndex);
 		
 		//btnOrder.
 		btnOrder = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(240), 
+				LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(92));
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 5);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 5);
+		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
 		btnOrder.setLayoutParams(rp);
-		btnOrder.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_sorting1_icon_a, 0, 0, 0);
 		btnOrder.setTextColor(Color.WHITE);
 		btnOrder.setGravity(Gravity.CENTER);
-		btnOrder.setBackgroundResource(R.drawable.myshop_drop3_btn);
+		btnOrder.setBackgroundResource(R.drawable.retail_drop2_btn);
 		FontUtils.setFontSize(btnOrder, 24);
 		addView(btnOrder);
 		
@@ -276,7 +277,7 @@ public class HeaderViewForShop extends RelativeLayout {
 		bottomBg.setBackgroundColor(Color.rgb(238, 141, 141));
 		addView(bottomBg);
 		
-		//tvTotalProduct.			id : 6
+		//tvTotalProduct.			id : 5
 		tvTotalProduct = new TextView(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, 
@@ -284,7 +285,7 @@ public class HeaderViewForShop extends RelativeLayout {
 		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		tvTotalProduct.setLayoutParams(rp);
-		tvTotalProduct.setId(madeCount + 6);
+		tvTotalProduct.setId(madeCount + 5);
 		tvTotalProduct.setGravity(Gravity.CENTER);
 		tvTotalProduct.setTextColor(Color.WHITE);
 		tvTotalProduct.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
@@ -298,7 +299,7 @@ public class HeaderViewForShop extends RelativeLayout {
 				ResizeUtils.getSpecificLength(20));
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		rp.topMargin = ResizeUtils.getSpecificLength(10);
-		rp.addRule(RelativeLayout.LEFT_OF, madeCount + 6);
+		rp.addRule(RelativeLayout.LEFT_OF, madeCount + 5);
 		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		totalProductIcon.setLayoutParams(rp);
 		totalProductIcon.setBackgroundResource(R.drawable.myshop_goods_icon);
@@ -307,39 +308,72 @@ public class HeaderViewForShop extends RelativeLayout {
 	
 	public void setValues() {
 
-		tvPhoneNumber.setText(activity.wholesale.getPhone_number());
-		tvLocation.setText("청평화몰 " + activity.wholesale.getLocation());
-		tvHit.setText(activity.wholesale.getToday_visited_cnt() + 
-				" / " + activity.wholesale.getTotal_visited_cnt());
-		tvLike.setText("" + activity.wholesale.getFavorited_cnt());
-		tvPartner.setText("" + activity.wholesale.getCustomers_cnt());
-		tvTotalProduct.setText("총 등록 상품 " + activity.wholesale.getProducts_cnt());
-		
-		btnCustomerType.setText("모두공개");
 		btnCategoryIndex.setText("전체");
 		btnOrder.setText("최신순");
 		
-		downloadProfile();
+		tvTotalProduct.setText("총 등록 상품 " + activity.retail.getProducts_cnt());
+		
+		downloadWholesales();
 	}
 
-	public void downloadProfile() {
+	public void downloadWholesales() {
 		
-		ivImage.setTag(activity.wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(activity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		if(wholesales.size() > 0) {
+			viewPager.setCurrentItem(0);
+			tvPhoneNumber.setText(wholesales.get(0).getPhone_number());
+			tvLocation.setText(wholesales.get(0).getLocation());
+			tvHit.setText(wholesales.get(0).getToday_visited_cnt() + 
+					" / " + wholesales.get(0).getTotal_visited_cnt());
+			tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
+			tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
+			
+			needPlay = true;
+			
+			if(!isPlaying) {
+				playPager();
+			}
+			
+			return;
+		}
+		
+		String url = CphConstants.BASE_API_URL + "wholesales/coverflow";
+		
+		DownloadUtils.downloadString(url, new OnStringDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("HeaderViewForShop.onError." + "\nurl : " + url);
+				LogUtils.log("HeaderViewForRetailShop.onError." + "\nurl : " + url);
+
 			}
 
 			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
+			public void onCompleted(String url, String result) {
 
 				try {
-					LogUtils.log("HeaderViewForShop.onCompleted." + "\nurl : " + url);
-					if(ivImage != null) {
-						ivImage.setImageBitmap(bitmap);
+					LogUtils.log("HeaderViewForRetailShop.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + result);
+
+					JSONArray arJSON = new JSONArray(result);
+					
+					int size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						wholesales.add(new Wholesale(arJSON.getJSONObject(i)));
+					}
+					
+					pagerAdapter.notifyDataSetChanged();
+					viewPager.setCurrentItem(0);
+					tvPhoneNumber.setText(wholesales.get(0).getPhone_number());
+					tvLocation.setText(wholesales.get(0).getLocation());
+					tvHit.setText(wholesales.get(0).getToday_visited_cnt() + 
+							" / " + wholesales.get(0).getTotal_visited_cnt());
+					tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
+					tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
+					
+					needPlay = true;
+					
+					if(!isPlaying) {
+						playPager();
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -352,19 +386,31 @@ public class HeaderViewForShop extends RelativeLayout {
 	
 	public void setListeners() {
 
-		ivImage.setOnClickListener(new OnClickListener() {
-
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
 			@Override
-			public void onClick(View view) {
+			public void onPageSelected(final int position) {
 
-				activity.showProfileImagePage();
+				tvPhoneNumber.setText(wholesales.get(position).getPhone_number());
+				tvLocation.setText(wholesales.get(position).getLocation());
+				tvHit.setText(wholesales.get(position).getToday_visited_cnt() + 
+						" / " + wholesales.get(position).getTotal_visited_cnt());
+				tvLike.setText("" + wholesales.get(position).getFavorited_cnt());
+				tvPartner.setText("" + wholesales.get(position).getCustomers_cnt());
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
-	}
-
-	public Button getBtnCustomerType() {
-		
-		return btnCustomerType;
 	}
 	
 	public Button getBtnCategoryIndex() {
@@ -382,6 +428,114 @@ public class HeaderViewForShop extends RelativeLayout {
 		super.onDetachedFromWindow();
 		
 		ViewUnbindHelper.unbindReferences(this);
+	}
+
+	public void playPager() {
+		
+		isPlaying = true;
+		
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				if(!needPlay) {
+					isPlaying = false;
+					return;
+				}
+				
+				if(wholesales != null &&wholesales.size() > 0) {
+					
+					int position = viewPager.getCurrentItem();
+					viewPager.setCurrentItem((position + 1) % wholesales.size(), true);
+				}
+				
+				playPager();
+			}
+		}, 3000);
+	}
+
+	public void setPlaying(boolean isPlaying) {
+		
+		this.isPlaying = isPlaying;
+	}
+	
+////////////////////Custom classes.
+	
+	public class PagerAdapterForWholesale extends PagerAdapter {
+
+		@Override
+		public int getCount() {
+
+			return wholesales.size();
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, final int position) {
+
+			final String imageUrl = wholesales.get(position).getRep_image_url();
+
+			LogUtils.log("###WholesaleMainPage.instantiateItem.  position : "
+					+ position + ", url : " + imageUrl);
+
+			final ImageView ivImage = new ImageView(getContext());
+			ivImage.setScaleType(ScaleType.CENTER_CROP);
+			ivImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					ToastUtils.showToast("pager item clicked");
+				}
+			});
+			container.addView(ivImage);
+
+			DownloadUtils.downloadBitmap(imageUrl,
+					new OnBitmapDownloadListener() {
+
+						@Override
+						public void onError(String url) {
+
+							LogUtils.log("instantiateItem.onError."
+									+ "\nurl : " + url);
+						}
+
+						@Override
+						public void onCompleted(String url, Bitmap bitmap) {
+
+							try {
+								LogUtils.log("instantiateItem.onCompleted."
+										+ "\nurl : " + url);
+								ivImage.setImageBitmap(bitmap);
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
+
+			return ivImage;
+		}
+
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+
+			try {
+				View v = (View) object;
+				container.removeView(v);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+
+			return arg0 == arg1;
+		}
 	}
 }
 

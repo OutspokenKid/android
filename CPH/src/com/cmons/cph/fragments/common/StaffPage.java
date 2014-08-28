@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
@@ -12,14 +12,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Staff;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
+public class StaffPage extends CmonsFragmentForShop {
 	
 	private Button btnRequest;
 	private Button btnStaff;
@@ -40,13 +40,13 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleStaffPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleStaffPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.commonStaffPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.commonStaffPage_ivBg);
 		
-		btnRequest = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnRequest);
-		btnStaff = (Button) mThisView.findViewById(R.id.wholesaleStaffPage_btnStaff);
+		btnRequest = (Button) mThisView.findViewById(R.id.commonStaffPage_btnRequest);
+		btnStaff = (Button) mThisView.findViewById(R.id.commonStaffPage_btnStaff);
 		
-		listView = (ListView) mThisView.findViewById(R.id.wholesaleStaffPage_listView);
+		listView = (ListView) mThisView.findViewById(R.id.commonStaffPage_listView);
 	}
 
 	@Override
@@ -59,7 +59,6 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
@@ -107,7 +106,7 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 		RelativeLayout.LayoutParams rp = null;
 		
 		//ivBg.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.wholesaleStaffPage_ivBg).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.commonStaffPage_ivBg).getLayoutParams();
 		rp.topMargin = ResizeUtils.getSpecificLength(96); 
 		
 		//btnRequest.
@@ -123,7 +122,7 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_staff;
+		return R.layout.fragment_common_staff;
 	}
 
 	@Override
@@ -153,7 +152,7 @@ public class WholesaleForStaffPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		url = CphConstants.BASE_API_URL + "commons/notices";
 		super.downloadInfo();
 	}
 	

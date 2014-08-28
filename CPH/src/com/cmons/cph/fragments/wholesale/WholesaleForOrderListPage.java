@@ -70,7 +70,6 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
@@ -119,7 +118,7 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				mActivity.showOrderPage();
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER, null);
 			}
 		});
 	}

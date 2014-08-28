@@ -1,5 +1,6 @@
 package com.cmons.cph.wrappers;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
@@ -9,7 +10,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.WholesaleActivity;
+import com.cmons.cph.ShopActivity;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Product;
 import com.outspoken_kid.model.BaseModel;
@@ -87,7 +89,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 			rp.rightMargin = ResizeUtils.getSpecificLength(10);
 			rp.topMargin = ResizeUtils.getSpecificLength(10);
 			
-			FontUtils.setFontSize(tvTitle, 30);
+			FontUtils.setFontSize(tvTitle, 24);
 			FontUtils.setFontSize(tvBuyCount, 18);
 			FontUtils.setFontSize(tvPrice, 22);
 		} catch(Exception e) {
@@ -129,8 +131,14 @@ public class ViewWrapperForProduct extends ViewWrapper {
 				@Override
 				public void onClick(View arg0) {
 				
-					if(WholesaleActivity.getInstance() != null) {
-						WholesaleActivity.getInstance().showProductPage(product);
+					if(product.getType() == Product.TYPE_WHOLESALE) {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("product", product);
+						ShopActivity.getInstance().showPage(CphConstants.PAGE_WHOLESALE_PRODUCT, bundle);
+					} else {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("product", product);
+						ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_PRODUCT, bundle);
 					}
 				}
 			});

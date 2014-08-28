@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
@@ -9,11 +9,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
+public class ChangeInfoPage extends CmonsFragmentForShop {
 
 	private Button btnChangePassword;
 	private Button btnChangePhoneNumber;
@@ -21,11 +22,11 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleChangeInfoPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleChangeInfoPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.commonChangeInfoPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.commonChangeInfoPage_ivBg);
 		
-		btnChangePassword = (Button) mThisView.findViewById(R.id.wholesaleChangeInfoPage_btnChangePassword);
-		btnChangePhoneNumber = (Button) mThisView.findViewById(R.id.wholesaleChangeInfoPage_btnChangePhoneNumber);
+		btnChangePassword = (Button) mThisView.findViewById(R.id.commonChangeInfoPage_btnChangePassword);
+		btnChangePhoneNumber = (Button) mThisView.findViewById(R.id.commonChangeInfoPage_btnChangePhoneNumber);
 	}
 
 	@Override
@@ -38,7 +39,7 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		titleBar.getHomeButton().setVisibility(View.INVISIBLE);
+		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showChangePasswordPage();
+				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_PASSWORD, null);
 			}
 		});
 		
@@ -58,7 +59,7 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showChangePhoneNumberPage();
+				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_PHONENUMBER, null);
 			}
 		});
 	}
@@ -81,7 +82,7 @@ public class WholesaleForChangeInfoPage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_changeinfo;
+		return R.layout.fragment_common_changeinfo;
 	}
 
 	@Override

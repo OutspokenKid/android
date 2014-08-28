@@ -3,14 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- 배경. -->
-	    
-    <ImageView 
-        android:id="@+id/findIdPwPage_ivBg"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:scaleType="centerCrop" />
-    
     <!-- 타이틀바. -->
 
 	<com.cmons.cph.views.TitleBar
@@ -19,10 +11,20 @@
 	    android:layout_height="0dp"
 	    android:layout_alignParentTop="true" />
     
+    <!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/findIdPwPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/findIdPwPage_titleBar"
+    	android:scaleType="centerCrop" />
+    
     <ScrollView
         android:id="@+id/findIdPwPage_scrollView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_below="@id/findIdPwPage_titleBar"
 	    android:fillViewport="true" >
 	
 	    <RelativeLayout
@@ -34,10 +36,9 @@
 		    
 		    <EditText 
 		        android:id="@+id/findIdPwPage_etPhone"
-		        android:layout_width="0dp"
+		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_alignParentTop="true"
-		    	android:layout_centerHorizontal="true"
 		    	android:background="#b2ffffff"
 		    	android:singleLine="true"
 		    	android:textColor="#4a4a4a"
@@ -46,16 +47,6 @@
 		    	android:inputType="phone"
 		    	android:hint="@string/inputPhone"
 		    	android:gravity="center" />
-		
-		    <!-- 인증번호 발송 버튼. -->
-		    
-		    <Button
-		        android:id="@+id/findIdPwPage_btnSend"
-		        android:layout_width="0dp"
-		    	android:layout_height="0dp"
-		    	android:layout_below="@id/findIdPwPage_etPhone"
-		    	android:layout_centerHorizontal="true"
-		    	android:background="@drawable/num_send_btn" />
 		    
 		    <!-- 인증번호 입력. -->
 		    
@@ -63,10 +54,9 @@
 		        android:id="@+id/findIdPwPage_etCertification"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
+		    	android:layout_alignLeft="@id/findIdPwPage_etPhone"
 		    	android:layout_below="@id/findIdPwPage_etPhone"
-		    	android:layout_centerHorizontal="true"
-		    	android:visibility="invisible"
-		    	android:background="#b2ffffff"
+		    	android:background="@drawable/text_box3"
 		    	android:singleLine="true"
 		    	android:textColor="#4a4a4a"
 		    	android:textColorHint="#4a4a4a"
@@ -75,14 +65,24 @@
 		    	android:inputType="phone"
 		    	android:gravity="center" />
 		    
+		    <!-- 인증번호 발송 버튼. -->
+		    
+		    <Button
+		        android:id="@+id/findIdPwPage_btnSend"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/findIdPwPage_etCertification"
+				android:layout_toRightOf="@id/findIdPwPage_etCertification"		    	
+		    	android:background="@drawable/num_send_btn" />
+		    
 		    <!-- 인증하기 버튼. -->
 		    
 		    <Button
 		        android:id="@+id/findIdPwPage_btnCertify"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:layout_below="@id/findIdPwPage_etCertification"
-		    	android:layout_centerHorizontal="true"
+		    	android:layout_alignTop="@id/findIdPwPage_etCertification"
+				android:layout_toRightOf="@id/findIdPwPage_etCertification"		    	
 		    	android:visibility="invisible"
 		    	android:background="@drawable/certification_btn" />
 		    

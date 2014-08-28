@@ -21,6 +21,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -31,22 +32,21 @@ public class FindIdPwPage extends CmonsFragment {
 	public static final int TYPE_FIND_ID = 0;
 	public static final int TYPE_FIND_PW = 1;
 	
-	private int type;
-	private String timeResponseKey;
-	private String certifyingPhoneNumber;
-
-	private TitleBar titleBar;
 	private EditText etPhone;
 	private EditText etCertification;
 	private Button btnSend;
 	private Button btnCertify;
 	
+	private int type;
+	private String timeResponseKey;
+	private String certifyingPhoneNumber;
+	
 	@Override
 	public void bindViews() {
-		
+
+		titleBar = (TitleBar) mThisView.findViewById(R.id.findIdPwPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.findIdPwPage_ivBg);
 		
-		titleBar = (TitleBar) mThisView.findViewById(R.id.findIdPwPage_titleBar);
 		etPhone = (EditText) mThisView.findViewById(R.id.findIdPwPage_etPhone);
 		etCertification = (EditText) mThisView.findViewById(R.id.findIdPwPage_etCertification);
 		btnSend = (Button) mThisView.findViewById(R.id.findIdPwPage_btnSend);
@@ -59,22 +59,18 @@ public class FindIdPwPage extends CmonsFragment {
 		if(getArguments() != null) {
 			type = getArguments().getInt("type", TYPE_FIND_ID);
 		}
+		
+		if(type == TYPE_FIND_ID) {
+			title = getString(R.string.findId);
+		} else {
+			title = getString(R.string.findPw);
+		}
 	}
 
 	@Override
 	public void createPage() {
 		
-		if(type == TYPE_FIND_ID) {
-			titleBar.setTitleText(R.string.findId);
-		} else {
-			titleBar.setTitleText(R.string.findPw);
-		}
-		
-		View bottomBlank = new View(mContext);
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(10, ResizeUtils.getSpecificLength(110));
-		rp.addRule(RelativeLayout.BELOW, R.id.findIdPwPage_btnCertify);
-		bottomBlank.setLayoutParams(rp);
-		((RelativeLayout) mThisView.findViewById(R.id.findIdPwPage_relative)).addView(bottomBlank);
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 	}
 
 	@Override
@@ -146,41 +142,34 @@ public class FindIdPwPage extends CmonsFragment {
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_titleShadow).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(14);
 		
-		//ScrollView.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_scrollView).getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(96);
-		
 		//etPhone.
 		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		etPhone.setPadding(padding, 0, padding, 0);
 		
-		//btnSend.
-		rp = (RelativeLayout.LayoutParams) btnSend.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
-		
 		//etCertification.
 		rp = (RelativeLayout.LayoutParams) etCertification.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
+		rp.width = ResizeUtils.getSpecificLength(448);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
 		etCertification.setPadding(padding, 0, padding, 0);
+		
+		//btnSend.
+		rp = (RelativeLayout.LayoutParams) btnSend.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//btnCertify.
 		rp = (RelativeLayout.LayoutParams) btnCertify.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(12);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		
+		FontUtils.setFontAndHintSize(etPhone, 30, 24);
+		FontUtils.setFontAndHintSize(etCertification, 30, 24);
 	}
 	
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_findidpw;
+		return R.layout.fragment_sign_in_findidpw;
 	}
 
 	@Override

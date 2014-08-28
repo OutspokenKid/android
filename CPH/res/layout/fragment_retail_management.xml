@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <!-- 타이틀바. -->
+	    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailManagementPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp" />
+    
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/retailManagementPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailManagementPage_titleBar"
+	    android:scaleType="centerCrop" />
+    
+    <ScrollView
+        android:id="@+id/retailManagementPage_scrollView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailManagementPage_titleBar" >
+	    
+	    <RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		    
+		    <!-- 공지사항. -->
+		    
+		    <Button 
+		        android:id="@+id/retailManagementPage_btnNotice" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentTop="true"
+			    android:background="@drawable/shop_notice_btn" />
+		    
+		    <!-- 매장 대표사진 관리. -->
+		    
+		    <Button 
+		        android:id="@+id/retailManagementPage_btnProfile" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/retailManagementPage_btnNotice"
+			    android:layout_toRightOf="@id/retailManagementPage_btnNotice"
+			    android:background="@drawable/shop_picture_btn" />
+		    
+		    <!-- 계좌번호 관리. -->
+		    
+		    <Button 
+		        android:id="@+id/retailManagementPage_btnAccount" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_btnNotice"
+			    android:layout_alignParentLeft="true"
+			    android:background="@drawable/shop_account_btn" />
+		    
+		    <!-- 매장정보 보내기. -->
+		    
+		    <Button 
+		        android:id="@+id/retailManagementPage_btnKakao" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/retailManagementPage_btnAccount"
+			    android:layout_toRightOf="@id/retailManagementPage_btnAccount"
+			    android:background="@drawable/shop_talk_btn" />
+		    
+		    <!-- 샘플 요청 관리. -->
+		    
+		    <Button 
+		        android:id="@+id/retailManagementPage_btnSample" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_btnAccount"
+			    android:layout_alignParentLeft="true"
+			    android:background="@drawable/shop_sample_btn_a" />
+		    
+		    <TextView 
+		        android:id="@+id/retailManagementPage_tvInfo" 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@id/retailManagementPage_btnSample"
+			    android:textColor="#fff" />
+		    
+		</RelativeLayout>
+
+    </ScrollView>
+    
+</RelativeLayout>
+    

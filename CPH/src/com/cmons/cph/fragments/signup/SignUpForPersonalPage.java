@@ -30,8 +30,6 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
-
-	private TitleBar titleBar;
 	
 	private TextView tvCompanyName1;
 	private TextView tvCompanyName2;
@@ -62,8 +60,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	private EditText etCertification;
 	private Button btnSendCertification;
 	private Button btnCertify;
-	
-	private Button btnComplete;
 	
 	private int type;
 	private Shop shop;
@@ -110,8 +106,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		etCertification = (EditText) mThisView.findViewById(R.id.signUpForPersonalPage_etCertification);
 		btnSendCertification = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnSendCertification);
 		btnCertify = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnCertify);
-		
-		btnComplete = (Button) mThisView.findViewById(R.id.signUpForPersonalPage_btnComplete);
 	}
 
 	@Override
@@ -127,16 +121,14 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			shop = (Shop) getArguments().getSerializable("shop");
 			categoryString = getArguments().getString("categoryString");
 		}
+		
+		title = getString(R.string.inputUserInfo);
 	}
 
 	@Override
 	public void createPage() {
 
-		View bottomBlank = new View(mContext);
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(10, ResizeUtils.getSpecificLength(110));
-		rp.addRule(RelativeLayout.BELOW, R.id.signUpForPersonalPage_btnComplete);
-		bottomBlank.setLayoutParams(rp);
-		((RelativeLayout) mThisView.findViewById(R.id.signUpForPersonalPage_relativeBusiness)).addView(bottomBlank);
+		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
 		switch(type) {
 		
@@ -194,8 +186,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 				tvCompanyLocation2.setText(((Retail)shop).getAddress());
 			}
 		}
-		
-		titleBar.setTitleText(R.string.inputUserInfo);
 	}
 
 	@Override
@@ -270,7 +260,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			}
 		});
 		
-		btnComplete.setOnClickListener(new OnClickListener() {
+		titleBar.getBtnSubmit().setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -292,50 +282,43 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		//tvCompanyName1.
 		rp = (RelativeLayout.LayoutParams) tvCompanyName1.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.leftMargin = ResizeUtils.getSpecificLength(70);
-		rp.topMargin = ResizeUtils.getSpecificLength(74);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCompanyName2.
 		rp = (RelativeLayout.LayoutParams) tvCompanyName2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvCompanyPhone1.
 		rp = (RelativeLayout.LayoutParams) tvCompanyPhone1.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCompanyPhone2.
 		rp = (RelativeLayout.LayoutParams) tvCompanyPhone2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvCompanyLocation1.
 		rp = (RelativeLayout.LayoutParams) tvCompanyLocation1.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCompanyLocation2.
 		rp = (RelativeLayout.LayoutParams) tvCompanyLocation2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvName.
 		rp = (RelativeLayout.LayoutParams) tvName.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
-		rp.leftMargin = ResizeUtils.getSpecificLength(70);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//etName.
 		rp = (RelativeLayout.LayoutParams) etName.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvId.
 		rp = (RelativeLayout.LayoutParams) tvId.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
-		rp.leftMargin = ResizeUtils.getSpecificLength(70);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCheckId.
 		rp = (RelativeLayout.LayoutParams) tvCheckId.getLayoutParams();
@@ -344,28 +327,26 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		//etId.
 		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPw.
 		rp = (RelativeLayout.LayoutParams) tvPw.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCheckPw.
 		rp = (RelativeLayout.LayoutParams) tvCheckPw.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.leftMargin = ResizeUtils.getSpecificLength(30);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//etPw.
 		rp = (RelativeLayout.LayoutParams) etPw.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPwConfirm.
 		rp = (RelativeLayout.LayoutParams) tvPwConfirm.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCheckConfirmPw.
 		rp = (RelativeLayout.LayoutParams) tvCheckConfirmPw.getLayoutParams();
@@ -374,60 +355,56 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		//etPwConfirm.
 		rp = (RelativeLayout.LayoutParams) etPwConfirm.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//tvPhone.
 		rp = (RelativeLayout.LayoutParams) tvPhone.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//etPhone.
 		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		//etCertification.
 		rp = (RelativeLayout.LayoutParams) etCertification.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(325);
+		rp.width = ResizeUtils.getSpecificLength(448);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//btnSendCertification.
 		rp = (RelativeLayout.LayoutParams) btnSendCertification.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(234);
+		rp.width = ResizeUtils.getSpecificLength(272);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.leftMargin = ResizeUtils.getSpecificLength(23);
 		
 		//btnCertify.
 		rp = (RelativeLayout.LayoutParams) btnCertify.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(234);
+		rp.width = ResizeUtils.getSpecificLength(272);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.leftMargin = ResizeUtils.getSpecificLength(23);
 		
-		//btnComplete.
-		rp = (RelativeLayout.LayoutParams) btnComplete.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(583);
-		rp.height = ResizeUtils.getSpecificLength(74);
-		rp.topMargin = ResizeUtils.getSpecificLength(24);
-		
-		FontUtils.setFontSize(tvCompanyName1, 34);
+		FontUtils.setFontSize(tvCompanyName1, 30);
 		FontUtils.setFontSize(tvCompanyName2, 30);
-		FontUtils.setFontSize(tvCompanyPhone1, 34);
+		FontUtils.setFontSize(tvCompanyPhone1, 30);
 		FontUtils.setFontSize(tvCompanyPhone2, 30);
-		FontUtils.setFontSize(tvCompanyLocation1, 34);
+		FontUtils.setFontSize(tvCompanyLocation1, 30);
 		FontUtils.setFontSize(tvCompanyLocation2, 30);
-		
-		FontUtils.setFontSize(tvId, 34);
-		FontUtils.setFontSize(tvPw, 34);
-		FontUtils.setFontSize(tvPwConfirm, 34);
-		FontUtils.setFontSize(tvPhone, 34);
+
+		FontUtils.setFontSize(tvName, 30);
+		FontUtils.setFontSize(tvId, 30);
+		FontUtils.setFontSize(tvPw, 30);
+		FontUtils.setFontSize(tvPwConfirm, 30);
+		FontUtils.setFontSize(tvPhone, 30);
 		
 		FontUtils.setFontSize(tvCheckId, 22);
 		FontUtils.setFontSize(tvCheckPw, 22);
 		FontUtils.setFontSize(tvCheckConfirmPw, 22);
-		
-		FontUtils.setFontSize(etCertification, 30);
+
+		FontUtils.setFontAndHintSize(etName, 30, 24);
+		FontUtils.setFontAndHintSize(etId, 30, 24);
+		FontUtils.setFontAndHintSize(etPw, 30, 24);
+		FontUtils.setFontAndHintSize(etPwConfirm, 30, 24);
+		FontUtils.setFontAndHintSize(etName, 30, 24);
+		FontUtils.setFontAndHintSize(etPhone, 30, 24);
+		FontUtils.setFontAndHintSize(etCertification, 30, 24);
 	}
 	
 	@Override

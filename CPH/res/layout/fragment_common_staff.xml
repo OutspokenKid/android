@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleStaffPage_titleBar" 
+	    android:id="@+id/commonStaffPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,32 +15,32 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/wholesaleStaffPage_ivBg" 
+        android:id="@+id/commonStaffPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
 	    android:scaleType="centerCrop" />
     
     <Button 
-        android:id="@+id/wholesaleStaffPage_btnRequest" 
+        android:id="@+id/commonStaffPage_btnRequest" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleStaffPage_titleBar"
+	    android:layout_below="@id/commonStaffPage_titleBar"
 	    android:layout_alignParentLeft="true"
 	    android:background="@drawable/staff_confirm_btn_a" />
        
 	<Button 
-        android:id="@+id/wholesaleStaffPage_btnStaff" 
+        android:id="@+id/commonStaffPage_btnStaff" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleStaffPage_btnRequest"
-	    android:layout_toRightOf="@id/wholesaleStaffPage_btnRequest"
+	    android:layout_alignTop="@id/commonStaffPage_btnRequest"
+	    android:layout_toRightOf="@id/commonStaffPage_btnRequest"
 	    android:background="@drawable/staff_list_btn_b" />
 
 	<ListView 
-	    android:id="@+id/wholesaleStaffPage_listView" 
+	    android:id="@+id/commonStaffPage_listView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleStaffPage_btnRequest"
+	    android:layout_below="@id/commonStaffPage_btnRequest"
 	    android:layout_alignParentLeft="true" />
     
 </RelativeLayout>

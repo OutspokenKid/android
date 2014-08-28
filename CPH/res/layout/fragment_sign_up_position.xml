@@ -4,38 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <!-- 배경. -->
-	    
-    <ImageView 
-        android:id="@+id/signUpForPositionPage_ivBg"
-        android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:scaleType="centerCrop" />
-    
 	<!-- 타이틀바. -->
 
 	<com.cmons.cph.views.TitleBar
 	    android:id="@+id/signUpForPositionPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp" />
+	
+	<!-- 배경. -->
+	    
+    <ImageView 
+        android:id="@+id/signUpForPositionPage_ivBg"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/signUpForPositionPage_titleBar"
+    	android:scaleType="centerCrop" />
     
     <Button
         android:id="@+id/signUpForPositionPage_btnPosition1"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/signUpForPositionPage_titleBar"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/signUpForPositionPage_btnPosition2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@id/signUpForPositionPage_btnPosition1"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/signUpForPositionPage_btnPosition3"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp" 
         android:layout_below="@id/signUpForPositionPage_btnPosition2"
         android:layout_centerHorizontal="true" />

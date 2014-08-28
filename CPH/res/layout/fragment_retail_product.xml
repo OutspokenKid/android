@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailProductPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/retailProductPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailProductPage_titleBar"
+	    android:scaleType="centerCrop" />
+
+    <ScrollView
+        android:id="@+id/retailProductPage_scrollView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailProductPage_titleBar" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+	    	android:layout_height="wrap_content" >
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvStatus"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:text="@string/productSelling"
+		        android:textColor="#fff"
+		        android:gravity="center" />
+            
+            <View
+                android:id="@+id/retailProductPage_checkbox"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/myshop_checkbox_a" /> 
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvSoldOut"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/retailProductPage_checkbox"
+		        android:layout_toLeftOf="@id/retailProductPage_checkbox"
+		        android:text="@string/soldOut"
+		        android:textColor="#fff"
+		        android:gravity="center" />
+            
+            <!-- 상품 사진 등록. -->
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvImage"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvStatus"
+		        android:text="@string/productPhoto"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+            
+            <!-- 뷰 페이저. -->
+            <android.support.v4.view.ViewPager
+		        android:id="@+id/retailProductPage_viewPager" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_below="@id/retailProductPage_tvImage" />
+            
+            <View
+                android:id="@+id/retailProductPage_arrowLeft" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/retailProductPage_viewPager"
+			    android:layout_alignParentLeft="true"
+			    android:background="@drawable/arrow1_btn" />
+            
+            <View
+                android:id="@+id/retailProductPage_arrowRight" 
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignTop="@id/retailProductPage_viewPager"
+			    android:layout_alignParentRight="true"
+			    android:background="@drawable/arrow2_btn" />
+            
+            <!-- 상품명 -->
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvName"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_viewPager"
+		        android:text="@string/productName"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <TextView
+		        android:id="@+id/retailProductPage_tvName2"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailProductPage_tvName"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:textColor="#000" />
+		    
+		    <!-- 상품가격. -->
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvPrice"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvName2"
+		        android:text="@string/productPrice"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <TextView
+		        android:id="@+id/retailProductPage_tvPrice2"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailProductPage_tvPrice"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:textColor="#000" />
+		    
+		    <!-- 상품분류. -->
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvCategory"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvPrice2"
+		        android:text="@string/productCategory"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvCategory2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvCategory"
+		        android:background="@drawable/text_box"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 상품색상. -->
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvColor"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvCategory2"
+		        android:text="@string/productColor"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvColor2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvColor"
+		        android:background="@drawable/text_box"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 상품사이즈. -->
+
+			<TextView
+		        android:id="@+id/retailProductPage_tvSize"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvColor2"
+		        android:text="@string/productSize"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvSize2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvSize"
+		        android:background="@drawable/text_box"
+		        android:textColor="#000"
+		        android:gravity="center" />
+		    
+		    <!-- 혼용률. -->
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvMixtureRate"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvSize2"
+		        android:text="@string/productMixtureRate"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		    <TextView
+		        android:id="@+id/retailProductPage_tvMixtureRate2"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailProductPage_tvMixtureRate"
+			    android:background="@drawable/text_box"
+			    android:gravity="center"
+			    android:textColor="#000" />
+		    
+		    <!-- 상품설명. -->
+		    
+		    <TextView
+		        android:id="@+id/retailProductPage_tvDescription"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvMixtureRate2"
+		        android:text="@string/productDescription"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+		   <TextView
+		        android:id="@+id/retailProductPage_tvDescription2"
+		        android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/retailProductPage_tvDescription"
+			    android:background="@drawable/text_box"
+			    android:gravity="center_horizontal|top"
+			    android:textColor="#000" />
+		    
+		    <!-- 상품 끌어올리기. -->
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvPullUp"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvDescription2"
+		        android:text="@string/pullUpProduct"
+		        android:textColor="#fff"
+		        android:gravity="bottom" />
+            
+            <TextView
+		        android:id="@+id/retailProductPage_tvPullUp2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignBottom="@id/retailProductPage_tvPullUp"
+		        android:layout_toRightOf="@id/retailProductPage_tvPullUp"
+		        android:text="@string/productPullUpDesc"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical" />
+		    
+		    <Button
+		        android:id="@+id/retailProductPage_btnPullUp"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/retailProductPage_tvPullUp"
+		        android:background="@drawable/myshop_pullup_btn" />
+		    
+        </RelativeLayout>
+        
+    </ScrollView>
+    
+</RelativeLayout>

@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleChangeInfoPage_titleBar" 
+	    android:id="@+id/commonChangeInfoPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,24 +15,24 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/wholesaleChangeInfoPage_ivBg" 
+        android:id="@+id/commonChangeInfoPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleChangeInfoPage_titleBar"
+	    android:layout_below="@id/commonChangeInfoPage_titleBar"
 	    android:scaleType="centerCrop" />
 
     <Button
-        android:id="@+id/wholesaleChangeInfoPage_btnChangePassword"
+        android:id="@+id/commonChangeInfoPage_btnChangePassword"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/wholesaleChangeInfoPage_titleBar"
+        android:layout_below="@id/commonChangeInfoPage_titleBar"
         android:background="@drawable/password2_btn" />
     
     <Button
-        android:id="@+id/wholesaleChangeInfoPage_btnChangePhoneNumber"
+        android:id="@+id/commonChangeInfoPage_btnChangePhoneNumber"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/wholesaleChangeInfoPage_btnChangePassword"
+        android:layout_below="@id/commonChangeInfoPage_btnChangePassword"
         android:background="@drawable/phonnumber_btn" />
     
 </RelativeLayout>

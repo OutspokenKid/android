@@ -3,11 +3,12 @@ package com.cmons.cph.fragments.wholesale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.cmons.cph.R;
@@ -76,7 +77,11 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showNoticePage(null, true, false);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("notice", null);
+				bundle.putBoolean("isEdit", true);
+				bundle.putBoolean("isAppNotice", false);
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE, null);
 			}
 		});
 		
@@ -86,19 +91,31 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
+				boolean isEdit = false;
+				boolean isAppNotice = false;
+				
 				if(isAppNotice) {
-					mActivity.showNoticePage((Notice)models.get(arg2), false, true);
+					isEdit = false;
+					isAppNotice = true;
 				} else {
 					
 					//대표.
 					if(mActivity.user.getRole() % 100 == 0) {
-						mActivity.showNoticePage((Notice)models.get(arg2), true, false);
+						isEdit = true;
+						isAppNotice = false;
 						
 					//대표 아님.
 					} else {
-						mActivity.showNoticePage((Notice)models.get(arg2), false, false);
+						isEdit = false;
+						isAppNotice = false;
 					}
 				}
+				
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("notice", (Notice)models.get(arg2));
+				bundle.putBoolean("isEdit", isEdit);
+				bundle.putBoolean("isAppNotice", isAppNotice);
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE, null);
 			}
 		});
 	}
