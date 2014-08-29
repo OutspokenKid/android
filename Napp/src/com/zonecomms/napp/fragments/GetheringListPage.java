@@ -208,7 +208,7 @@ public class GetheringListPage extends BaseListFragment {
 			
 			url = ZoneConstants.BASE_URL + "sb/search/list" +
 					"?last_sb_nid=" + lastIndexno +
-					"&image_size=" + ResizeUtils.getSpecificLength(150) +
+					"&image_size=150" +
 					"&keyword=" + keyword +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID|AppInfoUtils.WITHOUT_SB_ID);
 		} else{
@@ -231,7 +231,7 @@ public class GetheringListPage extends BaseListFragment {
 
 			*/
 			url = ZoneConstants.BASE_URL + "sb/board_list" +
-					"?image_size=" + ResizeUtils.getSpecificLength(150) +
+					"?image_size=150" +
 					"&last_sb_nid=" + lastIndexno +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID|AppInfoUtils.WITHOUT_SB_ID);
 			

@@ -150,7 +150,7 @@ public class IntroActivity extends Activity {
 	
 		int currentSponserVersion = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_SPONSER, "version");
 		String url = ZoneConstants.BASE_URL + "common/mainbanner" +
-				"?image_size=" + ResizeUtils.getScreenWidth() +
+				"?image_size=640" +
 				"&ver=" + currentSponserVersion;
 		
 		AsyncStringDownloader.download(url, null, ocl);
@@ -224,7 +224,7 @@ public class IntroActivity extends Activity {
 		};
 
 		String url = ZoneConstants.BASE_URL + "common/common_popup" +
-				"?image_size=" + ResizeUtils.getScreenWidth();
+				"?image_size=640";
 		AsyncStringDownloader.download(url, null, ocl);
 	}
 	

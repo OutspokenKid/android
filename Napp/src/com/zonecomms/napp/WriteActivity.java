@@ -18,49 +18,46 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.Selection;
-
-import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.StringUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.outspoken_kid.activities.RecyclingActivity;
-import com.zonecomms.napp.classes.ApplicationManager;
 import com.outspoken_kid.classes.FontInfo;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo_dark.HoloStyleSpinnerPopup.OnItemClickedListener;
-import com.zonecomms.napp.classes.ZoneConstants;
 import com.zonecomms.common.adapters.GridAdapter;
 import com.zonecomms.common.models.Papp;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.wrappers.ViewWrapperForPapp;
+import com.zonecomms.napp.classes.ApplicationManager;
+import com.zonecomms.napp.classes.ZoneConstants;
 
 public class WriteActivity extends RecyclingActivity {
 
@@ -257,7 +254,7 @@ public class WriteActivity extends RecyclingActivity {
 		
 		String url = ZoneConstants.BASE_URL + "sb/papp_list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&image_size=" + ResizeUtils.getSpecificLength(150) +
+				"&image_size=150" +
 				"&last_sb_nid=" + lastIndexno +
 				"&s_cate_id=" + s_cate_id;
 
@@ -608,20 +605,6 @@ public class WriteActivity extends RecyclingActivity {
 			@Override
 			public void onRefresh(PullToRefreshBase<GridView> refreshView) {
 				onRefreshPage();
-			}
-		});
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
 			}
 		});
 		frameForPosting.addView(gridView);

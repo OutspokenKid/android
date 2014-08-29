@@ -43,6 +43,28 @@ public abstract class BaseFragment extends Fragment {
 	public abstract void onSoftKeyboardHidden();
 	
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		mContext = getActivity();
+		mActivity = ApplicationManager.getInstance().getActivity();
+		SetupClass.setupApplication(mActivity);
+		ApplicationManager.getInstance().addFragment(this);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		
+		if(container == null) {
+			return null;
+		}
+		
+		mThisView = inflater.inflate(getXmlResId(), null);
+		return mThisView;
+	}
+	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
@@ -60,28 +82,6 @@ public abstract class BaseFragment extends Fragment {
 		
 		setListeners();
 		setSizes();
-	}
-	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
-		if(container == null) {
-			return null;
-		}
-		
-		mThisView = inflater.inflate(getXmlResId(), null);
-		return mThisView;
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		
-		mContext = getActivity();
-		mActivity = ApplicationManager.getInstance().getActivity();
-		SetupClass.setupApplication(mActivity);
-		ApplicationManager.getInstance().addFragment(this);
 	}
 
 	@Override

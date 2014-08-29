@@ -266,7 +266,7 @@ public class PostPage extends BaseFragment {
 		}
 				
 		url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&image_size=" + ResizeUtils.getSpecificLength(640) +
+				"&image_size=640" +
 				"&spot_nid=" + spot_nid;
 		super.downloadInfo();
 		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
@@ -594,7 +594,7 @@ public class PostPage extends BaseFragment {
 		String url = ZoneConstants.BASE_URL + "reply/list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&spot_nid=" + spot_nid +
-				"&image_size=" + ResizeUtils.getSpecificLength(100) +
+				"&image_size=100" +
 				"&last_reply_nid=" + lastIndexno;
 		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 	}

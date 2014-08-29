@@ -103,8 +103,6 @@ public class ViewWrapperForPapp extends ViewWrapper {
 				@Override
 				public void onClick(View v) {
 
-					LogUtils.log("papp clicked.  isCheckable : " + app.isCheckable() + "  isSelectable : "+ app.isSelectable());
-
 					switch(app.getType()) {
 					
 					case Papp.TYPE_WRITE:

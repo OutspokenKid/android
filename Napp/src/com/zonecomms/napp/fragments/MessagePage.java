@@ -251,7 +251,7 @@ public class MessagePage extends BaseListFragment {
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + member_id +
 					"&last_microspot_nid=" + lastIndexno +
-					"&image_size=" + ResizeUtils.getSpecificLength(640);
+					"&image_size=400";
 			
 			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
 				

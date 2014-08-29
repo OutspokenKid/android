@@ -272,7 +272,7 @@ public class SignInActivity extends RecyclingActivity {
 			String url = ZoneConstants.BASE_URL + "auth/login" +
 					"?id=" + URLEncoder.encode(id, "UTF-8") + 
 					"&password=" + URLEncoder.encode(pw, "UTF-8") + 
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 			AsyncStringDownloader.download(url, null, ocl);
 		} catch(Exception e) {

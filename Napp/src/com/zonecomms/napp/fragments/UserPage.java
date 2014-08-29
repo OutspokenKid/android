@@ -74,6 +74,7 @@ public class UserPage extends BaseListFragment {
 	
 	private FrameLayout mainLayout;
 	private RelativeLayout relative;
+	private FrameLayout imageFrame;
 	private ProgressBar progress;
 	private ImageView ivImage;
 	private TextView tvNickname;
@@ -157,7 +158,7 @@ public class UserPage extends BaseListFragment {
 		madeCount += 27;
 
 		//id : 0
-		FrameLayout imageFrame = new FrameLayout(mContext);
+		imageFrame = new FrameLayout(mContext);
 		rp = new RelativeLayout.LayoutParams(l*2 + s, l*2 + s);
 		rp.topMargin = s;
 		rp.leftMargin = s;
@@ -570,7 +571,7 @@ public class UserPage extends BaseListFragment {
 										"&profile_image=" + uploadImageInfo.getImageUrl() +
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
-										"&image_size=" + ResizeUtils.getSpecificLength(308);
+										"&image_size=308";
 								AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
 									
 									@Override
@@ -625,6 +626,10 @@ public class UserPage extends BaseListFragment {
 
 	@Override
 	protected void downloadInfo() {
+		
+		if(isDownloading || isLastList) {
+			return;
+		}
 		
 		if(mode == 1 || mode == 2) {
 			loadPosts();
@@ -1073,7 +1078,7 @@ public class UserPage extends BaseListFragment {
 			url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + userId +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 			
 			mActivity.showLoadingView();
 			AsyncStringDownloader.download(url, getDownloadKey(), ocl);
@@ -1102,7 +1107,7 @@ public class UserPage extends BaseListFragment {
 			
 			if(myStoryInfo.getMystory_member_id().equals(MainActivity.myInfo.getMember_id())) {
 				
-				ivImage.setOnClickListener(new OnClickListener() {
+				imageFrame.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -1134,7 +1139,7 @@ public class UserPage extends BaseListFragment {
 				tvLiveLocation.setOnClickListener(ocl);
 				tvActiveLocation.setOnClickListener(ocl);
 			} else {
-				ivImage.setOnClickListener(new OnClickListener() {
+				imageFrame.setOnClickListener(new OnClickListener() {
 					
 					@Override
 					public void onClick(View v) {
@@ -1234,12 +1239,12 @@ public class UserPage extends BaseListFragment {
 			return;
 		}
 
-		super.downloadInfo();
+		isDownloading = true;
 		
 		url = ZoneConstants.BASE_URL + "spot/list" +
 				"?member_id=" + userId + 
 				"&last_spot_nid=" + lastIndexno +
-				"&image_size=" + ResizeUtils.getSpecificLength(308) +
+				"&image_size=308" +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 
 		if(mode == 1) {
@@ -1306,21 +1311,21 @@ public class UserPage extends BaseListFragment {
 			return;
 		}
 		
-		super.downloadInfo();
+		isDownloading = true;
 		
 		String url = null;
 		
 		if(userId.equals(MainActivity.myInfo.getMember_id())) {
 			url = ZoneConstants.BASE_URL + "microspot/relationList" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 					
 		} else {
 			url = ZoneConstants.BASE_URL + "microspot/message_tap" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&friend_member_id=" + userId +
 					"&last_microspot_nid=0" +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 		}
 
 		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
@@ -1470,7 +1475,6 @@ public class UserPage extends BaseListFragment {
 	protected String generateDownloadKey() {
 		return "USERPAGE" + madeCount;
 	}
-
 
 	@Override
 	protected int getXmlResId() {

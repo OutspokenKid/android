@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -217,6 +218,7 @@ public class ViewForReply extends RelativeLayout {
 		
 		if(!StringUtils.isEmpty(reply.getContent())) {
 			tvText.setText(reply.getContent());
+			tvText.setAutoLinkMask(Linkify.WEB_URLS|Linkify.EMAIL_ADDRESSES);
 		}
 		
 		if(reply.getTarget_member().size() != 0) {

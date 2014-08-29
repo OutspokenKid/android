@@ -14,7 +14,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.common.adapters.ListAdapter;
@@ -95,21 +94,21 @@ public class ListPage extends BaseListFragment {
 		if(type == ZoneConstants.TYPE_LIST_PAPP && getArguments() != null) {
 			url = ZoneConstants.BASE_URL + "sb/category_papp_list" +
 					"?s_cate_id=" + getArguments().getInt("s_cate_id") +
-					"&image_size=" + ResizeUtils.getSpecificLength(150);
+					"&image_size=150";
 		} else if(type == ZoneConstants.TYPE_LIST_NOTICE){
 			url = ZoneConstants.BASE_URL + "notice/list" +
 					"?notice_type=1" +
-					"&image_size=" + ResizeUtils.getSpecificLength(640) +
+					"&image_size=640" +
 					"&last_notice_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_LIST_GUIDE) {
 			url = ZoneConstants.BASE_URL + "notice/list" +
 					"?notice_type=6" +
-					"&image_size=" + ResizeUtils.getSpecificLength(640) +
+					"&image_size=640" +
 					"&last_notice_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_LIST_QNA) {
 			url = ZoneConstants.BASE_URL + "notice/list" +
 					"?notice_type=5" +
-					"&image_size=" + ResizeUtils.getSpecificLength(640) +
+					"&image_size=640" +
 					"&last_notice_nid=" + lastIndexno;
 		}
 		

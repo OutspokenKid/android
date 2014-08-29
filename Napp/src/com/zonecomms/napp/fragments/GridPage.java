@@ -138,14 +138,14 @@ public class GridPage extends BaseListFragment {
 			url += "sb/category_papp_list" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
 					"&s_cate_id=" + s_cate_id +
-					"&image_size=" + ResizeUtils.getSpecificLength(150);
+					"&image_size=150";
 			break;
 			
 		case ZoneConstants.TYPE_GRID_POST:
 			url += "spot/list" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
 					"&concern_kind=" + concern_kind +
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&last_spot_nid=" + lastIndexno;
 			
 			break;
@@ -153,7 +153,7 @@ public class GridPage extends BaseListFragment {
 		case ZoneConstants.TYPE_GRID_POST_FRIENDS:
 			url += "spot/latestSpotListByFriends" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&last_spot_nid=" + lastIndexno;
 			break;
 		
@@ -167,7 +167,7 @@ public class GridPage extends BaseListFragment {
 			url += "spot/list/with_category" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
 					"&s_cate_id=" + s_cate_id +
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&last_spot_nid=" + lastIndexno;
 			break;
 
@@ -182,7 +182,7 @@ public class GridPage extends BaseListFragment {
 				url += "?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL);
 			}
 			
-			url += "&image_size=" + ResizeUtils.getSpecificLength(150) +
+			url += "&image_size=150" +
 					"&last_friend_plus_nid=" + lastIndexno;
 			break;
 		
@@ -205,7 +205,7 @@ public class GridPage extends BaseListFragment {
 			url += "member/search/user" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
 					"&keyword=" + keyword +
-					"&image_size=" + ResizeUtils.getSpecificLength(150);
+					"&image_size=150";
 			
 			if(lastIndexno == 0) {
 				url += "&last_member_nid="; 
@@ -216,7 +216,7 @@ public class GridPage extends BaseListFragment {
 			
 		case ZoneConstants.TYPE_GRID_POST_GETHERING:
 			url +=  "boardspot/list" +
-					"?image_size=" + ResizeUtils.getSpecificLength(308) +
+					"?image_size=308" +
 					"&last_spot_nid=" + lastIndexno +
 					"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID);
 			break;
@@ -224,7 +224,7 @@ public class GridPage extends BaseListFragment {
 		case ZoneConstants.TYPE_GRID_POST_GETHERING_INTRO:
 			url += "spot/list" +
 					"?concern_kind=050" +
-					"&image_size=" + ResizeUtils.getSpecificLength(308) +
+					"&image_size=308" +
 					"&last_spot_nid=" + lastIndexno;
 			break;
 		}

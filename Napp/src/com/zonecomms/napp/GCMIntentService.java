@@ -167,7 +167,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	 * @param spot_nid : 댓글인 경우 글의 nid.
 	 */
 	public void handleMessage(Context context, String push_msg, String msg_type, 
-			String member_id, String post_member_id, int spot_nid) {
+			final String member_id, String post_member_id, int spot_nid) {
 
 		if(msg_type == null) {
 			return;
@@ -179,15 +179,22 @@ public class GCMIntentService extends GCMBaseIntentService {
 				&& member_id != null
 				&& ApplicationManager.getTopFragment() instanceof MessagePage) {
 			
-			try {
-				MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
+			ApplicationManager.getInstance().getActivity().runOnUiThread(new Runnable() {
 				
-				if(mp.getFriend_member_id() != null
-						&& mp.getFriend_member_id().equals(member_id)) {
-					mp.onRefreshPage();
+				@Override
+				public void run() {
+
+					try {
+						MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
+						
+						if(mp.getFriend_member_id() != null
+								&& mp.getFriend_member_id().equals(member_id)) {
+							mp.onRefreshPage();
+						}
+					} catch(Exception e) {
+					}
 				}
-			} catch(Exception e) {
-			}
+			});
 		} else {
 
 			String uriString = "";

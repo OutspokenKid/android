@@ -259,7 +259,7 @@ public class ProfilePopup extends FrameLayout {
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + URLEncoder.encode(userId, "UTF-8") +
-					"&image_size=" + ResizeUtils.getSpecificLength(400);
+					"&image_size=400";
 			String key = ApplicationManager.getDownloadKeyFromTopFragment();
 			
 			AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {

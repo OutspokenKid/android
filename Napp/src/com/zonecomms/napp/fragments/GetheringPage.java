@@ -746,7 +746,7 @@ public class GetheringPage extends BaseListFragment {
 		
 		String url = ZoneConstants.BASE_URL + "sb/info" +
 				"?sb_id=" + sb_id +
-				"&image_size=" + ResizeUtils.getSpecificLength(308) +
+				"&image_size=308" +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID);
 		
 		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
@@ -877,7 +877,7 @@ public class GetheringPage extends BaseListFragment {
 		
 		String url = ZoneConstants.BASE_URL + "boardspot/list" +
 				"?sb_id=" + sb_id +
-				"&image_size=" + ResizeUtils.getSpecificLength(308) +
+				"&image_size=308" +
 				"&last_spot_nid=" + lastIndexno +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID);
 		
@@ -932,7 +932,7 @@ public class GetheringPage extends BaseListFragment {
 
 		String url = ZoneConstants.BASE_URL + "sb/member_list" +
 				"?sb_id=" + sb_id +
-				"&image_size=" + ResizeUtils.getSpecificLength(150) +
+				"&image_size=150" +
 				"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_SB_ID);
 
 		if(modelsForList.size() != 0) {

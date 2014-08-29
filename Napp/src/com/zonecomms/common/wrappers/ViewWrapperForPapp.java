@@ -71,7 +71,6 @@ public class ViewWrapperForPapp extends ViewWrapperForZonecomms {
 				
 				if(app.isCheckable()) {
 					check.setVisibility(View.VISIBLE);
-					setChecked(checked);
 				} else {
 					check.setVisibility(View.INVISIBLE);
 				}
