@@ -65,6 +65,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 	private String introduce;
 
 	private ProgressBar progress;
+	private FrameLayout imageFrame;
 	private ImageView ivImage;
 	private HoloStyleEditText etNickname;
 	private HoloStyleSpinnerButton spGender;
@@ -88,7 +89,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 	@Override
 	public void createPage() {
 
-		FrameLayout imageFrame = new FrameLayout(mContext);
+		imageFrame = new FrameLayout(mContext);
 		ResizeUtils.viewResize(200, 200, imageFrame, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 50, 0, 0});
 		imageFrame.setBackgroundColor(TitleBar.titleBarColor);
 		innerFrame.addView(imageFrame);
@@ -102,7 +103,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 															LayoutParams.MATCH_PARENT));
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		ivImage.setBackgroundResource(R.drawable.profilel_01);
-		ivImage.setOnClickListener(new OnClickListener() {
+		imageFrame.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -309,7 +310,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 										"&profile_image=" + uploadImageInfo.getImageUrl() +
 										"&img_width=" + uploadImageInfo.getImageWidth() +
 										"&img_height=" + + uploadImageInfo.getImageHeight() +
-										"&image_size=" + ResizeUtils.getSpecificLength(308);
+										"&image_size=308";
 								DownloadUtils.downloadJSONString(url,
 										new OnJSONDownloadListener() {
 
@@ -381,7 +382,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 			String url = ZoneConstants.BASE_URL + "member/info" +
 					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&mystory_member_id=" + ZonecommsApplication.myInfo.getMember_id() +
-					"&image_size=" + ResizeUtils.getSpecificLength(308);
+					"&image_size=308";
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

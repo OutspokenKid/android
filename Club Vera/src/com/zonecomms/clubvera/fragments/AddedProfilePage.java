@@ -221,7 +221,7 @@ public class AddedProfilePage extends ZonecommsFragment {
 					String url2 = ZoneConstants.BASE_URL + "member/info" +
 							"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 							"&mystory_member_id=" + ZonecommsApplication.myInfo.getMember_id() +
-							"&image_size=" + ResizeUtils.getSpecificLength(308);
+							"&image_size=308";
 					
 					DownloadUtils.downloadJSONString(url2,
 							new OnJSONDownloadListener() {
