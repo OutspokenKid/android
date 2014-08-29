@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 
 import com.cmons.cph.R;
 import com.cmons.cph.wrappers.ViewWrapperForAccount;
+import com.cmons.cph.wrappers.ViewWrapperForFavoriteShop;
+import com.cmons.cph.wrappers.ViewWrapperForWholesaleWish;
 import com.cmons.cph.wrappers.ViewWrapperForCategory;
 import com.cmons.cph.wrappers.ViewWrapperForCustomer;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
@@ -22,6 +24,7 @@ import com.cmons.cph.wrappers.ViewWrapperForOrderSet;
 import com.cmons.cph.wrappers.ViewWrapperForProduct;
 import com.cmons.cph.wrappers.ViewWrapperForSample;
 import com.cmons.cph.wrappers.ViewWrapperForStaff;
+import com.cmons.cph.wrappers.ViewWrapperForWish;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -138,6 +141,15 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return R.layout.list_account;
+			
+		case CphConstants.ITEM_WHOLESALE_WISH:
+			return R.layout.list_wholesale_wish;
+			
+		case CphConstants.ITEM_WISH:
+			return R.layout.list_wish;
+			
+		case CphConstants.ITEM_WHOLESALE:
+			return R.layout.list_favorite_shop;
 		}
 		
 		return 0;
@@ -181,6 +193,15 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return new ViewWrapperForAccount(convertView, itemCode);
+			
+		case CphConstants.ITEM_WHOLESALE_WISH:
+			return new ViewWrapperForWholesaleWish(convertView, itemCode);
+			
+		case CphConstants.ITEM_WISH:
+			return new ViewWrapperForWish(convertView, itemCode);
+			
+		case CphConstants.ITEM_WHOLESALE:
+			return new ViewWrapperForFavoriteShop(convertView, itemCode);
 		}
 		
 		return null;

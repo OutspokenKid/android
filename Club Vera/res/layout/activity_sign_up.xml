@@ -5,7 +5,7 @@
     android:id="@+id/signUpActivity_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5" >
+    android:background="@color/renewal_bg" >
     
     <TextView
         android:id="@+id/signUpActivity_tvTitle"
@@ -21,7 +21,7 @@
         android:id="@+id/signUpActivity_frameForClause"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:background="#f5f5f5" />
+    	android:background="@color/renewal_bg" />
     
 	<!-- 필수 입력 사항 -->
     <ScrollView
@@ -30,7 +30,7 @@
     	android:layout_height="0dp"
     	android:fillViewport="true"
     	android:visibility="invisible"
-    	android:background="#f5f5f5" >
+    	android:background="@color/renewal_bg" >
 
         <FrameLayout
             android:id="@+id/signUpActivity_frameForMainInfo"
@@ -46,7 +46,7 @@
     	android:layout_height="0dp"
     	android:fillViewport="true"
     	android:visibility="invisible"
-    	android:background="#f5f5f5" >
+    	android:background="@color/renewal_bg" >
 
         <FrameLayout
             android:id="@+id/signUpActivity_frameForSubInfo"

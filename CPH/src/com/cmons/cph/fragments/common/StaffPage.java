@@ -163,12 +163,12 @@ public class StaffPage extends CmonsFragmentForShop {
 		switch (menuIndex) {
 		
 		case 0:
-			btnRequest.setBackgroundResource(R.drawable.sample_recommand_btn_a);
+			btnRequest.setBackgroundResource(R.drawable.staff_confirm_btn_a);
 			btnStaff.setBackgroundResource(R.drawable.staff_list_btn_b);
 			break;
 			
 		case 1:
-			btnRequest.setBackgroundResource(R.drawable.sample_recommand_btn_b);
+			btnRequest.setBackgroundResource(R.drawable.staff_confirm_btn_b);
 			btnStaff.setBackgroundResource(R.drawable.staff_list_btn_a);
 			break;
 		}

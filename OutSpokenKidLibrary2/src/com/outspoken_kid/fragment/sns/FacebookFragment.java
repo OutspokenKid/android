@@ -151,7 +151,7 @@ public abstract class FacebookFragment extends SNSFragment {
 	}
 
 	@Override
-	protected void logout() {
+	public void logout() {
 
 		if(isLoggedIn()) {
 			fbUserInfo = null;

@@ -4,7 +4,6 @@
 package com.zonecomms.clubvera;
 
 import android.content.DialogInterface.OnClickListener;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.FrameLayout;
@@ -25,7 +24,7 @@ public class ImageViewer extends ImageViewerActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(Color.parseColor("#f5f5f5"));
+		findViewById(R.id.imageviewerActivity_mainLayout).setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		
 	}
 	

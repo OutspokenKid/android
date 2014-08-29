@@ -26,6 +26,7 @@ import com.zonecomms.clubvera.classes.ZoneConstants;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.models.MessageSample;
 import com.zonecomms.common.utils.AppInfoUtils;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMessageSample extends ViewWrapper {
@@ -62,8 +63,13 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 		
 		ResizeUtils.viewResize(150, 150, imageBg, 2, Gravity.LEFT, null);
 		ResizeUtils.viewResize(150, 150, ivProfile, 2, Gravity.LEFT, null);
+		
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 150, 
+				row.findViewById(R.id.list_messagesample_bg), 2, 
+				Gravity.LEFT|Gravity.TOP, new int[]{158, 0, 0, 0});
+		
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvNickname, 2, Gravity.LEFT|Gravity.TOP, new int[]{166, 20, 0, 0});
-		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 20, 0, 0});
+		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvRegdate, 2, Gravity.RIGHT|Gravity.TOP, new int[]{0, 20, 8, 0});
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 40, tvContent, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{166, 0, 0, 20});
 		ResizeUtils.viewResize(40, 40, newCheck, 2, Gravity.RIGHT|Gravity.BOTTOM, null);
 		
@@ -75,9 +81,7 @@ public class ViewWrapperForMessageSample extends ViewWrapper {
 	@Override
 	public void setValues(BaseModel baseModel) {
 
-		if(ivProfile != null) {
-			ivProfile.setVisibility(View.INVISIBLE);
-		}
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
 		
 		try {
 			if(baseModel != null && baseModel instanceof MessageSample) {

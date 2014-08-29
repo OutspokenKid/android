@@ -16,7 +16,7 @@ import com.zonecomms.common.views.WrapperView;
 public abstract class ViewWrapper {
 
 	protected final int[] alphas = new int[] {
-			76, 63, 50, 37, 24, 37, 50, 63
+			50, 40, 30, 20, 10, 20, 30, 40
 	};
 
 	protected static int red, green, blue;
@@ -97,15 +97,13 @@ public abstract class ViewWrapper {
 			return;
 		}
 		
+		ivImage.setImageBitmap(null);
+		
 		if(url == null || url.length() == 0) {
-			ivImage.setImageBitmap(null);
-			ivImage.setVisibility(View.INVISIBLE);
 			return;
 		}
-
-		ivImage.setVisibility(View.INVISIBLE);
 		
-		final String CURRENT_URL = url;
+		ivImage.setTag(url);
 		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
@@ -116,11 +114,11 @@ public abstract class ViewWrapper {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					if(CURRENT_URL.equals(url)) {
+					String tag = ivImage.getTag().toString();
+					if(tag.equals(url)) {
 						
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);
-							ivImage.setVisibility(View.VISIBLE);
 						}
 					}
 				} catch (Exception e) {

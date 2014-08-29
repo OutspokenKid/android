@@ -1,6 +1,7 @@
 package com.zonecomms.clubvera.fragments;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -59,6 +60,7 @@ import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
+import com.zonecomms.common.views.TitleBar;
 
 public class UserPage extends ZonecommsFragment {
 
@@ -75,6 +77,7 @@ public class UserPage extends ZonecommsFragment {
 	private ImageView ivImage;
 	private TextView tvNickname;
 	private TextView tvIdGenderAge;
+	private View relation;
 	private TextView tvIntroduce;
 	private TextView tvPostCount;
 	private TextView tvFriendCount;
@@ -174,7 +177,7 @@ public class UserPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		imageFrame.setId(madeCount);
 		imageFrame.setLayoutParams(rp);
-		imageFrame.setBackgroundResource(R.drawable.bg_profile_308);
+		imageFrame.setBackgroundColor(TitleBar.titleBarColor);
 		relative.addView(imageFrame);
 
 		progress = new ProgressBar(mContext);
@@ -182,18 +185,21 @@ public class UserPage extends ZonecommsFragment {
 		imageFrame.addView(progress);
 		
 		ivImage = new ImageView(mContext);
-		ivImage.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
-															LayoutParams.MATCH_PARENT));
+		ivImage.setLayoutParams(new FrameLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+		ivImage.setBackgroundResource(R.drawable.r_profilel308_01);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		imageFrame.addView(ivImage);
 
 		//id : 1
 		View bgForBaseProfile = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l*2 + s, l/2);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, l/2);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
+		rp.rightMargin = s;
 		bgForBaseProfile.setLayoutParams(rp);
 		bgForBaseProfile.setId(madeCount + 1);
+		bgForBaseProfile.setBackgroundColor(Color.WHITE);
 		bgForBaseProfile.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -216,30 +222,43 @@ public class UserPage extends ZonecommsFragment {
 		relative.addView(bgForBaseProfile);
 		
 		tvNickname = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/3);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
 		tvNickname.setLayoutParams(rp);
 		tvNickname.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		tvNickname.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
-		tvNickname.setGravity(Gravity.CENTER);
+		tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
 		tvNickname.setMaxWidth(l);
 		tvNickname.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvNickname, 26);
 		relative.addView(tvNickname);
 		
 		tvIdGenderAge = new TextView(mContext);
-		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, l/2);
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
-		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
+		rp.topMargin = l/3 + s;
 		tvIdGenderAge.setLayoutParams(rp);
-		tvIdGenderAge.setPadding(0, 0, ResizeUtils.getSpecificLength(20), 0);
+		tvIdGenderAge.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		tvIdGenderAge.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		tvIdGenderAge.setGravity(Gravity.CENTER);
 		tvIdGenderAge.setMaxWidth(l);
 		tvIdGenderAge.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvIdGenderAge, 18);
 		relative.addView(tvIdGenderAge);
+		
+		relation = new View(mContext);
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(130), 
+				ResizeUtils.getSpecificLength(54));
+		rp.addRule(RelativeLayout.ALIGN_RIGHT, madeCount + 1);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
+		rp.topMargin = s*2;
+		rp.rightMargin = s*2;
+		relation.setLayoutParams(rp);
+		relation.setBackgroundResource(R.drawable.btn_friendon_01);
+		relative.addView(relation);
 		
 		tvIntroduce = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, l/2);
@@ -253,6 +272,7 @@ public class UserPage extends ZonecommsFragment {
 		tvIntroduce.setMaxLines(2);
 		tvIntroduce.setEllipsize(TruncateAt.END);
 		tvIntroduce.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
+		tvIntroduce.setBackgroundColor(Color.WHITE);
 		FontUtils.setFontSize(tvIntroduce, 18);
 		relative.addView(tvIntroduce);
 		
@@ -656,7 +676,6 @@ public class UserPage extends ZonecommsFragment {
 	public void addProfileScroll() {
 		
 		int textColor = getResources().getColor(R.color.renewal_text);
-		int hintColor = getResources().getColor(R.color.renewal_text_light);
 		
 		profileScroll = new ScrollView(mContext);
 		profileScroll.setLayoutParams(new FrameLayout.LayoutParams(-1, -1));
@@ -669,176 +688,334 @@ public class UserPage extends ZonecommsFragment {
 				2, Gravity.CENTER_HORIZONTAL, null);
 		profileScroll.addView(relative);
 
+		//////
+		
 		madeCount += 10;
 		RelativeLayout.LayoutParams rp;
-		int hp = ResizeUtils.getSpecificLength(8);
-		int vp = ResizeUtils.getSpecificLength(50);
-		int tp = ResizeUtils.getSpecificLength(20);
-		int width = LayoutParams.MATCH_PARENT;
-		int height = ResizeUtils.getSpecificLength(80);
+		int l = ResizeUtils.getSpecificLength(150);
+		int p = ResizeUtils.getSpecificLength(8);
+		int width = l*2 + p;
+		int height = l;
 		
 		//현재 상태		id : 0
 		tvStatus = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.leftMargin = hp;
-		rp.topMargin = vp;
-		rp.rightMargin = hp;
+		rp.rightMargin = p;
+		rp.bottomMargin = p;
 		tvStatus.setLayoutParams(rp);
-		tvStatus.setId(madeCount);
-		tvStatus.setBackgroundResource(R.drawable.bg_box_1);
-		tvStatus.setPadding(tp, tp, tp, tp);
+		tvStatus.setBackgroundColor(Color.WHITE);
+		tvStatus.setPadding(p, p, p, p);
 		tvStatus.setSingleLine();
 		tvStatus.setEllipsize(TruncateAt.END);
-		tvStatus.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvStatus.setGravity(Gravity.CENTER);
 		tvStatus.setTextColor(textColor);
-		FontUtils.setFontSize(tvStatus, 26);
+		tvStatus.setId(madeCount);
+		FontUtils.setFontSize(tvStatus, 30);
 		relative.addView(tvStatus);
-		
-		TextView tvStatusText = new TextView(mContext);
-		tvStatusText.setLayoutParams(rp);
-		tvStatusText.setPadding(tp, tp, tp, tp);
-		tvStatusText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvStatusText.setText(R.string.status);
-		tvStatusText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvStatusText, 26);
-		relative.addView(tvStatusText);
 		
 		//관심사			id : 1
 		tvInterested = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount);
-		rp.addRule(RelativeLayout.BELOW, madeCount);
-		rp.topMargin = vp;
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount);
+		rp.addRule(RelativeLayout.RIGHT_OF, madeCount);
 		tvInterested.setLayoutParams(rp);
-		tvInterested.setId(madeCount + 1);
-		tvInterested.setBackgroundResource(R.drawable.bg_box_1);
-		tvInterested.setPadding(tp, tp, tp, tp);
+		tvInterested.setBackgroundColor(Color.WHITE);
+		tvInterested.setPadding(p, p, p, p);
 		tvInterested.setSingleLine();
 		tvInterested.setEllipsize(TruncateAt.END);
-		tvInterested.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvInterested.setGravity(Gravity.CENTER);
 		tvInterested.setTextColor(textColor);
-		FontUtils.setFontSize(tvInterested, 26);
+		tvInterested.setId(madeCount + 1);
+		FontUtils.setFontSize(tvInterested, 30);
 		relative.addView(tvInterested);
 		
-		TextView tvInterestedText = new TextView(mContext);
-		tvInterestedText.setLayoutParams(rp);
-		tvInterestedText.setPadding(tp, tp, tp, tp);
-		tvInterestedText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvInterestedText.setText(R.string.interested);
-		tvInterestedText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvInterestedText, 26);
-		relative.addView(tvInterestedText);
-
 		//직업			id : 2
 		tvJob = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
-		rp.topMargin = vp;
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		rp.addRule(RelativeLayout.BELOW, madeCount);
+		rp.rightMargin = p;
+		rp.bottomMargin = p;
 		tvJob.setLayoutParams(rp);
-		tvJob.setId(madeCount + 2);
-		tvJob.setBackgroundResource(R.drawable.bg_box_2);
-		tvJob.setPadding(tp, tp, tp, tp);
+		tvJob.setBackgroundColor(Color.WHITE);
+		tvJob.setPadding(p, p, p, p);
 		tvJob.setSingleLine();
 		tvJob.setEllipsize(TruncateAt.END);
-		tvJob.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvJob.setGravity(Gravity.CENTER);
 		tvJob.setTextColor(textColor);
-		FontUtils.setFontSize(tvJob, 26);
+		tvJob.setId(madeCount + 2);
+		FontUtils.setFontSize(tvJob, 30);
 		relative.addView(tvJob);
 		
-		TextView tvJobText = new TextView(mContext);
-		tvJobText.setLayoutParams(rp);
-		tvJobText.setPadding(tp, tp, tp, tp);
-		tvJobText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvJobText.setText(R.string.job);
-		tvJobText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvJobText, 26);
-		relative.addView(tvJobText);
-
 		//직장/학교		id : 3
 		tvCompany = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 2);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 2);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 2);
+		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 2);
 		tvCompany.setLayoutParams(rp);
-		tvCompany.setId(madeCount + 3);
-		tvCompany.setBackgroundResource(R.drawable.bg_box_1);
-		tvCompany.setPadding(tp, tp, tp, tp);
+		tvCompany.setBackgroundColor(Color.WHITE);
+		tvCompany.setPadding(p, p, p, p);
 		tvCompany.setSingleLine();
 		tvCompany.setEllipsize(TruncateAt.END);
-		tvCompany.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvCompany.setGravity(Gravity.CENTER);
 		tvCompany.setTextColor(textColor);
-		FontUtils.setFontSize(tvCompany, 26);
+		tvCompany.setId(madeCount + 3);
+		FontUtils.setFontSize(tvCompany, 30);
 		relative.addView(tvCompany);
 		
-		TextView tvCompanyText = new TextView(mContext);
-		tvCompanyText.setLayoutParams(rp);
-		tvCompanyText.setPadding(tp, tp, tp, tp);
-		tvCompanyText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvCompanyText.setText(R.string.company);
-		tvCompanyText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvCompanyText, 26);
-		relative.addView(tvCompanyText);
-
 		//사는 곳			id : 4
 		tvLiveLocation = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
-		rp.topMargin = vp;
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 2);
+		rp.rightMargin = p;
 		tvLiveLocation.setLayoutParams(rp);
-		tvLiveLocation.setId(madeCount + 4);
-		tvLiveLocation.setBackgroundResource(R.drawable.bg_box_2);
-		tvLiveLocation.setPadding(tp, tp, tp, tp);
+		tvLiveLocation.setBackgroundColor(Color.WHITE);
+		tvLiveLocation.setPadding(p, p, p, p);
 		tvLiveLocation.setSingleLine();
 		tvLiveLocation.setEllipsize(TruncateAt.END);
-		tvLiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvLiveLocation.setGravity(Gravity.CENTER);
 		tvLiveLocation.setTextColor(textColor);
-		FontUtils.setFontSize(tvLiveLocation, 26);
+		tvLiveLocation.setId(madeCount + 4);
+		FontUtils.setFontSize(tvLiveLocation, 30);
 		relative.addView(tvLiveLocation);
 		
-		TextView tvLiveLocationText = new TextView(mContext);
-		tvLiveLocationText.setLayoutParams(rp);
-		tvLiveLocationText.setPadding(tp, tp, tp, tp);
-		tvLiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvLiveLocationText.setText(R.string.liveLocation);
-		tvLiveLocationText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvLiveLocationText, 26);
-		relative.addView(tvLiveLocationText);
-
 		//활동 지역		id : 5
 		tvActiveLocation = new TextView(mContext);
 		rp = new RelativeLayout.LayoutParams(width, height);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 4);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
+		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
+		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
 		tvActiveLocation.setLayoutParams(rp);
-		tvActiveLocation.setId(madeCount + 5);
-		tvActiveLocation.setBackgroundResource(R.drawable.bg_box_1);
-		tvActiveLocation.setPadding(tp, tp, tp, tp);
+		tvActiveLocation.setBackgroundColor(Color.WHITE);
+		tvActiveLocation.setPadding(p, p, p, p);
 		tvActiveLocation.setSingleLine();
 		tvActiveLocation.setEllipsize(TruncateAt.END);
-		tvActiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+		tvActiveLocation.setGravity(Gravity.CENTER);
 		tvActiveLocation.setTextColor(textColor);
-		FontUtils.setFontSize(tvActiveLocation, 26);
+		tvActiveLocation.setId(madeCount + 5);
+		FontUtils.setFontSize(tvActiveLocation, 30);
 		relative.addView(tvActiveLocation);
 		
-		TextView tvActiveLocationText = new TextView(mContext);
-		tvActiveLocationText.setLayoutParams(rp);
-		tvActiveLocationText.setPadding(tp, tp, tp, tp);
-		tvActiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvActiveLocationText.setText(R.string.activeLocation);
-		tvActiveLocationText.setTextColor(hintColor);
-		FontUtils.setFontSize(tvActiveLocationText, 26);
-		relative.addView(tvActiveLocationText);
-		
 		View bottomBlank = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(1, vp);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 5);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 5);
+		rp = new RelativeLayout.LayoutParams(1, p);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
 		bottomBlank.setLayoutParams(rp);
 		relative.addView(bottomBlank);
+
+		int s = ResizeUtils.getSpecificLength(8);
+		int titleColor = getResources().getColor(R.color.renewal_text_dark);
+		
+		for(int i=0; i<6; i++) {
+			TextView titleText = new TextView(mContext);
+			rp = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, 
+					LayoutParams.WRAP_CONTENT);
+			rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + i);
+			rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + i);
+			rp.leftMargin = s;
+			rp.topMargin = s;
+			titleText.setLayoutParams(rp);
+			FontUtils.setFontSize(titleText, 18);
+			titleText.setTextColor(titleColor);
+			relative.addView(titleText);
+			
+			switch(i) {
+			
+			case 0:
+				titleText.setText("현재상태");
+				break;
+			case 1:
+				titleText.setText("관심사");
+				break;
+			case 2:
+				titleText.setText("직업");
+				break;
+			case 3:
+				titleText.setText("직장/학교");
+				break;
+			case 4:
+				titleText.setText("사는 곳");
+				break;
+			case 5:
+				titleText.setText("활동 지역");
+				break;
+				
+			}
+		}
+		
+//		madeCount += 10;
+//		RelativeLayout.LayoutParams rp;
+//		int hp = ResizeUtils.getSpecificLength(8);
+//		int vp = ResizeUtils.getSpecificLength(50);
+//		int tp = ResizeUtils.getSpecificLength(20);
+//		int width = LayoutParams.MATCH_PARENT;
+//		int height = ResizeUtils.getSpecificLength(80);
+//		
+//		//현재 상태		id : 0
+//		tvStatus = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+//		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+//		rp.leftMargin = hp;
+//		rp.topMargin = vp;
+//		rp.rightMargin = hp;
+//		tvStatus.setLayoutParams(rp);
+//		tvStatus.setId(madeCount);
+//		tvStatus.setBackgroundResource(R.drawable.bg_box_1);
+//		tvStatus.setPadding(tp, tp, tp, tp);
+//		tvStatus.setSingleLine();
+//		tvStatus.setEllipsize(TruncateAt.END);
+//		tvStatus.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvStatus.setTextColor(textColor);
+//		FontUtils.setFontSize(tvStatus, 26);
+//		relative.addView(tvStatus);
+//		
+//		TextView tvStatusText = new TextView(mContext);
+//		tvStatusText.setLayoutParams(rp);
+//		tvStatusText.setPadding(tp, tp, tp, tp);
+//		tvStatusText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvStatusText.setText(R.string.status);
+//		tvStatusText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvStatusText, 26);
+//		relative.addView(tvStatusText);
+//		
+//		//관심사			id : 1
+//		tvInterested = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount);
+//		rp.addRule(RelativeLayout.BELOW, madeCount);
+//		rp.topMargin = vp;
+//		tvInterested.setLayoutParams(rp);
+//		tvInterested.setId(madeCount + 1);
+//		tvInterested.setBackgroundResource(R.drawable.bg_box_1);
+//		tvInterested.setPadding(tp, tp, tp, tp);
+//		tvInterested.setSingleLine();
+//		tvInterested.setEllipsize(TruncateAt.END);
+//		tvInterested.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvInterested.setTextColor(textColor);
+//		FontUtils.setFontSize(tvInterested, 26);
+//		relative.addView(tvInterested);
+//		
+//		TextView tvInterestedText = new TextView(mContext);
+//		tvInterestedText.setLayoutParams(rp);
+//		tvInterestedText.setPadding(tp, tp, tp, tp);
+//		tvInterestedText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvInterestedText.setText(R.string.interested);
+//		tvInterestedText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvInterestedText, 26);
+//		relative.addView(tvInterestedText);
+//
+//		//직업			id : 2
+//		tvJob = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 1);
+//		rp.topMargin = vp;
+//		tvJob.setLayoutParams(rp);
+//		tvJob.setId(madeCount + 2);
+//		tvJob.setBackgroundResource(R.drawable.bg_box_2);
+//		tvJob.setPadding(tp, tp, tp, tp);
+//		tvJob.setSingleLine();
+//		tvJob.setEllipsize(TruncateAt.END);
+//		tvJob.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvJob.setTextColor(textColor);
+//		FontUtils.setFontSize(tvJob, 26);
+//		relative.addView(tvJob);
+//		
+//		TextView tvJobText = new TextView(mContext);
+//		tvJobText.setLayoutParams(rp);
+//		tvJobText.setPadding(tp, tp, tp, tp);
+//		tvJobText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvJobText.setText(R.string.job);
+//		tvJobText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvJobText, 26);
+//		relative.addView(tvJobText);
+//
+//		//직장/학교		id : 3
+//		tvCompany = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 2);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 2);
+//		tvCompany.setLayoutParams(rp);
+//		tvCompany.setId(madeCount + 3);
+//		tvCompany.setBackgroundResource(R.drawable.bg_box_1);
+//		tvCompany.setPadding(tp, tp, tp, tp);
+//		tvCompany.setSingleLine();
+//		tvCompany.setEllipsize(TruncateAt.END);
+//		tvCompany.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvCompany.setTextColor(textColor);
+//		FontUtils.setFontSize(tvCompany, 26);
+//		relative.addView(tvCompany);
+//		
+//		TextView tvCompanyText = new TextView(mContext);
+//		tvCompanyText.setLayoutParams(rp);
+//		tvCompanyText.setPadding(tp, tp, tp, tp);
+//		tvCompanyText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvCompanyText.setText(R.string.company);
+//		tvCompanyText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvCompanyText, 26);
+//		relative.addView(tvCompanyText);
+//
+//		//사는 곳			id : 4
+//		tvLiveLocation = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 3);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 3);
+//		rp.topMargin = vp;
+//		tvLiveLocation.setLayoutParams(rp);
+//		tvLiveLocation.setId(madeCount + 4);
+//		tvLiveLocation.setBackgroundResource(R.drawable.bg_box_2);
+//		tvLiveLocation.setPadding(tp, tp, tp, tp);
+//		tvLiveLocation.setSingleLine();
+//		tvLiveLocation.setEllipsize(TruncateAt.END);
+//		tvLiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvLiveLocation.setTextColor(textColor);
+//		FontUtils.setFontSize(tvLiveLocation, 26);
+//		relative.addView(tvLiveLocation);
+//		
+//		TextView tvLiveLocationText = new TextView(mContext);
+//		tvLiveLocationText.setLayoutParams(rp);
+//		tvLiveLocationText.setPadding(tp, tp, tp, tp);
+//		tvLiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvLiveLocationText.setText(R.string.liveLocation);
+//		tvLiveLocationText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvLiveLocationText, 26);
+//		relative.addView(tvLiveLocationText);
+//
+//		//활동 지역		id : 5
+//		tvActiveLocation = new TextView(mContext);
+//		rp = new RelativeLayout.LayoutParams(width, height);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 4);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 4);
+//		tvActiveLocation.setLayoutParams(rp);
+//		tvActiveLocation.setId(madeCount + 5);
+//		tvActiveLocation.setBackgroundResource(R.drawable.bg_box_1);
+//		tvActiveLocation.setPadding(tp, tp, tp, tp);
+//		tvActiveLocation.setSingleLine();
+//		tvActiveLocation.setEllipsize(TruncateAt.END);
+//		tvActiveLocation.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+//		tvActiveLocation.setTextColor(textColor);
+//		FontUtils.setFontSize(tvActiveLocation, 26);
+//		relative.addView(tvActiveLocation);
+//		
+//		TextView tvActiveLocationText = new TextView(mContext);
+//		tvActiveLocationText.setLayoutParams(rp);
+//		tvActiveLocationText.setPadding(tp, tp, tp, tp);
+//		tvActiveLocationText.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+//		tvActiveLocationText.setText(R.string.activeLocation);
+//		tvActiveLocationText.setTextColor(hintColor);
+//		FontUtils.setFontSize(tvActiveLocationText, 26);
+//		relative.addView(tvActiveLocationText);
+//		
+//		View bottomBlank = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(1, vp);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 5);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 5);
+//		bottomBlank.setLayoutParams(rp);
+//		relative.addView(bottomBlank);
 	}
 	
 	public void addGridView() {
@@ -849,7 +1026,7 @@ public class UserPage extends ZonecommsFragment {
 		gridView = new GridView(mContext);
 		gridView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		gridView.setAdapter(gridAdapter);
-		gridView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+		gridView.setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		
 		gridView.setNumColumns(numOfColumn);
 		gridView.setPadding(0, 0, 0, 0);
@@ -926,7 +1103,7 @@ public class UserPage extends ZonecommsFragment {
 		listView.setLayoutParams(new SwipeRefreshLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		listView.setAdapter(listAdapter);
 		listView.setDividerHeight(0);
-		listView.setBackgroundColor(Color.parseColor("#f5f5f5"));
+		listView.setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		listView.setCacheColorHint(Color.argb(0, 0, 0, 0));
 		listView.setOnScrollListener(new OnScrollListener() {
 			
@@ -1014,8 +1191,7 @@ public class UserPage extends ZonecommsFragment {
 		}
 
 		bgMenus[this.mode].setBackgroundColor(Color.rgb(217, 217, 217));
-//		bgMenus[mode].setBackgroundColor(Color.rgb(119, 119, 119));
-		bgMenus[mode].setBackgroundColor(HoloConstants.COLOR_HOLO_TARGET_ON);
+		bgMenus[mode].setBackgroundColor(TitleBar.titleBarColor);
 		
 		this.mode = mode;
 		
@@ -1117,7 +1293,7 @@ public class UserPage extends ZonecommsFragment {
 		String idGenderAgeString = "";
 		
 		if(!StringUtils.isEmpty(myStoryInfo.getMystory_member_id())) {
-			idGenderAgeString += myStoryInfo.getMystory_member_id();
+//			idGenderAgeString += myStoryInfo.getMystory_member_id();
 			
 			if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
 				
@@ -1171,7 +1347,7 @@ public class UserPage extends ZonecommsFragment {
 			}
 		}
 
-		idGenderAgeString += "\n" + myStoryInfo.getMember_gender() +
+		idGenderAgeString += myStoryInfo.getMember_gender() +
 				" / " + myStoryInfo.getMember_age();
 		tvIdGenderAge.setText(idGenderAgeString);
 
@@ -1270,6 +1446,40 @@ public class UserPage extends ZonecommsFragment {
 		} else if(ZonecommsApplication.myInfo.getMember_id().equals(myStoryInfo.getMystory_member_id())){
 //			tvActiveLocation.setText(R.string.touchHere);
 			tvActiveLocation.setText(R.string.nothing);
+		}
+
+		try {
+			//마이 홈.
+			if(myStoryInfo.getMystory_member_id().equals(ZonecommsApplication.myInfo.getMember_id())) {
+				relation.setVisibility(View.INVISIBLE);
+				ivImage.setBackgroundResource(R.drawable.profilel_01);
+				
+			//유저 홈.
+			} else {
+				relation.setVisibility(View.VISIBLE);
+				
+				boolean isFriend = !myStoryInfo.getIs_friend().equals("false");
+				
+				if(isFriend) {
+					relation.setBackgroundResource(R.drawable.btn_friendoff_01);
+				} else {
+					relation.setBackgroundResource(R.drawable.btn_friendon_01);
+				}
+				
+				relation.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						boolean isFriend = !myStoryInfo.getIs_friend().equals("false");
+						setRelation(isFriend);
+					}
+				});
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1513,6 +1723,53 @@ public class UserPage extends ZonecommsFragment {
 					}
 				}
 			}, ANIM_DURATION + 200);
+		}
+	}
+
+	public void setRelation(final boolean isFriend) {
+		
+		try {
+			String url = ZoneConstants.BASE_URL + "member/friendPlus" +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
+					"&friend_member_id=" + URLEncoder.encode(myStoryInfo.getMystory_member_id(), "UTF-8") +
+					"&status=" + (isFriend? "-1" : "1");
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("UserPage.setRelation.onError." + "\nurl : " + url);
+
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("UserPage.setRelation.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("errorCode") == 1) {
+							
+							if(isFriend) {
+								relation.setBackgroundResource(R.drawable.btn_friendon_01);
+								myStoryInfo.setIs_friend("false");
+							} else {
+								myStoryInfo.setIs_friend("true");
+								relation.setBackgroundResource(R.drawable.btn_friendoff_01);
+							}
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 }

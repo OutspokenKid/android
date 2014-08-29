@@ -4,4 +4,5 @@ import com.outspoken_kid.model.BaseModel;
 
 public class Customer extends BaseModel {
 
+	
 }

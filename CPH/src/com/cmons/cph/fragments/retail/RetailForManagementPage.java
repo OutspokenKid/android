@@ -1,17 +1,17 @@
 package com.cmons.cph.fragments.retail;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
-import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,21 +20,30 @@ import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class RetailForManagementPage extends CmonsFragmentForRetail {
 
-	private Button btnNotice;
-	private Button btnProfile;
-	private Button btnAccount;
-	private Button btnKakao;
-	private Button btnSample;
-	private TextView tvInfo;
-	
-	private boolean allowSampleRequest;
+	private View icon;
+	private TextView tvNameText;
+	private TextView tvName;
+	private TextView tvRegText;
+	private TextView tvReg;
+	private View changeReg;
+	private TextView tvOwnerNameText;
+	private TextView tvOwnerName;
+	private TextView tvPhoneText;
+	private TextView tvPhone;
+	private View changePhone;
+	private TextView tvAddressText;
+	private TextView tvAddress;
+	private View changeAddress;
 	
 	@Override
 	public void bindViews() {
@@ -42,13 +51,20 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.retailManagementPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.retailManagementPage_ivBg);
 		
-		btnNotice = (Button) mThisView.findViewById(R.id.retailManagementPage_btnNotice);
-		btnProfile = (Button) mThisView.findViewById(R.id.retailManagementPage_btnProfile);
-		btnAccount = (Button) mThisView.findViewById(R.id.retailManagementPage_btnAccount);
-		btnKakao = (Button) mThisView.findViewById(R.id.retailManagementPage_btnKakao);
-		btnSample = (Button) mThisView.findViewById(R.id.retailManagementPage_btnSample);
-		
-		tvInfo = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvInfo);
+		icon = mThisView.findViewById(R.id.retailManagementPage_icon);
+		tvNameText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvNameText);
+		tvName = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvName);
+		tvRegText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvRegText);
+		tvReg = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvReg);
+		changeReg = mThisView.findViewById(R.id.retailManagementPage_changeReg);
+		tvOwnerNameText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvOwnerNameText);
+		tvOwnerName = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvOwnerName);
+		tvPhoneText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvPhoneText);
+		tvPhone = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvPhone);
+		changePhone = mThisView.findViewById(R.id.retailManagementPage_changePhone);
+		tvAddressText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvAddressText);
+		tvAddress = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvAddress);
+		changeAddress = mThisView.findViewById(R.id.retailManagementPage_changeAddress);
 	}
 
 	@Override
@@ -61,85 +77,145 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
-		
-//		if(retail.getSample_available() == 1) {
-//			allowSampleRequest = true;
-//		} else {
-//			allowSampleRequest = false;
-//		}
-		
-		SpannableStringBuilder sp1 = new SpannableStringBuilder("매장전화번호");
-		sp1.setSpan(new RelativeSizeSpan(1.2f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvInfo.append(sp1); 
-		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n\n" + retail.getPhone_number());
-		tvInfo.append(sp2); 
-		
-		SpannableStringBuilder sp3 = new SpannableStringBuilder("\n\n매장주소");
-		sp3.setSpan(new RelativeSizeSpan(1.2f), 0, sp3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvInfo.append(sp3);
-		
-//		SpannableStringBuilder sp4 = new SpannableStringBuilder("\n\n청평화몰 " + retail.getLocation());
-//		tvInfo.append(sp4);
-		
-		SpannableStringBuilder sp5 = new SpannableStringBuilder(
-				"\n\n도매매장 전화번호, 주소 변경은 앱에서 지원하지 않습니다.\n청평화쇼핑몰 관리소에 문의해주세요.");
-		sp5.setSpan(new ForegroundColorSpan(Color.RED), 0, sp5.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvInfo.append(sp5);
-		
-		if(allowSampleRequest) {
-			btnSample.setBackgroundResource(R.drawable.shop_sample_btn_b);
-		} else{
-			btnSample.setBackgroundResource(R.drawable.shop_sample_btn_a);
+
+		if(retail != null) {
+			tvName.setText(retail.getName());
+			tvReg.setText(retail.getCorp_reg_number());
+			tvOwnerName.setText(retail.getOwner_name());
+			tvPhone.setText(retail.getPhone_number());
+			tvAddress.setText(retail.getAddress());
+			
+			if(StringUtils.isEmpty(retail.getMall_url())) {
+				icon.setBackgroundResource(R.drawable.offline_shop_icon);
+			} else {
+				icon.setBackgroundResource(R.drawable.online_shop_icon);
+			}
 		}
 	}
 
 	@Override
 	public void setListeners() {	
 
-		btnNotice.setOnClickListener(new OnClickListener() {
+		changeReg.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("isAppNotice", false);
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE_LIST, bundle);
+				SoftKeyboardUtils.showKeyboard(mContext, tvPhone);
+				
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+				// Setting Dialog Title
+		        alertDialog.setTitle("사업자 등록번호 변경");
+		        
+		        final EditText input = new EditText(mContext);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				lp.leftMargin = ResizeUtils.getSpecificLength(10);
+				lp.rightMargin = ResizeUtils.getSpecificLength(10);
+				input.setLayoutParams(lp);
+				input.setInputType(InputType.TYPE_CLASS_NUMBER);
+				alertDialog.setView(input);
+				
+		        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+				
+						if(input.getText() == null ||input.getText().length() == 0) {
+							return;
+						}
+						
+						String keyword = input.getText().toString();
+						changeReg(keyword);
+					}
+				});
+		        alertDialog.setNegativeButton("취소", null);
+				
+				// Showing Alert Message
+		        alertDialog.show();
 			}
 		});
 		
-		btnProfile.setOnClickListener(new OnClickListener() {
+		changePhone.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
+				SoftKeyboardUtils.showKeyboard(mContext, tvPhone);
+				
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+				// Setting Dialog Title
+		        alertDialog.setTitle("연락처 변경");
+		        
+		        final EditText input = new EditText(mContext);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				lp.leftMargin = ResizeUtils.getSpecificLength(10);
+				lp.rightMargin = ResizeUtils.getSpecificLength(10);
+				input.setLayoutParams(lp);
+				input.setInputType(InputType.TYPE_CLASS_PHONE);
+				alertDialog.setView(input);
+				
+		        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+				
+						if(input.getText() == null ||input.getText().length() == 0) {
+							return;
+						}
+						
+						String keyword = input.getText().toString();
+						changePhoneNumber(keyword);
+					}
+				});
+		        alertDialog.setNegativeButton("취소", null);
+				
+				// Showing Alert Message
+		        alertDialog.show();
 			}
 		});
-
-		btnAccount.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ACCOUNT, null);
-			}
-		});
-			
-		btnSample.setOnClickListener(new OnClickListener() {
+		
+		changeAddress.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				allowSampleRequest = !allowSampleRequest;
+				SoftKeyboardUtils.showKeyboard(mContext, tvPhone);
 				
-				if(allowSampleRequest) {
-					btnSample.setBackgroundResource(R.drawable.shop_sample_btn_b);
-				} else{
-					btnSample.setBackgroundResource(R.drawable.shop_sample_btn_a);
-				}
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+				// Setting Dialog Title
+		        alertDialog.setTitle("매장 주소 변경");
+		        
+		        final EditText input = new EditText(mContext);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				lp.leftMargin = ResizeUtils.getSpecificLength(10);
+				lp.rightMargin = ResizeUtils.getSpecificLength(10);
+				input.setLayoutParams(lp);
+				input.setInputType(InputType.TYPE_CLASS_TEXT);
+				alertDialog.setView(input);
 				
-				setSampleRequest(allowSampleRequest);
+		        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+				
+						if(input.getText() == null ||input.getText().length() == 0) {
+							return;
+						}
+						
+						String keyword = input.getText().toString();
+						changeAddress(keyword);
+					}
+				});
+		        alertDialog.setNegativeButton("취소", null);
+				
+				// Showing Alert Message
+		        alertDialog.show();
 			}
 		});
 	}
@@ -148,33 +224,85 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 	public void setSizes() {
 		
 		RelativeLayout.LayoutParams rp = null;
-		int length = ResizeUtils.getScreenWidth()/2;
+		int height = ResizeUtils.getSpecificLength(92);
+		int margin = ResizeUtils.getSpecificLength(20);
 		
-		//btnNotice.
-		rp = (RelativeLayout.LayoutParams) btnNotice.getLayoutParams();
-		rp.width = length;
-		rp.height = length;
+		//tvNameText.
+		rp = (RelativeLayout.LayoutParams) tvNameText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
 		
-		//btnProfile.
-		rp = (RelativeLayout.LayoutParams) btnProfile.getLayoutParams();
-		rp.height = length;
+		//icon.
+		rp = (RelativeLayout.LayoutParams) icon.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(146);
+		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.topMargin = ResizeUtils.getSpecificLength(34);
+		rp.rightMargin = margin;
 		
-		//btnAccount.
-		rp = (RelativeLayout.LayoutParams) btnAccount.getLayoutParams();
-		rp.width = length;
-		rp.height = length;
+		//tvName.
+		rp = (RelativeLayout.LayoutParams) tvName.getLayoutParams();
+		rp.height = height;
 		
-		//btnKakao.
-		rp = (RelativeLayout.LayoutParams) btnKakao.getLayoutParams();
-		rp.height = length;
+		//tvRegText.
+		rp = (RelativeLayout.LayoutParams) tvRegText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
 		
-		//btnSample.
-		rp = (RelativeLayout.LayoutParams) btnSample.getLayoutParams();
-		rp.height = length/2;
+		//tvReg.
+		rp = (RelativeLayout.LayoutParams) tvReg.getLayoutParams();
+		rp.height = height;
 		
-		int p = ResizeUtils.getSpecificLength(30);
-		tvInfo.setPadding(p, p, p, p);
-		FontUtils.setFontSize(tvInfo, 24);
+		//tvOwnerNameText.
+		rp = (RelativeLayout.LayoutParams) tvOwnerNameText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
+		
+		//tvOwnerName.
+		rp = (RelativeLayout.LayoutParams) tvOwnerName.getLayoutParams();
+		rp.height = height;
+		
+		//tvPhoneText.
+		rp = (RelativeLayout.LayoutParams) tvPhoneText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
+		
+		//tvPhone.
+		rp = (RelativeLayout.LayoutParams) tvPhone.getLayoutParams();
+		rp.height = height;
+		
+		//changePhone.
+		rp = (RelativeLayout.LayoutParams) changePhone.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.topMargin = margin;
+		rp.rightMargin = margin;
+		
+		//tvAddressText.
+		rp = (RelativeLayout.LayoutParams) tvAddressText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
+		
+		//tvAddress.
+		rp = (RelativeLayout.LayoutParams) tvAddress.getLayoutParams();
+		rp.height = height;
+		
+		//changeAddress.
+		rp = (RelativeLayout.LayoutParams) changeAddress.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.topMargin = margin;
+		rp.rightMargin = margin;
+
+		FontUtils.setFontSize(tvNameText, 30);
+		FontUtils.setFontSize(tvName, 30);
+		FontUtils.setFontSize(tvRegText, 30);
+		FontUtils.setFontSize(tvReg, 30);
+		FontUtils.setFontSize(tvOwnerNameText, 30);
+		FontUtils.setFontSize(tvOwnerName, 30);
+		FontUtils.setFontSize(tvPhoneText, 30);
+		FontUtils.setFontSize(tvPhone, 30);
+		FontUtils.setFontSize(tvAddressText, 30);
+		FontUtils.setFontSize(tvAddress, 30);
 	}
 
 	@Override
@@ -215,46 +343,147 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 //////////////////// Custom methods.
 	
-	public void setSampleRequest(final boolean allow) {
-		
-		String url = CphConstants.BASE_API_URL + "retails/update/sample_available";
-		
-		if(allow) {
-			url += "?sample_available=1";
-		} else {
-			url += "?sample_available=0";
-		}
-		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+	public void changePhoneNumber(final String phoneNumber) {
 
-			@Override
-			public void onError(String url) {
+		try {
+			//http://cph.minsangk.com/retails/update/phone_number?phone_number=1234
+			String url = CphConstants.BASE_API_URL + "retails/update/phone_number" +
+					"?phone_number=" + URLEncoder.encode(phoneNumber, "utf-8");
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-				LogUtils.log("WholesaleForManagementPage.onError." + "\nurl : " + url);
+				@Override
+				public void onError(String url) {
 
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("WholesaleForManagementPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					if(1 == objJSON.getInt("result")) {
-						
-//						if(allow) {
-//							retail.setSample_available(1);
-//						} else {
-//							retail.setSample_available(0);
-//						}
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
+					LogUtils.log("RetailForManagementPage.changePhoneNumber.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToChangePhoneNumber);
 				}
-			}
-		});
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForManagementPage.changePhoneNumber.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_changePhoneNumber);
+							retail.setPhone_number(phoneNumber);
+							tvPhone.setText(phoneNumber);
+							SoftKeyboardUtils.hideKeyboard(mContext, tvPhone);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToChangePhoneNumber);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToChangePhoneNumber);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
+	
+	public void changeAddress(final String address) {
+
+		try {
+			//http://cph.minsangk.com/retails/update/address?address=B3%A11%EB%8F%99
+			String url = CphConstants.BASE_API_URL + "retails/update/address"
+					+ "?address=" + URLEncoder.encode(address, "utf-8");
+
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailForManagementPage.changeAddress.onError."
+							+ "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToChangePhoneNumber);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForManagementPage.changeAddress.onCompleted."
+								+ "\nurl : " + url + "\nresult : " + objJSON);
+
+						if (objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_changeAddress);
+							retail.setAddress(address);
+							tvAddress.setText(address);
+							SoftKeyboardUtils.hideKeyboard(mContext, tvAddress);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToChangeAddress);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToChangeAddress);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void changeReg(final String reg) {
+
+		try {
+			//http://cph.minsangk.com/retails/update/address?address=B3%A11%EB%8F%99
+			String url = CphConstants.BASE_API_URL + "retails/update/corp_reg_number"
+					+ "?corp_reg_number=" + URLEncoder.encode(reg, "utf-8");
+
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailForManagementPage.changeReg.onError."
+							+ "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToChangeRegistration);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForManagementPage.changeReg.onCompleted."
+								+ "\nurl : " + url + "\nresult : " + objJSON);
+
+						if (objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_changeRegistration);
+							retail.setCorp_reg_number(reg);
+							tvReg.setText(reg);
+							SoftKeyboardUtils.hideKeyboard(mContext, tvReg);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToChangeRegistration);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToChangeRegistration);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+
 }

@@ -16,11 +16,13 @@ import com.outspoken_kid.utils.StringUtils;
 import com.zonecomms.clubvera.R;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMember extends ViewWrapper {
 	
 	private Member member;
+	private View imageBg;
 	private ImageView ivImage;
 	private TextView tvInfo;
 	
@@ -32,6 +34,7 @@ public class ViewWrapperForMember extends ViewWrapper {
 	public void bindViews() {
 
 		try {
+			imageBg = row.findViewById(R.id.grid_member_imageBg);
 			ivImage = (ImageView) row.findViewById(R.id.grid_member_ivImage);
 			tvInfo = (TextView) row.findViewById(R.id.grid_member_tvInfo);
 		} catch(Exception e) {
@@ -61,6 +64,8 @@ public class ViewWrapperForMember extends ViewWrapper {
 	@Override
 	public void setValues(BaseModel baseModel) {
 
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
+		
 		try {
 			if(baseModel instanceof Member) {
 				member = (Member) baseModel;

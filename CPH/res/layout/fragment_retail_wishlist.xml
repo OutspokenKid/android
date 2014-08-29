@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailWishListPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/retailWishListPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailWishListPage_titleBar"
+	    android:scaleType="centerCrop" />
+
+	<TextView 
+        android:id="@+id/retailWishListPage_tvCount"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailWishListPage_titleBar"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center"
+    	android:textColor="#fff" />
+    
+	<ListView 
+	    android:id="@+id/retailWishListPage_listView"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/retailWishListPage_tvCount"
+    	android:cacheColorHint="#0000" />
+	
+</RelativeLayout>

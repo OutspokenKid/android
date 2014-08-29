@@ -14,9 +14,11 @@ import android.widget.TextView;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.zonecomms.clubvera.R;
 
 public class SideView extends FrameLayout {
 
+	private View iconBg;
 	private ImageView icon;
 	private TextView tvTitle;
 	
@@ -47,9 +49,14 @@ public class SideView extends FrameLayout {
 		bottomLine.setBackgroundColor(Color.rgb(88, 88, 88));
 		this.addView(bottomLine);
 		
+		iconBg = new View(getContext());
+		ResizeUtils.viewResize(80, 80, iconBg, 2, Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{20, 0, 0, 0});
+		this.addView(iconBg);
+		
 		icon = new ImageView(getContext());
 		ResizeUtils.viewResize(80, 80, icon, 2, Gravity.LEFT|Gravity.CENTER_VERTICAL, new int[]{20, 0, 0, 0});
 		icon.setScaleType(ScaleType.CENTER_CROP);
+		icon.setBackgroundResource(R.drawable.r_profile80_01);
 		this.addView(icon);
 		
 		tvTitle = new TextView(getContext());
@@ -73,6 +80,10 @@ public class SideView extends FrameLayout {
 		
 		if(icon != null && resId != 0) {
 			icon.setBackgroundResource(resId);
+			
+			if(resId == R.drawable.r_profile64_01) {
+				iconBg.setBackgroundColor(TitleBar.titleBarColor);
+			}
 		}
 	}
 	

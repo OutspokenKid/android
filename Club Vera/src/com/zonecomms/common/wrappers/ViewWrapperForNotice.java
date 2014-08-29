@@ -69,7 +69,7 @@ public class ViewWrapperForNotice extends ViewWrapper {
 
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 75, tvTitle, 2, 
 				Gravity.LEFT|Gravity.TOP, new int[]{30, 0, 60, 0});
-		FontUtils.setFontSize(tvTitle, 26);
+		FontUtils.setFontSize(tvTitle, 30);
 		
 		ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, 75, tvRegdate, 2, 
 				Gravity.LEFT|Gravity.BOTTOM, new int[]{30, 0, 60, 0});
@@ -78,8 +78,8 @@ public class ViewWrapperForNotice extends ViewWrapper {
 		ResizeUtils.viewResize(624, 0, ivImage, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0});
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, tvContent, 
-				1, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0}, new int[]{30, 30, 30, 30});
-		FontUtils.setFontSize(tvContent, 30);
+				1, Gravity.CENTER_HORIZONTAL, null, new int[]{20, 20, 20, 20});
+		FontUtils.setFontSize(tvContent, 24);
 	}
 
 	@Override

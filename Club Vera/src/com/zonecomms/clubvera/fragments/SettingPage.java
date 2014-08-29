@@ -632,7 +632,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForEditPw = new FrameLayout(mContext);
 		frameForEditPw.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		frameForEditPw.setVisibility(View.INVISIBLE);
-		frameForEditPw.setBackgroundColor(Color.parseColor("#f5f5f5"));
+		frameForEditPw.setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		frameForEditPw.setClickable(true);
 		mainLayout.addView(frameForEditPw);
 		
@@ -711,7 +711,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForEditPush = new FrameLayout(mContext);
 		frameForEditPush.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		frameForEditPush.setVisibility(View.INVISIBLE);
-		frameForEditPush.setBackgroundColor(Color.parseColor("#f5f5f5"));
+		frameForEditPush.setBackgroundColor(getResources().getColor(R.color.renewal_bg));
 		frameForEditPush.setClickable(true);
 		mainLayout.addView(frameForEditPush);
 		

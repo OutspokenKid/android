@@ -22,177 +22,34 @@
 	    android:scaleType="centerCrop" />
     
     <Button 
-        android:id="@+id/retailCustomerListPage_btnRequest" 
+        android:id="@+id/retailCustomerListPage_btnOrder" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/retailCustomerListPage_titleBar"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/business_confirm_btn_a" />
+	    android:background="@drawable/retail_statement_btn_a" />
        
 	<Button 
         android:id="@+id/retailCustomerListPage_btnPartner" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/retailCustomerListPage_btnRequest"
-	    android:layout_toRightOf="@id/retailCustomerListPage_btnRequest"
-	    android:background="@drawable/business_costumer_btn_b" />
+	    android:layout_alignTop="@id/retailCustomerListPage_btnOrder"
+	    android:layout_toRightOf="@id/retailCustomerListPage_btnOrder"
+	    android:background="@drawable/retail_customer2_btn_b" />
 
     <TextView 
-        android:id="@+id/retailCustomerListPage_tvCustomer"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@id/retailCustomerListPage_btnRequest"
-	    android:layout_alignParentLeft="true"
-	    android:text="@string/searchCustomer"
+        android:id="@+id/retailCustomerListPage_tvCount"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailCustomerListPage_btnOrder"
+    	android:gravity="center"
     	android:textColor="#fff" />
        
-    <EditText
-        android:id="@+id/retailCustomerListPage_editText"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_below="@id/retailCustomerListPage_tvCustomer"
-	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
-	    android:gravity="center"
-	    android:hint="@string/hintForSearchCustomer"
-	    android:textColor="#000"
-	    android:textColorHint="#555" />
-        
-	<Button 
-        android:id="@+id/retailCustomerListPage_btnSearch" 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/retailCustomerListPage_editText"
-	    android:layout_toRightOf="@id/retailCustomerListPage_editText"
-	    android:background="@drawable/search_btn" />
-
 	<ListView 
 	    android:id="@+id/retailCustomerListPage_listView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/retailCustomerListPage_editText"
+	    android:layout_below="@id/retailCustomerListPage_tvCount"
 	    android:layout_alignParentLeft="true" />
-	
-	<RelativeLayout
-	    android:id="@+id/retailCustomerListPage_popupRelative"
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_centerInParent="true"
-	    android:visibility="invisible"
-	    android:background="@drawable/sample_popup_bg" >
-	    
-	    <Button 
-	        android:id="@+id/retailCustomerListPage_btnClose" 
-		    android:layout_width="0dp"
-		    android:layout_height="0dp"
-		    android:layout_alignParentTop="true"
-		    android:layout_alignParentRight="true"
-		    android:background="@drawable/sample_close_btn" />
-
-	    <TextView 
-	        android:id="@+id/retailCustomerListPage_tvShopName"
-	        android:layout_width="match_parent"
-	    	android:layout_height="0dp"
-		    android:layout_alignParentLeft="true"
-		    android:layout_alignParentTop="true"
-		    android:gravity="center_vertical"
-	    	android:textColor="#000" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line1"
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_tvShopName"
-	    	android:background="#f3f3f3" />
-	    
-	    <View
-	        android:id="@+id/retailCustomerListPage_line2" 
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_line1"
-	    	android:background="#d2d2d2" />
-	    
-	    <TextView 
-	        android:id="@+id/retailCustomerListPage_tvOwnerName"
-	        android:layout_width="match_parent"
-	    	android:layout_height="0dp"
-	    	android:layout_below="@id/retailCustomerListPage_line2"
-	    	android:gravity="center_vertical"
-	    	android:textColor="#000" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line3" 
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_tvOwnerName"
-	    	android:background="#f3f3f3" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line4" 
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_line3"
-	    	android:background="#d2d2d2" />
-	    
-	    <TextView 
-	        android:id="@+id/retailCustomerListPage_tvPhone"
-	        android:layout_width="match_parent"
-	    	android:layout_height="0dp"
-	    	android:layout_below="@id/retailCustomerListPage_line4"
-	    	android:gravity="center_vertical"
-	    	android:textColor="#000" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line5"
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_tvPhone"
-	    	android:background="#f3f3f3" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line6"
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_line5"
-	    	android:background="#d2d2d2" />
-	    
-	    <TextView 
-	        android:id="@+id/retailCustomerListPage_tvCategory"
-	        android:layout_width="match_parent"
-	    	android:layout_height="0dp"
-	    	android:layout_below="@id/retailCustomerListPage_line6"
-	    	android:gravity="center_vertical"
-	    	android:textColor="#000" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line7"
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_tvCategory"
-	    	android:background="#f3f3f3" />
-	    
-	    <View 
-	        android:id="@+id/retailCustomerListPage_line8"
-	        android:layout_width="match_parent"
-	    	android:layout_height="1dp"
-	    	android:layout_below="@id/retailCustomerListPage_line7"
-	    	android:background="#d2d2d2" />
-	    
-	    <TextView 
-	        android:id="@+id/retailCustomerListPage_tvAddress"
-	        android:layout_width="match_parent"
-	    	android:layout_height="wrap_content"
-	    	android:layout_below="@id/retailCustomerListPage_line8"
-	    	android:textColor="#000" />
-	    
-	    <Button
-	        android:id="@+id/retailCustomerListPage_btnConfirm"
-	        android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_centerHorizontal="true"
-	    	android:layout_alignParentBottom="true"
-	    	android:background="@drawable/business_popup_confirm_btn" />
-	    
-	</RelativeLayout>
     
 </RelativeLayout>

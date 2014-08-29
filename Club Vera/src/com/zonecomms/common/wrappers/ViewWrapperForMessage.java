@@ -25,6 +25,7 @@ import com.zonecomms.clubvera.classes.ZoneConstants;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Message;
 import com.zonecomms.common.utils.AppInfoUtils;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForMessage extends ViewWrapper {
@@ -75,6 +76,8 @@ public class ViewWrapperForMessage extends ViewWrapper {
 	@Override
 	public void setValues(BaseModel baseModel) {
 
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
+		
 		if(ivProfile != null) {
 			ivProfile.setVisibility(View.INVISIBLE);
 		}

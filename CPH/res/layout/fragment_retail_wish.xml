@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailWishPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/retailWishPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailWishPage_titleBar"
+	    android:scaleType="centerCrop" />
+
+	<TextView 
+        android:id="@+id/retailWishPage_tvInfo"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailWishPage_titleBar"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+    	android:textColor="#fff" />
+	
+	<Button 
+	    android:id="@+id/retailWishPage_btnShop"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignBottom="@id/retailWishPage_tvInfo"
+    	android:background="@drawable/retail_link_btn" />
+	
+	<Button
+	    android:id="@+id/retailWishPage_btnOrder"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:background="@drawable/retail_order2_btn" />
+	
+	<TextView 
+        android:id="@+id/retailWishPage_tvPriceText"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_btnOrder"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+	    android:text="@string/totalPrice"
+    	android:textColor="#fff" />
+	
+	<TextView 
+        android:id="@+id/retailWishPage_tvPrice"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_btnOrder"
+	    android:layout_alignParentRight="true"
+	    android:gravity="center_vertical"
+    	android:textColor="#f00" />
+	
+	<TextView 
+        android:id="@+id/retailWishPage_tvAccount"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_tvPriceText"
+	    android:gravity="center"
+	    android:visibility="invisible"
+    	android:textColor="#fff" />
+	
+	<EditText 
+        android:id="@+id/retailWishPage_etName"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_tvPriceText"
+    	android:layout_alignParentLeft="true"
+	    android:gravity="center"
+	    android:visibility="invisible"
+	    android:background="@drawable/retail_txt_box"
+	    android:hint="@string/agentName"
+	    android:textColorHint="#222"
+    	android:textColor="#000" />
+	
+	<EditText 
+        android:id="@+id/retailWishPage_etPhone"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_tvPriceText"
+    	android:layout_toRightOf="@id/retailWishPage_etName"
+	    android:gravity="center"
+	    android:visibility="invisible"
+	    android:background="@drawable/retail_txt_box2"
+	    android:hint="@string/agentPhone"
+	    android:textColorHighlight="#eee"
+    	android:textColor="#fff" android:inputType="phone"/>
+	
+	<TextView 
+        android:id="@+id/retailWishPage_tvPayment1"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_tvPriceText"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+	    android:text="@string/payment1"
+    	android:textColor="#fff" />
+	
+	<View 
+	    android:id="@+id/retailWishPage_checkBox1"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/retailWishPage_tvPayment1"
+    	android:layout_toRightOf="@id/retailWishPage_tvPayment1"
+    	android:background="@drawable/myshop_checkbox_a" />
+	
+	<TextView 
+        android:id="@+id/retailWishPage_tvPayment2"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+		android:layout_alignTop="@id/retailWishPage_tvPayment1"
+    	android:layout_toRightOf="@id/retailWishPage_checkBox1"    	
+	    android:gravity="center_vertical"
+	    android:text="@string/payment2"
+    	android:textColor="#fff" />
+	
+	<View 
+	    android:id="@+id/retailWishPage_checkBox2"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/retailWishPage_checkBox1"
+    	android:layout_toRightOf="@id/retailWishPage_tvPayment2"
+    	android:background="@drawable/myshop_checkbox_a" />
+
+	<TextView 
+        android:id="@+id/retailWishPage_tvSelectPayment"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailWishPage_tvPayment1"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+	    android:text="@string/selectPayment"
+    	android:textColor="#fff" />
+	
+	<ListView 
+	    android:id="@+id/retailWishPage_listView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/retailWishPage_tvInfo"
+    	android:layout_above="@id/retailWishPage_tvSelectPayment"
+    	android:cacheColorHint="#0000" />
+	
+</RelativeLayout>

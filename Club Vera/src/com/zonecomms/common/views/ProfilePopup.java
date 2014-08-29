@@ -131,7 +131,7 @@ public class ProfilePopup extends FrameLayout {
 		rp.addRule(RelativeLayout.BELOW, madeCount);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		imageBg.setLayoutParams(rp);
-		imageBg.setBackgroundResource(R.drawable.bg_profile_400);
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
 		relative.addView(imageBg);
 		
 		progress = new ProgressBar(getContext());
@@ -148,6 +148,7 @@ public class ProfilePopup extends FrameLayout {
 		ivImage.setLayoutParams(rp);
 		ivImage.setId(madeCount + 1);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
+		ivImage.setBackgroundResource(R.drawable.r_profilel308_01);
 		ivImage.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -359,7 +360,6 @@ public class ProfilePopup extends FrameLayout {
 						
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);
-							ivImage.setVisibility(View.VISIBLE);
 						}
 						
 						progress.setVisibility(View.INVISIBLE);
@@ -405,8 +405,6 @@ public class ProfilePopup extends FrameLayout {
             	bm.recycle();
             }
         }
-        
-        ivImage.setVisibility(View.INVISIBLE);
 	}
 	
 	private void addButtons(LinearLayout targetLinear, int l, int mod) {

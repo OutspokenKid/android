@@ -80,7 +80,7 @@ public abstract class KakaoFragment extends SNSFragment {
 	}
 
 	@Override
-	protected void logout() {
+	public void logout() {
 
 		UserManagement.requestLogout(new LogoutResponseCallback() {
 	        @Override
@@ -146,12 +146,14 @@ public abstract class KakaoFragment extends SNSFragment {
     
     public class KakaoUserInfo extends SNSUserInfo {
 
+    	public long id;
     	public String nickname;
     	public String profile_image;
     	public String thumbnail_image;
     	
     	public KakaoUserInfo(UserProfile userProfile) {
-    	
+
+    		userProfile.getId();
     		nickname=  userProfile.getNickname();
     		profile_image = userProfile.getProfileImagePath();
     		thumbnail_image = userProfile.getThumbnailImagePath();
@@ -162,6 +164,7 @@ public abstract class KakaoFragment extends SNSFragment {
 
 			LogUtils.log("###KakaoFragment.printSNSUserInfo.  " +
 					"######################################" +
+					"\nid : " + id +
 					"\nnickname : " + nickname +
 					"\nprofile_image : " + profile_image +
 					"\nthumbnail_image : " + thumbnail_image +

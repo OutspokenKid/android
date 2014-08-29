@@ -7,14 +7,20 @@
 	<View 
         android:id="@+id/list_messagesample_imageBg"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_profile_65" />
+        android:layout_height="0dp" />
    
     <ImageView
         android:id="@+id/list_messagesample_ivProfile"
         android:layout_width="0dp"
         android:layout_height="0dp" 
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/r_profile64_01" />
+    
+    <View 
+        android:id="@+id/list_messagesample_bg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#fff" />
     
     <TextView 
         android:id="@+id/list_messagesample_tvNickName"
@@ -38,7 +44,7 @@
         android:id="@+id/list_messagesample_tvContent"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:textColor="@color/renewal_text_light"
+    	android:textColor="@color/renewal_text"
     	android:singleLine="true"
     	android:ellipsize="end" />
 	

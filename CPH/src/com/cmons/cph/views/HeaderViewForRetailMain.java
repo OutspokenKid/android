@@ -60,6 +60,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 	private Button btnOrder;
 	private TextView tvTotalProduct;
 	private View totalProductIcon;
+	private TextView tvRetailName;
 	
 	public HeaderViewForRetailMain(Context context) {
 		this(context, null, 0);
@@ -304,14 +305,30 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		totalProductIcon.setLayoutParams(rp);
 		totalProductIcon.setBackgroundResource(R.drawable.myshop_goods_icon);
 		addView(totalProductIcon);
+		
+		//tvRetailName.
+		tvRetailName = new TextView(getContext());
+		rp = new RelativeLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, 
+				LayoutParams.WRAP_CONTENT);
+		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(100);
+		tvRetailName.setLayoutParams(rp);
+		tvRetailName.setTextColor(Color.WHITE);
+		FontUtils.setFontSize(tvRetailName, 32);
+		FontUtils.setShadow(tvRetailName, new float[]{
+				ResizeUtils.getSpecificLength(6),
+				ResizeUtils.getSpecificLength(-2),
+				ResizeUtils.getSpecificLength(-4),
+				255, 0, 0, 0});
+		addView(tvRetailName);
 	}
 	
 	public void setValues() {
 
 		btnCategoryIndex.setText("전체");
 		btnOrder.setText("최신순");
-		
-		tvTotalProduct.setText("총 등록 상품 " + activity.retail.getProducts_cnt());
 		
 		downloadWholesales();
 	}
@@ -326,7 +343,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					" / " + wholesales.get(0).getTotal_visited_cnt());
 			tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
 			tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
-			
+			tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(0).getProducts_cnt());
 			needPlay = true;
 			
 			if(!isPlaying) {
@@ -369,6 +386,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 							" / " + wholesales.get(0).getTotal_visited_cnt());
 					tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
 					tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
+					tvRetailName.setText(wholesales.get(0).getName());
+					tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(0).getProducts_cnt());
 					
 					needPlay = true;
 					
@@ -397,6 +416,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 						" / " + wholesales.get(position).getTotal_visited_cnt());
 				tvLike.setText("" + wholesales.get(position).getFavorited_cnt());
 				tvPartner.setText("" + wholesales.get(position).getCustomers_cnt());
+				tvRetailName.setText(wholesales.get(position).getName());
+				tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(position).getProducts_cnt());
 			}
 			
 			@Override

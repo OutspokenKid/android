@@ -5,15 +5,16 @@
     android:layout_height="0dp" >
 
     <View 
+        android:id="@+id/grid_member_imageBg"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_profile_150" />
+        android:layout_height="match_parent" />
     
     <ImageView
         android:id="@+id/grid_member_ivImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:background="@drawable/r_profile150_01" />
     
     <View
         android:id="@+id/grid_member_bg"

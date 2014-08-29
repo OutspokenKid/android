@@ -96,8 +96,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		menuButtons[3] = (Button) mThisView.findViewById(R.id.retailMainPage_btnBasket);
 		menuButtons[4] = (Button) mThisView.findViewById(R.id.retailMainPage_btnFavoriteShop);
 		menuButtons[5] = (Button) mThisView.findViewById(R.id.retailMainPage_btnFavoriteProduct);
-		menuButtons[6] = (Button) mThisView.findViewById(R.id.retailMainPage_btnBusiness);
-		menuButtons[7] = (Button) mThisView.findViewById(R.id.retailMainPage_btnStaff);
+		menuButtons[6] = (Button) mThisView.findViewById(R.id.retailMainPage_btnStaff);
+		menuButtons[7] = (Button) mThisView.findViewById(R.id.retailMainPage_btnBusiness);
 		menuButtons[8] = (Button) mThisView.findViewById(R.id.retailMainPage_btnSetting);
 		
 		cover = mThisView.findViewById(R.id.retailMainPage_cover);
@@ -336,25 +336,25 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 								}
 								break;
 							case 1:
-								mActivity.showPage(CphConstants.PAGE_RETAIL_CUSTOMERLIST, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, bundle);
 								break;
 							case 2:
-//								mActivity.showPage(CphConstants.PAGE_RETAIL_SEARCH, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_SEARCH, bundle);
 								break;
 							case 3:
-//								mActivity.showPage(CphConstants.PAGE_RETAIL_BASKET, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_WISH_LIST, bundle);
 								break;
 							case 4:
-//								mActivity.showPage(CphConstants.PAGE_RETAIL_FAVORITE_SHOP, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_FAVORITE_SHOP, bundle);
 								break;
 							case 5:
-//								mActivity.showPage(CphConstants.PAGE_RETAIL_FAVORITE_PRODUCT, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_FAVORITE_PRODUCT, bundle);
 								break;
 							case 6:
-								mActivity.showPage(CphConstants.PAGE_RETAIL_MANAGEMENT, bundle);
+								mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, bundle);
 								break;
 							case 7:
-								mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, bundle);
+								mActivity.showPage(CphConstants.PAGE_RETAIL_MANAGEMENT, bundle);
 								break;
 							case 8:
 								mActivity.showPage(CphConstants.PAGE_RETAIL_SETTING, bundle);

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/retailSearchPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/retailSearchPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/retailSearchPage_titleBar"
+	    android:scaleType="centerCrop" />
+
+	<TextView 
+        android:id="@+id/retailSearchPage_tvSearch"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailSearchPage_titleBar"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+	    android:text="@string/searchProductName"
+    	android:textColor="#fff" />
+    
+    <EditText
+        android:id="@+id/retailSearchPage_etSearch"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/retailSearchPage_tvSearch"
+	    android:layout_alignParentLeft="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center"
+	    android:hint="@string/hintForSearchKeyword"
+	    android:textColor="#000"
+	    android:textColorHint="#555" />
+        
+	<Button 
+        android:id="@+id/retailSearchPage_btnSearch" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignTop="@id/retailSearchPage_etSearch"
+	    android:layout_toRightOf="@id/retailSearchPage_etSearch"
+	    android:background="@drawable/search_btn" />
+
+	<TextView 
+        android:id="@+id/retailSearchPage_tvResult"
+        android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/retailSearchPage_etSearch"
+    	android:gravity="center"
+    	android:textColor="#fff" />
+	
+	<GridView 
+	    android:id="@+id/retailSearchPage_gridView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/retailSearchPage_tvResult"
+    	android:numColumns="2"
+    	android:cacheColorHint="#0000" />
+	
+</RelativeLayout>

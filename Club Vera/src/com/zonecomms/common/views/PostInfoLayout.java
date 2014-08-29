@@ -56,14 +56,19 @@ public class PostInfoLayout extends RelativeLayout {
 
 		madeCount += 12014;
 		
-		//id : 0
-		ivImage = new ImageView(getContext());
+		View imageBg = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		imageBg.setLayoutParams(rp);
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
+		this.addView(imageBg);
+		
+		//id : 0
+		ivImage = new ImageView(getContext());
 		ivImage.setLayoutParams(rp);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		ivImage.setBackgroundResource(R.drawable.bg_profile_150);
+		ivImage.setBackgroundResource(R.drawable.r_profile150_01);
 		ivImage.setId(madeCount);
 		this.addView(ivImage);
 		

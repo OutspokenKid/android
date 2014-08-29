@@ -17,9 +17,6 @@
     <string name="baseProfile">Base profile</string>
     <string name="birth">Birth</string>
     <string name="board_story">Story</string>
-    <string name="board_review">Review</string>
-    <string name="board_with">Go with</string>
-    <string name="board_findPeople">Find people</string>
 
     <string name="cancel">Cancel</string>
     <string name="canceled">Canceled</string>
@@ -217,10 +214,12 @@
     <string name="signInCompleted">Sign in completed</string>
     <string name="signingIn">Signing in now..</string>
     <string name="signingUp">Signing up now..</string>
+    <string name="signInWithSNS">SNS Login</string>
     <string name="signOut">Sign out</string>
 	<string name="signUp">Sign up</string>
 	<string name="signUpCompleted">Sign up completed</string>
 	<string name="SNSLinkSetting">SNS link setting</string>
+	<string name="SNSWarning">SNS..</string>
 	<string name="status">Status</string>
 	<string name="story">Story</string>
 	<string name="str_done">Done</string>

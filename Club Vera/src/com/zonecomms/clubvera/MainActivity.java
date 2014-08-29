@@ -481,13 +481,13 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			break;
 			
 		case ZoneConstants.REQUEST_SIGN:
-
+			
 			if(resultCode == RESULT_OK) {
 				
 				if(onAfterLoginListener != null) {
 					onAfterLoginListener.onAfterLogin();
 				}
-				
+
 				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 120, getProfileView(), 1, 0, null);
 			}
 			
@@ -1002,7 +1002,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			};
 		
 		int[] iconResIds = new int[]{
-				R.drawable.bg_profile_65,
+				R.drawable.r_profile64_01,
 				R.drawable.btn_side_notice,
 				R.drawable.btn_side_schedule,
 				R.drawable.btn_side_guest,

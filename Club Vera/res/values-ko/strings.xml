@@ -16,11 +16,7 @@
     
     <string name="baseProfile">기본 프로필</string>
     <string name="birth">생년월일</string>
-<!--     <string name="board_story">왁자지껄</string> -->
 	<string name="board_story">스토리</string>
-    <string name="board_review">생생후기</string>
-    <string name="board_with">함께가기</string>
-    <string name="board_findPeople">공개수배</string>
 
     <string name="cancel">취소</string>
     <string name="canceled">취소되었습니다</string>
@@ -76,7 +72,7 @@
     <string name="failToSubmitBaseProfile">기본 프로필 수정 실패</string>
     <string name="failToSubmitPassword">비밀번호 변경 실패</string>
     <string name="failToSubmitPushSetting">푸시 설정 변경 실패</string>
-    <string name="findIdAndPw">ID/비밀번호 찾기</string>
+    <string name="findIdAndPw">아이디 / 비밀번호 찾기</string>
     <string name="female">여성</string>
     <string name="femaleInit">여</string>
     <string name="friend">친구</string>
@@ -146,7 +142,7 @@
     <string name="maleInit">남</string>
     <string name="menu1">Profile</string>
     <string name="menu2">In\nStory</string>
-    <string name="menu3">Other\nStory</string>
+    <string name="menu3">Out\nStory</string>
     <string name="menu4">Message</string>
    	<string name="message">메세지</string>
    	<string name="modifyUserInfo">회원 정보 수정</string>
@@ -217,10 +213,12 @@
     <string name="signInCompleted">로그인 완료</string>
     <string name="signingIn">로그인 중..</string>
     <string name="signingUp">회원가입 중..</string>
+    <string name="signInWithSNS">SNS로 간편하게 로그인하기</string>
     <string name="signOut">로그아웃</string>
 	<string name="signUp">회원가입</string>
 	<string name="signUpCompleted">회원 가입 완료</string>
 	<string name="SNSLinkSetting">SNS 연결 설정</string>
+	<string name="SNSWarning">SNS 로그인은 이용자의 동의 없이\n이용자의 SNS 계정에 글이 남겨지거나 사진이 업로드되지 않습니다. </string>
 	<string name="status">현재 상태</string>
 	<string name="story">스토리</string>
 	<string name="str_done">완료</string>

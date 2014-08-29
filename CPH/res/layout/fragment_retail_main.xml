@@ -96,25 +96,25 @@
             android:layout_toRightOf="@id/retailMainPage_btnFavoriteShop"
             android:background="@drawable/retail_favorite_goods_btn" />
 
-        <!-- 업체 관리 -->
-
-        <Button
-            android:id="@+id/retailMainPage_btnBusiness"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_alignLeft="@id/retailMainPage_btnBasket"
-            android:layout_below="@id/retailMainPage_btnBasket"
-            android:background="@drawable/retail_business_btn" />
-
         <!-- 직원관리 -->
 
         <Button
             android:id="@+id/retailMainPage_btnStaff"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_alignTop="@id/retailMainPage_btnBusiness"
-            android:layout_toRightOf="@id/retailMainPage_btnBusiness"
+            android:layout_alignLeft="@id/retailMainPage_btnBasket"
+            android:layout_below="@id/retailMainPage_btnBasket"
             android:background="@drawable/retail_staff2_btn" />
+        
+        <!-- 업체 관리 -->
+
+        <Button
+            android:id="@+id/retailMainPage_btnBusiness"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignTop="@id/retailMainPage_btnStaff"
+            android:layout_toRightOf="@id/retailMainPage_btnStaff"
+            android:background="@drawable/retail_business_btn" />
 
         <!-- 설정 -->
 
@@ -122,8 +122,8 @@
             android:id="@+id/retailMainPage_btnSetting"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_alignTop="@id/retailMainPage_btnStaff"
-            android:layout_toRightOf="@id/retailMainPage_btnStaff"
+            android:layout_alignTop="@id/retailMainPage_btnBusiness"
+            android:layout_toRightOf="@id/retailMainPage_btnBusiness"
             android:background="@drawable/retail_setting_btn" />
 	
         <!-- 손잡이 -->

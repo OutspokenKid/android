@@ -20,12 +20,14 @@ import com.zonecomms.clubvera.classes.ZoneConstants;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.WrapperView;
 
 public class ViewWrapperForPost extends ViewWrapper {
 	
 	private static int length;
 
+	private View profileBg;
 	private View imageBg;
 	private ImageView ivImage;
 	private ImageView profileImage;
@@ -44,6 +46,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 	public void bindViews() {
 
 		try {
+			profileBg = row.findViewById(R.id.grid_post_profileBg);
 			imageBg = row.findViewById(R.id.grid_post_imageBg);
 			ivImage = (ImageView) row.findViewById(R.id.grid_post_ivImage);
 			profileImage = (ImageView) row.findViewById(R.id.grid_post_profileImage);
@@ -70,8 +73,7 @@ public class ViewWrapperForPost extends ViewWrapper {
 			
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 140,
 					row.findViewById(R.id.grid_post_bg), 2, Gravity.BOTTOM, null);
-			ResizeUtils.viewResize(60, 60, row.findViewById(R.id.grid_post_profileBg), 
-					2, Gravity.BOTTOM|Gravity.LEFT, new int[]{5, 0, 0, 75});
+			ResizeUtils.viewResize(60, 60, profileBg, 2, Gravity.BOTTOM|Gravity.LEFT, new int[]{5, 0, 0, 75});
 			ResizeUtils.viewResize(60, 60, profileImage, 2, Gravity.BOTTOM|Gravity.LEFT, new int[]{5, 0, 0, 75});
 			ResizeUtils.viewResize(180, 30, tvInfo, 2, Gravity.BOTTOM|Gravity.LEFT, new int[]{70, 0, 0, 105});
 			ResizeUtils.viewResize(140, 30, tvRegdate, 2, Gravity.BOTTOM|Gravity.LEFT, new int[]{70, 0, 0, 75});
@@ -93,6 +95,8 @@ public class ViewWrapperForPost extends ViewWrapper {
 	@Override
 	public void setValues(BaseModel baseModel) {
 
+		profileBg.setBackgroundColor(TitleBar.titleBarColor);
+		
 		try {
 			if(baseModel instanceof Post) {
 				post = (Post) baseModel;

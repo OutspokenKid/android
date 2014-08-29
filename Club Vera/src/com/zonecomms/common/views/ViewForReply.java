@@ -64,8 +64,7 @@ public class ViewForReply extends RelativeLayout {
 		blank.setLayoutParams(rp);
 		this.addView(blank);
 		
-		//id : 0
-		ivImage = new ImageView(getContext());
+		View imageBg = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(l, l);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
@@ -73,10 +72,16 @@ public class ViewForReply extends RelativeLayout {
 		rp.topMargin = m;
 		rp.rightMargin = m;
 		rp.bottomMargin = m;
+		imageBg.setLayoutParams(rp);
+		imageBg.setBackgroundColor(TitleBar.titleBarColor);
+		this.addView(imageBg);
+		
+		//id : 0
+		ivImage = new ImageView(getContext());
 		ivImage.setLayoutParams(rp);
 		ivImage.setId(madeCount);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		ivImage.setBackgroundResource(R.drawable.bg_profile_65);
+		ivImage.setBackgroundResource(R.drawable.r_profile64_01);
 		this.addView(ivImage);
 		
 		//id : 1

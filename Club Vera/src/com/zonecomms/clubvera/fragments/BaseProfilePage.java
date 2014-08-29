@@ -49,6 +49,7 @@ import com.zonecomms.common.models.UploadImageInfo;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.CustomDatePicker;
+import com.zonecomms.common.views.TitleBar;
 
 public class BaseProfilePage extends ZonecommsFragment {
 
@@ -89,7 +90,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 
 		FrameLayout imageFrame = new FrameLayout(mContext);
 		ResizeUtils.viewResize(200, 200, imageFrame, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 50, 0, 0});
-		imageFrame.setBackgroundResource(R.drawable.bg_profile_308);
+		imageFrame.setBackgroundColor(TitleBar.titleBarColor);
 		innerFrame.addView(imageFrame);
 
 		progress = new ProgressBar(mContext);
@@ -100,6 +101,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 		ivImage.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, 
 															LayoutParams.MATCH_PARENT));
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
+		ivImage.setBackgroundResource(R.drawable.profilel_01);
 		ivImage.setOnClickListener(new OnClickListener() {
 			
 			@Override

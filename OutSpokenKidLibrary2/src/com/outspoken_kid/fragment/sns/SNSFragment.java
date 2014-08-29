@@ -21,7 +21,7 @@ public abstract class SNSFragment extends Fragment {
 	public abstract boolean isLoggedIn();
 	protected abstract int getLoginImageResId();
 	protected abstract View getLoginButton(Activity activity);
-	protected abstract void logout();
+	public abstract void logout();
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

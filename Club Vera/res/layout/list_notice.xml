@@ -18,7 +18,7 @@
 		        android:id="@+id/list_notice_tvTitle"
 		        android:layout_width="0dp"
 		    	android:layout_height="0dp"
-		    	android:textColor="@color/renewal_text"
+		    	android:textColor="@color/renewal_text_dark"
 		    	android:singleLine="true"
 		    	android:gravity="center_vertical"
 		    	android:ellipsize="end" />
@@ -45,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="#fff"
             android:visibility="gone" >
 
             <FrameLayout

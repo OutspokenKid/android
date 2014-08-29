@@ -28,63 +28,128 @@
 	    <RelativeLayout
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content" >
-		    
-		    <!-- 공지사항. -->
-		    
-		    <Button 
-		        android:id="@+id/retailManagementPage_btnNotice" 
-			    android:layout_width="0dp"
-			    android:layout_height="0dp"
+		
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvNameText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
 			    android:layout_alignParentLeft="true"
 			    android:layout_alignParentTop="true"
-			    android:background="@drawable/shop_notice_btn" />
-		    
-		    <!-- 매장 대표사진 관리. -->
-		    
-		    <Button 
-		        android:id="@+id/retailManagementPage_btnProfile" 
-			    android:layout_width="match_parent"
-			    android:layout_height="0dp"
-			    android:layout_alignTop="@id/retailManagementPage_btnNotice"
-			    android:layout_toRightOf="@id/retailManagementPage_btnNotice"
-			    android:background="@drawable/shop_picture_btn" />
-		    
-		    <!-- 계좌번호 관리. -->
-		    
-		    <Button 
-		        android:id="@+id/retailManagementPage_btnAccount" 
-			    android:layout_width="0dp"
-			    android:layout_height="0dp"
-			    android:layout_below="@id/retailManagementPage_btnNotice"
-			    android:layout_alignParentLeft="true"
-			    android:background="@drawable/shop_account_btn" />
-		    
-		    <!-- 매장정보 보내기. -->
-		    
-		    <Button 
-		        android:id="@+id/retailManagementPage_btnKakao" 
-			    android:layout_width="match_parent"
-			    android:layout_height="0dp"
-			    android:layout_alignTop="@id/retailManagementPage_btnAccount"
-			    android:layout_toRightOf="@id/retailManagementPage_btnAccount"
-			    android:background="@drawable/shop_talk_btn" />
-		    
-		    <!-- 샘플 요청 관리. -->
-		    
-		    <Button 
-		        android:id="@+id/retailManagementPage_btnSample" 
-			    android:layout_width="match_parent"
-			    android:layout_height="0dp"
-			    android:layout_below="@id/retailManagementPage_btnAccount"
-			    android:layout_alignParentLeft="true"
-			    android:background="@drawable/shop_sample_btn_a" />
-		    
-		    <TextView 
-		        android:id="@+id/retailManagementPage_tvInfo" 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_below="@id/retailManagementPage_btnSample"
-			    android:textColor="#fff" />
+			    android:gravity="center_vertical"
+			    android:text="@string/companyName"
+		    	android:textColor="#fff" />
+	        
+	        <View 
+	            android:id="@+id/retailManagementPage_icon"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentRight="true"
+			    android:layout_alignParentTop="true" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvName"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvNameText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvRegText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_tvName"
+			    android:gravity="center_vertical"
+			    android:text="@string/registrationNumber"
+		    	android:textColor="#fff" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvReg"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvRegText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <View
+	            android:id="@+id/retailManagementPage_changeReg"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/retailManagementPage_tvReg"
+		    	android:layout_alignParentRight="true"
+		    	android:background="@drawable/retail_change_btn" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvOwnerNameText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_tvReg"
+			    android:gravity="center_vertical"
+			    android:text="@string/ownerName"
+		    	android:textColor="#fff" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvOwnerName"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvOwnerNameText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvPhoneText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_tvOwnerName"
+			    android:gravity="center_vertical"
+			    android:text="@string/number"
+		    	android:textColor="#fff" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvPhone"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvPhoneText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <View
+	            android:id="@+id/retailManagementPage_changePhone"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/retailManagementPage_tvPhone"
+		    	android:layout_alignParentRight="true"
+		    	android:background="@drawable/retail_change_btn" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvAddressText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_tvPhone"
+			    android:gravity="center_vertical"
+			    android:text="@string/addressForRetail"
+		    	android:textColor="#fff" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvAddress"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvAddressText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <View
+	            android:id="@+id/retailManagementPage_changeAddress"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/retailManagementPage_tvAddress"
+		    	android:layout_alignParentRight="true"
+		    	android:background="@drawable/retail_change_btn" />
 		    
 		</RelativeLayout>
 

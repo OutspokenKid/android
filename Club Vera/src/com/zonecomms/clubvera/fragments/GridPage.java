@@ -24,6 +24,7 @@ import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -48,6 +49,7 @@ import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Notice;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.utils.AppInfoUtils;
+import com.zonecomms.common.views.TitleBar;
 
 public class GridPage extends ZonecommsListFragment {
 	
@@ -407,17 +409,29 @@ public class GridPage extends ZonecommsListFragment {
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, length, 1);
 			lp.topMargin = p;
 			
-			ImageView v = new ImageView(mContext);
-			v.setLayoutParams(lp);
-			v.setScaleType(ScaleType.FIT_XY);
+			FrameLayout imageFrame = new FrameLayout(mContext);
+			imageFrame.setLayoutParams(lp);
 			
 			if(i == 0) {
-				v.setPadding(p, 0, p/2, 0);
+				imageFrame.setPadding(p, 0, p/2, 0);
 			} else if(i != 3) {
-				v.setPadding(p/2, 0, p/2, 0);
+				imageFrame.setPadding(p/2, 0, p/2, 0);
 			} else {
-				v.setPadding(p/2, 0, p, 0);
+				imageFrame.setPadding(p/2, 0, p, 0);
 			}
+			
+			linear.addView(imageFrame);
+			
+			View bg = new View(mContext);
+			bg.setLayoutParams(new FrameLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			bg.setBackgroundColor(TitleBar.titleBarColor);
+			imageFrame.addView(bg);
+			
+			ImageView v = new ImageView(mContext);
+			v.setLayoutParams(new FrameLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			v.setScaleType(ScaleType.FIT_XY);
 			
 			switch(i) {
 			
@@ -494,7 +508,7 @@ public class GridPage extends ZonecommsListFragment {
 				}
 			});
 			
-			linear.addView(v);
+			imageFrame.addView(v);
 			menus[i] = v;
 		}
 	}

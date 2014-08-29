@@ -3,10 +3,13 @@ package com.cmons.cph;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.cmons.cph.classes.CmonsFragment;
 import com.cmons.cph.classes.CmonsFragmentActivity;

@@ -11,10 +11,15 @@ import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.retail.RetailForAddPartner;
+import com.cmons.cph.fragments.retail.RetailForFavoriteProductPage;
+import com.cmons.cph.fragments.retail.RetailForFavoriteShopPage;
+import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.fragments.retail.RetailForManagementPage;
 import com.cmons.cph.fragments.retail.RetailForProductPage;
+import com.cmons.cph.fragments.retail.RetailForSearchPage;
 import com.cmons.cph.fragments.retail.RetailForSettingPage;
+import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -93,20 +98,20 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_ADD_PARTNER:
 			return new RetailForAddPartner();
 
-		case CphConstants.PAGE_RETAIL_CUSTOMERLIST:
+		case CphConstants.PAGE_RETAIL_CUSTOMER_LIST:
 			return new RetailForCustomerListPage();
 
 		case CphConstants.PAGE_RETAIL_SEARCH:
-//			 return new RetailForSearchPage();
+			 return new RetailForSearchPage();
 
-		case CphConstants.PAGE_RETAIL_BASKET:
-//			 return new RetailForBakset();
+		case CphConstants.PAGE_RETAIL_WISH_LIST:
+			 return new RetailForWishListPage();
 
 		case CphConstants.PAGE_RETAIL_FAVORITE_SHOP:
-//			 return new RetailForFavoriteShopPage();
+			 return new RetailForFavoriteShopPage();
 
 		case CphConstants.PAGE_RETAIL_FAVORITE_PRODUCT:
-//			 return new RetailForFavoriteProductPage();
+			 return new RetailForFavoriteProductPage();
 
 		case CphConstants.PAGE_RETAIL_MANAGEMENT:
 			return new RetailForManagementPage();
@@ -134,6 +139,9 @@ public class RetailActivity extends ShopActivity {
 			
 		case CphConstants.PAGE_RETAIL_PRODUCT:
 			return new RetailForProductPage();
+			
+		case CphConstants.PAGE_RETAIL_WISH:
+			 return new RetailForWishPage();
 		}
 		
 		return null;
@@ -169,8 +177,7 @@ public class RetailActivity extends ShopActivity {
 					LogUtils.log("RetailActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-//					retail = new Retail(objJSON.getJSONObject("retail"));
-					retail = new Retail(objJSON);
+					retail = new Retail(objJSON.getJSONObject("retail"));
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
