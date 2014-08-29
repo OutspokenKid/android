@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
+import com.zonecomms.clubvera.classes.ZoneConstants;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.views.WrapperView;
 import com.zonecomms.common.wrappers.ViewWrapper;
@@ -96,6 +97,10 @@ public abstract class ZoneAdapter extends BaseAdapter {
 				wrapper.setRow(wrapperView);				
 			} else {													//Maybe ListLoadingView.
 				//It'll be filled.
+			}
+
+			if(itemCode == ZoneConstants.ITEM_POST) {
+				wrapper.setBgColor(position);
 			}
 			
 			setRow(itemCode, position, wrapperView);

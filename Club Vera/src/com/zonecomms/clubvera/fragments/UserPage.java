@@ -226,12 +226,13 @@ public class UserPage extends ZonecommsFragment {
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 1);
 		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 1);
 		tvNickname.setLayoutParams(rp);
+		rp.topMargin = s;
 		tvNickname.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		tvNickname.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
-		tvNickname.setGravity(Gravity.LEFT|Gravity.BOTTOM);
+		tvNickname.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
 		tvNickname.setMaxWidth(l);
 		tvNickname.setEllipsize(TruncateAt.END);
-		FontUtils.setFontSize(tvNickname, 26);
+		FontUtils.setFontSize(tvNickname, 24);
 		relative.addView(tvNickname);
 		
 		tvIdGenderAge = new TextView(mContext);

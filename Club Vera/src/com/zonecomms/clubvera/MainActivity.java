@@ -1462,11 +1462,11 @@ public class MainActivity extends ZonecommsFragmentActivity {
 
 	public void checkProfileView() {
 		
-		if(ZonecommsApplication.myInfo != null && !StringUtils.isEmpty(ZonecommsApplication.myInfo.getMember_media_src())) {
-			String url = ZonecommsApplication.myInfo.getMember_media_src();
+		if(ZonecommsApplication.myInfo != null) {
 			
 			if(getProfileView() != null) {
-				
+
+				String url = ZonecommsApplication.myInfo.getMember_media_src();
 				if(!StringUtils.isEmpty(url) && getProfileView().getIcon() != null) {
 					getProfileView().getIcon().setTag(url);
 					DownloadUtils.downloadBitmap(url,

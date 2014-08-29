@@ -172,10 +172,6 @@ public class PostInfoLayout extends RelativeLayout {
 			} else {
 				nicknameWithId += "Noname";
 			}
-			
-			if(!StringUtils.isEmpty(member.getMember_id())) {
-				nicknameWithId += " (" + member.getMember_id() + ")";
-			}
 		}
 		
 		if(!StringUtils.isEmpty(nicknameWithId)) {

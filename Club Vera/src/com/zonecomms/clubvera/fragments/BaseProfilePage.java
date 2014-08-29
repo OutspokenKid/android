@@ -403,9 +403,6 @@ public class BaseProfilePage extends ZonecommsFragment {
 						
 						myStoryInfo = new MyStoryInfo(arJSON.getJSONObject(0));
 						
-						String monthString = ZonecommsApplication.myInfo.getMember_birty_md().substring(0, 2);
-						String dateString = ZonecommsApplication.myInfo.getMember_birty_md().substring(2, 4);
-						
 						nickname = myStoryInfo.getMystory_member_nickname();
 						gender = myStoryInfo.getMember_gender();
 						
@@ -414,10 +411,17 @@ public class BaseProfilePage extends ZonecommsFragment {
 						} else {
 							gender = getString(R.string.female);
 						}
-						
-						year = Integer.parseInt(ZonecommsApplication.myInfo.getMember_birty_yy());
-						month = Integer.parseInt(monthString) - 1;
-						date = Integer.parseInt(dateString);
+
+						try {
+							String monthString = ZonecommsApplication.myInfo.getMember_birty_md().substring(0, 2);
+							String dateString = ZonecommsApplication.myInfo.getMember_birty_md().substring(2, 4);
+							year = Integer.parseInt(ZonecommsApplication.myInfo.getMember_birty_yy());
+							month = Integer.parseInt(monthString) - 1;
+							date = Integer.parseInt(dateString);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						}
+
 						introduce = myStoryInfo.getMystory_title();
 
 						setPage(true);

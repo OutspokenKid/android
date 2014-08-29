@@ -55,7 +55,6 @@ public class SettingPage extends ZonecommsFragment {
 	private FrameLayout frameForEditPush;
 	private WebBrowser webBrowser;
 
-	private HoloStyleTextView tvId;
 	private HoloStyleTextView tvPw;
 	private HoloStyleEditText etEmail;
 	private HoloStyleSpinnerButton spEmail;
@@ -327,20 +326,18 @@ public class SettingPage extends ZonecommsFragment {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForEditPush, 2, 0, null);
 		
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, frameForMain, 2, 0, null);
-		ResizeUtils.viewResize(540, 80, tvId, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 60, 0, 0}, new int[]{200, 0, 20, 0});
-		ResizeUtils.viewResize(540, 80, tvPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 160, 0, 0}, new int[]{200, 0, 20, 0});
-		ResizeUtils.viewResize(270, 70, etEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 260, 0, 0});
-		ResizeUtils.viewResize(230, 70, spEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 260, 0, 0});
-		ResizeUtils.viewResize(180, 70, etEmail2, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 260, 0, 0});
-		ResizeUtils.viewResize(540, 80, etPhoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 360, 0, 0}, new int[]{200, 0, 20, 0});
-		ResizeUtils.viewResize(540, 80, tvPush, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 460, 0, 0});
-		ResizeUtils.viewResize(540, 80, tvSNS, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 560, 0, 0});
-		ResizeUtils.viewResize(540, 80, tvSignOut, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 660, 0, 0});
-		ResizeUtils.viewResize(540, 80, tvLeaveMember, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 760, 0, 0});
-		ResizeUtils.viewResize(540, 80, tvBaseProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 860, 0, 0});
-		ResizeUtils.viewResize(540, 80, tvAddedProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 960, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvPw, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 60, 0, 0}, new int[]{200, 0, 20, 0});
+		ResizeUtils.viewResize(270, 70, etEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 160, 0, 0});
+		ResizeUtils.viewResize(230, 70, spEmail, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 160, 0, 0});
+		ResizeUtils.viewResize(180, 70, etEmail2, 2, Gravity.LEFT|Gravity.TOP, new int[]{360, 160, 0, 0});
+		ResizeUtils.viewResize(540, 80, etPhoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 260, 0, 0}, new int[]{200, 0, 20, 0});
+		ResizeUtils.viewResize(540, 80, tvPush, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 360, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvSNS, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 460, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvSignOut, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 560, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvLeaveMember, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 660, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvBaseProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 760, 0, 0});
+		ResizeUtils.viewResize(540, 80, tvAddedProfile, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 860, 0, 0});
 		
-		FontUtils.setFontSize(tvId.getTextView(), 22);
 		FontUtils.setFontSize(tvPw.getTextView(), 22);
 		FontUtils.setFontSize(etEmail.getEditText(), 22);
 		FontUtils.setFontSize(tvPw.getTextView(), 22);
@@ -364,7 +361,6 @@ public class SettingPage extends ZonecommsFragment {
 		hideLoadingView();
 		
 		if(successDownload) {
-			tvId.setText(ZonecommsApplication.myInfo.getMember_id());
 			tvPw.setText("**********");
 			
 			String strEmail = ZonecommsApplication.myInfo.getMember_email();
@@ -457,11 +453,6 @@ public class SettingPage extends ZonecommsFragment {
 		frameForMain.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		frameForMain.setClickable(true);
 		scrollView.addView(frameForMain);
-
-		tvId = new HoloStyleTextView(mContext);
-		tvId.getTextView().setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-		tvId.setBgOn(false);
-		frameForMain.addView(tvId);
 		
 		tvPw = new HoloStyleTextView(mContext);
 		tvPw.getTextView().setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
@@ -543,16 +534,8 @@ public class SettingPage extends ZonecommsFragment {
 		tvAddedProfile.setBgOn(false);
 		frameForMain.addView(tvAddedProfile);
 		
-		TextView id = new TextView(mContext);
-		ResizeUtils.viewResize(170, 80, id, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 60, 0, 0});
-		id.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
-		id.setText(R.string.id);
-		id.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
-		FontUtils.setFontSize(id, 22);
-		frameForMain.addView(id);
-		
 		TextView pw = new TextView(mContext);
-		ResizeUtils.viewResize(170, 80, pw, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 160, 0, 0});
+		ResizeUtils.viewResize(170, 80, pw, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 60, 0, 0});
 		pw.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
 		pw.setText(R.string.password);
 		pw.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
@@ -560,14 +543,14 @@ public class SettingPage extends ZonecommsFragment {
 		frameForMain.addView(pw);
 		
 		TextView at = new TextView(mContext);
-		ResizeUtils.viewResize(60, 60, at, 2, Gravity.LEFT|Gravity.TOP, new int[]{310, 260, 0, 0});
+		ResizeUtils.viewResize(60, 60, at, 2, Gravity.LEFT|Gravity.TOP, new int[]{310, 160, 0, 0});
 		at.setText("@");
 		at.setGravity(Gravity.CENTER);
 		FontUtils.setFontSize(at, 36);
 		frameForMain.addView(at);
 		
 		TextView phoneNumber = new TextView(mContext);
-		ResizeUtils.viewResize(170, 80, phoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 360, 0, 0});
+		ResizeUtils.viewResize(170, 80, phoneNumber, 2, Gravity.LEFT|Gravity.TOP, new int[]{70, 260, 0, 0});
 		phoneNumber.setGravity(Gravity.CENTER_VERTICAL|Gravity.LEFT);
 		phoneNumber.setText(R.string.phoneNumber);
 		phoneNumber.setTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
@@ -575,7 +558,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForMain.addView(phoneNumber);
 		
 		HoloStyleButton btnSubmit = new HoloStyleButton(mContext);
-		ResizeUtils.viewResize(540, 70, btnSubmit, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 1060, 0, 0});
+		ResizeUtils.viewResize(540, 70, btnSubmit, 2, Gravity.LEFT|Gravity.TOP, new int[]{50, 960, 0, 0});
 		btnSubmit.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -623,7 +606,7 @@ public class SettingPage extends ZonecommsFragment {
 		frameForMain.addView(btnSubmit);
 		
 		View line = new View(mContext);
-		ResizeUtils.viewResize(1, 1160, line, 2, Gravity.LEFT, null);
+		ResizeUtils.viewResize(1, 1060, line, 2, Gravity.LEFT, null);
 		frameForMain.addView(line);
 	}
 	

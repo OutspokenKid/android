@@ -148,6 +148,8 @@ public class CircleListAdapter extends BaseAdapter {
 		public View moreBg;
 		public View more;
 		
+		public int pagerIndex; 
+		
 		public void bindViews(View convertView) {
 			
 			context = convertView.getContext();
@@ -308,9 +310,30 @@ public class CircleListAdapter extends BaseAdapter {
 					|| post.getMedias().length == 0) {
 				viewPager.setVisibility(View.GONE);
 			} else {
-				viewPager.setAdapter(new CirclePagerAdapter(context, post.getMedias()));
+				final CirclePagerAdapter circleAdapter = new CirclePagerAdapter(context, post.getMedias()); 
+				viewPager.setAdapter(circleAdapter);
 				viewPager.getAdapter().notifyDataSetChanged();
 				viewPager.setVisibility(View.VISIBLE);
+				viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+					
+					@Override
+					public void onPageSelected(int arg0) {
+
+						circleAdapter.pagerIndex = arg0;
+					}
+					
+					@Override
+					public void onPageScrolled(int arg0, float arg1, int arg2) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onPageScrollStateChanged(int arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
 			
 			if(post.getReply_cnt() > 99) {
@@ -347,6 +370,7 @@ public class CircleListAdapter extends BaseAdapter {
 
 		private Context context;
 		private Media[] medias;
+		public int pagerIndex;
 		
 		public CirclePagerAdapter(Context context, Media[] medias) {
 			
@@ -365,7 +389,7 @@ public class CircleListAdapter extends BaseAdapter {
 		}
 
 		@Override
-		protected View getView(final Object object, View convertView, ViewGroup parent) {
+		protected View getView(Object object, View convertView, ViewGroup parent) {
 
 			/*
 			http://112.169.61.103/externalapi/public/
@@ -395,22 +419,16 @@ public class CircleListAdapter extends BaseAdapter {
 
 					int size = medias.length;
 					String[] imageUrls = new String[size];
-					String[] thumbnailUrls = new String[size];
 					
 					for(int i=0; i<size; i++) {
 						imageUrls[i] = medias[i].getMedia_src();
-						thumbnailUrls[i] = medias[i].getThumbnail();
 					}
-					
+
 					if(imageUrls != null && imageUrls.length != 0) {
 						intent.putExtra("imageUrls", imageUrls);
 					}
-					
-					if(thumbnailUrls != null && thumbnailUrls.length != 0) {
-						intent.putExtra("thumbnailUrls", thumbnailUrls);
-					}
 
-					intent.putExtra("index", getItemPosition(object));
+					intent.putExtra("index", pagerIndex);
 					context.startActivity(intent);
 				}
 			});

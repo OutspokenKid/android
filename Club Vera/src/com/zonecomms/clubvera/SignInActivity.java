@@ -500,7 +500,7 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
 
-	public void signUpWithSNS(final String id, String type, String nickname) {
+	public void signUpWithSNS(String id, String type, String nickname) {
 
 		//?sns_id=snsid22&sns_type=facebook&sns_nickname=snsNick22&sb_id=golfn&image_size=
 		String url = ZoneConstants.BASE_URL + "auth/login/sns" +
@@ -536,8 +536,12 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 						ZonecommsApplication.myInfo = new MyInfo();
 						ZonecommsApplication.myInfo.setUserInfo(objJSON);
 						
+						String id = ZonecommsApplication.myInfo.getMember_id();
 						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "id", id);
 						SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_SIGN, "pw", id);
+						
+						setResult(RESULT_OK);
+						finish();
 					} catch(Exception e) {
 						LogUtils.trace(e);
 					}

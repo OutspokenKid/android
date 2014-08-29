@@ -114,13 +114,17 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	public void setVariables() {
 
 		if(getIntent() != null) {
-			if(getIntent().hasExtra("title")) {
-				title = getIntent().getStringExtra("title");
-			}
-			
+			imageIndex = getIntent().getIntExtra("index", 0);
+
 			if(getIntent().hasExtra("imageUrls")) {
 				imageUrls = getIntent().getStringArrayExtra("imageUrls");
 				imageFrames = new ImageFrame[imageUrls.length];
+			}
+			
+			if(getIntent().hasExtra("title")) {
+				title = getIntent().getStringExtra("title");
+			} else if(imageUrls.length > 1) {
+				tvTitle.setText((imageIndex + 1) + "/" + imageUrls.length);
 			}
 			
 			if(getIntent().hasExtra("thumbnailUrls")) {
@@ -148,8 +152,6 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			if(getIntent().hasExtra("imageResId")) {
 				imageResId = getIntent().getIntExtra("imageResId", 0);
 			}
-
-			imageIndex = getIntent().getIntExtra("index", 0);
 		} else {
 			finish();
 		}
@@ -259,6 +261,10 @@ public abstract class ImageViewerActivity extends BaseActivity {
 				
 				@Override
 				public void onPageSelected(int position) {
+					
+					if(imageUrls != null && imageUrls.length > 1 && title == null) {
+						tvTitle.setText((position + 1) + "/" + imageUrls.length);
+					}
 					
 					if(viewPagerForThumbnails != null) {
 						viewPagerForThumbnails.setCurrentItem(position/4, true);

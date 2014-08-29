@@ -54,6 +54,8 @@ public class ViewWrapperForPost extends ViewWrapper {
 			tvReplyCount = (TextView) row.findViewById(R.id.grid_post_tvReplyCount);
 			tvRegdate = (TextView) row.findViewById(R.id.grid_post_tvRegdate);
 			tvText = (TextView) row.findViewById(R.id.grid_post_tvText);
+			
+			bg = imageBg;
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -111,18 +113,14 @@ public class ViewWrapperForPost extends ViewWrapper {
 						info += member.getMember_nickname();
 					}
 					
-					if(!StringUtils.isEmpty(member.getMember_id())) {
-						info += "(" + member.getMember_id() + ")";
-					}
-					
 					tvInfo.setText(info);
 				}
 				
 				if(StringUtils.isEmpty(post.getMedia_src())) {
 					ivImage.setVisibility(View.INVISIBLE);
 					ivImage.setImageBitmap(null);
-					imageBg.setBackgroundResource(R.drawable.bg_talk);
 				} else {
+					ivImage.setVisibility(View.VISIBLE);
 					imageBg.setBackgroundResource(R.drawable.bg_post);
 					setImage(ivImage, post.getMedia_src());
 				}
