@@ -22,6 +22,7 @@ import java.util.Iterator;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 /**
  * This is an implementation of {@link PagerAdapter} that wraps it up like the

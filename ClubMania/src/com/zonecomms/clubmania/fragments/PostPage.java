@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
+import android.text.util.Linkify;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,13 +27,12 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.outspoken_kid.classes.ApplicationManager;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.classes.FontInfo;
-import com.outspoken_kid.classes.ApplicationManager;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
@@ -48,6 +48,7 @@ import com.zonecomms.clubmania.classes.ZoneConstants;
 import com.zonecomms.common.models.Member;
 import com.zonecomms.common.models.Post;
 import com.zonecomms.common.models.Reply;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageDownloadUtils;
 import com.zonecomms.common.views.PostInfoLayout;
 import com.zonecomms.common.views.ReplyLoadingView;
@@ -281,7 +282,7 @@ public class PostPage extends BaseFragment {
 		
 		String url = ZoneConstants.BASE_URL + "spot/detail" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
-				"&image_size=" + ResizeUtils.getSpecificLength(640) +
+				"&image_size=640" +
 				"&spot_nid=" + spot_nid;
 		super.downloadInfo();
 		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
@@ -591,7 +592,7 @@ public class PostPage extends BaseFragment {
 		String url = ZoneConstants.BASE_URL + "reply/list" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&spot_nid=" + spot_nid +
-				"&image_size=" + ResizeUtils.getSpecificLength(100) +
+				"&image_size=100" +
 				"&last_reply_nid=" + lastIndexno;
 		AsyncStringDownloader.download(url, getDownloadKey(), ocl);
 	}
@@ -1074,6 +1075,7 @@ public class PostPage extends BaseFragment {
 			
 			if(!TextUtils.isEmpty(reply.getContent())) {
 				tvText.setText(reply.getContent());
+				tvText.setAutoLinkMask(Linkify.WEB_URLS|Linkify.EMAIL_ADDRESSES);
 			}
 			
 			if(reply.getTarget_member().size() != 0) {

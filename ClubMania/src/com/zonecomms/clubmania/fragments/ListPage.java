@@ -19,14 +19,13 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.outspoken_kid.classes.BaseListFragment;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
-import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubmania.R;
 import com.zonecomms.clubmania.classes.ZoneConstants;
 import com.zonecomms.common.adapters.ListAdapter;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.models.Notice;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 public class ListPage extends BaseListFragment {
 	
@@ -114,27 +113,27 @@ public class ListPage extends BaseListFragment {
 		if(type == ZoneConstants.TYPE_NOTICE) {
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=1"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_notice_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_EVENT) {
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=2"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_notice_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_SMARTPASS) {
 			url = ZoneConstants.BASE_URL + "notice/list"
 					+ "?notice_type=7"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_notice_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_VIDEO) {
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=2"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(640)
+					+ "&image_size=640"
 					+ "&last_link_nid=" + lastIndexno;
 		} else if(type == ZoneConstants.TYPE_MUSIC) {
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=3"
-					+ "&image_size=" + ResizeUtils.getSpecificLength(150)
+					+ "&image_size=150"
 					+ "&last_link_nid=" + lastIndexno;
 		}
 		

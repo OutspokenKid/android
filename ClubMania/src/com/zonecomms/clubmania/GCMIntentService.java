@@ -14,11 +14,11 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.classes.ApplicationManager;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
-import com.zonecomms.common.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.zonecomms.clubmania.classes.ZoneConstants;
 import com.zonecomms.clubmania.fragments.MessagePage;
+import com.zonecomms.common.utils.AppInfoUtils;
 
 /**
  * v1.0.1
@@ -154,7 +154,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	 * @param spot_nid : 댓글인 경우 글의 nid.
 	 */
 	public void handleMessage(Context context, String push_msg, String msg_type, 
-			String member_id, String post_member_id, int spot_nid) {
+			final String member_id, String post_member_id, int spot_nid) {
 
 		if(msg_type == null) {
 			return;
@@ -167,12 +167,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 				&& ApplicationManager.getTopFragment() instanceof MessagePage) {
 			
 			try {
-				MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
+				ApplicationManager.getInstance().getMainActivity().runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						MessagePage mp = (MessagePage) ApplicationManager.getTopFragment();
+						
+						if(mp.getFriend_member_id() != null
+								&& mp.getFriend_member_id().equals(member_id)) {
+							mp.onRefreshPage();
+						}
+					}
+				});
 				
-				if(mp.getFriend_member_id() != null
-						&& mp.getFriend_member_id().equals(member_id)) {
-					mp.onRefreshPage();
-				}
 			} catch(Exception e) {
 			}
 		} else {

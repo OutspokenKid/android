@@ -32,6 +32,7 @@ reg_id : 작성자 ID
 	copyright : 출처
 	 */
 	
+	private int sb_spot_nid;
 	private String sb_nickname;
 	private String copyright;
 	private int sb_nid;
@@ -59,6 +60,10 @@ reg_id : 작성자 ID
 		super(objJSON);
 		
 		try {
+			if(objJSON.has("sb_spot_nid")) {
+				this.sb_spot_nid = objJSON.getInt("sb_spot_nid");
+			}
+			
 			if(objJSON.has("sb_nickname")) {
 				this.sb_nickname = objJSON.getString("sb_nickname");
 			}
@@ -267,5 +272,13 @@ reg_id : 작성자 ID
 
 	public void setBoard_name(String board_name) {
 		this.board_name = board_name;
+	}
+
+	public int getSb_spot_nid() {
+		return sb_spot_nid;
+	}
+
+	public void setSb_spot_nid(int sb_spot_nid) {
+		this.sb_spot_nid = sb_spot_nid;
 	}
 }

@@ -7,14 +7,39 @@ import java.util.Calendar;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.AnimationDrawable;
+import android.net.Uri;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
+import android.text.Html;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
+
 import com.google.android.gcm.GCMRegistrar;
-import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.classes.SetupClass;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader.OnCompletedListener;
-import com.zonecomms.common.utils.AppInfoUtils;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.NetworkUtils;
@@ -24,9 +49,9 @@ import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
-import com.outspoken_kid.views.SoftKeyboardDetector;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterCloseListener;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
+import com.outspoken_kid.views.SoftKeyboardDetector;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnHiddenSoftKeyboardListener;
 import com.outspoken_kid.views.SoftKeyboardDetector.OnShownSoftKeyboardListener;
 import com.outspoken_kid.views.WebBrowser;
@@ -47,6 +72,7 @@ import com.zonecomms.common.models.Popup;
 import com.zonecomms.common.models.SideMenu;
 import com.zonecomms.common.models.StartupInfo;
 import com.zonecomms.common.models.UploadImageInfo;
+import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.utils.ImageUploadUtils;
 import com.zonecomms.common.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.zonecomms.common.views.NoticePopup;
@@ -57,32 +83,6 @@ import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.TitleBar.OnNButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnSideMenuButtonClickedListener;
 import com.zonecomms.common.views.TitleBar.OnWriteButtonClickedListener;
-
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.AnimationDrawable;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
-import android.text.Html;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ScrollView;
 
 public class MainActivity extends FragmentActivity {
 
@@ -528,7 +528,7 @@ public class MainActivity extends FragmentActivity {
 					String url = ZoneConstants.BASE_URL + "auth/login" +
 							"?id=" + URLEncoder.encode(id, "UTF-8") + 
 							"&password=" + URLEncoder.encode(pw, "UTF-8") + 
-							"&image_size=" + ResizeUtils.getSpecificLength(308) +
+							"&image_size=308" +
 							"&" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID);
 					AsyncStringDownloader.download(url, null, ocl);
 				} catch(Exception e) {
@@ -884,7 +884,7 @@ public class MainActivity extends FragmentActivity {
 			return;
 		}
 		
-		Intent intent = new Intent(this, ImageViewerActivity.class);
+		Intent intent = new Intent(this, ImageViewer.class);
 
 		if(!TextUtils.isEmpty(title)) {
 			intent.putExtra("title", title);

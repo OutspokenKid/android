@@ -39,6 +39,7 @@
 			            android:id="@+id/postPage_tvText"
 			            android:layout_width="match_parent"	
 			            android:layout_height="wrap_content"
+			            android:autoLink="web|email"
 			            android:textColor="#ddd" />	            
 		            
 		        </LinearLayout>

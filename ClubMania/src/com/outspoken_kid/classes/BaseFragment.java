@@ -51,6 +51,16 @@ public abstract class BaseFragment extends Fragment {
 	protected ArrayList<ImageView> imageViews = new ArrayList<ImageView>();
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mContext = getActivity();
+		mActivity = (MainActivity) getActivity();
+		SetupClass.setupApplication(mActivity);
+
+		addFragmentToManager();
+	}
+	
+	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
@@ -59,16 +69,6 @@ public abstract class BaseFragment extends Fragment {
 		if(getArguments() != null) {
 			title = getArguments().getString("title");
 		}
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mContext = getActivity();
-		mActivity = (MainActivity) getActivity();
-		SetupClass.setupApplication(mActivity);
-
-		addFragmentToManager();
 	}
 
 	@Override

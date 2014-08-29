@@ -24,15 +24,15 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 import com.outspoken_kid.classes.BaseListFragment;
 import com.outspoken_kid.classes.FontInfo;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
@@ -96,7 +96,7 @@ public class GridPage extends BaseListFragment {
 		if(numOfColumn == 0) {
 			numOfColumn = 2;
 		}
-
+				
 		if(type == ZoneConstants.TYPE_MEMBER) {
 			addMenuForPeople();
 			addSearchBar();
@@ -139,7 +139,11 @@ public class GridPage extends BaseListFragment {
 					int visibleItemCount, int totalItemCount) {
 				
 				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
+
+					if(type != ZoneConstants.TYPE_PAPP_PHOTO
+							&& type != ZoneConstants.TYPE_PAPP_SCHEDULE) {
+						downloadInfo();
+					}
 				}
 			}
 		});
@@ -170,7 +174,7 @@ public class GridPage extends BaseListFragment {
 			url += "spot/list/with_category"
 					+ "?s_cate_id=" + s_cate_id
 					+ "&last_spot_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(308);
+					+ "&image_size=308";
 		} else if(type == ZoneConstants.TYPE_SCHEDULE) {
 			String sb_id = getArguments().getString("data");
 			url += "notice/list"
@@ -184,7 +188,7 @@ public class GridPage extends BaseListFragment {
 					+ "?link_type=1"
 					+ "&last_link_nid=" + lastIndexno
 					+ "&sb_id=" + sb_id
-					+ "&image_size=" + ResizeUtils.getSpecificLength(308);
+					+ "&image_size=308";
 		} else if(type == ZoneConstants.TYPE_MEMBER) {
 			String keyword = "";
 			if(editText != null && editText.getEditText().getText() != null 
@@ -199,7 +203,7 @@ public class GridPage extends BaseListFragment {
 			url += "sb/member_list"
 					+ "?status=1"
 					+ "&max_sb_member_nid=" + lastIndexno
-					+ "&image_size=" + ResizeUtils.getSpecificLength(150)
+					+ "&image_size=150"
 					+ "&keyword=" + keyword;
 			
 			switch(menuIndex) {
@@ -222,13 +226,13 @@ public class GridPage extends BaseListFragment {
 			
 		} else if(type == ZoneConstants.TYPE_PAPP_PHOTO) {
 			url += "sb/clubmania/papplist"
-					+ "?image_size=" + ResizeUtils.getSpecificLength(150);
+					+ "?image_size=150";
 			
 		} else if(type == ZoneConstants.TYPE_PAPP_SCHEDULE) {
 			s_cate_id = Integer.parseInt(getArguments().getString("data"));
 			url += "sb/category_papp_list"
 					+ "?s_cate_id=" + s_cate_id
-					+ "&image_size=" + ResizeUtils.getSpecificLength(150);
+					+ "&image_size=150";
 		}
 
 		if(!TextUtils.isEmpty(url)) {

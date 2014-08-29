@@ -71,6 +71,7 @@
     <string name="failToSendPost">글쓰기 실패</string>
     <string name="failToSendReply">댓글 작성 실패</string>
     <string name="failToShowVideo">해당 동영상을 열 수 없습니다</string>
+    <string name="failToShowVideoFullScreenMode">해당 동영상을 전체화면 보기로 열 수 없습니다</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignOut">로그아웃 실패</string>
     <string name="failToSignUp">회원가입 실패</string>

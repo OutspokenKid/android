@@ -4,11 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Environment;
+import android.provider.MediaStore;
+
+import com.zonecomms.clubmania.R;
 
 public class ImageCacheUtils {
 	
@@ -49,6 +58,16 @@ public class ImageCacheUtils {
     		return null;
     	}
     }
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) public static void saveImage(Context context, Bitmap bitmap, String fileName, boolean needRecycle) {
+
+		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+			(new BackgroundSaveImage(context, bitmap, fileName, needRecycle))
+				.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			(new BackgroundSaveImage(context, bitmap, fileName, needRecycle)).execute();
+		}
+	}
 	
 //////////////////////////// Classes.
 	
@@ -158,6 +177,86 @@ public class ImageCacheUtils {
  		    		onAfterLoadBitmap.onAfterLoadBitmap(null);
  		    	}
  			}
+     	}
+	}
+
+	public static class BackgroundSaveImage extends AsyncTask<Void, Void, Void> {
+     	
+		private Context context;
+     	private Bitmap bitmap;
+     	private String fileName;
+     	private boolean needRecycle;
+     	private String url;
+
+     	public BackgroundSaveImage(Context context, Bitmap bitmap, String fileName, boolean needRecycle) {
+
+     		this.context = context;
+     		this.bitmap = bitmap;
+     		this.fileName = fileName;
+     		this.needRecycle = needRecycle;
+     	}
+     	
+ 		@Override
+ 		protected Void doInBackground(Void... arg0) {
+ 			
+ 			url = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, fileName, "");
+
+ 			if(url == null) {
+ 				ToastUtils.showToast(R.string.failToSaveImage);
+ 			} else {
+ 				ToastUtils.showToast(R.string.saveImageCompleted);
+ 			}
+ 			return null;
+ 		}
+ 		
+ 		@Override
+     	public void onPostExecute(Void v) {
+
+ 			LogUtils.log("###ImageCacheUtil.onPostExecute.  filename : " + fileName + ", url :" + url);
+ 			
+// 			context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"+ Environment.getExternalStorageDirectory())));
+// 			MediaScannerConnection.scanFile(context,
+// 	                new String[] {url}, null,
+// 	                new MediaScannerConnection.OnScanCompletedListener() {
+//
+// 	                    public void onScanCompleted(String path, Uri uri) {
+// 	                        LogUtils.log("###ImageCacheUtil.onScanCompleted.  ");
+// 	                    }
+// 	                });
+// 			context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(uriString)));
+// 			SingleMediaScanner sms = (new SingleMediaScanner(context, url));
+ 			
+ 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { 
+// 				 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE); 
+// 				 Uri contentUri = Uri.parse(url); 
+// 				 mediaScanIntent.setData(contentUri); 
+// 				 context.sendBroadcast(mediaScanIntent); 
+ 				
+ 	 			MediaScannerConnection.scanFile(context,
+	                new String[] {url}, null,
+	                new MediaScannerConnection.OnScanCompletedListener() {
+
+	                    public void onScanCompleted(String path, Uri uri) {
+	                    	String printString = "###ImageCacheUtil.onScanCompleted.  \npath : " + path;
+	                    	
+	                    	if(uri != null) {
+	                    		printString += "\nuri : " + uri.toString();
+	                    	}
+	                    	
+	                        LogUtils.log(printString);
+	                    }
+	                });
+			
+ 			} else { 
+ 				context.sendBroadcast(
+ 						new Intent(Intent.ACTION_MEDIA_MOUNTED, 
+ 						Uri.parse("file://"+ Environment.getExternalStorageDirectory()))); 
+ 			}
+ 			
+ 			if(bitmap != null && needRecycle) {
+				bitmap.recycle();
+				bitmap = null;
+			}
      	}
 	}
 	

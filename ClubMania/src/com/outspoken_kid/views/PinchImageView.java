@@ -1,5 +1,6 @@
 package com.outspoken_kid.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -30,9 +31,13 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 	private boolean edgeLeft = false;
 	private boolean edgeRight = false;
 	private boolean wasZooming = false;		//줌 후 이전 스케일로 돌아가는 버그를 막기 위한 플래그.
+
+	private float scale = 1.0f;
 	
 	private PointF start = new PointF();
-	private PointF mid = new PointF();	
+	private PointF mid = new PointF();
+	
+	private OnScrollChangedListener onScrollChangedListener;
 	
 	//Methods.
 	public PinchImageView(Context context, AttributeSet attrs, int defStyle) {
@@ -88,12 +93,14 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		
+	
 		ImageView view = (ImageView) v;
 		
 		switch(event.getAction() & MotionEvent.ACTION_MASK) {
 		
 		case MotionEvent.ACTION_DOWN :
+			checkScrollState();
+			
 			savedMatrix.set(matrix);
 			start.set(event.getX(), event.getY());
 			mode = DRAG;
@@ -101,6 +108,7 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 			
 		case MotionEvent.ACTION_POINTER_DOWN :
 			oldDist = calculateDistance(event);
+			
 			if(oldDist > 10.0f) {
 				savedMatrix.set(matrix);
 				midPoint(mid, event);
@@ -119,15 +127,19 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 			break;
 			
 		case MotionEvent.ACTION_MOVE :
-			
+
 			if(mode == DRAG && wasZooming) {
 				return false;
 			}
 			
 			if(mode == DRAG) {
+				checkScrollState();
+				
 				matrix.set(savedMatrix);
 				matrix.postTranslate(event.getX() - start.x, event.getY() - start.y);
 			} else if (mode == ZOOM) {
+				checkScrollState();
+				
 				float newDist = calculateDistance(event);
 				if(newDist > 10.0f) {
 					float scale = newDist / oldDist;
@@ -149,6 +161,7 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 		return true;
 	}
 	
+	@SuppressLint("FloatMath")
 	public float calculateDistance(MotionEvent event) {
 		
 		float x = event.getX(0) - event.getX(1);
@@ -224,8 +237,9 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 			scaleWidth = (int) (imageWidth * value[0]);		
 			scaleHeight = (int) (imageHeight * value[4]);	
 			
-			if(scaleWidth > width)							
+			if(scaleWidth > width) {
 				value[0] = value[4] = (float) width/imageWidth;
+			}
 		}
 
 		scaleWidth = (int) (imageWidth * value[0]);
@@ -236,6 +250,8 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 			
 		if(scaleHeight <= height)
 			value[5] = (float) (height - scaleHeight) / 2;
+		
+		scale = value[0];
 		
 		matrix.setValues(value);
 		savedMatrix2.set(matrix);
@@ -293,4 +309,38 @@ public class PinchImageView extends ImageView implements OnTouchListener  {
 		matrix.setValues(value);
 		setImageMatrix(matrix);
 	}
+
+	public void setOnScrollChangedListener(OnScrollChangedListener onScrollChangedListener) {
+		
+		this.onScrollChangedListener = onScrollChangedListener;
+	}
+	
+	public void checkScrollState() {
+
+		if(onScrollChangedListener != null) {
+			
+			if(mode == DRAG) {
+				if(scale == 0 || edgeLeft || edgeRight) {
+					onScrollChangedListener.onScrollChanged(false);
+				} else{
+					onScrollChangedListener.onScrollChanged(true);
+				}
+			} else if(mode == ZOOM) {
+				if(scale == 0) {
+					onScrollChangedListener.onScrollChanged(false);
+				} else {
+					onScrollChangedListener.onScrollChanged(true);
+				}
+			}	
+		}
+		
+	}
+	
+/////////////////////// Interfaces.
+	
+	public interface OnScrollChangedListener {
+		
+		public void onScrollChanged(boolean needLockParentTouch);
+	}
 }
+

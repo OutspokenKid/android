@@ -12,7 +12,7 @@ import android.util.Log;
  */
 public class LogUtils {
 	
-	private static final boolean NEED_LOG = false;
+	private static final boolean NEED_LOG = true;
 	
 	@SuppressWarnings("unused")
 	public static void log(String logString) {

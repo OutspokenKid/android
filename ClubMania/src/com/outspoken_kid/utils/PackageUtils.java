@@ -1,5 +1,7 @@
 package com.outspoken_kid.utils;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,9 +14,18 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
+import android.util.Base64;
 
+/**
+ * v1.0.1
+ * 
+ * @author HyungGunKim
+ *
+ * v1.0.1 - Add 'getKeyHash' method.
+ */
 public class PackageUtils {
 
 	private static List<RunningTaskInfo> info;
@@ -94,10 +105,28 @@ public class PackageUtils {
 	        appInfo.setVersionName(p.versionName);
 	        appInfo.setVersionCode(p.versionCode);
 	        appInfo.setIcon(p.applicationInfo.loadIcon(pm));
-	        appInfo.setInitialName(StringUtils.getInitailLetters(appName));
+	        appInfo.setInitialName(StringUtils.getInitailKoreanLetters(appName));
 	        appInfos.add(appInfo);
 	    }
 	    
 	    return appInfos;
+	}
+
+	public static String getKeyHash(Context context, String packageName) {
+		try {
+			PackageInfo info = context.getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+			
+			MessageDigest md = MessageDigest.getInstance("SHA");
+			
+	        for (Signature signature : info.signatures) {
+	            md.update(signature.toByteArray());
+	        }
+	        
+	        return Base64.encodeToString(md.digest(), Base64.DEFAULT).toString();
+	    } catch (NameNotFoundException e) {
+	    } catch (NoSuchAlgorithmException e) {
+	    }
+		
+		return null;
 	}
 }

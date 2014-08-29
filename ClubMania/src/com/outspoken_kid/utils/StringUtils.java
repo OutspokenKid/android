@@ -1,19 +1,36 @@
 package com.outspoken_kid.utils;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Context;
+import android.text.Editable;
+import android.widget.EditText;
 
 /**
- * v1.0.1
+ * v1.0.5
  * 
  * @author HyungGunKim
- *
- * v1.0.1 - 클립보드에 복사 기능 추가.
+ * v1.0.5 - Edit isEmpty().
+ * v1.0.4 - checkString() -> checkTextLength(), Add checkForbiddenContains().
+ * v1.0.3 - Fix some bugs in checkString().
+ * v1.0.2 - Add isEmpty(), checkString().
+ * v1.0.1 - Add 'copyStringToClipboard'.
  */
 public class StringUtils {
 
+	/**
+	 * For isEmpty.
+	 */
+	public static final int PASS = 0;
+	public static final int FAIL_EMPTY = 2;
+	public static final int FAIL_SHORT = 3;
+	public static final int FAIL_LONG = 4;
+	
 	private static final char KOREAN_BEGIN_UNICODE = 44032; // 가 
 	private static final char KOREAN_LAST_UNICODE = 55203; // 힣
 	private static final char KOREAN_BASE_UNIT = 588;//각자음 마다 가지는 글자수
@@ -124,7 +141,7 @@ public class StringUtils {
 	 * @param str : 변환할 문자열.
 	 * @return : 변환된 문자열.
 	 */
-	public static String getInitailLetters(String str) {
+	public static String getInitailKoreanLetters(String str) {
 		
 		if(str == null || str.equals("")) {
 			return null;
@@ -139,7 +156,7 @@ public class StringUtils {
 				char c = str.charAt(i);
 				
 				if(isKorean(c)) {
-					initialString += getInitialLetter(str.charAt(i));
+					initialString += getInitialKoreanLetter(str.charAt(i));
 				} else {
 					initialString += c;
 				}
@@ -155,7 +172,7 @@ public class StringUtils {
 		return null;
 	}
 	
-	private static boolean isInitialLetter(char searchar){ 
+	private static boolean isInitialKoreanLetter(char searchar){ 
 		
 		try {
 			for(char c : INITIAL_LETTER){ 
@@ -170,10 +187,10 @@ public class StringUtils {
 		return false;
 	 } 
 		
-	private static char getInitialLetter(char c) { 
+	private static char getInitialKoreanLetter(char c) { 
 	
 		try {
-			if(!isInitialLetter(c) && isKorean(c)) {
+			if(!isInitialKoreanLetter(c) && isKorean(c)) {
 				int hanBegin = (c - KOREAN_BEGIN_UNICODE); 
 				int index = hanBegin / KOREAN_BASE_UNIT; 
 					
@@ -193,7 +210,7 @@ public class StringUtils {
 	  */
 	private static boolean isKorean(char c) {
 		
-		return KOREAN_BEGIN_UNICODE <= c && c <= KOREAN_LAST_UNICODE; 
+		return isInitialKoreanLetter(c) || (KOREAN_BEGIN_UNICODE <= c && c <= KOREAN_LAST_UNICODE); 
 	}
 
 	public static boolean isEqualSinceFirst(String target, String key) {
@@ -203,8 +220,8 @@ public class StringUtils {
 		}
 		 
 		try {
-			String s1 = target.toUpperCase();
-			String s2 = key.toUpperCase();
+			String s1 = target.toUpperCase(Locale.getDefault());
+			String s2 = key.toUpperCase(Locale.getDefault());
 			 
 			int length = s2.length();
 			for(int i=0; i<length; i++) {
@@ -234,8 +251,8 @@ public class StringUtils {
 		}
 		 
 		try {
-			String s1 = target.toUpperCase();
-			String s2 = key.toUpperCase();
+			String s1 = target.toUpperCase(Locale.getDefault());
+			String s2 = key.toUpperCase(Locale.getDefault());
 			 
 			int length = s2.length();
 			for(int i=0; i<length; i++) {
@@ -245,9 +262,9 @@ public class StringUtils {
 				char c3 = '1';
 				char c4 = '2';
 				 
-				if(isInitialLetter(c1) || isInitialLetter(c2)) {
-					c3 = getInitialLetter(s1.charAt(i));
-					c4 = getInitialLetter(s2.charAt(i));
+				if(isInitialKoreanLetter(c1) || isInitialKoreanLetter(c2)) {
+					c3 = getInitialKoreanLetter(s1.charAt(i));
+					c4 = getInitialKoreanLetter(s2.charAt(i));
 				}
 				 
 				if(c1 != c2 && c3 != c4) {
@@ -265,6 +282,7 @@ public class StringUtils {
 		return false;
 	}
 
+	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	public static boolean copyStringToClipboard(Context context, String text) {
 		
@@ -283,5 +301,236 @@ public class StringUtils {
 		} catch(Exception e) {
 			return false;
 		}
+	}
+
+	/**
+	 * Check the string whether forbidden or not.
+	 * 
+	 * @param editText : EditText to check.
+	 * @param noAlphabet
+	 * @param noKoreanLetters
+	 * @param noNumber
+	 * @param noOther
+	 * @return Returns true when editText's string is forbidden, or not.
+	 */
+	public static boolean checkForbidContains(EditText editText, boolean noAlphabet,
+			boolean noKoreanLetters, boolean noNumber, boolean noSpace, boolean noNewLine, boolean noOther) {
+		
+		try {
+			String str = editText.getEditableText().toString();
+			return checkForbidContains(str, noAlphabet, noKoreanLetters, noNumber, noSpace, noNewLine, noOther);
+		} catch(Exception e) {
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Check the string whether forbidden or not.
+	 * 
+	 * @param str : String to check.
+	 * @param noAlphabet
+	 * @param noKoreanLetters
+	 * @param noNumber
+	 * @param noOther
+	 * 
+	 * @return Returns true when 'str' is forbidden, or not.
+	 */
+	public static boolean checkForbidContains(String str, boolean noAlphabet, 
+			boolean noKoreanLetters, boolean noNumber, boolean noSpace, boolean noNewLine, boolean noOther) {
+
+		if(str == null || str.length() == 0) {
+			return false;
+		}
+		
+		LogUtils.log("check===================");
+		
+		try {
+			/*
+			 * Check all letters. 
+			 */
+			int size = str.length();
+			for(int i=0; i<size; i++) {
+				char c = str.charAt(i);
+				
+				//Korean.
+				if(isKorean(c)) {
+					if(noKoreanLetters) {
+						LogUtils.log("hasKorean : " + c);
+						return true;
+					}
+					
+				//Alphabet.
+				} else if((c >= 65 && c <= 90)
+						|| (c >= 97 && c <= 122)) {
+					if(noAlphabet) {
+						LogUtils.log("hasAlphabet : " + c);
+						return true;
+					}
+
+				//Number.
+				} else if(c >= 48 && c <= 57) {
+					if(noNumber) {
+						LogUtils.log("hasNumber : " + c);
+						return true;
+					}
+
+				//Space.
+				} else if(c == 32) {
+					if(noSpace) {
+						LogUtils.log("hasSpace : " + c);
+						return true;
+					}
+					
+				//NewLine.
+				} else if(c == 10) {
+					if(noNewLine) {
+						LogUtils.log("hasNewLine : " + c);
+						return true;
+					}
+					
+				//Other letter.
+				} else {
+					
+					if(noOther) {
+						LogUtils.log("hasOther : " + c);
+						return true;
+					}
+				}
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public static boolean isEmpty(CharSequence str) {
+		
+		return str == null || str.length() == 0;
+	}
+	
+	/**
+	 * Check the string's length.
+	 * 
+	 * @param str
+	 * @param minLength
+	 * @param maxLength
+	 * @return Result of checking.
+	 */
+	public static int checkTextLength(String str, int minLength, int maxLength) {
+
+		try {
+			if(str.length() < minLength) {
+				return FAIL_SHORT;
+			}
+			
+			if(str.length() > maxLength) {
+				return FAIL_LONG;
+			}
+			
+			if(isEmpty(str)) {
+				return FAIL_EMPTY;
+			}
+			
+			if((str == null || str.length() == 0) && !(minLength == 0)) {
+				return FAIL_EMPTY;
+			}
+		} catch(Exception e) {
+			return FAIL_EMPTY;
+		}
+		
+		return PASS;
+	}
+	
+	/**
+	 * Check the string's length.
+	 * 
+	 * @param editable
+	 * @param minLength
+	 * @param maxLength
+	 * @return Result of checking.
+	 */
+	public static int checkTextLength(Editable ed, int minLength, int maxLength) {
+
+		try {
+			String str = ed.toString();
+			
+			if(str.length() < minLength) {
+				return FAIL_SHORT;
+			}
+			
+			if(str.length() > maxLength) {
+				return FAIL_LONG;
+			}
+			
+			if(str.length() == 0 && !(minLength == 0)) {
+				return FAIL_EMPTY;
+			}
+		} catch(Exception e) {
+			return FAIL_EMPTY;
+		}
+		
+		return PASS;
+	}
+	
+	/**
+	 * Check the string's length.
+	 * 
+	 * @param textView
+	 * @param minLength
+	 * @param maxLength
+	 * @return Result of checking.
+	 */
+	public static int checkTextLength(EditText et, int minLength, int maxLength) {
+
+		try {
+			String str = et.getText().toString();
+			
+			if(str.length() < minLength) {
+				return FAIL_SHORT;
+			}
+			
+			if(str.length() > maxLength) {
+				return FAIL_LONG;
+			}
+			
+			if(str.length() == 0 && !(minLength == 0)) {
+				return FAIL_EMPTY;
+			}
+		} catch(Exception e) {
+			return FAIL_EMPTY;
+		}
+		
+		return PASS;
+	}
+
+	public static String stringReplace(String str) {
+
+		String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
+		str = str.replaceAll(match, "");
+		return str;
+	}
+
+	/**
+	 * yyyy-MM-dd hh:mm 형식으로.
+	 * 
+	 * @param format
+	 * @param timestamp
+	 * @return
+	 */
+	public static String getDateString(String format, long timestamp) {
+		
+		try {
+			Date date = new Date(timestamp);
+			SimpleDateFormat dateformat = new SimpleDateFormat(format,
+					Locale.getDefault());
+			String dateString = dateformat.format(date);
+			return dateString;
+		} catch (Exception e) {
+		} catch (Error e) {
+		}
+	     
+		return null;
 	}
 }

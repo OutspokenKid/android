@@ -1,21 +1,22 @@
 package com.zonecomms.common.wrappers;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.FrameLayout.LayoutParams;
 
-import com.outspoken_kid.classes.FontInfo;
 import com.outspoken_kid.classes.ApplicationManager;
+import com.outspoken_kid.classes.FontInfo;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.zonecomms.clubmania.R;
+import com.zonecomms.clubmania.YoutubePlayerActivity;
 import com.zonecomms.common.models.BaseModel;
 import com.zonecomms.common.models.Link;
 import com.zonecomms.common.utils.ImageDownloadUtils;
@@ -106,14 +107,17 @@ public class ViewWrapperForVideo extends ViewWrapper {
 	}
 
 	public void showLink(String videoUrl) {
-
-		if(!TextUtils.isEmpty(videoUrl)) {
+		
+		if(!StringUtils.isEmpty(videoUrl)) {
 			try {
-				Uri uri = Uri.parse("http://www.youtube.com/watch?v=" + videoUrl);
-				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
-				ApplicationManager.getInstance().getMainActivity().startActivity(i);
+				Intent intent = new Intent(ApplicationManager.getInstance().getMainActivity(), YoutubePlayerActivity.class);
+				intent.putExtra("videoId", videoUrl);
+				ApplicationManager.getInstance().getMainActivity().startActivity(intent);
+				
+//				Uri uri = Uri.parse("http://www.youtube.com/watch?v=" + videoUrl);
+//				Intent i=new Intent(Intent.ACTION_VIEW, uri); 
+//				ZonecommsApplication.getActivity().startActivity(i);
 			} catch(Exception e) {
-				e.printStackTrace();
 				ToastUtils.showToast(R.string.failToShowVideo);
 			}
 		} else {
