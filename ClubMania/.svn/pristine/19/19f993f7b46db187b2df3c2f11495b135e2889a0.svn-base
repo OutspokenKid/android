@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.zonecomms.common.wrapperviews.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View
+        android:id="@+id/grid_app_imageBg"
+    	android:layout_width="match_parent"
+        android:layout_height="match_parent"
+    	android:background="#000" />
+    
+    <ImageView
+        android:id="@+id/grid_app_ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+    
+    <CheckBox 
+        android:id="@+id/grid_app_checkBox"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:checked="false" />
+    
+    <View 
+        android:id="@+id/grid_app_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+</com.zonecomms.common.wrapperviews.WrapperView>

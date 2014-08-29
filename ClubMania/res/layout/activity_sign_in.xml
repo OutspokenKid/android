@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signInActivity_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000" >
+    
+    <ScrollView
+        android:id="@+id/signInActivity_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:fillViewport="true" >
+        
+        <LinearLayout
+            android:id="@+id/signInActivity_innerLinear"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:orientation="vertical" >
+            
+        </LinearLayout>
+        
+    </ScrollView>
+    
+    <com.outspoken_kid.views.WebBrowser 
+        android:id="@+id/signInActivity_webBrowser"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent" />
+
+</FrameLayout>
