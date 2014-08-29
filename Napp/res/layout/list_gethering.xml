@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zonecomms.common.views.WrapperView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="0dp" >
+    
+    <View 
+        android:id="@+id/list_gethering_imageBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_gethering_150" />
+    
+    <ImageView
+        android:id="@+id/list_gethering_ivImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop" />
+    
+    <TextView 
+        android:id="@+id/list_gethering_tvGetheringName"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+
+    <TextView 
+        android:id="@+id/list_gethering_tvIntroduce"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <TextView 
+        android:id="@+id/list_gethering_tvOwner"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:gravity="center_vertical|left"
+    	android:textColor="#fff"
+    	android:singleLine="true"
+    	android:ellipsize="end" />
+    
+    <View 
+        android:id="@+id/list_gethering_publicGethering"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+</com.zonecomms.common.views.WrapperView>

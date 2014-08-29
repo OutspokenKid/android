@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/getheringlistPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:background="#000" >
+
+    <com.outspoken_kid.views.holo_dark.HoloStyleEditText
+        android:id="@+id/getheringlistPage_editText" 
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="gone" />
+    
+    <Button 
+        android:id="@+id/getheringlistPage_btnAll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/getheringlistPage_editText"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringlist_all"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringlistPage_btnActive"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringlistPage_btnAll"
+        android:layout_alignTop="@id/getheringlistPage_btnAll"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringlist_active"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringlistPage_btnStandBy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringlistPage_btnActive"
+        android:layout_alignTop="@id/getheringlistPage_btnActive"
+        android:background="#373737"
+        android:gravity="center"
+        android:text="@string/getheringlist_standBy"
+        android:textColor="#fff" />
+    
+    <Button 
+        android:id="@+id/getheringlistPage_btnOpen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_toRightOf="@id/getheringlistPage_btnStandBy"
+        android:layout_alignTop="@id/getheringlistPage_btnStandBy"
+        android:gravity="center"
+        android:background="#373737"
+        android:text="@string/getheringlist_open"
+        android:textColor="#fff" />
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/getheringListPage_listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/getheringlistPage_btnAll"
+        android:layout_below="@id/getheringlistPage_btnAll"
+        android:background="#000" />
+    
+</RelativeLayout>
