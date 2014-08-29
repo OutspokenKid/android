@@ -1,5 +1,7 @@
 package com.outspoken_kid.utils;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -501,5 +503,36 @@ public class StringUtils {
 		}
 		
 		return PASS;
+	}
+
+	public static String stringReplace(String str) {
+
+		String match = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
+		str = str.replaceAll(match, "");
+		return str;
+	}
+
+	/**
+	 * yyyy-MM-dd hh:mm 형식으로.
+	 * 
+	 * @param format
+	 * @param timestamp
+	 * @return
+	 */
+	public static String getDateString(String format, long timestamp) {
+		
+		try {
+			Date date = new Date(timestamp);
+			SimpleDateFormat dateformat = new SimpleDateFormat(format,
+					Locale.getDefault());
+			String dateString = dateformat.format(date);
+			return dateString;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	     
+		return null;
 	}
 }
