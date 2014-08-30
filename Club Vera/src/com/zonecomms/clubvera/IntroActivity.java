@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,7 @@ import com.outspoken_kid.utils.ImageCacheUtils;
 import com.outspoken_kid.utils.ImageCacheUtils.OnAfterLoadBitmap;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.NetworkUtils;
+import com.outspoken_kid.utils.PackageUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -56,6 +58,8 @@ public class IntroActivity extends Activity {
 		setContentView(R.layout.activity_intro);
 		bindViews();
 		setSizes();
+		
+		LogUtils.log("###Introactivity.onCreate.  keyHash : " + PackageUtils.getKeyHash(getApplication(), "com.zonecomms.clubvera"));
 		
 		isInIntro = true;
 	}
