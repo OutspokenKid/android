@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleNoticeListPage_titleBar" 
+	    android:id="@+id/noticeListPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,19 +15,19 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/wholesaleNoticeListPage_ivBg" 
+        android:id="@+id/noticeListPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleNoticeListPage_titleBar"
+	    android:layout_below="@id/noticeListPage_titleBar"
 	    android:scaleType="centerCrop" />
 
     <!-- 리스트뷰. -->
     
     <ListView 
-		android:id="@+id/wholesaleNoticeListPage_listView" 
+		android:id="@+id/noticeListPage_listView" 
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:layout_below="@id/wholesaleNoticeListPage_titleBar"
+    	android:layout_below="@id/noticeListPage_titleBar"
     	android:cacheColorHint="#0000" />
     
 </RelativeLayout>

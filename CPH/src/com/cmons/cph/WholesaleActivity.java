@@ -9,16 +9,16 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.common.ChangeInfoPage;
 import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
+import com.cmons.cph.fragments.common.NoticeListPage;
+import com.cmons.cph.fragments.common.NoticePage;
+import com.cmons.cph.fragments.common.ProductPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForAccountPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
-import com.cmons.cph.fragments.wholesale.WholesaleForNoticeListPage;
-import com.cmons.cph.fragments.wholesale.WholesaleForNoticePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForNotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
-import com.cmons.cph.fragments.wholesale.WholesaleForProductPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForProfileImagePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSampleListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSettingPage;
@@ -106,11 +106,11 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_MANAGEMENT:
 			return new WholesaleForManagementPage();
 			
-		case CphConstants.PAGE_WHOLESALE_NOTICE_LIST:
-			return new WholesaleForNoticeListPage();
+		case CphConstants.PAGE_COMMON_NOTICE_LIST:
+			return new NoticeListPage();
 			
-		case CphConstants.PAGE_WHOLESALE_NOTICE:
-			return new WholesaleForNoticePage();
+		case CphConstants.PAGE_COMMON_NOTICE:
+			return new NoticePage();
 			
 		case CphConstants.PAGE_WHOLESALE_NOTIFICATION_SETTING:
 			return new WholesaleForNotificationSettingPage();
@@ -121,8 +121,8 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_ORDER:
 			return new WholesaleForOrderPage();
 			
-		case CphConstants.PAGE_WHOLESALE_PRODUCT:
-			return new WholesaleForProductPage();
+		case CphConstants.PAGE_COMMON_PRODUCT:
+			return new ProductPage();
 			
 		case CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE:
 			return new WholesaleForProfileImagePage();

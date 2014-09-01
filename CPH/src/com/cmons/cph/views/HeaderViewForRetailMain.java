@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -25,21 +26,20 @@ import com.cmons.cph.R;
 import com.cmons.cph.RetailActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Wholesale;
-import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnStringDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class HeaderViewForRetailMain extends RelativeLayout {
 
 	private static int madeCount = 870901;
 	
-	private RetailActivity activity; 
-
+	private RetailActivity activity;
+	
 	private ViewPager viewPager;
 	private ArrayList<Wholesale> wholesales = new ArrayList<Wholesale>();
 	private PagerAdapterForWholesale pagerAdapter;
@@ -75,7 +75,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 	}
 	
 	public void init(RetailActivity activity) {
-
+		
 		this.activity = activity;
 		
 		createViews();
@@ -251,7 +251,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		btnCategoryIndex.setId(madeCount + 4);
 		btnCategoryIndex.setTextColor(Color.WHITE);
 		btnCategoryIndex.setGravity(Gravity.CENTER);
-		btnCategoryIndex.setBackgroundResource(R.drawable.retail_drop1_btn);
+		btnCategoryIndex.setBackgroundResource(R.drawable.retail_main_drop1_btn);
 		FontUtils.setFontSize(btnCategoryIndex, 24);
 		addView(btnCategoryIndex);
 		
@@ -265,7 +265,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		btnOrder.setLayoutParams(rp);
 		btnOrder.setTextColor(Color.WHITE);
 		btnOrder.setGravity(Gravity.CENTER);
-		btnOrder.setBackgroundResource(R.drawable.retail_drop2_btn);
+		btnOrder.setBackgroundResource(R.drawable.retail_main_drop2_btn);
 		FontUtils.setFontSize(btnOrder, 24);
 		addView(btnOrder);
 		
@@ -343,7 +343,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					" / " + wholesales.get(0).getTotal_visited_cnt());
 			tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
 			tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
-			tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(0).getProducts_cnt());
 			needPlay = true;
 			
 			if(!isPlaying) {
@@ -387,7 +386,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
 					tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
 					tvRetailName.setText(wholesales.get(0).getName());
-					tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(0).getProducts_cnt());
 					
 					needPlay = true;
 					
@@ -410,14 +408,13 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			@Override
 			public void onPageSelected(final int position) {
 
-				tvPhoneNumber.setText(wholesales.get(position).getPhone_number());
-				tvLocation.setText(wholesales.get(position).getLocation());
+				tvPhoneNumber.setText("010-" + wholesales.get(position).getPhone_number());
+				tvLocation.setText("청평화몰 " + wholesales.get(position).getLocation());
 				tvHit.setText(wholesales.get(position).getToday_visited_cnt() + 
 						" / " + wholesales.get(position).getTotal_visited_cnt());
 				tvLike.setText("" + wholesales.get(position).getFavorited_cnt());
 				tvPartner.setText("" + wholesales.get(position).getCustomers_cnt());
 				tvRetailName.setText(wholesales.get(position).getName());
-				tvTotalProduct.setText("총 등록 상품 " +  wholesales.get(position).getProducts_cnt());
 			}
 			
 			@Override
@@ -442,13 +439,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 	public Button getBtnOrder() {
 		
 		return btnOrder;
-	}
-
-	@Override
-	protected void onDetachedFromWindow() {
-		super.onDetachedFromWindow();
-		
-		ViewUnbindHelper.unbindReferences(this);
 	}
 
 	public void playPager() {
@@ -480,6 +470,11 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		
 		this.isPlaying = isPlaying;
 	}
+
+	public void setTotalProduct(int totalProduct) {
+		
+		tvTotalProduct.setText("총 등록 상품 " +  totalProduct);
+	}
 	
 ////////////////////Custom classes.
 	
@@ -506,7 +501,11 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 				@Override
 				public void onClick(View view) {
 
-					ToastUtils.showToast("pager item clicked");
+					if(activity != null) {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("wholesale", wholesales.get(position));
+						activity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+					}
 				}
 			});
 			container.addView(ivImage);
@@ -527,7 +526,10 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 							try {
 								LogUtils.log("instantiateItem.onCompleted."
 										+ "\nurl : " + url);
-								ivImage.setImageBitmap(bitmap);
+								
+								if(StringUtils.isEmpty(url)) {
+									ivImage.setImageBitmap(bitmap);
+								}
 							} catch (Exception e) {
 								LogUtils.trace(e);
 							} catch (OutOfMemoryError oom) {

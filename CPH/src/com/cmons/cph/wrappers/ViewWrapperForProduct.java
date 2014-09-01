@@ -110,7 +110,8 @@ public class ViewWrapperForProduct extends ViewWrapper {
 				tvBuyCount.setText("" + product.getOrdered_cnt());
 				tvPrice.setText(product.getPrice() + "원");
 				
-				if(product.getProduct_images() != null) {
+				if(product.getProduct_images() != null
+						&& product.getProduct_images()[0] != null) {
 					setImage(ivImage, product.getProduct_images()[0]);
 				}
 			} else {
@@ -130,16 +131,11 @@ public class ViewWrapperForProduct extends ViewWrapper {
 				
 				@Override
 				public void onClick(View arg0) {
-				
-					if(product.getType() == Product.TYPE_WHOLESALE) {
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("product", product);
-						ShopActivity.getInstance().showPage(CphConstants.PAGE_WHOLESALE_PRODUCT, bundle);
-					} else {
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("product", product);
-						ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_PRODUCT, bundle);
-					}
+
+					Bundle bundle = new Bundle();
+					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
+					bundle.putSerializable("product", product);
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
 				}
 			});
 		}

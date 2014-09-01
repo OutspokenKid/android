@@ -6,7 +6,11 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +19,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * v1.0.1
+ * v1.0.2
  * 
  * @author HyungGunKim
  * 
+ * v1.0.2 - Add addSpan() etc.
  * v1.0.1 - Add setHintSize()
  */
 public class FontUtils {
@@ -263,5 +268,20 @@ public class FontUtils {
 	public static void setGlobalFont(TextView textView) {
 		
 		textView.setTypeface(mTypeface);
+	}
+
+	public static void addSpan(TextView textView, String text, int color, float scale) {
+
+		SpannableStringBuilder spb = new SpannableStringBuilder(text);
+		
+		if(color != 0) {
+			spb.setSpan(new ForegroundColorSpan(color), 0, spb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		if(scale != 1) {
+			spb.setSpan(new RelativeSizeSpan(scale), 0, spb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		textView.append(spb);
 	}
 }

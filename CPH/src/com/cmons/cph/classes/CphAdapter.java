@@ -12,18 +12,19 @@ import android.widget.BaseAdapter;
 
 import com.cmons.cph.R;
 import com.cmons.cph.wrappers.ViewWrapperForAccount;
-import com.cmons.cph.wrappers.ViewWrapperForFavoriteShop;
-import com.cmons.cph.wrappers.ViewWrapperForWholesaleWish;
 import com.cmons.cph.wrappers.ViewWrapperForCategory;
 import com.cmons.cph.wrappers.ViewWrapperForCustomer;
+import com.cmons.cph.wrappers.ViewWrapperForFavoriteShop;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
 import com.cmons.cph.wrappers.ViewWrapperForLine;
 import com.cmons.cph.wrappers.ViewWrapperForNotice;
 import com.cmons.cph.wrappers.ViewWrapperForOrder;
-import com.cmons.cph.wrappers.ViewWrapperForOrderSet;
+import com.cmons.cph.wrappers.ViewWrapperForOrderSetForRetail;
+import com.cmons.cph.wrappers.ViewWrapperForOrderSetForWholesale;
 import com.cmons.cph.wrappers.ViewWrapperForProduct;
 import com.cmons.cph.wrappers.ViewWrapperForSample;
 import com.cmons.cph.wrappers.ViewWrapperForStaff;
+import com.cmons.cph.wrappers.ViewWrapperForWholesaleWish;
 import com.cmons.cph.wrappers.ViewWrapperForWish;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
@@ -136,8 +137,11 @@ public class CphAdapter extends BaseAdapter {
 		case CphConstants.ITEM_ORDER:
 			return R.layout.list_order;
 			
-		case CphConstants.ITEM_ORDERSET:
-			return R.layout.list_orderset;
+		case CphConstants.ITEM_ORDERSET_WHOLESALE:
+			return R.layout.list_orderset_wholesale;
+			
+		case CphConstants.ITEM_ORDERSET_RETAIL:
+			return R.layout.list_orderset_retail;
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return R.layout.list_account;
@@ -188,8 +192,11 @@ public class CphAdapter extends BaseAdapter {
 		case CphConstants.ITEM_ORDER:
 			return new ViewWrapperForOrder(convertView, itemCode);
 
-		case CphConstants.ITEM_ORDERSET:
-			return new ViewWrapperForOrderSet(convertView, itemCode);
+		case CphConstants.ITEM_ORDERSET_WHOLESALE:
+			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
+			
+		case CphConstants.ITEM_ORDERSET_RETAIL:
+			return new ViewWrapperForOrderSetForRetail(convertView, itemCode);
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return new ViewWrapperForAccount(convertView, itemCode);

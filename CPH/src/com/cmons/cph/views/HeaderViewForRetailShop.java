@@ -13,20 +13,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.WholesaleActivity;
-import com.cmons.cph.classes.CphConstants;
-import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class HeaderViewForWholesaleShop extends RelativeLayout {
+public class HeaderViewForRetailShop extends RelativeLayout {
 
 	private static int madeCount = 880627;
-	
-	private WholesaleActivity activity; 
+
+	private Wholesale wholesale;
 	
 	private ImageView ivImage;
 	private TextView tvPhoneNumber;
@@ -39,27 +37,27 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	private View likeIcon;
 	private TextView tvPartner;
 	private View partnerIcon;
-	private Button btnCustomerType;
 	private Button btnCategoryIndex;
-	private Button btnOrder;
+	private Button btnFavorite;
+	private Button btnCall;
 	private TextView tvTotalProduct;
 	private View totalProductIcon;
 	
-	public HeaderViewForWholesaleShop(Context context) {
+	public HeaderViewForRetailShop(Context context) {
 		this(context, null, 0);
 	}
 	
-	public HeaderViewForWholesaleShop(Context context, AttributeSet attrs) {
+	public HeaderViewForRetailShop(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 	
-	public HeaderViewForWholesaleShop(Context context, AttributeSet attrs, int defStyle) {
+	public HeaderViewForRetailShop(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 	
-	public void init(WholesaleActivity activity) {
-
-		this.activity = activity;
+	public void init(Wholesale wholesale) {
+		
+		this.wholesale = wholesale;
 		
 		createViews();
 		setListeners();
@@ -221,52 +219,49 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		partnerIcon.setBackgroundResource(R.drawable.myshop_business_icon);
 		addView(partnerIcon);
 		
-		//btnCustomerType.			id : 4
-		btnCustomerType = new Button(getContext());
+		//btnCategoryIndex.			id : 4
+		btnCategoryIndex = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(240), 
 				ResizeUtils.getSpecificLength(92));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.BELOW, madeCount);
-		btnCustomerType.setLayoutParams(rp);
-		btnCustomerType.setId(madeCount + 4);
-		btnCustomerType.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_open1_icon_a, 0, 0, 0);
-		btnCustomerType.setTextColor(Color.WHITE);
-		btnCustomerType.setGravity(Gravity.CENTER);
-		btnCustomerType.setBackgroundResource(R.drawable.myshop_drop1_btn);
-		FontUtils.setFontSize(btnCustomerType, 24);
-		addView(btnCustomerType);
+		btnCategoryIndex.setLayoutParams(rp);
+		btnCategoryIndex.setId(madeCount + 4);
+		btnCategoryIndex.setTextColor(Color.WHITE);
+		btnCategoryIndex.setGravity(Gravity.CENTER);
+		btnCategoryIndex.setBackgroundResource(R.drawable.retail_main_drop1_btn);
+		FontUtils.setFontSize(btnCategoryIndex, 24);
+		addView(btnCategoryIndex);
 
-		//btnCategoryIndex.				id : 5
-		btnCategoryIndex = new Button(getContext());
+		//btnFavorite.				id : 5
+		btnFavorite = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(240), 
 				ResizeUtils.getSpecificLength(92));
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 4);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 4);
-		btnCategoryIndex.setLayoutParams(rp);
-		btnCategoryIndex.setId(madeCount + 5);
-		btnCategoryIndex.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_list_icon, 0, 0, 0);
-		btnCategoryIndex.setTextColor(Color.WHITE);
-		btnCategoryIndex.setGravity(Gravity.CENTER);
-		btnCategoryIndex.setBackgroundResource(R.drawable.myshop_drop2_btn);
-		FontUtils.setFontSize(btnCategoryIndex, 24);
-		addView(btnCategoryIndex);
+		btnFavorite.setLayoutParams(rp);
+		btnFavorite.setId(madeCount + 5);
+		btnFavorite.setTextColor(Color.WHITE);
+		btnFavorite.setGravity(Gravity.CENTER);
+		btnFavorite.setBackgroundResource(R.drawable.retail_list_favorite);
+		FontUtils.setFontSize(btnFavorite, 24);
+		addView(btnFavorite);
 		
-		//btnOrder.
-		btnOrder = new Button(getContext());
+		//btnCall.
+		btnCall = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(240), 
 				ResizeUtils.getSpecificLength(92));
 		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 5);
 		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 5);
-		btnOrder.setLayoutParams(rp);
-		btnOrder.setCompoundDrawablesWithIntrinsicBounds(R.drawable.myshop_sorting1_icon_a, 0, 0, 0);
-		btnOrder.setTextColor(Color.WHITE);
-		btnOrder.setGravity(Gravity.CENTER);
-		btnOrder.setBackgroundResource(R.drawable.myshop_drop3_btn);
-		FontUtils.setFontSize(btnOrder, 24);
-		addView(btnOrder);
+		btnCall.setLayoutParams(rp);
+		btnCall.setTextColor(Color.WHITE);
+		btnCall.setGravity(Gravity.CENTER);
+		btnCall.setBackgroundResource(R.drawable.retail_list_call);
+		FontUtils.setFontSize(btnCall, 24);
+		addView(btnCall);
 		
 		View bottomBg = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(
@@ -309,18 +304,14 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	public void setValues() {
 
 		try {
-			if(activity != null) {
-				tvPhoneNumber.setText(activity.wholesale.getPhone_number());
-				tvLocation.setText("청평화몰 " + activity.wholesale.getLocation());
-				tvHit.setText(activity.wholesale.getToday_visited_cnt() + 
-						" / " + activity.wholesale.getTotal_visited_cnt());
-				tvLike.setText("" + activity.wholesale.getFavorited_cnt());
-				tvPartner.setText("" + activity.wholesale.getCustomers_cnt());
-				tvTotalProduct.setText("총 등록 상품 " + activity.wholesale.getProducts_cnt());
-				
-				btnCustomerType.setText("모두공개");
+			if(wholesale != null) {
+				tvPhoneNumber.setText(wholesale.getPhone_number());
+				tvLocation.setText("청평화몰 " + wholesale.getLocation());
+				tvHit.setText(wholesale.getToday_visited_cnt() + 
+						" / " + wholesale.getTotal_visited_cnt());
+				tvLike.setText("" + wholesale.getFavorited_cnt());
+				tvPartner.setText("" + wholesale.getCustomers_cnt());
 				btnCategoryIndex.setText("전체");
-				btnOrder.setText("최신순");
 				
 				downloadProfile();
 			}
@@ -333,49 +324,41 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 
 	public void downloadProfile() {
 		
-		ivImage.setTag(activity.wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(activity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		try {
+			if(wholesale != null) {
+				ivImage.setTag(wholesale.getRep_image_url());
+				DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
 
-			@Override
-			public void onError(String url) {
+					@Override
+					public void onError(String url) {
 
-				LogUtils.log("HeaderViewForShop.onError." + "\nurl : " + url);
-			}
-
-			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
-
-				try {
-					LogUtils.log("HeaderViewForShop.onCompleted." + "\nurl : " + url);
-					if(ivImage != null) {
-						ivImage.setImageBitmap(bitmap);
+						LogUtils.log("HeaderViewForShop.onError." + "\nurl : " + url);
 					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
+
+					@Override
+					public void onCompleted(String url, Bitmap bitmap) {
+
+						try {
+							LogUtils.log("HeaderViewForShop.onCompleted." + "\nurl : " + url);
+							if(ivImage != null) {
+								ivImage.setImageBitmap(bitmap);
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 			}
-		});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void setListeners() {
-
-		ivImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				if(activity != null) {
-					activity.showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
-				}
-			}
-		});
-	}
-
-	public Button getBtnCustomerType() {
-		
-		return btnCustomerType;
 	}
 	
 	public Button getBtnCategoryIndex() {
@@ -383,11 +366,16 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		return btnCategoryIndex;
 	}
 	
-	public Button getBtnOrder() {
+	public Button getBtnFavorite() {
 		
-		return btnOrder;
+		return btnFavorite;
 	}
 	
+	public Button getBtnCall() {
+		
+		return btnCall;
+	}
+
 	public void setTotalProduct(int totalProduct) {
 		
 		tvTotalProduct.setText("총 등록 상품 " +  totalProduct);

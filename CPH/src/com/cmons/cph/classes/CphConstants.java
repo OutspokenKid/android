@@ -23,27 +23,28 @@ public class CphConstants {
 	public static final int ITEM_CUSTOMER = 8;
 	public static final int ITEM_STAFF = 9;
 	public static final int ITEM_ORDER = 10;
-	public static final int ITEM_ORDERSET = 11;
-	public static final int ITEM_ACCOUNT = 12;
-	public static final int ITEM_WHOLESALE_WISH = 13;
-	public static final int ITEM_WISH = 14;
-	public static final int ITEM_WHOLESALE = 15;
+	public static final int ITEM_ORDERSET_WHOLESALE = 11;
+	public static final int ITEM_ORDERSET_RETAIL = 12;
+	public static final int ITEM_ACCOUNT = 13;
+	public static final int ITEM_WHOLESALE_WISH = 14;
+	public static final int ITEM_WISH = 15;
+	public static final int ITEM_WHOLESALE = 16;
 	
 	public static final int PAGE_COMMON_CHANGE_INFO = 203;
 	public static final int PAGE_COMMON_CHANGE_PASSWORD = 204;
 	public static final int PAGE_COMMON_CHANGE_PHONENUMBER = 205;
 	public static final int PAGE_COMMON_STAFF = 206;
+	public static final int PAGE_COMMON_NOTICE_LIST = 207;
+	public static final int PAGE_COMMON_NOTICE = 208;
+	public static final int PAGE_COMMON_PRODUCT = 209;
 	
 	public static final int PAGE_WHOLESALE_MAIN = 1;
 	public static final int PAGE_WHOLESALE_ACCOUNT = 2;
 	public static final int PAGE_WHOLESALE_CUSTOMER_LIST = 6;
 	public static final int PAGE_WHOLESALE_MANAGEMENT = 7;
-	public static final int PAGE_WHOLESALE_NOTICE_LIST = 8;
-	public static final int PAGE_WHOLESALE_NOTICE = 9;
 	public static final int PAGE_WHOLESALE_NOTIFICATION_SETTING = 10;
 	public static final int PAGE_WHOLESALE_ORDER_LIST = 11;
 	public static final int PAGE_WHOLESALE_ORDER = 12;
-	public static final int PAGE_WHOLESALE_PRODUCT = 13;
 	public static final int PAGE_WHOLESALE_PROFILE_IMAGE = 14;
 	public static final int PAGE_WHOLESALE_SAMPLE_LIST = 15;
 	public static final int PAGE_WHOLESALE_SETTING = 16;
@@ -59,8 +60,8 @@ public class CphConstants {
 	public static final int PAGE_RETAIL_FAVORITE_PRODUCT = 106;
 	public static final int PAGE_RETAIL_MANAGEMENT = 107;
 	public static final int PAGE_RETAIL_SETTING = 109;
-	public static final int PAGE_RETAIL_NOTICE_LIST = 110;
 	public static final int PAGE_RETAIL_NOTIFICATION_SETTING = 111;
-	public static final int PAGE_RETAIL_PRODUCT = 113;
 	public static final int PAGE_RETAIL_WISH = 114;
+	public static final int PAGE_RETAIL_SHOP = 115;
+	public static final int PAGE_RETAIL_ORDER = 116;
 }

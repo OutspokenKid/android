@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
@@ -20,11 +20,24 @@ import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 
-public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
+/**
+ * 전체 공지.
+ * 내 매장 공지.
+ * 		대표
+ * 		대표 x
+ * 남의 매장 공지.
+ * 
+ * 
+ * @author HyungGunKim
+ *
+ */
+public class NoticeListPage extends CmonsFragmentForShop {
 
 	private ListView listView;
 	
 	private boolean isAppNotice;
+	private boolean isOurNotice;
+	private int wholesale_id;
 	
 	@Override
 	public void onResume() {
@@ -38,10 +51,10 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleNoticeListPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleNoticeListPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.noticeListPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.noticeListPage_ivBg);
 		
-		listView = (ListView) mThisView.findViewById(R.id.wholesaleNoticeListPage_listView);
+		listView = (ListView) mThisView.findViewById(R.id.noticeListPage_listView);
 	}
 
 	@Override
@@ -49,6 +62,8 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 
 		if(getArguments() != null) {
 			isAppNotice = getArguments().getBoolean("isAppNotice");
+			isOurNotice = getArguments().getBoolean("isOurNotice");
+			wholesale_id = getArguments().getInt("wholesale_id");
 		}
 		
 		if(isAppNotice) {
@@ -72,18 +87,21 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setListeners() {
 		
-		titleBar.getBtnWrite().setOnClickListener(new OnClickListener() {
+		//우리매장 공지 && 대표.
+		if(isOurNotice && mActivity.user.getRole() % 100 == 0) {
+			titleBar.getBtnWrite().setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View view) {
+				@Override
+				public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putSerializable("notice", null);
-				bundle.putBoolean("isEdit", true);
-				bundle.putBoolean("isAppNotice", false);
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE, null);
-			}
-		});
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("notice", null);
+					bundle.putBoolean("isEdit", true);
+					bundle.putString("title", title);
+					mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, null);
+				}
+			});
+		}
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
@@ -92,30 +110,26 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 					long arg3) {
 
 				boolean isEdit = false;
-				boolean isAppNotice = false;
 				
 				if(isAppNotice) {
 					isEdit = false;
-					isAppNotice = true;
 				} else {
 					
-					//대표.
-					if(mActivity.user.getRole() % 100 == 0) {
+					//우리매장 공지 && 대표.
+					if(isOurNotice && mActivity.user.getRole() % 100 == 0) {
 						isEdit = true;
-						isAppNotice = false;
 						
-					//대표 아님.
+					//아님.
 					} else {
 						isEdit = false;
-						isAppNotice = false;
 					}
 				}
 				
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("notice", (Notice)models.get(arg2));
 				bundle.putBoolean("isEdit", isEdit);
-				bundle.putBoolean("isAppNotice", isAppNotice);
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE, null);
+				bundle.putString("title", title);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, bundle);
 			}
 		});
 	}
@@ -128,7 +142,7 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_noticelist;
+		return R.layout.fragment_common_noticelist;
 	}
 
 	@Override
@@ -176,6 +190,11 @@ public class WholesaleForNoticeListPage extends CmonsFragmentForWholesale {
 	public void downloadInfo() {
 
 		url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
+		
+		if(wholesale_id != 0) {
+			url += "&wholesale_id=" + wholesale_id;
+		}
+		
 		super.downloadInfo();
 	}
 

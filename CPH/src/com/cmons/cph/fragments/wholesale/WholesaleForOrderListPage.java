@@ -176,7 +176,7 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		
 		for(int i=0; i<10; i++) {
 			OrderSet orderSet = new OrderSet();
-			orderSet.setItemCode(CphConstants.ITEM_ORDERSET);
+			orderSet.setItemCode(CphConstants.ITEM_ORDERSET_WHOLESALE);
 			models.add(orderSet);
 		}
 		return false;

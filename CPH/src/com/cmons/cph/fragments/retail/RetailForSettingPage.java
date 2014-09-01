@@ -74,7 +74,8 @@ public class RetailForSettingPage extends CmonsFragmentForRetail {
 
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isAppNotice", true);
-				mActivity.showPage(CphConstants.PAGE_RETAIL_NOTICE_LIST, bundle);
+				bundle.putBoolean("isOurNotice", false);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
 			}
 		});
 		

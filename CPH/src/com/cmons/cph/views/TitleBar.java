@@ -30,8 +30,10 @@ public class TitleBar extends RelativeLayout {
 	private Button btnSubmit;
 	private Button btnNext;
 	private Button btnNotice;
+	private Button btnNotice2;
 	private Button btnReply;
 	private Button btnWrite;
+	private Button btnFavorite;
 	
 	public TitleBar(Context context) {
 		this(context, null, 0);
@@ -174,7 +176,6 @@ public class TitleBar extends RelativeLayout {
 			rp.rightMargin = ResizeUtils.getSpecificLength(92);
 			btnNotice.setLayoutParams(rp);
 			btnNotice.setBackgroundResource(R.drawable.notice2_btn);
-			btnNotice.setVisibility(View.INVISIBLE);
 			this.addView(btnNotice);
 		}
 		
@@ -316,5 +317,40 @@ public class TitleBar extends RelativeLayout {
 		}
 		
 		return btnNext;
+	}
+	
+	public Button getBtnNotice2() {
+		
+		if(btnNotice2 == null) {
+			btnNotice2 = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.rightMargin = ResizeUtils.getSpecificLength(92);
+			btnNotice2.setLayoutParams(rp);
+			btnNotice2.setBackgroundResource(R.drawable.retail_notice2_btn);
+			this.addView(btnNotice2);
+		}
+		
+		return btnNotice2;
+	}
+	
+	public Button getBtnFavorite() {
+		
+		if(btnFavorite == null) {
+			btnFavorite = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(92), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnFavorite.setLayoutParams(rp);
+			btnFavorite.setBackgroundResource(R.drawable.retail_favorie2_btn);
+			this.addView(btnFavorite);
+		}
+		
+		return btnFavorite;
 	}
 }

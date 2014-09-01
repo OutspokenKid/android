@@ -1,9 +1,12 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
@@ -19,9 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Product;
+import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -32,11 +36,15 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class WholesaleForProductPage extends CmonsFragmentForWholesale {
+public class ProductPage extends CmonsFragmentForShop {
 
+	private boolean isWholesale;
+	private Wholesale wholesale;
+	
     private TextView tvStatus;
     private TextView tvSoldOut;
     private View checkbox;
+    private Button btnShop;
     private TextView tvImage;
     private ViewPager viewPager;
     private View arrowLeft;
@@ -58,41 +66,48 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
     private TextView tvPullUp;
     private TextView tvPullUp2;
     private Button btnPullUp;
+    private Button btnBasket;
+    private Button btnSample;
+    private Button btnOrder;
     
     private Product product;
     private PagerAdapterForProducts pagerAdapter;
     private boolean isSoldOut;
-	
+    
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleProductPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleProductPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.productPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.productPage_ivBg);
 		
-		tvStatus = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvStatus);
-		tvSoldOut = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvSoldOut);
-		checkbox = mThisView.findViewById(R.id.wholesaleProductPage_checkbox);
-		tvImage = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvImage);
-		viewPager = (ViewPager) mThisView.findViewById(R.id.wholesaleProductPage_viewPager);
-		arrowLeft = mThisView.findViewById(R.id.wholesaleProductPage_arrowLeft);
-		arrowRight = mThisView.findViewById(R.id.wholesaleProductPage_arrowRight);
-		tvName = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvName);
-		tvName2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvName2);
-		tvPrice = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvPrice);
-		tvPrice2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvPrice2);
-		tvCategory = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvCategory);
-		tvCategory2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvCategory2);
-		tvColor = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvColor);
-		tvColor2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvColor2);
-		tvSize = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvSize);
-		tvSize2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvSize2);
-		tvMixtureRate = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvMixtureRate);
-		tvMixtureRate2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvMixtureRate2);
-		tvDescription = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvDescription);
-		tvDescription2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvDescription2);
-		tvPullUp = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvPullUp);
-		tvPullUp2 = (TextView) mThisView.findViewById(R.id.wholesaleProductPage_tvPullUp2);
-		btnPullUp = (Button) mThisView.findViewById(R.id.wholesaleProductPage_btnPullUp);
+		tvStatus = (TextView) mThisView.findViewById(R.id.productPage_tvStatus);
+		tvSoldOut = (TextView) mThisView.findViewById(R.id.productPage_tvSoldOut);
+		checkbox = mThisView.findViewById(R.id.productPage_checkbox);
+		btnShop = (Button) mThisView.findViewById(R.id.productPage_btnShop);
+		tvImage = (TextView) mThisView.findViewById(R.id.productPage_tvImage);
+		viewPager = (ViewPager) mThisView.findViewById(R.id.productPage_viewPager);
+		arrowLeft = mThisView.findViewById(R.id.productPage_arrowLeft);
+		arrowRight = mThisView.findViewById(R.id.productPage_arrowRight);
+		tvName = (TextView) mThisView.findViewById(R.id.productPage_tvName);
+		tvName2 = (TextView) mThisView.findViewById(R.id.productPage_tvName2);
+		tvPrice = (TextView) mThisView.findViewById(R.id.productPage_tvPrice);
+		tvPrice2 = (TextView) mThisView.findViewById(R.id.productPage_tvPrice2);
+		tvCategory = (TextView) mThisView.findViewById(R.id.productPage_tvCategory);
+		tvCategory2 = (TextView) mThisView.findViewById(R.id.productPage_tvCategory2);
+		tvColor = (TextView) mThisView.findViewById(R.id.productPage_tvColor);
+		tvColor2 = (TextView) mThisView.findViewById(R.id.productPage_tvColor2);
+		tvSize = (TextView) mThisView.findViewById(R.id.productPage_tvSize);
+		tvSize2 = (TextView) mThisView.findViewById(R.id.productPage_tvSize2);
+		tvMixtureRate = (TextView) mThisView.findViewById(R.id.productPage_tvMixtureRate);
+		tvMixtureRate2 = (TextView) mThisView.findViewById(R.id.productPage_tvMixtureRate2);
+		tvDescription = (TextView) mThisView.findViewById(R.id.productPage_tvDescription);
+		tvDescription2 = (TextView) mThisView.findViewById(R.id.productPage_tvDescription2);
+		tvPullUp = (TextView) mThisView.findViewById(R.id.productPage_tvPullUp);
+		tvPullUp2 = (TextView) mThisView.findViewById(R.id.productPage_tvPullUp2);
+		btnPullUp = (Button) mThisView.findViewById(R.id.productPage_btnPullUp);
+		btnBasket = (Button) mThisView.findViewById(R.id.productPage_btnBasket);
+		btnSample = (Button) mThisView.findViewById(R.id.productPage_btnSample);
+		btnOrder = (Button) mThisView.findViewById(R.id.productPage_btnOrder);
 	}
 
 	@Override
@@ -100,6 +115,7 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 
 		if(getArguments() != null) {
 			product = (Product) getArguments().getSerializable("product");
+			isWholesale = getArguments().getBoolean("isWholesale");
 		}
 		
 		if(product != null) {
@@ -113,32 +129,72 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
 	@Override
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 
-		if(product.getStatus() == -1) {
-			isSoldOut = true;
-			checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
-			tvStatus.setText(R.string.productSoldOut);
-		} else{
-			isSoldOut = false;
-			checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
-			tvStatus.setText(R.string.productSelling);
+		if(product != null) {
+			pagerAdapter = new PagerAdapterForProducts();
+			viewPager.setAdapter(pagerAdapter);
+			
+			if(product.getStatus() == -1) {
+				isSoldOut = true;
+				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
+				tvStatus.setText(R.string.productSoldOut);
+				
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					btnBasket.setAlpha(0.5f);
+					btnBasket.setEnabled(false);
+					
+					btnSample.setAlpha(0.5f);
+					btnSample.setEnabled(false);
+					
+					btnOrder.setAlpha(0.5f);
+					btnOrder.setEnabled(false);
+				}
+			} else{
+				isSoldOut = false;
+				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
+				tvStatus.setText(R.string.productSelling);
+			}
+			
+			tvName2.setText(product.getName());
+			tvPrice2.setText(product.getPrice() + "원");
+			tvCategory2.setText("");
+			tvColor2.setText(product.getColors());
+			tvSize2.setText(product.getSizes());
+			tvMixtureRate2.setText(product.getMixture_rate());
+			tvDescription2.setText(product.getDesc());
+			
+			if(isWholesale) {
+				tvSoldOut.setVisibility(View.VISIBLE);
+				checkbox.setVisibility(View.VISIBLE);
+				tvPullUp.setVisibility(View.VISIBLE);
+				tvPullUp2.setVisibility(View.VISIBLE);
+				btnPullUp.setVisibility(View.VISIBLE);
+				
+				btnShop.setVisibility(View.GONE);
+				btnBasket.setVisibility(View.GONE);
+				btnSample.setVisibility(View.GONE);
+				btnOrder.setVisibility(View.GONE);
+			} else {
+				tvSoldOut.setVisibility(View.GONE);
+				checkbox.setVisibility(View.GONE);
+				tvPullUp.setVisibility(View.GONE);
+				tvPullUp2.setVisibility(View.GONE);
+				btnPullUp.setVisibility(View.GONE);
+				
+				btnShop.setVisibility(View.VISIBLE);
+				btnBasket.setVisibility(View.VISIBLE);
+				btnSample.setVisibility(View.VISIBLE);
+				btnOrder.setVisibility(View.VISIBLE);
+			}
 		}
-
-		pagerAdapter = new PagerAdapterForProducts();
-		viewPager.setAdapter(pagerAdapter);
 		
-		tvName2.setText(product.getName());
-		tvPrice2.setText(product.getPrice() + "원");
-		tvCategory2.setText("");
-		tvColor2.setText(product.getColors());
-		tvSize2.setText(product.getSizes());
-		tvMixtureRate2.setText(product.getMixture_rate());
-		tvDescription2.setText(product.getDesc());
+		loadWholesale();
 	}
 
 	@Override
@@ -152,17 +208,28 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 
 				}
 			});
-			
-			titleBar.getBtnEdit().setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View view) {
+			if(isWholesale) {
+				titleBar.getBtnEdit().setOnClickListener(new OnClickListener() {
 
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("product", product);
-					mActivity.showPage(CphConstants.PAGE_WHOLESALE_WRITE, bundle);
-				}
-			});
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("product", product);
+						mActivity.showPage(CphConstants.PAGE_WHOLESALE_WRITE, bundle);
+					}
+				});
+			} else {
+				titleBar.getBtnFavorite().setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						addFavorite();
+					}
+				});
+			}
 			
 			tvStatus.setOnClickListener(new OnClickListener() {
 				
@@ -183,6 +250,59 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 				}
 			});
 
+			btnShop.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					goToShop();
+				}
+			});
+			
+			btnBasket.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					if(!isSoldOut) {
+						addToBasket();
+					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+						ToastUtils.showToast(R.string.productSoldOut);
+					}					
+				}
+			});
+			
+			btnSample.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					if(!isSoldOut && wholesale != null 
+							&& wholesale.getSample_available() == 1) {
+						requestSample();
+					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+						if(isSoldOut) {
+							ToastUtils.showToast(R.string.productSoldOut);
+						} else {
+							ToastUtils.showToast(R.string.forbiddenRequestSample);
+						}
+					}
+				}
+			});
+			
+			btnOrder.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					if(!isSoldOut) {
+						order();
+					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+						ToastUtils.showToast(R.string.productSoldOut);
+					}	
+				}
+			});
+			
 			arrowLeft.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -237,6 +357,13 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 		//tvSoldOut.
 		rp = (RelativeLayout.LayoutParams) tvSoldOut.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(43);
+		
+		//btnShop.
+		rp = (RelativeLayout.LayoutParams) btnShop.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(142);
+		rp.height = ResizeUtils.getSpecificLength(36);
+		rp.topMargin = ResizeUtils.getSpecificLength(32);
+		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvImage.
 		rp = (RelativeLayout.LayoutParams) tvImage.getLayoutParams();
@@ -357,12 +484,25 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 		//btnPullUp.
 		rp = (RelativeLayout.LayoutParams) btnPullUp.getLayoutParams();
 		rp.height = buttonHeight;
+		
+		//btnBasket.
+		rp = (RelativeLayout.LayoutParams) btnBasket.getLayoutParams();
+		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = buttonHeight;
+		
+		//btnSample.
+		rp = (RelativeLayout.LayoutParams) btnSample.getLayoutParams();
+		rp.height = buttonHeight;
+		
+		//btnOrder.
+		rp = (RelativeLayout.LayoutParams) btnOrder.getLayoutParams();
+		rp.height = buttonHeight;
 	}
 
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_product;
+		return R.layout.fragment_common_product;
 	}
 
 	@Override
@@ -390,6 +530,57 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 	}
 	
 //////////////////// Custom methods.
+
+	public void loadWholesale() {
+		
+		if(product != null) {
+			String url = CphConstants.BASE_API_URL + "wholesales/show" +
+					"?wholesale_id=" + product.getWholesale_id();
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("ProductPage.loadWholesale..onError." + "\nurl : " + url);
+
+					new Handler().postDelayed(new Runnable() {
+						
+						@Override
+						public void run() {
+							loadWholesale();
+						}
+					}, 100);
+				}
+
+				@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("ProductPage.loadWholesale..onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							wholesale = new Wholesale(objJSON.getJSONObject("wholesale"));
+							
+							if(wholesale.getSample_available() != 1 
+									&& Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+								btnSample.setAlpha(0.5f);
+								btnSample.setEnabled(false);
+							}
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+
+		}
+	}
 	
 	public void pullUp() {
 		
@@ -439,6 +630,75 @@ public class WholesaleForProductPage extends CmonsFragmentForWholesale {
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void goToShop() {
+
+		if(wholesale != null) {
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("wholesale", wholesale);
+			mActivity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+		}
+	}
+	
+	public void addToBasket() {
+
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("product", product);
+		bundle.putSerializable("wholesale", wholesale);
+		bundle.putBoolean("isBasket", true);
+		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+	}
+	
+	public void requestSample() {
+		
+	}
+	
+	public void order() {
+		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("product", product);
+		bundle.putSerializable("wholesale", wholesale);
+		bundle.putBoolean("isBasket", false);
+		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+	}
+
+	public void addFavorite() {
+		
+		//http://cph.minsangk.com/retails/favorite/products/add?id=1
+		String url = CphConstants.BASE_API_URL + "retails/favorite/products/add" +
+				"?id=" + product.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ProductPage.addFavorite.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToAddFavorite);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ProductPage.addFavorite.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_addFavorite);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToAddFavorite);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToAddFavorite);
 					LogUtils.trace(oom);
 				}
 			}

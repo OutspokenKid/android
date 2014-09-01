@@ -104,7 +104,8 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isAppNotice", false);
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_NOTICE_LIST, bundle);
+				bundle.putBoolean("isOurNotice", true);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
 			}
 		});
 		

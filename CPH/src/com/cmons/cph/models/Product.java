@@ -19,7 +19,7 @@ public class Product extends BaseModel implements Serializable {
 	private int category_id;
 	private int wholesale_id;
 	private String name;
-	private String price;
+	private int price;
 	private String colors;
 	private String sizes;
 	private String mixture_rate;
@@ -59,7 +59,7 @@ public class Product extends BaseModel implements Serializable {
 			}
 
 			if(objJSON.has("price")) {
-				this.price = objJSON.getString("price");
+				this.price = objJSON.getInt("price");
 			}
 			
 			if(objJSON.has("colors")) {
@@ -205,11 +205,11 @@ public class Product extends BaseModel implements Serializable {
 		this.ordered_cnt = ordered_cnt;
 	}
 
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 

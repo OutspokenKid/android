@@ -192,7 +192,7 @@ public abstract class CmonsFragment extends BaseFragment {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 0;
+			pageIndex = 1;
 			models.clear();
 			adapter.notifyDataSetChanged();
 		} catch (Exception e) {

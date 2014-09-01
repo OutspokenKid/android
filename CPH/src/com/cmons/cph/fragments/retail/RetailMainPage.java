@@ -488,6 +488,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				models.add(product);
 			}
 
+			headerView.setTotalProduct(objJSON.getInt("productsCount"));
+					
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
 				return true;
 			}

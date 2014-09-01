@@ -766,7 +766,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("product", products.get(position));
-					mActivity.showPage(CphConstants.PAGE_WHOLESALE_PRODUCT, bundle);
+					bundle.putBoolean("isWholesale", false);
+					mActivity.showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
 				}
 			});
 			container.addView(ivImage);

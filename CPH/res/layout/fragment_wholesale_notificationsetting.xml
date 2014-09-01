@@ -18,7 +18,7 @@
         android:id="@+id/wholesaleNotificationSettingPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleNoticePage_titleBar"
+	    android:layout_below="@id/wholesaleNotificationSettingPage_titleBar"
 	    android:scaleType="centerCrop" />
     
     <!-- 알림 설정. -->

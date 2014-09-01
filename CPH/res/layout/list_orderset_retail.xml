@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <TextView
-        android:id="@+id/list_orderset_tvRegdate"
+        android:id="@+id/list_orderset_retail_tvRegdate"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_alignParentLeft="true"
@@ -13,28 +13,21 @@
         android:gravity="bottom" />
     
     <TextView
-        android:id="@+id/list_orderset_tvName"
+        android:id="@+id/list_orderset_retail_tvName"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_below="@id/list_orderset_tvRegdate"
-        android:layout_alignLeft="@id/list_orderset_tvRegdate"
+        android:layout_below="@id/list_orderset_retail_tvRegdate"
+        android:layout_alignLeft="@id/list_orderset_retail_tvRegdate"
         android:textColor="#fff"
         android:gravity="top" />
-
-    <View
-        android:id="@+id/list_orderset_type"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true" />
 
     <TextView
-        android:id="@+id/list_orderset_tvPrice"
+        android:id="@+id/list_orderset_retail_tvRight"
         android:layout_width="wrap_content"
-        android:layout_height="0dp" 
+        android:layout_height="wrap_content" 
         android:layout_alignParentRight="true"
-        android:layout_below="@id/list_orderset_type"
+        android:layout_centerVertical="true"
         android:textColor="#fff"
-        android:gravity="top" />
+        android:gravity="right" />
 
 </RelativeLayout>

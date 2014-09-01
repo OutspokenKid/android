@@ -160,7 +160,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 				
 				for(int i=0; i<size; i++) {
 					OrderSet orderSet = new OrderSet(arJSON.getJSONObject(i));
-					orderSet.setItemCode(CphConstants.ITEM_ORDERSET);
+					orderSet.setItemCode(CphConstants.ITEM_ORDERSET_RETAIL);
 					models.add(orderSet);
 				}
 				
@@ -192,8 +192,6 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 		
 		if(menuIndex == 0) {
 			url = CphConstants.BASE_API_URL + "retails/orders";
-		} else {
-			url = CphConstants.BASE_API_URL + "retails/customers";
 		}
 		
 		super.downloadInfo();
@@ -208,22 +206,32 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 ////////////////////Custom methods.
 	
 	public void setMenu(int menuIndex) {
+
+		this.menuIndex = menuIndex;
 		
 		switch (menuIndex) {
 		
 		case 0:
 			btnOrder.setBackgroundResource(R.drawable.retail_statement_btn_a);
 			btnPartner.setBackgroundResource(R.drawable.retail_customer2_btn_b);
+			refreshPage();
 			break;
 			
 		case 1:
 			btnOrder.setBackgroundResource(R.drawable.retail_statement_btn_b);
 			btnPartner.setBackgroundResource(R.drawable.retail_customer2_btn_a);
+			refreshCustomer();
 			break;
 		}
+	}
+	
+	public void refreshCustomer() {
 		
-		this.menuIndex = menuIndex;
+	}
+	
+	public void downloadCustomer() {
 		
-		refreshPage();
+		url = CphConstants.BASE_API_URL + "retails/customers";
+		
 	}
 }

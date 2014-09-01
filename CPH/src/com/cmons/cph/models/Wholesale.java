@@ -30,6 +30,7 @@ public class Wholesale extends Shop implements Serializable {
 	private int products_cnt;
 		
 	private int[] category_ids;
+	private Account[] accounts;
 	
 	public Wholesale(JSONObject objJSON) {
 		super(objJSON);
@@ -108,6 +109,17 @@ public class Wholesale extends Shop implements Serializable {
 				category_ids = new int[size];
 				for(int i=0; i<size; i++) {
 					category_ids[i] = arJSON.getInt(i);
+				}
+			}
+			
+			if(objJSON.has("accounts")) {
+				
+				JSONArray arJSON = objJSON.getJSONArray("accounts");
+				
+				int size = arJSON.length();
+				accounts = new Account[size];
+				for(int i=0; i<size; i++) {
+					accounts[i] = new Account(arJSON.getJSONObject(i));
 				}
 			}
 		} catch (Exception e) {
@@ -244,5 +256,13 @@ public class Wholesale extends Shop implements Serializable {
 
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
+	}
+
+	public Account[] getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(Account[] accounts) {
+		this.accounts = accounts;
 	}
 }

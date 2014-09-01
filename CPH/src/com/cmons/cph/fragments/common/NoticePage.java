@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
@@ -11,22 +11,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 
 /**
- * 전체 공지사항(관리자)인지 매장 공지사항인지 isAppNotice로 구분. 
- * isEdit인 경우 작성 또는 수정(notice==null?작성:수정).
- * 
  * @author HyungGunKim
- *
  */
-public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
+public class NoticePage extends CmonsFragmentForShop {
 
 	private Notice notice;
 	
@@ -39,22 +36,21 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 	private TextView tvContent;
 	
 	private boolean isEdit;
-	private boolean isAppNotice;
 	private boolean needPush;
 	
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleNoticePage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleNoticePage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.noticePage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.noticePage_ivBg);
 		
-		tvTitleText = (TextView) mThisView.findViewById(R.id.wholesaleNoticePage_tvTitleText);
-		etTitle = (EditText) mThisView.findViewById(R.id.wholesaleNoticePage_etTitle);
-		tvTitle = (TextView) mThisView.findViewById(R.id.wholesaleNoticePage_tvTitle);
-		btnPush = (Button) mThisView.findViewById(R.id.wholesaleNoticePage_btnPush);
-		tvContentText = (TextView) mThisView.findViewById(R.id.wholesaleNoticePage_tvContentText);
-		etContent = (EditText) mThisView.findViewById(R.id.wholesaleNoticePage_etContent);
-		tvContent = (TextView) mThisView.findViewById(R.id.wholesaleNoticePage_tvContent);
+		tvTitleText = (TextView) mThisView.findViewById(R.id.noticePage_tvTitleText);
+		etTitle = (EditText) mThisView.findViewById(R.id.noticePage_etTitle);
+		tvTitle = (TextView) mThisView.findViewById(R.id.noticePage_tvTitle);
+		btnPush = (Button) mThisView.findViewById(R.id.noticePage_btnPush);
+		tvContentText = (TextView) mThisView.findViewById(R.id.noticePage_tvContentText);
+		etContent = (EditText) mThisView.findViewById(R.id.noticePage_etContent);
+		tvContent = (TextView) mThisView.findViewById(R.id.noticePage_tvContent);
 	}
 
 	@Override
@@ -64,25 +60,21 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 			
 			if(getArguments().containsKey("notice")) {
 				notice = (Notice) getArguments().getSerializable("notice");
+				LogUtils.log("###NoticePage.setVariables.  notice is not null. title : " + notice.getTitle());
+			} else {
+				LogUtils.log("###NoticePage.setVariables.  notice is null");
 			}
 			
 			if(getArguments().containsKey("isEdit")) {
 				isEdit = getArguments().getBoolean("isEdit");
 			}
 			
-			if(getArguments().containsKey("isAppNotice")) {
-				isAppNotice = getArguments().getBoolean("isAppNotice");
+			if(getArguments().containsKey("title")) {
+				title = getArguments().getString("title");
 			}
 		}
 		
-		if(isEdit) {
-			
-			if(notice == null) {
-				title = "공지사항 추가";
-			} else {
-				title = "공지사항 수정";
-			}
-		} else {
+		if(title == null) {
 			title = "공지사항";
 		}
 		
@@ -189,7 +181,7 @@ public class WholesaleForNoticePage extends CmonsFragmentForWholesale {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_notice;
+		return R.layout.fragment_common_notice;
 	}
 
 	@Override

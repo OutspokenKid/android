@@ -9,16 +9,20 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.common.ChangeInfoPage;
 import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
+import com.cmons.cph.fragments.common.NoticeListPage;
+import com.cmons.cph.fragments.common.NoticePage;
+import com.cmons.cph.fragments.common.ProductPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.retail.RetailForAddPartner;
+import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteProductPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteShopPage;
-import com.cmons.cph.fragments.retail.RetailForWishListPage;
-import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.fragments.retail.RetailForManagementPage;
-import com.cmons.cph.fragments.retail.RetailForProductPage;
+import com.cmons.cph.fragments.retail.RetailForOrderPage;
 import com.cmons.cph.fragments.retail.RetailForSearchPage;
 import com.cmons.cph.fragments.retail.RetailForSettingPage;
+import com.cmons.cph.fragments.retail.RetailForShopPage;
+import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
@@ -119,8 +123,11 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_SETTING:
 			return new RetailForSettingPage();
 			
-		case CphConstants.PAGE_RETAIL_NOTICE_LIST:
-			return new RetailForSettingPage();
+		case CphConstants.PAGE_COMMON_NOTICE_LIST:
+			return new NoticeListPage();
+			
+		case CphConstants.PAGE_COMMON_NOTICE:
+			return new NoticePage();
 			
 		case CphConstants.PAGE_RETAIL_NOTIFICATION_SETTING:
 			return new RetailForSettingPage();
@@ -137,11 +144,17 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_COMMON_STAFF:
 			return new StaffPage();
 			
-		case CphConstants.PAGE_RETAIL_PRODUCT:
-			return new RetailForProductPage();
-			
 		case CphConstants.PAGE_RETAIL_WISH:
 			 return new RetailForWishPage();
+			 
+		case CphConstants.PAGE_RETAIL_SHOP:
+			 return new RetailForShopPage();
+			 
+		case CphConstants.PAGE_COMMON_PRODUCT:
+			 return new ProductPage();
+			 
+		case CphConstants.PAGE_RETAIL_ORDER:
+			 return new RetailForOrderPage();
 		}
 		
 		return null;

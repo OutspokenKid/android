@@ -1,7 +1,6 @@
 package com.cmons.cph.wrappers;
 
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
@@ -12,16 +11,15 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class ViewWrapperForOrderSet extends ViewWrapper {
+public class ViewWrapperForOrderSetForRetail extends ViewWrapper {
 	
 	private OrderSet orderSet;
 	
 	public TextView tvRegdate;
 	public TextView tvName;
-	public View type;
-	public TextView tvPrice;
+	public TextView tvRight;
 	
-	public ViewWrapperForOrderSet(View row, int itemCode) {
+	public ViewWrapperForOrderSetForRetail(View row, int itemCode) {
 		super(row, itemCode);
 	}
 
@@ -29,10 +27,9 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 	public void bindViews() {
 
 		try {
-			tvRegdate = (TextView) row.findViewById(R.id.list_orderset_tvRegdate);
-			type = row.findViewById(R.id.list_orderset_type);
-			tvName = (TextView) row.findViewById(R.id.list_orderset_tvName);
-			tvPrice = (TextView) row.findViewById(R.id.list_orderset_tvPrice);
+			tvRegdate = (TextView) row.findViewById(R.id.list_orderset_retail_tvRegdate);
+			tvName = (TextView) row.findViewById(R.id.list_orderset_retail_tvName);
+			tvRight = (TextView) row.findViewById(R.id.list_orderset_retail_tvRight);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -50,21 +47,11 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 			
 			tvName.getLayoutParams().height = ResizeUtils.getSpecificLength(55);
 			tvName.setPadding(p, 0, 0, 0);
-			
-			RelativeLayout.LayoutParams rp = null;
-			
-			rp = (RelativeLayout.LayoutParams) type.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(146);
-			rp.height = p;
-			rp.topMargin = ResizeUtils.getSpecificLength(16);
-			rp.rightMargin = p;
-			
-			tvPrice.getLayoutParams().height = ResizeUtils.getSpecificLength(55);
-			tvPrice.setPadding(0, 0, p, 0);
+			tvRight.setPadding(0, 0, p, 0);
 			
 			FontUtils.setFontSize(tvRegdate, 20);
 			FontUtils.setFontSize(tvName, 30);
-			FontUtils.setFontSize(tvPrice, 28);
+			FontUtils.setFontSize(tvRight, 28);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -81,13 +68,10 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 
 				tvRegdate.setText("2014년 08월 16일 AM 07:46");
 				tvName.setText("스타일콩");
-				tvPrice.setText("1,000,000원");
+				tvRight.setText("1,000,000원");
 				
-				if(orderSet.isOnline()) {
-					type.setBackgroundResource(R.drawable.online_shop_icon);
-				} else {
-					type.setBackgroundResource(R.drawable.offline_shop_icon);
-				}
+				tvRight.setText(null);
+				
 			} else {
 				setUnusableView();
 			}
