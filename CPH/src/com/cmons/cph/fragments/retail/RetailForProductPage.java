@@ -150,6 +150,9 @@ public class RetailForProductPage extends CmonsFragmentForRetail {
 				@Override
 				public void onClick(View arg0) {
 
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("product", product);
+					mActivity.showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
 				}
 			});
 			

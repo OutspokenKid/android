@@ -138,6 +138,17 @@ public class ViewWrapperForProduct extends ViewWrapper {
 					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
 				}
 			});
+			
+			replyIcon.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("product", product);
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+				}
+			});
 		}
 	}
 	

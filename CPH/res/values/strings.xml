@@ -37,6 +37,7 @@
 	<string name="complete_checkPhone">인증번호 전송되었습니다</string>
 	<string name="complete_order">주문 완료</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
+	<string name="complete_requestSample">샘플 요청 완료</string>
 	<string name="complete_signUp">회원가입 완료</string>
 	<string name="complete_signIn">로그인 완료</string>
     <string name="confirm">확인</string>
@@ -63,9 +64,11 @@
     <string name="failToLoadBitmap_OutOfMemory">메모리가 부족하여 이미지를 불러오지 못했습니다</string>
     <string name="failToOrder">주문 실패</string>
     <string name="failToRequestPartnership">거래처 신청 실패</string>
+    <string name="failToRequestSample">샘플 요청 실패</string>
     <string name="failToSearchShop">매장 검색 실패</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원 가입 실패</string>
+    <string name="failToWriteReply">댓글 작성 실패</string>
     <string name="findId">아이디 찾기</string>
     <string name="findPw">비밀번호 찾기</string>
     <string name="floor">층</string>
@@ -135,6 +138,7 @@
     <string name="phoneNumber">휴대폰 번호</string>
     <string name="phoneNumberForWholesale">매장 전화번호</string>
     <string name="phoneNumberForRetail">사업장 전화번호</string>
+    <string name="privateReply">체크시 판매자만 댓글을 볼 수 있습니다.</string>
     <string name="productCategory">상품 분류</string>
     <string name="productColor">상품 색상</string>
     <string name="productDescription">상품 설명</string>
@@ -215,6 +219,7 @@
     <string name="wrongPayment">결제 방식을 선택해주세요</string>
     <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
+    <string name="wrongReply">내용을 적어주세요</string>
     <string name="wrongSearchKeyword">검색어를 입력해주세요</string>
     <string name="wrongSize">사이즈를 선택해주세요</string>
     <string name="wrongMallUrl">사이트 주소를 입력해주세요</string>

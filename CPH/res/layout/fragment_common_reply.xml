@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <!-- 타이틀바. -->
+    
+    <com.cmons.cph.views.TitleBar
+	    android:id="@+id/replyPage_titleBar" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true" />
+    
+    <!-- 배경. -->
+    
+    <ImageView 
+        android:id="@+id/replyPage_ivBg" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/replyPage_titleBar"
+	    android:scaleType="centerCrop" />
+
+    <EditText
+        android:id="@+id/replyPage_etReply"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+	    android:layout_alignParentBottom="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center_vertical"
+	    android:inputType="text"
+	    android:textColor="#000" />
+    
+    <Button 
+        android:id="@+id/replyPage_btnSubmit" 
+	    android:layout_width="match_parent"
+	    android:layout_height="0dp"
+	    android:layout_toRightOf="@id/replyPage_etReply"
+	    android:layout_alignParentBottom="true"
+	    android:background="@drawable/reply_send_btn" />
+    
+    <TextView
+        android:id="@+id/replyPage_tvPrivate"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/replyPage_etReply"
+        android:background="@drawable/reply_cell"
+        android:text="@string/privateReply"
+        android:textColor="#000"
+        android:gravity="center_vertical" />
+    
+    <View 
+        android:id="@+id/replyPage_cbPrivate"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/replyPage_etReply"
+    	android:layout_alignParentRight="true"
+    	android:background="@drawable/reply_checkbox_a" />
+    
+    <View 
+        android:id="@+id/replyPage_icPrivate"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/replyPage_etReply"
+    	android:layout_toLeftOf="@id/replyPage_cbPrivate"
+    	android:background="@drawable/reply_secret_icon1" />
+
+    <ListView 
+	    android:id="@+id/replyPage_listView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:layout_below="@id/replyPage_titleBar"
+	    android:layout_above="@id/replyPage_tvPrivate" 
+	    android:cacheColorHint="#0000" />
+    
+</RelativeLayout>

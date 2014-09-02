@@ -12,6 +12,7 @@ import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
 import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
 import com.cmons.cph.fragments.common.ProductPage;
+import com.cmons.cph.fragments.common.ReplyPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.retail.RetailForAddPartner;
 import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
@@ -155,6 +156,9 @@ public class RetailActivity extends ShopActivity {
 			 
 		case CphConstants.PAGE_RETAIL_ORDER:
 			 return new RetailForOrderPage();
+			 
+		case CphConstants.PAGE_COMMON_REPLY:
+			 return new ReplyPage();
 		}
 		
 		return null;

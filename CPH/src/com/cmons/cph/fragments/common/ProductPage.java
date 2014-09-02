@@ -1,8 +1,11 @@
 package com.cmons.cph.fragments.common;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -206,6 +209,9 @@ public class ProductPage extends CmonsFragmentForShop {
 				@Override
 				public void onClick(View arg0) {
 
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("product", product);
+					mActivity.showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
 				}
 			});
 
@@ -231,15 +237,17 @@ public class ProductPage extends CmonsFragmentForShop {
 				});
 			}
 			
-			tvStatus.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
+			if(isWholesale) {
+				tvStatus.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
 
-					isSoldOut = !isSoldOut;
-					submitSoldOut();
-				}
-			});
+						isSoldOut = !isSoldOut;
+						submitSoldOut();
+					}
+				});
+			}
 			
 			btnPullUp.setOnClickListener(new OnClickListener() {
 
@@ -279,7 +287,7 @@ public class ProductPage extends CmonsFragmentForShop {
 
 					if(!isSoldOut && wholesale != null 
 							&& wholesale.getSample_available() == 1) {
-						requestSample();
+						selectSampleColor();
 					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 						if(isSoldOut) {
 							ToastUtils.showToast(R.string.productSoldOut);
@@ -653,9 +661,91 @@ public class ProductPage extends CmonsFragmentForShop {
 		bundle.putBoolean("isBasket", true);
 		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
 	}
+
+	public void selectSampleColor() {
+
+		try {
+			final String[] colors = product.getColors().split("\\|");
+			mActivity.showSelectDialog("색상 선택", colors, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					selectSampleSize(colors[which]);
+				}
+			});
+
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
 	
-	public void requestSample() {
+	public void selectSampleSize(final String color) {
 		
+		try {
+			final String[] sizes = product.getSizes().split("\\|");
+			mActivity.showSelectDialog("사이즈 선택", sizes, new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					requestSample(color, sizes[which]);
+				}
+			});
+
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void requestSample(String color, String size) {
+
+		try {
+			String url = CphConstants.BASE_API_URL + "retails/samples/request" +
+					"?product_id=" + product.getId() +
+					"&color=" + URLEncoder.encode(color, "utf-8") +
+					"&size=" + URLEncoder.encode(size, "utf-8");
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("ProductPage.requestSample.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToRequestSample);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("ProductPage.requestSample.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_requestSample);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToRequestSample);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToRequestSample);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+			
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void order() {

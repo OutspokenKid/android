@@ -1,15 +1,14 @@
 package com.cmons.cph;
 
+import java.util.Set;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.cmons.cph.classes.CmonsFragment;
 import com.cmons.cph.classes.CmonsFragmentActivity;
@@ -85,12 +84,32 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	}
 	
 	public void showPage(int pageCode, Bundle bundle) {
+
+		String logString = "###ShopActivity.showPage.  ====================" +
+				"\npageCode : " + pageCode;
+		
+		if(bundle != null) {
+			logString += "\nhas bundle.";
+			
+			Set<String> keySet = bundle.keySet();
+			
+			for(String key : keySet) {
+				logString += "\n    " + key + " : " + bundle.get(key);
+			}
+		} else {
+			logString += "\nhas not bundle.";
+		}
 		
 		CmonsFragment cf = getFragmentByPageCode(pageCode);
 		
 		if(cf != null) {
-			LogUtils.log("###3333333333.onClick.  ");
+			logString += "\n===============================================";
+			LogUtils.log(logString);
 			startPage(cf, bundle);
+		} else {
+			logString += "\nFail to get fragment from activity" +
+					"\n===============================================";
+			LogUtils.log(logString);
 		}
 	}
 	

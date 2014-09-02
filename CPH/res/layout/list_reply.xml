@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TextView
+    	android:id="@+id/list_reply_tvInfo"
+    	android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_alignParentTop="true"
+    	android:background="@drawable/text_box2"
+    	android:textColor="#fff" />
+    
+    <View
+		android:id="@+id/list_reply_shopIcon"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignParentTop="true" />
+    
+    <View
+		android:id="@+id/list_reply_privateIcon"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignRight="@id/list_reply_shopIcon"
+    	android:layout_below="@id/list_reply_shopIcon"
+    	android:visibility="invisible"
+    	android:background="@drawable/reply_secret_icon2" />
+    
+    <TextView
+    	android:id="@+id/list_reply_tvContent"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/list_reply_tvInfo"
+    	android:background="#bfff"
+    	android:gravity="center_vertical"
+    	android:textColor="#000" />
+    
+    <View
+		android:id="@+id/list_reply_commentIcon"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignTop="@id/list_reply_tvContent"
+    	android:background="@drawable/myshop_comment3_icon" />
+    
+    <Button
+		android:id="@+id/list_reply_btnDelete"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignTop="@id/list_reply_tvContent"
+    	android:background="@drawable/myshop_delete2_btn" />
+    
+    <Button
+		android:id="@+id/list_reply_btnReply"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentRight="true"
+    	android:layout_alignTop="@id/list_reply_tvContent"
+    	android:background="@drawable/myshop_reply2_btn" />
+    	
+</RelativeLayout>
+
+ 

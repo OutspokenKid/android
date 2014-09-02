@@ -29,6 +29,7 @@ public class CphConstants {
 	public static final int ITEM_WHOLESALE_WISH = 14;
 	public static final int ITEM_WISH = 15;
 	public static final int ITEM_WHOLESALE = 16;
+	public static final int ITEM_REPLY = 17;
 	
 	public static final int PAGE_COMMON_CHANGE_INFO = 203;
 	public static final int PAGE_COMMON_CHANGE_PASSWORD = 204;
@@ -37,6 +38,7 @@ public class CphConstants {
 	public static final int PAGE_COMMON_NOTICE_LIST = 207;
 	public static final int PAGE_COMMON_NOTICE = 208;
 	public static final int PAGE_COMMON_PRODUCT = 209;
+	public static final int PAGE_COMMON_REPLY = 210;
 	
 	public static final int PAGE_WHOLESALE_MAIN = 1;
 	public static final int PAGE_WHOLESALE_ACCOUNT = 2;

@@ -22,6 +22,7 @@ import com.cmons.cph.wrappers.ViewWrapperForOrder;
 import com.cmons.cph.wrappers.ViewWrapperForOrderSetForRetail;
 import com.cmons.cph.wrappers.ViewWrapperForOrderSetForWholesale;
 import com.cmons.cph.wrappers.ViewWrapperForProduct;
+import com.cmons.cph.wrappers.ViewWrapperForReply;
 import com.cmons.cph.wrappers.ViewWrapperForSample;
 import com.cmons.cph.wrappers.ViewWrapperForStaff;
 import com.cmons.cph.wrappers.ViewWrapperForWholesaleWish;
@@ -154,6 +155,9 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_WHOLESALE:
 			return R.layout.list_favorite_shop;
+			
+		case CphConstants.ITEM_REPLY:
+			return R.layout.list_reply;
 		}
 		
 		return 0;
@@ -209,6 +213,9 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_WHOLESALE:
 			return new ViewWrapperForFavoriteShop(convertView, itemCode);
+			
+		case CphConstants.ITEM_REPLY:
+			return new ViewWrapperForReply(convertView, itemCode);
 		}
 		
 		return null;
