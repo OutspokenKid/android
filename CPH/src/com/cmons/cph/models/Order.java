@@ -7,6 +7,13 @@ import com.outspoken_kid.utils.LogUtils;
 
 public class Order extends BaseModel {
 	
+	//-1: 주문취소, 0: 주문요청, 1: 입금대기, 2: 입금완료, 3: 거래완료
+	public static final int STATUS_CANCELED = -1;
+	public static final int STATUS_REQUESTED = 0;
+	public static final int STATUS_STANDBY = 1;
+	public static final int STATUS_DEPOSIT = 2;
+	public static final int STATUS_COMPLETED = 3;
+	
 	private int id;
 	private int retail_id;
 	private int product_id;
@@ -19,6 +26,8 @@ public class Order extends BaseModel {
 	private int payment_account_id;
 	private String payment_purchaser_info;
 	private long created_at;
+	private String product_name;
+	private long product_price;
 	
 	private boolean checked = true;
 	
@@ -75,6 +84,14 @@ public class Order extends BaseModel {
 			
 			if(objJSON.has("created_at")) {
 				this.created_at = objJSON.getLong("created_at");
+			}
+			
+			if(objJSON.has("product_name")) {
+				this.product_name = objJSON.getString("product_name");
+			}
+			
+			if(objJSON.has("product_price")) {
+				this.product_price = objJSON.getLong("product_price");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -185,5 +202,21 @@ public class Order extends BaseModel {
 
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
+	}
+
+	public String getProduct_name() {
+		return product_name;
+	}
+
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+
+	public long getProduct_price() {
+		return product_price;
+	}
+
+	public void setProduct_price(long product_price) {
+		this.product_price = product_price;
 	}
 }

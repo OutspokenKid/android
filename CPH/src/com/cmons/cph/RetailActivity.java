@@ -19,13 +19,14 @@ import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteProductPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteShopPage;
 import com.cmons.cph.fragments.retail.RetailForManagementPage;
-import com.cmons.cph.fragments.retail.RetailForOrderPage;
+import com.cmons.cph.fragments.retail.RetailForOrderProductPage;
 import com.cmons.cph.fragments.retail.RetailForSearchPage;
 import com.cmons.cph.fragments.retail.RetailForSettingPage;
 import com.cmons.cph.fragments.retail.RetailForShopPage;
 import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
+import com.cmons.cph.fragments.retail.retailForOrderPage;
 import com.cmons.cph.models.Retail;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -154,11 +155,14 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_COMMON_PRODUCT:
 			 return new ProductPage();
 			 
-		case CphConstants.PAGE_RETAIL_ORDER:
-			 return new RetailForOrderPage();
+		case CphConstants.PAGE_RETAIL_ORDER_PRODUCT:
+			 return new RetailForOrderProductPage();
 			 
 		case CphConstants.PAGE_COMMON_REPLY:
 			 return new ReplyPage();
+			 
+		case CphConstants.PAGE_RETAIL_ORDER:
+			 return new retailForOrderPage();
 		}
 		
 		return null;

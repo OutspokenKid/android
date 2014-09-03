@@ -5,12 +5,11 @@
 
     <TextView
         android:id="@+id/list_order_tvOrder"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:gravity="center_vertical"
-        android:paddingLeft="20dp" 
         android:textColor="#fff" />
 
     <View
@@ -19,5 +18,14 @@
         android:layout_height="0dp" 
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
+    
+    <TextView
+        android:id="@+id/list_order_tvPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:textColor="#f00" />
 
 </RelativeLayout>

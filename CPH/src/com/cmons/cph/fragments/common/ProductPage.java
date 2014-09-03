@@ -659,7 +659,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		bundle.putSerializable("product", product);
 		bundle.putSerializable("wholesale", wholesale);
 		bundle.putBoolean("isBasket", true);
-		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER_PRODUCT, bundle);
 	}
 
 	public void selectSampleColor() {
@@ -754,7 +754,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		bundle.putSerializable("product", product);
 		bundle.putSerializable("wholesale", wholesale);
 		bundle.putBoolean("isBasket", false);
-		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+		mActivity.showPage(CphConstants.PAGE_RETAIL_ORDER_PRODUCT, bundle);
 	}
 
 	public void addFavorite() {

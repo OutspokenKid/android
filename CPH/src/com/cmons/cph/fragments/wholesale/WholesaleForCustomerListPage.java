@@ -291,7 +291,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 
 		for(int i=0; i<10; i++) {
 			Customer customer = new Customer();
-			customer.setItemCode(CphConstants.ITEM_CUSTOMER);
+			customer.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
 			models.add(customer);
 		}
 		return false;

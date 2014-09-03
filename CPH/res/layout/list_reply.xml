@@ -45,20 +45,20 @@
     	android:background="@drawable/myshop_comment3_icon" />
     
     <Button
-		android:id="@+id/list_reply_btnDelete"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentRight="true"
-    	android:layout_alignTop="@id/list_reply_tvContent"
-    	android:background="@drawable/myshop_delete2_btn" />
-    
-    <Button
 		android:id="@+id/list_reply_btnReply"
     	android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_alignParentRight="true"
     	android:layout_alignTop="@id/list_reply_tvContent"
     	android:background="@drawable/myshop_reply2_btn" />
+    
+    <Button
+		android:id="@+id/list_reply_btnDelete"
+    	android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/list_reply_btnReply"
+    	android:layout_toLeftOf="@id/list_reply_btnReply"
+    	android:background="@drawable/myshop_delete2_btn" />
     	
 </RelativeLayout>
 

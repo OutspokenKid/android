@@ -22,9 +22,6 @@ public class Retail extends Shop implements Serializable {
 	private int favorite_wholesales_cnt;
 	private int favorited_products_cnt;
 	private long created_at;
-
-	////
-	
 	private int total_visited_cnt;
 	private int today_visited_cnt;
 	private String owner_phone_number;

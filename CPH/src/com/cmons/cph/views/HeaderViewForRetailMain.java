@@ -491,7 +491,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 			final String imageUrl = wholesales.get(position).getRep_image_url();
 
-			LogUtils.log("###WholesaleMainPage.instantiateItem.  position : "
+			LogUtils.log("###HeaderViewForRetailMain.instantiateItem.  position : "
 					+ position + ", url : " + imageUrl);
 
 			final ImageView ivImage = new ImageView(getContext());
@@ -510,34 +510,37 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			});
 			container.addView(ivImage);
 
-			DownloadUtils.downloadBitmap(imageUrl,
-					new OnBitmapDownloadListener() {
+			if(imageUrl != null) {
+				DownloadUtils.downloadBitmap(imageUrl,
+						new OnBitmapDownloadListener() {
 
-						@Override
-						public void onError(String url) {
+							@Override
+							public void onError(String url) {
 
-							LogUtils.log("instantiateItem.onError."
-									+ "\nurl : " + url);
-						}
-
-						@Override
-						public void onCompleted(String url, Bitmap bitmap) {
-
-							try {
-								LogUtils.log("instantiateItem.onCompleted."
+								LogUtils.log("instantiateItem.onError."
 										+ "\nurl : " + url);
-								
-								if(StringUtils.isEmpty(url)) {
-									ivImage.setImageBitmap(bitmap);
-								}
-							} catch (Exception e) {
-								LogUtils.trace(e);
-							} catch (OutOfMemoryError oom) {
-								LogUtils.trace(oom);
 							}
-						}
-					});
 
+							@Override
+							public void onCompleted(String url, Bitmap bitmap) {
+
+								try {
+									LogUtils.log("instantiateItem.onCompleted."
+											+ "\nurl : " + url);
+									
+									if(StringUtils.isEmpty(url)) {
+										ivImage.setImageBitmap(bitmap);
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						});
+
+			}
+			
 			return ivImage;
 		}
 

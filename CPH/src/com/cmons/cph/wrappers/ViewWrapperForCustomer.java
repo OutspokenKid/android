@@ -1,12 +1,13 @@
 package com.cmons.cph.wrappers;
 
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.AbsListView;
 import android.widget.TextView;
 
+import com.cmons.cph.R;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.Customer;
+import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -14,9 +15,11 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ViewWrapperForCustomer extends ViewWrapper {
 	
-	private Customer customer;
+	private Wholesale wholesale;
+	private Retail retail;
 	
 	public TextView tvCustomer;
+	public TextView tvStatus;
 	
 	public ViewWrapperForCustomer(View row, int itemCode) {
 		super(row, itemCode);
@@ -26,7 +29,8 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 	public void bindViews() {
 
 		try {
-			tvCustomer = (TextView) row;
+			tvCustomer = (TextView) row.findViewById(R.id.list_customer_tvCustomer);
+			tvStatus = (TextView) row.findViewById(R.id.list_customer_tvStatus);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -37,11 +41,13 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 	public void setSizes() {
 
 		try {
-			tvCustomer.setLayoutParams(new AbsListView.LayoutParams(
-					LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(100)));
-			tvCustomer.setPadding(ResizeUtils.getSpecificLength(30), 0, 
-					ResizeUtils.getSpecificLength(30), 0);
+			int p = ResizeUtils.getSpecificLength(20);
+			tvCustomer.setMaxWidth(ResizeUtils.getSpecificLength(540));
+			tvCustomer.setPadding(p, p, p, p);
 			FontUtils.setFontSize(tvCustomer, 30);
+			
+			tvStatus.setPadding(0, 0, p, 0);
+			FontUtils.setFontSize(tvStatus, 30);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -52,12 +58,31 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof Customer) {
-				customer = (Customer) baseModel;
+			if(baseModel.getItemCode() == CphConstants.ITEM_CUSTOMER_WHOLESALE) {
 				
-				tvCustomer.setText("매장이름(대표이름) 010 0000 0000");
-			} else {
-				setUnusableView();
+				if(baseModel instanceof Retail) {
+					retail = (Retail) baseModel;
+					
+					tvCustomer.setText("도매 - 거래처목록 - " + retail.getName());
+					tvStatus.setText(null);
+				} else {
+					setUnusableView();
+				}
+				
+			} else if(baseModel.getItemCode() == CphConstants.ITEM_CUSTOMER_RETAIL) {
+				
+				if(baseModel instanceof Wholesale) {
+					wholesale = (Wholesale) baseModel;
+					tvCustomer.setText(wholesale.getName() + " 청평화몰 " + wholesale.getLocation());
+					
+					if(wholesale.isStandingBy()) {
+						tvStatus.setText("승인대기중");
+					} else {
+						tvStatus.setText(null);
+					}
+				} else {
+					setUnusableView();
+				}
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -67,7 +92,6 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-		
 	}
 	
 	@Override

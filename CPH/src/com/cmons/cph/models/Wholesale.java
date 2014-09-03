@@ -32,6 +32,9 @@ public class Wholesale extends Shop implements Serializable {
 	private int[] category_ids;
 	private Account[] accounts;
 	
+	//소매 - 거래처 관리에서 쓰임.
+	private boolean standingBy;
+	
 	public Wholesale(JSONObject objJSON) {
 		super(objJSON);
 		
@@ -264,5 +267,13 @@ public class Wholesale extends Shop implements Serializable {
 
 	public void setAccounts(Account[] accounts) {
 		this.accounts = accounts;
+	}
+	
+	public boolean isStandingBy() {
+		return standingBy;
+	}
+
+	public void setStandingBy(boolean standingBy) {
+		this.standingBy = standingBy;
 	}
 }

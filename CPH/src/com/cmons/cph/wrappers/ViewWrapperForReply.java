@@ -1,5 +1,8 @@
 package com.cmons.cph.wrappers;
 
+import org.json.JSONObject;
+
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -7,13 +10,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Reply;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForReply extends ViewWrapper {
 
@@ -100,7 +108,7 @@ public class ViewWrapperForReply extends ViewWrapper {
 			rp.width = ResizeUtils.getSpecificLength(30);
 			rp.height = ResizeUtils.getSpecificLength(30);
 			rp.topMargin = ResizeUtils.getSpecificLength(31);
-			rp.rightMargin = ResizeUtils.getSpecificLength(80);
+			rp.rightMargin = ResizeUtils.getSpecificLength(20);
 			
 			FontUtils.setFontSize(tvInfo, 24);
 			FontUtils.setFontSize(tvContent, 30);
@@ -139,6 +147,21 @@ public class ViewWrapperForReply extends ViewWrapper {
 					privateIcon.setVisibility(View.INVISIBLE);
 				}
 				
+				//해당 게시글의 도매 사람이거나, 게시글 작성자인 경우에 삭제 버튼 노출.
+				if(reply.getWholesale_id() == ShopActivity.getInstance().user.getWholesale_id()) {
+					ToastUtils.showToast("도매 사람.");
+					btnDelete.setVisibility(View.VISIBLE);
+					btnReply.setVisibility(View.VISIBLE);
+				} else if(ShopActivity.getInstance().user.getId().equals(reply.getAuthor_id())) {
+					ToastUtils.showToast("작성자");
+					btnDelete.setVisibility(View.VISIBLE);
+					btnReply.setVisibility(View.GONE);
+				} else {
+					ToastUtils.showToast("아무도 아님");
+					btnDelete.setVisibility(View.GONE);
+					btnReply.setVisibility(View.GONE);
+				}
+				
 				tvContent.setText(reply.getContent());
 			} else {
 				setUnusableView();
@@ -166,7 +189,17 @@ public class ViewWrapperForReply extends ViewWrapper {
 			@Override
 			public void onClick(View view) {
 
-				delete();
+				ShopActivity.getInstance().showAlertDialog(
+						"댓글 삭제", "해당 댓글을 삭제하시겠습니까?", 
+						"확인", "취소", 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								delete();
+							}
+						}, 
+						null);
 			}
 		});
 	}
@@ -181,9 +214,41 @@ public class ViewWrapperForReply extends ViewWrapper {
 	
 	public void delete() {
 		
+		String url = CphConstants.BASE_API_URL + "products/replies/delete" +
+				"?product_id=" + reply.getProduct_id() +
+				"&reply_id=" + reply.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ViewWrapperForReply.delete.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeleteReply);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ViewWrapperForReply.delete.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ShopActivity.getInstance().getTopFragment().refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void writeReply() {
-		
 	}
 }

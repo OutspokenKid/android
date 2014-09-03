@@ -35,7 +35,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class RetailForOrderPage extends CmonsFragmentForRetail {
+public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	
 	private static final int PAYMENT_NONE = 0;
 	private static final int PAYMENT_BANK = 1;
@@ -413,7 +413,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_retail_order;
+		return R.layout.fragment_retail_order_product;
 	}
 
 	@Override

@@ -26,12 +26,12 @@ import com.cmons.cph.models.Product;
 import com.cmons.cph.models.Reply;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class ReplyPage extends CmonsFragmentForShop {
 

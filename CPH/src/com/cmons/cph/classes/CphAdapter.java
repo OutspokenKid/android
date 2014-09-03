@@ -129,14 +129,12 @@ public class CphAdapter extends BaseAdapter {
 		case CphConstants.ITEM_SAMPLE:
 			return R.layout.list_sample;
 			
-		case CphConstants.ITEM_CUSTOMER:
+		case CphConstants.ITEM_CUSTOMER_WHOLESALE:
+		case CphConstants.ITEM_CUSTOMER_RETAIL:
 			return R.layout.list_customer;
 			
 		case CphConstants.ITEM_STAFF:
 			return R.layout.list_staff;
-			
-		case CphConstants.ITEM_ORDER:
-			return R.layout.list_order;
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
 			return R.layout.list_orderset_wholesale;
@@ -158,6 +156,10 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_REPLY:
 			return R.layout.list_reply;
+			
+		case CphConstants.ITEM_ORDER_WHOLESALE:
+		case CphConstants.ITEM_ORDER_RETAIL:
+			return R.layout.list_order;
 		}
 		
 		return 0;
@@ -186,16 +188,14 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_SAMPLE:
 			return new ViewWrapperForSample(convertView, itemCode);
-			
-		case CphConstants.ITEM_CUSTOMER:
+		
+		case CphConstants.ITEM_CUSTOMER_WHOLESALE:
+		case CphConstants.ITEM_CUSTOMER_RETAIL:
 			return new ViewWrapperForCustomer(convertView, itemCode);
 			
 		case CphConstants.ITEM_STAFF:
 			return new ViewWrapperForStaff(convertView, itemCode);
 			
-		case CphConstants.ITEM_ORDER:
-			return new ViewWrapperForOrder(convertView, itemCode);
-
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
 			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
 			
@@ -216,6 +216,10 @@ public class CphAdapter extends BaseAdapter {
 			
 		case CphConstants.ITEM_REPLY:
 			return new ViewWrapperForReply(convertView, itemCode);
+			
+		case CphConstants.ITEM_ORDER_WHOLESALE:	
+		case CphConstants.ITEM_ORDER_RETAIL:
+			return new ViewWrapperForOrder(convertView, itemCode);
 		}
 		
 		return null;

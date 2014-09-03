@@ -3,6 +3,9 @@ package com.cmons.cph.fragments.retail;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -14,12 +17,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Customer;
 import com.cmons.cph.models.OrderSet;
+import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -70,6 +77,8 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -99,11 +108,16 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 			public void onItemClick(AdapterView<?> arg0, View convertView, int position,
 					long id) {
 				
-//				if(menuIndex == 0) {
-//					showPopup();
-//				} else {
-//					//Show CustomerPage.
-//				}
+				if(menuIndex == 0) {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("orderSet", (OrderSet) models.get(position));
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+					
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("wholesale", (Wholesale)models.get(position));
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+				}
 			}
 		});
 	}
@@ -172,7 +186,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 				
 				for(int i=0; i<10; i++) {
 					Customer customer = new Customer();
-					customer.setItemCode(CphConstants.ITEM_CUSTOMER);
+					customer.setItemCode(CphConstants.ITEM_CUSTOMER_RETAIL);
 					models.add(customer);
 				}
 
@@ -226,12 +240,130 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	}
 	
 	public void refreshCustomer() {
+
+		if(isRefreshing) {
+			return;
+		}
 		
+		try {
+			isRefreshing = true;
+			isDownloading = false;
+			isLastList = false;
+			pageIndex = 1;
+			models.clear();
+			adapter.notifyDataSetChanged();
+			
+			downloadCustomer1();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
-	public void downloadCustomer() {
+	public void downloadCustomer1() {
 		
-		url = CphConstants.BASE_API_URL + "retails/customers";
+		url = CphConstants.BASE_API_URL + "retails/customers/requested" +
+				"?num=0";
 		
+		if(isDownloading || isLastList) {
+			return;
+		}
+		
+		if(!isRefreshing) {
+			showLoadingView();
+		}
+		
+		isDownloading = true;
+		isLastList = true;
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CmonsFragment.onError." + "\nurl : " + url);
+				downloadCustomer2(0);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				int size = 0;
+				
+				try {
+					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					JSONArray arJSON = objJSON.getJSONArray("requestedCustomers");
+					
+					size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						Wholesale wholesale = new Wholesale(arJSON.getJSONObject(i));
+						wholesale.setItemCode(CphConstants.ITEM_CUSTOMER_RETAIL);
+						wholesale.setStandingBy(true);
+						models.add(wholesale);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				} finally {
+					downloadCustomer2(size);
+				}
+			}
+		});
+	}
+
+	public void downloadCustomer2(final int standingBySize) {
+
+		url = CphConstants.BASE_API_URL + "retails/customers" +
+				"?num=0";
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CmonsFragment.onError." + "\nurl : " + url);
+				hideLoadingView();
+				isRefreshing = false;
+				isDownloading = false;
+				adapter.notifyDataSetChanged();
+				
+				tvCount.setText("거래처 0  승인중거래처 " + standingBySize);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				int size = 0;
+				
+				try {
+					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					JSONArray arJSON = objJSON.getJSONArray("customers");
+					
+					size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						Wholesale wholesale = new Wholesale(arJSON.getJSONObject(i));
+						wholesale.setItemCode(CphConstants.ITEM_CUSTOMER_RETAIL);
+						wholesale.setStandingBy(false);
+						models.add(wholesale);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				} finally {
+					tvCount.setText("거래처 " + size + "  승인중거래처 " + standingBySize);
+					hideLoadingView();
+					isRefreshing = false;
+					isDownloading = false;
+					adapter.notifyDataSetChanged();
+				}
+			}
+		});
 	}
 }
