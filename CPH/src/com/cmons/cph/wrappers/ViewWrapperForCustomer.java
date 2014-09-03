@@ -1,17 +1,27 @@
 package com.cmons.cph.wrappers;
 
+import org.json.JSONObject;
+
+import android.content.DialogInterface;
+import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class ViewWrapperForCustomer extends ViewWrapper {
 	
@@ -92,11 +102,135 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
+		
+		if(wholesale != null) {
+			row.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("wholesale", wholesale);
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+				}
+			});
+			
+			row.setOnLongClickListener(new OnLongClickListener() {
+				
+				@Override
+				public boolean onLongClick(View v) {
+					
+					String message = null;
+					
+					if(wholesale.isStandingBy()) {
+						message = "거래처 요청을 취소하시겠습니까?";
+					} else {
+						message = "거래처를 끊겠습니까?";
+					}
+					
+					ShopActivity.getInstance().showAlertDialog("삭제", message, 
+							"확인", "취소", 
+							new DialogInterface.OnClickListener(){
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									
+									if(wholesale.isStandingBy()) {
+										cancelRequest();
+									} else {
+										breakPartnerShip();
+									}
+								}
+					}, null);
+					
+					return false;
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void setUnusableView() {
 		// TODO Auto-generated method stub
 		
+	}
+
+//////////////////// Custom methods.
+	
+	public void cancelRequest() {
+		
+		String url = "http://cph.minsangk.com/retails/customers/cancel" +
+				"?wholesale_id=" + wholesale.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ViewWrapperForCustomer.cancelRequest.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToCancelRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ViewWrapperForCustomer.cancelRequest.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_cancelRequest);
+						ShopActivity.getInstance().getTopFragment().refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToCancelRequest);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToCancelRequest);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void breakPartnerShip() {
+		
+		String url = "http://cph.minsangk.com/retails/customers/delete" +
+				"?wholesale_id=" + wholesale.getId();
+
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ViewWrapperForCustomer.breakPartnerShip.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failTobreakPartnerShip);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ViewWrapperForCustomer.breakPartnerShip.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_breakPartnerShip);
+						ShopActivity.getInstance().getTopFragment().refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failTobreakPartnerShip);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failTobreakPartnerShip);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

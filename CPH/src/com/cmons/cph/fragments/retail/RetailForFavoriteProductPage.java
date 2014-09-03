@@ -25,6 +25,8 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 	private TextView tvCount;
 	private GridView gridView;
 	
+	private int totalCount;
+	
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -47,6 +49,7 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 	@Override
 	public void setVariables() {
 
+		title = "즐겨찾기 상품";
 	}
 
 	@Override
@@ -57,6 +60,8 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 		gridView.setNumColumns(2);
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		gridView.setAdapter(adapter);
+		
+		tvCount.setText("총 " + totalCount + "개의 즐겨찾기 상품이 등록되었습니다.");
 	}
 
 	@Override
@@ -129,7 +134,8 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 				models.add(product);
 			}
 
-			tvCount.setText("총 " + size + "개의 즐겨찾기 상품이 등록되었습니다.");
+			totalCount = size;
+			tvCount.setText("총 " + totalCount + "개의 즐겨찾기 상품이 등록되었습니다.");
 			
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
 				return true;

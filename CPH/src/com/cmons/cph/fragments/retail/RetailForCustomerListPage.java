@@ -112,11 +112,6 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("orderSet", (OrderSet) models.get(position));
 					ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
-					
-				} else {
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("wholesale", (Wholesale)models.get(position));
-					ShopActivity.getInstance().showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
 				}
 			}
 		});
