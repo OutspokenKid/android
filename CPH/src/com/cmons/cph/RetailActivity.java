@@ -11,22 +11,23 @@ import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
 import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
+import com.cmons.cph.fragments.common.NotificationSettingPage;
 import com.cmons.cph.fragments.common.ProductPage;
 import com.cmons.cph.fragments.common.ReplyPage;
+import com.cmons.cph.fragments.common.SettingPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.retail.RetailForAddPartner;
 import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteProductPage;
 import com.cmons.cph.fragments.retail.RetailForFavoriteShopPage;
 import com.cmons.cph.fragments.retail.RetailForManagementPage;
+import com.cmons.cph.fragments.retail.RetailForOrderPage;
 import com.cmons.cph.fragments.retail.RetailForOrderProductPage;
 import com.cmons.cph.fragments.retail.RetailForSearchPage;
-import com.cmons.cph.fragments.retail.RetailForSettingPage;
 import com.cmons.cph.fragments.retail.RetailForShopPage;
 import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
-import com.cmons.cph.fragments.retail.retailForOrderPage;
 import com.cmons.cph.models.Retail;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -122,8 +123,8 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_MANAGEMENT:
 			return new RetailForManagementPage();
 			
-		case CphConstants.PAGE_RETAIL_SETTING:
-			return new RetailForSettingPage();
+		case CphConstants.PAGE_COMMON_SETTING:
+			return new SettingPage();
 			
 		case CphConstants.PAGE_COMMON_NOTICE_LIST:
 			return new NoticeListPage();
@@ -131,8 +132,8 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_COMMON_NOTICE:
 			return new NoticePage();
 			
-		case CphConstants.PAGE_RETAIL_NOTIFICATION_SETTING:
-			return new RetailForSettingPage();
+		case CphConstants.PAGE_COMMON_NOTIFICATION_SETTING:
+			return new NotificationSettingPage();
 			
 		case CphConstants.PAGE_COMMON_CHANGE_INFO:
 			return new ChangeInfoPage();
@@ -162,7 +163,7 @@ public class RetailActivity extends ShopActivity {
 			 return new ReplyPage();
 			 
 		case CphConstants.PAGE_RETAIL_ORDER:
-			 return new retailForOrderPage();
+			 return new RetailForOrderPage();
 		}
 		
 		return null;

@@ -36,6 +36,7 @@
 	<string name="complete_changeRegistration">사업자 등록번호 변경 완료</string>
 	<string name="complete_changeShopProfile">프로필 변경 완료</string>
 	<string name="complete_checkPhone">인증번호 전송되었습니다</string>
+	<string name="complete_deleteFavorite">즐겨찾기 삭제 완료</string>
 	<string name="complete_order">주문 완료</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
 	<string name="complete_requestSample">샘플 요청 완료</string>
@@ -60,6 +61,7 @@
     <string name="failToChangeProfileImage">프로필 사진 변경 실패</string>
     <string name="failToChangeRegistration">사업자 등록번호 변경 실패</string>
     <string name="failToChangePw">비밀번호 변경 실패</string>
+    <string name="failToDeleteFavorite">즐겨찾기 삭제 실패</string>
     <string name="failToDeleteReply">댓글 삭제 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>

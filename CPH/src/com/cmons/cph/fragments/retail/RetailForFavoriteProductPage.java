@@ -125,6 +125,7 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 				Product product = new Product(arJSON.getJSONObject(i));
 				product.setItemCode(CphConstants.ITEM_PRODUCT);
 				product.setType(Product.TYPE_RETAIL);
+				product.setDeletable(true);
 				models.add(product);
 			}
 

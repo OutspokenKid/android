@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
@@ -51,6 +52,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 	private EditText etPhone;
 	private TextView tvPriceText;
 	private TextView tvPrice;
+	private Button btnDelete;
 	private Button btnOrder;
 	private boolean isPayment1, isPayment2;
 	
@@ -73,6 +75,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		etName = (EditText) mThisView.findViewById(R.id.retailWishPage_etName);
 		etPhone = (EditText) mThisView.findViewById(R.id.retailWishPage_etPhone);
 		tvPrice = (TextView) mThisView.findViewById(R.id.retailWishPage_tvPrice);
+		btnDelete = (Button) mThisView.findViewById(R.id.retailWishPage_btnDelete);
 		btnOrder = (Button) mThisView.findViewById(R.id.retailWishPage_btnOrder);
 	}
 
@@ -95,6 +98,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 		
 		if(wholesaleWish != null) {
 			
@@ -196,6 +200,24 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 			}
 		});
 
+		btnDelete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog("장바구니 비우기", "장바구니를 비우시겠습니까?", 
+						"확인", "취소",
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+						
+						delete();
+					}
+				}, null);
+			}
+		});
+		
 		btnOrder.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -205,13 +227,19 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 					ToastUtils.showToast(R.string.wrongPayment);
 					return;
 					
-				} else if (etName.getEditableText() == null
-						|| etName.getEditableText().length() == 0) {
+				} else if(isPayment1 && tvAccount.getText() == null) {
+					ToastUtils.showToast(R.string.wrongAccount2);
+					return;
+					
+				} else if (isPayment2 
+						&& (etName.getEditableText() == null
+						|| etName.getEditableText().length() == 0)) {
 					ToastUtils.showToast(R.string.wrongAgentName);
 					return;
 					
-				} else if (etPhone.getEditableText() == null
-						|| etPhone.getEditableText().length() == 0) {
+				} else if (isPayment2 
+						&& (etPhone.getEditableText() == null
+						|| etPhone.getEditableText().length() == 0)) {
 					ToastUtils.showToast(R.string.wrongAgentPhone);
 					return;
 				}
@@ -299,6 +327,11 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		rp.height = ResizeUtils.getSpecificLength(80);
 		rp.rightMargin = m;
 		FontUtils.setFontSize(tvPrice, 34);
+
+		//btnDelete.
+		rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
+		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getSpecificLength(180);
 		
 		//btnOrder.
 		rp = (RelativeLayout.LayoutParams) btnOrder.getLayoutParams();
@@ -321,7 +354,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 	@Override
 	public int getBgResourceId() {
 
-		return R.drawable.myshop_bg;
+		return R.drawable.order_bg;
 	}
 
 	@Override
@@ -350,17 +383,23 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 //		etName.setVisibility(View.INVISIBLE);
 //		etPhone.setVisibility(View.INVISIBLE);
 	}
+
+	public void delete() {
+		
+		ToastUtils.showToast("장바구니 비우기. 아직 구현 안함");
+	}
 	
 	public void order() {
 
 		try {
 			String url = CphConstants.BASE_API_URL + "retails/orders/order_from_cart" +
-					"?wholesale_id=1";
+					"?wholesale_id=" + wholesaleWish.getId() +
+					"&payment_type=" + (isPayment1? 1:2);
 			
 			if(isPayment1) {
-				url += "&payment_account_id=";
+				url += "&payment_account_id=" + URLEncoder.encode(tvAccount.getText().toString(), "utf-8");
 			} else {
-				url += "&pyament_purchaser_info=" + URLEncoder.encode(etName.getText().toString() + 
+				url += "&payment_purchaser_info=" + URLEncoder.encode(etName.getText().toString() + 
 						"/" + etPhone.getText().toString(), "utf-8");
 			}
 			

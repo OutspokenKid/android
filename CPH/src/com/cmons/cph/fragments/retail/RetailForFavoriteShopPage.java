@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -55,6 +56,7 @@ public class RetailForFavoriteShopPage extends CmonsFragmentForRetail {
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -131,5 +133,8 @@ public class RetailForFavoriteShopPage extends CmonsFragmentForRetail {
 
 	public void showWholesale(Wholesale wholesale) {
 		
+		Bundle bundle = new Bundle();
+		bundle.putSerializable("wholesale", wholesale);
+		mActivity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
 	}
 }

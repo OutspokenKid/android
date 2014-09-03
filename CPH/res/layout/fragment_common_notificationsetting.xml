@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/wholesaleNotificationSettingPage_titleBar" 
+	    android:id="@+id/notificationSettingPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,25 +15,25 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/wholesaleNotificationSettingPage_ivBg" 
+        android:id="@+id/notificationSettingPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleNotificationSettingPage_titleBar"
+	    android:layout_below="@id/notificationSettingPage_titleBar"
 	    android:scaleType="centerCrop" />
     
     <!-- 알림 설정. -->
     
     <Button 
-        android:id="@+id/wholesaleNotificationSettingPage_btnNotification" 
+        android:id="@+id/notificationSettingPage_btnNotification" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleNotificationSettingPage_titleBar" />
+	    android:layout_below="@id/notificationSettingPage_titleBar" />
     
     <TextView
-        android:id="@+id/wholesaleNotificationSettingPage_tvNotification"
+        android:id="@+id/notificationSettingPage_tvNotification"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/wholesaleNotificationSettingPage_btnNotification"
+        android:layout_below="@id/notificationSettingPage_btnNotification"
         android:text="@string/settingNotification"
         android:textColor="#fff"
         android:gravity="center_vertical" />
@@ -41,26 +41,26 @@
     <!-- 방해금지. -->
     
     <Button 
-        android:id="@+id/wholesaleNotificationSettingPage_btnDoNotDisturb" 
+        android:id="@+id/notificationSettingPage_btnDoNotDisturb" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_below="@id/wholesaleNotificationSettingPage_tvNotification"
+	    android:layout_below="@id/notificationSettingPage_tvNotification"
 	    android:background="@drawable/disturb_btn" />
     
     <TextView
-        android:id="@+id/wholesaleNotificationSettingPage_tvTime"
+        android:id="@+id/notificationSettingPage_tvTime"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/wholesaleNotificationSettingPage_btnDoNotDisturb"
+        android:layout_alignTop="@id/notificationSettingPage_btnDoNotDisturb"
         android:layout_alignParentRight="true"
         android:textColor="#fff"
         android:gravity="center" />
     
     <TextView
-        android:id="@+id/wholesaleNotificationSettingPage_tvDoNotDisturb"
+        android:id="@+id/notificationSettingPage_tvDoNotDisturb"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/wholesaleNotificationSettingPage_btnDoNotDisturb"
+        android:layout_below="@id/notificationSettingPage_btnDoNotDisturb"
         android:text="@string/settingDoNotDisturb"
         android:textColor="#fff"
         android:gravity="top|left" />

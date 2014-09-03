@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
     
     <com.cmons.cph.views.TitleBar
-	    android:id="@+id/retailSettingPage_titleBar" 
+	    android:id="@+id/settingPage_titleBar" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
@@ -15,17 +15,17 @@
     <!-- 배경. -->
     
     <ImageView 
-        android:id="@+id/retailSettingPage_ivBg" 
+        android:id="@+id/settingPage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/retailSettingPage_titleBar"
+	    android:layout_below="@id/settingPage_titleBar"
 	    android:scaleType="centerCrop" />
     
     <ScrollView 
-        android:id="@+id/retailSettingPage_scrollView"
+        android:id="@+id/settingPage_scrollView"
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:layout_below="@id/retailSettingPage_titleBar" >
+    	android:layout_below="@id/settingPage_titleBar" >
     
         <RelativeLayout
     		android:layout_width="match_parent"
@@ -34,7 +34,7 @@
     		<!-- 내 정보 관리. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnInfo"
+                android:id="@+id/settingPage_btnInfo"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_alignParentLeft="true"
@@ -44,52 +44,52 @@
             <!-- 전체공지사항. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnNotice"
+                android:id="@+id/settingPage_btnNotice"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/retailSettingPage_btnInfo"
+                android:layout_below="@id/settingPage_btnInfo"
                 android:background="@drawable/setting_notice_btn" />
             
 			<!-- 알림설정. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnNotification"
+                android:id="@+id/settingPage_btnNotification"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-				android:layout_alignTop="@id/retailSettingPage_btnNotice"
-                android:layout_toRightOf="@id/retailSettingPage_btnNotice"                
+				android:layout_alignTop="@id/settingPage_btnNotice"
+                android:layout_toRightOf="@id/settingPage_btnNotice"                
                 android:background="@drawable/setting_notification_btn" />
             
             <!-- 건의하기. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnSuggest"
+                android:id="@+id/settingPage_btnSuggest"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignLeft="@id/retailSettingPage_btnNotification"
-                android:layout_below="@id/retailSettingPage_btnNotification"
+                android:layout_alignLeft="@id/settingPage_btnNotification"
+                android:layout_below="@id/settingPage_btnNotification"
                 android:background="@drawable/setting_suggest_btn" />
 
 			<!-- 로그아웃. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnSignout"
+                android:id="@+id/settingPage_btnSignout"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_alignParentLeft="true"
-                android:layout_below="@id/retailSettingPage_btnNotice"
+                android:layout_below="@id/settingPage_btnNotice"
                 android:background="@drawable/setting_logout_btn" />
             
             
             <!-- 회원탈퇴. -->
 
             <Button
-                android:id="@+id/retailSettingPage_btnWithdraw"
+                android:id="@+id/settingPage_btnWithdraw"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/retailSettingPage_btnSignout"
-                android:layout_toRightOf="@id/retailSettingPage_btnSignout"
+                android:layout_alignTop="@id/settingPage_btnSignout"
+                android:layout_toRightOf="@id/settingPage_btnSignout"
                 android:background="@drawable/setting_withdraw_btn" />
             	
         </RelativeLayout>

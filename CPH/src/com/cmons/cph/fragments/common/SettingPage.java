@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.retail;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForRetail;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -20,7 +20,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 
-public class RetailForSettingPage extends CmonsFragmentForRetail {
+public class SettingPage extends CmonsFragmentForShop {
 
 	private Button btnInfo;
 	private Button btnNotice;
@@ -32,15 +32,15 @@ public class RetailForSettingPage extends CmonsFragmentForRetail {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.retailSettingPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.retailSettingPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.settingPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.settingPage_ivBg);
 		
-		btnInfo = (Button) mThisView.findViewById(R.id.retailSettingPage_btnInfo);
-		btnNotice = (Button) mThisView.findViewById(R.id.retailSettingPage_btnNotice);
-		btnSuggest = (Button) mThisView.findViewById(R.id.retailSettingPage_btnSuggest);
-		btnNotification = (Button) mThisView.findViewById(R.id.retailSettingPage_btnNotification);
-		btnWithdraw = (Button) mThisView.findViewById(R.id.retailSettingPage_btnWithdraw);
-		btnSignout = (Button) mThisView.findViewById(R.id.retailSettingPage_btnSignout);
+		btnInfo = (Button) mThisView.findViewById(R.id.settingPage_btnInfo);
+		btnNotice = (Button) mThisView.findViewById(R.id.settingPage_btnNotice);
+		btnSuggest = (Button) mThisView.findViewById(R.id.settingPage_btnSuggest);
+		btnNotification = (Button) mThisView.findViewById(R.id.settingPage_btnNotification);
+		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
+		btnSignout = (Button) mThisView.findViewById(R.id.settingPage_btnSignout);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class RetailForSettingPage extends CmonsFragmentForRetail {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isAppNotice", true);
 				bundle.putBoolean("isOurNotice", false);
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, null);
 			}
 		});
 		
@@ -84,7 +84,7 @@ public class RetailForSettingPage extends CmonsFragmentForRetail {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_RETAIL_NOTIFICATION_SETTING, null);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTIFICATION_SETTING, null);
 			}
 		});
 	
@@ -160,7 +160,7 @@ public class RetailForSettingPage extends CmonsFragmentForRetail {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_retail_setting;
+		return R.layout.fragment_common_setting;
 	}
 
 	@Override

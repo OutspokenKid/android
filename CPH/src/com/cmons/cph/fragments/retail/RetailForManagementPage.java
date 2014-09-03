@@ -252,6 +252,13 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		rp = (RelativeLayout.LayoutParams) tvReg.getLayoutParams();
 		rp.height = height;
 		
+		//changeReg.
+		rp = (RelativeLayout.LayoutParams) changeReg.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.topMargin = margin;
+		rp.rightMargin = margin;
+		
 		//tvOwnerNameText.
 		rp = (RelativeLayout.LayoutParams) tvOwnerNameText.getLayoutParams();
 		rp.height = height;
@@ -485,5 +492,4 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 			LogUtils.trace(e);
 		}
 	}
-
 }

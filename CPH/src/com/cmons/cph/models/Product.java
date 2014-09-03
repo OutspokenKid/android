@@ -35,6 +35,7 @@ public class Product extends BaseModel implements Serializable {
 	private String[] product_images;
 	
 	private int type;
+	private boolean deletable;
 	
 	public Product() {
 	}
@@ -251,5 +252,13 @@ public class Product extends BaseModel implements Serializable {
 
 	public void setType(int type) {
 		this.type = type;
+	}
+
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
 	}
 }

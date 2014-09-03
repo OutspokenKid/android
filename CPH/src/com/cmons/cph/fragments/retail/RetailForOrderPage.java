@@ -32,7 +32,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class retailForOrderPage extends CmonsFragmentForRetail {
+public class RetailForOrderPage extends CmonsFragmentForRetail {
 
 	private OrderSet orderSet;
 	

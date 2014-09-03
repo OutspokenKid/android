@@ -39,11 +39,20 @@
     	android:background="@drawable/retail_link_btn" />
 	
 	<Button
+	    android:id="@+id/retailWishPage_btnDelete"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:layout_alignParentLeft="true"
+    	android:background="@drawable/retail_delete2_btn" />
+	
+	<Button
 	    android:id="@+id/retailWishPage_btnOrder"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
+    	android:layout_toRightOf="@id/retailWishPage_btnDelete"
     	android:layout_alignParentBottom="true"
-    	android:background="@drawable/retail_order2_btn" />
+    	android:background="@drawable/retail_order3_btn" />
 	
 	<TextView 
         android:id="@+id/retailWishPage_tvPriceText"

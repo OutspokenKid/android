@@ -13,15 +13,15 @@ import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
 import com.cmons.cph.fragments.common.ProductPage;
 import com.cmons.cph.fragments.common.StaffPage;
+import com.cmons.cph.fragments.common.SettingPage;
+import com.cmons.cph.fragments.common.NotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForAccountPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
-import com.cmons.cph.fragments.wholesale.WholesaleForNotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForProfileImagePage;
 import com.cmons.cph.fragments.wholesale.WholesaleForSampleListPage;
-import com.cmons.cph.fragments.wholesale.WholesaleForSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForShopPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForWritePage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
@@ -112,8 +112,8 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_COMMON_NOTICE:
 			return new NoticePage();
 			
-		case CphConstants.PAGE_WHOLESALE_NOTIFICATION_SETTING:
-			return new WholesaleForNotificationSettingPage();
+		case CphConstants.PAGE_COMMON_NOTIFICATION_SETTING:
+			return new NotificationSettingPage();
 			
 		case CphConstants.PAGE_WHOLESALE_ORDER_LIST:
 			return new WholesaleForOrderListPage();
@@ -130,8 +130,8 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_SAMPLE_LIST:
 			return new WholesaleForSampleListPage();
 			
-		case CphConstants.PAGE_WHOLESALE_SETTING:
-			return new WholesaleForSettingPage();
+		case CphConstants.PAGE_COMMON_SETTING:
+			return new SettingPage();
 			
 		case CphConstants.PAGE_WHOLESALE_SHOP:
 			return new WholesaleForShopPage();

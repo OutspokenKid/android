@@ -41,17 +41,17 @@ public class CphConstants {
 	public static final int PAGE_COMMON_NOTICE = 208;
 	public static final int PAGE_COMMON_PRODUCT = 209;
 	public static final int PAGE_COMMON_REPLY = 210;
+	public static final int PAGE_COMMON_SETTING = 211;
+	public static final int PAGE_COMMON_NOTIFICATION_SETTING = 212;
 	
 	public static final int PAGE_WHOLESALE_MAIN = 1;
 	public static final int PAGE_WHOLESALE_ACCOUNT = 2;
 	public static final int PAGE_WHOLESALE_CUSTOMER_LIST = 6;
 	public static final int PAGE_WHOLESALE_MANAGEMENT = 7;
-	public static final int PAGE_WHOLESALE_NOTIFICATION_SETTING = 10;
 	public static final int PAGE_WHOLESALE_ORDER_LIST = 11;
 	public static final int PAGE_WHOLESALE_ORDER = 12;
 	public static final int PAGE_WHOLESALE_PROFILE_IMAGE = 14;
 	public static final int PAGE_WHOLESALE_SAMPLE_LIST = 15;
-	public static final int PAGE_WHOLESALE_SETTING = 16;
 	public static final int PAGE_WHOLESALE_SHOP = 17;
 	public static final int PAGE_WHOLESALE_WRITE = 19;
 	
@@ -63,7 +63,6 @@ public class CphConstants {
 	public static final int PAGE_RETAIL_FAVORITE_SHOP = 105;
 	public static final int PAGE_RETAIL_FAVORITE_PRODUCT = 106;
 	public static final int PAGE_RETAIL_MANAGEMENT = 107;
-	public static final int PAGE_RETAIL_SETTING = 109;
 	public static final int PAGE_RETAIL_NOTIFICATION_SETTING = 111;
 	public static final int PAGE_RETAIL_WISH = 114;
 	public static final int PAGE_RETAIL_SHOP = 115;

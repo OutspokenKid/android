@@ -1,4 +1,4 @@
-package com.cmons.cph.fragments.wholesale;
+package com.cmons.cph.fragments.common;
 
 import org.json.JSONObject;
 
@@ -14,12 +14,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesale {
+public class NotificationSettingPage extends CmonsFragmentForShop {
 
 	private Button btnNotification;
 	private TextView tvNotification;
@@ -33,14 +33,14 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.notificationSettingPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.notificationSettingPage_ivBg);
 		
-		btnNotification = (Button) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_btnNotification);
-		tvNotification = (TextView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_tvNotification);
-		btnDoNotDisturb = (Button) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_btnDoNotDisturb);
-		tvTime = (TextView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_tvTime);
-		tvDoNotDisturb = (TextView) mThisView.findViewById(R.id.wholesaleNotificationSettingPage_tvDoNotDisturb);
+		btnNotification = (Button) mThisView.findViewById(R.id.notificationSettingPage_btnNotification);
+		tvNotification = (TextView) mThisView.findViewById(R.id.notificationSettingPage_tvNotification);
+		btnDoNotDisturb = (Button) mThisView.findViewById(R.id.notificationSettingPage_btnDoNotDisturb);
+		tvTime = (TextView) mThisView.findViewById(R.id.notificationSettingPage_tvTime);
+		tvDoNotDisturb = (TextView) mThisView.findViewById(R.id.notificationSettingPage_tvDoNotDisturb);
 	}
 
 	@Override
@@ -152,7 +152,7 @@ public class WholesaleForNotificationSettingPage extends CmonsFragmentForWholesa
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_wholesale_notificationsetting;
+		return R.layout.fragment_common_notificationsetting;
 	}
 
 	@Override

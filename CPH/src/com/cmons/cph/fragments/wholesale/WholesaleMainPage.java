@@ -277,7 +277,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_SETTING, null);
+				mActivity.showPage(CphConstants.PAGE_COMMON_SETTING, null);
 			}
 		});
 		

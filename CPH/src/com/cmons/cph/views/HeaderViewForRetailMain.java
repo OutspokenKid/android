@@ -510,7 +510,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			});
 			container.addView(ivImage);
 
-			if(imageUrl != null) {
+			if(!StringUtils.isEmpty(imageUrl)) {
 				DownloadUtils.downloadBitmap(imageUrl,
 						new OnBitmapDownloadListener() {
 
