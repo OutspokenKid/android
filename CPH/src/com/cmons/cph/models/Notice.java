@@ -20,7 +20,7 @@ public class Notice extends BaseModel implements Serializable {
 	private int target;
 	private int wholesale_id;
 	private int retail_id;
-	private String created_at;
+	private long created_at;
 	
 	private boolean read;
 	
@@ -68,7 +68,7 @@ public class Notice extends BaseModel implements Serializable {
 			}
 			
 			if(objJSON.has("created_at")) {
-				this.created_at = objJSON.getString("created_at");
+				this.created_at = objJSON.getLong("created_at");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -149,11 +149,11 @@ public class Notice extends BaseModel implements Serializable {
 		this.retail_id = retail_id;
 	}
 
-	public String getCreated_at() {
+	public long getCreated_at() {
 		return created_at;
 	}
 
-	public void setCreated_at(String created_at) {
+	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
 	}
 

@@ -28,6 +28,7 @@
     <string name="complete_addBasket">장바구니 추가 완료</string>
     <string name="complete_addFavorite">즐겨찾기 추가 완료</string>
 	<string name="complete_addPartner">거래처 추가 완료</string>
+	<string name="complete_approval">승인 완료</string>
 	<string name="complete_breakPartnerShip">거래처 삭제 완료</string>
 	<string name="complete_cancelRequest">요청 취소 완료</string>
 	<string name="complete_certification">인증 완료</string>
@@ -40,6 +41,7 @@
 	<string name="complete_checkPhone">인증번호 전송되었습니다</string>
 	<string name="complete_deleteFavorite">즐겨찾기 삭제 완료</string>
 	<string name="complete_editProduct">상품 수정 완료</string>
+	<string name="complete_fire">해고 완료</string>
 	<string name="complete_order">주문 완료</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
 	<string name="complete_requestSample">샘플 요청 완료</string>
@@ -59,6 +61,7 @@
     <string name="failToAddBasket">장바구니 추가 실패</string>
     <string name="failToAddFavorite">즐겨찾기 추가 실패</string>
     <string name="failToAddPartner">거래처 추가 실패</string>
+    <string name="failToApproval">승인 실패</string>
     <string name="failTobreakPartnerShip">거래처 삭제 실패</string>
     <string name="failToCancelRequest">요청 취소 실패</string>
     <string name="failToChangeAddress">주소 변경 실패</string>
@@ -72,6 +75,7 @@
     <string name="failToEditProduct">상품 수정 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>
+    <string name="failToFire">해고 실패</string>
     <string name="failToLoadBitmap">이미지를 불러오지 못했습니다</string>
     <string name="failToLoadBitmap_OutOfMemory">메모리가 부족하여 이미지를 불러오지 못했습니다</string>
     <string name="failToOrder">주문 실패</string>

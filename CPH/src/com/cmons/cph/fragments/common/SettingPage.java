@@ -75,7 +75,7 @@ public class SettingPage extends CmonsFragmentForShop {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isAppNotice", true);
 				bundle.putBoolean("isOurNotice", false);
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, null);
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
 			}
 		});
 		

@@ -18,6 +18,7 @@ import com.cmons.cph.fragments.common.SettingPage;
 import com.cmons.cph.fragments.common.NotificationSettingPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForAccountPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
+import com.cmons.cph.fragments.wholesale.WholesaleForCustomerPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForManagementPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
@@ -154,6 +155,9 @@ public class WholesaleActivity extends ShopActivity {
 			
 		case CphConstants.PAGE_COMMON_REPLY:
 			return new ReplyPage();
+			
+		case CphConstants.PAGE_WHOLESALE_CUSTOMER:
+			return new WholesaleForCustomerPage();
 		}
 		
 		return null;

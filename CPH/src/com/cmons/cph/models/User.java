@@ -22,7 +22,7 @@ public class User extends BaseModel implements Serializable {
 	private int retail_id;
 	private long created_at;
 	private int status;
-
+	
 	public User(){
 	}
 	

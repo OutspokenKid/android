@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.Staff;
+import com.cmons.cph.models.User;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -15,8 +15,9 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ViewWrapperForStaff extends ViewWrapper {
 	
-	private Staff staff;
+	private User user;
 	
+	public View classIcon;
 	public TextView textView;
 	public View action;
 	
@@ -28,6 +29,7 @@ public class ViewWrapperForStaff extends ViewWrapper {
 	public void bindViews() {
 
 		try {
+			classIcon = row.findViewById(R.id.list_staff_class);
 			textView = (TextView) row.findViewById(R.id.list_staff_textView);
 			action = row.findViewById(R.id.list_staff_action);
 		} catch(Exception e) {
@@ -42,10 +44,15 @@ public class ViewWrapperForStaff extends ViewWrapper {
 		try {
 			RelativeLayout.LayoutParams rp = null;
 			
+			rp = (RelativeLayout.LayoutParams) classIcon.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(30);
+			rp.height = ResizeUtils.getSpecificLength(30);
+			rp.leftMargin = ResizeUtils.getSpecificLength(20);
+			
 			rp = (RelativeLayout.LayoutParams) textView.getLayoutParams();
 			rp.width = LayoutParams.MATCH_PARENT;
 			rp.height = ResizeUtils.getSpecificLength(100);
-			textView.setPadding(ResizeUtils.getSpecificLength(40), 0, 
+			textView.setPadding(ResizeUtils.getSpecificLength(70), 0, 
 					ResizeUtils.getSpecificLength(160), 0);
 			FontUtils.setFontSize(textView, 30);
 			
@@ -63,15 +70,39 @@ public class ViewWrapperForStaff extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof Staff) {
+			if(baseModel instanceof User) {
 
-				staff = (Staff) baseModel;
-				textView.setText("직원이름 (아이디) 010 0000 0000");
+				user = (User) baseModel;
+				textView.setText(user.getName() + 
+						"(" + user.getId() + ") " + 
+						user.getPhone_number());
 				
-				if(staff.isInRequest()) {
+				if(user.getStatus() == 0) {
 					action.setBackgroundResource(R.drawable.staff_approve_btn);
 				} else {
 					action.setBackgroundResource(R.drawable.staff_layoff_btn);
+				}
+				
+				switch(user.getRole()) {
+				
+				case 101:
+					classIcon.setBackgroundResource(R.drawable.class2_icon);
+					break;
+				case 102:
+					classIcon.setBackgroundResource(R.drawable.class3_icon);
+					break;
+				case 201:
+					classIcon.setBackgroundResource(R.drawable.class2_icon);
+					break;
+				case 202:
+					classIcon.setBackgroundResource(R.drawable.class4_icon);
+					break;
+				case 301:
+					classIcon.setBackgroundResource(R.drawable.class2_icon);
+					break;
+				case 302:
+					classIcon.setBackgroundResource(R.drawable.class4_icon);
+					break;
 				}
 			} else {
 				setUnusableView();

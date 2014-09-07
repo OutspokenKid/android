@@ -29,6 +29,7 @@ public class Retail extends Shop implements Serializable {
 	private int customers_cnt;
 	private int favorited_cnt;
 	private int products_cnt;
+	private int status;
 	
 	public Retail() {
 	}
@@ -108,6 +109,10 @@ public class Retail extends Shop implements Serializable {
 			
 			if(objJSON.has("favorite_wholesales_cnt")) {
 				this.favorite_wholesales_cnt = objJSON.getInt("favorite_wholesales_cnt");
+			}
+			
+			if(objJSON.has("status")) {
+				this.products_cnt = objJSON.getInt("status");
 			}
 			
 			printModel();
@@ -265,5 +270,13 @@ public class Retail extends Shop implements Serializable {
 
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

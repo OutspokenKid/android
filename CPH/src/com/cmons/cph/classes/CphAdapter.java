@@ -13,7 +13,8 @@ import android.widget.BaseAdapter;
 import com.cmons.cph.R;
 import com.cmons.cph.wrappers.ViewWrapperForAccount;
 import com.cmons.cph.wrappers.ViewWrapperForCategory;
-import com.cmons.cph.wrappers.ViewWrapperForCustomer;
+import com.cmons.cph.wrappers.ViewWrapperForCustomer_retail;
+import com.cmons.cph.wrappers.ViewWrapperForCustomer_wholesale;
 import com.cmons.cph.wrappers.ViewWrapperForFavoriteShop;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
 import com.cmons.cph.wrappers.ViewWrapperForLine;
@@ -132,14 +133,19 @@ public class CphAdapter extends BaseAdapter {
 			return R.layout.list_sample;
 			
 		case CphConstants.ITEM_CUSTOMER_WHOLESALE:
+			return R.layout.list_customerlist_wholesale;
+			
 		case CphConstants.ITEM_CUSTOMER_RETAIL:
-			return R.layout.list_customer;
+			return R.layout.list_customerlist_retail;
 			
 		case CphConstants.ITEM_STAFF:
 			return R.layout.list_staff;
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
 			return R.layout.list_orderset_wholesale;
+			
+		case CphConstants.ITEM_ORDERSET_WHOLESALE2:
+			return R.layout.list_orderset_wholesale2;
 			
 		case CphConstants.ITEM_ORDERSET_RETAIL:
 			return R.layout.list_orderset_retail;
@@ -194,13 +200,18 @@ public class CphAdapter extends BaseAdapter {
 			return new ViewWrapperForSample(convertView, itemCode);
 		
 		case CphConstants.ITEM_CUSTOMER_WHOLESALE:
+			return new ViewWrapperForCustomer_wholesale(convertView, itemCode);
+			
 		case CphConstants.ITEM_CUSTOMER_RETAIL:
-			return new ViewWrapperForCustomer(convertView, itemCode);
+			return new ViewWrapperForCustomer_retail(convertView, itemCode);
 			
 		case CphConstants.ITEM_STAFF:
 			return new ViewWrapperForStaff(convertView, itemCode);
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
+			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
+			
+		case CphConstants.ITEM_ORDERSET_WHOLESALE2:
 			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
 			
 		case CphConstants.ITEM_ORDERSET_RETAIL:

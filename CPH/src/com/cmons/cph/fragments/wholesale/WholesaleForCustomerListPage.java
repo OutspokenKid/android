@@ -1,8 +1,12 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
@@ -24,12 +28,15 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.Customer;
+import com.cmons.cph.models.Retail;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 
@@ -51,10 +58,11 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	private Button btnConfirm;
 	
 	private int menuIndex;
-	private String keyword;
 	
 	private AlphaAnimation aaIn, aaOut;
 	private boolean isAnimating;
+	
+	private Retail selectedRetail;
 	
 	@Override
 	public void onResume() {
@@ -129,6 +137,16 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		
+		if(menuIndex == 0) {
+			tvCustomer.setVisibility(View.GONE);
+			editText.setVisibility(View.GONE);
+			btnSearch.setVisibility(View.GONE);
+		} else {
+			tvCustomer.setVisibility(View.VISIBLE);
+			editText.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -152,16 +170,34 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			}
 		});
 		
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(editText.getText() == null) {
+					ToastUtils.showToast(R.string.wrongSearchKeyword);
+					return;
+				}
+
+				refreshPage();
+			}
+		});
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView, int position,
 					long id) {
 				
+				selectedRetail = (Retail) models.get(position);
+				
 				if(menuIndex == 0) {
-					showPopup();
+					showPopup(selectedRetail);
 				} else {
-					//Show CustomerPage.
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("retail", selectedRetail);
+					mActivity.showPage(CphConstants.PAGE_WHOLESALE_CUSTOMER, bundle);
 				}
 			}
 		});
@@ -180,7 +216,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				hidePopup();
+				approval(selectedRetail);
 			}
 		});
 	}
@@ -290,21 +326,21 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-
-		for(int i=0; i<10; i++) {
-			Customer customer = new Customer();
-			customer.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
-			models.add(customer);
-		}
 		
 		try {
+			JSONArray arJSON = null;
+			
 			if(menuIndex == 0) {
-				JSONArray arJSON = objJSON.getJSONArray("requestedCustomers");
-				
-				int size = arJSON.length();
-				for(int i=0; i<size; i++) {
-					
-				}
+				arJSON = objJSON.getJSONArray("requestedCustomers");
+			} else {
+				arJSON = objJSON.getJSONArray("customers");
+			}
+			
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Retail retail = new Retail(arJSON.getJSONObject(i));
+				retail.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
+				models.add(retail);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -326,8 +362,8 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			url = CphConstants.BASE_API_URL + "wholesales/customers";
 			
 			try {
-				if(keyword != null) {
-					url += "?keyword=" + keyword;
+				if(editText.getText() != null) {
+					url += "?keyword=" + URLEncoder.encode(editText.getText().toString(), "utf-8");
 				}
 			} catch (Exception e) {
 				LogUtils.trace(e);
@@ -367,32 +403,39 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		refreshPage();
 	}
 
-	public void showPopup() {
+	public void showPopup(Retail retail) {
 
 		if(isAnimating || popupRelative.getVisibility() == View.VISIBLE) {
 			return;
 		}
 		
-		tvShopName.setText("상호명 : " + "매장이름1");
-		tvOwnerName.setText("대표성함 : " + "대표이름1");
-		tvPhone.setText("연락처 : " + "010-1111-1111");
-		tvCategory.setText("매장분류 : " + "오프라인");
+		tvShopName.setText("상호명 : " + retail.getName());
+		tvOwnerName.setText("대표성함 : " + retail.getOwner_name());
+		tvPhone.setText("연락처 : " + retail.getPhone_number());
 		
 		tvAddress.setText(null);
 		SpannableStringBuilder sp1 = new SpannableStringBuilder("주소 : ");
 		tvAddress.append(sp1);
-		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder(
-				"서울특별시 강남구 역삼동 192-3번지 개나리아파트 101동 503호"
-				);
-		sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvAddress.append(sp2);
+
+		if(retail.getMall_url() == null) {
+			SpannableStringBuilder sp2 = new SpannableStringBuilder(
+					retail.getAddress());
+			sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			tvAddress.append(sp2);
+			
+			tvCategory.setText("매장분류 : " + "오프라인");
+		} else {
+			SpannableStringBuilder sp2 = new SpannableStringBuilder(
+					retail.getMall_url());
+			tvAddress.append(sp2);
+			
+			tvCategory.setText("매장분류 : " + "온라인");
+		}
 		
 		switch (menuIndex) {
 		case 0:
 			btnConfirm.setBackgroundResource(R.drawable.sample_confirm_popup_btn);
 			break;
-			
 		}
 		
 		SoftKeyboardUtils.hideKeyboard(mContext, popupRelative);
@@ -414,5 +457,54 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	public int getBgResourceId() {
 
 		return R.drawable.order_bg;
+	}
+
+	public void approval(Retail retail) {
+		
+		//http://cph.minsangk.com/
+		String url = CphConstants.BASE_API_URL + "wholesales/customers/answer" +
+				"?retail_id=" + retail.getId() +
+				"&answer=accept";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForCustomerListPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToApproval);
+				selectedRetail = null;
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForCustomerListPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_approval);
+						selectedRetail = null;
+						hidePopup();
+						new Handler().postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+
+								refreshPage();
+							}
+						}, 400);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToApproval);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToApproval);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

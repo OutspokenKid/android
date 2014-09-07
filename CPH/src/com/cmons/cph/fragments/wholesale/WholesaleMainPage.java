@@ -54,7 +54,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private Button btnCustomer;
 	private Button btnStaff;
 	private Button btnSetting;
-	private TextView tvHit;
 	private TextView tvWholesale;
 	
 	private ViewPager viewPager;
@@ -108,7 +107,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		btnStaff = (Button) mThisView.findViewById(R.id.wholesaleMainPage_btnStaff);
 		btnSetting = (Button) mThisView.findViewById(R.id.wholesaleMainPage_btnSetting);
 		
-		tvHit = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvHit);
 		tvWholesale = (TextView) mThisView.findViewById(R.id.wholesaleMainPage_tvWholesale);
 		
 		viewPager = (ViewPager)  mThisView.findViewById(R.id.wholesaleMainPage_viewPager);
@@ -161,8 +159,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void createPage() {
 
-		tvHit.setText("오늘 방문 " + wholesale.getToday_visited_cnt());
-		
 		SpannableStringBuilder sp1 = new SpannableStringBuilder(wholesale.getName());
 		sp1.setSpan(new RelativeSizeSpan(1.5f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp1); 
@@ -403,18 +399,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) btnSetting.getLayoutParams();
 		rp.width = length_short;
 		rp.height = length_short;
-		
-		//hitIcon.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.wholesaleMainPage_hitIcon).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(28);
-		rp.height = ResizeUtils.getSpecificLength(19);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		rp.topMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvHit.
-		rp = (RelativeLayout.LayoutParams) tvHit.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//tvWholesale.
 		rp = (RelativeLayout.LayoutParams) tvWholesale.getLayoutParams();

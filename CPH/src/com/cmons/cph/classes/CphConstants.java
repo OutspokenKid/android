@@ -7,6 +7,7 @@ public class CphConstants {
 	public static final String PREFS_SIGN = "sign";
 	public static final String PREFS_NOTICE = "notice";
 	public static final String PREFS_NOTIFICATION = "notification";
+	public static final String PREFS_DISTURB = "disturb";
 	
 	public static final int REQUEST_CAMERA = 0;
 	public static final int REQUEST_ALBUM = 1;
@@ -21,8 +22,6 @@ public class CphConstants {
 	public static final int ITEM_PRODUCT = 6;
 	public static final int ITEM_SAMPLE = 7;
 	public static final int ITEM_STAFF = 9;
-	public static final int ITEM_ORDERSET_WHOLESALE = 11;
-	public static final int ITEM_ORDERSET_RETAIL = 12;
 	public static final int ITEM_ACCOUNT = 13;
 	public static final int ITEM_WHOLESALE_WISH = 14;
 	public static final int ITEM_WISH = 15;
@@ -33,6 +32,9 @@ public class CphConstants {
 	public static final int ITEM_ORDER_WHOLESALE = 20;
 	public static final int ITEM_ORDER_RETAIL = 21;
 	public static final int ITEM_NOTIFICATION = 22;
+	public static final int ITEM_ORDERSET_WHOLESALE = 23;
+	public static final int ITEM_ORDERSET_WHOLESALE2 = 24;
+	public static final int ITEM_ORDERSET_RETAIL = 25;
 	
 	public static final int PAGE_COMMON_CHANGE_INFO = 203;
 	public static final int PAGE_COMMON_CHANGE_PASSWORD = 204;
@@ -55,6 +57,7 @@ public class CphConstants {
 	public static final int PAGE_WHOLESALE_SAMPLE_LIST = 15;
 	public static final int PAGE_WHOLESALE_SHOP = 17;
 	public static final int PAGE_WHOLESALE_WRITE = 19;
+	public static final int PAGE_WHOLESALE_CUSTOMER = 20;
 	
 	public static final int PAGE_RETAIL_MAIN = 100;
 	public static final int PAGE_RETAIL_ADD_PARTNER = 101;

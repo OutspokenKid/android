@@ -15,9 +15,15 @@ import android.widget.TimePicker;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForShop;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class NotificationSettingPage extends CmonsFragmentForShop {
 
@@ -47,6 +53,11 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 	public void setVariables() {
 
 		title = "알림설정";
+		
+		startHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "sh");
+		startMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "sm");
+		endHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "eh");
+		endMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "em");
 	}
 
 	@Override
@@ -63,7 +74,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		}
 		
 		//시간 설정.
-		tvTime.setText("AM 11:00\nPM 03:00");
+		checkTime();
 	}
 
 	@Override
@@ -74,15 +85,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				allowNotification = !allowNotification;
-				
-				if(allowNotification) {
-					btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);
-				} else{
-					btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_a);
-				}
-				
-				setNotificationSetting(allowNotification);
+				changeNotificationSetting();
 			}
 		});
 
@@ -94,7 +97,8 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 				String title = "시간 선택";
 				String[] strings = new String[] {
 						"시작시간",
-						"종료시간"
+						"종료시간",
+						"방해금지모드 해제"
 				};
 				
 				mActivity.showSelectDialog(title, strings, new DialogInterface.OnClickListener() {
@@ -104,8 +108,10 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 						if(which == 0) {
 							setStartTime();
-						} else {
+						} else if(which == 1) {
 							setEndTime();
+						} else {
+							disableTime();
 						}
 					}
 				});
@@ -187,8 +193,45 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 //////////////////// Custom classes.
 	
-	public void setNotificationSetting(boolean allow) {
+	public void changeNotificationSetting() {
 		
+		//http://cph.minsangk.com/users/update/to_get_pushed?to_get_pushed=Y
+		String url = CphConstants.BASE_API_URL + "users/update/to_get_pushed" +
+				"?to_get_pushed=" + (allowNotification? "N" : "Y");
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("NotificationSettingPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("NotificationSettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						allowNotification = !allowNotification;
+						
+						if(allowNotification) {
+							btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);
+						} else{
+							btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_a);
+						}
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void setStartTime() {
@@ -204,7 +247,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 			}
 		};
 		
-		new TimePickerDialog(mContext, otsl, 0, 0, false).show();
+		new TimePickerDialog(mContext, otsl, startHour, startMinute, false).show();
 	}
 	
 	public void setEndTime() {
@@ -220,7 +263,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 			}
 		};
 		
-		new TimePickerDialog(mContext, otsl, 0, 0, false).show();
+		new TimePickerDialog(mContext, otsl, endHour, endMinute, false).show();
 	}
 	
 	public void checkTime() {
@@ -232,6 +275,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		text += getTimeText(endHour, endMinute);
 		
 		tvTime.setText(text);
+		submitTime();
 	}
 	
 	public String getTimeText(int hour, int minute) {
@@ -262,5 +306,112 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		}
 		
 		return text;
+	}
+
+	public void submitTime() {
+		
+		String startTimeString = null;
+		
+		if(startHour < 10) {
+			startTimeString = "0" + startHour;
+		} else {
+			startTimeString = "" + startHour;
+		}
+		
+		if(startMinute < 10) {
+			startTimeString += "0" + startMinute;
+		} else {
+			startTimeString += "" + startMinute;
+		}
+		
+		String endTimeString = null;
+		
+		if(endHour < 10) {
+			endTimeString = "0" + endHour;
+		} else {
+			endTimeString = "" + endHour;
+		}
+		
+		if(endMinute < 10) {
+			endTimeString += "0" + endMinute;
+		} else {
+			endTimeString += "" + endMinute;
+		}
+		
+		//http://cph.minsangk.com/users/update/dnd_time?dnd_time=2300-0900
+		String url = CphConstants.BASE_API_URL + "users/update/dnd_time" +
+				"?dnd_time=" + startTimeString + "-" + endTimeString;
+
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("NotificationSettingPage.submitTime.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("NotificationSettingPage.submitTime.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "sh", startHour);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "sm", startMinute);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "eh", endHour);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "em", endMinute);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void disableTime() {
+		
+		//http://cph.minsangk.com/users/update/dnd_time?dnd_time=disable
+		String url = CphConstants.BASE_API_URL + "users/update/dnd_time" +
+				"?dnd_time=disable";
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("NotificationSettingPage.disableTime.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("NotificationSettingPage.disableTime.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "sh");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "sm");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "eh");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "em");
+						startHour = 0;
+						startMinute = 0;
+						endHour = 0;
+						endMinute = 0;
+						tvTime.setText("사용 안함");
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

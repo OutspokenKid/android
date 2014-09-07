@@ -1,7 +1,10 @@
 package com.cmons.cph.fragments.common;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -15,9 +18,13 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.Staff;
+import com.cmons.cph.models.User;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class StaffPage extends CmonsFragmentForShop {
 	
@@ -62,6 +69,8 @@ public class StaffPage extends CmonsFragmentForShop {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -92,9 +101,9 @@ public class StaffPage extends CmonsFragmentForShop {
 					long arg3) {
 
 				if(menuIndex == 0) {
-					approval((Staff)models.get(arg2));
+					approval((User)models.get(arg2));
 				} else {
-					fire((Staff)models.get(arg2));
+					fire((User)models.get(arg2));
 				}
 			}
 		});
@@ -140,19 +149,40 @@ public class StaffPage extends CmonsFragmentForShop {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		
-		for(int i=0; i<10; i++) {
-			Staff staff = new Staff();
-			staff.setItemCode(CphConstants.ITEM_STAFF);
-			staff.setInRequest(menuIndex == 0);
-			models.add(staff);
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("staffs");
+			
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				User user = new User(arJSON.getJSONObject(i));
+				
+				LogUtils.log("###StaffPage.parseJSON.  id : " + user.getId() + ", status : " + user.getStatus());
+				
+				//승인 요청.
+				if(menuIndex == 0 && user.getStatus() == 1) {
+					continue;
+					
+				//직원 목록.
+				} else if(menuIndex == 1 && user.getStatus() == 0) {
+					continue;
+				}
+				
+				user.setItemCode(CphConstants.ITEM_STAFF);
+				models.add(user);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
+		
 		return false;
 	}
 
 	@Override
 	public void downloadInfo() {
-		
-		url = CphConstants.BASE_API_URL + "commons/notices";
+
+		url = CphConstants.BASE_API_URL + "users/staffs";
 		super.downloadInfo();
 	}
 	
@@ -178,12 +208,79 @@ public class StaffPage extends CmonsFragmentForShop {
 		refreshPage();
 	}
 	
-	public void approval(Staff staff) {
-		
+	public void approval(User user) {
+
+		String url = CphConstants.BASE_API_URL + "users/staffs/accept" +
+				"?staff_id=" + user.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("StaffPage.approval.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToApproval);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("StaffPage.approval.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_approval);
+						refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToApproval);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToApproval);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
-	public void fire(Staff staff) {
-		
+	public void fire(User user) {
+
+		String url = CphConstants.BASE_API_URL + "users/staffs/decline" +
+				"?staff_id=" + user.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("StaffPage.fire.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToFire);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("StaffPage.fire.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_fire);
+						refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToFire);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToFire);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+
 	}
 
 	@Override

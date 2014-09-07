@@ -189,10 +189,14 @@ public class NoticeListPage extends CmonsFragmentForShop {
 	@Override
 	public void downloadInfo() {
 
-		url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
-		
-		if(wholesale_id != 0) {
-			url += "&wholesale_id=" + wholesale_id;
+		if(isAppNotice) {
+			url = CphConstants.BASE_API_URL + "posts/notices?num=0";
+		} else {
+			url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
+			
+			if(wholesale_id != 0) {
+				url += "&wholesale_id=" + wholesale_id;
+			}
 		}
 		
 		super.downloadInfo();

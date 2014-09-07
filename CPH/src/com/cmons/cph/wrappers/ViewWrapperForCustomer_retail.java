@@ -23,7 +23,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
-public class ViewWrapperForCustomer extends ViewWrapper {
+public class ViewWrapperForCustomer_retail extends ViewWrapper {
 	
 	private Wholesale wholesale;
 	private Retail retail;
@@ -31,7 +31,7 @@ public class ViewWrapperForCustomer extends ViewWrapper {
 	public TextView tvCustomer;
 	public TextView tvStatus;
 	
-	public ViewWrapperForCustomer(View row, int itemCode) {
+	public ViewWrapperForCustomer_retail(View row, int itemCode) {
 		super(row, itemCode);
 	}
 
