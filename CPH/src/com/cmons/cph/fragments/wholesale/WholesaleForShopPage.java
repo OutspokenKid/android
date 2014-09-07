@@ -53,7 +53,13 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
-		title = wholesale.getName();
+		try {
+			title = getWholesale().getName();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 
 	@Override
@@ -204,7 +210,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	public void downloadInfo() {
 
 		url = CphConstants.BASE_API_URL + "products" +
-				"?wholesale_id=" + wholesale.getId();
+				"?wholesale_id=" + getWholesale().getId();
 				
 		if(customerType == 0) {
 			url += "&permission_type=all";
@@ -243,6 +249,14 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
+			} else if(pageIndex == 1 && size == 0) {
+				BaseModel emptyModel1 = new BaseModel() {};
+				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel1);
+
+				BaseModel emptyModel2 = new BaseModel() {};
+				emptyModel2.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel2);
 			}
 
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {

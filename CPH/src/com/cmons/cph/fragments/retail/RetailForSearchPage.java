@@ -161,6 +161,14 @@ public class RetailForSearchPage extends CmonsFragmentForRetail {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
+			} else if(pageIndex == 1 && size == 0) {
+				BaseModel emptyModel1 = new BaseModel() {};
+				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel1);
+
+				BaseModel emptyModel2 = new BaseModel() {};
+				emptyModel2.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel2);
 			}
 			
 			tvResult.setText("총 " + size + "개의 상품이 검색되었습니다.");

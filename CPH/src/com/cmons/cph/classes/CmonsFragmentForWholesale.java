@@ -1,18 +1,18 @@
 package com.cmons.cph.classes;
 
-import android.app.Activity;
-
 import com.cmons.cph.WholesaleActivity;
 import com.cmons.cph.models.Wholesale;
 
 public abstract class CmonsFragmentForWholesale extends CmonsFragmentForShop {
 	
-	protected Wholesale wholesale;
+	private Wholesale wholesale;
 	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public Wholesale getWholesale() {
 		
-		wholesale = ((WholesaleActivity)activity).wholesale;
+		if(wholesale == null) {
+			wholesale = ((WholesaleActivity)mActivity).wholesale;
+		}
+		
+		return wholesale;
 	}
 }

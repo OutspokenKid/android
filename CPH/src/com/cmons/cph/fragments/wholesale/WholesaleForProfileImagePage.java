@@ -35,7 +35,9 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	public void onResume() {
 		super.onResume();
 		
-		downloadProfile();
+		if(ivImage != null) {
+			downloadProfile();
+		}
 	}
 	
 	@Override
@@ -88,11 +90,47 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 					@Override
 					public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
 						
+						LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  " +
+								"\nresultString : " + resultString);
+
+						/*
+						{
+							"result":1,
+							"message":"OK",
+							"file":{
+								"type":"image",
+								"path":"\/var\/www\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+								"url":"http:\/\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+								"original_name":"temp.jpeg",
+								"image_width":720,
+								"image_height":960
+							}
+						}
+						*/
+						
+						try {
+							JSONObject objJSON = new JSONObject(resultString);
+
+							if(objJSON.getInt("result") == 1) {
+								JSONObject objFile = objJSON.getJSONObject("file");
+								selectedImageUrl = objFile.getString("url");
+								getWholesale().setRep_image_url(selectedImageUrl);
+								downloadProfile();
+							}
+							
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (Error e) {
+							LogUtils.trace(e);
+						}
+						
+						if(thumbnail == null) {
+							LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
+						}
+						
 						if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
 							ivImage.setImageBitmap(thumbnail);
 						}
-						
-						selectedImageUrl = resultString;
 					}
 				});
 			}
@@ -153,15 +191,13 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	
 	public void downloadProfile() {
 
-		ivImage.setTag(wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		ivImage.setTag(getWholesale().getRep_image_url());
+		DownloadUtils.downloadBitmap(getWholesale().getRep_image_url(), new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
 				LogUtils.log("WholesaleForProfileImagePage.onError." + "\nurl : " + url);
-
-				// TODO Auto-generated method stub		
 			}
 
 			@Override

@@ -32,6 +32,7 @@ public class FindIdPwPage extends CmonsFragment {
 	public static final int TYPE_FIND_ID = 0;
 	public static final int TYPE_FIND_PW = 1;
 	
+	private EditText etId;
 	private EditText etPhone;
 	private EditText etCertification;
 	private Button btnSend;
@@ -47,6 +48,7 @@ public class FindIdPwPage extends CmonsFragment {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.findIdPwPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.findIdPwPage_ivBg);
 		
+		etId = (EditText) mThisView.findViewById(R.id.findIdPwPage_etId);
 		etPhone = (EditText) mThisView.findViewById(R.id.findIdPwPage_etPhone);
 		etCertification = (EditText) mThisView.findViewById(R.id.findIdPwPage_etCertification);
 		btnSend = (Button) mThisView.findViewById(R.id.findIdPwPage_btnSend);
@@ -71,6 +73,12 @@ public class FindIdPwPage extends CmonsFragment {
 	public void createPage() {
 		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
+		
+		if(type == TYPE_FIND_ID) {
+			etId.setVisibility(View.GONE);
+		} else {
+			etId.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -117,7 +125,14 @@ public class FindIdPwPage extends CmonsFragment {
 
 			@Override
 			public void onClick(View view) {
-
+				
+				if(type == TYPE_FIND_PW && 
+						(etId.getText() == null
+						|| StringUtils.isEmpty(etId.getText().toString()))) {
+					ToastUtils.showToast(R.string.wrongId);
+					return;
+				}
+				
 				checkPhone();
 			}
 		});
@@ -141,11 +156,16 @@ public class FindIdPwPage extends CmonsFragment {
 		//Shadow.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.findIdPwPage_titleShadow).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(14);
+
+		//etId.
+		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
+		rp.topMargin = ResizeUtils.getSpecificLength(70);
+		etPhone.setPadding(padding, 0, padding, 0);
 		
 		//etPhone.
 		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		etPhone.setPadding(padding, 0, padding, 0);
 		
 		//etCertification.
@@ -162,6 +182,7 @@ public class FindIdPwPage extends CmonsFragment {
 		rp = (RelativeLayout.LayoutParams) btnCertify.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
+		FontUtils.setFontAndHintSize(etId, 30, 24);
 		FontUtils.setFontAndHintSize(etPhone, 30, 24);
 		FontUtils.setFontAndHintSize(etCertification, 30, 24);
 	}
@@ -311,10 +332,16 @@ public class FindIdPwPage extends CmonsFragment {
 				url += "id";
 			} else {
 				url += "password";
+				
 			}
 					
 			url += "?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
 					"&no_sms=0";
+			
+			if(type == TYPE_FIND_PW) {
+				url += "&id=" + etId.getText().toString();
+			}
+			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override

@@ -83,6 +83,9 @@ public class ChangePasswordPage extends CmonsFragmentForShop {
 						|| !etNewPassword.getText().toString().equals(etNewPasswordConfirm.getText().toString())) {
 					ToastUtils.showToast(R.string.check_pwConfirm);
 					return;
+				} else if(etCurrentPassword.getText().toString().equals(etNewPassword.getText().toString())) {
+					ToastUtils.showToast(R.string.wrongPwAndNewPw);
+					return;
 				}
 				
 				submit();

@@ -43,14 +43,14 @@ public abstract class BaseFragment extends Fragment
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		LogUtils.log("###BaseFragment.onAttach.");
+		LogUtils.log("#################################BaseFragment." + fragmentTag + ".onAttach, fragment : " + this);
 	}
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		LogUtils.log("###BaseFragment.onCreate.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onCreate.  ");
 		
 		mContext = getActivity();
 		setVariables();
@@ -60,7 +60,7 @@ public abstract class BaseFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		LogUtils.log("###BaseFragment.onCreateView.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onCreateView.  ");
 		
 		if(container == null) {
 			return null;
@@ -74,7 +74,7 @@ public abstract class BaseFragment extends Fragment
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-		LogUtils.log("###BaseFragment.onActivityCreated.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onActivityCreated.  ");
 		
 		bindViews();
 		createPage();
@@ -87,7 +87,7 @@ public abstract class BaseFragment extends Fragment
 	public void onStart() {
 		super.onStart();
 		
-		LogUtils.log("###BaseFragment.onStart.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onStart.  ");
 		
 		if(getCustomFontResId() != 0) {
 			FontUtils.setGlobalFont(getActivity(), mThisView, getString(getCustomFontResId()));
@@ -98,41 +98,41 @@ public abstract class BaseFragment extends Fragment
 	public void onResume() {
 		super.onResume();
 		
-		LogUtils.log("###BaseFragment.onResume.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onResume.  ");
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		LogUtils.log("###BaseFragment.onPause.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onPause.  ");
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
 		
-		LogUtils.log("###BaseFragment.onStop.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onStop.  ");
 	}
 	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
 		
-		LogUtils.log("###BaseFragment.onDestroyView.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onDestroyView.  ");
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		
-		LogUtils.log("###BaseFragment.onDestroy.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onDestroy.  ");
 	}
 	
 	@Override
 	public void onDetach() {
 		super.onDetach();
 
-		LogUtils.log("###BaseFragment.onDetach.  ");
+		LogUtils.log("###BaseFragment." + fragmentTag + ".onDetach.  ");
 	}
 	
 	@Override

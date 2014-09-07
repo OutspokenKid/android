@@ -74,7 +74,7 @@ public abstract class CmonsFragment extends BaseFragment {
 			});
 		}
 		
-		 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+		 if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT && ivBg != null) {
 			 ivBg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 		 }
 	}

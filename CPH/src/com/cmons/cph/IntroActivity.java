@@ -26,13 +26,13 @@ public class IntroActivity extends Activity {
 		setContentView(R.layout.activity_intro);
 		CphApplication.initWithActivity(this);
 		
+		bindViews();
+		setSizes();
+		
 		if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
 			 ivBg.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 			 ivImage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-		 }
-		
-		bindViews();
-		setSizes();
+		}
 	}
 	
 	@Override

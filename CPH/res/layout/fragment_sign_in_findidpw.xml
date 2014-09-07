@@ -31,14 +31,30 @@
 	        android:id="@+id/findIdPwPage_relative" 
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content" >
-	        		    
+
+			<!-- 아이디 입력. -->
+		    
+		    <EditText 
+		        android:id="@+id/findIdPwPage_etId"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentTop="true"
+		    	android:background="#b2ffffff"
+		    	android:singleLine="true"
+		    	android:textColor="#4a4a4a"
+		    	android:textColorHint="#4a4a4a"
+		    	android:imeOptions="actionSend"
+		    	android:inputType="phone"
+		    	android:hint="@string/hintForId"
+		    	android:gravity="center" />
+	        	        		    
 		    <!-- 전화번호 입력. -->
 		    
 		    <EditText 
 		        android:id="@+id/findIdPwPage_etPhone"
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
-		    	android:layout_alignParentTop="true"
+		    	android:layout_below="@id/findIdPwPage_etId"
 		    	android:background="#b2ffffff"
 		    	android:singleLine="true"
 		    	android:textColor="#4a4a4a"

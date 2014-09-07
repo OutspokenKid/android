@@ -82,7 +82,7 @@ public class ImageUploadUtils {
 			
 			File tempFile = new File(tempFilePath);
 	        OutputStream out = null;
-	 
+	        
 	        try {
 	            tempFile.createNewFile();
 	            out = new FileOutputStream(tempFile);

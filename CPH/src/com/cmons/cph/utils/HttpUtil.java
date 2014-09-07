@@ -15,7 +15,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
-import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
@@ -122,16 +121,7 @@ public class HttpUtil {
 		
 		try {
 			MultipartEntity multipartEntity = new MultipartEntity();
-			multipartEntity.addPart("attachFile", new FileBody(uploadFile));
-			multipartEntity.addPart("filename", new StringBody(""));
-			multipartEntity.addPart("basepath", new StringBody(""));
-			multipartEntity.addPart("folder", new StringBody("service/temp"));
-			multipartEntity.addPart("ext", new StringBody("image"));
-			multipartEntity.addPart("stillimage", new StringBody("false"));
-			multipartEntity.addPart("allsizeResize", new StringBody(""));
-			multipartEntity.addPart("quality", new StringBody("100"));
-			multipartEntity.addPart("result_flag", new StringBody("STRING"));
-
+			multipartEntity.addPart("userfile", new FileBody(uploadFile));
 			httpPost.setEntity(multipartEntity);
 			
 			inputStream = execute(httpPost, context);

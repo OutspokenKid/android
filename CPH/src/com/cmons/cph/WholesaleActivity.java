@@ -2,6 +2,7 @@ package com.cmons.cph;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.os.Handler;
 
 import com.cmons.cph.classes.CmonsFragment;
@@ -168,6 +169,21 @@ public class WholesaleActivity extends ShopActivity {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("wholesale", wholesale);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		if(savedInstanceState != null) {
+			wholesale = (Wholesale) savedInstanceState.getSerializable("wholesale");
+		}
+	}
 	
 //////////////////// Custom methods.
 
@@ -215,7 +231,10 @@ public class WholesaleActivity extends ShopActivity {
 		
 		if(categories != null && categories.length > 0
 				&& wholesale != null) {
-			showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);
+			
+			if(getFragmentsSize() == 0) {
+				showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);
+			}
 		} else {
 			new Handler().postDelayed(new Runnable() {
 				

@@ -132,13 +132,38 @@
 	            android:textColor="#000000"
 	    		android:textColorHint="#4a4a4a" />
 	
+	        <!-- 매장 전화번호 -->
+	        <TextView
+	            android:id="@+id/signUpForWritePage_tvCompanyPhone"
+	            android:layout_width="wrap_content"
+	            android:layout_height="0dp"
+	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
+	            android:layout_below="@id/signUpForWritePage_etCompanyOwnerName"
+	            android:gravity="center_vertical"
+	            android:text="@string/companyPhone"
+	            android:textColor="#fff" />
+	
+	        <EditText
+	            android:id="@+id/signUpForWritePage_etCompanyPhone"
+	            android:layout_width="match_parent"
+	            android:layout_height="0dp"
+	            android:layout_alignParentLeft="true"
+	            android:layout_below="@id/signUpForWritePage_tvCompanyPhone"
+	            android:singleLine="true"
+	            android:gravity="center"
+	            android:inputType="phone"
+	            android:background="#b2ffffff"
+	            android:hint="@string/hintForCompanyPhone"
+	            android:textColor="#000000"
+	    		android:textColorHint="#4a4a4a" />
+	        
 	        <!-- 사업자 등록번호 -->
 	        <TextView
 	            android:id="@+id/signUpForWritePage_tvCompanyRegistration"
 	            android:layout_width="wrap_content"
 	            android:layout_height="0dp"
 	            android:layout_alignLeft="@id/signUpForWritePage_tvCompanyName"
-	            android:layout_below="@id/signUpForWritePage_etCompanyOwnerName"
+	            android:layout_below="@id/signUpForWritePage_etCompanyPhone"
 	            android:gravity="center_vertical"
 	            android:text="@string/registrationNumber"
 	            android:textColor="#fff" />
@@ -153,6 +178,7 @@
 	            android:gravity="center"
 	            android:inputType="number"
 	            android:background="#b2ffffff"
+	            android:hint="@string/hintForCompanyReg"
 	            android:textColor="#000000"
 	    		android:textColorHint="#4a4a4a" />
 

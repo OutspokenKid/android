@@ -126,8 +126,13 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 	}
 	
 	@Override
-	protected void onActivityResult(int resultCode, int requestCode, Intent data) {
-		super.onActivityResult(resultCode, requestCode, data);
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		LogUtils.log("###############################.onActivityResult.  " +
+				"\nresultCode : " + resultCode +
+				"\nrequestCode : " + requestCode +
+				"\ndata : " + data);
 		
 		switch(requestCode) {
 		

@@ -62,7 +62,7 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
-		if(wholesale.getSample_available() == 1) {
+		if(getWholesale().getSample_available() == 1) {
 			allowSampleRequest = true;
 		} else {
 			allowSampleRequest = false;
@@ -72,14 +72,14 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 		sp1.setSpan(new RelativeSizeSpan(1.2f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvInfo.append(sp1); 
 		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n\n" + wholesale.getPhone_number());
+		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n\n" + getWholesale().getPhone_number());
 		tvInfo.append(sp2); 
 		
 		SpannableStringBuilder sp3 = new SpannableStringBuilder("\n\n매장주소");
 		sp3.setSpan(new RelativeSizeSpan(1.2f), 0, sp3.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvInfo.append(sp3);
 		
-		SpannableStringBuilder sp4 = new SpannableStringBuilder("\n\n청평화몰 " + wholesale.getLocation());
+		SpannableStringBuilder sp4 = new SpannableStringBuilder("\n\n청평화몰 " + getWholesale().getLocation());
 		tvInfo.append(sp4);
 		
 		SpannableStringBuilder sp5 = new SpannableStringBuilder(
@@ -245,9 +245,9 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 					if(1 == objJSON.getInt("result")) {
 						
 						if(allow) {
-							wholesale.setSample_available(1);
+							getWholesale().setSample_available(1);
 						} else {
-							wholesale.setSample_available(0);
+							getWholesale().setSample_available(0);
 						}
 					}
 				} catch (Exception e) {

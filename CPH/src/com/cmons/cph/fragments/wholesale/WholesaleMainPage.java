@@ -159,11 +159,11 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void createPage() {
 
-		SpannableStringBuilder sp1 = new SpannableStringBuilder(wholesale.getName());
+		SpannableStringBuilder sp1 = new SpannableStringBuilder(getWholesale().getName());
 		sp1.setSpan(new RelativeSizeSpan(1.5f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp1); 
 		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화몰 " + wholesale.getLocation());
+		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n청평화몰 " + getWholesale().getLocation());
 		sp2.setSpan(new RelativeSizeSpan(1.0f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvWholesale.append(sp2);
 		
@@ -575,7 +575,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	public void downloadProducts() {
 		
 		String url = CphConstants.BASE_API_URL + "products/weekly_best" +
-				"?wholesale_id=" + wholesale.getId();
+				"?wholesale_id=" + getWholesale().getId();
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

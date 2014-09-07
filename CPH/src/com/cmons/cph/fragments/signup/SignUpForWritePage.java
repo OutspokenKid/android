@@ -32,6 +32,9 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 	private TextView tvCompanyOwnerName;
 	private EditText etCompanyOwnerName;
 	
+	private TextView tvCompanyPhone;
+	private EditText etCompanyPhone;
+	
 	private TextView tvCompanyRegistration;
 	private EditText etCompanyRegistration;
 	
@@ -54,6 +57,9 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 		
 		tvCompanyOwnerName = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyOwnerName);
 		etCompanyOwnerName = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyOwnerName);
+		
+		tvCompanyPhone = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyPhone);
+		etCompanyPhone = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyPhone);
 		
 		tvCompanyRegistration = (TextView) mThisView.findViewById(R.id.signUpForWritePage_tvCompanyRegistration);
 		etCompanyRegistration = (EditText) mThisView.findViewById(R.id.signUpForWritePage_etCompanyRegistration);
@@ -135,6 +141,14 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 		// etCompanyOwnerName.
 		rp = (RelativeLayout.LayoutParams) etCompanyOwnerName.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
+
+		// tvCompanyPhone.
+		rp = (RelativeLayout.LayoutParams) tvCompanyPhone.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(120);
+		
+		// etCompanyPhone.
+		rp = (RelativeLayout.LayoutParams) etCompanyPhone.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
 		
 		// tvCompanyRegistration.
 		rp = (RelativeLayout.LayoutParams) tvCompanyRegistration.getLayoutParams();
@@ -148,12 +162,14 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 		FontUtils.setFontSize(tvMallUrl, 34);
 		FontUtils.setFontSize(tvCompanyAddress, 34);
 		FontUtils.setFontSize(tvCompanyOwnerName, 34);
+		FontUtils.setFontSize(tvCompanyPhone, 34);
 		FontUtils.setFontSize(tvCompanyRegistration, 34);
 		
 		FontUtils.setFontAndHintSize(etCompanyName, 30, 24);
 		FontUtils.setFontAndHintSize(etMallUrl, 30, 24);
 		FontUtils.setFontAndHintSize(etCompanyAddress, 30, 24);
 		FontUtils.setFontAndHintSize(etCompanyOwnerName, 30, 24);
+		FontUtils.setFontAndHintSize(etCompanyPhone, 30, 24);
 		FontUtils.setFontAndHintSize(etCompanyRegistration, 30, 24);
 	}
 
@@ -201,6 +217,9 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 			
 		} else if(StringUtils.isEmpty(etCompanyOwnerName.getText())) {
 			ToastUtils.showToast(R.string.wrongCompanyOwner);
+		
+		} else if(StringUtils.isEmpty(etCompanyPhone.getText())) {
+			ToastUtils.showToast(R.string.wrongCompanyPhone);
 			
 		} else if(StringUtils.isEmpty(etCompanyRegistration.getText())) {
 			ToastUtils.showToast(R.string.wrongCompanyReg);
@@ -216,6 +235,7 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 					etCompanyName.getText().toString(),
 					etMallUrl.getText().toString(),
 					etCompanyAddress.getText().toString(),
+					etCompanyPhone.getText().toString(),
 					etCompanyRegistration.getText().toString()); 
 		}
 	}

@@ -24,6 +24,7 @@
     <string name="checkDuplication">중복 확인</string>
     <string name="color">색상</string>
     <string name="companyName">상호명</string>
+    <string name="companyPhone">매장 전화번호</string>
     <string name="complete">완료</string>
     <string name="complete_addBasket">장바구니 추가 완료</string>
     <string name="complete_addFavorite">즐겨찾기 추가 완료</string>
@@ -98,6 +99,8 @@
     <string name="hintForChangePw1">현재 비밀번호 입력</string>
     <string name="hintForChangePw2">새 비밀번호 입력</string>
     <string name="hintForChangePw3">새 비밀번호 확인</string>
+    <string name="hintForCompanyPhone">매장 전화번호 입력</string>
+    <string name="hintForCompanyReg">사업자 등록번호 입력</string>
     <string name="hintForEditNoticeTitle">공지사항의 제목을 입력해주세요.</string>
     <string name="hintForEditNoticeContent">공지사항의 내용을 입력해주세요.</string>
     <string name="hintForId">아이디 입력</string>
@@ -227,6 +230,7 @@
     <string name="wrongColor">색상을 선택해주세요</string>
     <string name="wrongCompanyName">상호명을 입력해주세요</string>
     <string name="wrongCompanyOwner">성함을 입력해주세요</string>
+    <string name="wrongCompanyPhone">매장 전화번호를 입력해주세요</string>
     <string name="wrongCompanyReg">사업자 등록 번호를 입력해주세요</string>
     <string name="wrongCurrentPw">현재 비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongId">아이디를 올바르게 입력해주세요(6 ~ 64자)</string>
@@ -234,7 +238,7 @@
     <string name="wrongName">이름을 입력해주세요</string>
     <string name="wrongNewPw">새 비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongPayment">결제 방식을 선택해주세요</string>
-    <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
+    <string name="wrongPhoneNumber">전화번호를 입력해주세요</string>
     <string name="wrongProductCategory">상품분류를 선택해주세요</string>
     <string name="wrongProductColor">상품색상을 선택해주세요</string>
     <string name="wrongProductDesc">상품설명을 입력해주세요</string>
@@ -244,6 +248,7 @@
     <string name="wrongProductPrice">상품가격을 입력해주세요</string>
     <string name="wrongProductSize">상품사이즈를 선택해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
+    <string name="wrongPwAndNewPw">새 비밀번호는 기존의 비밀번호와 달라야합니다</string>
     <string name="wrongReply">내용을 적어주세요</string>
     <string name="wrongSearchKeyword">검색어를 입력해주세요</string>
     <string name="wrongSize">사이즈를 선택해주세요</string>

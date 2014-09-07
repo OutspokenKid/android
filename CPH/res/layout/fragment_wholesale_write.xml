@@ -312,6 +312,7 @@
         android:id="@+id/wholesaleWritePage_relativePopup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/wholesaleWritePage_titleBar"
         android:visibility="invisible"
         android:background="#a000" >
         

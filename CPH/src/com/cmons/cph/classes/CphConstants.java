@@ -9,8 +9,8 @@ public class CphConstants {
 	public static final String PREFS_NOTIFICATION = "notification";
 	public static final String PREFS_DISTURB = "disturb";
 	
-	public static final int REQUEST_CAMERA = 0;
-	public static final int REQUEST_ALBUM = 1;
+	public static final int REQUEST_CAMERA = 1;
+	public static final int REQUEST_ALBUM = 2;
 	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	

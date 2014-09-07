@@ -354,6 +354,50 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View arg0) {
 
+				if(relativePopup.getVisibility() == View.VISIBLE) {
+					
+					if(mode == MODE_COLOR) {
+						String colorString = null;
+
+						int size = colorItems.size();
+						for(int i=0; i<size; i++) {
+
+							if(colorItems.get(i).selected) {
+								if(colorString == null) {
+									colorString = "";
+								} else {
+									colorString += "/";
+								}
+								
+								colorString += colorItems.get(i).text;
+							}
+						}
+						
+						btnColor.setText(colorString);
+					} else {
+						String sizeString = null;
+
+						int size = sizeItems.size();
+						for(int i=0; i<size; i++) {
+
+							if(sizeItems.get(i).selected) {
+								if(sizeString == null) {
+									sizeString = "";
+								} else {
+									sizeString += "/";
+								}
+								
+								sizeString += sizeItems.get(i).text;
+							}
+						}
+						
+						btnSize.setText(sizeString);
+					}
+					
+					hidePopup();
+					return;
+				}
+				
 				if(selectedImageUrls == null 
 						|| (selectedImageUrls[0] == null
 							&& selectedImageUrls[1] == null

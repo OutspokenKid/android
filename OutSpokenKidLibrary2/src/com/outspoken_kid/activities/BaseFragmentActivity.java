@@ -28,18 +28,47 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		setContentView(getContentViewId());
 		context = this;
 		
+		LogUtils.log("###BaseFragmentActivity.onCreate.  ");
+		
 		bindViews();
 		setVariables();
 		createPage();
 		setListeners();
 		setSizes();
 	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		LogUtils.log("###BaseFragmentActivity.onStart.  ");
+	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		
+		LogUtils.log("###BaseFragmentActivity.onResume.  ");
+		
 		downloadInfo();
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		LogUtils.log("###BaseFragmentActivity.onPause.  ");
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		LogUtils.log("###BaseFragmentActivity.onStop.  ");
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		LogUtils.log("###BaseFragmentActivity.onDestroy.  ");
 	}
 	
 	@Override
@@ -172,6 +201,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	}
 	
 	public void startPage(BaseFragment fragment, Bundle bundle) {
+		
+		LogUtils.log("#################################BaseFragmentActivity.startPage.  " +
+				"\nstartPage. fragment : " + fragment);
 		
 		try {
 			if(bundle != null) {

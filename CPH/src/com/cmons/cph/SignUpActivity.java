@@ -16,6 +16,7 @@ import com.cmons.cph.fragments.signup.SignUpForPositionPage;
 import com.cmons.cph.fragments.signup.SignUpForSearchPage;
 import com.cmons.cph.fragments.signup.SignUpForTermsPage;
 import com.cmons.cph.fragments.signup.SignUpForWritePage;
+import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -218,15 +219,20 @@ public class SignUpActivity extends CmonsFragmentActivity {
 	
 	//소매 대표.
 	public void showPersonalPage(int type, String userName, String retailName, 
-			String mallUrl, String address, String regNumber) {
+			String mallUrl, String address, String companyPhone, String regNumber) {
 		
 		Bundle bundle = new Bundle();
-		bundle.putInt("type", type);
-		bundle.putString("userName", userName);
-		bundle.putString("retailName", retailName);
-		bundle.putString("mallUrl", mallUrl);
-		bundle.putString("address", address);
-		bundle.putString("regNumber", regNumber);
+
+		Retail retail = new Retail();
+		retail.setType(type);
+		retail.setOwner_name(userName);
+		retail.setName(retailName);
+		retail.setMall_url(mallUrl);
+		retail.setAddress(address);
+		retail.setPhone_number(companyPhone);
+		retail.setCorp_reg_number(regNumber);
+		
+		bundle.putSerializable("retail", retail);
 		
 		startPage(new SignUpForPersonalPage(), bundle);
 	}
@@ -283,6 +289,10 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
+						
+						if(objJSON.getInt("result") == 2) {
+							finish();
+						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 						ToastUtils.showToast(R.string.failToSignUp);
@@ -302,7 +312,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 	}
 	
 	public void signUpForRetailOwner(String id, String pw, String role, String userName,
-			String retailName, String address, String mallUrl, 
+			String retailName, String address, String mallUrl, String companyPhone, 
 			String regNumber, String phone_auth_key) {
 		
 		try {
@@ -314,6 +324,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 					"&retail[name]=" + URLEncoder.encode(retailName, "utf-8") +
 					"&retail[address]=" + URLEncoder.encode(address, "utf-8") +
 					"&retail[mall_url]=" + URLEncoder.encode(mallUrl, "utf-8") +
+					"&retail[phone_number]=" + URLEncoder.encode(companyPhone, "utf-8") +
 					"&retail[corp_reg_number]=" + URLEncoder.encode(regNumber, "utf-8") +
 					"&phone_auth_key=" + URLEncoder.encode(phone_auth_key, "utf-8");
 		
@@ -339,6 +350,10 @@ public class SignUpActivity extends CmonsFragmentActivity {
 							launchRetailActivity(user);
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
+						}
+						
+						if(objJSON.getInt("result") == 2) {
+							finish();
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
@@ -392,6 +407,10 @@ public class SignUpActivity extends CmonsFragmentActivity {
 							launchRetailActivity(user);
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
+						}
+						
+						if(objJSON.getInt("result") == 2) {
+							finish();
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);

@@ -218,6 +218,14 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
+			} else if(pageIndex == 1 && size == 0) {
+				BaseModel emptyModel1 = new BaseModel() {};
+				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel1);
+
+				BaseModel emptyModel2 = new BaseModel() {};
+				emptyModel2.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel2);
 			}
 
 			headerView.setTotalProduct(objJSON.getInt("productsCount"));

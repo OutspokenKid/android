@@ -111,7 +111,7 @@
 	            android:layout_height="0dp"
 	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvName"
-	            android:hint="@string/hintForId"
+	            android:hint="@string/hintForName"
 	            android:inputType="text"
 	            android:textColor="#000"
 	            android:textColorHint="#aaa"

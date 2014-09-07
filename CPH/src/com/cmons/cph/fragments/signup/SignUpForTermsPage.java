@@ -13,6 +13,20 @@ import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class SignUpForTermsPage extends CmonsFragmentForSignUp {
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				getActivity().finish();
+			}
+		});
+	}
 	
 	@Override
 	public void bindViews() {
@@ -35,15 +49,6 @@ public class SignUpForTermsPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public void setListeners() {
-
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				
-				getActivity().finish();
-			}
-		});
 		
 		titleBar.getBtnAgree().setOnClickListener(new OnClickListener() {
 

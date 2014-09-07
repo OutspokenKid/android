@@ -108,7 +108,11 @@ public class NoticeListPage extends CmonsFragmentForShop {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-
+				
+				//읽음표시.
+				((Notice)models.get(arg2)).setRead(true);
+				adapter.notifyDataSetChanged();
+				
 				boolean isEdit = false;
 				
 				if(isAppNotice) {

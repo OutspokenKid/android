@@ -62,6 +62,7 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -123,7 +124,6 @@ public class SignUpForCategoryPage extends CmonsFragmentForSignUp {
 		
 		//ScrollView.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signUpForCategoryPage_listView).getLayoutParams();
-		rp.bottomMargin = ResizeUtils.getSpecificLength(200);
 	}
 	
 	@Override

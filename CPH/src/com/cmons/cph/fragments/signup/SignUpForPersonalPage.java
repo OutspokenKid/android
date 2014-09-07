@@ -516,13 +516,15 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 
 						
 						if(objJSON.getInt("result") == 1) {
-							ToastUtils.showToast(R.string.complete_checkPhone);
 							timeResponseKey = objJSON.getString("tempResponseKey");
+							
+							mActivity.showAlertDialog("휴대폰 번호", 
+									getString(R.string.complete_checkPhone), "확인", null);
 							
 							btnSendCertification.setVisibility(View.INVISIBLE);
 							btnCertify.setVisibility(View.VISIBLE);
 						} else {
-							ToastUtils.showToast(objJSON.getString("message"));
+							mActivity.showAlertDialog("휴대폰 번호", objJSON.getString("message"), "확인", null);
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
@@ -566,12 +568,14 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 
 							
 							if(objJSON.getInt("result") == 1) {
-								ToastUtils.showToast(R.string.complete_certification);
+								mActivity.showAlertDialog("휴대폰 번호 인증", 
+										getString(R.string.complete_certification), "확인", null);
+								
 								JSONObject objResponse = objJSON.getJSONObject("authResponse");
 								phone_number = objResponse.getString("phone_number");
 								phone_auth_key = objResponse.getString("phone_auth_key");
 							} else {
-								ToastUtils.showToast(objJSON.getString("message"));
+								mActivity.showAlertDialog("휴대폰 번호 인증", objJSON.getString("message"), "확인", null);
 							}
 						} catch (Exception e) {
 							ToastUtils.showToast(R.string.wrongCertificationNumber);
@@ -644,6 +648,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 						shop.getName(), 
 						((Retail)shop).getAddress(), 
 						((Retail)shop).getMall_url(), 
+						((Retail)shop).getPhone_number(),
 						shop.getCorp_reg_number(), 
 						phone_auth_key);
 				break;

@@ -302,27 +302,22 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 			// btnCompanyLocation.
 			rp = (RelativeLayout.LayoutParams) btnCompanyLocation.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(92);
-		
-			// tvCompanyRegistration.
-			rp = (RelativeLayout.LayoutParams) tvCompanyRegistration.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(120);
-			rp.topMargin = ResizeUtils.getSpecificLength(212);
 			
 		//소매인 경우.
 		} else {
 			// tvCompanyRegistration.
 			rp = (RelativeLayout.LayoutParams) tvCompanyRegistration.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(120);
+
+			// etCompanyRegistration.
+			rp = (RelativeLayout.LayoutParams) etCompanyRegistration.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(550);
+			rp.height = ResizeUtils.getSpecificLength(92);
+			
+			// btnCompanyRegistration.
+			rp = (RelativeLayout.LayoutParams) btnCompanyRegistration.getLayoutParams();
+			rp.height = ResizeUtils.getSpecificLength(92);
 		}
-		
-		// etCompanyRegistration.
-		rp = (RelativeLayout.LayoutParams) etCompanyRegistration.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(550);
-		rp.height = ResizeUtils.getSpecificLength(92);
-		
-		// btnCompanyRegistration.
-		rp = (RelativeLayout.LayoutParams) btnCompanyRegistration.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(92);
 
 		FontUtils.setFontSize(tvCompanyName, 34);
 		FontUtils.setFontSize(tvCompanyPhone, 34);
@@ -336,7 +331,6 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		FontUtils.setFontAndHintSize(etCompanyName, 30, 24);
 		FontUtils.setFontAndHintSize(etCompanyPhone, 30, 24);
 		FontUtils.setFontAndHintSize(etCompanyRegistration, 30, 24);
-		
 	}
 	
 	@Override
