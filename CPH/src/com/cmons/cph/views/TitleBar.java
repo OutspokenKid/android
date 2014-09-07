@@ -35,6 +35,8 @@ public class TitleBar extends RelativeLayout {
 	private Button btnWrite;
 	private Button btnFavorite;
 	
+	private View newBadge;
+	
 	public TitleBar(Context context) {
 		this(context, null, 0);
 	}
@@ -180,6 +182,25 @@ public class TitleBar extends RelativeLayout {
 		}
 		
 		return btnNotice;
+	}
+
+	public View getNewBadge() {
+		
+		if(newBadge == null) {
+			newBadge = new View(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(28), 
+					ResizeUtils.getSpecificLength(28));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.topMargin = ResizeUtils.getSpecificLength(24);
+			rp.rightMargin = ResizeUtils.getSpecificLength(110);
+			newBadge.setLayoutParams(rp);
+			newBadge.setBackgroundResource(R.drawable.badge);
+			this.addView(newBadge);
+		}
+		
+		return newBadge;
 	}
 	
 	public Button getBtnAdd() {

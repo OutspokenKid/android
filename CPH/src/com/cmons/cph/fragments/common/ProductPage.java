@@ -37,6 +37,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class ProductPage extends CmonsFragmentForShop {
@@ -165,10 +166,25 @@ public class ProductPage extends CmonsFragmentForShop {
 			}
 			
 			tvName2.setText(product.getName());
-			tvPrice2.setText(product.getPrice() + "원");
-			tvCategory2.setText("");
-			tvColor2.setText(product.getColors());
-			tvSize2.setText(product.getSizes());
+			tvPrice2.setText(StringUtils.getFormattedNumber(product.getPrice()) + "원");
+			
+			if(mActivity.categories != null) {
+				String categoryText = null;
+				int category_id = product.getCategory_id();
+				int size = mActivity.categories.length;
+				
+				for(int i=0; i<size; i++) {
+					categoryText = mActivity.categories[i].getCategoryStringById(category_id);
+					
+					if(categoryText != null) {
+						tvCategory2.setText(categoryText);
+						break;
+					}
+				}
+			}
+			
+			tvColor2.setText(product.getColors().replace("|", "/"));
+			tvSize2.setText(product.getSizes().replace("|", "/"));
 			tvMixtureRate2.setText(product.getMixture_rate());
 			tvDescription2.setText(product.getDesc());
 			
@@ -549,7 +565,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("ProductPage.loadWholesale..onError." + "\nurl : " + url);
+					LogUtils.log("ProductPage.loadWholesale.onError." + "\nurl : " + url);
 
 					new Handler().postDelayed(new Runnable() {
 						
@@ -565,7 +581,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						LogUtils.log("ProductPage.loadWholesale..onCompleted." + "\nurl : " + url
+						LogUtils.log("ProductPage.loadWholesale.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
 						if(objJSON.getInt("result") == 1) {

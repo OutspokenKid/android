@@ -37,13 +37,14 @@ public class ReplyPage extends CmonsFragmentForShop {
 
 	private Product product;
 
+	private TextView tvEmpty;
 	private EditText etReply;
 	private Button btnSubmit;
 	private TextView tvPrivate;
 	private View cbPrivate;
 	private View icPrivate;
 	private ListView listView;
-	
+
 	private boolean isPrivate;
 	
 	@Override
@@ -61,6 +62,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.replyPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.replyPage_ivBg);
 		
+		tvEmpty = (TextView) mThisView.findViewById(R.id.replyPage_tvEmpty);
 		etReply = (EditText) mThisView.findViewById(R.id.replyPage_etReply);
 		btnSubmit = (Button) mThisView.findViewById(R.id.replyPage_btnSubmit);
 		tvPrivate = (TextView) mThisView.findViewById(R.id.replyPage_tvPrivate);
@@ -75,13 +77,27 @@ public class ReplyPage extends CmonsFragmentForShop {
 
 		if(getArguments() != null) {
 			product = (Product) getArguments().getSerializable("product");
-			title = product.getName();
+			title = "상품 댓글";
 		}
 	}
 
 	@Override
 	public void createPage() {
 
+		if(mActivity.user.getRetail_id() != 0) {
+			etReply.setVisibility(View.VISIBLE);
+			btnSubmit.setVisibility(View.VISIBLE);
+			tvPrivate.setVisibility(View.VISIBLE);
+			cbPrivate.setVisibility(View.VISIBLE);
+			icPrivate.setVisibility(View.VISIBLE);
+		} else {
+			etReply.setVisibility(View.GONE);
+			btnSubmit.setVisibility(View.GONE);
+			tvPrivate.setVisibility(View.GONE);
+			cbPrivate.setVisibility(View.GONE);
+			icPrivate.setVisibility(View.GONE);
+		}
+		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
@@ -214,6 +230,13 @@ public class ReplyPage extends CmonsFragmentForShop {
 				reply.setItemCode(CphConstants.ITEM_REPLY);
 				models.add(reply);
 			}
+			
+			if(pageIndex == 1 && size == 0) {
+				tvEmpty.setVisibility(View.VISIBLE);
+			} else {
+				tvEmpty.setVisibility(View.INVISIBLE);
+			}
+				
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

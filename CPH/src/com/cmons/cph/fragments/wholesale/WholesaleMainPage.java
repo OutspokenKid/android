@@ -34,7 +34,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.Notice;
+import com.cmons.cph.models.Notification;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -43,7 +43,6 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
@@ -77,7 +76,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private ArrayList<Product> products = new ArrayList<Product>();
 	private PagerAdapterForProducts pagerAdapter;
 	private boolean needPlay;
-	private boolean isPlaying; 
+	private boolean isPlaying;
+	private boolean needWait;
 	
 	@Override
 	public void onResume() {
@@ -304,7 +304,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				
+
+				requestReadNotification((Notification)models.get(position));
 				hideNoticeRelative();
 			}
 		});
@@ -318,6 +319,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				tvBestTitle.setText(products.get(position).getName());
 				tvBestSellingCount.setText("구매 : " + products.get(position).getOrdered_cnt());
 				tvRank.setText((position + 1) + "위");
+				needWait = true;
 			}
 			
 			@Override
@@ -330,6 +332,26 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+
+		arrowLeft.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				int index = (viewPager.getCurrentItem() - 1) % viewPager.getChildCount();
+				viewPager.setCurrentItem(index, true);
+			}
+		});
+		
+		arrowRight.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				int index = (viewPager.getCurrentItem() + 1) % viewPager.getChildCount();
+				viewPager.setCurrentItem(index, true);
 			}
 		});
 	}
@@ -413,6 +435,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) tvBestTitle.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
 		FontUtils.setFontSize(tvBestTitle, 26);
+		tvBestTitle.setPadding(ResizeUtils.getSpecificLength(120), 0, 0, 0);
 		
 		//tvBestSellingCount.
 		rp = (RelativeLayout.LayoutParams) tvBestSellingCount.getLayoutParams();
@@ -499,14 +522,15 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		checkNewMessage();
 		
 		try {
-			JSONArray arJSON = objJSON.getJSONArray("notices");
+			JSONArray arJSON = objJSON.getJSONArray("notifications");
 			
 			int size = arJSON.length();
 			
 			for(int i=0; i<size; i++) {
-				Notice notice = new Notice(arJSON.getJSONObject(i));
-				notice.setItemCode(CphConstants.ITEM_NOTICE);
-				models.add(notice);
+				Notification notification = new Notification(arJSON.getJSONObject(i));
+				notification.setItemCode(CphConstants.ITEM_NOTIFICATION);
+				LogUtils.log("###WholesaleMainPage.parseJSON.  message : " + notification.getMessage());
+				models.add(notification);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -520,7 +544,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		//http://cph.minsangk.com/notifications/mine
+		url = CphConstants.BASE_API_URL + "notifications/mine";
 		
 		if(isDownloading || isLastList) {
 			return;
@@ -531,7 +556,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		}
 		
 		isDownloading = true;
-		url += "?num=0";
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -549,7 +573,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 					
-					isLastList = parseJSON(objJSON);
+					parseJSON(objJSON);
 					setPage(true);
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -565,24 +589,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 //////////////////// Custom methods.
 
 	public void downloadProducts() {
-		
-		if(products.size() > 0) {
-			viewPager.setCurrentItem(0);
-			mThisView.findViewById(R.id.wholesaleMainPage_pagerBg).setVisibility(View.INVISIBLE);
-			viewPager.setVisibility(View.VISIBLE);
-			tvBestTitle.setVisibility(View.VISIBLE);
-			tvBestSellingCount.setVisibility(View.VISIBLE);
-			badge.setVisibility(View.VISIBLE);
-			tvRank.setVisibility(View.VISIBLE);
-			
-			needPlay = true;
-			
-			if(!isPlaying) {
-				playPager();
-			}
-			
-			return;
-		}
 		
 		String url = CphConstants.BASE_API_URL + "products/weekly_best" +
 				"?wholesale_id=" + wholesale.getId();
@@ -627,10 +633,15 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 							badge.setVisibility(View.VISIBLE);
 							tvRank.setVisibility(View.VISIBLE);
 							
-							needPlay = true;
-							
-							if(!isPlaying) {
-								playPager();
+							if(size > 1) {
+								arrowLeft.setVisibility(View.VISIBLE);
+								arrowRight.setVisibility(View.VISIBLE);
+								
+								needPlay = true;
+								
+								if(!isPlaying) {
+									playPager();
+								}
 							}
 						}
 					}
@@ -655,56 +666,54 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				if(!needPlay) {
 					isPlaying = false;
 					return;
+				} else if(needWait) {
+					needWait = false;
+					playPager();
+					return;
 				}
 				
 				if(products != null &&products.size() > 0) {
-					
 					int position = viewPager.getCurrentItem();
 					viewPager.setCurrentItem((position + 1) % products.size(), true);
 				}
 				
 				playPager();
 			}
-		}, 3000);
+		}, 1500);
 	}
 	
 	public void checkNewMessage() {
-		
-		int nonReadCount = models.size();
-		
-		String readListString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_NOTICE, "readList");
-		
-		if(readListString != null) {
-			String[] readList = (readListString).split(",");
-			
-			Notice notice;
-			boolean isRead;
-			
-			for(int i=0; i<models.size(); i++) {
 
-				notice = (Notice) models.get(i);
-				isRead = false;
-				
-				for(String read : readList) {
-					
-					//읽은적 있음.
-					if(read.equals("" + notice.getId())) {
-						isRead = true;
-						nonReadCount--;
-						break;
-					}
-				}
-				
-				notice.setRead(isRead);
+		url = CphConstants.BASE_API_URL + "notifications/mine?filter=unread";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleMainPage.checkNewMessage.onError." + "\nurl : " + url);
+
 			}
-		}
-		
-		//새로운 메시지가 있느냐의 여부에 따라 titleBar.getNotice() 노출 결정.
-		if(nonReadCount > 0) {
-			titleBar.getBtnNotice().setVisibility(View.VISIBLE);
-		} else {
-			titleBar.getBtnNotice().setVisibility(View.INVISIBLE);
-		}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleMainPage.checkNewMessage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					//새로운 메시지가 있느냐의 여부에 따라 new badge 노출 결정.
+					if(objJSON.getJSONArray("notifications").length() > 0) {
+						titleBar.getNewBadge().setVisibility(View.VISIBLE);
+					} else {
+						titleBar.getNewBadge().setVisibility(View.INVISIBLE);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void showNoticeRelative() {
@@ -738,7 +747,40 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 		return R.drawable.main_bg;
 	}
+	
+	public void requestReadNotification(Notification notification) {
+		
+		//http://cph.minsangk.com/notifications/read?notification_id=1
+		String url = CphConstants.BASE_API_URL + "notifications/read" +
+				"?notification_id=" + notification.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleMainPage.requestReadNotification.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleMainPage.requestReadNotification.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						refreshPage();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 //////////////////// Classes.
 	
 	public class PagerAdapterForProducts extends PagerAdapter {

@@ -83,4 +83,22 @@ public class Category extends BaseModel {
 		
 		this.categories = categories;
 	}
+
+	public String getCategoryStringById(int category_id) {
+		
+		LogUtils.log("###Category.getCategoryStringById.  \ncategory_id : " + category_id + ", id : " + id + ", name : " + name); 
+		
+		if(id == category_id) {
+			return name;
+		} else if(categories != null) {
+			int size = categories.length;
+			for(int i=0; i<size; i++) {
+				if(categories[i].getCategoryStringById(category_id) != null) {
+					return categories[i].getCategoryStringById(category_id);
+				}
+			}
+		}
+		
+		return null;
+	}
 }

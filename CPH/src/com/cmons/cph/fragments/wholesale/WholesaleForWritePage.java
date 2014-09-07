@@ -1,11 +1,13 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,12 +28,14 @@ import android.widget.TextView;
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
+import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -39,9 +44,9 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
-    private TextView tvStatus;
-    private TextView tvSoldOut;
-    private View checkbox;
+	private static final int MODE_COLOR = 0;
+	private static final int MODE_SIZE = 1;
+	
     private TextView tvImageText;
     private Button btnImage1;
     private Button btnImage2;
@@ -67,22 +72,25 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
     private Button btnPublic2;
     private TextView tvNotification;
     private Button btnNotification;
-    private Button btnPullUp;
-    private TextView tvNotificationText;
     private Button btnDelete;
     
     private RelativeLayout relativePopup;
     private EditText etAdd;
     private Button btnAdd;
     private ListView listView;
-    private ChoiceAdapter adapter;
+    private ChoiceAdapter colorAdapter;
+    private ChoiceAdapter sizeAdapter;
 
     private Product product;
-    private boolean isSoldOut;
     private boolean isPublic;
 	private boolean needPush;
+	private int selectedCategoryIndex;
 	
 	private String[] selectedImageUrls = new String[3];
+	
+	private ArrayList<Item> colorItems;
+	private ArrayList<Item> sizeItems;
+	private int mode;
 	
 	@Override
 	public void bindViews() {
@@ -90,9 +98,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.wholesaleWritePage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleWritePage_ivBg);
 		
-		tvStatus = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvStatus);
-		tvSoldOut = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvSoldOut);
-		checkbox = mThisView.findViewById(R.id.wholesaleWritePage_checkbox);
 		tvImageText = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvImageText);
 		btnImage1 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnImage1);
 		btnImage2 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnImage2);
@@ -122,8 +127,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		btnPublic2 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnPublic2);
 		tvNotification = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvNotification);
 		btnNotification = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnNotification);
-		btnPullUp = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnPullUp);
-		tvNotificationText = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvNotificationText);
 		btnDelete = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnDelete);
 		
 		relativePopup = (RelativeLayout) mThisView.findViewById(R.id.wholesaleWritePage_relativePopup);
@@ -139,11 +142,51 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			product = (Product) getArguments().getSerializable("product");
 		}
 		
+		colorItems = new ArrayList<Item>();
+		colorItems.add(new Item("블랙"));
+		colorItems.add(new Item("화이트"));
+		colorItems.add(new Item("아이보리"));
+		colorItems.add(new Item("그레이"));
+		colorItems.add(new Item("블루"));
+		colorItems.add(new Item("빨간색"));
+		colorItems.add(new Item("주황색"));
+		colorItems.add(new Item("노랑색"));
+		colorItems.add(new Item("카키색"));
+		colorItems.add(new Item("곤색"));
+		colorItems.add(new Item("연두색"));
+		colorItems.add(new Item("하늘색"));
+		colorItems.add(new Item("보라색"));
+		colorAdapter = new ChoiceAdapter(colorItems);
+		
+		sizeItems = new ArrayList<Item>();
+		sizeItems.add(new Item("XS"));
+		sizeItems.add(new Item("S"));
+		sizeItems.add(new Item("M"));
+		sizeItems.add(new Item("L"));
+		sizeItems.add(new Item("XL"));
+		sizeItems.add(new Item("XXL"));
+		sizeItems.add(new Item("44"));
+		sizeItems.add(new Item("55"));
+		sizeItems.add(new Item("66"));
+		sizeItems.add(new Item("77"));
+		sizeItems.add(new Item("88"));
+		sizeItems.add(new Item("95"));
+		sizeItems.add(new Item("100"));
+		sizeItems.add(new Item("105"));
+		sizeItems.add(new Item("110"));
+		sizeItems.add(new Item("210"));
+		sizeItems.add(new Item("220"));
+		sizeItems.add(new Item("230"));
+		sizeItems.add(new Item("240"));
+		sizeItems.add(new Item("250"));
+		sizeItems.add(new Item("260"));
+		sizeItems.add(new Item("270"));
+		sizeItems.add(new Item("280"));
+		sizeItems.add(new Item("290"));
+		sizeAdapter = new ChoiceAdapter(sizeItems);
+		
 		if(product != null) {
-			title = "공지사항 수정";
-			
-			//isSoldOut 설정.
-			isSoldOut = product.getStatus() == -1;
+			title = "상품 수정";
 			
 			//isPublic 설정.
 			isPublic = product.getCustomers_only() == 0;
@@ -151,8 +194,54 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			//needPush 설정.
 			needPush = product.getNeed_push() == 1;
 			
+			boolean duplicated = false;
+			
+			//추가 사이즈 설정.
+			String[] sizeStrings = product.getSizes().split("\\|");
+
+			int size = sizeStrings.length;
+			for(int i=0; i<size; i++) {
+				
+				duplicated = false;
+				
+				for(Item item : sizeItems) {
+					if(sizeStrings[i].equals(item.text)) {
+						duplicated = true;
+						item.selected = true;
+					}
+				}
+				
+				if(!duplicated) {
+					Item item = new Item(sizeStrings[i]);
+					item.selected = true;
+					sizeItems.add(item);
+				}
+			}
+			
+			//추가 색상 설정.
+			String[] colorStrings = product.getColors().split("\\|");
+
+			size = colorStrings.length;
+			for(int i=0; i<size; i++) {
+				
+				duplicated = false;
+				
+				for(Item item : colorItems) {
+					if(colorStrings[i].equals(item.text)) {
+						duplicated = true;
+						item.selected = true;
+					}
+				}
+				
+				if(!duplicated) {
+					Item item = new Item(colorStrings[i]);
+					item.selected = true;
+					colorItems.add(item);
+				}
+			}
+			
 		} else {
-			title = "공지사항";
+			title = "상품 등록";
 			
 			isPublic = true;
 			needPush = true;
@@ -165,19 +254,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
+		
 		//수정.
 		if(product != null) {
-			tvStatus.setVisibility(View.VISIBLE);
-			tvSoldOut.setVisibility(View.VISIBLE);
-			checkbox.setVisibility(View.VISIBLE);
-			
-			if(isSoldOut) {
-				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
-				tvStatus.setText(R.string.productSoldOut);
-			} else{
-				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
-				tvStatus.setText(R.string.productSelling);
-			}
 			
 			if(isPublic) {
 				btnPublic1.setBackgroundResource(R.drawable.myshop_open1_a);
@@ -187,11 +268,9 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				btnPublic2.setBackgroundResource(R.drawable.myshop_open2_a);
 			}
 			
-			btnPullUp.setVisibility(View.VISIBLE);
-			btnNotification.setVisibility(View.GONE);
+			tvNotification.setVisibility(View.INVISIBLE);
+			btnNotification.setVisibility(View.INVISIBLE);
 			btnDelete.setVisibility(View.VISIBLE);
-			
-			tvNotificationText.setText(R.string.productPullUpDesc);
 			
 			//이미지 설정.
 			if(product.getProduct_images() != null) {
@@ -237,28 +316,116 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			}
 			
 			etName.setText(product.getName());
-			etPrice.setText(product.getPrice());
-			btnColor.setText(product.getColors());
+			etPrice.setText("" + product.getPrice());
+			
+			if(mActivity.categories != null) {
+				String categoryText = null;
+				selectedCategoryIndex = product.getCategory_id();
+				int size = mActivity.categories.length;
+				
+				for(int i=0; i<size; i++) {
+					categoryText = mActivity.categories[i].getCategoryStringById(selectedCategoryIndex);
+					
+					if(categoryText != null) {
+						btnCategory.setText(categoryText);
+						break;
+					}
+				}
+			}
+			
+			btnColor.setText(product.getColors().replace("|", "/"));
+			btnSize.setText(product.getSizes().replace("|", "/"));
 			etMixtureRate.setText(product.getMixture_rate());
 			etDescription.setText(product.getDesc());
 			
 		//등록.
 		} else{
-			tvStatus.setVisibility(View.GONE);
-			tvSoldOut.setVisibility(View.GONE);
-			checkbox.setVisibility(View.GONE);
-			
-			btnPullUp.setVisibility(View.GONE);
+			tvNotification.setVisibility(View.VISIBLE);
 			btnNotification.setVisibility(View.VISIBLE);
-			btnDelete.setVisibility(View.GONE);
-			
-			tvNotificationText.setText(R.string.productNotificationDesc);
+			btnDelete.setVisibility(View.INVISIBLE);
 		}
 	}
 
 	@Override
 	public void setListeners() {
 
+		titleBar.getBtnSubmit().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+
+				if(selectedImageUrls == null 
+						|| (selectedImageUrls[0] == null
+							&& selectedImageUrls[1] == null
+							&& selectedImageUrls[2] == null)) {
+					//이미지를 등록해주세요.
+					ToastUtils.showToast(R.string.wrongProductImage);
+					return;
+					
+				} else if(etName.getText() == null){
+					//상품명을 입력해주세요.
+					ToastUtils.showToast(R.string.wrongProductName);
+					return;
+					
+				} else if(etPrice.getText() == null) {
+					//상품가격을 입력해주세요.
+					ToastUtils.showToast(R.string.wrongProductPrice);
+					return;
+					
+				} else if(btnCategory.getText() == null) {
+					//상품분류를 선택해주세요.
+					ToastUtils.showToast(R.string.wrongProductCategory);
+					return;
+				}
+				
+				int selectedCount = 0;
+				int size = colorItems.size();
+				for(int i=0; i<size; i++) {
+					if(colorItems.get(i).selected) {
+						selectedCount++;
+					}
+				}
+				
+				//색상.
+				if(selectedCount == 0) {
+					ToastUtils.showToast(R.string.wrongProductColor);
+					return;
+				}
+				
+				selectedCount = 0;
+				size = sizeItems.size();
+				for(int i=0; i<size; i++) {
+					if(sizeItems.get(i).selected) {
+						selectedCount++;
+					}
+				}
+				
+				//사이즈.
+				if(selectedCount == 0) {
+					ToastUtils.showToast(R.string.wrongProductSize);
+					return;
+				}
+				
+				//혼용률.
+				if(etMixtureRate.getText() == null) {
+					ToastUtils.showToast(R.string.wrongProductMixtureRate);
+					return;
+				}
+				
+				//상품 설명.
+				if(etDescription.getText() == null) {
+					ToastUtils.showToast(R.string.wrongProductDesc);
+					return;
+				}
+				
+				if(product == null) {
+					write();
+				} else {
+					edit();
+				}
+			}
+		});
+		
 		btnImage1.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -299,9 +466,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 						String categoryString = category.getName();
 						
 						if(subCategory != null) {
-							categoryString += " - " + subCategory.getName();
+//							categoryString += " - " + subCategory.getName();
+							categoryString = subCategory.getName();
+							selectedCategoryIndex = subCategory.getId();
+						} else {
+							selectedCategoryIndex = category.getId();
 						}
-						ToastUtils.showToast(categoryString);
+						
+						btnCategory.setText(categoryString);
 					}
 				});
 			}
@@ -312,14 +484,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				ArrayList<Item> items = new ArrayList<Item>();
-				items.add(new Item("black"));
-				items.add(new Item("white"));
-				items.add(new Item("read"));
-				items.add(new Item("green"));
-				items.add(new Item("blue"));
-				items.add(new Item("yellow"));
-				showPopup(items);
+				mode = MODE_COLOR;
+				listView.setAdapter(colorAdapter);
+				colorAdapter.notifyDataSetChanged();
+				showPopup();
+				ToastUtils.showToast(R.string.wrongProductColor);
 			}
 		});
 		
@@ -328,13 +497,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				ArrayList<Item> items = new ArrayList<Item>();
-				items.add(new Item("S"));
-				items.add(new Item("M"));
-				items.add(new Item("L"));
-				items.add(new Item("XL"));
-				items.add(new Item("XXL"));
-				showPopup(items);
+				mode = MODE_SIZE;
+				listView.setAdapter(sizeAdapter);
+				sizeAdapter.notifyDataSetChanged();
+				showPopup();
+				ToastUtils.showToast(R.string.wrongProductSize);
 			}
 		});
 		
@@ -363,15 +530,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		});
 		
 		if(product != null) {
-			btnPullUp.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					pullUp();
-				}
-			});
-			
 			btnDelete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -406,7 +564,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-				adapter.addItem(etAdd.getText().toString());
+				if(mode == MODE_COLOR) {
+					colorAdapter.addItem(etAdd.getText().toString());
+				} else {
+					sizeAdapter.addItem(etAdd.getText().toString());
+				}
 			}
 		});
 		
@@ -416,7 +578,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				adapter.selectItem(arg2);
+				if(mode == MODE_COLOR) {
+					colorAdapter.selectItem(arg2);
+				} else {
+					sizeAdapter.selectItem(arg2);
+				}
 			}
 		});
 	}
@@ -432,25 +598,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		int titleTextHeight = ResizeUtils.getSpecificLength(100);
 		int editTextHeight = ResizeUtils.getSpecificLength(92);
 		int buttonHeight = ResizeUtils.getSpecificLength(180);
-
-		if(product != null) {
-			//tvStatus.
-			rp = (RelativeLayout.LayoutParams) tvStatus.getLayoutParams();
-			rp.height = titleTextHeight;
-			FontUtils.setFontSize(tvStatus, 30);
-			tvStatus.setPadding(padding, 0, padding, 0);
-			
-			//checkbox.
-			rp = (RelativeLayout.LayoutParams) checkbox.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(44);
-			rp.height = ResizeUtils.getSpecificLength(43);
-			rp.topMargin = ResizeUtils.getSpecificLength(28);
-			rp.rightMargin = ResizeUtils.getSpecificLength(20);
-			
-			//tvSoldOut.
-			rp = (RelativeLayout.LayoutParams) tvSoldOut.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(43);
-		}
 		
 		//tvImageText.
 		rp = (RelativeLayout.LayoutParams) tvImageText.getLayoutParams();
@@ -490,7 +637,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) tvImageSizeText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(66);
 		FontUtils.setFontSize(tvImageSizeText, 20);
-		tvImageText.setPadding(padding, 0, 0, padding);
+		tvImageSizeText.setPadding(padding, 0, 0, padding);
 		
 		//tvName.
 		rp = (RelativeLayout.LayoutParams) tvName.getLayoutParams();
@@ -500,8 +647,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//etName.
 		rp = (RelativeLayout.LayoutParams) etName.getLayoutParams();
-		rp.height = editTextHeight;
 		FontUtils.setFontAndHintSize(etName, 30, 24);
+		etName.setMinHeight(editTextHeight);
 		etName.setPadding(padding, 0, padding, 0);
 		
 		//tvPrice.
@@ -512,7 +659,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//etPrice.
 		rp = (RelativeLayout.LayoutParams) etPrice.getLayoutParams();
-		rp.height = editTextHeight;
+		etPrice.setMinHeight(editTextHeight);
 		FontUtils.setFontAndHintSize(etPrice, 30, 24);
 		etPrice.setPadding(padding, 0, padding, 0);
 		
@@ -524,8 +671,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//btnCategory.
 		rp = (RelativeLayout.LayoutParams) btnCategory.getLayoutParams();
-		rp.height = editTextHeight;
-		FontUtils.setFontSize(btnCategory, 24);
+		btnCategory.setMinHeight(editTextHeight);
+		FontUtils.setFontSize(btnCategory, 30);
 		
 		//tvColor.
 		rp = (RelativeLayout.LayoutParams) tvColor.getLayoutParams();
@@ -535,8 +682,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//btnColor.
 		rp = (RelativeLayout.LayoutParams) btnColor.getLayoutParams();
-		rp.height = editTextHeight;
-		FontUtils.setFontSize(btnColor, 24);
+		btnColor.setMinHeight(editTextHeight);
+		FontUtils.setFontSize(btnColor, 30);
 		
 		//tvSize.
 		rp = (RelativeLayout.LayoutParams) tvSize.getLayoutParams();
@@ -546,8 +693,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//btnSize.
 		rp = (RelativeLayout.LayoutParams) btnSize.getLayoutParams();
-		rp.height = editTextHeight;
-		FontUtils.setFontSize(btnSize, 24);
+		btnSize.setMinHeight(editTextHeight);
+		FontUtils.setFontSize(btnSize, 30);
 		
 		//tvMixtureRate.
 		rp = (RelativeLayout.LayoutParams) tvMixtureRate.getLayoutParams();
@@ -557,7 +704,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//etMixtureRate.
 		rp = (RelativeLayout.LayoutParams) etMixtureRate.getLayoutParams();
-		rp.height = editTextHeight;
+		etMixtureRate.setMinHeight(editTextHeight);
 		FontUtils.setFontAndHintSize(etMixtureRate, 30, 24);
 		etMixtureRate.setPadding(padding, 0, padding, 0);
 		
@@ -569,7 +716,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		//etDescription.
 		rp = (RelativeLayout.LayoutParams) etDescription.getLayoutParams();
-		rp.height = editTextHeight * 4;
+		etDescription.setMinHeight(editTextHeight * 4);
 		FontUtils.setFontAndHintSize(etDescription, 30, 24);
 		etDescription.setPadding(padding, padding, padding, padding);
 		
@@ -587,32 +734,20 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		//btnPublic2.
 		rp = (RelativeLayout.LayoutParams) btnPublic2.getLayoutParams();
 		rp.height = editTextHeight;
-		
+
+		//btnDelete.
+		rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
+		rp.height = buttonHeight;
+
 		//tvNotification.
 		rp = (RelativeLayout.LayoutParams) tvNotification.getLayoutParams();
 		rp.height = titleTextHeight;
 		FontUtils.setFontSize(tvNotification, 30);
 		tvNotification.setPadding(padding, 0, 0, padding);
 		
-		if(product != null) {
-			//btnPullUp.
-			rp = (RelativeLayout.LayoutParams) btnPullUp.getLayoutParams();
-			rp.height = buttonHeight;
-			
-			//btnDelete.
-			rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
-			rp.height = buttonHeight;
-		} else {
-			//btnNotification.
-			rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
-			rp.height = buttonHeight;
-		}
-		
-		//tvNotificationText.
-		rp = (RelativeLayout.LayoutParams) tvNotificationText.getLayoutParams();
-		rp.height = titleTextHeight;
-		FontUtils.setFontSize(tvNotificationText, 20);
-		tvNotificationText.setPadding(padding, padding, 0, 0);
+		//btnNotification.
+		rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
+		rp.height = buttonHeight;
 		
 		//etAdd.
 		rp = (RelativeLayout.LayoutParams) etAdd.getLayoutParams();
@@ -655,12 +790,195 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 //////////////////// Custom methods.
 	
-	public void pullUp() {
-		
-	}
-	
 	public void delete() {
 		
+	}
+
+	public void write() {
+
+		try {
+			String url = CphConstants.BASE_API_URL + "products/save" +
+					"?product[category_id]=" + selectedCategoryIndex +
+					"&product[wholesale_id]=" + mActivity.user.getWholesale_id() +
+					"&product[name]=" + URLEncoder.encode(etName.getText().toString(), "utf-8") +
+					"&product[price]=" + etPrice.getText().toString() +
+					"&product[mixture_rate]=" + URLEncoder.encode(etMixtureRate.getText().toString(), "utf-8") + 
+					"&product[desc]=" + URLEncoder.encode(etDescription.getText().toString(), "utf-8") +
+					"&product[need_push]=" + (needPush? 1 : 0) +
+					"&product[customers_only]=" + (isPublic? 0 : 1);
+			
+			//색상 추가.
+			for(Item item : colorItems) {
+				
+				if(item.selected) {
+					url += "&product[colors][]=" + item.text;
+				}
+			}
+			
+			//사이즈 추가.
+			for(Item item : sizeItems) {
+				
+				if(item.selected) {
+					url += "&product[sizes][]=" + item.text;
+				}
+			}
+			
+			//이미지 주소 추가.
+			for(String imageUrl : selectedImageUrls) {
+				
+				if(imageUrl != null && imageUrl.contains("http")) {
+					url += "&product[product_images][]=" + imageUrl;
+				}
+			}
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("WholesaleForWritePage.write.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToWriteProduct);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("WholesaleForWritePage.write.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_writeProduct);
+							mActivity.closeTopPage();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToWriteProduct);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToWriteProduct);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void edit() {
+		
+		/*
+		http://cph.minsangk.com/products/save
+		?product[id]=148
+		&product[category_id]=0
+		&product[wholesale_id]=korea10
+		&product[name]=%EB%A7%A4%EC%9A%
+		&product[price]=7777777777
+		&product[mixture_rate]=%EB%A7%A4%EA%B8%B4
+		&product[desc]=%EB%A7%A4%EB0+%
+		&product[need_push]=0
+		&product[customers_only]=0
+		&product[colors][]=블랙
+		&product[colors][]=화이트
+		&product[colors][]=아이보리
+		&product[colors][]=그레이
+		&product[sizes][]=280
+		&product[sizes][]=290
+		&product[product_images][]=http://cph.minsangk.com/images/20140907/7c8114390ef4f4bcde419a8e5b24ee5b.jpg
+
+		http://cph.minsangk.com/products/save
+		?product[category_id]=1
+		&product[wholesale_id]=1
+		&product[name]=%EB%A7%A5%EC%A3%BC%EC%
+		&product[price]=20000
+		&product[colors][]=%ED%9D%B0%EC%83%89
+		&product[colors][]=%EA%B2%80%EC%A0%95
+		&product[sizes][]=S
+		&product[sizes][]=L
+		&product[mixture_rate]=75%
+		&product[desc]=%EC%84%20%EC%88%98%
+		&product[need_push]=1
+		&product[customers_only]=0
+		&product[product_images][]=http://jayworks.co.kr/wp-content/uploads/2013/12/STRIKE_02.png
+		&product[product_images][]=http://jayworks.co.kr/wp-content/uploads/2014/06/mockup_1.png
+		*/
+		try {
+			String url = CphConstants.BASE_API_URL + "products/save" +
+					"?product[id]=" + product.getId() +
+					"&product[category_id]=" + selectedCategoryIndex +
+					"&product[wholesale_id]=" + mActivity.user.getWholesale_id() +
+					"&product[name]=" + URLEncoder.encode(etName.getText().toString(), "utf-8") +
+					"&product[price]=" + etPrice.getText().toString() +
+					"&product[mixture_rate]=" + URLEncoder.encode(etMixtureRate.getText().toString(), "utf-8") + 
+					"&product[desc]=" + URLEncoder.encode(etDescription.getText().toString(), "utf-8") +
+					"&product[need_push]=" + (needPush? 1 : 0) +
+					"&product[customers_only]=" + (isPublic? 0 : 1);
+			
+			//색상 추가.
+			for(Item item : colorItems) {
+				
+				if(item.selected) {
+					url += "&product[colors][]=" + item.text;
+				}
+			}
+			
+			//사이즈 추가.
+			for(Item item : sizeItems) {
+				
+				if(item.selected) {
+					url += "&product[sizes][]=" + item.text;
+				}
+			}
+			
+			//이미지 주소 추가.
+			for(String imageUrl : selectedImageUrls) {
+				
+				if(imageUrl != null && imageUrl.contains("http")) {
+					url += "&product[product_images][]=" + imageUrl;
+				}
+			}
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("WholesaleForWritePage.edit.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToEditProduct);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("WholesaleForWritePage.edit.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							product = new Product(objJSON.getJSONObject("product"));
+							ToastUtils.showToast(R.string.complete_editProduct);
+							mActivity.closeTopPage();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToEditProduct);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToEditProduct);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void uploadImage(final ImageView ivImage, final int index) {
@@ -679,11 +997,9 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		});
 	}
 
-	public void showPopup(ArrayList<Item> items) {
-
+	public void showPopup() {
+		
 		relativePopup.setVisibility(View.VISIBLE);
-		adapter = new ChoiceAdapter(items);
-		listView.setAdapter(adapter);
 	}
 	
 	public void hidePopup() {
@@ -723,29 +1039,49 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			TextView textView;
+			TextView textView = null;
+			View checkBox = null;
 			
 			if(convertView == null) {
+				LinearLayout linear = new LinearLayout(mContext);
+				linear.setOrientation(LinearLayout.HORIZONTAL);
+				linear.setLayoutParams(new AbsListView.LayoutParams(
+						LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(92)));
+				
 				textView = new TextView(mContext);
 				textView.setGravity(Gravity.CENTER);
-				textView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(92)));
+				textView.setLayoutParams(new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1));
+				textView.setTextColor(Color.WHITE);
+				FontUtils.setFontSize(textView, 32);
+				linear.addView(textView);
+				
+				checkBox = new View(mContext);
+				ResizeUtils.viewResize(52, 34, checkBox, 1, Gravity.CENTER_VERTICAL, new int[]{20, 0, 20, 0});
+				checkBox.setBackgroundResource(R.drawable.check);
+				linear.addView(checkBox);
+				
+				ViewHolder holder = new ViewHolder();
+				holder.textView = textView;
+				holder.checkBox = checkBox;
+				
+				linear.setTag(holder);
+				
+				convertView = linear;
 			} else {
-				textView = (TextView) convertView;
+				ViewHolder holder = (ViewHolder)convertView.getTag();
+				textView = holder.textView;
+				checkBox = holder.checkBox;
 			}
-			
+
 			textView.setText(items.get(position).text);
 			
 			if(items.get(position).selected) {
-				textView.setTextColor(Color.WHITE);
-				textView.setBackgroundColor(Color.argb(100, 255, 255, 255));
-				FontUtils.setFontSize(textView, 32);
+				checkBox.setVisibility(View.VISIBLE);
 			} else{
-				textView.setTextColor(Color.LTGRAY);
-				FontUtils.setFontSize(textView, 26);
-				textView.setBackgroundColor(Color.argb(0, 0, 0, 0));
+				checkBox.setVisibility(View.INVISIBLE);
 			}
 			
-			return textView;
+			return convertView;
 		}
 	
 		public void addItem(String string) {
@@ -754,6 +1090,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			item.selected = true;
 			items.add(item);
 			notifyDataSetChanged();
+            listView.setSelection(adapter.getCount() - 1);
+
 		}
 		
 		public ArrayList<Item> getItemList() {
@@ -767,6 +1105,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			selectedItem.selected = !selectedItem.selected;
 			notifyDataSetChanged();
 		}
+	}
+	
+	public class ViewHolder {
+		
+		public TextView textView;
+		public View checkBox;
 	}
 	
 	public class Item {

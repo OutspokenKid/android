@@ -39,11 +39,13 @@
 	<string name="complete_changeShopProfile">프로필 변경 완료</string>
 	<string name="complete_checkPhone">인증번호 전송되었습니다</string>
 	<string name="complete_deleteFavorite">즐겨찾기 삭제 완료</string>
+	<string name="complete_editProduct">상품 수정 완료</string>
 	<string name="complete_order">주문 완료</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
 	<string name="complete_requestSample">샘플 요청 완료</string>
 	<string name="complete_signUp">회원가입 완료</string>
 	<string name="complete_signIn">로그인 완료</string>
+	<string name="complete_writeProduct">상품 등록 완료</string>
     <string name="confirm">확인</string>
     <string name="confirmPw">비밀번호 확인</string>
     <string name="currentPw">현재 비밀번호</string>
@@ -67,6 +69,7 @@
     <string name="failToChangePw">비밀번호 변경 실패</string>
     <string name="failToDeleteFavorite">즐겨찾기 삭제 실패</string>
     <string name="failToDeleteReply">댓글 삭제 실패</string>
+    <string name="failToEditProduct">상품 수정 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>
     <string name="failToLoadBitmap">이미지를 불러오지 못했습니다</string>
@@ -77,6 +80,7 @@
     <string name="failToSearchShop">매장 검색 실패</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원 가입 실패</string>
+    <string name="failToWriteProduct">상품 등록 실패</string>
     <string name="failToWriteReply">댓글 작성 실패</string>
     <string name="findId">아이디 찾기</string>
     <string name="findPw">비밀번호 찾기</string>
@@ -131,6 +135,7 @@
     <string name="newPw">새 비밀번호</string>
     <string name="newPwConfirm">새 비밀번호 확인</string>
     <string name="next">다음</string>
+    <string name="noReply">등록된 댓글이 없습니다.</string>
     <string name="noResult_searchRetail">검색된 상품이 없습니다.</string>
     <string name="noResult_searchWholsale">알맞은 검색 결과가 없습니다.</string>
     <string name="noResult_wish">장바구니가 비어있습니다.</string>
@@ -154,7 +159,6 @@
     <string name="productMixtureRate">혼용률\</string>
     <string name="productName">상품명</string>
     <string name="productNotification">거래처 알림</string>
-    <string name="productNotificationDesc">거래처 알림을 켜면 새로운 상품이 등록될 때 거래처로 알림이 발송됩니다.</string>
     <string name="productPrice">상품 가격</string>
     <string name="productPullUpDesc">최신순 정렬 시 상품이 최상단으로 올라갑니다.</string>
     <string name="productPhoto">상품 사진</string>
@@ -227,6 +231,14 @@
     <string name="wrongNewPw">새 비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongPayment">결제 방식을 선택해주세요</string>
     <string name="wrongPhoneNumber">전화번호를 올바르게 입력해주세요</string>
+    <string name="wrongProductCategory">상품분류를 선택해주세요</string>
+    <string name="wrongProductColor">상품색상을 선택해주세요</string>
+    <string name="wrongProductDesc">상품설명을 입력해주세요</string>
+    <string name="wrongProductImage">상품사진을 등록해주세요</string>
+    <string name="wrongProductMixtureRate">혼용률을 입력해주세요</string>
+    <string name="wrongProductName">상품명을 입력해주세요</string>
+    <string name="wrongProductPrice">상품가격을 입력해주세요</string>
+    <string name="wrongProductSize">상품사이즈를 선택해주세요</string>
     <string name="wrongPw">비밀번호를 올바르게 입력해주세요(6 ~ 64자)</string>
     <string name="wrongReply">내용을 적어주세요</string>
     <string name="wrongSearchKeyword">검색어를 입력해주세요</string>

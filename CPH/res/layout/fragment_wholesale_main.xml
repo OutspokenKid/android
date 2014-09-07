@@ -163,6 +163,8 @@
 			    android:textColor="#000"
 			    android:background="#afff"
 			    android:visibility="invisible"
+			    android:maxLines="2"
+			    android:ellipsize="end"
 			    android:gravity="center" />
 		    
 		    <TextView

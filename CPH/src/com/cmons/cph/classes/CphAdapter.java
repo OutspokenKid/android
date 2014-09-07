@@ -18,6 +18,7 @@ import com.cmons.cph.wrappers.ViewWrapperForFavoriteShop;
 import com.cmons.cph.wrappers.ViewWrapperForFloor;
 import com.cmons.cph.wrappers.ViewWrapperForLine;
 import com.cmons.cph.wrappers.ViewWrapperForNotice;
+import com.cmons.cph.wrappers.ViewWrapperForNotification;
 import com.cmons.cph.wrappers.ViewWrapperForOrder;
 import com.cmons.cph.wrappers.ViewWrapperForOrderSetForRetail;
 import com.cmons.cph.wrappers.ViewWrapperForOrderSetForWholesale;
@@ -112,7 +113,8 @@ public class CphAdapter extends BaseAdapter {
 		switch (itemCode) {
 		
 		case CphConstants.ITEM_NOTICE:
-			return R.layout.list_wholesale_notice;
+		case CphConstants.ITEM_NOTIFICATION:
+			return R.layout.list_notice;
 			
 		case CphConstants.ITEM_CATEGORY:
 			return R.layout.list_signup_category;
@@ -173,6 +175,8 @@ public class CphAdapter extends BaseAdapter {
 		
 		case CphConstants.ITEM_NOTICE:
 			return new ViewWrapperForNotice(convertView, itemCode);
+		case CphConstants.ITEM_NOTIFICATION:
+			return new ViewWrapperForNotification(convertView, itemCode);
 			
 		case CphConstants.ITEM_CATEGORY:
 			return new ViewWrapperForCategory(convertView, itemCode);

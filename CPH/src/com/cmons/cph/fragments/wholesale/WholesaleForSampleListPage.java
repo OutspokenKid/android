@@ -1,5 +1,8 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.text.Spannable;
@@ -26,6 +29,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Sample;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -328,17 +332,39 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		//http://cph.minsangk.com/wholesales/samples
+		url = CphConstants.BASE_API_URL + "wholesales/samples" +
+				"?status=" + menuIndex;
+		
+		try {
+			if(keyword != null) {
+				url += "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
 		super.downloadInfo();
 	}
 	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		
-		for(int i=0; i<10; i++) {
-			Sample sample = new Sample();
-			sample.setItemCode(CphConstants.ITEM_SAMPLE);
-			models.add(sample);
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("samples");
+			
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Sample sample = new Sample();
+				sample.setItemCode(CphConstants.ITEM_SAMPLE);
+				models.add(sample);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 		
 		return false;
@@ -355,6 +381,9 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			btnApproval.setBackgroundResource(R.drawable.sample_confirm_btn_b);
 			btnReturn.setBackgroundResource(R.drawable.sample_return_btn_b);
 			btnComplete.setBackgroundResource(R.drawable.sample_return_done_btn_b);
+			tvSearch.setVisibility(View.GONE);
+			editText.setVisibility(View.GONE);
+			btnSearch.setVisibility(View.GONE);
 			break;
 			
 		case 1:
@@ -362,6 +391,9 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			btnApproval.setBackgroundResource(R.drawable.sample_confirm_btn_a);
 			btnReturn.setBackgroundResource(R.drawable.sample_return_btn_b);
 			btnComplete.setBackgroundResource(R.drawable.sample_return_done_btn_b);
+			tvSearch.setVisibility(View.VISIBLE);
+			editText.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
 			break;
 			
 		case 2:
@@ -369,6 +401,9 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			btnApproval.setBackgroundResource(R.drawable.sample_confirm_btn_b);
 			btnReturn.setBackgroundResource(R.drawable.sample_return_btn_a);
 			btnComplete.setBackgroundResource(R.drawable.sample_return_done_btn_b);
+			tvSearch.setVisibility(View.VISIBLE);
+			editText.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
 			break;
 			
 		case 3:
@@ -376,11 +411,13 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			btnApproval.setBackgroundResource(R.drawable.sample_confirm_btn_b);
 			btnReturn.setBackgroundResource(R.drawable.sample_return_btn_b);
 			btnComplete.setBackgroundResource(R.drawable.sample_return_done_btn_a);
+			tvSearch.setVisibility(View.VISIBLE);
+			editText.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
 			break;
 		}
 		
 		this.menuIndex = menuIndex;
-		
 		refreshPage();
 	}
 

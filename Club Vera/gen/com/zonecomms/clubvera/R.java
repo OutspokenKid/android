@@ -1894,7 +1894,9 @@ containing a value of this type.
         public static final int agreeWithClause=0x7f0a005a;
         public static final int all=0x7f0a005b;
         public static final int alreadyMember=0x7f0a005c;
-        public static final int app_id=0x7f0a0045;
+        /**  For Facebook. 
+         */
+        public static final int app_id=0x7f0a004a;
         /**  Customize 
          */
         public static final int app_name=0x7f0a0044;
@@ -1909,7 +1911,7 @@ containing a value of this type.
         public static final int close=0x7f0a0065;
         /**  커스터마이징. 
          */
-        public static final int clubAddress=0x7f0a0046;
+        public static final int clubAddress=0x7f0a0045;
         public static final int com_facebook_choose_friends=0x7f0a001c;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f0a000d;
         public static final int com_facebook_internet_permission_error_message=0x7f0a0020;
@@ -2172,10 +2174,10 @@ containing a value of this type.
         public static final int submitCompleted=0x7f0a011b;
         public static final int submitReply=0x7f0a011d;
         public static final int submittingToServer=0x7f0a011c;
-        public static final int textForCafe=0x7f0a0047;
-        public static final int textForCall=0x7f0a0048;
-        public static final int textForFacebook=0x7f0a0049;
-        public static final int textForIntroduce=0x7f0a004a;
+        public static final int textForCafe=0x7f0a0046;
+        public static final int textForCall=0x7f0a0047;
+        public static final int textForFacebook=0x7f0a0048;
+        public static final int textForIntroduce=0x7f0a0049;
         public static final int thereIsNoTStore=0x7f0a011e;
         public static final int titleText_notice=0x7f0a011f;
         public static final int touchHere=0x7f0a0120;

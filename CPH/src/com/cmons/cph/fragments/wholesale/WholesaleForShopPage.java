@@ -20,6 +20,7 @@ import com.cmons.cph.models.Category;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.HeaderViewForWholesaleShop;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.views.HeaderGridView;
 
@@ -236,6 +237,12 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				product.setItemCode(CphConstants.ITEM_PRODUCT);
 				product.setType(Product.TYPE_WHOLESALE);
 				models.add(product);
+			}
+			
+			if(size%2 == 1) {
+				BaseModel emptyModel = new BaseModel() {};
+				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel);
 			}
 
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {

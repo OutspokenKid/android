@@ -1,5 +1,8 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.view.View;
@@ -20,6 +23,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -174,18 +178,46 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		
-		for(int i=0; i<10; i++) {
-			OrderSet orderSet = new OrderSet();
-			orderSet.setItemCode(CphConstants.ITEM_ORDERSET_WHOLESALE);
-			models.add(orderSet);
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("orders");
+			
+			int size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				OrderSet orderSet = new OrderSet(arJSON.getJSONObject(i));
+				orderSet.setItemCode(CphConstants.ITEM_ORDERSET_WHOLESALE);
+				models.add(orderSet);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
+		
 		return false;
 	}
 
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		//http://cph.minsangk.com/wholesales/orders
+		url = CphConstants.BASE_API_URL + "wholesales/orders";
+		
+		if(menuIndex == 0) {
+			url += "?status=in_progress";
+		} else {
+			url += "?status=3";
+		}
+		
+		try {
+			if(keyword != null) {
+				url += "&keyword=" + URLEncoder.encode(keyword, "utf-8");
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
 		super.downloadInfo();
 	}
 

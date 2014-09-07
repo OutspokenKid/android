@@ -27,6 +27,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	public Category[] categories;
 
 	public abstract CmonsFragment getFragmentByPageCode(int pageCode);
+	public abstract void handleNotification(String uriString);
 	
 	@Override
 	public void onCreate(Bundle arg0) {

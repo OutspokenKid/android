@@ -17,6 +17,7 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
@@ -132,6 +133,12 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 				product.setType(Product.TYPE_RETAIL);
 				product.setDeletable(true);
 				models.add(product);
+			}
+			
+			if(size%2 == 1) {
+				BaseModel emptyModel = new BaseModel() {};
+				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel);
 			}
 
 			totalCount = size;

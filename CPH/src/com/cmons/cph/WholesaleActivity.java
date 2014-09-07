@@ -12,6 +12,7 @@ import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
 import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
 import com.cmons.cph.fragments.common.ProductPage;
+import com.cmons.cph.fragments.common.ReplyPage;
 import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.common.SettingPage;
 import com.cmons.cph.fragments.common.NotificationSettingPage;
@@ -150,9 +151,18 @@ public class WholesaleActivity extends ShopActivity {
 			
 		case CphConstants.PAGE_COMMON_STAFF:
 			return new StaffPage();
+			
+		case CphConstants.PAGE_COMMON_REPLY:
+			return new ReplyPage();
 		}
 		
 		return null;
+	}
+
+	@Override
+	public void handleNotification(String uriString) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 //////////////////// Custom methods.

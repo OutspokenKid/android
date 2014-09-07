@@ -169,6 +169,12 @@ public class RetailActivity extends ShopActivity {
 		return null;
 	}
 	
+	@Override
+	public void handleNotification(String uriString) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 //////////////////// Custom methods.
 	
 	public void downloadRetail() {
@@ -224,5 +230,4 @@ public class RetailActivity extends ShopActivity {
 			}, 50);
 		}
 	}
-
 }

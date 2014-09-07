@@ -20,6 +20,17 @@
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/replyPage_titleBar"
 	    android:scaleType="centerCrop" />
+    
+    <TextView
+        android:id="@+id/replyPage_tvEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/replyPage_titleBar"
+        android:text="@string/noReply"
+        android:textColor="#fff"
+        android:padding="30dp"
+        android:visibility="invisible"
+        android:gravity="center" />
 
     <EditText
         android:id="@+id/replyPage_etReply"

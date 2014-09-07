@@ -1,5 +1,6 @@
 package com.cmons.cph.fragments.wholesale;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.text.Spannable;
@@ -26,6 +27,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Customer;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 
@@ -294,13 +296,46 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			customer.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
 			models.add(customer);
 		}
+		
+		try {
+			if(menuIndex == 0) {
+				JSONArray arJSON = objJSON.getJSONArray("requestedCustomers");
+				
+				int size = arJSON.length();
+				for(int i=0; i<size; i++) {
+					
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
 		return false;
 	}
 
 	@Override
 	public void downloadInfo() {
 		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
+		if(menuIndex == 0) {
+			//http://cph.minsangk.com/wholesales/customers/requested
+			url = CphConstants.BASE_API_URL + "wholesales/customers/requested";
+		} else {
+			//http://cph.minsangk.com/wholesales/customers
+			url = CphConstants.BASE_API_URL + "wholesales/customers";
+			
+			try {
+				if(keyword != null) {
+					url += "?keyword=" + keyword;
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
 		super.downloadInfo();
 	}
 	
@@ -313,11 +348,17 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		case 0:
 			btnRequest.setBackgroundResource(R.drawable.business_confirm_btn_a);
 			btnPartner.setBackgroundResource(R.drawable.business_costumer_btn_b);
+			tvCustomer.setVisibility(View.GONE);
+			editText.setVisibility(View.GONE);
+			btnSearch.setVisibility(View.GONE);
 			break;
 			
 		case 1:
 			btnRequest.setBackgroundResource(R.drawable.business_confirm_btn_b);
 			btnPartner.setBackgroundResource(R.drawable.business_costumer_btn_a);
+			tvCustomer.setVisibility(View.VISIBLE);
+			editText.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
 			break;
 		}
 		

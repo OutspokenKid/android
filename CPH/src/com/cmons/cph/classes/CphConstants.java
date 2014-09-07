@@ -32,6 +32,7 @@ public class CphConstants {
 	public static final int ITEM_CUSTOMER_RETAIL = 19;
 	public static final int ITEM_ORDER_WHOLESALE = 20;
 	public static final int ITEM_ORDER_RETAIL = 21;
+	public static final int ITEM_NOTIFICATION = 22;
 	
 	public static final int PAGE_COMMON_CHANGE_INFO = 203;
 	public static final int PAGE_COMMON_CHANGE_PASSWORD = 204;

@@ -110,7 +110,12 @@ public class ViewWrapperForProduct extends ViewWrapper {
 
 		try {
 			if(baseModel instanceof Product) {
-
+				tvTitle.setVisibility(View.VISIBLE);
+				tvPrice.setVisibility(View.VISIBLE);
+				tvBuyCount.setVisibility(View.VISIBLE);
+				replyIcon.setVisibility(View.VISIBLE);
+				heartIcon.setVisibility(View.VISIBLE);
+				
 				product = (Product) baseModel;
 
 				tvTitle.setText(product.getName());
@@ -183,8 +188,12 @@ public class ViewWrapperForProduct extends ViewWrapper {
 	
 	@Override
 	public void setUnusableView() {
-		// TODO Auto-generated method stub
-		
+
+		tvTitle.setVisibility(View.INVISIBLE);
+		tvPrice.setVisibility(View.INVISIBLE);
+		tvBuyCount.setVisibility(View.INVISIBLE);
+		replyIcon.setVisibility(View.INVISIBLE);
+		heartIcon.setVisibility(View.INVISIBLE);
 	}
 
 //////////////////// Custom methods.

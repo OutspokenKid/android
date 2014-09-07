@@ -20,6 +20,7 @@ import com.cmons.cph.models.Product;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.HeaderViewForRetailShop;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.IntentUtils;
@@ -211,6 +212,12 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				product.setItemCode(CphConstants.ITEM_PRODUCT);
 				product.setType(Product.TYPE_RETAIL);
 				models.add(product);
+			}
+			
+			if(size%2 == 1) {
+				BaseModel emptyModel = new BaseModel() {};
+				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel);
 			}
 
 			headerView.setTotalProduct(objJSON.getInt("productsCount"));
