@@ -13,6 +13,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
+import com.cmons.cph.fragments.common.ReplyPage;
 import com.cmons.cph.models.Reply;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -35,6 +36,12 @@ public class ViewWrapperForReply extends ViewWrapper {
 	private Button btnReply;
 	private Button btnDelete;
 	
+	private RelativeLayout childRelative;
+	private TextView tvContent2;
+	private View replyIcon;
+	private TextView tvRegdate;
+	private Button btnDelete2;
+	
 	public ViewWrapperForReply(View row, int itemCode) {
 		super(row, itemCode);
 	}
@@ -50,6 +57,12 @@ public class ViewWrapperForReply extends ViewWrapper {
 			commentIcon = row.findViewById(R.id.list_reply_commentIcon);
 			btnReply = (Button) row.findViewById(R.id.list_reply_btnReply);
 			btnDelete = (Button) row.findViewById(R.id.list_reply_btnDelete);
+			
+			childRelative = (RelativeLayout) row.findViewById(R.id.list_reply_childRelative);
+			tvContent2 = (TextView) row.findViewById(R.id.list_reply_tvContent2);
+			replyIcon = row.findViewById(R.id.list_reply_replyIcon);
+			tvRegdate = (TextView) row.findViewById(R.id.list_reply_tvRegdate);
+			btnDelete2 = (Button) row.findViewById(R.id.list_reply_btnDelete2);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -95,14 +108,7 @@ public class ViewWrapperForReply extends ViewWrapper {
 			rp.height = ResizeUtils.getSpecificLength(23);
 			rp.leftMargin = ResizeUtils.getSpecificLength(10);
 			rp.topMargin = ResizeUtils.getSpecificLength(34);
-			
-			//btnReply.
-			rp = (RelativeLayout.LayoutParams) btnReply.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(30);
-			rp.height = ResizeUtils.getSpecificLength(30);
-			rp.topMargin = ResizeUtils.getSpecificLength(31);
-			rp.rightMargin = ResizeUtils.getSpecificLength(20);
-			
+
 			//btnDelete.
 			rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(30);
@@ -110,8 +116,41 @@ public class ViewWrapperForReply extends ViewWrapper {
 			rp.topMargin = ResizeUtils.getSpecificLength(31);
 			rp.rightMargin = ResizeUtils.getSpecificLength(20);
 			
+			//btnReply.
+			rp = (RelativeLayout.LayoutParams) btnReply.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(30);
+			rp.height = ResizeUtils.getSpecificLength(30);
+			rp.rightMargin = ResizeUtils.getSpecificLength(30);
+			
+			//tvContent2
+			tvContent2.setPadding(ResizeUtils.getSpecificLength(40), 
+					ResizeUtils.getSpecificLength(30), 
+					ResizeUtils.getSpecificLength(40), 
+					tp);
+			tvContent2.setMinHeight(ResizeUtils.getSpecificLength(92));
+			
+			//replyIcon.
+			rp = (RelativeLayout.LayoutParams) replyIcon.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(19);
+			rp.height = ResizeUtils.getSpecificLength(16);
+			rp.leftMargin = ResizeUtils.getSpecificLength(10);
+			rp.topMargin = ResizeUtils.getSpecificLength(44);
+			
+			//tvRegdate.
+			rp = (RelativeLayout.LayoutParams) tvRegdate.getLayoutParams();
+			rp.height = ResizeUtils.getSpecificLength(40);
+			rp.rightMargin = ResizeUtils.getSpecificLength(20);
+			
+			//btnDelete2.
+			rp = (RelativeLayout.LayoutParams) btnDelete2.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(30);
+			rp.height = ResizeUtils.getSpecificLength(30);
+			rp.rightMargin = ResizeUtils.getSpecificLength(20);
+			
 			FontUtils.setFontSize(tvInfo, 24);
 			FontUtils.setFontSize(tvContent, 30);
+			FontUtils.setFontSize(tvContent2, 30);
+			FontUtils.setFontSize(tvRegdate, 22);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -147,19 +186,34 @@ public class ViewWrapperForReply extends ViewWrapper {
 					privateIcon.setVisibility(View.INVISIBLE);
 				}
 				
-				//해당 게시글의 도매 사람이거나, 게시글 작성자인 경우에 삭제 버튼 노출.
+				//해당 게시글의 도매 사람이거나, 
 				if(reply.getWholesale_id() == ShopActivity.getInstance().user.getWholesale_id()) {
-					ToastUtils.showToast("도매 사람.");
 					btnDelete.setVisibility(View.VISIBLE);
 					btnReply.setVisibility(View.VISIBLE);
+					
+				//게시글 작성자인 경우에 삭제 버튼 노출.
 				} else if(ShopActivity.getInstance().user.getId().equals(reply.getAuthor_id())) {
-					ToastUtils.showToast("작성자");
 					btnDelete.setVisibility(View.VISIBLE);
 					btnReply.setVisibility(View.GONE);
 				} else {
-					ToastUtils.showToast("아무도 아님");
 					btnDelete.setVisibility(View.GONE);
 					btnReply.setVisibility(View.GONE);
+				}
+				
+				//그리고 이미 댓글이 있다면 댓글 버튼 숨김.
+				if(reply.getReplies() != null && reply.getReplies().length > 0) {
+					btnReply.setVisibility(View.GONE);
+
+					tvContent2.setText(reply.getReplies()[0].getContent());
+					
+					String dateString = StringUtils.getDateString(
+							"yyyy년 MM월 dd일 aa hh:mm", 
+							reply.getReplies()[0].getCreated_at() * 1000);
+					tvRegdate.setText(dateString);
+					
+					childRelative.setVisibility(View.VISIBLE);
+				} else {
+					childRelative.setVisibility(View.GONE);
 				}
 				
 				tvContent.setText(reply.getContent());
@@ -196,7 +250,26 @@ public class ViewWrapperForReply extends ViewWrapper {
 							
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
-								delete();
+								delete(reply);
+							}
+						}, 
+						null);
+			}
+		});
+	
+		btnDelete2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ShopActivity.getInstance().showAlertDialog(
+						"댓글 삭제", "해당 댓글을 삭제하시겠습니까?", 
+						"확인", "취소", 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								delete(reply.getReplies()[0]);
 							}
 						}, 
 						null);
@@ -212,7 +285,7 @@ public class ViewWrapperForReply extends ViewWrapper {
 	
 //////////////////// Custom methods.
 	
-	public void delete() {
+	public void delete(final Reply reply) {
 		
 		String url = CphConstants.BASE_API_URL + "products/replies/delete" +
 				"?product_id=" + reply.getProduct_id() +
@@ -234,7 +307,7 @@ public class ViewWrapperForReply extends ViewWrapper {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						ShopActivity.getInstance().getTopFragment().refreshPage();
+						((ReplyPage)ShopActivity.getInstance().getTopFragment()).notifyDataSetChanged(reply);
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -250,5 +323,10 @@ public class ViewWrapperForReply extends ViewWrapper {
 	}
 	
 	public void writeReply() {
+		
+		if(ShopActivity.getInstance().getTopFragment() != null
+				&& ShopActivity.getInstance().getTopFragment() instanceof ReplyPage) {
+			((ReplyPage)ShopActivity.getInstance().getTopFragment()).setReplyScroll(reply);
+		}
 	}
 }

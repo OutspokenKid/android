@@ -1,5 +1,7 @@
 package com.cmons.cph.fragments.common;
 
+import java.net.URLEncoder;
+
 import org.json.JSONObject;
 
 import android.view.View;
@@ -15,10 +17,13 @@ import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Notice;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 /**
  * @author HyungGunKim
@@ -121,6 +126,17 @@ public class NoticePage extends CmonsFragmentForShop {
 	@Override
 	public void setListeners() {
 
+		if(isEdit) {
+			titleBar.getBtnSubmit().setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					submit();
+				}
+			});
+		}
+		
 		btnPush.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -203,6 +219,66 @@ public class NoticePage extends CmonsFragmentForShop {
 	}
 
 //////////////////// Custom methods.
+	
+	public void submit() {
+
+		/*
+		http://cph.minsangk.com/wholesales/notices/save
+		?notice[title]=%EA%B8%B4%EA%80
+		&notice[content]=%EB%82%B4%EC%%9A%A
+		&notice[need_push]=1
+	
+		http://cph.minsangk.com/wholesales/notices/save
+		?notice[id]=1
+		&notice[title]=%EA%B8%B4%EA%B8%89%EA%B3%B5%EC%A7%80%EC%88%98%EC%A0%95%EC%82%AC%ED%95%AD
+		*/
+		try {
+			String url = CphConstants.BASE_API_URL + "wholesales/notices/save" +
+					"?notice[title]=" + URLEncoder.encode(etTitle.getText().toString(), "utf-8") +
+					"&notice[content]=" + URLEncoder.encode(etTitle.getText().toString(), "utf-8") +
+					"&notice[need_push]=" + (needPush? 1 : 0);
+					
+			if(notice != null) {
+				url += "&notice[id]=" + notice.getId();
+			}
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("NoticePage.submit.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToWriteNotice);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("NoticePage.submit.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_writeNotice);
+							mActivity.closePageWithRefreshPreviousPage();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToWriteNotice);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToWriteNotice);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
 	
 	public void checkReadList() {
 

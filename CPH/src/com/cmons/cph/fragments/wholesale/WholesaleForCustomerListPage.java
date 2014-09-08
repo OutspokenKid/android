@@ -138,14 +138,20 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		
+		LogUtils.log("###where.createPage.  menuIndex : " + menuIndex);
+		
 		if(menuIndex == 0) {
 			tvCustomer.setVisibility(View.GONE);
 			editText.setVisibility(View.GONE);
 			btnSearch.setVisibility(View.GONE);
+			btnRequest.setBackgroundResource(R.drawable.business_confirm_btn_a);
+			btnPartner.setBackgroundResource(R.drawable.business_costumer_btn_b);
 		} else {
 			tvCustomer.setVisibility(View.VISIBLE);
 			editText.setVisibility(View.VISIBLE);
 			btnSearch.setVisibility(View.VISIBLE);
+			btnRequest.setBackgroundResource(R.drawable.business_confirm_btn_b);
+			btnPartner.setBackgroundResource(R.drawable.business_costumer_btn_a);
 		}
 	}
 

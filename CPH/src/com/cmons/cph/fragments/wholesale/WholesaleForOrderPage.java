@@ -2,10 +2,10 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.RelativeSizeSpan;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -19,11 +19,16 @@ import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Order;
+import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 
+	private OrderSet orderSet;
+	
 	private TextView tvOrder;
 	private View type;
 	private Button btnOrder;
@@ -34,9 +39,8 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	
 	private Button btnConfirm;
 	private TextView tvAccount;
+	private TextView tvTotalPrice;
 	private ListView listView;
-	
-	private int menuIndex;
 	
 	@Override
 	public void bindViews() {
@@ -55,6 +59,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		tvSoldOut = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvSoldOut);
 		btnConfirm = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnConfirm);
 		tvAccount = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvAccount);
+		tvTotalPrice = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvTotalPrice);
 		
 		listView = (ListView) mThisView.findViewById(R.id.wholesaleOrderPage_listView);
 	}
@@ -62,6 +67,9 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
+		if(getArguments() != null) {
+			orderSet = (OrderSet) getArguments().getSerializable("orderSet");
+		}
 		title = "주문내역";
 	}
 
@@ -71,31 +79,57 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
-		setMenu(0);
+		String dateString = StringUtils.getDateString("yyyy.MM.dd aa hh:mm", 
+				orderSet.getItems()[0].getCreated_at() * 1000);
+		FontUtils.addSpan(tvOrder, dateString, 0, 0.8f);
 		
-		SpannableStringBuilder sp1 = new SpannableStringBuilder("2014년 08월 31일 PM 06:45\n\n");
-		sp1.setSpan(new RelativeSizeSpan(0.8f), 0, sp1.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvOrder.append(sp1); 
-		
-		SpannableStringBuilder sp2 = new SpannableStringBuilder("스타일콩");
-		sp2.setSpan(new RelativeSizeSpan(1.5f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		tvOrder.append(sp2);
-		
-		SpannableStringBuilder sp3 = new SpannableStringBuilder(" 010-1234-5678");
-		tvOrder.append(sp3);
+		FontUtils.addSpan(tvOrder, "\n" + orderSet.getRetail_name(), 0, 1.5f);
+		FontUtils.addSpan(tvOrder, " (" + orderSet.getRetail_phone_number() + ")", 0, 1);
 		
 		type.setBackgroundResource(R.drawable.offline_shop_icon);
 		
 		tvSoldOut.setText(R.string.disableSoldout);
-		tvAccount.setText("결제방식 : 무통장입금\n국민은행(홍길동)123-12-11234151");
+		
+		String accountString = "결제방식 : ";
+
+		if(orderSet.getPayment_type() == 1) {
+			accountString += "무통장입금" +
+					"\n" + getWholesale().getAccounts()[orderSet.getPayment_account_id()];
+		} else {
+			accountString += "사입자대납" +
+					"\n" + orderSet.getPayment_purchaser_info();
+		}
+		
+		accountString += "\n총 금액";
+		
+		tvAccount.setText(accountString);
+		tvTotalPrice.setText(StringUtils.getFormattedNumber(orderSet.getSum()) + "원");
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
+
+		if(models.size() == 0) {
+			for(Order order : orderSet.getItems()) {
+				order.setItemCode(CphConstants.ITEM_ORDER_WHOLESALE);
+				models.add(order);
+			}
+		}
 	}
 
 	@Override
 	public void setListeners() {
 	
+		btnConfirm.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				approval();
+			}
+		});
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -158,6 +192,9 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		//tvAccount.
 		tvAccount.setPadding(p, p, p, p);
 		
+		//tvTotalPrice.
+		tvTotalPrice.setPadding(p, p, p, p);
+		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(180);
@@ -171,21 +208,8 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-
-		for(int i=0; i<10; i++) {
-			Order order = new Order();
-			order.setItemCode(CphConstants.ITEM_ORDER_WHOLESALE);
-			models.add(order);
-		}
 		
 		return false;
-	}
-	
-	@Override
-	public void downloadInfo() {
-		
-		url = CphConstants.BASE_API_URL + "wholesales/notices";
-		super.downloadInfo();
 	}
 
 	@Override
@@ -199,50 +223,17 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-////////////////////Custom classes.
-	
-	public void setMenu(int menuIndex) {
-
-		switch(menuIndex) {
-		
-		case 0:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_a);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			break;
-			
-		case 1:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_a);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			break;
-			
-		case 2:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_a);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			break;
-			
-		case 3:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_a);
-			break;
-		}
-
-		this.menuIndex = menuIndex;
-
-		refreshPage();
-	}
 
 	@Override
 	public int getBgResourceId() {
 
 		return R.drawable.order_bg;
+	}
+
+//////////////////// Custom methods.
+	
+	public void approval() {
+		
+		
 	}
 }

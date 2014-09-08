@@ -268,6 +268,19 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			}
 		});
 	}
+
+	public void closePageWithRefreshPreviousPage() {
+		
+		closeTopPage();
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				getTopFragment().refreshPage();
+			}
+		}, 500);
+	}
 	
 //////////////////// Interfaces.
 	

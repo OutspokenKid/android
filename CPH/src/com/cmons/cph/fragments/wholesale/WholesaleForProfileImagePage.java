@@ -75,7 +75,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 				if(selectedImageUrl != null) {
 					uploadImage();
 				} else {
-					mActivity.closeTopPage();
+					mActivity.closePageWithRefreshPreviousPage();
 				}
 			}
 		});

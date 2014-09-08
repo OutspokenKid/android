@@ -3,6 +3,7 @@ package com.cmons.cph.fragments.wholesale;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -114,7 +115,16 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				cancelPartnerShip();
+				mActivity.showAlertDialog("거래처 끊기", "해당 거래처와 거래를 끊겠습니까?", 
+						"확인", "취소", 
+						new DialogInterface.OnClickListener() {
+					
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								cancelPartnerShip();
+							}
+						}, null);
 			}
 		});
 	}
@@ -251,7 +261,7 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 
 					if (objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_breakPartnerShip);
-						mActivity.closeTopPage();
+						mActivity.closePageWithRefreshPreviousPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

@@ -380,7 +380,9 @@ public class ProductPage extends CmonsFragmentForShop {
 		
 		//tvSoldOut.
 		rp = (RelativeLayout.LayoutParams) tvSoldOut.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(43);
+		rp.height = titleTextHeight;
+		rp.rightMargin = padding;
+		tvSoldOut.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
 		
 		//btnShop.
 		rp = (RelativeLayout.LayoutParams) btnShop.getLayoutParams();

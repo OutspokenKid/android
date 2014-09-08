@@ -108,8 +108,6 @@ public class CphAdapter extends BaseAdapter {
 	}
 
 	public int getLayoutResIdByItemCode(int itemCode) {
-
-		LogUtils.log("###CphAdapter.getLayoutResIdByItemCode.  itemCode : " + itemCode);
 		
 		switch (itemCode) {
 		
@@ -174,8 +172,6 @@ public class CphAdapter extends BaseAdapter {
 	}
 	
 	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
-		
-		LogUtils.log("###CphAdapter.getViewWrapperByItemCode.  itemCode : " + itemCode);
 		
 		switch (itemCode) {
 		

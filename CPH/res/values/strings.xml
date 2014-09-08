@@ -48,7 +48,9 @@
 	<string name="complete_requestSample">샘플 요청 완료</string>
 	<string name="complete_signUp">회원가입 완료</string>
 	<string name="complete_signIn">로그인 완료</string>
+	<string name="complete_writeNotice">공지사항 작성 완료</string>
 	<string name="complete_writeProduct">상품 등록 완료</string>
+	<string name="complete_writeReply">댓글 작성 완료</string>
     <string name="confirm">확인</string>
     <string name="confirmPw">비밀번호 확인</string>
     <string name="currentPw">현재 비밀번호</string>
@@ -85,6 +87,7 @@
     <string name="failToSearchShop">매장 검색 실패</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원 가입 실패</string>
+    <string name="failToWriteNotice">공지사항 작성 실패</string>
     <string name="failToWriteProduct">상품 등록 실패</string>
     <string name="failToWriteReply">댓글 작성 실패</string>
     <string name="findId">아이디 찾기</string>

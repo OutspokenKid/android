@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -122,7 +123,9 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
-				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER, null);
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("orderSet", (OrderSet)models.get(position));
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER, bundle);
 			}
 		});
 	}

@@ -43,6 +43,7 @@
 		    	android:textColor="#4a4a4a"
 		    	android:textColorHint="#4a4a4a"
 		    	android:imeOptions="actionNext"
+		    	android:inputType="text|textEmailAddress"
 		    	android:hint="@string/id"
 		    	android:gravity="center" />
 		    

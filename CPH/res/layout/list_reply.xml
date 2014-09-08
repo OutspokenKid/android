@@ -32,7 +32,7 @@
     	android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:layout_below="@id/list_reply_tvInfo"
-    	android:background="#bfff"
+    	android:background="#fff"
     	android:gravity="center_vertical"
     	android:textColor="#000" />
     
@@ -45,21 +45,67 @@
     	android:background="@drawable/myshop_comment3_icon" />
     
     <Button
-		android:id="@+id/list_reply_btnReply"
+		android:id="@+id/list_reply_btnDelete"
     	android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_alignParentRight="true"
     	android:layout_alignTop="@id/list_reply_tvContent"
-    	android:background="@drawable/myshop_reply2_btn" />
+    	android:background="@drawable/myshop_delete2_btn" />
     
     <Button
-		android:id="@+id/list_reply_btnDelete"
+		android:id="@+id/list_reply_btnReply"
     	android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_alignTop="@id/list_reply_btnReply"
-    	android:layout_toLeftOf="@id/list_reply_btnReply"
-    	android:background="@drawable/myshop_delete2_btn" />
+    	android:layout_alignTop="@id/list_reply_btnDelete"
+    	android:layout_toLeftOf="@id/list_reply_btnDelete"
+    	android:background="@drawable/myshop_reply2_btn" />
+
+    <RelativeLayout
+        android:id="@+id/list_reply_childRelative"
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/list_reply_tvContent"
+    	android:visibility="gone" >
+        
+        <TextView
+	    	android:id="@+id/list_reply_tvContent2"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="wrap_content"
+	    	android:background="#fff"
+	    	android:gravity="center_vertical"
+	    	android:textColor="#000" />
+        
+        <View
+	    	android:layout_width="match_parent"
+	    	android:layout_height="1dp"
+	    	android:background="#aaa"
+	    	android:layout_alignParentTop="true" />
+        
+        <View
+			android:id="@+id/list_reply_replyIcon"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_alignTop="@id/list_reply_tvContent2"
+	    	android:background="@drawable/myshop_reply_icon" />
+
+        <TextView
+	    	android:id="@+id/list_reply_tvRegdate"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_alignParentTop="true"
+	    	android:gravity="center_vertical"
+	    	android:textColor="#000" />
+        
+        <Button
+			android:id="@+id/list_reply_btnDelete2"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_below="@id/list_reply_tvRegdate"
+	    	android:background="@drawable/myshop_delete2_btn" />
+        
+    </RelativeLayout>
     	
 </RelativeLayout>
-
- 

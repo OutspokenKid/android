@@ -797,7 +797,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) etAdd.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(550);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(96);
 		
 		//btnAdd.
 		rp = (RelativeLayout.LayoutParams) btnAdd.getLayoutParams();
@@ -1031,12 +1030,28 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			
 			@Override
 			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
+
+				try {
+					JSONObject objJSON = new JSONObject(resultString);
+
+					if(objJSON.getInt("result") == 1) {
+						JSONObject objFile = objJSON.getJSONObject("file");
+						selectedImageUrls[index] = objFile.getString("url");
+						getWholesale().setRep_image_url(selectedImageUrls[index]);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+				
+				if(thumbnail == null) {
+					LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
+				}
 				
 				if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
 					ivImage.setImageBitmap(thumbnail);
 				}
-				
-				selectedImageUrls[index] = resultString;
 			}
 		});
 	}

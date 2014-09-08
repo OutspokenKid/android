@@ -106,7 +106,6 @@ public class Reply extends BaseModel implements Serializable {
 			}
 			
 			if(objJSON.has("replies")) {
-				
 				JSONArray arJSON = objJSON.getJSONArray("replies");
 				int size = arJSON.length();
 				replies = new Reply[size];

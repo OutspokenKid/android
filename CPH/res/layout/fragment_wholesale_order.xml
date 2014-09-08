@@ -74,7 +74,6 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_below="@id/wholesaleOrderPage_btnOrder"
-	    android:layout_alignParentLeft="true"
 	    android:gravity="center_vertical"
     	android:textColor="#fff" />
 	
@@ -92,6 +91,14 @@
     	android:layout_above="@id/wholesaleOrderPage_btnConfirm"
 	    android:layout_alignParentLeft="true"
     	android:textColor="#fff" />
+	
+	<TextView 
+        android:id="@+id/wholesaleOrderPage_tvTotalPrice"
+        android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_above="@id/wholesaleOrderPage_btnConfirm"
+	    android:layout_alignParentRight="true"
+    	android:textColor="#f00" />
 	
 	<ListView 
 	    android:id="@+id/wholesaleOrderPage_listView" 

@@ -11,6 +11,7 @@ import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class ViewWrapperForOrderSetForWholesale extends ViewWrapper {
 	
@@ -79,9 +80,11 @@ public class ViewWrapperForOrderSetForWholesale extends ViewWrapper {
 				
 				orderSet = (OrderSet) baseModel;
 
-				tvRegdate.setText("2014년 08월 16일 AM 07:46");
-				tvName.setText("스타일콩");
-				tvPrice.setText("1,000,000원");
+				String dateString = StringUtils.getDateString("yyyy.MM.dd aa hh:mm", 
+						orderSet.getItems()[0].getCreated_at() * 1000);
+				tvRegdate.setText(dateString);
+				tvName.setText(orderSet.getRetail_name());
+				tvPrice.setText(StringUtils.getFormattedNumber(orderSet.getSum()) + "원");
 				
 				if(orderSet.isOnline()) {
 					type.setBackgroundResource(R.drawable.online_shop_icon);
