@@ -2,6 +2,7 @@ package com.cmons.cph;
 
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -12,11 +13,11 @@ import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
 import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
+import com.cmons.cph.fragments.common.NotificationSettingPage;
 import com.cmons.cph.fragments.common.ProductPage;
 import com.cmons.cph.fragments.common.ReplyPage;
-import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.common.SettingPage;
-import com.cmons.cph.fragments.common.NotificationSettingPage;
+import com.cmons.cph.fragments.common.StaffPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForAccountPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForCustomerPage;
@@ -30,6 +31,7 @@ import com.cmons.cph.fragments.wholesale.WholesaleForWritePage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -164,12 +166,74 @@ public class WholesaleActivity extends ShopActivity {
 		return null;
 	}
 
+	/**
+	 * id : push id. 
+	 * receiver_id : 받는 사람의 id.
+	 * message : 유저에게 보여줄 메세지.
+	 * uri : 연결할 uri.
+	 * created_at : 생성된 시간.
+	 * pushed_at : 보내진 시간.
+	 * read_at : 유저가 읽은 시간.
+	 */
 	@Override
-	public void handleNotification(String uriString) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void handleUri(Uri uri) {
 
+		try {
+			String scheme = uri.getScheme();
+			String host = uri.getHost();
+			String url = host + uri.getPath();
+			
+			LogUtils.log("WholesaleActivity.actionByUri. ========" +
+					"\nuri : " + uri + 
+					"\nscheme : "+ scheme +
+					"\nhost : " + host + 
+					"\nurl : " + url);
+			
+			if(scheme.equals("http")||scheme.equals("https")) {
+				IntentUtils.showDeviceBrowser(this, url);
+				
+			} else if(scheme.equals("market") || scheme.equals("tstore")) {
+				IntentUtils.showMarket(this, uri);
+				
+			} else if(scheme.equals("cph")) {
+				
+				//상품 주문
+				if(url.equals("cph://wholesales/orders")) {
+					
+				//상품 상태값 변경 (입금완료)
+				} else if(url.equals("cph://retails/orders")) {
+					
+				//상품에서 댓글 작성
+				} else if(url.equals("cph://products/replies?product_id=100001&post_id=1")) {
+					
+				//전체 공지 작성 (need_push:1)
+				} else if(url.equals("cph://notices")) {
+					
+				//샘플 요청
+				} else if(url.equals("cph://wholesales/samples")) {
+					
+				//직원 상태값 변경 (승인)
+				} else if(url.equals("cph://home")) {
+					
+				//직원 상태값 변경 (거절)
+				} else if(url.equals("cph://home")) {
+					
+				//거래처 요청
+				} else if(url.equals("cph://wholesales/customers/requested")) {
+					
+				//회원가입
+				} else if(url.equals("cph://users/staffs")) {
+					
+				//대표 승인
+				} else if(url.equals("cph://home")) {
+					
+				}
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

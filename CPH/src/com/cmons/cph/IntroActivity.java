@@ -16,6 +16,8 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class IntroActivity extends Activity {
 
+	public static boolean isInIntro;
+	
 	private ImageView ivBg;
 	private ImageView ivImage;
 	
@@ -54,10 +56,6 @@ public class IntroActivity extends Activity {
 			
 			try {
 				ivImage.setImageResource(R.drawable.splash_screen);
-//				Matrix matrix = new Matrix();
-//				float scale = (float)ResizeUtils.getScreenWidth() / 720f;
-//				matrix.postScale(scale, scale);
-//				ivImage.setImageMatrix(matrix);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {
@@ -70,12 +68,15 @@ public class IntroActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		
+		isInIntro = true;
 		checkSession();
 	}
 	
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		
+		isInIntro = false;
 		
 		if(ivBg != null) {
 			ivBg.setImageDrawable(null);

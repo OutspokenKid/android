@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -15,9 +16,11 @@ import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
 import com.cmons.cph.models.User;
+import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public abstract class ShopActivity extends CmonsFragmentActivity {
 
@@ -27,12 +30,14 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	public Category[] categories;
 
 	public abstract CmonsFragment getFragmentByPageCode(int pageCode);
-	public abstract void handleNotification(String uriString);
+	public abstract void handleUri(Uri uri);
 	
 	@Override
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		instance = this;
+		
+		checkGCM();
 	}
 	
 	@Override
@@ -82,6 +87,51 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	public static ShopActivity getInstance() {
 		
 		return instance;
+	}
+	
+	public void checkGCM() {
+		
+		try {
+			GCMRegistrar.checkDevice(this);
+			GCMRegistrar.checkManifest(this);
+			final String regId = GCMRegistrar.getRegistrationId(this);
+
+			LogUtils.log("############\n1\n1\n1\n1\n1.checkGCM.  regId : " + regId);
+			
+			if(regId == null || regId.equals("")) {
+				GCMRegistrar.register(this, CphConstants.GCM_SENDER_ID);
+			} else {
+				updateInfo(regId);
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void updateInfo(String regId) {
+	
+		try {
+			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
+					"?user_id=" + SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id") +
+					"&device_token=" + regId;
+					
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+				
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("###ShopActivity.updateInfo.onError.  \nurl : " + url);
+				}
+				
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					LogUtils.log("###ShopActivity.updateInfo.onCompleted.  \nresult : " + objJSON);
+				}
+			});
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void showPage(int pageCode, Bundle bundle) {

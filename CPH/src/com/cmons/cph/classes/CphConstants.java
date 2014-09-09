@@ -2,6 +2,9 @@ package com.cmons.cph.classes;
 
 public class CphConstants {
 
+	//구글 플레이 콘솔의 프로젝트 아이디.
+	public static final String GCM_SENDER_ID = "536624421053";
+	
 	public static String BASE_API_URL = "http://cph.minsangk.com/";
 	
 	public static final String PREFS_SIGN = "sign";

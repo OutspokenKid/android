@@ -2,6 +2,7 @@ package com.cmons.cph;
 
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.os.Handler;
 
 import com.cmons.cph.classes.CmonsFragment;
@@ -31,6 +32,7 @@ import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 
 public class RetailActivity extends ShopActivity {
@@ -169,10 +171,75 @@ public class RetailActivity extends ShopActivity {
 		return null;
 	}
 	
+	/**
+	 * id : push id. 
+	 * receiver_id : 받는 사람의 id.
+	 * message : 유저에게 보여줄 메세지.
+	 * uri : 연결할 uri.
+	 * created_at : 생성된 시간.
+	 * pushed_at : 보내진 시간.
+	 * read_at : 유저가 읽은 시간.
+	 */
 	@Override
-	public void handleNotification(String uriString) {
-		// TODO Auto-generated method stub
-		
+	public void handleUri(Uri uri) {
+
+		try {
+			String scheme = uri.getScheme();
+			String host = uri.getHost();
+			String url = host + uri.getPath();
+			
+			LogUtils.log("WholesaleActivity.actionByUri. ========" +
+					"\nuri : " + uri + 
+					"\nscheme : "+ scheme +
+					"\nhost : " + host + 
+					"\nurl : " + url);
+			
+			if(scheme.equals("http")||scheme.equals("https")) {
+				IntentUtils.showDeviceBrowser(this, url);
+				
+			} else if(scheme.equals("market") || scheme.equals("tstore")) {
+				IntentUtils.showMarket(this, uri);
+				
+			} else if(scheme.equals("cph")) {
+				
+				//상품 상태값 변경 (거래완료)
+				if(url.equals("cph://retails/orders")) {
+					
+				//상품 댓글 대댓글 작성
+				} else if(url.equals("cph://products/replies?product_id=100001&post_id=2")) {
+					
+				//전체 공지 작성 (need_push:1)
+				} else if(url.equals("cph://notices")) {
+					
+				//도매 공지 작성 (need_push:1)
+				} else if(url.equals("cph://wholesales/notices?wholesale_id=1&post_id=1")) {
+					
+				//상품 등록
+				} else if(url.equals("cph://products?wholesale_id=1")) {
+					
+				//샘플 상태값 변경 (반납요청)
+				} else if(url.equals("cph://retails/samples")) {
+					
+				//직원 상태값 변경 (승인)
+				} else if(url.equals("cph://home")) {
+					
+				//직원 상태값 변경 (거절)
+				} else if(url.equals("cph://home")) {
+					
+				//거래처 승인
+				} else if(url.equals("cph://retails/customers")) {
+					
+				//거래처 삭제
+				} else if(url.equals("cph://retails/customers")) {
+					
+				//회원가입
+				} else if(url.equals("cph://users/staffs")) {
+					
+				}
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 //////////////////// Custom methods.
