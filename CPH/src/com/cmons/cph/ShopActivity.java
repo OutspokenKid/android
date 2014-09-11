@@ -15,12 +15,14 @@ import com.cmons.cph.classes.CmonsFragment;
 import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
+import com.cmons.cph.models.PushObject;
 import com.cmons.cph.models.User;
 import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class ShopActivity extends CmonsFragmentActivity {
 
@@ -38,6 +40,12 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 		instance = this;
 		
 		checkGCM();
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		checkSignStatus();
 	}
 	
 	@Override
@@ -89,6 +97,35 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 		return instance;
 	}
 	
+	public void checkSignStatus() {
+		
+		String url = CphConstants.BASE_API_URL + "users/login_check";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ShopActivity.checkSignStatus.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ShopActivity.checkSignStatus.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void checkGCM() {
 		
 		try {
@@ -96,7 +133,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			GCMRegistrar.checkManifest(this);
 			final String regId = GCMRegistrar.getRegistrationId(this);
 
-			LogUtils.log("############\n1\n1\n1\n1\n1.checkGCM.  regId : " + regId);
+			LogUtils.log("###ShopActivity.checkGCM.  regId : " + regId);
 			
 			if(regId == null || regId.equals("")) {
 				GCMRegistrar.register(this, CphConstants.GCM_SENDER_ID);
@@ -318,18 +355,54 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			}
 		});
 	}
+	
+	public void setPushRead(int push_id) {
 
-	public void closePageWithRefreshPreviousPage() {
+		ToastUtils.showToast("읽음 처리 함");
+	}
+
+	/**
+	 * id : push id. 
+	 * receiver_id : 받는 사람의 id.
+	 * message : 유저에게 보여줄 메세지.
+	 * uri : 연결할 uri.
+	 * created_at : 생성된 시간.
+	 * pushed_at : 보내진 시간.
+	 * read_at : 유저가 읽은 시간.
+	 */
+
+	public void handleIntent(Intent intent) {
 		
-		closeTopPage();
-		new Handler().postDelayed(new Runnable() {
+		LogUtils.log("###WholesaleActivity.handleIntent.  ");
+		
+		try {
+			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
+			String message = po.message;
+			final String uriString = po.uri;
 			
-			@Override
-			public void run() {
+			LogUtils.log("message : " + message);
+			LogUtils.log("uriString : " + uriString);
+			
+			//팝업을 보여준 후 확인을 누르면 처리.
+			showAlertDialog("알림", message, "확인", "닫기", new DialogInterface.OnClickListener() {
 				
-				getTopFragment().refreshPage();
-			}
-		}, 500);
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					try {
+						Uri uri = Uri.parse(uriString);
+						handleUri(uri);
+						setPushRead(0);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+			}, null);
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 //////////////////// Interfaces.

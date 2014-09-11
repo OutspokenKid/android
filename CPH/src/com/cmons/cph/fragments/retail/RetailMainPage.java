@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -31,15 +32,15 @@ import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
-import com.cmons.cph.models.Notice;
+import com.cmons.cph.models.Notification;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.HeaderViewForRetailMain;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.HeaderGridView;
 
 public class RetailMainPage extends CmonsFragmentForRetail {
@@ -65,6 +66,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	
 	private int categoryIndex = 0;
 	private int order = 0;
+	private int totalCount;
 	
 	@Override
 	public void onResume() {
@@ -164,6 +166,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		
 		headerView = new HeaderViewForRetailMain(mContext);
 		headerView.init((RetailActivity)mActivity);
+		headerView.setTotalProduct(totalCount);
 		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		headerView.setLayoutParams(al);
 		gridView.addHeaderView(headerView);
@@ -187,10 +190,6 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, 
 					int visibleItemCount, int totalItemCount) {
-				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
 			}
 		});
 		
@@ -303,6 +302,15 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 				
+				try {
+					mActivity.handleUri(Uri.parse(((Notification)notices.get(position)).getUri()));
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+				
+				requestReadNotification((Notification)notices.get(position));
 				hideNoticeRelative();
 			}
 		});
@@ -459,7 +467,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		noticeAdapter.notifyDataSetChanged();
 		
 		url = CphConstants.BASE_API_URL + "products" +
-				"?retail_id=" + retail.getId();
+				"?retail_id=" + getRetail().getId();
 		
 		if(categoryIndex != 0) {
 			url += "&category_id=" + categoryIndex;
@@ -488,7 +496,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				models.add(product);
 			}
 
-			headerView.setTotalProduct(objJSON.getInt("productsCount"));
+			totalCount = objJSON.getInt("productsCount");
+			headerView.setTotalProduct(totalCount);
 					
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
 				return true;
@@ -509,10 +518,16 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	
 //////////////////// Custom methods.
 
+	public void refreshNotices() {
+		
+		notices.clear();
+		noticeAdapter.notifyDataSetChanged();
+		downloadNotices();
+	}
+	
 	public void downloadNotices() {
 		
-		String url = CphConstants.BASE_API_URL + "posts/notices" +
-				"?num=0";
+		url = CphConstants.BASE_API_URL + "notifications/mine";
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -529,18 +544,27 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					JSONArray arJSON = objJSON.getJSONArray("notices");
-					
-					int size = arJSON.length();
-					
-					for(int i=0; i<size; i++) {
-						Notice notice = new Notice(arJSON.getJSONObject(i));
-						notice.setItemCode(CphConstants.ITEM_NOTICE);
-						notices.add(notice);
-					}
-
-					noticeAdapter.notifyDataSetChanged();
 					checkNewMessage();
+					
+					try {
+						JSONArray arJSON = objJSON.getJSONArray("notifications");
+						
+						int size = arJSON.length();
+						
+						for(int i=0; i<size; i++) {
+							Notification notification = new Notification(arJSON.getJSONObject(i));
+							notification.setItemCode(CphConstants.ITEM_NOTIFICATION);
+							LogUtils.log("###RetailMainPage.parseJSON.  message : " + notification.getMessage());
+							notices.add(notification);
+						}
+						
+						noticeAdapter.notifyDataSetChanged();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -552,7 +576,36 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 
 	public void checkNewMessage() {
 		
-		titleBar.getBtnNotice().setVisibility(View.VISIBLE);
+		url = CphConstants.BASE_API_URL + "notifications/mine?filter=unread";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailMainPage.checkNewMessage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailMainPage.checkNewMessage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					//새로운 메시지가 있느냐의 여부에 따라 new badge 노출 결정.
+					if(objJSON.getJSONArray("notifications").length() > 0) {
+						titleBar.getNewBadge().setVisibility(View.VISIBLE);
+					} else {
+						titleBar.getNewBadge().setVisibility(View.INVISIBLE);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void showMenuRelative() {
@@ -601,5 +654,38 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			noticeRelative.startAnimation(aaOut);
 			cover.startAnimation(aaOut);
 		}
+	}
+
+	public void requestReadNotification(Notification notification) {
+		
+		//http://cph.minsangk.com/notifications/read?notification_id=1
+		String url = CphConstants.BASE_API_URL + "notifications/read" +
+				"?notification_id=" + notification.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailMainPage.requestReadNotification.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailMainPage.requestReadNotification.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						refreshPage();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

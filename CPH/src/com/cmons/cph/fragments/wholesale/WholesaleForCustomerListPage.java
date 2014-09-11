@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -28,7 +30,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Customer;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -62,7 +64,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	private AlphaAnimation aaIn, aaOut;
 	private boolean isAnimating;
 	
-	private Retail selectedRetail;
+	private Customer selectedCustomer;
 	
 	@Override
 	public void onResume() {
@@ -137,6 +139,8 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDividerHeight(1);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
 		
 		LogUtils.log("###where.createPage.  menuIndex : " + menuIndex);
 		
@@ -196,13 +200,13 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> arg0, View convertView, int position,
 					long id) {
 				
-				selectedRetail = (Retail) models.get(position);
+				selectedCustomer = (Customer) models.get(position);
 				
 				if(menuIndex == 0) {
-					showPopup(selectedRetail);
+					showPopup(selectedCustomer);
 				} else {
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("retail", selectedRetail);
+					bundle.putSerializable("customer", selectedCustomer);
 					mActivity.showPage(CphConstants.PAGE_WHOLESALE_CUSTOMER, bundle);
 				}
 			}
@@ -222,7 +226,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				approval(selectedRetail);
+				approval(selectedCustomer);
 			}
 		});
 	}
@@ -344,9 +348,9 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 			
 			int size = arJSON.length();
 			for(int i=0; i<size; i++) {
-				Retail retail = new Retail(arJSON.getJSONObject(i));
-				retail.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
-				models.add(retail);
+				Customer customer = new Customer(arJSON.getJSONObject(i));
+				customer.setItemCode(CphConstants.ITEM_CUSTOMER_WHOLESALE);
+				models.add(customer);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -409,30 +413,30 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		refreshPage();
 	}
 
-	public void showPopup(Retail retail) {
+	public void showPopup(Customer customer) {
 
 		if(isAnimating || popupRelative.getVisibility() == View.VISIBLE) {
 			return;
 		}
 		
-		tvShopName.setText("상호명 : " + retail.getName());
-		tvOwnerName.setText("대표성함 : " + retail.getOwner_name());
-		tvPhone.setText("연락처 : " + retail.getPhone_number());
+		tvShopName.setText("상호명 : " + customer.getName());
+		tvOwnerName.setText("대표성함 : " + customer.getOwner_name());
+		tvPhone.setText("연락처 : " + customer.getPhone_number());
 		
 		tvAddress.setText(null);
 		SpannableStringBuilder sp1 = new SpannableStringBuilder("주소 : ");
 		tvAddress.append(sp1);
 
-		if(retail.getMall_url() == null) {
+		if(customer.getMall_url() == null) {
 			SpannableStringBuilder sp2 = new SpannableStringBuilder(
-					retail.getAddress());
+					customer.getAddress());
 			sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			tvAddress.append(sp2);
 			
 			tvCategory.setText("매장분류 : " + "오프라인");
 		} else {
 			SpannableStringBuilder sp2 = new SpannableStringBuilder(
-					retail.getMall_url());
+					customer.getMall_url());
 			tvAddress.append(sp2);
 			
 			tvCategory.setText("매장분류 : " + "온라인");
@@ -465,11 +469,11 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		return R.drawable.order_bg;
 	}
 
-	public void approval(Retail retail) {
+	public void approval(Customer customer) {
 		
 		//http://cph.minsangk.com/
 		String url = CphConstants.BASE_API_URL + "wholesales/customers/answer" +
-				"?retail_id=" + retail.getId() +
+				"?retail_id=" + customer.getId() +
 				"&answer=accept";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -478,7 +482,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 
 				LogUtils.log("WholesaleForCustomerListPage.onError." + "\nurl : " + url);
 				ToastUtils.showToast(R.string.failToApproval);
-				selectedRetail = null;
+				selectedCustomer = null;
 			}
 
 			@Override
@@ -490,7 +494,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_approval);
-						selectedRetail = null;
+						selectedCustomer = null;
 						hidePopup();
 						new Handler().postDelayed(new Runnable() {
 							

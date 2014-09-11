@@ -13,11 +13,11 @@ import android.widget.TextView;
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
-import com.cmons.cph.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -35,7 +35,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	public void onResume() {
 		super.onResume();
 		
-		if(ivImage != null) {
+		if(ivImage != null && ivImage.getDrawable() == null) {
 			downloadProfile();
 		}
 	}
@@ -107,14 +107,12 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 							}
 						}
 						*/
-						
 						try {
 							JSONObject objJSON = new JSONObject(resultString);
 
 							if(objJSON.getInt("result") == 1) {
 								JSONObject objFile = objJSON.getJSONObject("file");
 								selectedImageUrl = objFile.getString("url");
-								getWholesale().setRep_image_url(selectedImageUrl);
 								downloadProfile();
 							}
 							
@@ -126,10 +124,6 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 						
 						if(thumbnail == null) {
 							LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
-						}
-						
-						if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
-							ivImage.setImageBitmap(thumbnail);
 						}
 					}
 				});
@@ -191,8 +185,17 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	
 	public void downloadProfile() {
 
-		ivImage.setTag(getWholesale().getRep_image_url());
-		DownloadUtils.downloadBitmap(getWholesale().getRep_image_url(), new OnBitmapDownloadListener() {
+		String imageUrl = null;
+		
+		if(selectedImageUrl == null) {
+			imageUrl = getWholesale().getRep_image_url();
+		} else {
+			imageUrl = selectedImageUrl;
+		}
+		
+		ivImage.setImageDrawable(null);
+		ivImage.setTag(imageUrl);
+		DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -204,11 +207,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					LogUtils.log("WholesaleForProfileImagePage.onCompleted." + "\nurl : " + url);
-
-					if(ivImage != null) {
-						ivImage.setImageBitmap(bitmap);
-					}
+					LogUtils.log("WholesaleForProfileImagePage.downloadProfile.onCompleted." + "\nurl : " + url);
+					ivImage.setImageBitmap(bitmap);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -240,7 +240,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_changeShopProfile);
-						mActivity.closeTopPage();
+						getWholesale().setRep_image_url(selectedImageUrl);
+						mActivity.closePageWithRefreshPreviousPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

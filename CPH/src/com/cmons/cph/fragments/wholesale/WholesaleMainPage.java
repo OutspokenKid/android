@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -301,6 +302,14 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
+				try {
+					mActivity.handleUri(Uri.parse(((Notification)models.get(position)).getUri()));
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+				
 				requestReadNotification((Notification)models.get(position));
 				hideNoticeRelative();
 			}
@@ -574,6 +583,9 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 	public void downloadProducts() {
 		
+		products.clear();
+		pagerAdapter.notifyDataSetChanged();
+		
 		String url = CphConstants.BASE_API_URL + "products/weekly_best" +
 				"?wholesale_id=" + getWholesale().getId();
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -792,7 +804,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("product", products.get(position));
-					bundle.putBoolean("isWholesale", false);
+					bundle.putBoolean("isWholesale", true);
 					mActivity.showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
 				}
 			});

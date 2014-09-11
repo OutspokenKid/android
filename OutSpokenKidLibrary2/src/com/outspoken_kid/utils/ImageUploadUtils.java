@@ -1,4 +1,4 @@
-package com.cmons.cph.utils;
+package com.outspoken_kid.utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,12 +14,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 
-import com.cmons.cph.R;
-import com.cmons.cph.classes.CphConstants;
-import com.outspoken_kid.utils.BitmapUtils;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.R;
 
 public class ImageUploadUtils {
 	
@@ -31,25 +26,67 @@ public class ImageUploadUtils {
         return cursor.getString(column_index);
     }
 	
-	public static void uploadImage(Context context, OnAfterUploadImage onAfterUploadImage,
+	public static void uploadImage(String uploadUrl,
+			OnAfterUploadImage onAfterUploadImage,
 			String filePath, int inSampleSize){
-		(new AsyncUploadImage(context, onAfterUploadImage, filePath, inSampleSize)).execute();
+		(new AsyncUploadImage(uploadUrl, onAfterUploadImage, filePath, inSampleSize)).execute();
+	}
+
+	public static int getBitmapInSampleSize(File file, int standardLength) {
+		
+		try {
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = 1;
+			BitmapFactory.decodeFile(file.getPath(), options);
+
+			int width = 0;
+			int height = 0;
+
+			if (BitmapUtils.GetExifOrientation(file.getPath()) % 180 == 0) {
+				width = options.outWidth;
+				height = options.outHeight;
+			} else {
+				width = options.outHeight;
+				height = options.outWidth;
+			}
+
+			int length = Math.max(width, height);
+			int baseLength = (int)((float)standardLength / (float)options.inSampleSize);
+			
+			if (length < baseLength) {
+				return 1;
+			} else if (length < baseLength * 2) {
+				return 2;
+			} else if (length < baseLength * 4) {
+				return 4;
+			} else if (length < baseLength * 8) {
+				return 8;
+			} else {
+				return 16;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return 1;
 	}
 	
 //////////////////// Classes.
 	
 	public static class AsyncUploadImage extends AsyncTask<Void, Void, Void> {
 
-		private Context context;
+		private String uploadUrl;
 		private OnAfterUploadImage onAfterUploadImage;
 		private String filePath;
 		private int inSampleSize;
 		private String resultString;
 		private Bitmap thumbnail;
 		
-		public AsyncUploadImage(Context context, OnAfterUploadImage onAfterUploadImage,
+		public AsyncUploadImage(String uploadUrl, OnAfterUploadImage onAfterUploadImage,
 				String filePath, int inSampleSize) {
-			this.context = context;
+			this.uploadUrl = uploadUrl;
 			this.onAfterUploadImage = onAfterUploadImage;
 			this.filePath = filePath;
 			this.inSampleSize = inSampleSize;
@@ -93,8 +130,12 @@ public class ImageUploadUtils {
 	            	tempBitmap.compress(CompressFormat.JPEG, 100, out);
 	            }
 	            
-	            resultString = HttpUtil.post(CphConstants.BASE_API_URL + "files/upload/image", 
-	            		tempFile, context);
+	            LogUtils.log("###\n \n \nnAsyncUploadImage.doInBackground.  \nfileSize : " + tempFile.length());
+//	            resultString = HttpUtil.post(CphConstants.BASE_API_URL + "files/upload/image", 
+//	            		tempFile, context);
+	            resultString = HttpUtils.httpPost(uploadUrl, "userfile", tempFile);
+	            LogUtils.log("###\n \n \nAsyncUploadImage.doInBackground.  \nresultString : " + resultString);
+	            
 				tempFile.delete();
 	        } catch(OutOfMemoryError oom) {
 				oom.printStackTrace();

@@ -21,8 +21,8 @@ import com.cmons.cph.wrappers.ViewWrapperForLine;
 import com.cmons.cph.wrappers.ViewWrapperForNotice;
 import com.cmons.cph.wrappers.ViewWrapperForNotification;
 import com.cmons.cph.wrappers.ViewWrapperForOrder;
-import com.cmons.cph.wrappers.ViewWrapperForOrderSetForRetail;
-import com.cmons.cph.wrappers.ViewWrapperForOrderSetForWholesale;
+import com.cmons.cph.wrappers.ViewWrapperForOrderSet;
+import com.cmons.cph.wrappers.ViewWrapperForOrderSetForWholesale2;
 import com.cmons.cph.wrappers.ViewWrapperForProduct;
 import com.cmons.cph.wrappers.ViewWrapperForReply;
 import com.cmons.cph.wrappers.ViewWrapperForSample;
@@ -140,13 +140,13 @@ public class CphAdapter extends BaseAdapter {
 			return R.layout.list_staff;
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
-			return R.layout.list_orderset_wholesale;
+			return R.layout.list_orderset;
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE2:
 			return R.layout.list_orderset_wholesale2;
 			
 		case CphConstants.ITEM_ORDERSET_RETAIL:
-			return R.layout.list_orderset_retail;
+			return R.layout.list_orderset;
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return R.layout.list_account;
@@ -205,13 +205,13 @@ public class CphAdapter extends BaseAdapter {
 			return new ViewWrapperForStaff(convertView, itemCode);
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE:
-			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
+			return new ViewWrapperForOrderSet(convertView, itemCode);
 			
 		case CphConstants.ITEM_ORDERSET_WHOLESALE2:
-			return new ViewWrapperForOrderSetForWholesale(convertView, itemCode);
+			return new ViewWrapperForOrderSetForWholesale2(convertView, itemCode);
 			
 		case CphConstants.ITEM_ORDERSET_RETAIL:
-			return new ViewWrapperForOrderSetForRetail(convertView, itemCode);
+			return new ViewWrapperForOrderSet(convertView, itemCode);
 			
 		case CphConstants.ITEM_ACCOUNT:
 			return new ViewWrapperForAccount(convertView, itemCode);

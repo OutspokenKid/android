@@ -24,13 +24,13 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragment extends BaseFragment {
 
-	public static final int NUMBER_OF_LISTITEMS = 10;
+	public static final int NUMBER_OF_LISTITEMS = 0;
 
 	protected TitleBar titleBar;
 	protected ImageView ivBg;
 	protected String title;
 	
-	protected int pageIndex = 1;
+	protected int pageIndex = 0;
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected CphAdapter adapter;
 	protected String url;
@@ -192,9 +192,32 @@ public abstract class CmonsFragment extends BaseFragment {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 1;
+			pageIndex = 0;
 			models.clear();
 			adapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		downloadInfo();
+	}
+	
+	public void refreshPageWithoutClearItem() {
+		
+		LogUtils.log("###CmonsFragment.refreshPageWithoutClearItem.  ");
+		
+		if(isRefreshing) {
+			return;
+		}
+		
+		try {
+			isRefreshing = true;
+			isDownloading = false;
+			isLastList = false;
+			pageIndex = 0;
+			models.clear();
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

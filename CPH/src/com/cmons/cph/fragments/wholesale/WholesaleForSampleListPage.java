@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
@@ -28,6 +30,8 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Sample;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -60,12 +64,14 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 	private AlphaAnimation aaIn, aaOut;
 	private boolean isAnimating;
 	
+	private Sample selectedSample;
+	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		if(models.size() == 0) {
-			downloadInfo();
+			setMenu(menuIndex);
 		}
 	}
 	
@@ -134,6 +140,8 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -196,7 +204,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView, int position,
 					long id) {
-				showPopup();
+				showPopup((Sample)models.get(position));
 			}
 		});
 		
@@ -213,8 +221,22 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 
 			@Override
 			public void onClick(View view) {
-
-				hidePopup();
+				
+				switch(menuIndex) {
+				
+				case 0:
+					changeStatus(selectedSample.getId(), 1);
+					break;
+				case 1:
+					changeStatus(selectedSample.getId(), 2);
+					break;
+				case 2:
+					changeStatus(selectedSample.getId(), 3);
+					break;
+				case 3:
+					deleteSample(selectedSample.getId());
+					break;
+				}
 			}
 		});
 	}
@@ -357,7 +379,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			
 			int size = arJSON.length();
 			for(int i=0; i<size; i++) {
-				Sample sample = new Sample();
+				Sample sample = new Sample(arJSON.getJSONObject(i));
 				sample.setItemCode(CphConstants.ITEM_SAMPLE);
 				models.add(sample);
 			}
@@ -421,24 +443,26 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		refreshPage();
 	}
 
-	public void showPopup() {
+	public void showPopup(Sample sample) {
 
+		selectedSample = sample;
+		
 		if(isAnimating || popupRelative.getVisibility() == View.VISIBLE) {
 			return;
 		}
 		
-		tvShopName.setText("상호명 : " + "매장이름1");
-		tvOwnerName.setText("대표성함 : " + "대표이름1");
-		tvPhone.setText("연락처 : " + "010-1111-1111");
+		tvShopName.setText("상호명 : " + sample.getRetail_name());
+		tvOwnerName.setText("대표성함 : " + sample.getRetail_owner_name());
+		tvPhone.setText("연락처 : " + sample.getRetail_phone_number());
 		
 		tvSample.setText(null);
 		SpannableStringBuilder sp1 = new SpannableStringBuilder("샘플요청내역\n\n");
 		tvSample.append(sp1);
 		
 		SpannableStringBuilder sp2 = new SpannableStringBuilder(
-				"품명 : " + "티셔츠" +
-				"\n\n색상 : " + "흰색" +
-				"\n\n사이즈 : " + "S"
+				"품명 : " + sample.getProduct_name() +
+				"\n\n색상 : " + sample.getColor() +
+				"\n\n사이즈 : " + sample.getSize()
 				);
 		sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvSample.append(sp2);
@@ -476,6 +500,92 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		popupRelative.startAnimation(aaOut);
 	}
 
+	public void changeStatus(int sample_id, int status) {
+		
+		String url = CphConstants.BASE_API_URL + "wholesales/samples/set_status" + 
+				"?sample_id=" + sample_id + 
+				"&status=" + status;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSampleListPage.changeStatus.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToChangeSampleStatus);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSampleListPage.changeStatus.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						
+						if(menuIndex == 0) {
+							ToastUtils.showToast(R.string.complete_changeSampleStatus1);
+						} else if(menuIndex == 1) {
+							ToastUtils.showToast(R.string.complete_changeSampleStatus2);
+						} else if(menuIndex == 2) {	
+							ToastUtils.showToast(R.string.complete_changeSampleStatus3);
+						}
+						
+						hidePopup();
+						refreshPage();
+					} else {
+						objJSON.getString("message");
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToChangeSampleStatus);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToChangeSampleStatus);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void deleteSample(int sample_id) {
+		
+		//http://cph.minsangk.com/wholesales/samples/delete?sample_id=10001
+		String url = CphConstants.BASE_API_URL + "wholesales/samples/delete" + 
+				"?sample_id=" + sample_id;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSampleListPage.deleteSample.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeleteSample);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSampleListPage.deleteSample.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_deleteSample);
+						hidePopup();
+						refreshPage();
+					} else {
+						objJSON.getString("message");
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeleteSample);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeleteSample);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	@Override
 	public int getBgResourceId() {
 

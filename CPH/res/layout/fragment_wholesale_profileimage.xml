@@ -29,7 +29,7 @@
 	    android:layout_height="0dp"
 	    android:layout_below="@id/profileImagePage_titleBar"
 	    android:scaleType="centerCrop"
-	    android:src="@drawable/picture_default" />
+	    android:background="@drawable/picture_default" />
     
     <!-- 사진 올리기. -->
     
@@ -50,7 +50,5 @@
         android:text="@string/shopProfileImageDescription"
         android:textColor="#fff"
         android:gravity="center_vertical" />
-    
-    
     
 </RelativeLayout>

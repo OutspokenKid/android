@@ -52,6 +52,10 @@ public class TitleBar extends RelativeLayout {
 	}
 	
 	public void init() {
+
+		if(this.getChildCount() != 0) {
+			return;
+		}
 		
 		RelativeLayout.LayoutParams rp = null;
 		

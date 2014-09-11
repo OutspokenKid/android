@@ -21,6 +21,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Account;
 import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.models.Wholesale;
@@ -120,8 +121,6 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 		SpannableStringBuilder sp3 = new SpannableStringBuilder(
 				"(청평화몰 " + orderSet.getWholesale_location() + ")");
 		tvOrder.append(sp3);
-		
-		tvAccount.setText("결제방식 : 무통장입금\n국민은행(홍길동)123-12-11234151");
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
@@ -327,6 +326,29 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 
 					if(objJSON.has("wholesale")) {
 						wholesale = new Wholesale(objJSON.getJSONObject("wholesale"));
+						
+						String accountString = "결제방식 : ";
+						
+						if(orderSet.getPayment_type() == 1) {
+							accountString += "무통장입금";
+
+							if(wholesale.getAccounts() != null) {
+
+								for(Account account : wholesale.getAccounts()) {
+									
+									if(account.getId() == orderSet.getPayment_account_id()) {
+										accountString += "\n" + account.getBank() + 
+												" " + account.getNumber() + 
+												"(" + account.getDepositor() + ")";
+									}
+								}
+							}
+						} else {
+							accountString += "사입자대납" +
+									"\n" + orderSet.getPayment_purchaser_info();
+						}
+						
+						tvAccount.setText(accountString);
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -375,7 +397,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_changeOrderStatus);
+						ToastUtils.showToast(R.string.complete_changeOrderStatus1);
 						mActivity.closeTopPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));

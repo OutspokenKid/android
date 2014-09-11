@@ -1,12 +1,16 @@
 package com.cmons.cph.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Customer extends BaseModel {
+public class Customer extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = -3977469842607329854L;
+	
 	private int id;
 	private int wholesale_id;
 	private int retail_id;

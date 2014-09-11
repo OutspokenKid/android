@@ -105,11 +105,17 @@
             
             <!-- 상품명 -->
             
+            <com.cmons.cph.views.PageNavigatorView
+                android:id="@+id/productPage_pageNavigatorView"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/productPage_viewPager" />
+            
             <TextView
 		        android:id="@+id/productPage_tvName"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/productPage_viewPager"
+		        android:layout_below="@id/productPage_pageNavigatorView"
 		        android:text="@string/productName"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />

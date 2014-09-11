@@ -91,6 +91,7 @@
 	    android:gravity="center"
 	    android:visibility="invisible"
 	    android:background="@drawable/retail_txt_box"
+	    android:singleLine="true"
 	    android:hint="@string/agentName"
 	    android:textColorHint="#222"
     	android:textColor="#000" />
@@ -104,6 +105,7 @@
 	    android:gravity="center"
 	    android:visibility="invisible"
 	    android:background="@drawable/retail_txt_box2"
+	    android:singleLine="true"
 	    android:hint="@string/agentPhone"
 	    android:textColorHighlight="#eee"
     	android:textColor="#fff" android:inputType="phone"/>

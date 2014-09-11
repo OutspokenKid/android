@@ -2,6 +2,8 @@ package com.cmons.cph.fragments.retail;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.json.JSONArray;
@@ -299,9 +301,26 @@ public class RetailForAddPartner extends CmonsFragmentForRetail {
 						floor.lines.add(line);
 					}
 					
+					Collections.sort(floor.lines, new Comparator<Line>(){
+
+						@Override
+						public int compare(Line l1, Line l2) {
+				            return l1.lineName.compareToIgnoreCase(l2.lineName);
+						}
+				    });
+					
 					floor.setItemCode(CphConstants.ITEM_FLOOR);
 					floors.add(floor);
 				}
+				
+				Collections.sort(floors, new Comparator<Floor>(){
+
+					@Override
+					public int compare(Floor f1, Floor f2) {
+			            return f1.floorName.compareToIgnoreCase(f2.floorName);
+					}
+			    });
+
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (OutOfMemoryError oom) {
@@ -310,7 +329,7 @@ public class RetailForAddPartner extends CmonsFragmentForRetail {
 		} else {
 			try {
 				JSONArray arJSON = null;
-				arJSON = objJSON.getJSONArray("customers");
+				arJSON = objJSON.getJSONArray("wholesales");
 				
 				int size = arJSON.length();
 				
@@ -376,27 +395,28 @@ public class RetailForAddPartner extends CmonsFragmentForRetail {
 		super.downloadInfo();
 	}
 
+	//retails/search/phone_number?keyword=010-3993-7001
 	public void searchShop(int searchType, String keyword) {
 		
-		url = CphConstants.BASE_API_URL + "retails/customers";
+		url = CphConstants.BASE_API_URL + "wholesales/search/";
 		
 		try {
 			switch(searchType) {
 			
 			case SEARCH_TYPE_NAME:
-				url += "?name=";
+				url += "name";
 				break;
 				
 			case SEARCH_TYPE_PHONE:
-				url += "?phone_number=";
+				url += "phone_number";
 				break;
 				
 			case SEARCH_TYPE_LOCATION:
-				url += "?location=";
+				url += "location";
 				break;
 			}
 			
-			url += keyword + "&num=0";
+			url += "?keyword=" + keyword + "&num=0";
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

@@ -257,7 +257,7 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_etPhone"
 	            android:hint="@string/hintForCertification"
-	            android:inputType="text"
+	            android:inputType="phone"
 	            android:textColor="#000"
 	            android:textColorHint="#ccc"
 	            android:singleLine="true"

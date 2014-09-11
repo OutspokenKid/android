@@ -83,7 +83,8 @@ public class ViewWrapperForOrderSetForWholesale2 extends ViewWrapper {
 				}
 
 				tvName.setText(orderSetString);
-				tvRegdate.setText(StringUtils.getDateString("yyyy.MM.dd", orderSet.getItems()[0].getCreated_at()*1000));
+				tvRegdate.setText(StringUtils.getDateString("yyyy.MM.dd aa hh:mm", 
+						orderSet.getItems()[0].getCreated_at()*1000));
 				tvPrice.setText(StringUtils.getFormattedNumber(orderSet.getSum()) + "원");
 			} else {
 				setUnusableView();

@@ -106,6 +106,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/wholesaleOrderPage_tvSoldOut"
 	    android:layout_above="@id/wholesaleOrderPage_tvAccount"
-	    android:layout_alignParentLeft="true" />
+	    android:layout_alignParentLeft="true" 
+	    android:cacheColorHint="#0000" />
     
 </RelativeLayout>

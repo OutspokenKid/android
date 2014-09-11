@@ -85,7 +85,8 @@
 	    android:id="@+id/wholesaleSamplePage_listView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/wholesaleSamplePage_editText" />
+	    android:layout_below="@id/wholesaleSamplePage_editText"
+	    android:cacheColorHint="#0000" />
 	
 	<RelativeLayout
 	    android:id="@+id/wholesaleSamplePage_popupRelative"

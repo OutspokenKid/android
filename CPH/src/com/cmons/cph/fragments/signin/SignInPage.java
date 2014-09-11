@@ -74,7 +74,10 @@ public class SignInPage extends CmonsFragment {
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(10, ResizeUtils.getSpecificLength(110));
 		rp.addRule(RelativeLayout.BELOW, R.id.signInPage_btnFindId);
 		bottomBlank.setLayoutParams(rp);
-		((RelativeLayout) mThisView.findViewById(R.id.signInPage_relative)).addView(bottomBlank);
+		
+		if(((RelativeLayout) mThisView.findViewById(R.id.signInPage_relative)).getChildCount() == 0) {
+			((RelativeLayout) mThisView.findViewById(R.id.signInPage_relative)).addView(bottomBlank);
+		}
 	}
 
 	@Override

@@ -1,11 +1,15 @@
 package com.cmons.cph.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Order extends BaseModel {
+public class Order extends BaseModel implements Serializable {
+	
+	private static final long serialVersionUID = -5278048036609739736L;
 	
 	//-1: 주문취소, 0: 주문요청, 1: 입금대기, 2: 입금완료, 3: 거래완료
 	public static final int STATUS_CANCELED = -1;
@@ -28,6 +32,7 @@ public class Order extends BaseModel {
 	private long created_at;
 	private String product_name;
 	private long product_price;
+	private int product_status;
 	
 	private boolean checked = true;
 	
@@ -92,6 +97,10 @@ public class Order extends BaseModel {
 			
 			if(objJSON.has("product_price")) {
 				this.product_price = objJSON.getLong("product_price");
+			}
+			
+			if(objJSON.has("product_status")) {
+				this.product_status = objJSON.getInt("product_status");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -218,5 +227,13 @@ public class Order extends BaseModel {
 
 	public void setProduct_price(long product_price) {
 		this.product_price = product_price;
+	}
+
+	public int getProduct_status() {
+		return product_status;
+	}
+
+	public void setProduct_status(int product_status) {
+		this.product_status = product_status;
 	}
 }

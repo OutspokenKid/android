@@ -244,7 +244,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 1;
+			pageIndex = 0;
 			models.clear();
 			adapter.notifyDataSetChanged();
 			

@@ -5,6 +5,8 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +48,7 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		super.onResume();
 		
 		if(models.size() == 0) {
-			downloadInfo();
+			setMenu(menuIndex);
 		}
 	}
 	
@@ -68,6 +70,9 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	@Override
 	public void setVariables() {
 
+		if(getArguments() != null) {
+			menuIndex = getArguments().getInt("menuIndex");
+		}
 		title = "주문내역";
 	}
 
@@ -76,8 +81,18 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
+		if(menuIndex == 0) {
+			btnOnGoing.setBackgroundResource(R.drawable.order_progressing_btn_a);
+			btnFinished.setBackgroundResource(R.drawable.order_complete_btn_b);
+		} else {
+			btnOnGoing.setBackgroundResource(R.drawable.order_progressing_btn_b);
+			btnFinished.setBackgroundResource(R.drawable.order_complete_btn_a);
+		}
+		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 	}
 
 	@Override
@@ -224,6 +239,12 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		super.downloadInfo();
 	}
 
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.order_bg;
+	}
+	
 //////////////////// Custom classes.
 	
 	public void setMenu(int menuIndex) {
@@ -238,12 +259,10 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		
 		this.menuIndex = menuIndex;
 		
+		if(getArguments() != null) {
+			getArguments().putInt("menuIndex", menuIndex);
+		}
+		
 		refreshPage();
-	}
-
-	@Override
-	public int getBgResourceId() {
-
-		return R.drawable.order_bg;
 	}
 }

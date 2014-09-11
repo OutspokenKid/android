@@ -1,6 +1,7 @@
 package com.cmons.cph.wrappers;
 
 import android.graphics.Color;
+import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,15 +15,14 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
-public class ViewWrapperForOrderSetForRetail extends ViewWrapper {
+public class ViewWrapperForOrderSet extends ViewWrapper {
 	
 	private OrderSet orderSet;
 	
-	public TextView tvRegdate;
-	public TextView tvName;
+	public TextView tvLeft;
 	public TextView tvRight;
 	
-	public ViewWrapperForOrderSetForRetail(View row, int itemCode) {
+	public ViewWrapperForOrderSet(View row, int itemCode) {
 		super(row, itemCode);
 	}
 
@@ -30,9 +30,8 @@ public class ViewWrapperForOrderSetForRetail extends ViewWrapper {
 	public void bindViews() {
 
 		try {
-			tvRegdate = (TextView) row.findViewById(R.id.list_orderset_retail_tvRegdate);
-			tvName = (TextView) row.findViewById(R.id.list_orderset_retail_tvName);
-			tvRight = (TextView) row.findViewById(R.id.list_orderset_retail_tvRight);
+			tvLeft = (TextView) row.findViewById(R.id.list_orderset_tvLeft);
+			tvRight = (TextView) row.findViewById(R.id.list_orderset_tvRight);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -44,19 +43,14 @@ public class ViewWrapperForOrderSetForRetail extends ViewWrapper {
 
 		try {
 			int p = ResizeUtils.getSpecificLength(30);
+			int p2 = ResizeUtils.getSpecificLength(15);
+			tvLeft.setPadding(p, p2, 0, p2);
+			tvRight.setPadding(0, p2, p, p2);
+			tvLeft.setLineSpacing(0, 1.2f);
+			tvRight.setLineSpacing(0, 1.2f);
 			
-			tvRegdate.getLayoutParams().height = ResizeUtils.getSpecificLength(45);
-			tvRegdate.setPadding(p, 0, 0, 0);
-			
-			tvName.getLayoutParams().height = ResizeUtils.getSpecificLength(55);
-			tvName.setPadding(p, 0, 0, 0);
-			tvRight.setPadding(0, 0, p, 0);
-			
-			FontUtils.setFontSize(tvRegdate, 20);
-			FontUtils.setFontSize(tvName, 34);
-			FontUtils.setFontSize(tvRight, 28);
-			
-			FontUtils.setFontStyle(tvName, FontUtils.BOLD);
+			FontUtils.setFontSize(tvLeft, 30);
+			FontUtils.setFontSize(tvRight, 30);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -71,20 +65,23 @@ public class ViewWrapperForOrderSetForRetail extends ViewWrapper {
 				
 				orderSet = (OrderSet) baseModel;
 
-				String dateString = StringUtils.getDateString(
-						"yyyy년 MM월 dd일 aa hh:mm", 
-						orderSet.getItems()[0].getCreated_at() * 1000);
-				tvRegdate.setText(dateString);
-				
-				String nameString = orderSet.getItems()[0].getProduct_name();
+				String leftString = orderSet.getItems()[0].getProduct_name();
 				
 				if(orderSet.getItems().length > 1) {
-					nameString += " 외 " + (orderSet.getItems().length - 1) + "건";
+					leftString += " 외 " + (orderSet.getItems().length - 1) + "건";
 				}
 				
-				tvName.setText(nameString);
+				tvLeft.setText(Html.fromHtml(
+						"<B>" + orderSet.getRetail_name() + "</B><BR>" +
+						leftString));
 
 				tvRight.setText(null);
+				
+				String dateString = StringUtils.getDateString(
+						"yyyy.MM.dd\n", 
+						orderSet.getItems()[0].getCreated_at() * 1000);
+				FontUtils.addSpan(tvRight, dateString, 0, 0.7f);
+				
 				switch(orderSet.getStatus()) {
 				
 				case Order.STATUS_CANCELED:

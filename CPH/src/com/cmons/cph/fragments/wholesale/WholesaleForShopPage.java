@@ -8,11 +8,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
-import com.cmons.cph.WholesaleActivity;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
@@ -35,12 +33,19 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	private int customerType = 0;
 	private int categoryIndex = 0;
 	private int order = 0;
+	private int totalCount;
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		downloadInfo();
+		if(headerView != null) {
+			headerView.checkProfile();
+		}
+		
+		if(models.size() == 0) {
+			downloadInfo();
+		}
 	}
 	
 	@Override
@@ -71,7 +76,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		
 		headerView = new HeaderViewForWholesaleShop(mContext);
-		headerView.init((WholesaleActivity)mActivity);
+		headerView.init(getWholesale());
+		headerView.setTotalProduct(totalCount);
 		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		headerView.setLayoutParams(al);
 		gridView.addHeaderView(headerView);
@@ -83,31 +89,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
-
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, 
-					int visibleItemCount, int totalItemCount) {
-				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
-			}
-		});
-		
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-
-				getActivity().getSupportFragmentManager().popBackStack();
-			}
-		});
 		
 		titleBar.getBtnAdd().setOnClickListener(new OnClickListener() {
 
@@ -249,7 +230,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
-			} else if(pageIndex == 1 && size == 0) {
+			} else if(pageIndex == 0 && size == 0) {
 				BaseModel emptyModel1 = new BaseModel() {};
 				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel1);
@@ -258,8 +239,11 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				emptyModel2.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel2);
 			}
+			
+			totalCount = size;
+			headerView.setTotalProduct(totalCount);
 
-			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
+			if(size < NUMBER_OF_LISTITEMS) {
 				return true;
 			}
 		} catch (Exception e) {

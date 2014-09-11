@@ -13,9 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.WholesaleActivity;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CphConstants;
-import com.outspoken_kid.classes.ViewUnbindHelper;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -25,8 +25,8 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class HeaderViewForWholesaleShop extends RelativeLayout {
 
 	private static int madeCount = 880627;
-	
-	private WholesaleActivity activity; 
+
+	private Wholesale wholesale;
 	
 	private ImageView ivImage;
 	private TextView tvPhoneNumber;
@@ -45,6 +45,8 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	private TextView tvTotalProduct;
 	private View totalProductIcon;
 	
+	private String profileUrl; 
+	
 	public HeaderViewForWholesaleShop(Context context) {
 		this(context, null, 0);
 	}
@@ -57,9 +59,9 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		super(context, attrs, defStyle);
 	}
 	
-	public void init(WholesaleActivity activity) {
+	public void init(Wholesale wholesale) {
 
-		this.activity = activity;
+		this.wholesale = wholesale;
 		
 		createViews();
 		setListeners();
@@ -309,14 +311,14 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	public void setValues() {
 
 		try {
-			if(activity != null) {
-				tvPhoneNumber.setText(activity.wholesale.getPhone_number());
-				tvLocation.setText("청평화몰 " + activity.wholesale.getLocation());
-				tvHit.setText(activity.wholesale.getToday_visited_cnt() + 
-						" / " + activity.wholesale.getTotal_visited_cnt());
-				tvLike.setText("" + activity.wholesale.getFavorited_cnt());
-				tvPartner.setText("" + activity.wholesale.getCustomers_cnt());
-				tvTotalProduct.setText("총 등록 상품 " + activity.wholesale.getProducts_cnt());
+			if(wholesale != null) {
+				tvPhoneNumber.setText(wholesale.getPhone_number());
+				tvLocation.setText("청평화몰 " + wholesale.getLocation());
+				tvHit.setText(wholesale.getToday_visited_cnt() + 
+						" / " + wholesale.getTotal_visited_cnt());
+				tvLike.setText("" + wholesale.getFavorited_cnt());
+				tvPartner.setText("" + wholesale.getCustomers_cnt());
+				tvTotalProduct.setText("총 등록 상품 " + wholesale.getProducts_cnt());
 				
 				btnCustomerType.setText("모두공개");
 				btnCategoryIndex.setText("전체");
@@ -333,20 +335,22 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 
 	public void downloadProfile() {
 		
-		ivImage.setTag(activity.wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(activity.wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		ivImage.setImageDrawable(null);
+		profileUrl = wholesale.getRep_image_url();
+		ivImage.setTag(wholesale.getRep_image_url());
+		DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("HeaderViewForShop.onError." + "\nurl : " + url);
+				LogUtils.log("HeaderViewForWholesaleShop.onError." + "\nurl : " + url);
 			}
 
 			@Override
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					LogUtils.log("HeaderViewForShop.onCompleted." + "\nurl : " + url);
+					LogUtils.log("HeaderViewForWholesaleShop.onCompleted." + "\nurl : " + url);
 					if(ivImage != null) {
 						ivImage.setImageBitmap(bitmap);
 					}
@@ -366,8 +370,8 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 			@Override
 			public void onClick(View view) {
 
-				if(activity != null) {
-					activity.showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
+				if(wholesale != null) {
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
 				}
 			}
 		});
@@ -391,6 +395,25 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	public void setTotalProduct(int totalProduct) {
 		
 		tvTotalProduct.setText("총 등록 상품 " +  totalProduct);
+	}
+
+	
+	public void checkProfile() {
+
+		try {
+			LogUtils.log("###HeaderViewForWholesaleShop.checkProfile.  " +
+					"\nprofileUrl : " + profileUrl +
+					"\nwholesale.url : " + wholesale.getRep_image_url());
+			
+			if(!profileUrl.equals(wholesale.getRep_image_url())) {
+				ivImage.setImageDrawable(null);
+				downloadProfile();
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }
 

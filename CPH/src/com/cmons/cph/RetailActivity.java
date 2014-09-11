@@ -3,6 +3,7 @@ package com.cmons.cph;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 
 import com.cmons.cph.classes.CmonsFragment;
@@ -30,9 +31,9 @@ import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 
 public class RetailActivity extends ShopActivity {
@@ -171,74 +172,121 @@ public class RetailActivity extends ShopActivity {
 		return null;
 	}
 	
-	/**
-	 * id : push id. 
-	 * receiver_id : 받는 사람의 id.
-	 * message : 유저에게 보여줄 메세지.
-	 * uri : 연결할 uri.
-	 * created_at : 생성된 시간.
-	 * pushed_at : 보내진 시간.
-	 * read_at : 유저가 읽은 시간.
-	 */
 	@Override
 	public void handleUri(Uri uri) {
 
-		try {
-			String scheme = uri.getScheme();
-			String host = uri.getHost();
-			String url = host + uri.getPath();
+		String url = uri.getHost() + uri.getPath();
+		
+		LogUtils.log("###RetailActivity.handleIntent.clickOK " +
+				"\nurl : " + url);
+		
+		//상품 상태값 변경 (거래완료)
+		if(url.equals("retails/orders")) {
+			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, null);
 			
-			LogUtils.log("WholesaleActivity.actionByUri. ========" +
-					"\nuri : " + uri + 
-					"\nscheme : "+ scheme +
-					"\nhost : " + host + 
-					"\nurl : " + url);
+		//상품 댓글 대댓글 작성
+		} else if(url.equals("products/replies")) {
+			int product_id = Integer.parseInt(uri.getQueryParameter("product_id"));
+			Bundle bundle = new Bundle();
+			bundle.putInt("product_id", product_id);
+			showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
 			
-			if(scheme.equals("http")||scheme.equals("https")) {
-				IntentUtils.showDeviceBrowser(this, url);
-				
-			} else if(scheme.equals("market") || scheme.equals("tstore")) {
-				IntentUtils.showMarket(this, uri);
-				
-			} else if(scheme.equals("cph")) {
-				
-				//상품 상태값 변경 (거래완료)
-				if(url.equals("cph://retails/orders")) {
-					
-				//상품 댓글 대댓글 작성
-				} else if(url.equals("cph://products/replies?product_id=100001&post_id=2")) {
-					
-				//전체 공지 작성 (need_push:1)
-				} else if(url.equals("cph://notices")) {
-					
-				//도매 공지 작성 (need_push:1)
-				} else if(url.equals("cph://wholesales/notices?wholesale_id=1&post_id=1")) {
-					
-				//상품 등록
-				} else if(url.equals("cph://products?wholesale_id=1")) {
-					
-				//샘플 상태값 변경 (반납요청)
-				} else if(url.equals("cph://retails/samples")) {
-					
-				//직원 상태값 변경 (승인)
-				} else if(url.equals("cph://home")) {
-					
-				//직원 상태값 변경 (거절)
-				} else if(url.equals("cph://home")) {
-					
-				//거래처 승인
-				} else if(url.equals("cph://retails/customers")) {
-					
-				//거래처 삭제
-				} else if(url.equals("cph://retails/customers")) {
-					
-				//회원가입
-				} else if(url.equals("cph://users/staffs")) {
-					
-				}
-			}
-		} catch(Exception e) {
-			LogUtils.trace(e);
+		//전체 공지 작성 (need_push:1)
+		} else if(url.equals("notices")) {
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("isAppNotice", true);
+			bundle.putBoolean("isOurNotice", false);
+			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+			
+		//도매 공지 작성 (need_push:1)
+		} else if(url.equals("wholesales/notices")) {
+			int wholesale_id = Integer.parseInt(uri.getQueryParameter("wholesale_id"));
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("isAppNotice", false);
+			bundle.putBoolean("isOurNotice", false);
+			bundle.putInt("wholesale_id", wholesale_id);
+			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+			
+		//상품 등록
+		} else if(url.equals("products")) {
+			int wholesale_id = Integer.parseInt(uri.getQueryParameter("wholesale_id"));
+			String wholesaleInfoUrl = CphConstants.BASE_API_URL + "wholesales/show" +
+					"?wholesale_id=" + wholesale_id;
+			
+			DownloadUtils.downloadJSONString(wholesaleInfoUrl,
+					new OnJSONDownloadListener() {
+
+						@Override
+						public void onError(String url) {
+
+							LogUtils.log("RetailActivity.handleIntent.onError."
+									+ "\nurl : " + url);
+
+						}
+
+						@Override
+						public void onCompleted(String url,
+								JSONObject objJSON) {
+
+							try {
+								LogUtils.log("RetailActivity.handleIntent.onCompleted."
+										+ "\nurl : "
+										+ url
+										+ "\nresult : "
+										+ objJSON);
+
+								if(objJSON.getInt("result") == 1) {
+									Wholesale wholesale = new Wholesale(objJSON.getJSONObject("wholesale"));
+									Bundle bundle = new Bundle();
+									bundle.putSerializable("wholesale", wholesale);
+									showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
+			
+		//샘플 상태값 변경 (반납요청)
+		} else if(url.equals("retails/samples")) {
+			//Do nothing.
+			
+		//직원 상태값 변경 (승인)
+		} else if(url.equals("home")) {
+			//Do nothing.
+			
+		//직원 상태값 변경 (거절)
+		} else if(url.equals("home")) {
+			//Do nothing.
+			
+		//거래처 승인
+		} else if(url.equals("retails/customers")) {
+			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, null);
+			
+		//거래처 삭제
+		} else if(url.equals("retails/customers")) {
+			//Do nothing.
+			
+		//회원가입
+		} else if(url.equals("users/staffs")) {
+			showPage(CphConstants.PAGE_COMMON_STAFF, null);
+		}
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("retail", retail);
+	}
+	
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		
+		if(savedInstanceState != null) {
+			retail = (Retail) savedInstanceState.getSerializable("retail");
 		}
 	}
 	
@@ -284,8 +332,10 @@ public class RetailActivity extends ShopActivity {
 	
 	public void checkDownload() {
 		
-		if(categories != null && categories.length > 0
-				&& retail != null) {
+		if(categories != null 
+				&& categories.length > 0
+				&& retail != null
+				&& getFragmentsSize() == 0) {
 			showPage(CphConstants.PAGE_RETAIL_MAIN, null);
 		} else {
 			new Handler().postDelayed(new Runnable() {

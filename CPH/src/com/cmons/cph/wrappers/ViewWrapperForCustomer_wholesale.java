@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.ViewWrapper;
-import com.cmons.cph.models.Retail;
+import com.cmons.cph.models.Customer;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -14,7 +14,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ViewWrapperForCustomer_wholesale extends ViewWrapper {
 	
-	private Retail retail;
+	private Customer customer;
 
 	private View icon;
 	private TextView tvInfo;
@@ -60,11 +60,11 @@ public class ViewWrapperForCustomer_wholesale extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			if(baseModel instanceof Retail) {
-				retail = (Retail) baseModel;
-				tvInfo.setText(retail.getName() + "(" + retail.getOwner_name() + ")");
+			if(baseModel instanceof Customer) {
+				customer = (Customer) baseModel;
+				tvInfo.setText(customer.getName() + "(" + customer.getOwner_name() + ")");
 				
-				if(retail.getMall_url() == null) {
+				if(customer.getMall_url() == null) {
 					icon.setBackgroundResource(R.drawable.offline_shop_icon);
 				} else {
 					icon.setBackgroundResource(R.drawable.online_shop_icon);

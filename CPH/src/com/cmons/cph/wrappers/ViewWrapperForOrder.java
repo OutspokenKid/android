@@ -1,18 +1,28 @@
 package com.cmons.cph.wrappers;
 
+import org.json.JSONObject;
+
+import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
+import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
 import com.cmons.cph.models.Order;
+import com.cmons.cph.models.Product;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForOrder extends ViewWrapper {
 	
@@ -43,15 +53,19 @@ public class ViewWrapperForOrder extends ViewWrapper {
 	public void setSizes() {
 
 		try {
-			tvOrder.getLayoutParams().height = ResizeUtils.getSpecificLength(100);
+			RelativeLayout.LayoutParams rp = null;
+			
+			rp = (RelativeLayout.LayoutParams) tvOrder.getLayoutParams();
+			rp.height = ResizeUtils.getSpecificLength(100);
+			rp.rightMargin = ResizeUtils.getSpecificLength(100);
 			FontUtils.setFontSize(tvOrder, 30);
 			tvOrder.setPadding(ResizeUtils.getSpecificLength(20), 0, 
-					ResizeUtils.getSpecificLength(180), 0);
+					ResizeUtils.getSpecificLength(20), 0);
 			
 			FontUtils.setFontSize(tvPrice, 30);
 			tvPrice.setPadding(0, 0, ResizeUtils.getSpecificLength(20), 0);
 
-			RelativeLayout.LayoutParams rp = null;
+			
 			rp = (RelativeLayout.LayoutParams) checkbox.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(44);
 			rp.height = ResizeUtils.getSpecificLength(43);
@@ -74,9 +88,10 @@ public class ViewWrapperForOrder extends ViewWrapper {
 					tvOrder.setText(order.getProduct_name() + " / " +
 							order.getSize() + " / " +
 							order.getColor() + " / " + 
-							order.getAmount() + "장");
+							order.getAmount());
 					tvPrice.setText(null);
 					checkbox.setVisibility(View.VISIBLE);
+					
 					if(order.isChecked()) {
 						checkbox.setBackgroundResource(R.drawable.order_check_box_b);
 					} else {
@@ -102,11 +117,99 @@ public class ViewWrapperForOrder extends ViewWrapper {
 	@Override
 	public void setListeners() {
 		
+		row.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(order.getStatus() != 0) {
+					return;
+				}
+				
+				order.setChecked(!order.isChecked());
+
+				if(ShopActivity.getInstance().getTopFragment() instanceof WholesaleForOrderPage) {
+					
+					long addedPrice = 0;
+					
+					//추가된 경우.
+					if(order.isChecked()) {
+						addedPrice = order.getProduct_price() * order.getAmount();
+						checkbox.setBackgroundResource(R.drawable.order_check_box_b);
+					//삭제된 경우.
+					} else {
+						addedPrice = -order.getProduct_price() * order.getAmount();
+						checkbox.setBackgroundResource(R.drawable.order_check_box_a);
+					}
+					
+					((WholesaleForOrderPage)ShopActivity.getInstance().getTopFragment()).addToTotalPrice(addedPrice);
+				}
+			}
+		});
+		
+		tvOrder.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				LogUtils.log("###ViewWrapperForOrder.row.onClick.  ");
+				
+				String url = CphConstants.BASE_API_URL + "products/show" +
+						"?product_id=" + order.getProduct_id();
+				DownloadUtils.downloadJSONString(url,
+						new OnJSONDownloadListener() {
+
+							@Override
+							public void onError(String url) {
+
+								LogUtils.log("ViewWrapperForOrder.onError." + "\nurl : " + url);
+
+							}
+
+							@Override
+							public void onCompleted(String url,
+									JSONObject objJSON) {
+
+								try {
+									LogUtils.log("ViewWrapperForOrder.onCompleted."
+											+ "\nurl : " + url + "\nresult : "
+											+ objJSON);
+
+									if(objJSON.getInt("result") == 1) {
+										showProductPage(new Product(objJSON.getJSONObject("product")));
+									} else {
+										ToastUtils.showToast(objJSON.getString("message"));
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						});
+			}
+		});
 	}
 	
 	@Override
 	public void setUnusableView() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void showProductPage(Product product) {
+		
+		LogUtils.log("###ViewWrapperForOrder.showProductPage.  ");
+		
+		try {
+			Bundle bundle = new Bundle();
+			bundle.putSerializable("product", product);
+			bundle.putBoolean("isWholesale", (ShopActivity.getInstance().user.getWholesale_id() != 0? true : false));
+			ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }

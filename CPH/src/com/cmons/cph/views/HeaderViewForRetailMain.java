@@ -345,9 +345,9 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
 			needPlay = true;
 			
-			if(!isPlaying) {
-				playPager();
-			}
+//			if(!isPlaying) {
+//				playPager();
+//			}
 			
 			return;
 		}
@@ -461,6 +461,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					viewPager.setCurrentItem((position + 1) % wholesales.size(), true);
 				}
 				
+				
 				playPager();
 			}
 		}, 3000);
@@ -487,12 +488,14 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		}
 
 		@Override
-		public Object instantiateItem(ViewGroup container, final int position) {
+		public Object instantiateItem(ViewGroup container, int position) {
 
-			final String imageUrl = wholesales.get(position).getRep_image_url();
-
-			LogUtils.log("###HeaderViewForRetailMain.instantiateItem.  position : "
-					+ position + ", url : " + imageUrl);
+			final int index = position % wholesales.size();
+			final String imageUrl = wholesales.get(index).getRep_image_url();
+			
+			LogUtils.log("###HeaderViewForRetailMain.instantiateItem.  " +
+					"index : " + index + 
+					", url : " + imageUrl);
 
 			final ImageView ivImage = new ImageView(getContext());
 			ivImage.setScaleType(ScaleType.CENTER_CROP);
@@ -503,7 +506,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 					if(activity != null) {
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("wholesale", wholesales.get(position));
+						bundle.putSerializable("wholesale", wholesales.get(index));
 						activity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
 					}
 				}
@@ -528,7 +531,16 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 									LogUtils.log("instantiateItem.onCompleted."
 											+ "\nurl : " + url);
 									
-									if(StringUtils.isEmpty(url)) {
+									if(bitmap == null) {
+										LogUtils.log("###instantiateItem.onCompleted.  bitmap is null.");
+										return;
+									}
+									
+									if(bitmap.isRecycled()) {
+										LogUtils.log("###instantiateItem.onCompleted.  bitmap is recycled.");
+									}
+									
+									if(!StringUtils.isEmpty(url)) {
 										ivImage.setImageBitmap(bitmap);
 									}
 								} catch (Exception e) {
@@ -538,7 +550,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 								}
 							}
 						});
-
 			}
 			
 			return ivImage;

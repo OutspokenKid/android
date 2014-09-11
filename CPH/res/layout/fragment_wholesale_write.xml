@@ -340,6 +340,7 @@
             android:id="@+id/wholesaleWritePage_listView"
             android:layout_width="match_parent"
         	android:layout_height="match_parent"
+        	android:cacheColorHint="#0000"
         	android:layout_below="@id/wholesaleWritePage_etAdd" />
         
     </RelativeLayout>

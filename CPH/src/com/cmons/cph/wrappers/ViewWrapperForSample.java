@@ -11,6 +11,7 @@ import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForSample extends ViewWrapper {
 	
@@ -59,8 +60,13 @@ public class ViewWrapperForSample extends ViewWrapper {
 		
 		try {
 			if(baseModel instanceof Sample) {
-				tvSample.setText("매장이름(대표이름) - 티셔츠(흰색, S)");
+				sample = (Sample) baseModel;
+				
+				tvSample.setText(sample.getRetail_name() + " - " + 
+						sample.getProduct_name() + 
+						" (" + sample.getSize() + ", " + sample.getColor() + ")");
 			} else {
+				ToastUtils.showToast("2");
 				setUnusableView();
 			}
 		} catch(Exception e) {

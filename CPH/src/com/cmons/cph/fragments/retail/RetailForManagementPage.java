@@ -78,18 +78,16 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 
-		if(retail != null) {
-			tvName.setText(retail.getName());
-			tvReg.setText(retail.getCorp_reg_number());
-			tvOwnerName.setText(retail.getOwner_name());
-			tvPhone.setText(retail.getPhone_number());
-			tvAddress.setText(retail.getAddress());
-			
-			if(StringUtils.isEmpty(retail.getMall_url())) {
-				icon.setBackgroundResource(R.drawable.offline_shop_icon);
-			} else {
-				icon.setBackgroundResource(R.drawable.online_shop_icon);
-			}
+		tvName.setText(getRetail().getName());
+		tvReg.setText(getRetail().getCorp_reg_number());
+		tvOwnerName.setText(getRetail().getOwner_name());
+		tvPhone.setText(getRetail().getPhone_number());
+		tvAddress.setText(getRetail().getAddress());
+		
+		if(StringUtils.isEmpty(getRetail().getMall_url())) {
+			icon.setBackgroundResource(R.drawable.offline_shop_icon);
+		} else {
+			icon.setBackgroundResource(R.drawable.online_shop_icon);
 		}
 	}
 
@@ -375,7 +373,7 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_changePhoneNumber);
-							retail.setPhone_number(phoneNumber);
+							getRetail().setPhone_number(phoneNumber);
 							tvPhone.setText(phoneNumber);
 							SoftKeyboardUtils.hideKeyboard(mContext, tvPhone);
 						} else {
@@ -423,7 +421,7 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 						if (objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_changeAddress);
-							retail.setAddress(address);
+							getRetail().setAddress(address);
 							tvAddress.setText(address);
 							SoftKeyboardUtils.hideKeyboard(mContext, tvAddress);
 						} else {
@@ -471,7 +469,7 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 						if (objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_changeRegistration);
-							retail.setCorp_reg_number(reg);
+							getRetail().setCorp_reg_number(reg);
 							tvReg.setText(reg);
 							SoftKeyboardUtils.hideKeyboard(mContext, tvReg);
 						} else {

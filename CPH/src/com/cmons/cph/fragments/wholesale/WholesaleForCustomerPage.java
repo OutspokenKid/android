@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -18,8 +21,8 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Customer;
 import com.cmons.cph.models.OrderSet;
-import com.cmons.cph.models.Retail;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -40,7 +43,7 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 	private ListView listView;
 	private Button btnCancel;
 
-	private Retail retail;
+	private Customer customer;
 	
 	@Override
 	public void onResume() {
@@ -71,7 +74,7 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 	public void setVariables() {
 
 		if(getArguments() != null) {
-			retail = (Retail) getArguments().getSerializable("retail");
+			customer = (Customer) getArguments().getSerializable("customer");
 		}
 		
 		title = "거래처 정보";
@@ -84,16 +87,18 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.WHITE));
+		listView.setDividerHeight(1);
 
-		tvShopName.setText(retail.getName());
-		tvOwnerName.setText("대표성함 : " + retail.getOwner_name());
-		tvPhone.setText("연락처 : " + retail.getPhone_number());
+		tvShopName.setText(customer.getName());
+		tvOwnerName.setText("대표성함 : " + customer.getOwner_name());
+		tvPhone.setText("연락처 : " + customer.getPhone_number());
 		
-		if(StringUtils.isEmpty(retail.getMall_url())) {
-			tvAddress.setText("매장주소 : " + retail.getAddress());
+		if(StringUtils.isEmpty(customer.getMall_url())) {
+			tvAddress.setText("매장주소 : " + customer.getAddress());
 			tvCategory.setText("매장분류 : 오프라인매장");
 		} else {
-			tvAddress.setText("홈페이지 주소 : " + retail.getMall_url());
+			tvAddress.setText("홈페이지 주소 : " + customer.getMall_url());
 			tvCategory.setText("매장분류 : 온라인매장");
 		}
 	}
@@ -106,9 +111,12 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View convertView, int position,
 					long id) {
+				
+				Bundle bundle = new Bundle();
+				bundle.putSerializable("orderSet", (OrderSet)models.get(position));
+				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER, bundle);
 			}
 		});
-
 		
 		btnCancel.setOnClickListener(new OnClickListener() {
 
@@ -201,15 +209,21 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 		try {
 			JSONArray arJSON = null;
 			arJSON = objJSON.getJSONArray("orders");
-
+			int count = 0;
+			
 			int size = arJSON.length();
 			for(int i=0; i<size; i++) {
+				
 				OrderSet orderSet = new OrderSet(arJSON.getJSONObject(i));
-				retail.setItemCode(CphConstants.ITEM_ORDERSET_WHOLESALE2);
-				models.add(orderSet);
+				orderSet.setItemCode(CphConstants.ITEM_ORDERSET_WHOLESALE2);
+				
+				if(orderSet.getRetail_id() == customer.getId()) {
+					models.add(orderSet);
+					count++;
+				}
 			}
 			
-			tvTotalCount.setText("거래완료 " + objJSON.getInt("ordersCount") + "건");
+			tvTotalCount.setText("거래완료 " + count + "건");
 			
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -223,9 +237,8 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 		
-		//http://cph.minsangk.com/wholesales/orders?retail_id=1
 		url = CphConstants.BASE_API_URL + "wholesales/orders" +
-				"?retail_id=" + retail.getId() +
+				"?retail_id=" + customer.getId() +
 				"&status=3";
 		super.downloadInfo();
 	}
@@ -241,7 +254,7 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 	public void cancelPartnerShip() {
 		
 		String url = CphConstants.BASE_API_URL + "wholesales/customers/delete"
-				+ "?retail_id=" + retail.getId();
+				+ "?retail_id=" + customer.getId();
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

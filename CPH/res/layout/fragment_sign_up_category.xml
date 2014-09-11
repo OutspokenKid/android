@@ -34,7 +34,8 @@
         android:id="@+id/signUpForCategoryPage_listView" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:layout_below="@id/signUpForCategoryPage_tvCategory" />
+	    android:layout_below="@id/signUpForCategoryPage_tvCategory"
+	    android:cacheColorHint="#0000" />
     	
     <!-- 그림자. -->
     

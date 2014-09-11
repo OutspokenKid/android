@@ -125,6 +125,8 @@ public class ViewWrapperForProduct extends ViewWrapper {
 				if(product.getProduct_images() != null
 						&& product.getProduct_images()[0] != null) {
 					setImage(ivImage, product.getProduct_images()[0]);
+				} else {
+					ivImage.setImageBitmap(null);
 				}
 			} else {
 				setUnusableView();
@@ -194,6 +196,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 		tvBuyCount.setVisibility(View.INVISIBLE);
 		replyIcon.setVisibility(View.INVISIBLE);
 		heartIcon.setVisibility(View.INVISIBLE);
+		ivImage.setImageDrawable(null);
 	}
 
 //////////////////// Custom methods.

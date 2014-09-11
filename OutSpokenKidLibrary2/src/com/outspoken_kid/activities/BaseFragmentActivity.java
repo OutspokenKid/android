@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -263,5 +264,53 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 
 		LogUtils.log("###BaseFragmentActivity.closeTopPage.  ");
 		getSupportFragmentManager().popBackStack();
+	}
+
+	public void closePageWithRefreshPreviousPage() {
+		
+		closeTopPage();
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				getTopFragment().refreshPage();
+			}
+		}, 500);
+	}
+	
+	public void closePages(int size) {
+		
+		int fragmentSize = getFragmentsSize();
+		int closeCount = Math.min(size, fragmentSize - 2);
+		
+		for(int i=fragmentSize - 1; i>=fragmentSize - closeCount; i--) {
+
+			if(i == fragmentSize - closeCount) {
+				//Do nothing.
+			} else if(i == fragmentSize - 1) {
+				((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+			} else {
+				((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+			}
+			
+			getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+		}
+	}
+	
+	public void closePagesWithRefreshPreviousPage(int size) {
+		
+//		closePages(size);
+		closeTopPage();
+		closeTopPage();
+
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				getTopFragment().refreshPage();
+			}
+		}, 1000);
 	}
 }

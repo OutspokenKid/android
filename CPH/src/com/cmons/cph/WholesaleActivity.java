@@ -31,9 +31,9 @@ import com.cmons.cph.fragments.wholesale.WholesaleForWritePage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleActivity extends ShopActivity {
 
@@ -165,72 +165,72 @@ public class WholesaleActivity extends ShopActivity {
 		
 		return null;
 	}
-
-	/**
-	 * id : push id. 
-	 * receiver_id : 받는 사람의 id.
-	 * message : 유저에게 보여줄 메세지.
-	 * uri : 연결할 uri.
-	 * created_at : 생성된 시간.
-	 * pushed_at : 보내진 시간.
-	 * read_at : 유저가 읽은 시간.
-	 */
+	
 	@Override
 	public void handleUri(Uri uri) {
+		
+		String url = uri.getHost() + uri.getPath();
+		
+		LogUtils.log("###WholesaleActivity.handleIntent.clickOK " +
+				"\nurl : " + url);
+		
+		//상품 주문
+		if(url.contains("wholesales/orders")) {
+			Bundle bundle = new Bundle();
+			bundle.putInt("menuIndex", 0);
+			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
+			
+		//상품 상태값 변경 (입금완료)
+//		} else if(url.contains("retails/orders")) {
+//			Bundle bundle = new Bundle();
+//			bundle.putInt("menuIndex", 0);
+//			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
+		
+		//상품 상태값 변경 (입금완료)
+//		} else if(url.contains("retails/orders")) {
+//			Bundle bundle = new Bundle();
+//			bundle.putInt("menuIndex", 0);
+//			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
+			
+			//products/replies
 
-		try {
-			String scheme = uri.getScheme();
-			String host = uri.getHost();
-			String url = host + uri.getPath();
+		//상품에서 댓글 작성
+		} else if(url.contains("products/replies")) {
+			int product_id = Integer.parseInt(uri.getQueryParameter("product_id"));
+			Bundle bundle = new Bundle();
+			bundle.putInt("product_id", product_id);
+			showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
 			
-			LogUtils.log("WholesaleActivity.actionByUri. ========" +
-					"\nuri : " + uri + 
-					"\nscheme : "+ scheme +
-					"\nhost : " + host + 
-					"\nurl : " + url);
+		//전체 공지 작성 (need_push:1)
+		} else if(url.contains("notices")) {
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("isAppNotice", true);
+			bundle.putBoolean("isOurNotice", false);
+			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
 			
-			if(scheme.equals("http")||scheme.equals("https")) {
-				IntentUtils.showDeviceBrowser(this, url);
-				
-			} else if(scheme.equals("market") || scheme.equals("tstore")) {
-				IntentUtils.showMarket(this, uri);
-				
-			} else if(scheme.equals("cph")) {
-				
-				//상품 주문
-				if(url.equals("cph://wholesales/orders")) {
-					
-				//상품 상태값 변경 (입금완료)
-				} else if(url.equals("cph://retails/orders")) {
-					
-				//상품에서 댓글 작성
-				} else if(url.equals("cph://products/replies?product_id=100001&post_id=1")) {
-					
-				//전체 공지 작성 (need_push:1)
-				} else if(url.equals("cph://notices")) {
-					
-				//샘플 요청
-				} else if(url.equals("cph://wholesales/samples")) {
-					
-				//직원 상태값 변경 (승인)
-				} else if(url.equals("cph://home")) {
-					
-				//직원 상태값 변경 (거절)
-				} else if(url.equals("cph://home")) {
-					
-				//거래처 요청
-				} else if(url.equals("cph://wholesales/customers/requested")) {
-					
-				//회원가입
-				} else if(url.equals("cph://users/staffs")) {
-					
-				//대표 승인
-				} else if(url.equals("cph://home")) {
-					
-				}
-			}
-		} catch(Exception e) {
-			LogUtils.trace(e);
+		//샘플 요청
+		} else if(url.contains("wholesales/samples")) {
+			showPage(CphConstants.PAGE_WHOLESALE_SAMPLE_LIST, null);
+			
+		//직원 상태값 변경 (승인)
+		} else if(url.contains("home")) {
+			//Do nothing.
+			
+		//직원 상태값 변경 (거절)
+		} else if(url.contains("home")) {
+			//Do nothing.
+			
+		//거래처 요청
+		} else if(url.contains("wholesales/customers/requested")) {
+			showPage(CphConstants.PAGE_WHOLESALE_CUSTOMER_LIST, null);
+			
+		//회원가입
+		} else if(url.contains("users/staffs")) {
+			showPage(CphConstants.PAGE_COMMON_STAFF, null);
+			
+		//대표 승인
+		} else if(url.contains("home")) {
+			//Do nothing.
 		}
 	}
 	
@@ -293,12 +293,11 @@ public class WholesaleActivity extends ShopActivity {
 	
 	public void checkDownload() {
 		
-		if(categories != null && categories.length > 0
-				&& wholesale != null) {
-			
-			if(getFragmentsSize() == 0) {
-				showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);
-			}
+		if(categories != null
+				&& categories.length > 0
+				&& wholesale != null
+				&& getFragmentsSize() == 0) {
+			showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);
 		} else {
 			new Handler().postDelayed(new Runnable() {
 				
@@ -310,4 +309,8 @@ public class WholesaleActivity extends ShopActivity {
 		}
 	}
 
+	public void setPushRead(int push_id) {
+
+		ToastUtils.showToast("읽음 처리 함");
+	}
 }

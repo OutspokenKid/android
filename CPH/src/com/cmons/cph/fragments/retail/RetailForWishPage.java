@@ -386,7 +386,46 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 
 	public void delete() {
 		
-		ToastUtils.showToast("장바구니 비우기. 아직 구현 안함");
+		try {
+			String url = CphConstants.BASE_API_URL + "retails/cart/delete_item" +
+					"?wholesale_id=" + wholesaleWish.getId();
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailForWishPage.delete.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToDeleteWishList);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForWishPage.delete.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						
+						if(objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_deleteWishList);
+							mActivity.closePageWithRefreshPreviousPage();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToDeleteWishList);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToDeleteWishList);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void order() {
@@ -421,7 +460,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 						
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_order);
-							mActivity.closeTopPage();
+							mActivity.closePageWithRefreshPreviousPage();
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}

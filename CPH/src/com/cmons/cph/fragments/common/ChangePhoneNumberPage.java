@@ -33,7 +33,6 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 	private Button btnCertify;
 	
 	private String phone_number;
-	private String timeResponseKey;
 	private String phone_auth_key;
 	
 	@Override
@@ -180,7 +179,6 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_checkPhone);
-							timeResponseKey = objJSON.getString("tempResponseKey");
 							btnSendCertification.setVisibility(View.INVISIBLE);
 							btnCertify.setVisibility(View.VISIBLE);
 						} else {
@@ -203,53 +201,54 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 	}
 	
 	public void checkCertification() {
-		
-		if(timeResponseKey.equals(etCertify.getText().toString())) {
-			
-			try {
-				String url = CphConstants.BASE_API_URL + "users/auth/response" +
-						"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
-						"&response_key=" + timeResponseKey;
-				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-					@Override
-					public void onError(String url) {
-
-						LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
-					}
-
-					@Override
-					public void onCompleted(String url, JSONObject objJSON) {
-
-						try {
-							LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
-									+ "\nresult : " + objJSON);
-							
-							if(objJSON.getInt("result") == 1) {
-								JSONObject objResponse = objJSON.getJSONObject("authResponse");
-								phone_number = objResponse.getString("phone_number");
-								phone_auth_key = objResponse.getString("phone_auth_key");
-								changePhoneNumber();
-							} else {
-								ToastUtils.showToast(objJSON.getString("message"));
-							}
-						} catch (Exception e) {
-							ToastUtils.showToast(R.string.wrongCertificationNumber);
-							LogUtils.trace(e);
-						} catch (OutOfMemoryError oom) {
-							ToastUtils.showToast(R.string.wrongCertificationNumber);
-							LogUtils.trace(oom);
-						}
-					}
-				});
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
+		try {
+			if(etCertify.getText() == null
+					&& etCertify.getText().toString().length() != 4) {
+				ToastUtils.showToast(R.string.wrongCertificationNumber);
+				return;
 			}
-		} else {
-			ToastUtils.showToast(R.string.wrongCertificationNumber);
+			
+			String url = CphConstants.BASE_API_URL + "users/auth/response" +
+					"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
+					"&response_key=" + etCertify.getText().toString();
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.wrongCertificationNumber);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						
+						if(objJSON.getInt("result") == 1) {
+							JSONObject objResponse = objJSON.getJSONObject("authResponse");
+							phone_number = objResponse.getString("phone_number");
+							phone_auth_key = objResponse.getString("phone_auth_key");
+							changePhoneNumber();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}	
 	

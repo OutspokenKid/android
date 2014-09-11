@@ -2,11 +2,17 @@ package com.cmons.cph;
 
 import org.json.JSONObject;
 
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
+import android.support.v4.app.NotificationCompat;
 
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.PushObject;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -40,22 +46,56 @@ public class GCMIntentService extends GCMBaseIntentService {
 		LogUtils.log("###GCMIntentService.onMessage.  " +
 				"\nintent : " + intent);
 		
+		/*
+		{
+			"id":null,
+			"message":"푸시 메세지 테스트",
+			"title":"청평화 알림",
+			"sound":true,
+			"vibrate":true,
+			"uri":"cph:\/\/wholesales\/orders"
+		}
+		*/
 		try {
 			if(intent != null && intent.getExtras() != null) {
-
 				String token = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id");
 				
 				//로그인이 안되어있는 경우 전체 푸시가 아니면 제한.
 				if(StringUtils.isEmpty(token)) {
+					LogUtils.log("###GCMIntentService.onMessage.  token is null, return.");
 					return;
 				}
-
+				
+				PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
+				intent.putExtra("pushObject", po);
+				
 				//앱이 실행중인 경우 ShopActivity로 바로 넘김.
 				if(ShopActivity.getInstance() != null) {
-					handleIntent(context, intent);
+					LogUtils.log("###GCMIntentService.onMessage.  App is running, send intent to ShopActivity.");
+
+					PowerManager pm = (PowerManager) context
+							.getSystemService(Context.POWER_SERVICE);
+					
+					WakeLock screenWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+							| PowerManager.ACQUIRE_CAUSES_WAKEUP, context
+							.getClass().getName());
+
+					if (screenWakeLock != null) {
+						screenWakeLock.acquire();
+					}
+					
+					final Intent SENDING_INTENT = intent;
+					ShopActivity.getInstance().runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							ShopActivity.getInstance().handleIntent(SENDING_INTENT);
+						}
+					});
 					
 				//앱이 실행중이지 않은 경우 Notification 전송.
 				} else {
+					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
 					showNotification(context, intent);
 				}
 			}
@@ -71,10 +111,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 	@Override
 	protected void onRegistered(Context context, String regId) {
 
-		//http://cph.minsangk.com/users/token_register/ios?user_id=minsangk&device_token=1234
-		
-		LogUtils.log("############\n1\n1\n1\n1\n1.onRegistered.  regId : " + regId);
-		
 		try {
 			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
 					"?user_id=" + SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id") +
@@ -104,67 +140,59 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	/**
-	 * 앱이 실행중인 경우.
-	 */
-	public void handleIntent(Context context, Intent intent) {
-		
-		LogUtils.log("###GCMIntentService.handleIntent.  " +
-				"\nintent : " + intent);
-		
-		//처리할 부분이 떠있는 경우.
-		//처리할 부분이 떠있지 않은 경우 showNotification으로 넘김..
-	}
-
-	/**
-	 * 앱이 실행중이지 않은 경우.
+	 * 앱이 실행중이지 않거나 화면이 꺼져있는 경우..
 	 */
 	public void showNotification(Context context, Intent intent) {
 
 		LogUtils.log("###GCMIntentService.showNotification.  " +
 				"\nintent : " + intent);
-		
-//		String message = intent.getStringExtra("message");
-//		String uri = intent.getStringExtra("url");
-//		
-//		LogUtils.log("###GCMIntentService.showNotification.  " +
-//				"\npush_msg : " + message + 
-//				"\nuri : " + uri);
-		
-//		try {
-//			if(notiManager == null) {
-//				notiManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//			}
-//
-//			int time = (int)(System.currentTimeMillis() % 10000);
-//			
-//			Intent pushIntent = new Intent(context, IntentHandlerActivity.class);
-//			
-//			if(uriString != null) {
-//				pushIntent.setData(Uri.parse(uriString));
-//			}
-//			
-//			pushIntent.putExtra("time", time);
-//			
-//			pushIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//			pushIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//			pushIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//			
-//			PendingIntent pIntent = PendingIntent.getActivity(context, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//			
-//			Notification noti = new NotificationCompat.Builder(context)
-//						.setContentTitle(getString(R.string.app_name))
-//						.setContentText(push_msg)
-//						.setSmallIcon(R.drawable.app_icon)
-//						.setDefaults(pushSetting)
-//						.setTicker(push_msg)
-//						.setAutoCancel(true)
-//						.setContentIntent(pIntent)
-//						.build();
-//			
-//			notiManager.notify(time, noti);
-//		} catch (Exception e) {
-//			LogUtils.trace(e);
-//		}
+
+		try {
+			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
+			String message = po.message;
+			String uri = po.uri;
+			
+			LogUtils.log("###GCMIntentService.showNotification.  " +
+					"\nmessage : " + message + 
+					"\nuri : " + uri);
+			
+			if(notiManager == null) {
+				notiManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			}
+
+			int time = (int)(System.currentTimeMillis() % 10000);
+			
+			Intent pushIntent = new Intent(context, IntentHandlerActivity.class);
+			
+			if(intent != null) {
+				pushIntent.putExtra("pushObject", po);
+			}
+
+			pushIntent.putExtra("time", time);
+			pushIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			pushIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			pushIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			
+			int pushSetting = Notification.DEFAULT_LIGHTS
+					| Notification.DEFAULT_SOUND
+					| Notification.DEFAULT_VIBRATE;
+			String push_msg = intent.getStringExtra("message");
+			
+			PendingIntent pIntent = PendingIntent.getActivity(context, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			Notification noti = new NotificationCompat.Builder(context)
+						.setContentTitle(getString(R.string.app_name))
+						.setContentText(message)
+						.setSmallIcon(R.drawable.app_icon)
+						.setDefaults(pushSetting)
+						.setTicker(push_msg)
+						.setAutoCancel(true)
+						.setContentIntent(pIntent)
+						.build();
+			
+			notiManager.notify(time, noti);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
 	}
 
 	@Override

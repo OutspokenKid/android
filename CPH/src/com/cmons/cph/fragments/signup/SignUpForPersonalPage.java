@@ -67,7 +67,6 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	private String userName;
 	private boolean focusOnId, focusOnPw, focusOnPwConfirm;
 	private String phone_number;
-	private String timeResponseKey;
 	private String phone_auth_key;
 	
 	@Override
@@ -322,7 +321,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		//tvCheckId.
 		rp = (RelativeLayout.LayoutParams) tvCheckId.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(120);
 		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etId.
@@ -336,7 +335,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		//tvCheckPw.
 		rp = (RelativeLayout.LayoutParams) tvCheckPw.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(120);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		
 		//etPw.
@@ -350,7 +349,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		//tvCheckConfirmPw.
 		rp = (RelativeLayout.LayoutParams) tvCheckConfirmPw.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(120);
 		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPwConfirm.
@@ -495,7 +494,9 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		try {
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
-					"?no_sms=0" +
+					//Test.
+//					"?no_sms=0" +
+					"?no_sms=1" +
 					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -516,10 +517,11 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 
 						
 						if(objJSON.getInt("result") == 1) {
-							timeResponseKey = objJSON.getString("tempResponseKey");
-							
-							mActivity.showAlertDialog("휴대폰 번호", 
-									getString(R.string.complete_checkPhone), "확인", null);
+
+							//Test.
+//							mActivity.showAlertDialog("휴대폰 번호", 
+//									getString(R.string.complete_checkPhone), "확인", null);
+							mActivity.showAlertDialog("인증번호", objJSON.getString("tempResponseKey"), "확인", null);
 							
 							btnSendCertification.setVisibility(View.INVISIBLE);
 							btnCertify.setVisibility(View.VISIBLE);
@@ -543,56 +545,57 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	}
 	
 	public void checkCertification() {
-		
-		if(timeResponseKey.equals(etCertification.getText().toString())) {
-			
-			try {
-				String url = CphConstants.BASE_API_URL + "users/auth/response" +
-						"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
-						"&response_key=" + timeResponseKey;
-				DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-					@Override
-					public void onError(String url) {
-
-						LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
-						ToastUtils.showToast(R.string.wrongCertificationNumber);
-					}
-
-					@Override
-					public void onCompleted(String url, JSONObject objJSON) {
-
-						try {
-							LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
-									+ "\nresult : " + objJSON);
-
-							
-							if(objJSON.getInt("result") == 1) {
-								mActivity.showAlertDialog("휴대폰 번호 인증", 
-										getString(R.string.complete_certification), "확인", null);
-								
-								JSONObject objResponse = objJSON.getJSONObject("authResponse");
-								phone_number = objResponse.getString("phone_number");
-								phone_auth_key = objResponse.getString("phone_auth_key");
-							} else {
-								mActivity.showAlertDialog("휴대폰 번호 인증", objJSON.getString("message"), "확인", null);
-							}
-						} catch (Exception e) {
-							ToastUtils.showToast(R.string.wrongCertificationNumber);
-							LogUtils.trace(e);
-						} catch (OutOfMemoryError oom) {
-							ToastUtils.showToast(R.string.wrongCertificationNumber);
-							LogUtils.trace(oom);
-						}
-					}
-				});
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
+		try {
+			if(etCertification.getText() == null
+					&& etCertification.getText().toString().length() != 4) {
+				ToastUtils.showToast(R.string.wrongCertificationNumber);
+				return;
 			}
-		} else {
-			ToastUtils.showToast(R.string.wrongCertificationNumber);
+			
+			String url = CphConstants.BASE_API_URL + "users/auth/response" +
+					"?phone_number=" + URLEncoder.encode(phone_number, "utf-8") +
+					"&response_key=" + etCertification.getText().toString();
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.wrongCertificationNumber);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						
+						if(objJSON.getInt("result") == 1) {
+							mActivity.showAlertDialog("휴대폰 번호 인증", 
+									getString(R.string.complete_certification), "확인", null);
+							
+							JSONObject objResponse = objJSON.getJSONObject("authResponse");
+							phone_number = objResponse.getString("phone_number");
+							phone_auth_key = objResponse.getString("phone_auth_key");
+						} else {
+							mActivity.showAlertDialog("휴대폰 번호 인증", objJSON.getString("message"), "확인", null);
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.wrongCertificationNumber);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 

@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,18 +14,17 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 
 import com.cmons.cph.R;
-import com.cmons.cph.utils.ImageUploadUtils;
-import com.cmons.cph.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.activities.BaseFragmentActivity;
-import com.outspoken_kid.utils.BitmapUtils;
+import com.outspoken_kid.utils.ImageUploadUtils;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 
 	//For uploadImage.
-	private String filePath;
-	private String fileName;
+	private static String filePath;
+	private static String fileName;
 	private OnAfterUploadImage onAfterUploadImage;
 	
 	public abstract void onRefreshPage();
@@ -109,6 +107,9 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				    String fileName = System.currentTimeMillis() + ".jpg";
 				    File file = new File(fileDerectory, fileName);
 				    
+				    CmonsFragmentActivity.fileName = file.getName();
+				    CmonsFragmentActivity.filePath = fileDerectory.getPath();
+
 				    if(!fileDerectory.exists()) {
 				    	fileDerectory.mkdirs();
 				    }
@@ -151,33 +152,15 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 						file = new File(filePath, fileName);
 					}
 
-					BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inSampleSize = 16;
-					BitmapFactory.decodeFile(file.getPath(), options);
-
-					int width = 0;
-
-					if (BitmapUtils.GetExifOrientation(file.getPath()) % 180 == 0) {
-						width = options.outWidth;
-					} else {
-						width = options.outHeight;
-					}
-
-					if (width > 720) {
-						// Use last inSampleSize.
-					} else if (width > 360) {
-						options.inSampleSize = 8;
-					} else if (width > 180) {
-						options.inSampleSize = 4;
-					} else if (width > 90) {
-						options.inSampleSize = 2;
-					} else {
-						options.inSampleSize = 1;
-					}
-
+					int standardLength = 720;
+					int inSampleSize = ImageUploadUtils.getBitmapInSampleSize(file, standardLength);
+					
+					LogUtils.log("################## standardLength : " + standardLength + ", inSampleSize : " + inSampleSize);
+					
 					showLoadingView();
-					ImageUploadUtils.uploadImage(this, onAfterUploadImage,
-							file.getPath(), options.inSampleSize);
+					String uploadUrl = CphConstants.BASE_API_URL + "files/upload/image";
+					ImageUploadUtils.uploadImage(uploadUrl, onAfterUploadImage,
+							file.getPath(), inSampleSize);
 				} catch (OutOfMemoryError oom) {
 					oom.printStackTrace();
 					ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);

@@ -38,7 +38,7 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class ReplyPage extends CmonsFragmentForShop {
 
-	private Product product;
+	private int product_id;
 
 	private TextView tvEmpty;
 	private EditText etReply;
@@ -103,7 +103,13 @@ public class ReplyPage extends CmonsFragmentForShop {
 	public void setVariables() {
 
 		if(getArguments() != null) {
-			product = (Product) getArguments().getSerializable("product");
+			
+			if(getArguments().containsKey("product")) {
+				product_id = ((Product) getArguments().getSerializable("product")).getId();
+			} else if(getArguments().containsKey("product_id")) {
+				product_id = getArguments().getInt("product_id");
+			}
+			
 			title = "상품 댓글";
 		}
 
@@ -116,7 +122,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 
 	@Override
 	public void createPage() {
-
+		
 		if(mActivity.user.getRetail_id() != 0) {
 			etReply.setVisibility(View.VISIBLE);
 			btnSubmit.setVisibility(View.VISIBLE);
@@ -339,7 +345,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 				models.add(reply);
 			}
 			
-			if(pageIndex == 1 && size == 0) {
+			if(pageIndex == 0 && size == 0) {
 				tvEmpty.setVisibility(View.VISIBLE);
 			} else {
 				tvEmpty.setVisibility(View.INVISIBLE);
@@ -358,7 +364,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 	public void downloadInfo() {
 		
 		url = CphConstants.BASE_API_URL + "products/replies" +
-				"?product_id=" + product.getId();
+				"?product_id=" + product_id;
 		super.downloadInfo();
 	}
 	
@@ -479,7 +485,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 
 		try {
 			String url = CphConstants.BASE_API_URL + "products/replies/save" +
-					"?product_id=" + product.getId();
+					"?product_id=" + product_id;
 					
 			
 			if(isChild) {

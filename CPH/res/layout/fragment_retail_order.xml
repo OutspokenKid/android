@@ -91,6 +91,7 @@
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/retailOrderPage_order"
 	    android:layout_above="@id/retailOrderPage_tvAccount"
-	    android:layout_alignParentLeft="true" />
+	    android:layout_alignParentLeft="true"
+	    android:cacheColorHint="#0000" />
     
 </RelativeLayout>

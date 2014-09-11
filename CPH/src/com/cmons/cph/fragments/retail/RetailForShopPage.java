@@ -36,12 +36,15 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 	private HeaderGridView gridView;
 	
 	private int categoryIndex = 0;
+	private int totalCount;
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
-		downloadInfo();
+		if(models.size() == 0) {
+			downloadInfo();
+		}
 	}
 	
 	@Override
@@ -66,16 +69,17 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 	public void createPage() {
 		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
+		titleBar.getHomeButton().setVisibility(View.VISIBLE);
 		
 		headerView = new HeaderViewForRetailShop(mContext);
 		headerView.init(wholesale);
+		headerView.setTotalProduct(totalCount);
 		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		headerView.setLayoutParams(al);
 		gridView.addHeaderView(headerView);
 		gridView.setNumColumns(2);
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		gridView.setAdapter(adapter);
-		
 	}
 
 	@Override
@@ -90,10 +94,6 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, 
 					int visibleItemCount, int totalItemCount) {
-				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
 			}
 		});
 		
@@ -218,7 +218,7 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
-			} else if(pageIndex == 1 && size == 0) {
+			} else if(pageIndex == 0 && size == 0) {
 				BaseModel emptyModel1 = new BaseModel() {};
 				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel1);
@@ -228,7 +228,8 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				models.add(emptyModel2);
 			}
 
-			headerView.setTotalProduct(objJSON.getInt("productsCount"));
+			totalCount = objJSON.getInt("productsCount");
+			headerView.setTotalProduct(totalCount);
 			
 			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
 				return true;

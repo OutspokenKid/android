@@ -58,6 +58,8 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		startMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "sm");
 		endHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "eh");
 		endMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "em");
+		
+		allowNotification = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "allow");
 	}
 
 	@Override
@@ -216,6 +218,8 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 					if(objJSON.getInt("result") == 1) {
 						allowNotification = !allowNotification;
+						
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, "allow", allowNotification);
 						
 						if(allowNotification) {
 							btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);

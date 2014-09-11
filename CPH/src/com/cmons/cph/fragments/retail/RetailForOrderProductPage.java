@@ -456,6 +456,10 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 					&& btnSize.getText() != null
 					&& etCount.getText() != null) {
 				
+				if(innerLinear.getChildCount() != 0) {
+					return;
+				}
+				
 				final FrameLayout orderFrame = new FrameLayout(mContext);
 				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, orderFrame, 1, 0, null);
 				innerLinear.addView(orderFrame);

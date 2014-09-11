@@ -398,6 +398,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		} else {
 			try {
 				JSONArray arJSON = null;
+				shops.clear();
 				
 				if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
 					arJSON = objJSON.getJSONArray("wholesales");
@@ -511,7 +512,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
-		
+
 		super.downloadInfo();
 	}
 

@@ -39,7 +39,6 @@ public class FindIdPwPage extends CmonsFragment {
 	private Button btnCertify;
 	
 	private int type;
-	private String timeResponseKey;
 	private String certifyingPhoneNumber;
 	
 	@Override
@@ -250,8 +249,6 @@ public class FindIdPwPage extends CmonsFragment {
 						
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_checkPhone);
-							
-							timeResponseKey = objJSON.getString("tempResponseKey");
 							btnSend.setVisibility(View.INVISIBLE);
 							etCertification.setVisibility(View.VISIBLE);
 							btnCertify.setVisibility(View.VISIBLE);
@@ -273,12 +270,17 @@ public class FindIdPwPage extends CmonsFragment {
 	}
 	
 	public void checkCertification() {
-		
-		if(timeResponseKey.equals(etCertification.getText().toString())) {
+
+		try {
+			if(etCertification.getText() == null
+					&& etCertification.getText().toString().length() != 4) {
+				ToastUtils.showToast(R.string.wrongCertificationNumber);
+				return;
+			}
 			
 			String url = CphConstants.BASE_API_URL + "users/auth/response" +
 					"?phone_number=" + certifyingPhoneNumber +
-					"&response_key=" + timeResponseKey;
+					"&response_key=" + etCertification.getText().toString();
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 				@Override
@@ -318,8 +320,10 @@ public class FindIdPwPage extends CmonsFragment {
 					}
 				}
 			});
-		} else {
-			ToastUtils.showToast(R.string.wrongCertificationNumber);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	

@@ -7,11 +7,14 @@ import org.json.JSONObject;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,6 +32,7 @@ import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.models.Wholesale;
+import com.cmons.cph.views.PageNavigatorView;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -53,6 +57,7 @@ public class ProductPage extends CmonsFragmentForShop {
     private ViewPager viewPager;
     private View arrowLeft;
     private View arrowRight;
+    private PageNavigatorView pageNavigatorView;
     private TextView tvName;
     private TextView tvName2;
     private TextView tvPrice;
@@ -92,6 +97,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		viewPager = (ViewPager) mThisView.findViewById(R.id.productPage_viewPager);
 		arrowLeft = mThisView.findViewById(R.id.productPage_arrowLeft);
 		arrowRight = mThisView.findViewById(R.id.productPage_arrowRight);
+		pageNavigatorView = (PageNavigatorView) mThisView.findViewById(R.id.productPage_pageNavigatorView);
 		tvName = (TextView) mThisView.findViewById(R.id.productPage_tvName);
 		tvName2 = (TextView) mThisView.findViewById(R.id.productPage_tvName2);
 		tvPrice = (TextView) mThisView.findViewById(R.id.productPage_tvPrice);
@@ -122,15 +128,7 @@ public class ProductPage extends CmonsFragmentForShop {
 			isWholesale = getArguments().getBoolean("isWholesale");
 		}
 		
-		if(product != null) {
-			title = product.getName();
-			
-			//isSoldOut 설정.
-			//isPublic 설정.
-			//needPush 설정.
-		} else {
-			title = "상품 상세 페이지";
-		}
+		title = "상품 상세 페이지";
 	}
 
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
@@ -143,11 +141,21 @@ public class ProductPage extends CmonsFragmentForShop {
 		if(product != null) {
 			pagerAdapter = new PagerAdapterForProducts();
 			viewPager.setAdapter(pagerAdapter);
+			viewPager.requestDisallowInterceptTouchEvent(true);
+			
+			title = product.getName();
+			
+			if(product.getProduct_images() != null) {
+				pageNavigatorView.setSize(product.getProduct_images().length);
+				pageNavigatorView.setIndex(0);
+				pageNavigatorView.invalidate();
+			}
 			
 			if(product.getStatus() == -1) {
 				isSoldOut = true;
 				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
-				tvStatus.setText(R.string.productSoldOut);
+				tvStatus.setText(Html.fromHtml("<B>" + getString(R.string.productSoldOut) + "</B>"));
+				tvStatus.setTextColor(Color.RED);
 				
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					btnBasket.setAlpha(0.5f);
@@ -163,6 +171,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				isSoldOut = false;
 				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
 				tvStatus.setText(R.string.productSelling);
+				tvStatus.setTextColor(Color.WHITE);
 			}
 			
 			tvName2.setText(product.getName());
@@ -352,6 +361,27 @@ public class ProductPage extends CmonsFragmentForShop {
 					}
 				}
 			});
+	
+			viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+				
+				@Override
+				public void onPageSelected(int arg0) {
+
+					pageNavigatorView.setIndex(arg0);
+				}
+				
+				@Override
+				public void onPageScrolled(int arg0, float arg1, int arg2) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+				@Override
+				public void onPageScrollStateChanged(int arg0) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
 		}
 	}
 
@@ -414,6 +444,12 @@ public class ProductPage extends CmonsFragmentForShop {
 		rp.height = ResizeUtils.getSpecificLength(66);
 		rp.topMargin = (ResizeUtils.getScreenWidth() - rp.height) / 2;
 		rp.rightMargin = ResizeUtils.getSpecificLength(40);
+		
+		//pageNavigatorView.
+		rp = (RelativeLayout.LayoutParams) pageNavigatorView.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(16);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvName.
 		rp = (RelativeLayout.LayoutParams) tvName.getLayoutParams();
@@ -610,6 +646,38 @@ public class ProductPage extends CmonsFragmentForShop {
 	
 	public void pullUp() {
 		
+		String url = CphConstants.BASE_API_URL + "products/pull_up" +
+				"?product_id=" + product.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ProductPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToPullUp);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ProductPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_pullUp);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToPullUp);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToPullUp);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 
 	public void submitSoldOut() {
