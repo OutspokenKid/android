@@ -131,4 +131,20 @@ public class IntentUtils {
 		}
 		return false;
 	}
+
+	public static boolean sendEmail(Context context, String mailTo) {
+	
+		try {
+			Uri uri = Uri.parse("mailto:" + mailTo);
+			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+			context.startActivity(intent);
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
 }

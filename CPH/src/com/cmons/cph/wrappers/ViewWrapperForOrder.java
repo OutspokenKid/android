@@ -102,7 +102,9 @@ public class ViewWrapperForOrder extends ViewWrapper {
 							order.getSize() + "/" +
 							order.getColor() + "/" + 
 							order.getAmount() + "개)");
-					tvPrice.setText(StringUtils.getFormattedNumber(order.getProduct_price()) + "원");
+					
+					long sum = order.getAmount() * order.getProduct_price();
+					tvPrice.setText(StringUtils.getFormattedNumber(sum) + "원");
 					checkbox.setVisibility(View.INVISIBLE);
 				}
 			} else {

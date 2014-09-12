@@ -320,7 +320,6 @@ public class RetailForAddPartner extends CmonsFragmentForRetail {
 			            return f1.floorName.compareToIgnoreCase(f2.floorName);
 					}
 			    });
-
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (OutOfMemoryError oom) {

@@ -1,5 +1,11 @@
 package com.cmons.cph;
 
+import java.util.List;
+
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
+import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +17,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.cmons.cph.classes.CphApplication;
+import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.User;
+import com.outspoken_kid.classes.RequestManager;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class IntroActivity extends Activity {
 
@@ -69,7 +81,15 @@ public class IntroActivity extends Activity {
 		super.onResume();
 		
 		isInIntro = true;
-		checkSession();
+		
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				checkSession();
+			}
+		}, 1500);
 	}
 	
 	@Override
@@ -103,19 +123,117 @@ public class IntroActivity extends Activity {
 
 	public void checkSession() {
 
-		new Handler().postDelayed(new Runnable() {
+		LogUtils.log("###IntroActivity.checkSession.  check Cookies =====================");
+		
+		try {
+			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
 			
-			@Override
-			public void run() {
+			if(bcc1 != null) {
+				RequestManager.getCookieStore().addCookie(bcc1);
+			}
+			
+			if(bcc2 != null) {
+				RequestManager.getCookieStore().addCookie(bcc2);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		LogUtils.log("###IntroActivity.checkSession.  check Cookies2 =====================");
+		
+		try {
+			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
+			
+			for(Cookie cookie : cookies) {
+				LogUtils.log("		key : " + cookie.getName() + ", value : " + cookie.getValue());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 
+		String url = CphConstants.BASE_API_URL + "users/login_check";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("IntroActivity.checkSession.onError." + "\nurl : " + url);
 				launchSignInActivity();
 			}
-		}, 2000);
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("IntroActivity.checkSession.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+
+						User user = new User(objJSON.getJSONObject("user"));
+						
+						//도매.
+						if(user.getRole() < 200){
+							launchWholesaleActivity(user);
+							
+						//소매.
+						} else {
+							launchRetailActivity(user);
+						}
+					} else {
+						launchSignInActivity();
+					}
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void launchSignInActivity() {
 		
 		Intent intent = new Intent(this, SignInActivity.class);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
+		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
+	}
+	
+	public void launchWholesaleActivity(User user) {
+
+		Intent intent = new Intent(this, WholesaleActivity.class);
+		intent.putExtra("user", user);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
+		startActivity(intent);
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
+	}
+	
+	public void launchRetailActivity(User user) {
+
+		Intent intent = new Intent(this, RetailActivity.class);
+		intent.putExtra("user", user);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		finish();

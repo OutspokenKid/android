@@ -71,7 +71,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		super.onResume();
 		
 		if(models.size() == 0) {
-			downloadInfo();
+			setMenu(menuIndex);
 		}
 	}
 	

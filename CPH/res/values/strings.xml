@@ -34,6 +34,7 @@
 	<string name="complete_cancelRequest">요청 취소 완료</string>
 	<string name="complete_certification">인증 완료</string>
 	<string name="complete_changeAddress">주소 변경 완료</string>
+	<string name="complete_changeMallUrl">쇼핑몰 사이트 주소 변경 완료</string>
 	<string name="complete_changeOrderStatus1">주문을 승인했습니다</string>
 	<string name="complete_changeOrderStatus3">거래완료 상태로 변경되었습니다</string>
 	<string name="complete_changePhoneNumber">전화번호 변경 완료</string>
@@ -55,7 +56,9 @@
 	<string name="complete_pullUp">상품이 최상단으로 올라갔습니다</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
 	<string name="complete_requestSample">샘플 요청 완료</string>
-	<string name="complete_signUp">회원가입 완료</string>
+	<string name="complete_signUpWholesaleOwner">정보 입력이 완료되었습니다.\n관리자의 승인 후 가입이 완료됩니다.</string>
+	<string name="complete_signUpRetailOwner">회원가입 완료</string>
+	<string name="complete_signUpEmployee">정보 입력이 완료되었습니다.\n대표의 승인 후 가입이 완료됩니다.</string>
 	<string name="complete_signIn">로그인 완료</string>
 	<string name="complete_writeNotice">공지사항 작성 완료</string>
 	<string name="complete_writeProduct">상품 등록 완료</string>
@@ -77,6 +80,7 @@
     <string name="failTobreakPartnerShip">거래처 삭제 실패</string>
     <string name="failToCancelRequest">요청 취소 실패</string>
     <string name="failToChangeAddress">주소 변경 실패</string>
+    <string name="failToChangeMallUrl">쇼핑몰 사이트 주소 변경 실패</string>
     <string name="failToChangeOrderStatus">주문 상태 변경 실패</string>
     <string name="failToChangePhoneNumber">전화번호 변경 실패</string>
     <string name="failToChangeProfileImage">프로필 사진 변경 실패</string>
@@ -170,6 +174,7 @@
     <string name="number">연락처</string>
     
     <string name="owner">대표</string>
+    <string name="ownerAvailable">대표만 이용가능한 메뉴입니다</string>
     <string name="ownerName">대표 성함</string>
     
     <string name="payment1">무통장 입금</string>

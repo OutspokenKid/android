@@ -20,13 +20,13 @@ import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class RetailForManagementPage extends CmonsFragmentForRetail {
 
@@ -44,6 +44,9 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 	private TextView tvAddressText;
 	private TextView tvAddress;
 	private View changeAddress;
+	private TextView tvMallUrlText;
+	private TextView tvMallUrl;
+	private View changeMallUrl;
 	
 	@Override
 	public void bindViews() {
@@ -65,6 +68,9 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		tvAddressText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvAddressText);
 		tvAddress = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvAddress);
 		changeAddress = mThisView.findViewById(R.id.retailManagementPage_changeAddress);
+		tvMallUrlText = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvMallUrlText);
+		tvMallUrl = (TextView) mThisView.findViewById(R.id.retailManagementPage_tvMallUrl);
+		changeMallUrl = mThisView.findViewById(R.id.retailManagementPage_changeMallUrl);
 	}
 
 	@Override
@@ -86,8 +92,31 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		
 		if(StringUtils.isEmpty(getRetail().getMall_url())) {
 			icon.setBackgroundResource(R.drawable.offline_shop_icon);
+			
+			tvMallUrl.setVisibility(View.GONE);
+			tvMallUrlText.setVisibility(View.GONE);
 		} else {
 			icon.setBackgroundResource(R.drawable.online_shop_icon);
+			
+			tvMallUrl.setVisibility(View.VISIBLE);
+			tvMallUrlText.setVisibility(View.VISIBLE);
+			tvMallUrl.setText(getRetail().getMall_url());
+		}
+		
+		//대표가 아닌 경우.
+		if(mActivity.user.getRole() % 100 != 0) {
+			changeAddress.setVisibility(View.GONE);
+			changePhone.setVisibility(View.GONE);
+			changeReg.setVisibility(View.GONE);
+			changeMallUrl.setVisibility(View.GONE);
+		} else {
+			changeAddress.setVisibility(View.VISIBLE);
+			changePhone.setVisibility(View.VISIBLE);
+			changeReg.setVisibility(View.VISIBLE);
+			
+			if(StringUtils.isEmpty(getRetail().getMall_url())) {
+				changeMallUrl.setVisibility(View.VISIBLE);
+			}
 		}
 	}
 
@@ -216,6 +245,47 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		        alertDialog.show();
 			}
 		});
+	
+		changeMallUrl.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				SoftKeyboardUtils.showKeyboard(mContext, tvPhone);
+				
+				AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+				// Setting Dialog Title
+		        alertDialog.setTitle("쇼핑몰 사이트 주소 변경");
+		        
+		        final EditText input = new EditText(mContext);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+						LinearLayout.LayoutParams.MATCH_PARENT,
+						LinearLayout.LayoutParams.MATCH_PARENT);
+				lp.leftMargin = ResizeUtils.getSpecificLength(10);
+				lp.rightMargin = ResizeUtils.getSpecificLength(10);
+				input.setLayoutParams(lp);
+				input.setInputType(InputType.TYPE_CLASS_TEXT);
+				alertDialog.setView(input);
+				
+		        alertDialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface arg0, int arg1) {
+				
+						if(input.getText() == null ||input.getText().length() == 0) {
+							return;
+						}
+						
+						String keyword = input.getText().toString();
+						changeAddress(keyword);
+					}
+				});
+		        alertDialog.setNegativeButton("취소", null);
+				
+				// Showing Alert Message
+		        alertDialog.show();
+			}
+		});
 	}
 
 	@Override
@@ -297,6 +367,22 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		rp.height = ResizeUtils.getSpecificLength(50);
 		rp.topMargin = margin;
 		rp.rightMargin = margin;
+		
+		//tvMallUrlText.
+		rp = (RelativeLayout.LayoutParams) tvMallUrlText.getLayoutParams();
+		rp.height = height;
+		rp.leftMargin = margin;
+		
+		//tvMallUrl.
+		rp = (RelativeLayout.LayoutParams) tvMallUrl.getLayoutParams();
+		rp.height = height;
+		
+		//changeMallUrl.
+		rp = (RelativeLayout.LayoutParams) changeMallUrl.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.topMargin = margin;
+		rp.rightMargin = margin;
 
 		FontUtils.setFontSize(tvNameText, 30);
 		FontUtils.setFontSize(tvName, 30);
@@ -308,6 +394,8 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		FontUtils.setFontSize(tvPhone, 30);
 		FontUtils.setFontSize(tvAddressText, 30);
 		FontUtils.setFontSize(tvAddress, 30);
+		FontUtils.setFontSize(tvMallUrlText, 30);
+		FontUtils.setFontSize(tvMallUrl, 30);
 	}
 
 	@Override
@@ -409,7 +497,7 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 
 					LogUtils.log("RetailForManagementPage.changeAddress.onError."
 							+ "\nurl : " + url);
-					ToastUtils.showToast(R.string.failToChangePhoneNumber);
+					ToastUtils.showToast(R.string.failToChangeAddress);
 				}
 
 				@Override
@@ -481,6 +569,54 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 					} catch (OutOfMemoryError oom) {
 						LogUtils.trace(oom);
 						ToastUtils.showToast(R.string.failToChangeRegistration);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public void changeMallUrl(final String mallUrl) {
+
+		try {
+			//http://cph.minsangk.com/retails/update/mall_url?mall_url=B3%A11%EB%8F%99
+			String url = CphConstants.BASE_API_URL + "retails/update/mall_url"
+					+ "?mall_url=" + URLEncoder.encode(mallUrl, "utf-8");
+
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailForManagementPage.changeMallUrl.onError."
+							+ "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToChangeMallUrl);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForManagementPage.changeMallUrl.onCompleted."
+								+ "\nurl : " + url + "\nresult : " + objJSON);
+
+						if (objJSON.getInt("result") == 1) {
+							ToastUtils.showToast(R.string.complete_changeMallUrl);
+							getRetail().setAddress(mallUrl);
+							tvMallUrl.setText(mallUrl);
+							SoftKeyboardUtils.hideKeyboard(mContext, tvMallUrl);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToChangeMallUrl);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToChangeMallUrl);
 					}
 				}
 			});

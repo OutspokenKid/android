@@ -7,7 +7,8 @@ public class CphConstants {
 	
 	public static String BASE_API_URL = "http://cph.minsangk.com/";
 	
-	public static final String PREFS_SIGN = "sign";
+	public static final String PREFS_COOKIE_CPH_D1 = "cphd1";
+	public static final String PREFS_COOKIE_CPH_S = "cphs";
 	public static final String PREFS_NOTICE = "notice";
 	public static final String PREFS_NOTIFICATION = "notification";
 	public static final String PREFS_DISTURB = "disturb";

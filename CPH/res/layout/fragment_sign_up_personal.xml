@@ -148,7 +148,7 @@
 	            android:layout_alignParentLeft="true"
 	            android:layout_below="@id/signUpForPersonalPage_tvId"
 	            android:hint="@string/hintForId"
-	            android:inputType="text"
+	            android:inputType="textEmailAddress"
 	            android:textColor="#000"
 	            android:textColorHint="#aaa"
 	            android:singleLine="true"

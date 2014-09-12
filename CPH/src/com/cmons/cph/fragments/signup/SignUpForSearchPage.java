@@ -2,6 +2,8 @@ package com.cmons.cph.fragments.signup;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.json.JSONArray;
@@ -387,9 +389,25 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 						floor.lines.add(line);
 					}
 					
+					Collections.sort(floor.lines, new Comparator<Line>(){
+
+						@Override
+						public int compare(Line l1, Line l2) {
+				            return l1.lineName.compareToIgnoreCase(l2.lineName);
+						}
+				    });
+					
 					floor.setItemCode(CphConstants.ITEM_FLOOR);
 					floors.add(floor);
 				}
+				
+				Collections.sort(floors, new Comparator<Floor>(){
+
+					@Override
+					public int compare(Floor f1, Floor f2) {
+			            return f1.floorName.compareToIgnoreCase(f2.floorName);
+					}
+			    });
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (OutOfMemoryError oom) {

@@ -1,7 +1,9 @@
 package com.cmons.cph;
 
 import java.net.URLEncoder;
+import java.util.List;
 
+import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -12,6 +14,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.signin.FindIdPwPage;
 import com.cmons.cph.fragments.signin.SignInPage;
 import com.cmons.cph.models.User;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
@@ -124,6 +127,11 @@ public class SignInActivity extends CmonsFragmentActivity {
 	public void launchSignUpActivity() {
 		
 		Intent intent = new Intent(this, SignUpActivity.class);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
@@ -162,9 +170,26 @@ public class SignInActivity extends CmonsFragmentActivity {
 							ToastUtils.showToast(R.string.complete_signIn);
 							
 							User user = new User(objJSON.getJSONObject("user"));
+
+							LogUtils.log("###SignInActivity.onResume.  save Cookies =====================");
+							List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
 							
-							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "id", id);
-							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "pw", pw);
+							int size = cookies.size();
+							for(int i=0; i<size; i++) {
+
+								String prefsName = null;
+								
+								if("CPH_D1".equals(cookies.get(i).getName())) {
+									prefsName = CphConstants.PREFS_COOKIE_CPH_D1;
+								} else if("CPH_S".equals(cookies.get(i).getName())) {
+									prefsName = CphConstants.PREFS_COOKIE_CPH_S;
+								} else {
+									continue;
+								}
+								
+								SharedPrefsUtils.saveCookie(prefsName, cookies.get(i));
+								LogUtils.log("		key : " + cookies.get(i).getName());
+							}
 							
 							//Check user type.
 							if(user.getRole() < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
@@ -197,6 +222,11 @@ public class SignInActivity extends CmonsFragmentActivity {
 
 		Intent intent = new Intent(this, WholesaleActivity.class);
 		intent.putExtra("user", user);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		finish();
@@ -206,6 +236,11 @@ public class SignInActivity extends CmonsFragmentActivity {
 
 		Intent intent = new Intent(this, RetailActivity.class);
 		intent.putExtra("user", user);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		startActivity(intent);
 		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		finish();

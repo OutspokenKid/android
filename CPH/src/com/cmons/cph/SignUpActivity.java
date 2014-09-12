@@ -240,6 +240,11 @@ public class SignUpActivity extends CmonsFragmentActivity {
 	public void launchWholesaleActivity(User user) {
 		
 		Intent intent = new Intent(this, WholesaleActivity.class);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		intent.putExtra("user", user);
 		startActivity(intent);
 		finish();
@@ -248,15 +253,24 @@ public class SignUpActivity extends CmonsFragmentActivity {
 	public void launchRetailActivity(User user) {
 		
 		Intent intent = new Intent(this, RetailActivity.class);
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+		}
+		
 		intent.putExtra("user", user);
 		startActivity(intent);
 		finish();
 	}
 
-	public void signUpForWholesale(String id, String pw, String role, String userName, 
+	public void signUpForWholesale(String id, String pw, final String role, String userName, 
 			String wholesale_id, String categoryString, String phone_auth_key) {
 	
 		try {
+			if(categoryString == null) {
+				categoryString = "";
+			}
+			
 			String url = CphConstants.BASE_API_URL + "users/join" +
 					"?user[id]=" + URLEncoder.encode(id, "utf-8") + 
 					"&user[pw]=" + URLEncoder.encode(pw, "utf-8") +
@@ -283,7 +297,13 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
-							ToastUtils.showToast(R.string.complete_signUp);
+							
+							if(role.equals("100")) {
+								ToastUtils.showToast(R.string.complete_signUpWholesaleOwner);
+							} else {
+								ToastUtils.showToast(R.string.complete_signUpEmployee);
+							}
+							
 							User user = new User(objJSON.getJSONObject("user"));
 							launchWholesaleActivity(user);
 						} else {
@@ -311,7 +331,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		}
 	}
 	
-	public void signUpForRetailOwner(String id, String pw, String role, String userName,
+	public void signUpForRetailOwner(String id, String pw, final String role, String userName,
 			String retailName, String address, String mallUrl, String companyPhone, 
 			String regNumber, String phone_auth_key) {
 		
@@ -345,7 +365,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
-							ToastUtils.showToast(R.string.complete_signUp);
+							ToastUtils.showToast(R.string.complete_signUpRetailOwner);
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {
@@ -402,7 +422,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						LogUtils.log("SignUpActivity.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
-							ToastUtils.showToast(R.string.complete_signUp);
+							ToastUtils.showToast(R.string.complete_signUpEmployee);
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {

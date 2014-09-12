@@ -254,20 +254,14 @@ public class RetailActivity extends ShopActivity {
 			//Do nothing.
 			
 		//직원 상태값 변경 (승인)
-		} else if(url.equals("home")) {
-			//Do nothing.
-			
 		//직원 상태값 변경 (거절)
 		} else if(url.equals("home")) {
 			//Do nothing.
 			
 		//거래처 승인
-		} else if(url.equals("retails/customers")) {
-			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, null);
-			
 		//거래처 삭제
 		} else if(url.equals("retails/customers")) {
-			//Do nothing.
+			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, null);
 			
 		//회원가입
 		} else if(url.equals("users/staffs")) {
@@ -337,6 +331,15 @@ public class RetailActivity extends ShopActivity {
 				&& retail != null
 				&& getFragmentsSize() == 0) {
 			showPage(CphConstants.PAGE_RETAIL_MAIN, null);
+			
+			new Handler().postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+
+					checkIntent();
+				}
+			}, 500);
 		} else {
 			new Handler().postDelayed(new Runnable() {
 				

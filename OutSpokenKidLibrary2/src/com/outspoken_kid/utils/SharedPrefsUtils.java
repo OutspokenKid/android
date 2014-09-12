@@ -1,5 +1,10 @@
 package com.outspoken_kid.utils;
 
+import java.util.Date;
+
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -141,7 +146,7 @@ public class SharedPrefsUtils {
 			if(prefs.contains(key)) {
 				ed.remove(key);
 			}
-			
+
 			ed.putString(key, value);
 			ed.commit();
 			return true;
@@ -197,5 +202,91 @@ public class SharedPrefsUtils {
 		} catch(Exception e) {
 			return false;
 		}
+	}
+
+	public static boolean saveCookie(String prefsName, Cookie cookie) {
+		
+		try {
+			//domain, expirydate, path, (secure), value, version
+			String name = cookie.getName();
+			String value = cookie.getValue();
+			String domain = cookie.getDomain();
+			String expiryDate = cookie.getExpiryDate().toString();
+			String path = cookie.getPath();
+			int version = cookie.getVersion();
+			
+			SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+
+			ed.putString("name", name);
+			ed.putString("value", value);
+			ed.putString("domain", domain);
+			ed.putString("expiryDate", expiryDate);
+			ed.putString("path", path);
+			ed.putInt("version", version);
+			ed.commit();
+			
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
+
+	public static boolean clearCookie(String prefsName) {
+		
+		try {
+			//domain, expirydate, path, (secure), value, version
+			SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+
+			ed.putString("name", null);
+			ed.putString("value", null);
+			ed.putString("domain", null);
+			ed.putString("expiryDate", null);
+			ed.putString("path", null);
+			ed.putInt("version", 0);
+			ed.commit();
+			
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
+	
+	public static BasicClientCookie getCookie(String prefsName) {
+
+		try {
+			SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+			
+			//domain, expirydate, path, (secure), value, version
+			String name = prefs.getString("name", null);
+			String value = prefs.getString("value", null);
+			String domain = prefs.getString("domain", null);
+			String expiryDate = prefs.getString("expiryDate", null);
+			String path = prefs.getString("path", null);
+			int version = prefs.getInt("version", 0);
+			
+			BasicClientCookie cookie = new BasicClientCookie(name, value);
+			cookie.setDomain(domain);
+			cookie.setExpiryDate(new Date(expiryDate));
+			cookie.setPath(path);
+			cookie.setVersion(version);
+			
+			return cookie;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
 	}
 }

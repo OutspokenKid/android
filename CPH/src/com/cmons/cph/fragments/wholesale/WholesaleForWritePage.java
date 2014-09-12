@@ -592,7 +592,16 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				@Override
 				public void onClick(View view) {
 
-					delete();
+					mActivity.showAlertDialog("상품 삭제", "상품을 삭제하시겠습니까?", 
+							"삭제", "취소", 
+							new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface arg0, int arg1) {
+
+							delete();
+						}
+					}, null);
 				}
 			});
 		} else {

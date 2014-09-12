@@ -159,14 +159,13 @@ public class ProductPage extends CmonsFragmentForShop {
 				
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					btnBasket.setAlpha(0.5f);
-					btnBasket.setEnabled(false);
-					
 					btnSample.setAlpha(0.5f);
-					btnSample.setEnabled(false);
-					
 					btnOrder.setAlpha(0.5f);
-					btnOrder.setEnabled(false);
 				}
+				
+				btnBasket.setEnabled(false);
+				btnSample.setEnabled(false);
+				btnOrder.setEnabled(false);
 			} else{
 				isSoldOut = false;
 				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
@@ -640,7 +639,6 @@ public class ProductPage extends CmonsFragmentForShop {
 					}
 				}
 			});
-
 		}
 	}
 	
@@ -666,6 +664,7 @@ public class ProductPage extends CmonsFragmentForShop {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_pullUp);
+						mActivity.closePageWithRefreshPreviousPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -707,8 +706,6 @@ public class ProductPage extends CmonsFragmentForShop {
 					LogUtils.log("WholesaleForProductPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					ToastUtils.showToast(objJSON.getString("message"));
-					
 					if(objJSON.getInt("result") == 1) {
 						
 						if(url.contains("&status=-1")) {
@@ -720,6 +717,8 @@ public class ProductPage extends CmonsFragmentForShop {
 							checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
 							product.setStatus(1);
 						}
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -867,6 +866,7 @@ public class ProductPage extends CmonsFragmentForShop {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_addFavorite);
+						product.setFavorited_cnt(product.getFavorited_cnt() + 1);
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -952,6 +952,5 @@ public class ProductPage extends CmonsFragmentForShop {
 
 			return arg0 == arg1;
 		}
-		
 	}
 }

@@ -230,7 +230,7 @@ public class HeaderViewForRetailShop extends RelativeLayout {
 		btnCategoryIndex.setId(madeCount + 4);
 		btnCategoryIndex.setTextColor(Color.WHITE);
 		btnCategoryIndex.setGravity(Gravity.CENTER);
-		btnCategoryIndex.setBackgroundResource(R.drawable.retail_main_drop1_btn);
+		btnCategoryIndex.setBackgroundResource(R.drawable.retail_list_drop);
 		FontUtils.setFontSize(btnCategoryIndex, 24);
 		addView(btnCategoryIndex);
 

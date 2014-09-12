@@ -1,6 +1,8 @@
 package com.outspoken_kid.classes;
 
+import org.apache.http.client.CookieStore;
 import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.params.HttpParams;
@@ -26,6 +28,8 @@ public class RequestManager {
 	 */
 	private static RequestQueue mRequestQueue;
 
+	private static CookieStore cookieStore;
+	
 	/**
 	 * Nothing to see here.
 	 */
@@ -55,11 +59,14 @@ public class RequestManager {
 		}
 	    
 	    DefaultHttpClient mDefaultHttpClient = new DefaultHttpClient();
-
+	    
         final ClientConnectionManager mClientConnectionManager = mDefaultHttpClient.getConnectionManager();
         final HttpParams mHttpParams = mDefaultHttpClient.getParams();
         final ThreadSafeClientConnManager mThreadSafeClientConnManager = new ThreadSafeClientConnManager( mHttpParams, mClientConnectionManager.getSchemeRegistry() );
         mDefaultHttpClient = new DefaultHttpClient( mThreadSafeClientConnManager, mHttpParams );
+        cookieStore = new BasicCookieStore();
+	    mDefaultHttpClient.setCookieStore( cookieStore );
+        
         final HttpStack httpStack = new HttpClientStack( mDefaultHttpClient );
         mRequestQueue = Volley.newRequestQueue(context, httpStack );
 	}
@@ -76,5 +83,10 @@ public class RequestManager {
 	    } else {
 	        throw new IllegalStateException("Not initialized");
 	    }
+	}
+	
+	public static CookieStore getCookieStore() {
+		
+		return cookieStore;
 	}
 }

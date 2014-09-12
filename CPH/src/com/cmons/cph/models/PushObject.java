@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import com.outspoken_kid.utils.LogUtils;
 
-public class PushObject implements Serializable{
+public class PushObject implements Serializable {
 
 	private static final long serialVersionUID = -8039255353290977219L;
 	

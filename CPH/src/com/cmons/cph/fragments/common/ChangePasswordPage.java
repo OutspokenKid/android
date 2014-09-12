@@ -21,7 +21,6 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -192,7 +191,6 @@ public class ChangePasswordPage extends CmonsFragmentForShop {
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_changePw);
-							SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SIGN, "pw", pw);
 							mActivity.closeTopPage();
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));

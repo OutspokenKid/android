@@ -190,14 +190,17 @@ public class ViewWrapperForReply extends ViewWrapper {
 				if(reply.getWholesale_id() == ShopActivity.getInstance().user.getWholesale_id()) {
 					btnDelete.setVisibility(View.VISIBLE);
 					btnReply.setVisibility(View.VISIBLE);
+					btnDelete2.setVisibility(View.VISIBLE);
 					
 				//게시글 작성자인 경우에 삭제 버튼 노출.
 				} else if(ShopActivity.getInstance().user.getId().equals(reply.getAuthor_id())) {
 					btnDelete.setVisibility(View.VISIBLE);
 					btnReply.setVisibility(View.GONE);
+					btnDelete2.setVisibility(View.GONE);
 				} else {
 					btnDelete.setVisibility(View.GONE);
 					btnReply.setVisibility(View.GONE);
+					btnDelete2.setVisibility(View.GONE);
 				}
 				
 				//그리고 이미 댓글이 있다면 댓글 버튼 숨김.

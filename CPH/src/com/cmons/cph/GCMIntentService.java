@@ -1,5 +1,6 @@
 package com.cmons.cph;
 
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.json.JSONObject;
 
 import android.app.Notification;
@@ -7,8 +8,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.PowerManager;
-import android.os.PowerManager.WakeLock;
 import android.support.v4.app.NotificationCompat;
 
 import com.cmons.cph.classes.CphConstants;
@@ -18,7 +17,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.utils.StringUtils;
 
 /**
  * v1.0.1
@@ -58,46 +56,46 @@ public class GCMIntentService extends GCMBaseIntentService {
 		*/
 		try {
 			if(intent != null && intent.getExtras() != null) {
-				String token = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id");
+				BasicClientCookie cookie = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
 				
 				//로그인이 안되어있는 경우 전체 푸시가 아니면 제한.
-				if(StringUtils.isEmpty(token)) {
+				if(cookie == null) {
 					LogUtils.log("###GCMIntentService.onMessage.  token is null, return.");
 					return;
 				}
 				
 				PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
 				intent.putExtra("pushObject", po);
-				
-				//앱이 실행중인 경우 ShopActivity로 바로 넘김.
-				if(ShopActivity.getInstance() != null) {
-					LogUtils.log("###GCMIntentService.onMessage.  App is running, send intent to ShopActivity.");
-
-					PowerManager pm = (PowerManager) context
-							.getSystemService(Context.POWER_SERVICE);
-					
-					WakeLock screenWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
-							| PowerManager.ACQUIRE_CAUSES_WAKEUP, context
-							.getClass().getName());
-
-					if (screenWakeLock != null) {
-						screenWakeLock.acquire();
-					}
-					
-					final Intent SENDING_INTENT = intent;
-					ShopActivity.getInstance().runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							ShopActivity.getInstance().handleIntent(SENDING_INTENT);
-						}
-					});
-					
-				//앱이 실행중이지 않은 경우 Notification 전송.
-				} else {
-					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
+//				
+//				//앱이 실행중인 경우 ShopActivity로 바로 넘김.
+//				if(ShopActivity.getInstance() != null) {
+//					LogUtils.log("###GCMIntentService.onMessage.  App is running, send intent to ShopActivity.");
+//
+//					PowerManager pm = (PowerManager) context
+//							.getSystemService(Context.POWER_SERVICE);
+//					
+//					WakeLock screenWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
+//							| PowerManager.ACQUIRE_CAUSES_WAKEUP, context
+//							.getClass().getName());
+//
+//					if (screenWakeLock != null) {
+//						screenWakeLock.acquire();
+//					}
+//					
+//					final Intent SENDING_INTENT = intent;
+//					ShopActivity.getInstance().runOnUiThread(new Runnable() {
+//						
+//						@Override
+//						public void run() {
+//							ShopActivity.getInstance().handleIntent(SENDING_INTENT);
+//						}
+//					});
+//					
+//				//앱이 실행중이지 않은 경우 Notification 전송.
+//				} else {
+//					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
 					showNotification(context, intent);
-				}
+//				}
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -113,7 +111,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 		try {
 			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
-					"?user_id=" + SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id") +
+					"?user_id=" + ShopActivity.getInstance().user.getId() +
 					"&device_token=" + regId;
 					
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

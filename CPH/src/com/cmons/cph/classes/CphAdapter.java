@@ -177,6 +177,7 @@ public class CphAdapter extends BaseAdapter {
 		
 		case CphConstants.ITEM_NOTICE:
 			return new ViewWrapperForNotice(convertView, itemCode);
+			
 		case CphConstants.ITEM_NOTIFICATION:
 			return new ViewWrapperForNotification(convertView, itemCode);
 			

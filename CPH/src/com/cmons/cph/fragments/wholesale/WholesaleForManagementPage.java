@@ -2,7 +2,9 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -19,11 +21,14 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
+import com.kakao.KakaoLink;
+import com.kakao.KakaoTalkLinkMessageBuilder;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 
@@ -57,6 +62,7 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 		title = "매장관리";
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void createPage() {
 
@@ -83,7 +89,8 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 		tvInfo.append(sp4);
 		
 		SpannableStringBuilder sp5 = new SpannableStringBuilder(
-				"\n\n도매매장 전화번호, 주소 변경은 앱에서 지원하지 않습니다.\n청평화쇼핑몰 관리소에 문의해주세요.");
+				"\n\n도매매장 전화번호, 주소 변경은 앱에서 지원하지 않습니다." +
+				"\n청평화패션몰 관리사무실(02-2252-8036)로 문의해주시기 바랍니다.");
 		sp5.setSpan(new ForegroundColorSpan(Color.RED), 0, sp5.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvInfo.append(sp5);
 		
@@ -91,6 +98,20 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			btnSample.setBackgroundResource(R.drawable.shop_sample_btn_b);
 		} else{
 			btnSample.setBackgroundResource(R.drawable.shop_sample_btn_a);
+		}
+		
+		//대표가 아닌 경우.
+		if(mActivity.user.getRole() % 100 != 0) {
+			
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				btnProfile.setAlpha(0.5f);
+				btnAccount.setAlpha(0.5f);
+				btnSample.setAlpha(0.5f);
+			}
+			
+			btnProfile.setEnabled(false);
+			btnAccount.setEnabled(false);
+			btnSample.setEnabled(false);
 		}
 	}
 
@@ -115,6 +136,11 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
+				if(!btnProfile.isEnabled()) {
+					ToastUtils.showToast(R.string.ownerAvailable);
+					return;
+				}
+				
 				mActivity.showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
 			}
 		});
@@ -124,15 +150,56 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
+				if(!btnAccount.isEnabled()) {
+					ToastUtils.showToast(R.string.ownerAvailable);
+					return;
+				}
+				
 				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ACCOUNT, null);
 			}
 		});
-			
+
+		btnKakao.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				try {
+					String shopInfoString = "거래처 정보" +
+							"\n매장 이름 : " + getWholesale().getName() +
+							"\n매장 위치 : 청평화 패션몰 " + getWholesale().getLocation() +
+							"\n대표 성함 : " + getWholesale().getOwner_name() +
+							"\n매장 전화번호 : " + getWholesale().getPhone_number() +
+							"\n\n청평화 패션몰 앱이 없으신 분은 아래 링크를 눌러 앱을 설치해주세요.";
+					
+					final KakaoLink kakaoLink = KakaoLink.getKakaoLink(mContext);
+					final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder 
+							= kakaoLink.createKakaoTalkLinkMessageBuilder();
+					//720 440 => 360 220 => 180 110
+					final String linkContents = kakaoTalkLinkMessageBuilder
+						.addImage(getWholesale().getRep_image_url(), 180, 110)
+						.addText(shopInfoString)
+                    	.addAppButton("청평화 앱 설치주소")
+                    	.build();
+					kakaoLink.sendMessage(linkContents, mContext);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		});
+		
 		btnSample.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
+				if(!btnSample.isEnabled()) {
+					ToastUtils.showToast(R.string.ownerAvailable);
+					return;
+				}
+				
 				allowSampleRequest = !allowSampleRequest;
 				
 				if(allowSampleRequest) {

@@ -65,9 +65,10 @@ public class NoticePage extends CmonsFragmentForShop {
 			
 			if(getArguments().containsKey("notice")) {
 				notice = (Notice) getArguments().getSerializable("notice");
-				LogUtils.log("###NoticePage.setVariables.  notice is not null. title : " + notice.getTitle());
-			} else {
-				LogUtils.log("###NoticePage.setVariables.  notice is null");
+				
+				if(notice != null) {
+					needPush = notice.getNeed_push() == 1;
+				}
 			}
 			
 			if(getArguments().containsKey("isEdit")) {
@@ -78,6 +79,11 @@ public class NoticePage extends CmonsFragmentForShop {
 				title = getArguments().getString("title");
 			}
 		}
+		
+		LogUtils.log("###NoticePage.setVariables.  " +
+				"\nisEdit : " + isEdit +
+				"\ntitle : " + title +
+				(notice == null? "\nNotice is null" : "Notice is not null, title : " + notice.getTitle()));
 		
 		if(title == null) {
 			title = "공지사항";

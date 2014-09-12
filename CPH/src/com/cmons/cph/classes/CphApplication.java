@@ -17,7 +17,6 @@ public class CphApplication extends OutSpokenApplication {
 	public static void initWithActivity(Activity activity) {
 
 		RequestManager.initForUsingCookie(activity.getApplicationContext());
-//		RequestManager.init(activity.getApplicationContext());
 		createImageCache(activity.getApplicationContext());
 		ResizeUtils.setBasicValues(activity, 720);
 		activity.getWindow().setFormat(PixelFormat.RGBA_8888);

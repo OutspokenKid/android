@@ -59,6 +59,10 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		endHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "eh");
 		endMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "em");
 		
+		if(!SharedPrefsUtils.checkPrefs(CphConstants.PREFS_NOTIFICATION, "allow")) {
+			SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, "allow", true);
+		}
+		
 		allowNotification = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "allow");
 	}
 

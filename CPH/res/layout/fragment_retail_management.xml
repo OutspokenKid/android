@@ -150,6 +150,32 @@
 		    	android:layout_alignTop="@id/retailManagementPage_tvAddress"
 		    	android:layout_alignParentRight="true"
 		    	android:background="@drawable/retail_change_btn" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvMallUrlText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+			    android:layout_below="@id/retailManagementPage_tvAddress"
+			    android:gravity="center_vertical"
+			    android:text="@string/mallUrl"
+		    	android:textColor="#fff" />
+	        
+	        <TextView 
+		        android:id="@+id/retailManagementPage_tvMallUrl"
+		        android:layout_width="match_parent"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailManagementPage_tvMallUrlText"
+		    	android:background="@drawable/txt_box"
+			    android:gravity="center"
+		    	android:textColor="#000" />
+	        
+	        <View
+	            android:id="@+id/retailManagementPage_changeMallUrl"
+		        android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/retailManagementPage_tvMallUrl"
+		    	android:layout_alignParentRight="true"
+		    	android:background="@drawable/retail_change_btn" />
 		    
 		</RelativeLayout>
 

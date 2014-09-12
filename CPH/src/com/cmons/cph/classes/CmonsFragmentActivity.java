@@ -18,6 +18,7 @@ import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
@@ -152,7 +153,12 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 						file = new File(filePath, fileName);
 					}
 
-					int standardLength = 720;
+					int standardLength = 640;
+					
+					if(ResizeUtils.getScreenWidth() == 1080) {
+						standardLength = 720;
+					}
+					
 					int inSampleSize = ImageUploadUtils.getBitmapInSampleSize(file, standardLength);
 					
 					LogUtils.log("################## standardLength : " + standardLength + ", inSampleSize : " + inSampleSize);

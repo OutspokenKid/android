@@ -105,8 +105,17 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 					break;
 				}
 
+				long sum = 0;
+				
+				int size = orderSet.getItems().length;
+				for(int i=0; i<size; i++) {
+					
+					sum += orderSet.getItems()[i].getProduct_price() 
+							* orderSet.getItems()[i].getAmount();
+				}
+				
 				FontUtils.addSpan(tvRight, "\n" + 
-						StringUtils.getFormattedNumber(orderSet.getSum()) 
+						StringUtils.getFormattedNumber(sum) 
 						+ "원", Color.RED, 1);
 				
 			} else {

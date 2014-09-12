@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -72,8 +74,11 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	public void onResume() {
 		super.onResume();
 		
-		downloadInfo();
-		downloadNotices();
+		if(models.size() == 0) {
+			downloadInfo();
+		}
+		
+		refreshNotices();
 	}
 	
 	@Override
@@ -157,6 +162,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		aaOut.setAnimationListener(al);
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void createPage() {
 
@@ -176,6 +182,16 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		
 		noticeAdapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), notices);
 		listView.setAdapter(noticeAdapter);
+		
+		//대표가 아닌 경우.
+		if(mActivity.user.getRole() % 100 != 0) {
+			
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				menuButtons[6].setAlpha(0.5f);
+			}
+			
+			menuButtons[6].setEnabled(false);
+		}
 	}
 
 	@Override
@@ -312,6 +328,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				
 				requestReadNotification((Notification)notices.get(position));
 				hideNoticeRelative();
+				checkNewMessage();
 			}
 		});
 
@@ -320,11 +337,17 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			
 			final int INDEX = i;
 			
+			//대표가 아닌 경우.
+			if(mActivity.user.getRole() % 100 != 0
+					&& i == 6) {
+				continue;
+			}
+			
 			menuButtons[i].setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View view) {
-
+					
 					hideMenuRelative();
 
 					new Handler().postDelayed(new Runnable() {
@@ -496,6 +519,20 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				models.add(product);
 			}
 
+			if(size%2 == 1) {
+				BaseModel emptyModel = new BaseModel() {};
+				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel);
+			} else if(pageIndex == 0 && size == 0) {
+				BaseModel emptyModel1 = new BaseModel() {};
+				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel1);
+
+				BaseModel emptyModel2 = new BaseModel() {};
+				emptyModel2.setItemCode(CphConstants.ITEM_PRODUCT);
+				models.add(emptyModel2);
+			}
+			
 			totalCount = objJSON.getInt("productsCount");
 			headerView.setTotalProduct(totalCount);
 					
@@ -576,7 +613,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 
 	public void checkNewMessage() {
 		
-		url = CphConstants.BASE_API_URL + "notifications/mine?filter=unread";
+		url = CphConstants.BASE_API_URL + "notifications/mine?num=0&filter=unread";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -678,7 +715,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						refreshPage();
+						refreshNotices();
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);

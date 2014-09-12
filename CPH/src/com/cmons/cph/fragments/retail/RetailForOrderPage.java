@@ -161,7 +161,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 				case Order.STATUS_STANDBY:
 				//거래완료.
 				case Order.STATUS_DEPOSIT:
-					requestStatus(orderSet.getStatus());
+					requestStatus(3);
 					break;
 				//내역삭제.
 				case Order.STATUS_COMPLETED:
@@ -280,8 +280,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 			standBy.setBackgroundResource(R.drawable.order_wait_b);
 			deposit.setBackgroundResource(R.drawable.order_done_a);
 			completed.setBackgroundResource(R.drawable.order_complete_b);
-			btnConfirm.setBackgroundResource(R.drawable.retail_complete4_btn);
-			btnConfirm.setVisibility(View.VISIBLE);
+			btnConfirm.setVisibility(View.INVISIBLE);
 			break;
 			
 		case Order.STATUS_COMPLETED:
@@ -363,16 +362,25 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 
 	public void requestStatus(int status) {
 
+		if(orderSet.getItems() == null) {
+			LogUtils.log("###where.requestStatus.  items is null.");
+		} else {
+			LogUtils.log("###where.requestStatus.  items is good. size : " + orderSet.getItems().length);
+		}
+
 		String order_ids = null;
 		
 		int size = orderSet.getItems().length;
 		for(int i=0; i<size; i++) {
 			
-			if(i != 0) {
-				order_ids += ",";
+			if(orderSet.getItems()[i].isChecked()) {
+				
+				if(order_ids == null) {
+					order_ids = "" + orderSet.getItems()[i].getId();
+				} else {
+					order_ids += "," + orderSet.getItems()[i].getId();
+				}
 			}
-			
-			order_ids += orderSet.getItems()[i];
 		}
 
 		//http://cph.minsangk.com/retails/orders/delete?order_id=10001
@@ -415,5 +423,40 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 	
 	public void deleteOrder() {
 		
+		//http://cph.minsangk.com/retails/orders/delete?collapse_key=10001
+		String url = CphConstants.BASE_API_URL + "retails/orders/delete" +
+				"?collapse_key=" + orderSet.getCollapse_key();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailForOrderPage.deleteOrder.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeleteOrder);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailForOrderPage.deleteOrder.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_deleteOrder);
+						mActivity.closePageWithRefreshPreviousPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeleteOrder);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeleteOrder);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

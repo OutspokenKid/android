@@ -72,7 +72,7 @@ public class ViewWrapperForNotification extends ViewWrapper {
 				tvNotice.setText(notification.getMessage());
 				
 				String dateString = StringUtils.getDateString("yyyy.MM.dd\naa hh:mm", 
-						notification.getPushed_at() * 1000);
+						notification.getCreated_at() * 1000);
 				tvRegdate.setText(dateString);
 				
 				if(notification.getRead_at() != 0) {

@@ -95,10 +95,9 @@ public class NoticeListPage extends CmonsFragmentForShop {
 				public void onClick(View view) {
 
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("notice", null);
 					bundle.putBoolean("isEdit", true);
-					bundle.putString("title", title);
-					mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, null);
+					bundle.putString("title", "공지사항 추가");
+					mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, bundle);
 				}
 			});
 		}
@@ -196,6 +195,7 @@ public class NoticeListPage extends CmonsFragmentForShop {
 		if(isAppNotice) {
 			url = CphConstants.BASE_API_URL + "posts/notices?num=0";
 		} else {
+			//http://cph.minsangk.com/wholesales/notices?wholesale_id=190
 			url = CphConstants.BASE_API_URL + "wholesales/notices?num=0";
 			
 			if(wholesale_id != 0) {

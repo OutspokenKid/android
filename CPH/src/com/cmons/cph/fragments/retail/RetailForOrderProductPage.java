@@ -455,8 +455,15 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 			if(btnColor.getText() != null
 					&& btnSize.getText() != null
 					&& etCount.getText() != null) {
+
+				String color = btnColor.getText().toString();
+				String size = btnSize.getText().toString();
+				int amount = Integer.parseInt(etCount.getText().toString());
 				
-				if(innerLinear.getChildCount() != 0) {
+				Order duplicatedOrder = getDuplicatedOrder(
+						color, size, amount);
+				
+				if(duplicatedOrder != null) {
 					return;
 				}
 				
@@ -489,22 +496,22 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				line.setBackgroundColor(Color.WHITE);
 				orderFrame.addView(line);
 				
-				int count = Integer.parseInt(etCount.getText().toString());
-				final long price =  count * product.getPrice();
+				final long price =  amount * product.getPrice();
 				
 				FontUtils.addSpan(tv1, product.getName() + 
-						"(" + btnSize.getText() + "/" + 
-						btnColor.getText() + "/" + 
-						count + "개" + ")", 0, 1);
+						"(" + size + "/" + 
+						color + "/" + 
+						amount + "개" + ")", 0, 1);
 				
 				FontUtils.addSpan(tv2, StringUtils.getFormattedNumber(price) + "원", Color.RED, 1);
 				
 				final Order order = new Order();
 				order.setProduct_id(product.getId());
-				order.setSize(btnSize.getText().toString());
-				order.setColor(btnColor.getText().toString());
-				order.setAmount(Integer.parseInt(etCount.getText().toString()));
+				order.setSize(size);
+				order.setColor(color);
+				order.setAmount(amount);
 				models.add(order);
+				orderFrame.setTag(order);
 				
 				totalPrice += price;
 				tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
@@ -534,6 +541,54 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+	
+	public Order getDuplicatedOrder(String color, String size, int amount) {
+		
+		LogUtils.log("###RetailForOrderProductPage.getDuplicatedOrder.  " +
+				"\nsize : " + size + ", color : " + color + ", amount : " + amount);
+		
+		try {
+			Order order = null;
+			
+			int length = innerLinear.getChildCount();
+			for(int i=0; i<length; i++) {
+				order = (Order) innerLinear.getChildAt(i).getTag();
+				
+				LogUtils.log("		size : " + order.getSize() + 
+						", color : " + order.getColor() + 
+						", amount : " + order.getAmount());
+				
+				if(order.getSize().equals(size)
+						&& order.getColor().equals(color)) {
+					
+					order.setAmount(order.getAmount() + amount);
+					
+					FrameLayout orderFrame = (FrameLayout) innerLinear.getChildAt(i);
+					((TextView)orderFrame.getChildAt(0)).setText(product.getName() + 
+							"(" + size + "/" + 
+							color + "/" + 
+							order.getAmount() + "개" + ")");
+
+					final long price =  order.getAmount() * product.getPrice();
+					
+					TextView tv = (TextView)orderFrame.getChildAt(1);
+					tv.setText(null);
+					FontUtils.addSpan(tv, StringUtils.getFormattedNumber(price) + "원", Color.RED, 1);
+					
+					totalPrice += amount * product.getPrice();
+					tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
+					
+					return order;
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
 	}
 
 	public void order() {

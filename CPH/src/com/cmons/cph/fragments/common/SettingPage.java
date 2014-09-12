@@ -16,6 +16,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -88,6 +89,15 @@ public class SettingPage extends CmonsFragmentForShop {
 			}
 		});
 	
+		btnSuggest.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				IntentUtils.sendEmail(mContext, "rinter@naver.com");
+			}
+		});
+		
 		btnSignout.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -208,8 +218,9 @@ public class SettingPage extends CmonsFragmentForShop {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
-					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
+					
 					mActivity.launchSignInActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -222,7 +233,8 @@ public class SettingPage extends CmonsFragmentForShop {
 	
 	public void withdraw() {
 		
-		url = CphConstants.BASE_API_URL + "users/logout";
+		//http://cph.minsangk.com/users/withdraw
+		url = CphConstants.BASE_API_URL + "users/withdraw";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -238,8 +250,9 @@ public class SettingPage extends CmonsFragmentForShop {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 					
-					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "id");
-					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_SIGN, "pw");
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
+					
 					mActivity.launchSignInActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);

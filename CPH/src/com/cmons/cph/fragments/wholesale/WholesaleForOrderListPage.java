@@ -5,13 +5,16 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,6 +28,8 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -141,6 +146,25 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("orderSet", (OrderSet)models.get(position));
 				mActivity.showPage(CphConstants.PAGE_WHOLESALE_ORDER, bundle);
+			}
+		});
+		
+		listView.setOnItemLongClickListener(new OnItemLongClickListener() {
+			
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					final int arg2, long arg3) {
+				mActivity.showAlertDialog("알림", "주문요청을 거절하시겠습니까?", 
+						"확인", "취소", 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								cancelRequest((OrderSet)models.get(arg2));
+							}
+						}, null);
+				return false;
 			}
 		});
 	}
@@ -264,5 +288,60 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 		}
 		
 		refreshPage();
+	}
+
+	public void cancelRequest(OrderSet orderSet) {
+		
+		String order_ids = null;
+		
+		int size = orderSet.getItems().length;
+		for(int i=0; i<size; i++) {
+			
+			if(order_ids == null) {
+				order_ids = "" + orderSet.getItems()[i].getId();
+			} else {
+				order_ids = "," + orderSet.getItems()[i].getId();
+			}
+		}
+		
+		if(order_ids == null) {
+			order_ids = "";
+		}
+		
+		//http://cph.minsangk.com/wholesales/orders/set_status?order_ids[]=1&status=1
+		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
+				"?order_ids[]=" + order_ids +
+				"&status=-1";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForOrderListPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToCancelRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForOrderListPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_cancelRequest);
+						refreshPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToCancelRequest);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToCancelRequest);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

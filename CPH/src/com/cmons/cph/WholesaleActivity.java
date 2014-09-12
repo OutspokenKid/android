@@ -33,7 +33,6 @@ import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleActivity extends ShopActivity {
 
@@ -298,6 +297,15 @@ public class WholesaleActivity extends ShopActivity {
 				&& wholesale != null
 				&& getFragmentsSize() == 0) {
 			showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);
+
+			new Handler().postDelayed(new Runnable() {
+				
+				@Override
+				public void run() {
+
+					checkIntent();
+				}
+			}, 500);
 		} else {
 			new Handler().postDelayed(new Runnable() {
 				
@@ -307,10 +315,5 @@ public class WholesaleActivity extends ShopActivity {
 				}
 			}, 50);
 		}
-	}
-
-	public void setPushRead(int push_id) {
-
-		ToastUtils.showToast("읽음 처리 함");
 	}
 }

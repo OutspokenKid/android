@@ -40,13 +40,14 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	private ListView listView;
 	
 	private int menuIndex;
+	private int totalCount;
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		
 		if(models.size() == 0) {
-			downloadInfo();
+			setMenu(menuIndex);
 		}
 	}
 	
@@ -79,6 +80,25 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.WHITE));
 		listView.setDividerHeight(1);
+		
+		switch (menuIndex) {
+		
+		case 0:
+			btnOrder.setBackgroundResource(R.drawable.retail_statement_btn_a);
+			btnPartner.setBackgroundResource(R.drawable.retail_customer2_btn_b);
+			break;
+			
+		case 1:
+			btnOrder.setBackgroundResource(R.drawable.retail_statement_btn_b);
+			btnPartner.setBackgroundResource(R.drawable.retail_customer2_btn_a);
+			break;
+		}
+		
+		if(menuIndex == 0) {
+			tvCount.setText("총 주문 " + totalCount + "건");
+		} else {
+			tvCount.setText("거래처 " + totalCount + " 승인중 거래처 ");
+		}
 	}
 
 	@Override
@@ -172,8 +192,9 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 					orderSet.setItemCode(CphConstants.ITEM_ORDERSET_RETAIL);
 					models.add(orderSet);
 				}
-				
-				tvCount.setText("총 주문 " + size + "건");
+
+				totalCount = size;
+				tvCount.setText("총 주문 " + totalCount + "건");
 				
 			} else {
 				arJSON = objJSON.getJSONArray("customers");
@@ -185,7 +206,8 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 					models.add(customer);
 				}
 
-				tvCount.setText("거래처 " + size + " 승인중 거래처 "); 
+				totalCount = size;
+				tvCount.setText("거래처 " + totalCount + " 승인중 거래처 "); 
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -217,6 +239,10 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	public void setMenu(int menuIndex) {
 
 		this.menuIndex = menuIndex;
+		
+		if(getArguments() != null) {
+			getArguments().putInt("menuIndex", menuIndex);
+		}
 		
 		switch (menuIndex) {
 		

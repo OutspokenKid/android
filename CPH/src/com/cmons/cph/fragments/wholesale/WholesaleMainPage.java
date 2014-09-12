@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -44,6 +46,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
@@ -157,6 +160,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		aaOut.setAnimationListener(al);
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void createPage() {
 
@@ -173,6 +177,16 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		
 		pagerAdapter = new PagerAdapterForProducts();
 		viewPager.setAdapter(pagerAdapter);
+		
+		//대표가 아닌 경우.
+		if(mActivity.user.getRole() % 100 != 0) {
+			
+			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				btnStaff.setAlpha(0.5f);
+			}
+			
+			btnStaff.setEnabled(false);
+		}
 	}
 
 	@Override
@@ -265,6 +279,11 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
+				if(!btnStaff.isEnabled()) {
+					ToastUtils.showToast(R.string.ownerAvailable);
+					return;
+				}
+				
 				mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, null);
 			}
 		});
@@ -312,6 +331,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				
 				requestReadNotification((Notification)models.get(position));
 				hideNoticeRelative();
+				checkNewMessage();
 			}
 		});
 
@@ -320,7 +340,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onPageSelected(final int position) {
 
-				LogUtils.log("###viewPager.onPageSelected.  position : " + position);
 				tvBestTitle.setText(products.get(position).getName());
 				tvBestSellingCount.setText("구매 : " + products.get(position).getOrdered_cnt());
 				tvRank.setText((position + 1) + "위");
@@ -538,7 +557,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	public void downloadInfo() {
 		
 		//http://cph.minsangk.com/notifications/mine
-		url = CphConstants.BASE_API_URL + "notifications/mine";
+		url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
 		
 		if(isDownloading || isLastList) {
 			return;
@@ -658,7 +677,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			
 			@Override
 			public void run() {
-
+				
 				if(!needPlay) {
 					isPlaying = false;
 					return;
@@ -746,7 +765,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 	public void requestReadNotification(Notification notification) {
 		
-		//http://cph.minsangk.com/notifications/read?notification_id=1
+		//http://cph.minsangk.com/notifications/read?notification_id=1700
 		String url = CphConstants.BASE_API_URL + "notifications/read" +
 				"?notification_id=" + notification.getId();
 		

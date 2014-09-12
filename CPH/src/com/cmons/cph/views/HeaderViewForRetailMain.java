@@ -492,10 +492,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 			final int index = position % wholesales.size();
 			final String imageUrl = wholesales.get(index).getRep_image_url();
-			
-			LogUtils.log("###HeaderViewForRetailMain.instantiateItem.  " +
-					"index : " + index + 
-					", url : " + imageUrl);
 
 			final ImageView ivImage = new ImageView(getContext());
 			ivImage.setScaleType(ScaleType.CENTER_CROP);
@@ -532,12 +528,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 											+ "\nurl : " + url);
 									
 									if(bitmap == null) {
-										LogUtils.log("###instantiateItem.onCompleted.  bitmap is null.");
 										return;
-									}
-									
-									if(bitmap.isRecycled()) {
-										LogUtils.log("###instantiateItem.onCompleted.  bitmap is recycled.");
 									}
 									
 									if(!StringUtils.isEmpty(url)) {

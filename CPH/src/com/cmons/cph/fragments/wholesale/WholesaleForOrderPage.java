@@ -162,13 +162,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		
 		tvAccount.setText(accountString);
 		
-		if(totalPrice == -1) {
-			tvTotalPrice.setText(StringUtils.getFormattedNumber(orderSet.getSum()) + "원");
-			totalPrice = orderSet.getSum();
-		} else {
-			tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
-		}
-		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.WHITE));
@@ -178,19 +171,27 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			for(Order order : orderSet.getItems()) {
 				order.setItemCode(CphConstants.ITEM_ORDER_WHOLESALE);
 				
-				LogUtils.log("###############.createPage.  ===========================");
-				
 				if(order.getStatus() == orderSet.getStatus()) {
-					LogUtils.log("###true.createPage.  amount : " + order.getAmount());
 					order.setChecked(true);
 				} else {
-					LogUtils.log("###false.createPage.  amount : " + order.getAmount());
 					order.setChecked(false);
 				}
 				
 				models.add(order);
 			}
 		}
+		
+		totalPrice = 0;
+		int size = orderSet.getItems().length;
+		for(int i=0; i<size; i++) {
+			
+			if(orderSet.getItems()[i].isChecked()) {
+				totalPrice += orderSet.getItems()[i].getProduct_price()
+						* orderSet.getItems()[i].getAmount();
+			}
+		}
+		
+		tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
 	}
 
 	@Override
@@ -374,6 +375,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 						case 2:
 							ToastUtils.showToast(R.string.complete_changeOrderStatus3);
 							orderSet.setStatus(3);
+							mActivity.closePageWithRefreshPreviousPage();
 							break;
 						}
 						

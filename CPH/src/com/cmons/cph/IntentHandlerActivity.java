@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
+import com.cmons.cph.models.PushObject;
 import com.outspoken_kid.utils.LogUtils;
 
 public class IntentHandlerActivity extends Activity {
@@ -67,8 +68,10 @@ public class IntentHandlerActivity extends Activity {
 		if(intent != null) {
 			Intent i = new Intent(this, IntroActivity.class);
 			
-			if(intent.getData() != null) {
-				i.setData(intent.getData());
+			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
+			
+			if(po != null) {
+				i.putExtra("pushObject", po);
 			}
 			
 			i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

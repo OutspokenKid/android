@@ -16,11 +16,8 @@ import android.widget.TextView.OnEditorActionListener;
 import com.cmons.cph.R;
 import com.cmons.cph.SignInActivity;
 import com.cmons.cph.classes.CmonsFragment;
-import com.cmons.cph.classes.CphConstants;
 import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -33,20 +30,6 @@ public class SignInPage extends CmonsFragment {
 	private Button btnSignUp;
 	private Button btnFindId;
 	private Button btnFindPw;
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		String id = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id");
-		String pw = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "pw");
-		
-		LogUtils.log("###SignInPage.onResume.  check.  id : " + id + ", pw : " + pw);
-		
-		if(id != null && pw != null) {
-			((SignInActivity)getActivity()).signIn(id, pw);
-		}
-	}
 	
 	@Override
 	public void bindViews() {

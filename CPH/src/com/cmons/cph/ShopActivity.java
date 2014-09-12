@@ -19,10 +19,9 @@ import com.cmons.cph.models.PushObject;
 import com.cmons.cph.models.User;
 import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class ShopActivity extends CmonsFragmentActivity {
 
@@ -115,8 +114,11 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 				try {
 					LogUtils.log("ShopActivity.checkSignStatus.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
 					
+					if(objJSON.getInt("result") != 1) {
+						ToastUtils.showToast(objJSON.getString("message"));
+						launchSignInActivity();
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -145,11 +147,26 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 		}
 	}
 	
+	public void checkIntent() {
+		
+		try {
+			if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+				PushObject po = (PushObject) getIntent().getSerializableExtra("pushObject");
+				handleUri(Uri.parse(po.uri));
+				po.uri = null;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 	public void updateInfo(String regId) {
 	
 		try {
 			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
-					"?user_id=" + SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SIGN, "id") +
+					"?user_id=" + user.getId() +
 					"&device_token=" + regId;
 					
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -357,8 +374,31 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	}
 	
 	public void setPushRead(int push_id) {
+		
+		String url = CphConstants.BASE_API_URL + "/notifications/read" +
+				"?notification_id=" + push_id;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-		ToastUtils.showToast("읽음 처리 함");
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ShopActivity.setPushRead.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ShopActivity.setPushRead.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 
 	/**
@@ -370,19 +410,18 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	 * pushed_at : 보내진 시간.
 	 * read_at : 유저가 읽은 시간.
 	 */
-
 	public void handleIntent(Intent intent) {
 		
 		LogUtils.log("###WholesaleActivity.handleIntent.  ");
 		
 		try {
-			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
+			final PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
 			String message = po.message;
 			final String uriString = po.uri;
 			
 			LogUtils.log("message : " + message);
 			LogUtils.log("uriString : " + uriString);
-			
+
 			//팝업을 보여준 후 확인을 누르면 처리.
 			showAlertDialog("알림", message, "확인", "닫기", new DialogInterface.OnClickListener() {
 				
@@ -390,9 +429,9 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 				public void onClick(DialogInterface dialog, int which) {
 
 					try {
+						setPushRead(Integer.parseInt(po.id));
 						Uri uri = Uri.parse(uriString);
 						handleUri(uri);
-						setPushRead(0);
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (Error e) {

@@ -23,6 +23,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
@@ -77,7 +78,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 			//tvPrice.
 			rp = (RelativeLayout.LayoutParams) tvPrice.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(50);
-			rp.rightMargin = ResizeUtils.getSpecificLength(30);
+			rp.rightMargin = ResizeUtils.getSpecificLength(20);
 			
 			//tvBuyCount.
 			rp = (RelativeLayout.LayoutParams) tvBuyCount.getLayoutParams();
@@ -119,8 +120,13 @@ public class ViewWrapperForProduct extends ViewWrapper {
 				product = (Product) baseModel;
 
 				tvTitle.setText(product.getName());
-				tvBuyCount.setText("" + product.getOrdered_cnt());
-				tvPrice.setText(product.getPrice() + "원");
+				tvBuyCount.setText("" + product.getFavorited_cnt());
+				
+				if(product.getPrice() > 1000000) {
+					tvPrice.setText("100만원 이상");
+				} else {
+					tvPrice.setText(StringUtils.getFormattedNumber(product.getPrice()) + "원");
+				}
 				
 				if(product.getProduct_images() != null
 						&& product.getProduct_images()[0] != null) {

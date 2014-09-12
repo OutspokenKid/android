@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -630,6 +631,26 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE1:
 			case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_EMPLOYEE2:
 			
+				mActivity.showAlertDialog("알림", "회원가입시 계정은 해당 매장에 귀속이 되며 " +
+						"대표가 해고할 경우 계정은 자동 탈퇴처리 됩니다." +
+						"\n동의하시겠습니까?", 
+						"동의", "거부", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								mActivity.signUpForWholesale(
+										etId.getText().toString(), 		//id
+										etPw.getText().toString(), 		//pw
+										"" + type, 						//type
+										userName, 						//user id
+										"" + shop.getId(), 				//shop id
+										categoryString, 				//category
+										phone_auth_key);				//phone certification
+							}
+					
+				}, null);
+
+				break;
 			case SignUpActivity.BUSINESS_WHOLESALE + SignUpActivity.POSITION_OWNER:
 				mActivity.signUpForWholesale(
 						etId.getText().toString(), 		//id
@@ -660,14 +681,25 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			case SignUpActivity.BUSINESS_RETAIL_OFFLINE + SignUpActivity.POSITION_EMPLOYEE2:
 			case SignUpActivity.BUSINESS_RETAIL_ONLINE + SignUpActivity.POSITION_EMPLOYEE1:
 			case SignUpActivity.BUSINESS_RETAIL_ONLINE + SignUpActivity.POSITION_EMPLOYEE2:
-				userName = etName.getText().toString();
-				mActivity.signUpForRetailEmployee(
-						etId.getText().toString(), 		//id
-						etPw.getText().toString(), 		//pw
-						"" + type, 						//type
-						userName, 						//user id
-						"" + shop.getId(), 
-						phone_auth_key);
+				
+				mActivity.showAlertDialog("알림", "회원가입시 계정은 해당 매장에 귀속이 되며 " +
+						"대표가 해고할 경우 계정은 자동 탈퇴처리 됩니다." +
+						"\n동의하시겠습니까?", 
+						"동의", "거부", new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								userName = etName.getText().toString();
+								mActivity.signUpForRetailEmployee(
+										etId.getText().toString(), 		//id
+										etPw.getText().toString(), 		//pw
+										"" + type, 						//type
+										userName, 						//user id
+										"" + shop.getId(), 
+										phone_auth_key);
+							}
+					
+				}, null);
 				break;
 			}
 		}
