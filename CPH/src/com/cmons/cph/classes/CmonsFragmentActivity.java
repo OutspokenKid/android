@@ -19,14 +19,13 @@ import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 
 	//For uploadImage.
-	private static String filePath;
-	private static String fileName;
-	private OnAfterUploadImage onAfterUploadImage;
+	public static OnAfterUploadImage onAfterUploadImage;
 	
 	public abstract void onRefreshPage();
 	public abstract void setTitleText(String title);
@@ -81,7 +80,7 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 	
 	public void showUploadPhotoPopup(OnAfterUploadImage onAfterUploadImage) {
 		
-		this.onAfterUploadImage = onAfterUploadImage;
+		CmonsFragmentActivity.onAfterUploadImage = onAfterUploadImage;
 		
 		showSelectDialog("프로필 사진 업로드", 
 				new String[]{"앨범", "카메라"}, 
@@ -106,11 +105,15 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 
 				    File fileDerectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 				    String fileName = System.currentTimeMillis() + ".jpg";
+				    String filePath = fileDerectory.getPath();
 				    File file = new File(fileDerectory, fileName);
 				    
-				    CmonsFragmentActivity.fileName = file.getName();
-				    CmonsFragmentActivity.filePath = fileDerectory.getPath();
-
+				    LogUtils.log("###CmonsFramentActivity.onClick.  Set fileName, filePath." +
+				    		"\nfileName : " + fileName+
+				    		"\nfilePath : " + filePath);
+				    SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "fileName", fileName);
+				    SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "filePath", filePath);
+				    
 				    if(!fileDerectory.exists()) {
 				    	fileDerectory.mkdirs();
 				    }
@@ -146,10 +149,18 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				try {
 					File file = null;
 
+					LogUtils.log("###CmonsFragmentActivity.onActivityResult.  ");
+					
 					if (requestCode == CphConstants.REQUEST_ALBUM) {
 						file = new File(ImageUploadUtils.getRealPathFromUri(
 								this, data.getData()));
 					} else {
+						String filePath = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "filePath");
+						String fileName = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "fileName");
+						
+						LogUtils.log("fileName : " + fileName +
+								"\nfilePath : " + filePath);
+						
 						file = new File(filePath, fileName);
 					}
 

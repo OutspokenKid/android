@@ -336,9 +336,8 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 	public void downloadProfile() {
 		
 		ivImage.setImageDrawable(null);
-		profileUrl = wholesale.getRep_image_url();
-		ivImage.setTag(wholesale.getRep_image_url());
-		DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
+		profileUrl = Wholesale.profileImage;
+		DownloadUtils.downloadBitmap(Wholesale.profileImage, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -403,9 +402,9 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		try {
 			LogUtils.log("###HeaderViewForWholesaleShop.checkProfile.  " +
 					"\nprofileUrl : " + profileUrl +
-					"\nwholesale.url : " + wholesale.getRep_image_url());
+					"\nwholesale.url : " + Wholesale.profileImage);
 			
-			if(!profileUrl.equals(wholesale.getRep_image_url())) {
+			if(!profileUrl.equals(Wholesale.profileImage)) {
 				ivImage.setImageDrawable(null);
 				downloadProfile();
 			}

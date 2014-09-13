@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -27,7 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
+import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
@@ -36,17 +39,21 @@ import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
-import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 	private static final int MODE_COLOR = 0;
 	private static final int MODE_SIZE = 1;
+	
+	private static String[] selectedImageUrls = new String[3];
+	private static OnAfterUploadImage onAfterUploadImage;
 	
     private TextView tvImageText;
     private Button btnImage1;
@@ -87,11 +94,71 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	private boolean needPush;
 	private int selectedCategoryIndex;
 	
-	private String[] selectedImageUrls = new String[3];
-	
 	private ArrayList<Item> colorItems;
 	private ArrayList<Item> sizeItems;
 	private int mode;
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		onAfterUploadImage = new OnAfterUploadImage() {
+			
+			@Override
+			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
+
+				int selectedImageIndex = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
+				
+				LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  " +
+						"resultString : " + resultString +
+						"\nselectedImageIndex : " + selectedImageIndex);
+				
+				try {
+					JSONObject objJSON = new JSONObject(resultString);
+
+					if(objJSON.getInt("result") == 1) {
+						ivImages[selectedImageIndex].setImageDrawable(null);
+						JSONObject objFile = objJSON.getJSONObject("file");
+						selectedImageUrls[selectedImageIndex] = objFile.getString("url");
+						
+						LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  " +
+								"\nimage1 : " + selectedImageUrls[0] + 
+								"\nimage2 : " + selectedImageUrls[1] + 
+								"\nimage3 : " + selectedImageUrls[2]);
+						
+						
+						((WholesaleForWritePage)ShopActivity.getInstance().getTopFragment()).downloadImages();
+					}
+					
+					if(thumbnail == null) {
+						LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  bitmap is null.");
+					} else {
+						LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  bitmap is not null.");
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		};
+		CmonsFragmentActivity.onAfterUploadImage = onAfterUploadImage;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				
+				getActivity().getSupportFragmentManager().popBackStack();
+				clear();
+			}
+		});
+	}
 	
 	@Override
 	public void bindViews() {
@@ -276,45 +343,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			//이미지 설정.
 			if(product.getProduct_images() != null) {
 				
-				for(int i=0; i<product.getProduct_images().length; i++) {
-
-					String imageUrl = product.getProduct_images()[i];
-					
-					if(!StringUtils.isEmpty(imageUrl)) {
-						final ImageView imageView = ivImages[i];
-						selectedImageUrls[i] = imageUrl;
-						
-						DownloadUtils.downloadBitmap(imageUrl,
-								new OnBitmapDownloadListener() {
-
-									@Override
-									public void onError(String url) {
-
-										LogUtils.log("WholesaleForWritePage.onError."
-												+ "\nurl : " + url);
-									}
-
-									@Override
-									public void onCompleted(String url,
-											Bitmap bitmap) {
-
-										try {
-											LogUtils.log("WholesaleForWritePage.onCompleted."
-													+ "\nurl : " + url);
-
-											if(imageView != null) {
-												imageView.setImageBitmap(bitmap);
-											}
-										} catch (Exception e) {
-											LogUtils.trace(e);
-										} catch (OutOfMemoryError oom) {
-											LogUtils.trace(oom);
-										}
-									}
-								});
-					}
+				for(int i=0; i<Math.min(3, product.getProduct_images().length); i++) {
+					selectedImageUrls[i] = product.getProduct_images()[i];
 				}
 			}
+			
+			downloadImages();
 			
 			etName.setText(product.getName());
 			etPrice.setText("" + product.getPrice());
@@ -844,6 +878,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			hidePopup();
 			return true;
 		}
+
+		clear();
 		return false;
 	}
 
@@ -855,7 +891,44 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 //////////////////// Custom methods.
 
-	public void delete() {
+	public void downloadImages() {
+
+		for(int i=0; i<3; i++) {
+	
+			final ImageView imageView = ivImages[i];
+			DownloadUtils.downloadBitmap(selectedImageUrls[i],
+					new OnBitmapDownloadListener() {
+
+						@Override
+						public void onError(String url) {
+
+							LogUtils.log("WholesaleForWritePage.onError."
+									+ "\nurl : " + url);
+						}
+
+						@Override
+						public void onCompleted(String url,
+								Bitmap bitmap) {
+
+							try {
+								LogUtils.log("WholesaleForWritePage.onCompleted."
+										+ "\nurl : " + url);
+
+								if(imageView != null) {
+									imageView.setImageBitmap(bitmap);
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
+
+		}
+	}
+	
+ 	public void delete() {
 		
 		if(product == null) {
 			return;
@@ -883,6 +956,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_deleteProduct);
 						mActivity.closePagesWithRefreshPreviousPage(2);
+						clear();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -953,6 +1027,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_writeProduct);
 							mActivity.closePageWithRefreshPreviousPage();
+							clear();
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
@@ -1076,7 +1151,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 							product.setColors(newProduct.getColors());
 							product.setSizes(newProduct.getSizes());
 							
-							mActivity.closeTopPage();
+							mActivity.closePageWithRefreshPreviousPage();
+							clear();
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
@@ -1098,37 +1174,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 	public void uploadImage(final ImageView ivImage, final int index) {
 		
-		mActivity.showUploadPhotoPopup(new OnAfterUploadImage() {
-			
-			@Override
-			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
-
-				LogUtils.log("###\n2\n2\n2.onAfterUploadImage.  resultString : " + resultString);
-				
-				try {
-					JSONObject objJSON = new JSONObject(resultString);
-
-					if(objJSON.getInt("result") == 1) {
-						ivImage.setImageDrawable(null);
-						JSONObject objFile = objJSON.getJSONObject("file");
-						selectedImageUrls[index] = objFile.getString("url");
-						getWholesale().setRep_image_url(selectedImageUrls[index]);
-					}
-					
-					if(thumbnail == null) {
-						LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
-					}
-					
-					if(thumbnail != null && !thumbnail.isRecycled() && ivImage != null) {
-						ivImage.setImageBitmap(thumbnail);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
-			}
-		});
+		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index", index);
+		mActivity.showUploadPhotoPopup(onAfterUploadImage);
 	}
 	
 	public void choiceMode(final int index) {
@@ -1161,6 +1208,13 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	public void hidePopup() {
 		
 		relativePopup.setVisibility(View.INVISIBLE);
+	}
+
+	public void clear() {
+		
+		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
+		selectedImageUrls = new String[3];
+		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	
 ////////////////////Custom classes.

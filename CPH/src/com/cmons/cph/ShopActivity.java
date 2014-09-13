@@ -1,7 +1,10 @@
 package com.cmons.cph;
 
+import java.util.List;
 import java.util.Set;
 
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,10 +21,12 @@ import com.cmons.cph.models.Category;
 import com.cmons.cph.models.PushObject;
 import com.cmons.cph.models.User;
 import com.google.android.gcm.GCMRegistrar;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class ShopActivity extends CmonsFragmentActivity {
 
@@ -98,6 +103,39 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	
 	public void checkSignStatus() {
 		
+		LogUtils.log("###ShopActivity.checkSession.  check Cookies =====================");
+		
+		try {
+			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
+			
+			if(bcc1 != null) {
+				RequestManager.getCookieStore().addCookie(bcc1);
+			}
+			
+			if(bcc2 != null) {
+				RequestManager.getCookieStore().addCookie(bcc2);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		LogUtils.log("###ShopActivity.checkSession.  check Cookies2 =====================");
+		
+		try {
+			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
+			
+			for(Cookie cookie : cookies) {
+				LogUtils.log("		key : " + cookie.getName() + ", value : " + cookie.getValue());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
 		String url = CphConstants.BASE_API_URL + "users/login_check";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -168,7 +206,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
 					"?user_id=" + user.getId() +
 					"&device_token=" + regId;
-					
+			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 				
 				@Override

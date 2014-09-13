@@ -112,72 +112,84 @@ public abstract class CmonsFragment extends BaseFragment {
 	@Override
 	public void downloadInfo() {
 
-		if(isDownloading || isLastList) {
-			return;
-		}
-		
-		if(!isRefreshing) {
-			showLoadingView();
-		}
-		
-		isDownloading = true;
-		
-		if(url.contains("?")) {
-			url += "&";
-		} else {
-			url += "?";
-		}
-
-		url += "page=" + pageIndex;
-		
-		if(!url.contains("num=0")) {
-			url += "&num=" + NUMBER_OF_LISTITEMS;
-		}
-		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("CmonsFragment.onError." + "\nurl : " + url);
-				setPage(false);
+		try {
+			if(isDownloading || isLastList) {
+				return;
+			}
+			
+			if(!isRefreshing) {
+				showLoadingView();
+			}
+			
+			isDownloading = true;
+			
+			if(url.contains("?")) {
+				url += "&";
+			} else {
+				url += "?";
 			}
 
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
+			url += "page=" + pageIndex;
+			
+			if(!url.contains("num=0")) {
+				url += "&num=" + NUMBER_OF_LISTITEMS;
+			}
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-				try {
-					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					isLastList = parseJSON(objJSON);
-					
-					if(isLastList && pageIndex > 1) {
-						ToastUtils.showToast(R.string.lastList);
-					}
-					
-					setPage(true);
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					setPage(false);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("CmonsFragment.onError." + "\nurl : " + url);
 					setPage(false);
 				}
-			}
-		});
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						
+						isLastList = parseJSON(objJSON);
+						
+						if(isLastList && pageIndex > 1) {
+							ToastUtils.showToast(R.string.lastList);
+						}
+						
+						setPage(true);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						setPage(false);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						setPage(false);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override
 	public void setPage(boolean successDownload) {
 
-		hideLoadingView();
-		isRefreshing = false;
-		isDownloading = false;
-		
-		if(successDownload) {
-			adapter.notifyDataSetChanged();
-			pageIndex++;
+		try {
+			hideLoadingView();
+			isRefreshing = false;
+			isDownloading = false;
+			
+			if(successDownload) {
+				adapter.notifyDataSetChanged();
+				pageIndex++;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	

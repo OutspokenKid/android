@@ -31,6 +31,14 @@
 	    android:scaleType="centerCrop"
 	    android:background="@drawable/picture_default" />
     
+    <!-- 프로그래스바. -->
+    <ProgressBar 
+        android:id="@+id/profileImagePage_progress" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/profileImagePage_titleBar"
+	    android:layout_centerHorizontal="true" />
+    
     <!-- 사진 올리기. -->
     
     <Button

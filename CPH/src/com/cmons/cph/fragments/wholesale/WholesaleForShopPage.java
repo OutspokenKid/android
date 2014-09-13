@@ -40,7 +40,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		super.onResume();
 		
 		if(headerView != null) {
-			headerView.checkProfile();
+			headerView.init(getWholesale());
 		}
 		
 		if(models.size() == 0) {
@@ -84,7 +84,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		gridView.setNumColumns(2);
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		gridView.setAdapter(adapter);
-		
 	}
 
 	@Override
@@ -209,6 +208,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 			url +="&order=order-desc";
 		}
 		
+		url += "num=0";
+		
 		super.downloadInfo();
 	}
 	
@@ -216,6 +217,11 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	public boolean parseJSON(JSONObject objJSON) {
 
 		try {
+			//어차피 한번에 다 받을거라 중복으로 다운로드하는 경우 방지.
+			if(models.size() != 0) {
+				return true;
+			}
+			
 			JSONArray arJSON = objJSON.getJSONArray("products");
 			
 			int size = arJSON.length();
@@ -240,10 +246,10 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				models.add(emptyModel2);
 			}
 			
-			totalCount = size;
+			totalCount = objJSON.getInt("productsCount");
 			headerView.setTotalProduct(totalCount);
 
-			if(size < NUMBER_OF_LISTITEMS) {
+			if(size == 0 || size < NUMBER_OF_LISTITEMS) {
 				return true;
 			}
 		} catch (Exception e) {

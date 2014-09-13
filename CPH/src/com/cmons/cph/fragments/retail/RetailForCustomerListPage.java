@@ -68,7 +68,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	@Override
 	public void setVariables() {
 
-		title = "거래처관리";
+		title = "주문 / 거래처관리";
 	}
 
 	@Override

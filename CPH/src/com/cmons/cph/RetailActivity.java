@@ -33,6 +33,7 @@ import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -48,8 +49,8 @@ public class RetailActivity extends ShopActivity {
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 		
+		getRetailFromSharedPrefs();
 	}
 
 	@Override
@@ -268,19 +269,19 @@ public class RetailActivity extends ShopActivity {
 			showPage(CphConstants.PAGE_COMMON_STAFF, null);
 		}
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putSerializable("retail", retail);
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		if(savedInstanceState != null) {
-			retail = (Retail) savedInstanceState.getSerializable("retail");
+
+	public void getRetailFromSharedPrefs() {
+
+		try {
+			if(!SharedPrefsUtils.checkPrefs(CphConstants.PREFS_SHOP, "retail")) {
+				JSONObject objJSON = new JSONObject(
+						SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SHOP, "retail")); 
+				retail = new Retail(objJSON);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -315,6 +316,7 @@ public class RetailActivity extends ShopActivity {
 							+ "\nresult : " + objJSON);
 
 					retail = new Retail(objJSON.getJSONObject("retail"));
+					SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SHOP, "retail", retail.getJsonString());
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

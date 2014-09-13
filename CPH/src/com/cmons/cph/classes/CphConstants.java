@@ -12,6 +12,8 @@ public class CphConstants {
 	public static final String PREFS_NOTICE = "notice";
 	public static final String PREFS_NOTIFICATION = "notification";
 	public static final String PREFS_DISTURB = "disturb";
+	public static final String PREFS_SHOP = "shop";
+	public static final String PREFS_IMAGE_UPLOAD = "imageupload";
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
@@ -76,5 +78,4 @@ public class CphConstants {
 	public static final int PAGE_RETAIL_SHOP = 115;
 	public static final int PAGE_RETAIL_ORDER_PRODUCT = 116;
 	public static final int PAGE_RETAIL_ORDER = 117;
-	
 }

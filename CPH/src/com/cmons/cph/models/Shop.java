@@ -15,15 +15,22 @@ public class Shop extends BaseModel implements Serializable {
 	public static final int TYPE_RETAIL_OFFLINE = 1;
 	public static final int TYPE_RETAIL_ONLINE = 2;
 	
-	protected int type;
+	private int type;
 	
-	protected int id;
-	protected String name;
-	protected String phone_number;
-	protected String owner_id;
-	protected String corp_reg_number;
-	protected int favorited_products_cnt;
-	protected long created_at;
+	private int id;
+	private String name;
+	private String phone_number;
+	private String owner_id;
+	private String owner_name;
+	private String owner_phone_number;
+	private String corp_reg_number;
+	private int favorited_products_cnt;
+	private long created_at;
+	private int total_visited_cnt;
+	private int today_visited_cnt;
+	private int favorited_cnt;
+	
+	private String jsonString;
 	
 	public Shop() {
 	}
@@ -31,6 +38,8 @@ public class Shop extends BaseModel implements Serializable {
 	public Shop(JSONObject objJSON) {
 		
 		try {
+			setJsonString(objJSON.toString());
+			
 			if(objJSON.has("id")) {
 				this.id = objJSON.getInt("id");
 			}
@@ -47,6 +56,14 @@ public class Shop extends BaseModel implements Serializable {
 				this.owner_id = objJSON.getString("owner_id");
 			}
 			
+			if(objJSON.has("owner_name")) {
+				this.owner_name = objJSON.getString("owner_name");
+			}
+			
+			if(objJSON.has("owner_phone_number")) {
+				this.owner_phone_number = objJSON.getString("owner_phone_number");
+			}
+			
 			if(objJSON.has("corp_reg_number")) {
 				this.corp_reg_number = objJSON.getString("corp_reg_number");
 			}
@@ -58,7 +75,18 @@ public class Shop extends BaseModel implements Serializable {
 			if(objJSON.has("created_at")) {
 				this.created_at = objJSON.getLong("created_at");
 			}
-
+			
+			if(objJSON.has("total_visited_cnt")) {
+				this.total_visited_cnt = objJSON.getInt("total_visited_cnt");
+			}
+			
+			if(objJSON.has("today_visited_cnt")) {
+				this.today_visited_cnt = objJSON.getInt("today_visited_cnt");
+			}
+			
+			if(objJSON.has("favorited_cnt")) {
+				this.favorited_cnt = objJSON.getInt("favorited_cnt");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -116,5 +144,53 @@ public class Shop extends BaseModel implements Serializable {
 	public void setType(int type) {
 		
 		this.type = type;
+	}
+
+	public String getOwner_name() {
+		return owner_name;
+	}
+
+	public void setOwner_name(String owner_name) {
+		this.owner_name = owner_name;
+	}
+
+	public String getOwner_phone_number() {
+		return owner_phone_number;
+	}
+
+	public void setOwner_phone_number(String owner_phone_number) {
+		this.owner_phone_number = owner_phone_number;
+	}
+
+	public int getTotal_visited_cnt() {
+		return total_visited_cnt;
+	}
+
+	public void setTotal_visited_cnt(int total_visited_cnt) {
+		this.total_visited_cnt = total_visited_cnt;
+	}
+
+	public int getToday_visited_cnt() {
+		return today_visited_cnt;
+	}
+
+	public void setToday_visited_cnt(int today_visited_cnt) {
+		this.today_visited_cnt = today_visited_cnt;
+	}
+
+	public int getFavorited_cnt() {
+		return favorited_cnt;
+	}
+
+	public void setFavorited_cnt(int favorited_cnt) {
+		this.favorited_cnt = favorited_cnt;
+	}
+
+	public String getJsonString() {
+		return jsonString;
+	}
+
+	public void setJsonString(String jsonString) {
+		this.jsonString = jsonString;
 	}
 }

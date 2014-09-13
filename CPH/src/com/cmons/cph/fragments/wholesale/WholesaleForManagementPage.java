@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
 import com.kakao.KakaoLink;
 import com.kakao.KakaoTalkLinkMessageBuilder;
@@ -177,7 +178,7 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 							= kakaoLink.createKakaoTalkLinkMessageBuilder();
 					//720 440 => 360 220 => 180 110
 					final String linkContents = kakaoTalkLinkMessageBuilder
-						.addImage(getWholesale().getRep_image_url(), 180, 110)
+						.addImage(Wholesale.profileImage, 180, 110)
 						.addText(shopInfoString)
                     	.addAppButton("청평화 앱 설치주소")
                     	.build();

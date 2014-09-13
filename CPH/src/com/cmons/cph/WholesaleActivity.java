@@ -33,6 +33,8 @@ import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class WholesaleActivity extends ShopActivity {
 
@@ -45,8 +47,8 @@ public class WholesaleActivity extends ShopActivity {
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
-		
+
+		getWholesaleFromSharedPrefs();
 	}
 
 	@Override
@@ -232,19 +234,25 @@ public class WholesaleActivity extends ShopActivity {
 			//Do nothing.
 		}
 	}
-	
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putSerializable("wholesale", wholesale);
-	}
-	
-	@Override
-	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		super.onRestoreInstanceState(savedInstanceState);
-		
-		if(savedInstanceState != null) {
-			wholesale = (Wholesale) savedInstanceState.getSerializable("wholesale");
+
+	public void getWholesaleFromSharedPrefs() {
+
+		try {
+			String jsonString = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_SHOP, "wholesale");
+			
+			if(!StringUtils.isEmpty(jsonString)) {
+				LogUtils.log("###WholesaleActivity.getWholesaleFromSharedPrefs.  " +
+						"has Wholesale.");
+				JSONObject objJSON = new JSONObject(jsonString); 
+				wholesale = new Wholesale(objJSON);
+			} else {
+				LogUtils.log("###WholesaleActivity.getWholesaleFromSharedPrefs.  " +
+						"has not Wholesale.");
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -279,6 +287,7 @@ public class WholesaleActivity extends ShopActivity {
 							+ "\nresult : " + objJSON);
 
 					wholesale = new Wholesale(objJSON.getJSONObject("wholesale"));
+					SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_SHOP, "wholesale", wholesale.getJsonString());
 					
 					LogUtils.log("###where.onCompleted.  sampleav : " + wholesale.getSample_available());
 				} catch (Exception e) {
