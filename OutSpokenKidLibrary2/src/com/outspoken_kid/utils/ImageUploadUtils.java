@@ -50,16 +50,22 @@ public class ImageUploadUtils {
 				height = options.outWidth;
 			}
 
+			//가로, 세로 중 긴 값으로 최대치 제한.
 			int length = Math.max(width, height);
-			int baseLength = (int)((float)standardLength / (float)options.inSampleSize);
 			
-			if (length < baseLength) {
+			LogUtils.log("###ImageUploadUtils.getBitmapInSampleSize.  " +
+					"\nstandardLength : " + standardLength +
+					"\nwidth : " + width +
+					"\nheight : " + height +
+					"\nlength : " + length);
+			
+			if (length < standardLength) {
 				return 1;
-			} else if (length < baseLength * 2) {
+			} else if (length < standardLength * 2) {
 				return 2;
-			} else if (length < baseLength * 4) {
+			} else if (length < standardLength * 4) {
 				return 4;
-			} else if (length < baseLength * 8) {
+			} else if (length < standardLength * 8) {
 				return 8;
 			} else {
 				return 16;
@@ -130,11 +136,9 @@ public class ImageUploadUtils {
 	            	tempBitmap.compress(CompressFormat.JPEG, 100, out);
 	            }
 	            
-	            LogUtils.log("###\n \n \nnAsyncUploadImage.doInBackground.  \nfileSize : " + tempFile.length());
-//	            resultString = HttpUtil.post(CphConstants.BASE_API_URL + "files/upload/image", 
-//	            		tempFile, context);
+	            LogUtils.log("###AsyncUploadImage.doInBackground.  \nfileSize : " + tempFile.length());
 	            resultString = HttpUtils.httpPost(uploadUrl, "userfile", tempFile);
-	            LogUtils.log("###\n \n \nAsyncUploadImage.doInBackground.  \nresultString : " + resultString);
+	            LogUtils.log("###AsyncUploadImage.doInBackground.  \nresultString : " + resultString);
 	            
 				tempFile.delete();
 	        } catch(OutOfMemoryError oom) {
@@ -177,7 +181,10 @@ public class ImageUploadUtils {
 		protected void onPostExecute(Void result) {
 
 			if(onAfterUploadImage != null) {
+				LogUtils.log("###ImageUploadUtils.onPostExecute.  onAfterUploadImage is not null");
 				onAfterUploadImage.onAfterUploadImage(resultString, thumbnail);
+			} else {
+				LogUtils.log("###ImageUploadUtils.onPostExecute.  onAfterUploadImage is null");
 			}
 		}
 	}

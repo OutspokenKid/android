@@ -3,6 +3,7 @@ package com.outspoken_kid.activities;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -313,4 +314,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 			}
 		}, 1000);
 	}
+
+	@Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        
+        LogUtils.log("###BaseFragmentActivity.onConfigurationChanged.  " +
+        		"newConfig : " + newConfig.toString());
+    }
 }

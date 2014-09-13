@@ -61,6 +61,10 @@ public class DownloadUtils {
 	 */
 	public static void downloadJSONString(final String url, final OnJSONDownloadListener onJSONDownloadListener) {
 		
+		if(StringUtils.isEmpty(url)) {
+			return;
+		}
+		
 		try {
 			Response.Listener<JSONObject> onResponseListener = new Response.Listener<JSONObject>() {
 
@@ -115,6 +119,10 @@ public class DownloadUtils {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
 	public static void downloadBitmap(final String url, 
 			final OnBitmapDownloadListener onBitmapDownloadListener) {
+		
+		if(StringUtils.isEmpty(url)) {
+			return;
+		}
 		
 		try {
 			getInstance().executeDownloadTask(url, onBitmapDownloadListener);
