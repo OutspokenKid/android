@@ -1,5 +1,7 @@
 package com.outspoken_kid.classes;
 
+import com.outspoken_kid.utils.LogUtils;
+
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -145,8 +147,13 @@ public class ViewUnbindHelper {
             }
             
         } else if (view instanceof WebView) {
-            ((WebView)view).destroyDrawingCache();
-            ((WebView)view).destroy();
+        	
+        	try {
+        		((WebView)view).destroyDrawingCache();
+                ((WebView)view).destroy();
+			} catch (Exception e) {
+			} catch (Error e) {
+			}
         }
  
         try {
