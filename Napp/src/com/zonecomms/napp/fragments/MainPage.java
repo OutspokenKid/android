@@ -432,127 +432,129 @@ public class MainPage extends BaseFragment {
 		});
 		mainRelative.addView(friend_list);
 
-		//Gethering.				id : 9
-		View bgForGethering = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l2, l2);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 8);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 8);
-		rp.topMargin = s;
-		bgForGethering.setLayoutParams(rp);
-		mainRelative.addView(bgForGethering);
-		menuBgs[14] = bgForGethering;
-		
-		View gethering = new View(mContext);
-		gethering.setLayoutParams(rp);
-		gethering.setId(madeCount + 9);
-		gethering.setBackgroundResource(R.drawable.img_gethering);
-		gethering.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringlist";
-				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-			}
-		});
-		mainRelative.addView(gethering);
-		
-		//Gethering_newpost.
-		View bgForGethering_newpost = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l, l);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 9);
-		rp.leftMargin = s;
-		bgForGethering_newpost.setLayoutParams(rp);
-		mainRelative.addView(bgForGethering_newpost);
-		menuBgs[15] = bgForGethering_newpost;
-		
-		View gethering_newpost = new View(mContext);
-		gethering_newpost.setLayoutParams(rp);
-		gethering_newpost.setBackgroundResource(R.drawable.img_gethering_newpost);
-		gethering_newpost.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringnewpost";
-				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-			}
-		});
-		mainRelative.addView(gethering_newpost);
-		
-		//Gethering_management.
-		View bgForGethering_management = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l, l);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
-		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 9);
-		rp.leftMargin = l + 2*s;
-		bgForGethering_management.setLayoutParams(rp);
-		mainRelative.addView(bgForGethering_management);
-		menuBgs[16] = bgForGethering_management;
-		
-		View gethering_management = new View(mContext);
-		gethering_management.setLayoutParams(rp);
-		gethering_management.setBackgroundResource(R.drawable.img_gethering_management);
-		gethering_management.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringmanagement";
-				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-			}
-		});
-		mainRelative.addView(gethering_management);
-		
-		//Gethering_intro.
-		View bgForGethering_intro = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l, l);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
-		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 9);
-		rp.leftMargin = s;
-		bgForGethering_intro.setLayoutParams(rp);
-		mainRelative.addView(bgForGethering_intro);
-		menuBgs[17] = bgForGethering_intro;
-		
-		View gethering_intro = new View(mContext);
-		gethering_intro.setLayoutParams(rp);
-		gethering_intro.setBackgroundResource(R.drawable.img_gethering_intro);
-		gethering_intro.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringintro";
-				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-			}
-		});
-		mainRelative.addView(gethering_intro);
-		
-		//Gethering_search.
-		View bgForGethering_search = new View(mContext);
-		rp = new RelativeLayout.LayoutParams(l, l);
-		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
-		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 9);
-		rp.leftMargin = l + 2*s;
-		bgForGethering_search.setLayoutParams(rp);
-		mainRelative.addView(bgForGethering_search);
-		menuBgs[18] = bgForGethering_search;
-		
-		View gethering_search = new View(mContext);
-		gethering_search.setLayoutParams(rp);
-		gethering_search.setBackgroundResource(R.drawable.img_gethering_search);
-		gethering_search.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringsearch";
-				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
-			}
-		});
-		mainRelative.addView(gethering_search);
+//		//Gethering.				id : 9
+//		View bgForGethering = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(l2, l2);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 8);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 8);
+//		rp.topMargin = s;
+//		bgForGethering.setLayoutParams(rp);
+//		mainRelative.addView(bgForGethering);
+//		menuBgs[14] = bgForGethering;
+//		
+//		View gethering = new View(mContext);
+//		gethering.setLayoutParams(rp);
+//		gethering.setId(madeCount + 9);
+//		gethering.setBackgroundResource(R.drawable.img_gethering);
+//		gethering.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringlist";
+//				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//			}
+//		});
+//		mainRelative.addView(gethering);
+//		
+//		//Gethering_newpost.
+//		View bgForGethering_newpost = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(l, l);
+//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
+//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 9);
+//		rp.leftMargin = s;
+//		bgForGethering_newpost.setLayoutParams(rp);
+//		mainRelative.addView(bgForGethering_newpost);
+//		menuBgs[15] = bgForGethering_newpost;
+//		
+//		View gethering_newpost = new View(mContext);
+//		gethering_newpost.setLayoutParams(rp);
+//		gethering_newpost.setBackgroundResource(R.drawable.img_gethering_newpost);
+//		gethering_newpost.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringnewpost";
+//				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//			}
+//		});
+//		mainRelative.addView(gethering_newpost);
+//		
+//		//Gethering_management.
+//		View bgForGethering_management = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(l, l);
+//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
+//		rp.addRule(RelativeLayout.ALIGN_TOP, madeCount + 9);
+//		rp.leftMargin = l + 2*s;
+//		bgForGethering_management.setLayoutParams(rp);
+//		mainRelative.addView(bgForGethering_management);
+//		menuBgs[16] = bgForGethering_management;
+//		
+//		View gethering_management = new View(mContext);
+//		gethering_management.setLayoutParams(rp);
+//		gethering_management.setBackgroundResource(R.drawable.img_gethering_management);
+//		gethering_management.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringmanagement";
+//				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//			}
+//		});
+//		mainRelative.addView(gethering_management);
+//		
+//		//Gethering_intro.
+//		View bgForGethering_intro = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(l, l);
+//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
+//		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 9);
+//		rp.leftMargin = s;
+//		bgForGethering_intro.setLayoutParams(rp);
+//		mainRelative.addView(bgForGethering_intro);
+//		menuBgs[17] = bgForGethering_intro;
+//		
+//		View gethering_intro = new View(mContext);
+//		gethering_intro.setLayoutParams(rp);
+//		gethering_intro.setBackgroundResource(R.drawable.img_gethering_intro);
+//		gethering_intro.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringintro";
+//				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//			}
+//		});
+//		mainRelative.addView(gethering_intro);
+//		
+//		//Gethering_search.
+//		View bgForGethering_search = new View(mContext);
+//		rp = new RelativeLayout.LayoutParams(l, l);
+//		rp.addRule(RelativeLayout.RIGHT_OF, madeCount + 9);
+//		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount + 9);
+//		rp.leftMargin = l + 2*s;
+//		bgForGethering_search.setLayoutParams(rp);
+//		mainRelative.addView(bgForGethering_search);
+//		menuBgs[18] = bgForGethering_search;
+//		
+//		View gethering_search = new View(mContext);
+//		gethering_search.setLayoutParams(rp);
+//		gethering_search.setBackgroundResource(R.drawable.img_gethering_search);
+//		gethering_search.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				String uriString = ZoneConstants.PAPP_ID + "://android.zonecomms.com/getheringsearch";
+//				IntentHandlerActivity.actionByUri(Uri.parse(uriString));
+//			}
+//		});
+//		mainRelative.addView(gethering_search);
 		
 		//napp.						id : 10
 		View bgForGuide = new View(mContext);
 		rp = new RelativeLayout.LayoutParams(l, l);
-		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 9);
-		rp.addRule(RelativeLayout.BELOW, madeCount + 9);
+//		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 9);
+//		rp.addRule(RelativeLayout.BELOW, madeCount + 9);
+		rp.addRule(RelativeLayout.ALIGN_LEFT, madeCount + 8);
+		rp.addRule(RelativeLayout.BELOW, madeCount + 8);
 		rp.topMargin = s;
 		bgForGuide.setLayoutParams(rp);
 		mainRelative.addView(bgForGuide);
@@ -878,7 +880,9 @@ public class MainPage extends BaseFragment {
 				color = colorSet[2];
 			}
 			
-			menuBgs[i].setBackgroundColor(color);
+			if(menuBgs[i] != null) {
+				menuBgs[i].setBackgroundColor(color);
+			}
 		}
 	
 		SharedPrefsUtils.addDataToPrefs(ZoneConstants.PREFS_COLOR, "colorIndex", index);
