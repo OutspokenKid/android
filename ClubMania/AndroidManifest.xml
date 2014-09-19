@@ -99,6 +99,12 @@
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
         
         <activity 
+            android:name=".YoutubePlayerActivity"
+        	android:screenOrientation="landscape"
+        	android:windowSoftInputMode="stateAlwaysHidden"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+        
+        <activity 
             android:name=".IntentHandlerActivity"
         	android:screenOrientation="portrait"
         	android:theme="@style/Theme.Transparent"

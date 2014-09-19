@@ -98,6 +98,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	private ArrayList<Item> sizeItems;
 	private int mode;
 	
+	private boolean uploading;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -107,13 +109,17 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
 
-				int selectedImageIndex = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
-				
-				LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  " +
-						"resultString : " + resultString +
-						"\nselectedImageIndex : " + selectedImageIndex);
-				
 				try {
+					if(!uploading) {
+						return;
+					}
+					
+					int selectedImageIndex = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
+					
+					LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  " +
+							"resultString : " + resultString +
+							"\nselectedImageIndex : " + selectedImageIndex);
+					
 					JSONObject objJSON = new JSONObject(resultString);
 
 					if(objJSON.getInt("result") == 1) {
@@ -139,6 +145,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					LogUtils.trace(e);
 				} catch (Error e) {
 					LogUtils.trace(e);
+				} finally {
+					uploading = false;
 				}
 			}
 		};
@@ -509,6 +517,13 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 			@Override
 			public void onClick(View view) {
+		
+				if(uploading) {
+					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
+					return;
+				}
+				
+				uploading = true;
 				
 				if(ivImages[0].getDrawable() == null) {
 					uploadImage(ivImages[0], 0);
@@ -523,6 +538,13 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
+				if(uploading) {
+					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
+					return;
+				}
+				
+				uploading = true;
+				
 				if(ivImages[1].getDrawable() == null) {
 					uploadImage(ivImages[1], 1);
 				} else {
@@ -536,6 +558,13 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
+				if(uploading) {
+					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
+					return;
+				}
+				
+				uploading = true;
+				
 				if(ivImages[2].getDrawable() == null) {
 					uploadImage(ivImages[2], 2);
 				} else {
@@ -1214,6 +1243,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 		selectedImageUrls = new String[3];
+		uploading = false;
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	

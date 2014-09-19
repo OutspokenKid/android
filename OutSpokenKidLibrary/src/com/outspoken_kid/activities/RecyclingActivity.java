@@ -3,6 +3,7 @@ package com.outspoken_kid.activities;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.downloader.bitmapdownloader.BitmapDownloader;
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 import android.app.Activity;
@@ -32,7 +33,14 @@ public abstract class RecyclingActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ViewUnbindHelper.unbindReferences(this, getContentViewId());
+		
+		try {
+			ViewUnbindHelper.unbindReferences(this, getContentViewId());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		AsyncStringDownloader.cancelCurrentDownload(downloadKey);
 		BitmapDownloader.removeTasksByKey(downloadKey);
 	}

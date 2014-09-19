@@ -48,6 +48,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	private Button btnUpload;
 	private TextView tvProfileDesc;
 	
+	private boolean uploading;
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -60,6 +62,10 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 				LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  " +
 						"\nresultString : " + resultString);
 
+				if(!uploading) {
+					return;
+				}
+				
 				/*
 				{
 					"result":1,
@@ -106,8 +112,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 			public void onClick(View arg0) {
 				
 				getActivity().getSupportFragmentManager().popBackStack();
-				selectedBitmap = null;
-				selectedImageUrl = null;
+				clear();
 			}
 		});
 		
@@ -163,6 +168,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 				if(selectedImageUrl != null) {
 					uploadImage(selectedImageUrl);
 				} else {
+					clear();
 					mActivity.closeTopPage();
 				}
 			}
@@ -172,6 +178,13 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 			@Override
 			public void onClick(View view) {
+
+				if(uploading) {
+					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
+					return;
+				}
+				
+				uploading = true;
 				
 				mActivity.showUploadPhotoPopup(onAfterUploadImage);
 			}
@@ -225,8 +238,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	@Override
 	public boolean onBackPressed() {
 
-		selectedBitmap = null;
-		selectedImageUrl = null;
+		clear();
 		return false;
 	}
 
@@ -322,5 +334,12 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	public int getBgResourceId() {
 
 		return R.drawable.shop_bg;
+	}
+	
+	public void clear() {
+		
+		selectedBitmap = null;
+		selectedImageUrl = null;
+		uploading = false;
 	}
 }

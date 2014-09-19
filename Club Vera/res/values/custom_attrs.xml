@@ -12,7 +12,10 @@
 
 	<!-- For Facebook. -->
 	<string name="app_id">1459537684333113</string>
-		
+	
+	<!-- For Kakao. -->	
+	<string name="kakao_app_key">a6d444469110017dc9ac295e9bc433eb</string>
+	
 	<!-- For NaverMap. -->	
 	<string name="naverMapKey">1b4074a32aa9dccf797262dff9f7b1fa</string>
 	<string name="latitude">37.554387</string>

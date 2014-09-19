@@ -576,20 +576,21 @@ public final class R {
 		public static final int com_kakao_profile_nickname = 0x7f0a002f;
 		public static final int com_kakao_profile_userId = 0x7f0a0030;
 		public static final int com_kakao_unlink_button = 0x7f0a002d;
-		public static final int completeToSaveImage = 0x7f0a003d;
+		public static final int completeToSaveImage = 0x7f0a003c;
 		public static final int core_com_kakao_sdk_loading = 0x7f0a0027;
-		public static final int failToSaveImage = 0x7f0a003e;
-		public static final int failToShowVideoFullScreenMode = 0x7f0a003f;
-		public static final int kakao_app_key = 0x7f0a003c;
-		public static final int pullToLoadNewList = 0x7f0a0041;
-		public static final int pullToRefresh = 0x7f0a0040;
+		public static final int failToLoadBitmap = 0x7f0a003d;
+		public static final int failToLoadBitmap_OutOfMemory = 0x7f0a003e;
+		public static final int failToSaveImage = 0x7f0a003f;
+		public static final int failToShowVideoFullScreenMode = 0x7f0a0040;
+		public static final int pullToLoadNewList = 0x7f0a0042;
+		public static final int pullToRefresh = 0x7f0a0041;
 		public static final int pull_to_loading_pull_label = 0x7f0a003a;
 		public static final int pull_to_loading_release_label = 0x7f0a003b;
 		public static final int pull_to_refresh_pull_label = 0x7f0a0037;
 		public static final int pull_to_refresh_refreshing_label = 0x7f0a0039;
 		public static final int pull_to_refresh_release_label = 0x7f0a0038;
-		public static final int putToLoadNewList = 0x7f0a0043;
-		public static final int putToRefresh = 0x7f0a0042;
+		public static final int putToLoadNewList = 0x7f0a0044;
+		public static final int putToRefresh = 0x7f0a0043;
 	}
 	public static final class style {
 		public static final int AppBaseTheme = 0x7f0b008e;

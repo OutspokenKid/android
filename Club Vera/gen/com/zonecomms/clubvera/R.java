@@ -1884,34 +1884,34 @@ containing a value of this type.
         /**  Common 
  공통. 
          */
-        public static final int accuse=0x7f0a0053;
-        public static final int accuseCompleted=0x7f0a0054;
-        public static final int accuseReplyCompleted=0x7f0a0055;
-        public static final int activeLocation=0x7f0a0056;
-        public static final int addMe=0x7f0a0059;
-        public static final int addedProfile=0x7f0a0057;
-        public static final int addedToFriendList=0x7f0a0058;
-        public static final int agreeWithClause=0x7f0a005a;
-        public static final int all=0x7f0a005b;
-        public static final int alreadyMember=0x7f0a005c;
+        public static final int accuse=0x7f0a0055;
+        public static final int accuseCompleted=0x7f0a0056;
+        public static final int accuseReplyCompleted=0x7f0a0057;
+        public static final int activeLocation=0x7f0a0058;
+        public static final int addMe=0x7f0a005b;
+        public static final int addedProfile=0x7f0a0059;
+        public static final int addedToFriendList=0x7f0a005a;
+        public static final int agreeWithClause=0x7f0a005c;
+        public static final int all=0x7f0a005d;
+        public static final int alreadyMember=0x7f0a005e;
         /**  For Facebook. 
          */
-        public static final int app_id=0x7f0a004a;
+        public static final int app_id=0x7f0a004b;
         /**  Customize 
          */
-        public static final int app_name=0x7f0a0044;
-        public static final int baseProfile=0x7f0a005d;
-        public static final int birth=0x7f0a005e;
-        public static final int board_story=0x7f0a005f;
-        public static final int cancel=0x7f0a0060;
-        public static final int canceled=0x7f0a0061;
-        public static final int cantUploadMorePhoto=0x7f0a0062;
-        public static final int checkNetworkStatus=0x7f0a0063;
-        public static final int clause=0x7f0a0064;
-        public static final int close=0x7f0a0065;
+        public static final int app_name=0x7f0a0045;
+        public static final int baseProfile=0x7f0a005f;
+        public static final int birth=0x7f0a0060;
+        public static final int board_story=0x7f0a0061;
+        public static final int cancel=0x7f0a0062;
+        public static final int canceled=0x7f0a0063;
+        public static final int cantUploadMorePhoto=0x7f0a0064;
+        public static final int checkNetworkStatus=0x7f0a0065;
+        public static final int clause=0x7f0a0066;
+        public static final int close=0x7f0a0067;
         /**  커스터마이징. 
          */
-        public static final int clubAddress=0x7f0a0045;
+        public static final int clubAddress=0x7f0a0046;
         public static final int com_facebook_choose_friends=0x7f0a001c;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f0a000d;
         public static final int com_facebook_internet_permission_error_message=0x7f0a0020;
@@ -1959,39 +1959,39 @@ containing a value of this type.
         public static final int com_kakao_profile_nickname=0x7f0a002f;
         public static final int com_kakao_profile_userId=0x7f0a0030;
         public static final int com_kakao_unlink_button=0x7f0a002d;
-        public static final int company=0x7f0a0066;
-        public static final int complete=0x7f0a0067;
-        public static final int completeSignUp=0x7f0a0068;
-        public static final int completeToSaveImage=0x7f0a003d;
-        public static final int confirm=0x7f0a0069;
-        public static final int confirmPassword=0x7f0a006a;
-        public static final int copyReplyCompleted=0x7f0a006b;
+        public static final int company=0x7f0a0068;
+        public static final int complete=0x7f0a0069;
+        public static final int completeSignUp=0x7f0a006a;
+        public static final int completeToSaveImage=0x7f0a003c;
+        public static final int confirm=0x7f0a006b;
+        public static final int confirmPassword=0x7f0a006c;
+        public static final int copyReplyCompleted=0x7f0a006d;
         public static final int core_com_kakao_sdk_loading=0x7f0a0027;
         /**  	<string name="domain">http://112.169.61.103</string> 
  Custom font. 
          */
-        public static final int customFont=0x7f0a0052;
-        public static final int delete=0x7f0a006c;
-        public static final int deleteCompleted=0x7f0a006d;
-        public static final int deleteMessage=0x7f0a006f;
-        public static final int deletedFromFriendList=0x7f0a006e;
-        public static final int disagreeWithClause=0x7f0a0070;
+        public static final int customFont=0x7f0a0054;
+        public static final int delete=0x7f0a006e;
+        public static final int deleteCompleted=0x7f0a006f;
+        public static final int deleteMessage=0x7f0a0071;
+        public static final int deletedFromFriendList=0x7f0a0070;
+        public static final int disagreeWithClause=0x7f0a0072;
         /**  Domain 
          */
-        public static final int domain=0x7f0a0051;
-        public static final int dontSeeAgainToday=0x7f0a0071;
-        public static final int edit=0x7f0a0072;
-        public static final int emailAddress=0x7f0a0073;
-        public static final int failToAccuse=0x7f0a0074;
-        public static final int failToAccuseReply=0x7f0a0075;
-        public static final int failToCopyReply=0x7f0a0076;
-        public static final int failToDeleteMessage=0x7f0a0077;
-        public static final int failToDeletePost=0x7f0a0078;
-        public static final int failToDeleteReply=0x7f0a0079;
-        public static final int failToDownloadImage=0x7f0a007a;
-        public static final int failToLaunchToNApp=0x7f0a007b;
-        public static final int failToLoadBitmap=0x7f0a007c;
-        public static final int failToLoadBitmap_OutOfMemory=0x7f0a007d;
+        public static final int domain=0x7f0a0053;
+        public static final int dontSeeAgainToday=0x7f0a0073;
+        public static final int edit=0x7f0a0074;
+        public static final int emailAddress=0x7f0a0075;
+        public static final int failToAccuse=0x7f0a0076;
+        public static final int failToAccuseReply=0x7f0a0077;
+        public static final int failToCopyReply=0x7f0a0078;
+        public static final int failToDeleteMessage=0x7f0a0079;
+        public static final int failToDeletePost=0x7f0a007a;
+        public static final int failToDeleteReply=0x7f0a007b;
+        public static final int failToDownloadImage=0x7f0a007c;
+        public static final int failToLaunchToNApp=0x7f0a007d;
+        public static final int failToLoadBitmap=0x7f0a003d;
+        public static final int failToLoadBitmap_OutOfMemory=0x7f0a003e;
         public static final int failToLoadList=0x7f0a007f;
         public static final int failToLoadMessageList=0x7f0a0080;
         public static final int failToLoadPhoto=0x7f0a0081;
@@ -2000,13 +2000,13 @@ containing a value of this type.
         public static final int failToLoadUserInfo=0x7f0a007e;
         public static final int failToLoadUserStatus=0x7f0a0084;
         public static final int failToLoadWebBrowser=0x7f0a0085;
-        public static final int failToSaveImage=0x7f0a003e;
+        public static final int failToSaveImage=0x7f0a003f;
         public static final int failToScrapPost=0x7f0a0086;
         public static final int failToSendMessage=0x7f0a0087;
         public static final int failToSendPost=0x7f0a0088;
         public static final int failToSendReply=0x7f0a0089;
         public static final int failToShowVideo=0x7f0a008a;
-        public static final int failToShowVideoFullScreenMode=0x7f0a003f;
+        public static final int failToShowVideoFullScreenMode=0x7f0a0040;
         public static final int failToSignIn=0x7f0a008b;
         public static final int failToSignOut=0x7f0a008c;
         public static final int failToSignUp=0x7f0a008d;
@@ -2062,18 +2062,20 @@ containing a value of this type.
         public static final int invalidUri=0x7f0a00bf;
         public static final int job=0x7f0a00c0;
         public static final int kakaoTalkId=0x7f0a00c1;
-        public static final int kakao_app_key=0x7f0a003c;
+        /**  For Kakao. 
+         */
+        public static final int kakao_app_key=0x7f0a004c;
         public static final int lastPage=0x7f0a00c2;
-        public static final int latitude=0x7f0a004c;
+        public static final int latitude=0x7f0a004e;
         public static final int leaveMember=0x7f0a00c3;
         public static final int liveLocation=0x7f0a00c4;
         public static final int loadingNewList=0x7f0a00c5;
         public static final int loadingReplies=0x7f0a00c6;
-        public static final int logo_height=0x7f0a004f;
+        public static final int logo_height=0x7f0a0051;
         /**  Length of logo at IntroActivity.java 
          */
-        public static final int logo_width=0x7f0a004e;
-        public static final int longitude=0x7f0a004d;
+        public static final int logo_width=0x7f0a0050;
+        public static final int longitude=0x7f0a004f;
         public static final int mail1=0x7f0a00c7;
         public static final int mail2=0x7f0a00c8;
         public static final int mail3=0x7f0a00c9;
@@ -2093,7 +2095,7 @@ containing a value of this type.
         public static final int myPost=0x7f0a00d7;
         /**  For NaverMap. 
          */
-        public static final int naverMapKey=0x7f0a004b;
+        public static final int naverMapKey=0x7f0a004d;
         public static final int needSignIn=0x7f0a00d8;
         public static final int nickname=0x7f0a00d9;
         public static final int noContent=0x7f0a00da;
@@ -2117,16 +2119,16 @@ containing a value of this type.
         public static final int profileInfo=0x7f0a00ec;
         public static final int profilePhotoCondition=0x7f0a00ee;
         public static final int profileSetting=0x7f0a00ed;
-        public static final int pullToLoadNewList=0x7f0a0041;
-        public static final int pullToRefresh=0x7f0a0040;
+        public static final int pullToLoadNewList=0x7f0a0042;
+        public static final int pullToRefresh=0x7f0a0041;
         public static final int pull_to_loading_pull_label=0x7f0a003a;
         public static final int pull_to_loading_release_label=0x7f0a003b;
         public static final int pull_to_refresh_pull_label=0x7f0a0037;
         public static final int pull_to_refresh_refreshing_label=0x7f0a0039;
         public static final int pull_to_refresh_release_label=0x7f0a0038;
         public static final int pushSetting=0x7f0a00ef;
-        public static final int putToLoadNewList=0x7f0a0043;
-        public static final int putToRefresh=0x7f0a0042;
+        public static final int putToLoadNewList=0x7f0a0044;
+        public static final int putToRefresh=0x7f0a0043;
         public static final int recentPost=0x7f0a00f0;
         public static final int recentPostByCategory=0x7f0a00f1;
         public static final int refreshing=0x7f0a00f2;
@@ -2141,7 +2143,7 @@ containing a value of this type.
         public static final int saveImageCompleted=0x7f0a00fb;
         /**  sb_id. 
          */
-        public static final int sb_id=0x7f0a0050;
+        public static final int sb_id=0x7f0a0052;
         public static final int schedule=0x7f0a00fc;
         public static final int scrap=0x7f0a00fd;
         public static final int scrapCompleted=0x7f0a00fe;
@@ -2174,10 +2176,10 @@ containing a value of this type.
         public static final int submitCompleted=0x7f0a011b;
         public static final int submitReply=0x7f0a011d;
         public static final int submittingToServer=0x7f0a011c;
-        public static final int textForCafe=0x7f0a0046;
-        public static final int textForCall=0x7f0a0047;
-        public static final int textForFacebook=0x7f0a0048;
-        public static final int textForIntroduce=0x7f0a0049;
+        public static final int textForCafe=0x7f0a0047;
+        public static final int textForCall=0x7f0a0048;
+        public static final int textForFacebook=0x7f0a0049;
+        public static final int textForIntroduce=0x7f0a004a;
         public static final int thereIsNoTStore=0x7f0a011e;
         public static final int titleText_notice=0x7f0a011f;
         public static final int touchHere=0x7f0a0120;
