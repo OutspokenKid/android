@@ -350,7 +350,6 @@ public class StringUtils {
 		if(str == null || str.length() == 0) {
 			return false;
 		}
-		
 		LogUtils.log("check===================");
 		
 		try {
@@ -409,6 +408,8 @@ public class StringUtils {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		LogUtils.log("Pass.");
 		
 		return false;
 	}

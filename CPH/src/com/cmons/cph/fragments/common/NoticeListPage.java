@@ -88,7 +88,10 @@ public class NoticeListPage extends CmonsFragmentForShop {
 	public void setListeners() {
 		
 		//우리매장 공지 && 대표.
-		if(isOurNotice && mActivity.user.getRole() % 100 == 0) {
+		if(isOurNotice && 
+				(mActivity.user.getRole() == 100
+						|| mActivity.user.getRole() == 210
+						|| mActivity.user.getRole() == 220)) {
 			titleBar.getBtnWrite().setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -119,7 +122,10 @@ public class NoticeListPage extends CmonsFragmentForShop {
 				} else {
 					
 					//우리매장 공지 && 대표.
-					if(isOurNotice && mActivity.user.getRole() % 100 == 0) {
+					if(isOurNotice && 
+							(mActivity.user.getRole() == 100
+									|| mActivity.user.getRole() == 210
+									|| mActivity.user.getRole() == 220)) {
 						isEdit = true;
 						
 					//아님.

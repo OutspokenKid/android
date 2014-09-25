@@ -1,6 +1,9 @@
 package com.cmons.cph.classes;
 
 import java.io.File;
+import java.util.List;
+
+import org.apache.http.cookie.Cookie;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -15,6 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 
 import com.cmons.cph.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
@@ -198,6 +202,29 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 			}
 
 			break;
+		}
+	}
+	
+	public void saveCookies() {
+		
+		LogUtils.log("###CmonsFragmentActivity.saveCookies =====================");
+		List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
+		
+		int size = cookies.size();
+		for(int i=0; i<size; i++) {
+
+			String prefsName = null;
+			
+			if("CPH_D1".equals(cookies.get(i).getName())) {
+				prefsName = CphConstants.PREFS_COOKIE_CPH_D1;
+			} else if("CPH_S".equals(cookies.get(i).getName())) {
+				prefsName = CphConstants.PREFS_COOKIE_CPH_S;
+			} else {
+				continue;
+			}
+			
+			SharedPrefsUtils.saveCookie(prefsName, cookies.get(i));
+			LogUtils.log("		key : " + cookies.get(i).getName());
 		}
 	}
 	

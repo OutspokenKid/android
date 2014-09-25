@@ -179,7 +179,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		viewPager.setAdapter(pagerAdapter);
 		
 		//대표가 아닌 경우.
-		if(mActivity.user.getRole() % 100 != 0) {
+		if(mActivity.user.getRole() != 100) {
 			
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				btnStaff.setAlpha(0.5f);

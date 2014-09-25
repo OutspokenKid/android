@@ -182,7 +182,7 @@ public abstract class CmonsFragment extends BaseFragment {
 			isRefreshing = false;
 			isDownloading = false;
 			
-			if(successDownload) {
+			if(successDownload && adapter != null) {
 				adapter.notifyDataSetChanged();
 				pageIndex++;
 			}

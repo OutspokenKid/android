@@ -1,14 +1,14 @@
 package com.cmons.cph.views;
 
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class PageNavigatorView extends View {
 	

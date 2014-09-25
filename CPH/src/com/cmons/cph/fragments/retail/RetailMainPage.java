@@ -184,7 +184,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		listView.setAdapter(noticeAdapter);
 		
 		//대표가 아닌 경우.
-		if(mActivity.user.getRole() % 100 != 0) {
+		if(mActivity.user.getRole() % 100 == 1
+				|| mActivity.user.getRole() % 100 == 2) {
 			
 			if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 				menuButtons[6].setAlpha(0.5f);
@@ -338,7 +339,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			final int INDEX = i;
 			
 			//대표가 아닌 경우.
-			if(mActivity.user.getRole() % 100 != 0
+			if((mActivity.user.getRole() % 100 == 1 || mActivity.user.getRole() % 100 == 2)
 					&& i == 6) {
 				continue;
 			}

@@ -16,7 +16,6 @@ import com.cmons.cph.fragments.signup.SignUpForPositionPage;
 import com.cmons.cph.fragments.signup.SignUpForSearchPage;
 import com.cmons.cph.fragments.signup.SignUpForTermsPage;
 import com.cmons.cph.fragments.signup.SignUpForWritePage;
-import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Shop;
 import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -27,23 +26,21 @@ import com.outspoken_kid.utils.ToastUtils;
 public class SignUpActivity extends CmonsFragmentActivity {
 
 	/**
-	 * type
+	 * role.
 	 * 100 : 도매 - 대표.
 	 * 101 : 도매 - 직원.
 	 * 102 : 도매 - 디자이너.
 	 * 
-	 * 200 : 소매(오프라인) - 대표.
-	 * 201 : 소매(오프라인) - 직원.
-	 * 202 : 소매(오프라인) - MD.
+	 * 210 : 소매(오프라인) - 대표.
+	 * 220 : 소매(온라인) - 대표.
 	 * 
-	 * 300 : 소매(온라인) - 대표.
-	 * 301 : 소매(온라인) - 직원.
-	 * 302 : 소매(온라인) - MD.
+	 * 201 : 소매 - 직원.
+	 * 202 : 소매 - MD.
 	 */
 	
-	public static final int BUSINESS_WHOLESALE = 100;
-	public static final int BUSINESS_RETAIL_OFFLINE = 200;
-	public static final int BUSINESS_RETAIL_ONLINE = 300;
+	public static final int BUSINESS_WHOLESALE = 0;
+	public static final int BUSINESS_RETAIL_OFFLINE = 3;
+	public static final int BUSINESS_RETAIL_ONLINE = 6;
 
 	public static final int POSITION_OWNER = 0;
 	public static final int POSITION_EMPLOYEE1 = 1;
@@ -123,7 +120,6 @@ public class SignUpActivity extends CmonsFragmentActivity {
 			super.onBackPressed();
 		}
 	}
-	
 
 	@Override
 	public void showLoadingView() {
@@ -206,33 +202,13 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		startPage(new SignUpForWritePage(), bundle);
 	}
 	
-	//도매 대표, 직원, 디자이너, 소매 직원, MD.
-	public void showPersonalPage(int type, Shop shop, String categoryString) {
+	public void showPersonalPage(int type, Shop shop, String categoryString, String userName) {
 			
-			Bundle bundle = new Bundle();
-			bundle.putInt("type", type);
-			bundle.putSerializable("shop", shop);
-			bundle.putString("categoryString", categoryString);
-			
-			startPage(new SignUpForPersonalPage(), bundle);
-		}
-	
-	//소매 대표.
-	public void showPersonalPage(int type, String userName, String retailName, 
-			String mallUrl, String address, String companyPhone, String regNumber) {
-		
 		Bundle bundle = new Bundle();
-
-		Retail retail = new Retail();
-		retail.setType(type);
-		retail.setOwner_name(userName);
-		retail.setName(retailName);
-		retail.setMall_url(mallUrl);
-		retail.setAddress(address);
-		retail.setPhone_number(companyPhone);
-		retail.setCorp_reg_number(regNumber);
-		
-		bundle.putSerializable("retail", retail);
+		bundle.putInt("type", type);
+		bundle.putSerializable("shop", shop);
+		bundle.putString("categoryString", categoryString);
+		bundle.putString("userName", userName);
 		
 		startPage(new SignUpForPersonalPage(), bundle);
 	}
@@ -263,13 +239,25 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		finish();
 	}
 
-	public void signUpForWholesale(String id, String pw, final String role, String userName, 
+	public void signUpForWholesale(String id, String pw, int type, String userName, 
 			String wholesale_id, String categoryString, String phone_auth_key) {
 	
 		try {
 			if(categoryString == null) {
 				categoryString = "";
 			}
+			
+			String role = null;
+			
+			if(type % 3 == 0) {
+				role = "100";
+			} else if(type % 3 == 1) {
+				role = "101";
+			} else {
+				role = "102";
+			}
+			
+			final String ROLE = role;
 			
 			String url = CphConstants.BASE_API_URL + "users/join" +
 					"?user[id]=" + URLEncoder.encode(id, "utf-8") + 
@@ -298,12 +286,13 @@ public class SignUpActivity extends CmonsFragmentActivity {
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
 							
-							if(role.equals("100")) {
+							if(ROLE.equals("100")) {
 								ToastUtils.showToast(R.string.complete_signUpWholesaleOwner);
 							} else {
 								ToastUtils.showToast(R.string.complete_signUpEmployee);
 							}
 							
+							saveCookies();
 							User user = new User(objJSON.getJSONObject("user"));
 							launchWholesaleActivity(user);
 						} else {
@@ -331,9 +320,17 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		}
 	}
 	
-	public void signUpForRetailOwner(String id, String pw, final String role, String userName,
+	public void signUpForRetailOwner(String id, String pw, int type, String userName,
 			String retailName, String address, String mallUrl, String companyPhone, 
 			String regNumber, String phone_auth_key) {
+		
+		String role = null;
+		
+		if(type == 3) {
+			role = "220";
+		} else {
+			role = "210";
+		}
 		
 		try {
 			String url = CphConstants.BASE_API_URL + "users/join" +
@@ -348,6 +345,18 @@ public class SignUpActivity extends CmonsFragmentActivity {
 					"&retail[corp_reg_number]=" + URLEncoder.encode(regNumber, "utf-8") +
 					"&phone_auth_key=" + URLEncoder.encode(phone_auth_key, "utf-8");
 		
+			/*
+			user[id] : 아이디 (6 ~ 64)
+			user[pw] : 비밀번호 (6 ~ 64)
+			user[role] : 인터넷쇼핑몰 대표(210), 오프라인 대표(220)
+			user[name] : 가입자 이름
+			retail[name] : 상호명
+			retail[address] : 사업장 주소(오프라인)
+			retail[mall_url] : 쇼핑몰 URL(인터넷 쇼핑몰)
+			retail[phone_number] : 매장 전화번호
+			retail[corp_reg_number] : 사업자 등록번호
+			phone_auth_key : 전화번호 인증키
+			*/
 			ToastUtils.showToast(R.string.signingUp);
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -366,6 +375,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_signUpRetailOwner);
+							saveCookies();
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {
@@ -393,10 +403,18 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		}
 	}
 	
-	public void signUpForRetailEmployee(String id, String pw, String role, String userName,
+	public void signUpForRetailEmployee(String id, String pw, int type, String userName,
 			String retailId, String phone_auth_key) {
 		
 		try {
+			String role = null;
+					
+			if(type % 3 == 1) {
+				role = "201";
+			} else {
+				role = "202";
+			}
+			
 			String url = CphConstants.BASE_API_URL + "users/join" +
 					"?user[id]=" + URLEncoder.encode(id, "utf-8") + 
 					"&user[pw]=" + URLEncoder.encode(pw, "utf-8") +
@@ -423,6 +441,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 								+ "\nresult : " + objJSON);
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_signUpEmployee);
+							saveCookies();
 							User user = new User(objJSON.getJSONObject("user"));
 							launchRetailActivity(user);
 						} else {

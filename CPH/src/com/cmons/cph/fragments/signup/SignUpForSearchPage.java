@@ -430,6 +430,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 
 					String[] strings = new String[size];
 					
+					//도매.
 					if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
 						
 						for(int i=0; i<size; i++) {
@@ -439,6 +440,8 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 							shops.add(wholesale);
 							strings[i] = wholesale.getName() + "(" + wholesale.getLocation() + ")";
 						}
+						
+					//소매(오프라인).
 					} else if(type < SignUpActivity.BUSINESS_RETAIL_ONLINE) {
 						
 						for(int i=0; i<size; i++) {
@@ -448,6 +451,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 							strings[i] = retail.getName() + "(" + retail.getAddress() + ")";
 						}
 						
+					//소매(온라인).
 					} else {
 						
 						for(int i=0; i<size; i++) {
@@ -463,12 +467,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 
-							if(type < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
-								mActivity.showPersonalPage(type, shops.get(which), categoryString);
-							} else if(type < SignUpActivity.BUSINESS_RETAIL_ONLINE) {
-								mActivity.showPersonalPage(type, shops.get(which), categoryString);
-							} else {
-							}
+							mActivity.showPersonalPage(type, shops.get(which), categoryString, null);
 						}
 					});
 				} else {

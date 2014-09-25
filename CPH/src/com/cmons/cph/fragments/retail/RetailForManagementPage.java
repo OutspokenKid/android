@@ -104,7 +104,8 @@ public class RetailForManagementPage extends CmonsFragmentForRetail {
 		}
 		
 		//대표가 아닌 경우.
-		if(mActivity.user.getRole() % 100 != 0) {
+		if(mActivity.user.getRole() % 100 == 1
+				|| mActivity.user.getRole() % 100 == 2) {
 			changeAddress.setVisibility(View.GONE);
 			changePhone.setVisibility(View.GONE);
 			changeReg.setVisibility(View.GONE);

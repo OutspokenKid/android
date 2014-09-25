@@ -75,11 +75,18 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	@Override
 	public void onBackPressed() {
 		
-		if(getTopFragment().onBackPressed()) {
-			//Do nothing.
-		} else {
-			super.onBackPressed();
+		try {
+			if(getTopFragment() != null && getTopFragment().onBackPressed()) {
+				//Do nothing.
+				return;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
+		
+		super.onBackPressed();
 	}
 	
 	@Override
@@ -103,7 +110,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	
 	public void checkSignStatus() {
 		
-		LogUtils.log("###ShopActivity.checkSession.  check Cookies =====================");
+		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from prefs. =====================");
 		
 		try {
 			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
@@ -111,10 +118,12 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			
 			if(bcc1 != null) {
 				RequestManager.getCookieStore().addCookie(bcc1);
+				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
 			}
 			
 			if(bcc2 != null) {
 				RequestManager.getCookieStore().addCookie(bcc2);
+				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -122,7 +131,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			LogUtils.trace(e);
 		}
 		
-		LogUtils.log("###ShopActivity.checkSession.  check Cookies2 =====================");
+		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from cookieStore. =====================");
 		
 		try {
 			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
@@ -143,7 +152,6 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			public void onError(String url) {
 
 				LogUtils.log("ShopActivity.checkSignStatus.onError." + "\nurl : " + url);
-
 			}
 
 			@Override
@@ -156,6 +164,8 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 					if(objJSON.getInt("result") != 1) {
 						ToastUtils.showToast(objJSON.getString("message"));
 						launchSignInActivity();
+					} else {
+						saveCookies();
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);

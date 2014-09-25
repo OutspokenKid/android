@@ -120,6 +120,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 			
 			shop = (Shop) getArguments().getSerializable("shop");
 			categoryString = getArguments().getString("categoryString");
+			userName = getArguments().getString("userName");
 		}
 		
 		title = getString(R.string.inputUserInfo);
@@ -641,7 +642,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 								mActivity.signUpForWholesale(
 										etId.getText().toString(), 		//id
 										etPw.getText().toString(), 		//pw
-										"" + type, 						//type
+										type, 							//type
 										userName, 						//user id
 										"" + shop.getId(), 				//shop id
 										categoryString, 				//category
@@ -655,7 +656,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 				mActivity.signUpForWholesale(
 						etId.getText().toString(), 		//id
 						etPw.getText().toString(), 		//pw
-						"" + type, 						//type
+						type, 							//type
 						userName, 						//user id
 						"" + shop.getId(), 				//shop id
 						categoryString, 				//category
@@ -667,7 +668,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 				mActivity.signUpForRetailOwner(
 						etId.getText().toString(), 		//id
 						etPw.getText().toString(), 		//pw
-						"" + type, 						//type
+						type,	 						//type
 						userName, 						//user id 
 						shop.getName(), 
 						((Retail)shop).getAddress(), 
@@ -693,7 +694,7 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 								mActivity.signUpForRetailEmployee(
 										etId.getText().toString(), 		//id
 										etPw.getText().toString(), 		//pw
-										"" + type, 						//type
+										type,	 						//type
 										userName, 						//user id
 										"" + shop.getId(), 
 										phone_auth_key);

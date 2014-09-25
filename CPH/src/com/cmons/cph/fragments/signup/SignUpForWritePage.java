@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.cmons.cph.R;
 import com.cmons.cph.SignUpActivity;
 import com.cmons.cph.classes.CmonsFragmentForSignUp;
+import com.cmons.cph.models.Retail;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -84,6 +86,11 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 		if(type < SignUpActivity.BUSINESS_RETAIL_ONLINE) {
 			tvMallUrl.setVisibility(View.GONE);
 			etMallUrl.setVisibility(View.GONE);
+			
+		//소매 - 온라인.
+		} else {
+			tvMallUrl.setVisibility(View.VISIBLE);
+			etMallUrl.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -229,14 +236,23 @@ public class SignUpForWritePage extends CmonsFragmentForSignUp {
 			if(!mallUrl.contains("http://") && !mallUrl.contains("https//")) {
 				mallUrl = "http://" + mallUrl;
 			}
-			
-			mActivity.showPersonalPage(type, 
-					etCompanyOwnerName.getText().toString(), 
-					etCompanyName.getText().toString(),
-					etMallUrl.getText().toString(),
-					etCompanyAddress.getText().toString(),
-					etCompanyPhone.getText().toString(),
-					etCompanyRegistration.getText().toString()); 
+
+			try {
+				Retail retail = new Retail();
+				retail.setType(type);
+				retail.setOwner_name(etCompanyOwnerName.getText().toString());
+				retail.setName(etCompanyName.getText().toString());
+				retail.setMall_url(etMallUrl.getText().toString());
+				retail.setAddress(etCompanyAddress.getText().toString());
+				retail.setPhone_number(etCompanyPhone.getText().toString());
+				retail.setCorp_reg_number(etCompanyRegistration.getText().toString());
+				
+				mActivity.showPersonalPage(type, retail, null, retail.getOwner_name());
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
 		}
 	}
 

@@ -204,13 +204,19 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	
 	public void startPage(BaseFragment fragment, Bundle bundle) {
 		
-		LogUtils.log("#################################BaseFragmentActivity.startPage.  " +
-				"\nstartPage. fragment : " + fragment);
-		
 		try {
+			String logString = "#################################BaseFragmentActivity.startPage.  " +
+					"\nstartPage. fragment : " + fragment;
+			
 			if(bundle != null) {
 				fragment.setArguments(bundle);
+				
+				for(String key : bundle.keySet()) {
+					logString += "\nkey : " + key + ", value : " + bundle.get(key);
+				}
 			}
+			
+			LogUtils.log(logString);
 
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 

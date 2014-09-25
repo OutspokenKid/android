@@ -18,6 +18,7 @@ import com.cmons.cph.SignInActivity;
 import com.cmons.cph.classes.CmonsFragment;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -30,6 +31,27 @@ public class SignInPage extends CmonsFragment {
 	private Button btnSignUp;
 	private Button btnFindId;
 	private Button btnFindPw;
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		SoftKeyboardUtils.hideKeyboard(mContext, etId);
+		
+		/*
+		http://cph.minsangk.com/users/join
+		?user[id]=korea2001
+		&user[pw]=qqqqqq
+		&user[role]=200
+		&user[name]=%EB%8D%94%EB%8D%94
+		&retail[name]=%EB%8D%94%EB%8D%94
+		&retail[address]=%EB%8D%94%EB%8D%94%EB%8D%94%EB%8D%94
+		&retail[mall_url]=
+		&retail[phone_number]=46464646
+		&retail[corp_reg_number]=4646464664646
+		&phone_auth_key=BGwYCjTYNWEnhbEFkANfGLGLJJjnFcCwPAQrtzzNUXkpYdDrscxjWfQJcrLsAGzK
+		*/
+	}
 	
 	@Override
 	public void bindViews() {

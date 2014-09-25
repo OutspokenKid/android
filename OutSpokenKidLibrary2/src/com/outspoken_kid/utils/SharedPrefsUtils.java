@@ -207,24 +207,22 @@ public class SharedPrefsUtils {
 	public static boolean saveCookie(String prefsName, Cookie cookie) {
 		
 		try {
-			//domain, expirydate, path, (secure), value, version
-			String name = cookie.getName();
-			String value = cookie.getValue();
-			String domain = cookie.getDomain();
-			String expiryDate = cookie.getExpiryDate().toString();
-			String path = cookie.getPath();
-			int version = cookie.getVersion();
-			
-			SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
-			Editor ed = prefs.edit();
-
-			ed.putString("name", name);
-			ed.putString("value", value);
-			ed.putString("domain", domain);
-			ed.putString("expiryDate", expiryDate);
-			ed.putString("path", path);
-			ed.putInt("version", version);
-			ed.commit();
+			if(cookie != null) {
+				SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
+				Editor ed = prefs.edit();
+				
+				ed.putString("name", cookie.getName());
+				ed.putString("value", cookie.getValue());
+				ed.putString("domain", cookie.getDomain());
+				ed.putString("path", cookie.getPath());
+				ed.putInt("version", cookie.getVersion());
+				
+				if(cookie.getExpiryDate() != null) {
+					ed.putString("expiryDate", cookie.getExpiryDate().toString());
+				}
+				
+				ed.commit();
+			}
 			
 			return true;
 		} catch (Exception e) {
@@ -274,11 +272,15 @@ public class SharedPrefsUtils {
 			String path = prefs.getString("path", null);
 			int version = prefs.getInt("version", 0);
 			
-			BasicClientCookie cookie = new BasicClientCookie(name, value);
-			cookie.setDomain(domain);
-			cookie.setExpiryDate(new Date(expiryDate));
-			cookie.setPath(path);
-			cookie.setVersion(version);
+			BasicClientCookie cookie = null;
+			
+			if(name != null) {
+				cookie = new BasicClientCookie(name, value);
+				cookie.setDomain(domain);
+				cookie.setExpiryDate(new Date(expiryDate));
+				cookie.setPath(path);
+				cookie.setVersion(version);
+			}
 			
 			return cookie;
 		} catch (Exception e) {

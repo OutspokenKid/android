@@ -86,21 +86,13 @@ public class ViewWrapperForStaff extends ViewWrapper {
 				switch(user.getRole()) {
 				
 				case 101:
+				case 201:
 					classIcon.setBackgroundResource(R.drawable.class2_icon);
 					break;
 				case 102:
 					classIcon.setBackgroundResource(R.drawable.class3_icon);
 					break;
-				case 201:
-					classIcon.setBackgroundResource(R.drawable.class2_icon);
-					break;
 				case 202:
-					classIcon.setBackgroundResource(R.drawable.class4_icon);
-					break;
-				case 301:
-					classIcon.setBackgroundResource(R.drawable.class2_icon);
-					break;
-				case 302:
 					classIcon.setBackgroundResource(R.drawable.class4_icon);
 					break;
 				}

@@ -33,9 +33,9 @@ import com.cmons.cph.fragments.retail.RetailMainPage;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class RetailActivity extends ShopActivity {
 	

@@ -1,9 +1,7 @@
 package com.cmons.cph;
 
 import java.net.URLEncoder;
-import java.util.List;
 
-import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -14,11 +12,9 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.signin.FindIdPwPage;
 import com.cmons.cph.fragments.signin.SignInPage;
 import com.cmons.cph.models.User;
-import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SignInActivity extends CmonsFragmentActivity {
@@ -168,31 +164,12 @@ public class SignInActivity extends CmonsFragmentActivity {
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_signIn);
-							
+
+							saveCookies();
 							User user = new User(objJSON.getJSONObject("user"));
-
-							LogUtils.log("###SignInActivity.onResume.  save Cookies =====================");
-							List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
-							
-							int size = cookies.size();
-							for(int i=0; i<size; i++) {
-
-								String prefsName = null;
-								
-								if("CPH_D1".equals(cookies.get(i).getName())) {
-									prefsName = CphConstants.PREFS_COOKIE_CPH_D1;
-								} else if("CPH_S".equals(cookies.get(i).getName())) {
-									prefsName = CphConstants.PREFS_COOKIE_CPH_S;
-								} else {
-									continue;
-								}
-								
-								SharedPrefsUtils.saveCookie(prefsName, cookies.get(i));
-								LogUtils.log("		key : " + cookies.get(i).getName());
-							}
 							
 							//Check user type.
-							if(user.getRole() < SignUpActivity.BUSINESS_RETAIL_OFFLINE) {
+							if(user.getRole() < 200) {
 								launchWholesaleActivity(user);
 							} else {
 								launchRetailActivity(user);
