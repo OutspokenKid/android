@@ -159,12 +159,21 @@ public class FindIdPwPage extends CmonsFragment {
 		//etId.
 		rp = (RelativeLayout.LayoutParams) etId.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
-		rp.topMargin = ResizeUtils.getSpecificLength(70);
+		
+		if(type != TYPE_FIND_ID) {
+			rp.topMargin = ResizeUtils.getSpecificLength(92);
+		}
+		
 		etPhone.setPadding(padding, 0, padding, 0);
 		
 		//etPhone.
 		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
+		
+		if(type == TYPE_FIND_ID) {
+			rp.topMargin = ResizeUtils.getSpecificLength(92);
+		}
+		
 		etPhone.setPadding(padding, 0, padding, 0);
 		
 		//etCertification.

@@ -95,11 +95,11 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 		tvPhone.setText("연락처 : " + customer.getPhone_number());
 		
 		if(StringUtils.isEmpty(customer.getMall_url())) {
-			tvAddress.setText("매장주소 : " + customer.getAddress());
 			tvCategory.setText("매장분류 : 오프라인매장");
+			tvAddress.setText("매장주소 : " + customer.getAddress());
 		} else {
+			tvCategory.setText("매장분류 : 온라인쇼핑몰");
 			tvAddress.setText("홈페이지 주소 : " + customer.getMall_url());
-			tvCategory.setText("매장분류 : 온라인매장");
 		}
 	}
 

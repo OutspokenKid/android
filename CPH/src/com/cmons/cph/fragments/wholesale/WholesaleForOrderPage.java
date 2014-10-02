@@ -19,6 +19,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Account;
 import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
+import com.cmons.cph.models.Retail;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -46,6 +47,12 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	private ListView listView;
 	
 	private long totalPrice = -1;
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		setTypeImage();
+	}
 	
 	@Override
 	public void bindViews() {
@@ -133,8 +140,6 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		FontUtils.addSpan(tvOrder, "\n" + orderSet.getRetail_name(), 0, 1.5f);
 		FontUtils.addSpan(tvOrder, " (" + orderSet.getRetail_phone_number() + ")", 0, 1);
 		
-		type.setBackgroundResource(R.drawable.offline_shop_icon);
-		
 		tvSoldOut.setText(R.string.disableSoldout);
 		
 		String accountString = "결제방식 : ";
@@ -177,6 +182,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 					order.setChecked(false);
 				}
 				
+				order.setParentStatus(orderSet.getStatus());
 				models.add(order);
 			}
 		}
@@ -313,25 +319,18 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 
 	public void changeOrderStatus() {
 		
-		String order_ids = null;
+		//status : 변경할 상태값 (-1: 주문취소, 0: 주문요청, 1: 입금대기, 2: 입금완료, 3: 거래완료)
+		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
+				"?status=" + (orderSet.getStatus() + 1);
 		
+		//"?order_ids[]=" + order_ids +
 		int size = orderSet.getItems().length;
 		for(int i=0; i<size; i++) {
 			
 			if(orderSet.getItems()[i].isChecked()) {
-				
-				if(order_ids == null) {
-					order_ids = "" + orderSet.getItems()[i].getId();
-				} else {
-					order_ids += "," + orderSet.getItems()[i].getId();
-				}
+				url += "&order_ids[]=" + orderSet.getItems()[i].getId();
 			}
 		}
-		
-		//status : 변경할 상태값 (-1: 주문취소, 0: 주문요청, 1: 입금대기, 2: 입금완료, 3: 거래완료
-		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
-				"?order_ids[]=" + order_ids +
-				"&status=" + (orderSet.getStatus() + 1);
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -427,6 +426,43 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
 					ToastUtils.showToast(R.string.failToDeleteOrder);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void setTypeImage() {
+		
+		String url = CphConstants.BASE_API_URL + "retails/show" + 
+				"?retail_id=" + orderSet.getRetail_id();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForOrderPage.setTypeImage.onError." + "\nurl : " + url);
+				type.setVisibility(View.INVISIBLE);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForOrderPage.setTypeImage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					Retail retail = new Retail(objJSON.getJSONObject("retail"));
+					
+					if(StringUtils.isEmpty(retail.getMall_url())) {
+						type.setBackgroundResource(R.drawable.offline_shop_icon);
+					} else {
+						type.setBackgroundResource(R.drawable.online_shop_icon);
+					}
+					
+					type.setVisibility(View.VISIBLE);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
 				}
 			}

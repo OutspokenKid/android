@@ -40,7 +40,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		super.onResume();
 		
 		if(headerView != null) {
-			headerView.init(getWholesale());
+			headerView.refreshValues(getWholesale());
 		}
 		
 		if(models.size() == 0) {
@@ -77,6 +77,9 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		
 		headerView = new HeaderViewForWholesaleShop(mContext);
 		headerView.init(getWholesale());
+		
+		LogUtils.log("###WholesaleForShopPage.createPage.  init.");
+		
 		headerView.setTotalProduct(totalCount);
 		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		headerView.setLayoutParams(al);
@@ -88,6 +91,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
+		
+		LogUtils.log("###WholesaleForShopPage.setListeners.");
 		
 		titleBar.getBtnAdd().setOnClickListener(new OnClickListener() {
 
@@ -148,7 +153,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 
 			@Override
 			public void onClick(View view) {
-
+				
 				mActivity.showSelectDialog(null, orders, new DialogInterface.OnClickListener() {
 					
 					@Override

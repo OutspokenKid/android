@@ -78,10 +78,29 @@
 	    android:background="@drawable/order_approve_btn" />
 	
 	<TextView 
+        android:id="@+id/retailOrderPage_tvPriceText"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailOrderPage_btnConfirm"
+	    android:layout_alignParentLeft="true"
+	    android:gravity="center_vertical"
+	    android:text="@string/totalPrice"
+    	android:textColor="#fff" />
+	
+	<TextView 
+        android:id="@+id/retailOrderPage_tvPrice"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_above="@id/retailOrderPage_btnConfirm"
+	    android:layout_alignParentRight="true"
+	    android:gravity="center_vertical"
+    	android:textColor="#f00" />
+	
+	<TextView 
         android:id="@+id/retailOrderPage_tvAccount"
         android:layout_width="wrap_content"
     	android:layout_height="wrap_content"
-    	android:layout_above="@id/retailOrderPage_btnConfirm"
+    	android:layout_above="@id/retailOrderPage_tvPriceText"
 	    android:layout_alignParentLeft="true"
     	android:textColor="#fff" />
 	

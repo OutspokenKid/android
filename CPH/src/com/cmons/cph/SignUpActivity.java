@@ -21,6 +21,7 @@ import com.cmons.cph.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SignUpActivity extends CmonsFragmentActivity {
@@ -299,7 +300,9 @@ public class SignUpActivity extends CmonsFragmentActivity {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
 						
-						if(objJSON.getInt("result") == 2) {
+						if(objJSON.getInt("result") == 2
+								|| objJSON.getInt("result") == 3) {
+							SoftKeyboardUtils.hideKeyboard(context, getTopFragment().getView());
 							finish();
 						}
 					} catch (Exception e) {
@@ -383,6 +386,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 						}
 						
 						if(objJSON.getInt("result") == 2) {
+							SoftKeyboardUtils.hideKeyboard(context, getTopFragment().getView());
 							finish();
 						}
 					} catch (Exception e) {
@@ -448,7 +452,8 @@ public class SignUpActivity extends CmonsFragmentActivity {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
 						
-						if(objJSON.getInt("result") == 2) {
+						if(objJSON.getInt("result") == 3) {
+							SoftKeyboardUtils.hideKeyboard(context, getTopFragment().getView());
 							finish();
 						}
 					} catch (Exception e) {

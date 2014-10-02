@@ -83,7 +83,7 @@
     	android:textColor="#fff" />
 	
 	<EditText 
-        android:id="@+id/retailWishPage_etName"
+        android:id="@+id/retailWishPage_etAgentName"
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_above="@id/retailWishPage_tvPriceText"
@@ -97,11 +97,11 @@
     	android:textColor="#000" />
 	
 	<EditText 
-        android:id="@+id/retailWishPage_etPhone"
+        android:id="@+id/retailWishPage_etAgentPhone"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_above="@id/retailWishPage_tvPriceText"
-    	android:layout_toRightOf="@id/retailWishPage_etName"
+    	android:layout_toRightOf="@id/retailWishPage_etAgentName"
 	    android:gravity="center"
 	    android:visibility="invisible"
 	    android:background="@drawable/retail_txt_box2"
@@ -111,8 +111,8 @@
     	android:textColor="#fff" android:inputType="phone"/>
 	
 	<TextView 
-        android:id="@+id/retailWishPage_tvPayment1"
-        android:layout_width="wrap_content"
+        android:id="@+id/retailWishPage_tvBank"
+        android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_above="@id/retailWishPage_tvPriceText"
 	    android:layout_alignParentLeft="true"
@@ -121,36 +121,36 @@
     	android:textColor="#fff" />
 	
 	<View 
-	    android:id="@+id/retailWishPage_checkBox1"
+	    android:id="@+id/retailWishPage_cbBank"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_alignTop="@id/retailWishPage_tvPayment1"
-    	android:layout_toRightOf="@id/retailWishPage_tvPayment1"
+    	android:layout_alignTop="@id/retailWishPage_tvBank"
+    	android:layout_alignRight="@id/retailWishPage_tvBank"
     	android:background="@drawable/myshop_checkbox_a" />
 	
 	<TextView 
-        android:id="@+id/retailWishPage_tvPayment2"
-        android:layout_width="wrap_content"
+        android:id="@+id/retailWishPage_tvAgent"
+        android:layout_width="0dp"
     	android:layout_height="0dp"
-		android:layout_alignTop="@id/retailWishPage_tvPayment1"
-    	android:layout_toRightOf="@id/retailWishPage_checkBox1"    	
+		android:layout_alignTop="@id/retailWishPage_tvBank"
+    	android:layout_toRightOf="@id/retailWishPage_cbBank"    	
 	    android:gravity="center_vertical"
 	    android:text="@string/payment2"
     	android:textColor="#fff" />
 	
 	<View 
-	    android:id="@+id/retailWishPage_checkBox2"
+	    android:id="@+id/retailWishPage_cbAgent"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_alignTop="@id/retailWishPage_checkBox1"
-    	android:layout_toRightOf="@id/retailWishPage_tvPayment2"
+    	android:layout_alignTop="@id/retailWishPage_cbBank"
+    	android:layout_alignRight="@id/retailWishPage_tvAgent"
     	android:background="@drawable/myshop_checkbox_a" />
 
 	<TextView 
         android:id="@+id/retailWishPage_tvSelectPayment"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
-    	android:layout_above="@id/retailWishPage_tvPayment1"
+    	android:layout_above="@id/retailWishPage_tvBank"
 	    android:layout_alignParentLeft="true"
 	    android:gravity="center_vertical"
 	    android:text="@string/selectPayment"

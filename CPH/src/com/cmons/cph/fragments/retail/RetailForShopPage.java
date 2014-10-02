@@ -41,6 +41,10 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		if(headerView != null) {
+			headerView.refreshValues(wholesale);
+		}
 		
 		if(models.size() == 0) {
 			downloadInfo();

@@ -45,6 +45,8 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 	private View completed;
 	
 	private Button btnConfirm;
+	private TextView tvPriceText;
+	private TextView tvPrice;
 	private TextView tvAccount;
 	private ListView listView;
 	
@@ -63,6 +65,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 			for(int i=0; i<size; i++) {
 				Order order = orderSet.getItems()[i];
 				order.setItemCode(CphConstants.ITEM_ORDER_RETAIL);
+				order.setParentStatus(orderSet.getStatus());
 				models.add(order);
 			}
 			adapter.notifyDataSetChanged();
@@ -84,6 +87,8 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 		completed = mThisView.findViewById(R.id.retailOrderPage_completed);
 		
 		btnConfirm = (Button) mThisView.findViewById(R.id.retailOrderPage_btnConfirm);
+		tvPriceText = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvPriceText);
+		tvPrice = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvPrice);
 		tvAccount = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvAccount);
 		
 		listView = (ListView) mThisView.findViewById(R.id.retailOrderPage_listView);
@@ -159,9 +164,11 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 					
 				//입금완료.
 				case Order.STATUS_STANDBY:
+					requestStatus(2);
+					break;
+					
 				//거래완료.
 				case Order.STATUS_DEPOSIT:
-					requestStatus(3);
 					break;
 				//내역삭제.
 				case Order.STATUS_COMPLETED:
@@ -176,11 +183,11 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 	public void setSizes() {
 
 		RelativeLayout.LayoutParams rp = null;
+		int p = ResizeUtils.getSpecificLength(10);
 		
 		//tvOrder.
 		rp = (RelativeLayout.LayoutParams) tvOrder.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(120);
-		int p = ResizeUtils.getSpecificLength(10);
 		tvOrder.setPadding(p, p, p, p);
 		
 		//btnShop.
@@ -215,6 +222,16 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 
 		//tvAccount.
 		tvAccount.setPadding(p, p, p, p);
+		
+		//tvPriceText.
+		rp = (RelativeLayout.LayoutParams) tvPriceText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(80);
+		tvPriceText.setPadding(p, p, p, p);
+		
+		//tvPrice.
+		rp = (RelativeLayout.LayoutParams) tvPrice.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(80);
+		tvPrice.setPadding(p, p, p, p);
 		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
@@ -348,6 +365,8 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 						}
 						
 						tvAccount.setText(accountString);
+						tvPrice.setText(StringUtils.getFormattedNumber(orderSet.getSum()) +"원");
+						
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -360,13 +379,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 		});
 	}
 
-	public void requestStatus(int status) {
-
-		if(orderSet.getItems() == null) {
-			LogUtils.log("###where.requestStatus.  items is null.");
-		} else {
-			LogUtils.log("###where.requestStatus.  items is good. size : " + orderSet.getItems().length);
-		}
+	public void requestStatus(final int status) {
 
 		String order_ids = null;
 		
@@ -405,8 +418,21 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_changeOrderStatus1);
-						mActivity.closeTopPage();
+						
+						switch(status) {
+						
+						case 1:
+							ToastUtils.showToast(R.string.complete_changeOrderStatus1);
+							break;
+						case 2:
+							ToastUtils.showToast(R.string.complete_changeOrderStatus2);
+							break;
+						case 3:
+							ToastUtils.showToast(R.string.complete_changeOrderStatus3);
+							break;
+						}
+						
+						mActivity.closePageWithRefreshPreviousPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

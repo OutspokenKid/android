@@ -395,7 +395,6 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		
 		tvTotalProduct.setText("총 등록 상품 " +  totalProduct);
 	}
-
 	
 	public void checkProfile() {
 
@@ -413,6 +412,12 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void refreshValues(Wholesale wholesale) {
+		
+		this.wholesale = wholesale;
+		this.wholesale = wholesale;
 	}
 }
 

@@ -194,38 +194,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 			@Override
 			public void onClick(View view) {
 
-				int size = wholesale.getAccounts().length;
-				final String[] strings = new String[size];
-				
-				for(int i=0; i<size; i++) {
-					Account account = wholesale.getAccounts()[i];
-					strings[i] = account.getBank() + " " +
-							account.getNumber() + "(" +
-							account.getDepositor() + ")";
-				}
-				
-				mActivity.showSelectDialog("계좌 선택", strings, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-
-						if(type != PAYMENT_BANK) {
-							selectedAccount = wholesale.getAccounts()[which];
-							
-							type = PAYMENT_BANK;
-							cbBank.setBackgroundResource(R.drawable.myshop_checkbox_b);
-							cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_a);
-
-							tvAccount.setText(strings[which]);
-							tvAccount.setVisibility(View.VISIBLE);
-							etAgentName.setVisibility(View.INVISIBLE);
-							etAgentPhone.setVisibility(View.INVISIBLE);
-							etAgentName.setText("");
-							etAgentPhone.setText("");
-
-						}
-					}
-				});
+				selectAccount();
 			}
 		});
 		
@@ -268,10 +237,12 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 					
 				} else if(type == PAYMENT_AGENT){
 					
-					if(etAgentName.getText() == null) {
+					if(etAgentName.getText() == null
+							|| etAgentName.getText().length() == 0) {
 						ToastUtils.showToast(R.string.wrongAgentName);
 						return;
-					} else if(etAgentPhone.getText() == null) {
+					} else if(etAgentPhone.getText() == null
+							|| etAgentPhone.getText().length() == 0) {
 						ToastUtils.showToast(R.string.wrongAgentPhone);
 						return;
 					}
@@ -447,7 +418,47 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	
 //////////////////// Custom methods.
 
-//////////////////// Custom methods.
+	public void selectAccount() {
+
+		if(wholesale == null
+				|| wholesale.getAccounts() == null
+				|| wholesale.getAccounts().length == 0) {
+			ToastUtils.showToast("등록된 계좌가 없습니다.");
+			return;
+		}
+		
+		int size = wholesale.getAccounts().length;
+		
+		final String[] strings = new String[size];
+		
+		for(int i=0; i<size; i++) {
+			Account account = wholesale.getAccounts()[i];
+			strings[i] = account.getBank() + " " +
+					account.getNumber() + "(" +
+					account.getDepositor() + ")";
+		}
+		
+		mActivity.showSelectDialog("계좌 선택", strings, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				selectedAccount = wholesale.getAccounts()[which];
+				
+				type = PAYMENT_BANK;
+				cbBank.setBackgroundResource(R.drawable.myshop_checkbox_b);
+				cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_a);
+
+				tvAccount.setText(strings[which]);
+				tvAccount.setVisibility(View.VISIBLE);
+				etAgentName.setVisibility(View.INVISIBLE);
+				etAgentPhone.setVisibility(View.INVISIBLE);
+				etAgentName.setText("");
+				etAgentPhone.setText("");
+
+			}
+		});
+	}
 	
 	public void addOrder() {
 		
@@ -620,7 +631,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("RetailForOrderPage.order.onError." + "\nurl : " + url);
+					LogUtils.log("RetailForOrderProductPage.order.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.failToOrder);
 				}
 
@@ -628,12 +639,17 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						LogUtils.log("RetailForOrderPage.order.onCompleted." + "\nurl : " + url
+						LogUtils.log("RetailForOrderProductPage.order.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_order);
-							mActivity.closeTopPage();
+							
+							if(isBasket) {
+								mActivity.closeTopPage();
+							} else {
+								mActivity.closePagesWithRefreshPreviousPage(2);
+							}
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}
@@ -677,7 +693,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("RetailForOrderPage.addToBasket.onError." + "\nurl : " + url);
+					LogUtils.log("RetailForOrderProductPage.addToBasket.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.failToAddBasket);
 				}
 
@@ -685,12 +701,12 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						LogUtils.log("RetailForOrderPage.addToBasket.onCompleted." + "\nurl : " + url
+						LogUtils.log("RetailForOrderProductPage.addToBasket.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
 						if(objJSON.getInt("result") == 1) {
 							ToastUtils.showToast(R.string.complete_addBasket);
-							mActivity.closeTopPage();
+							mActivity.closePagesWithRefreshPreviousPage(2);
 						} else {
 							ToastUtils.showToast(objJSON.getString("message"));
 						}

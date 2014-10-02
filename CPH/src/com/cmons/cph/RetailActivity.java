@@ -262,7 +262,9 @@ public class RetailActivity extends ShopActivity {
 		//거래처 승인
 		//거래처 삭제
 		} else if(url.equals("retails/customers")) {
-			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, null);
+			Bundle bundle = new Bundle();
+			bundle.putInt("menuIndex", 1);
+			showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, bundle);
 			
 		//회원가입
 		} else if(url.equals("users/staffs")) {

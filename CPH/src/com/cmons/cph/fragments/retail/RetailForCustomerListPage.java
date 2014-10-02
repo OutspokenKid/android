@@ -69,6 +69,10 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	public void setVariables() {
 
 		title = "주문 / 거래처관리";
+		
+		if(getArguments() != null) {
+			menuIndex = getArguments().getInt("menuIndex");
+		}
 	}
 
 	@Override

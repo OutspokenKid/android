@@ -325,8 +325,9 @@ public class HeaderViewForRetailShop extends RelativeLayout {
 	public void downloadProfile() {
 		
 		try {
-			if(wholesale != null) {
-				DownloadUtils.downloadBitmap(Wholesale.profileImage, new OnBitmapDownloadListener() {
+			if(wholesale != null
+					&& wholesale.getRep_image_url() != null) {
+				DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -378,6 +379,12 @@ public class HeaderViewForRetailShop extends RelativeLayout {
 	public void setTotalProduct(int totalProduct) {
 		
 		tvTotalProduct.setText("총 등록 상품 " +  totalProduct);
+	}
+	
+	public void refreshValues(Wholesale wholesale) {
+
+		this.wholesale = wholesale;
+		setValues();
 	}
 }
 

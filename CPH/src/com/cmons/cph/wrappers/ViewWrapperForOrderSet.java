@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
+import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
@@ -72,7 +73,11 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 				}
 				
 				tvLeft.setText(Html.fromHtml(
-						"<B>" + orderSet.getRetail_name() + "</B><BR>" +
+						"<B>" +
+						(ShopActivity.getInstance().user.getWholesale_id() != 0? 
+								orderSet.getRetail_name() : 
+								orderSet.getWholesale_name()) +
+						"</B><BR>" +
 						leftString));
 
 				tvRight.setText(null);
@@ -105,19 +110,9 @@ public class ViewWrapperForOrderSet extends ViewWrapper {
 					break;
 				}
 
-				long sum = 0;
-				
-				int size = orderSet.getItems().length;
-				for(int i=0; i<size; i++) {
-					
-					sum += orderSet.getItems()[i].getProduct_price() 
-							* orderSet.getItems()[i].getAmount();
-				}
-				
 				FontUtils.addSpan(tvRight, "\n" + 
-						StringUtils.getFormattedNumber(sum) 
+						StringUtils.getFormattedNumber(orderSet.getSum()) 
 						+ "원", Color.RED, 1);
-				
 			} else {
 				setUnusableView();
 			}

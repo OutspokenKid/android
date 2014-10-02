@@ -11,6 +11,7 @@ import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class ViewWrapperForCustomer_wholesale extends ViewWrapper {
 	
@@ -62,9 +63,11 @@ public class ViewWrapperForCustomer_wholesale extends ViewWrapper {
 		try {
 			if(baseModel instanceof Customer) {
 				customer = (Customer) baseModel;
-				tvInfo.setText(customer.getName() + "(" + customer.getOwner_name() + ")");
+				tvInfo.setText(customer.getName() + 
+						"(" + customer.getOwner_name() + ")" +
+						" " + customer.getPhone_number());
 				
-				if(customer.getMall_url() == null) {
+				if(StringUtils.isEmpty(customer.getMall_url())) {
 					icon.setBackgroundResource(R.drawable.offline_shop_icon);
 				} else {
 					icon.setBackgroundResource(R.drawable.online_shop_icon);

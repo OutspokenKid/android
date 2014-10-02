@@ -461,7 +461,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					viewPager.setCurrentItem((position + 1) % wholesales.size(), true);
 				}
 				
-				
 				playPager();
 			}
 		}, 3000);
@@ -564,6 +563,12 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 			return arg0 == arg1;
 		}
+	}
+	
+	public void refreshValues(RetailActivity activity) {
+
+		this.activity = activity;
+		setValues();
 	}
 }
 

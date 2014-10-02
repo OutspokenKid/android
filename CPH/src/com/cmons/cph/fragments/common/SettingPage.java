@@ -94,7 +94,7 @@ public class SettingPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				IntentUtils.sendEmail(mContext, "rinter@naver.com");
+				IntentUtils.sendEmail(mContext, getString(R.string.suggestMail));
 			}
 		});
 		

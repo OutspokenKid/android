@@ -103,8 +103,14 @@ public class ViewWrapperForOrder extends ViewWrapper {
 							order.getColor() + "/" + 
 							order.getAmount() + "개)");
 					
-					long sum = order.getAmount() * order.getProduct_price();
-					tvPrice.setText(StringUtils.getFormattedNumber(sum) + "원");
+					if(order.getParentStatus() != 0
+							&& order.getStatus() == 0) {
+						tvPrice.setText("품절");
+					} else {
+						long sum = order.getAmount() * order.getProduct_price();
+						tvPrice.setText(StringUtils.getFormattedNumber(sum) + "원");
+					}
+					
 					checkbox.setVisibility(View.INVISIBLE);
 				}
 			} else {
@@ -119,35 +125,37 @@ public class ViewWrapperForOrder extends ViewWrapper {
 	@Override
 	public void setListeners() {
 		
-		row.setOnClickListener(new OnClickListener() {
+		if(order.getParentStatus() == 0) {
+			row.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View view) {
+				@Override
+				public void onClick(View view) {
 
-				if(order.getStatus() != 0) {
-					return;
-				}
-				
-				order.setChecked(!order.isChecked());
-
-				if(ShopActivity.getInstance().getTopFragment() instanceof WholesaleForOrderPage) {
-					
-					long addedPrice = 0;
-					
-					//추가된 경우.
-					if(order.isChecked()) {
-						addedPrice = order.getProduct_price() * order.getAmount();
-						checkbox.setBackgroundResource(R.drawable.order_check_box_b);
-					//삭제된 경우.
-					} else {
-						addedPrice = -order.getProduct_price() * order.getAmount();
-						checkbox.setBackgroundResource(R.drawable.order_check_box_a);
+					if(order.getStatus() != 0) {
+						return;
 					}
 					
-					((WholesaleForOrderPage)ShopActivity.getInstance().getTopFragment()).addToTotalPrice(addedPrice);
+					order.setChecked(!order.isChecked());
+
+					if(ShopActivity.getInstance().getTopFragment() instanceof WholesaleForOrderPage) {
+						
+						long addedPrice = 0;
+						
+						//추가된 경우.
+						if(order.isChecked()) {
+							addedPrice = order.getProduct_price() * order.getAmount();
+							checkbox.setBackgroundResource(R.drawable.order_check_box_b);
+						//삭제된 경우.
+						} else {
+							addedPrice = -order.getProduct_price() * order.getAmount();
+							checkbox.setBackgroundResource(R.drawable.order_check_box_a);
+						}
+						
+						((WholesaleForOrderPage)ShopActivity.getInstance().getTopFragment()).addToTotalPrice(addedPrice);
+					}
 				}
-			}
-		});
+			});
+		}
 		
 		tvOrder.setOnClickListener(new OnClickListener() {
 

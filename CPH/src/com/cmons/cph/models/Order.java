@@ -34,6 +34,7 @@ public class Order extends BaseModel implements Serializable {
 	private long product_price;
 	private int product_status;
 	
+	private int parentStatus;
 	private boolean checked = true;
 	
 	public Order() {
@@ -235,5 +236,13 @@ public class Order extends BaseModel implements Serializable {
 
 	public void setProduct_status(int product_status) {
 		this.product_status = product_status;
+	}
+
+	public int getParentStatus() {
+		return parentStatus;
+	}
+
+	public void setParentStatus(int parentStatus) {
+		this.parentStatus = parentStatus;
 	}
 }

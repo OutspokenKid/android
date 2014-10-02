@@ -74,6 +74,10 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	public void onResume() {
 		super.onResume();
 		
+		if(headerView != null) {
+			headerView.refreshValues((RetailActivity)mActivity);
+		}
+		
 		if(models.size() == 0) {
 			downloadInfo();
 		}

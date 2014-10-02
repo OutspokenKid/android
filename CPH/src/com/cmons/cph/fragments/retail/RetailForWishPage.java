@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
@@ -25,6 +26,8 @@ import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForRetail;
 import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
+import com.cmons.cph.models.Account;
+import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.models.WholesaleWish;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -37,24 +40,38 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class RetailForWishPage extends CmonsFragmentForRetail {
 
+	private static final int PAYMENT_NONE = 0;
+	private static final int PAYMENT_BANK = 1;
+	private static final int PAYMENT_AGENT = 2;
+	
 	private WholesaleWish wholesaleWish;
+	private Wholesale wholesale;
 	
 	private TextView tvInfo;
 	private Button btnShop;
 	private ListView listView;
 	private TextView tvSelectPayment;
-	private TextView tvPayment1;
-	private View checkBox1;
-	private TextView tvPayment2;
-	private View checkBox2;
+	private TextView tvBank;
+	private View cbBank;
+	private TextView tvAgent;
+	private View cbAgent;
 	private TextView tvAccount;
-	private EditText etName;
-	private EditText etPhone;
+	private EditText etAgentName;
+	private EditText etAgentPhone;
 	private TextView tvPriceText;
 	private TextView tvPrice;
 	private Button btnDelete;
 	private Button btnOrder;
-	private boolean isPayment1, isPayment2;
+
+	private int type;
+	private Account selectedAccount;
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		downloadWholesale();
+	}
 	
 	@Override
 	public void bindViews() {
@@ -66,14 +83,14 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		btnShop = (Button) mThisView.findViewById(R.id.retailWishPage_btnShop);
 		listView = (ListView) mThisView.findViewById(R.id.retailWishPage_listView);
 		tvSelectPayment = (TextView) mThisView.findViewById(R.id.retailWishPage_tvSelectPayment);
-		tvPayment1 = (TextView) mThisView.findViewById(R.id.retailWishPage_tvPayment1);
-		checkBox1 = mThisView.findViewById(R.id.retailWishPage_checkBox1);
-		tvPayment2 = (TextView) mThisView.findViewById(R.id.retailWishPage_tvPayment2);
-		checkBox2 = mThisView.findViewById(R.id.retailWishPage_checkBox2);
+		tvBank = (TextView) mThisView.findViewById(R.id.retailWishPage_tvBank);
+		cbBank = mThisView.findViewById(R.id.retailWishPage_cbBank);
+		tvAgent = (TextView) mThisView.findViewById(R.id.retailWishPage_tvAgent);
+		cbAgent = mThisView.findViewById(R.id.retailWishPage_cbAgent);
 		tvAccount = (TextView) mThisView.findViewById(R.id.retailWishPage_tvAccount);
 		tvPriceText = (TextView) mThisView.findViewById(R.id.retailWishPage_tvPriceText);
-		etName = (EditText) mThisView.findViewById(R.id.retailWishPage_etName);
-		etPhone = (EditText) mThisView.findViewById(R.id.retailWishPage_etPhone);
+		etAgentName = (EditText) mThisView.findViewById(R.id.retailWishPage_etAgentName);
+		etAgentPhone = (EditText) mThisView.findViewById(R.id.retailWishPage_etAgentPhone);
 		tvPrice = (TextView) mThisView.findViewById(R.id.retailWishPage_tvPrice);
 		btnDelete = (Button) mThisView.findViewById(R.id.retailWishPage_btnDelete);
 		btnOrder = (Button) mThisView.findViewById(R.id.retailWishPage_btnOrder);
@@ -140,62 +157,44 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 			}
 		});
 	
-		tvPayment1.setOnClickListener(new OnClickListener() {
+		btnShop.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				if(!isPayment1) {
-					selectAccount();
+				if(wholesaleWish != null) {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("wholesale", wholesale);
+					mActivity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
 				}
 			}
 		});
 		
-		checkBox1.setOnClickListener(new OnClickListener() {
+		tvBank.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				if(!isPayment1) {
-					selectAccount();
-				}
+				selectAccount();
 			}
 		});
 		
-		tvPayment2.setOnClickListener(new OnClickListener() {
+		tvAgent.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				if(!isPayment2) {
-					isPayment2 = true;
-					checkBox2.setBackgroundResource(R.drawable.myshop_checkbox_b);
+				if(type != PAYMENT_AGENT) {
+					type = PAYMENT_AGENT;
+					cbBank.setBackgroundResource(R.drawable.myshop_checkbox_a);
+					cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_b);
 					
 					tvAccount.setVisibility(View.INVISIBLE);
-					etName.setVisibility(View.VISIBLE);
-					etPhone.setVisibility(View.VISIBLE);
-					
-					isPayment1 = false;
-					checkBox1.setBackgroundResource(R.drawable.myshop_checkbox_a);
-				}
-			}
-		});
-		
-		checkBox2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				if(!isPayment2) {
-					isPayment2 = true;
-					checkBox2.setBackgroundResource(R.drawable.myshop_checkbox_b);
-					
-					tvAccount.setVisibility(View.INVISIBLE);
-					etName.setVisibility(View.VISIBLE);
-					etPhone.setVisibility(View.VISIBLE);
-					
-					isPayment1 = false;
-					checkBox1.setBackgroundResource(R.drawable.myshop_checkbox_a);
+					tvAccount.setText("");
+					etAgentName.setText("");
+					etAgentPhone.setText("");
+					etAgentName.setVisibility(View.VISIBLE);
+					etAgentPhone.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -222,26 +221,26 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 
 			@Override
 			public void onClick(View view) {
-
-				if(!isPayment1 && !isPayment2) {
+				
+				if(type == PAYMENT_NONE) {
 					ToastUtils.showToast(R.string.wrongPayment);
 					return;
 					
-				} else if(isPayment1 && tvAccount.getText() == null) {
+				} else if(type == PAYMENT_BANK && tvAccount.getText() == null) {
 					ToastUtils.showToast(R.string.wrongAccount2);
 					return;
 					
-				} else if (isPayment2 
-						&& (etName.getEditableText() == null
-						|| etName.getEditableText().length() == 0)) {
-					ToastUtils.showToast(R.string.wrongAgentName);
-					return;
+				} else if(type == PAYMENT_AGENT){
 					
-				} else if (isPayment2 
-						&& (etPhone.getEditableText() == null
-						|| etPhone.getEditableText().length() == 0)) {
-					ToastUtils.showToast(R.string.wrongAgentPhone);
-					return;
+					if(etAgentName.getText() == null
+							|| etAgentName.getText().length() == 0) {
+						ToastUtils.showToast(R.string.wrongAgentName);
+						return;
+					} else if(etAgentPhone.getText() == null
+							|| etAgentPhone.getText().length() == 0) {
+						ToastUtils.showToast(R.string.wrongAgentPhone);
+						return;
+					}
 				}
 				
 				order();
@@ -254,12 +253,12 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 
 		RelativeLayout.LayoutParams rp = null;
 		int m = ResizeUtils.getSpecificLength(20);
+		int padding = ResizeUtils.getSpecificLength(16);
 		
 		//tvInfo.
 		rp = (RelativeLayout.LayoutParams) tvInfo.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(120);
 		rp.leftMargin = m;
-		FontUtils.setFontSize(tvInfo, 26);
 		
 		//btnShop.
 		rp = (RelativeLayout.LayoutParams) btnShop.getLayoutParams();
@@ -272,62 +271,57 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		rp = (RelativeLayout.LayoutParams) tvSelectPayment.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(40);
 		rp.leftMargin = m;
-		FontUtils.setFontSize(tvSelectPayment, 30);
 		
-		//tvPayment1.
-		rp = (RelativeLayout.LayoutParams) tvPayment1.getLayoutParams();
+		//tvBank.
+		rp = (RelativeLayout.LayoutParams) tvBank.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(260);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.leftMargin = m;
+		tvBank.setPadding(padding*2, 0, 0, 0);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(92);
-		FontUtils.setFontSize(tvPayment1, 30);
 		
-		//checkBox1.
-		rp = (RelativeLayout.LayoutParams) checkBox1.getLayoutParams();
+		//cbBank.
+		rp = (RelativeLayout.LayoutParams) cbBank.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(44);
 		rp.height = ResizeUtils.getSpecificLength(43);
-		rp.leftMargin = m;
-		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(8);
+		rp.rightMargin = padding;
 		
-		//tvPayment2.
-		rp = (RelativeLayout.LayoutParams) tvPayment2.getLayoutParams();
+		//tvAgent.
+		rp = (RelativeLayout.LayoutParams) tvAgent.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(260);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.leftMargin = ResizeUtils.getSpecificLength(100);
-		FontUtils.setFontSize(tvPayment2, 30);
+		tvBank.setPadding(padding*2, 0, 0, 0);
 		
-		//checkBox2.
-		rp = (RelativeLayout.LayoutParams) checkBox2.getLayoutParams();
+		//cbAgent.
+		rp = (RelativeLayout.LayoutParams) cbAgent.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(44);
 		rp.height = ResizeUtils.getSpecificLength(43);
-		rp.leftMargin = m;
+		rp.topMargin = ResizeUtils.getSpecificLength(8);
+		rp.rightMargin = padding;
 		
 		//tvAccount.
 		rp = (RelativeLayout.LayoutParams) tvAccount.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
-		FontUtils.setFontSize(tvPriceText, 40);
 		
-		//etName.
-		rp = (RelativeLayout.LayoutParams) etName.getLayoutParams();
+		//etAgentName.
+		rp = (RelativeLayout.LayoutParams) etAgentName.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(184);
 		rp.height = ResizeUtils.getSpecificLength(92);
-		FontUtils.setFontAndHintSize(etName, 28, 24);
 		
-		//etPhone.
-		rp = (RelativeLayout.LayoutParams) etPhone.getLayoutParams();
+		//etAgentPhone.
+		rp = (RelativeLayout.LayoutParams) etAgentPhone.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
-		FontUtils.setFontAndHintSize(etPhone, 28, 24);
 		
 		//tvPriceText.
 		rp = (RelativeLayout.LayoutParams) tvPriceText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(80);
 		rp.leftMargin = m;
-		FontUtils.setFontSize(tvPriceText, 30);
 		
 		//tvPrice.
 		rp = (RelativeLayout.LayoutParams) tvPrice.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(80);
 		rp.rightMargin = m;
-		FontUtils.setFontSize(tvPrice, 34);
-
+		
 		//btnDelete.
 		rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;
@@ -337,6 +331,15 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		rp = (RelativeLayout.LayoutParams) btnOrder.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(180);
 
+		FontUtils.setFontSize(tvInfo, 26);
+		FontUtils.setFontSize(tvSelectPayment, 30);
+		FontUtils.setFontSize(tvBank, 30);
+		FontUtils.setFontSize(tvAgent, 30);
+		FontUtils.setFontSize(tvPriceText, 40);
+		FontUtils.setFontAndHintSize(etAgentName, 28, 24);
+		FontUtils.setFontAndHintSize(etAgentPhone, 28, 24);
+		FontUtils.setFontSize(tvPriceText, 30);
+		FontUtils.setFontSize(tvPrice, 34);
 	}
 
 	@Override
@@ -370,18 +373,76 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 	}
 
 //////////////////// Custom methods.
-	
+
+	public void downloadWholesale() {
+		
+		//http://cph.minsangk.com/wholesales/show?wholesale_id=632
+		String url = CphConstants.BASE_API_URL + "wholesales/show" +
+				"?wholesale_id=" + wholesaleWish.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailForWishPage.downloadWholesale.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailForWishPage.downloadWholesale.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					wholesale = new Wholesale(objJSON.getJSONObject("wholesale"));
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
 	public void selectAccount() {
 
-		ToastUtils.showToast("등록된 계좌가 없습니다.");
+		if(wholesale == null
+				|| wholesale.getAccounts() == null
+				|| wholesale.getAccounts().length == 0) {
+			ToastUtils.showToast("등록된 계좌가 없습니다.");
+			return;
+		}
+		
+		int size = wholesale.getAccounts().length;
+		
+		final String[] strings = new String[size];
+		
+		for(int i=0; i<size; i++) {
+			Account account = wholesale.getAccounts()[i];
+			strings[i] = account.getBank() + " " +
+					account.getNumber() + "(" +
+					account.getDepositor() + ")";
+		}
+		
+		mActivity.showSelectDialog("계좌 선택", strings, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 
-//		checkBox1.setBackgroundResource(R.drawable.myshop_checkbox_b);
-//		isPayment1 = true;
-//		isPayment2 = false;
-//		checkBox2.setBackgroundResource(R.drawable.myshop_checkbox_a);
-//		tvAccount.setVisibility(View.VISIBLE);
-//		etName.setVisibility(View.INVISIBLE);
-//		etPhone.setVisibility(View.INVISIBLE);
+				selectedAccount = wholesale.getAccounts()[which];
+				
+				type = PAYMENT_BANK;
+				cbBank.setBackgroundResource(R.drawable.myshop_checkbox_b);
+				cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_a);
+
+				tvAccount.setText(strings[which]);
+				tvAccount.setVisibility(View.VISIBLE);
+				etAgentName.setVisibility(View.INVISIBLE);
+				etAgentPhone.setVisibility(View.INVISIBLE);
+				etAgentName.setText("");
+				etAgentPhone.setText("");
+			}
+		});
 	}
 
 	public void delete() {
@@ -430,16 +491,28 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 	
 	public void order() {
 
+		/*
+		http://cph.minsangk.com/retails/orders/order_from_cart
+		?wholesale_id=1
+		&payment_type=1
+		&payment_account_id=1
+
+		http://cph.minsangk.com/retails/orders/order_from_cart
+		?wholesale_id=1
+		&payment_type=2
+		&payment_purchaser_info=%ED%99%8D%EA%B8%B8%EB%8F%99/010-2082-1803
+		*/
 		try {
 			String url = CphConstants.BASE_API_URL + "retails/orders/order_from_cart" +
 					"?wholesale_id=" + wholesaleWish.getId() +
-					"&payment_type=" + (isPayment1? 1:2);
+					"&payment_type=" + type;
 			
-			if(isPayment1) {
-				url += "&payment_account_id=" + URLEncoder.encode(tvAccount.getText().toString(), "utf-8");
+			if(type == PAYMENT_BANK) {
+				url += "&payment_account_id=" + selectedAccount.getId();
 			} else {
-				url += "&payment_purchaser_info=" + URLEncoder.encode(etName.getText().toString() + 
-						"/" + etPhone.getText().toString(), "utf-8");
+				String purchaser_info = (etAgentName.getText().toString() + "/" + 
+						etAgentPhone.getText().toString()).replace(" ", "");
+				url += "&payment_purchaser_info=" + URLEncoder.encode(purchaser_info, "utf-8");
 			}
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

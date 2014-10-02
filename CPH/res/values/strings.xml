@@ -36,6 +36,7 @@
 	<string name="complete_changeAddress">주소 변경 완료</string>
 	<string name="complete_changeMallUrl">쇼핑몰 사이트 주소 변경 완료</string>
 	<string name="complete_changeOrderStatus1">주문을 승인했습니다</string>
+	<string name="complete_changeOrderStatus2">입금 완료 처리되었습니다</string>
 	<string name="complete_changeOrderStatus3">거래완료 상태로 변경되었습니다</string>
 	<string name="complete_changePhoneNumber">전화번호 변경 완료</string>
 	<string name="complete_changePw">비밀번호 변경 완료</string>
@@ -233,6 +234,7 @@
     <string name="signUp">회원가입</string>
     <string name="size">사이즈</string>
     <string name="soldOut">품절</string>
+    <string name="suggestMail">cph22528036@gmail.com</string>
     
     <string name="terms">약관</string>
     <string name="totalPrice">총 결제금액</string>

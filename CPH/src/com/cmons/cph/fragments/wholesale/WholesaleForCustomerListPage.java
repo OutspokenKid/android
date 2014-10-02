@@ -9,9 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Spannable;
 import android.text.SpannableStringBuilder;
-import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
@@ -38,6 +36,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
@@ -306,7 +305,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(209);
+		rp.width = ResizeUtils.getSpecificLength(254);
 		rp.height = ResizeUtils.getSpecificLength(62);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
@@ -424,28 +423,21 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		tvPhone.setText("연락처 : " + customer.getPhone_number());
 		
 		tvAddress.setText(null);
-		SpannableStringBuilder sp1 = new SpannableStringBuilder("주소 : ");
+		SpannableStringBuilder sp1 = new SpannableStringBuilder("매장주소 : " +
+				customer.getAddress());
 		tvAddress.append(sp1);
 
-		if(customer.getMall_url() == null) {
-			SpannableStringBuilder sp2 = new SpannableStringBuilder(
-					customer.getAddress());
-			sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-			tvAddress.append(sp2);
-			
-			tvCategory.setText("매장분류 : " + "오프라인");
+		if(StringUtils.isEmpty(customer.getMall_url())) {
+			tvCategory.setText("매장분류 : " + "오프라인매장");
+//			SpannableStringBuilder sp2 = new SpannableStringBuilder(
+//					customer.getAddress());
+//			sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//			tvAddress.append(sp2);
 		} else {
+			tvCategory.setText("매장분류 : " + "온라인쇼핑몰");
 			SpannableStringBuilder sp2 = new SpannableStringBuilder(
-					customer.getMall_url());
+					"\n\n" + customer.getMall_url());
 			tvAddress.append(sp2);
-			
-			tvCategory.setText("매장분류 : " + "온라인");
-		}
-		
-		switch (menuIndex) {
-		case 0:
-			btnConfirm.setBackgroundResource(R.drawable.sample_confirm_popup_btn);
-			break;
 		}
 		
 		SoftKeyboardUtils.hideKeyboard(mContext, popupRelative);

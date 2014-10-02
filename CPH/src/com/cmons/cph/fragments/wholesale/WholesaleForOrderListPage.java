@@ -291,26 +291,15 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 
 	public void cancelRequest(OrderSet orderSet) {
 		
-		String order_ids = null;
+		//http://cph.minsangk.com/wholesales/orders/set_status?order_ids[]=1&status=1
+		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
+				"?status=-1";
 		
 		int size = orderSet.getItems().length;
 		for(int i=0; i<size; i++) {
-			
-			if(order_ids == null) {
-				order_ids = "" + orderSet.getItems()[i].getId();
-			} else {
-				order_ids = "," + orderSet.getItems()[i].getId();
-			}
+			url += "&order_ids[]=" + orderSet.getItems()[i].getId();
 		}
 		
-		if(order_ids == null) {
-			order_ids = "";
-		}
-		
-		//http://cph.minsangk.com/wholesales/orders/set_status?order_ids[]=1&status=1
-		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
-				"?order_ids[]=" + order_ids +
-				"&status=-1";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
