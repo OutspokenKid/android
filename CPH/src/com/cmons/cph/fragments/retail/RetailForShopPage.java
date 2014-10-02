@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
-import android.widget.AbsListView.OnScrollListener;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
@@ -88,18 +87,6 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 
 	@Override
 	public void setListeners() {
-
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, 
-					int visibleItemCount, int totalItemCount) {
-			}
-		});
 		
 		titleBar.getBtnAdd().setOnClickListener(new OnClickListener() {
 
@@ -222,7 +209,7 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
-			} else if(pageIndex == 0 && size == 0) {
+			} else if(pageIndex == 1 && size == 0) {
 				BaseModel emptyModel1 = new BaseModel() {};
 				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel1);

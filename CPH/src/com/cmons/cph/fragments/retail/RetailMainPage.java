@@ -19,7 +19,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -43,6 +42,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.views.HeaderGridView;
 
 public class RetailMainPage extends CmonsFragmentForRetail {
@@ -52,6 +52,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 
 	private View cover;
 	private RelativeLayout noticeRelative;
+	private View read;
 	private Button btnClose;
 	private ListView listView;
 	private CphAdapter noticeAdapter;
@@ -101,7 +102,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		menuRelative = (RelativeLayout) mThisView.findViewById(R.id.retailMainPage_menuRelative);
 
 		menuButtons = new Button[9];
-		menuButtons[0] = (Button) mThisView.findViewById(R.id.retailMainPage_btnNotice);
+		menuButtons[0] = (Button) mThisView.findViewById(R.id.retailMainPage_btnSample);
 		menuButtons[1] = (Button) mThisView.findViewById(R.id.retailMainPage_btnCustomer);
 		menuButtons[2] = (Button) mThisView.findViewById(R.id.retailMainPage_btnSearch);
 		menuButtons[3] = (Button) mThisView.findViewById(R.id.retailMainPage_btnBasket);
@@ -113,6 +114,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		
 		cover = mThisView.findViewById(R.id.retailMainPage_cover);
 		noticeRelative = (RelativeLayout) mThisView.findViewById(R.id.retailMainPage_noticeRelative);
+		read = mThisView.findViewById(R.id.retailMainPage_read);
 		btnClose = (Button) mThisView.findViewById(R.id.retailMainPage_btnClose);
 		listView = (ListView) mThisView.findViewById(R.id.retailMainPage_listView);
 	}
@@ -197,23 +199,20 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			
 			menuButtons[6].setEnabled(false);
 		}
+		
+		boolean showNonReadNotification = SharedPrefsUtils.getBooleanFromPrefs(
+				CphConstants.PREFS_NOTIFICATION, "showNonReadNotification"); 
+
+		if(showNonReadNotification) {
+			read.setBackgroundResource(R.drawable.main_notice_checkbox_b);
+		} else {
+			read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
+		}
 	}
 
 	@Override
 	public void setListeners() {
 
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView arg0, int arg1) {
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem, 
-					int visibleItemCount, int totalItemCount) {
-			}
-		});
-		
 		titleBar.getMenuButton().setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -308,6 +307,32 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			}
 		});
 		
+		read.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				boolean showNonReadNotification = SharedPrefsUtils.getBooleanFromPrefs(
+						CphConstants.PREFS_NOTIFICATION, "showNonReadNotification"); 
+
+				//SharedPrefs의 값을 반대로 저장, 없었다면 true로 저장.
+				SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, 
+						"showNonReadNotification", 
+						!showNonReadNotification);
+				
+				//안읽음 알림만 보기였다면 체크 해제.
+				if(showNonReadNotification) {
+					read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
+					
+				//체크.
+				} else {
+					read.setBackgroundResource(R.drawable.main_notice_checkbox_b);
+				}
+				
+				downloadNotices();
+			}
+		});
+		
 		btnClose.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -365,11 +390,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 							switch(INDEX) {
 							
 							case 0:
-								if(noticeRelative.getVisibility() == View.VISIBLE) {
-									hideNoticeRelative();
-								} else {
-									showNoticeRelative();
-								}
+								mActivity.showPage(CphConstants.PAGE_RETAIL_SAMPLE, bundle);
 								break;
 							case 1:
 								mActivity.showPage(CphConstants.PAGE_RETAIL_CUSTOMER_LIST, bundle);
@@ -446,6 +467,13 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		rp.height = ResizeUtils.getSpecificLength(711);
 		rp.leftMargin = ResizeUtils.getSpecificLength(62);
 		rp.topMargin = ResizeUtils.getSpecificLength(58);
+
+		//read.
+		rp = (RelativeLayout.LayoutParams) read.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(250);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.leftMargin = ResizeUtils.getSpecificLength(34);
+		rp.topMargin = ResizeUtils.getSpecificLength(97);
 		
 		//btnClose.
 		rp = (RelativeLayout.LayoutParams) btnClose.getLayoutParams();
@@ -494,17 +522,18 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		notices.clear();
 		noticeAdapter.notifyDataSetChanged();
 		
+		//http://cph.minsangk.com/products?permission_type=retail&category_id=&sort=date-desc&wholesale_id=&num=10&page=1
 		url = CphConstants.BASE_API_URL + "products" +
-				"?retail_id=" + getRetail().getId();
+				"?permission_type=retail";
 		
 		if(categoryIndex != 0) {
 			url += "&category_id=" + categoryIndex;
 		}
 		
 		if(order == 0) {
-			url +="&order=date-desc";
+			url +="&sort=date-desc";
 		} else {
-			url +="&order=order-desc";
+			url +="&sort=order-desc";
 		}
 		
 		super.downloadInfo();
@@ -528,7 +557,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
-			} else if(pageIndex == 0 && size == 0) {
+			} else if(pageIndex == 1 && size == 0) {
 				BaseModel emptyModel1 = new BaseModel() {};
 				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel1);
@@ -569,7 +598,13 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	
 	public void downloadNotices() {
 		
-		url = CphConstants.BASE_API_URL + "notifications/mine";
+		url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
+
+		if(SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "showNonReadNotification")) {
+			url += "&filter=unread";
+		} else {
+			url += "&filter=all";
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -586,6 +621,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 					LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
+					notices.clear();
 					checkNewMessage();
 					
 					try {

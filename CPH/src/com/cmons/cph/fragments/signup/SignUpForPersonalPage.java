@@ -497,8 +497,8 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		try {
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					//Test.
-//					"?no_sms=0" +
-					"?no_sms=1" +
+					"?no_sms=0" +
+//					"?no_sms=1" +		//이걸로 하면 문자 안보냄.
 					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -521,9 +521,9 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 						if(objJSON.getInt("result") == 1) {
 
 							//Test.
-//							mActivity.showAlertDialog("휴대폰 번호", 
-//									getString(R.string.complete_checkPhone), "확인", null);
-							mActivity.showAlertDialog("인증번호", objJSON.getString("tempResponseKey"), "확인", null);
+							mActivity.showAlertDialog("휴대폰 번호", 
+									getString(R.string.complete_checkPhone), "확인", null);
+//							mActivity.showAlertDialog("인증번호", objJSON.getString("tempResponseKey"), "확인", null);	//이걸로 하면 팝업으로 보여줌.
 							
 							btnSendCertification.setVisibility(View.INVISIBLE);
 							btnCertify.setVisibility(View.VISIBLE);

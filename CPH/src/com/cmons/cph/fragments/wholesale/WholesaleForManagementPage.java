@@ -29,6 +29,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
@@ -172,17 +173,30 @@ public class WholesaleForManagementPage extends CmonsFragmentForWholesale {
 							"\n대표 성함 : " + getWholesale().getOwner_name() +
 							"\n매장 전화번호 : " + getWholesale().getPhone_number() +
 							"\n\n청평화 패션몰 앱이 없으신 분은 아래 링크를 눌러 앱을 설치해주세요.";
-					
+
 					final KakaoLink kakaoLink = KakaoLink.getKakaoLink(mContext);
+					
+					
 					final KakaoTalkLinkMessageBuilder kakaoTalkLinkMessageBuilder 
 							= kakaoLink.createKakaoTalkLinkMessageBuilder();
-					//720 440 => 360 220 => 180 110
-					final String linkContents = kakaoTalkLinkMessageBuilder
-						.addImage(Wholesale.profileImage, 180, 110)
-						.addText(shopInfoString)
-                    	.addAppButton("청평화 앱 설치주소")
-                    	.build();
-					kakaoLink.sendMessage(linkContents, mContext);
+					
+					if(!StringUtils.isEmpty(Wholesale.profileImage)) {
+						//720 440 => 360 220 => 180 110
+						final String linkContents = kakaoTalkLinkMessageBuilder
+							.addImage(Wholesale.profileImage, 180, 110)
+							.addText(shopInfoString)
+	                    	.addAppButton("market://details?id=com.cmons.cph")
+	                    	.build();
+						kakaoLink.sendMessage(linkContents, mContext);
+
+					} else {
+						//720 440 => 360 220 => 180 110
+						final String linkContents = kakaoTalkLinkMessageBuilder
+							.addText(shopInfoString)
+	                    	.addAppButton("market://details?id=com.cmons.cph")
+	                    	.build();
+						kakaoLink.sendMessage(linkContents, mContext);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

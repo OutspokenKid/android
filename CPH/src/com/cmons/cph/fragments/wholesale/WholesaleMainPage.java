@@ -46,6 +46,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleMainPage extends CmonsFragmentForWholesale {
@@ -70,6 +71,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 	private View cover;
 	private RelativeLayout noticeRelative;
+	private View read;
 	private Button btnClose;
 	private ListView listView;
 	
@@ -123,6 +125,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		
 		cover = mThisView.findViewById(R.id.wholesaleMainPage_cover);
 		noticeRelative = (RelativeLayout) mThisView.findViewById(R.id.wholesaleMainPage_noticeRelative);
+		read = mThisView.findViewById(R.id.wholesaleMainPage_read);
 		btnClose = (Button) mThisView.findViewById(R.id.wholesaleMainPage_btnClose);
 		listView = (ListView) mThisView.findViewById(R.id.wholesaleMainPage_listView);
 	}
@@ -186,6 +189,15 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			}
 			
 			btnStaff.setEnabled(false);
+		}
+		
+		boolean showNonReadNotification = SharedPrefsUtils.getBooleanFromPrefs(
+				CphConstants.PREFS_NOTIFICATION, "showNonReadNotification");
+		
+		if(showNonReadNotification) {
+			read.setBackgroundResource(R.drawable.main_notice_checkbox_b);
+		} else {
+			read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
 		}
 	}
 
@@ -303,6 +315,32 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			public void onClick(View view) {
 
 				hideNoticeRelative();
+			}
+		});
+	
+		read.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				boolean showNonReadNotification = SharedPrefsUtils.getBooleanFromPrefs(
+						CphConstants.PREFS_NOTIFICATION, "showNonReadNotification"); 
+
+				//SharedPrefs의 값을 반대로 저장, 없었다면 true로 저장.
+				SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, 
+						"showNonReadNotification", 
+						!showNonReadNotification);
+				
+				//안읽음 알림만 보기였다면 체크 해제.
+				if(showNonReadNotification) {
+					read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
+					
+				//체크.
+				} else {
+					read.setBackgroundResource(R.drawable.main_notice_checkbox_b);
+				}
+				
+				downloadInfo();
 			}
 		});
 		
@@ -490,6 +528,13 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		
+		//read.
+		rp = (RelativeLayout.LayoutParams) read.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(250);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.leftMargin = ResizeUtils.getSpecificLength(34);
+		rp.topMargin = ResizeUtils.getSpecificLength(101);
+		
 		//btnClose.
 		rp = (RelativeLayout.LayoutParams) btnClose.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(52);
@@ -531,6 +576,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 
+		models.clear();
 		checkNewMessage();
 		
 		try {
@@ -561,6 +607,12 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		
 		if(isDownloading || isLastList) {
 			return;
+		}
+		
+		if(SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "showNonReadNotification")) {
+			url += "&filter=unread";
+		} else {
+			url += "&filter=all";
 		}
 		
 		if(!isRefreshing) {

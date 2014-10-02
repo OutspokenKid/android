@@ -13,6 +13,7 @@ import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.classes.ViewWrapper;
+import com.cmons.cph.fragments.retail.RetailForCustomerListPage;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.model.BaseModel;
@@ -181,7 +182,7 @@ public class ViewWrapperForCustomer_retail extends ViewWrapper {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_cancelRequest);
-						ShopActivity.getInstance().getTopFragment().refreshPage();
+						refreshPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -219,7 +220,7 @@ public class ViewWrapperForCustomer_retail extends ViewWrapper {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_breakPartnerShip);
-						ShopActivity.getInstance().getTopFragment().refreshPage();
+						refreshPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -232,5 +233,11 @@ public class ViewWrapperForCustomer_retail extends ViewWrapper {
 				}
 			}
 		});
+	}
+	
+	public void refreshPage() {
+
+		int menuIndex = ((RetailForCustomerListPage)ShopActivity.getInstance().getTopFragment()).getMenuIndex(); 
+		((RetailForCustomerListPage)ShopActivity.getInstance().getTopFragment()).setMenu(menuIndex);
 	}
 }

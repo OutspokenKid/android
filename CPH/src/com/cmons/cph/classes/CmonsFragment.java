@@ -30,7 +30,7 @@ public abstract class CmonsFragment extends BaseFragment {
 	protected ImageView ivBg;
 	protected String title;
 	
-	protected int pageIndex = 0;
+	protected int pageIndex = 1;
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected CphAdapter adapter;
 	protected String url;
@@ -153,7 +153,7 @@ public abstract class CmonsFragment extends BaseFragment {
 						
 						isLastList = parseJSON(objJSON);
 						
-						if(isLastList && pageIndex > 1) {
+						if(isLastList && pageIndex > 2) {
 							ToastUtils.showToast(R.string.lastList);
 						}
 						
@@ -204,7 +204,7 @@ public abstract class CmonsFragment extends BaseFragment {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 0;
+			pageIndex = 1;
 			models.clear();
 			adapter.notifyDataSetChanged();
 		} catch (Exception e) {
@@ -228,7 +228,7 @@ public abstract class CmonsFragment extends BaseFragment {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 0;
+			pageIndex = 1;
 			models.clear();
 		} catch (Exception e) {
 			LogUtils.trace(e);

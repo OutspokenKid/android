@@ -78,4 +78,5 @@ public class CphConstants {
 	public static final int PAGE_RETAIL_SHOP = 115;
 	public static final int PAGE_RETAIL_ORDER_PRODUCT = 116;
 	public static final int PAGE_RETAIL_ORDER = 117;
+	public static final int PAGE_RETAIL_SAMPLE = 118;
 }

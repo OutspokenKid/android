@@ -25,6 +25,7 @@ import com.cmons.cph.fragments.retail.RetailForFavoriteShopPage;
 import com.cmons.cph.fragments.retail.RetailForManagementPage;
 import com.cmons.cph.fragments.retail.RetailForOrderPage;
 import com.cmons.cph.fragments.retail.RetailForOrderProductPage;
+import com.cmons.cph.fragments.retail.RetailForSampleListPage;
 import com.cmons.cph.fragments.retail.RetailForSearchPage;
 import com.cmons.cph.fragments.retail.RetailForShopPage;
 import com.cmons.cph.fragments.retail.RetailForWishListPage;
@@ -168,6 +169,9 @@ public class RetailActivity extends ShopActivity {
 			 
 		case CphConstants.PAGE_RETAIL_ORDER:
 			 return new RetailForOrderPage();
+			 
+		case CphConstants.PAGE_RETAIL_SAMPLE:
+			 return new RetailForSampleListPage();
 		}
 		
 		return null;
@@ -252,7 +256,7 @@ public class RetailActivity extends ShopActivity {
 			
 		//샘플 상태값 변경 (반납요청)
 		} else if(url.equals("retails/samples")) {
-			//Do nothing.
+			showPage(CphConstants.PAGE_RETAIL_SAMPLE, null);
 			
 		//직원 상태값 변경 (승인)
 		//직원 상태값 변경 (거절)

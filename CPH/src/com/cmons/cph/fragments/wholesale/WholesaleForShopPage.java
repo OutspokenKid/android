@@ -102,7 +102,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				mActivity.showPage(CphConstants.PAGE_WHOLESALE_WRITE, null);
 			}
 		});
-	
+		
 		headerView.getBtnCustomerType().setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -241,7 +241,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				BaseModel emptyModel = new BaseModel() {};
 				emptyModel.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel);
-			} else if(pageIndex == 0 && size == 0) {
+			} else if(pageIndex == 1 && size == 0) {
 				BaseModel emptyModel1 = new BaseModel() {};
 				emptyModel1.setItemCode(CphConstants.ITEM_PRODUCT);
 				models.add(emptyModel1);

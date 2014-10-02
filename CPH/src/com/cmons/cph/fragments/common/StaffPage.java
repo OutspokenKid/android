@@ -8,7 +8,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -75,7 +77,7 @@ public class StaffPage extends CmonsFragmentForShop {
 
 	@Override
 	public void setListeners() {
-
+		
 		btnRequest.setOnClickListener(new OnClickListener() {
 
 			@Override

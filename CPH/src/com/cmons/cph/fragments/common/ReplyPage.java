@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity;
@@ -147,7 +149,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 
 	@Override
 	public void setListeners() {
-
+		
 		icPrivate.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -345,7 +347,7 @@ public class ReplyPage extends CmonsFragmentForShop {
 				models.add(reply);
 			}
 			
-			if(pageIndex == 0 && size == 0) {
+			if(pageIndex == 1 && size == 0) {
 				tvEmpty.setVisibility(View.VISIBLE);
 			} else {
 				tvEmpty.setVisibility(View.INVISIBLE);

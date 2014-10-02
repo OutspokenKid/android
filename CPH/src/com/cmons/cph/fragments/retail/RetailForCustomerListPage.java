@@ -274,7 +274,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 			isRefreshing = true;
 			isDownloading = false;
 			isLastList = false;
-			pageIndex = 0;
+			pageIndex = 1;
 			models.clear();
 			adapter.notifyDataSetChanged();
 			
@@ -390,5 +390,10 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 				}
 			}
 		});
+	}
+
+	public int getMenuIndex() {
+		
+		return menuIndex;
 	}
 }

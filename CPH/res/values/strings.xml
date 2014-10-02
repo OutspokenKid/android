@@ -45,7 +45,7 @@
 	<string name="complete_changeSampleStatus2">반납요청을 했습니다</string>
 	<string name="complete_changeSampleStatus3">반납완료 상태로 변경했습니다</string>
 	<string name="complete_changeShopProfile">프로필 변경 완료</string>
-	<string name="complete_checkPhone">인증번호 전송되었습니다</string>
+	<string name="complete_checkPhone">인증번호가 전송되었습니다</string>
 	<string name="complete_deleteFavorite">즐겨찾기 삭제 완료</string>
 	<string name="complete_deleteOrder">주문내역을 삭제했습니다</string>
 	<string name="complete_deleteProduct">상품 삭제 완료</string>

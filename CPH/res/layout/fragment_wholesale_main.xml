@@ -210,8 +210,17 @@
         android:id="@+id/wholesaleMainPage_noticeRelative" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
+	    android:clickable="true"
 	    android:visibility="invisible"
 		android:background="@drawable/main_pop_up" >
+        
+        <View 
+            android:id="@+id/wholesaleMainPage_read" 
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentTop="true"
+	    	android:layout_alignParentLeft="true"
+	    	android:background="@drawable/main_notice_checkbox_a" />
         
         <Button 
             android:id="@+id/wholesaleMainPage_btnClose" 
