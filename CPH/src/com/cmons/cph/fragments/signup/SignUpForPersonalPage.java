@@ -494,6 +494,42 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		
 		phone_number = etPhone.getText().toString();
 		
+		//http://cph.minsangk.com/users/check/phone_number?phone_number=0123
+		String url = CphConstants.BASE_API_URL + "users/check/phone_number" +
+				"?phone_number=" + phone_number;
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("SignUpForPersonalPage.checkPhone.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("SignUpForPersonalPage.checkPhone.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 101) {
+						sendCertification();
+					} else {
+						ToastUtils.showToast(R.string.duplicatedPhoneNumber);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void sendCertification() {
+		
 		try {
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					//Test.

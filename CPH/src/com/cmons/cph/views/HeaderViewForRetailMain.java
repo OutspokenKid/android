@@ -45,6 +45,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 	private PagerAdapterForWholesale pagerAdapter;
 	private boolean needPlay;
 	private boolean isPlaying;
+	private boolean needWait;
 	
 	private TextView tvPhoneNumber;
 	private View phoneNumberIcon;
@@ -408,6 +409,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			@Override
 			public void onPageSelected(final int position) {
 
+				needWait = true;
+				
 				tvPhoneNumber.setText("010-" + wholesales.get(position).getPhone_number());
 				tvLocation.setText("청평화몰 " + wholesales.get(position).getLocation());
 				tvHit.setText(wholesales.get(position).getToday_visited_cnt() + 
@@ -452,6 +455,10 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 				if(!needPlay) {
 					isPlaying = false;
+					return;
+				} else if(needWait) {
+					needWait = false;
+					playPager();
 					return;
 				}
 				

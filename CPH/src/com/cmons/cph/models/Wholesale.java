@@ -5,6 +5,7 @@ import java.io.Serializable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.cmons.cph.ShopActivity;
 import com.outspoken_kid.utils.LogUtils;
 
 public class Wholesale extends Shop implements Serializable {
@@ -36,10 +37,16 @@ public class Wholesale extends Shop implements Serializable {
 			}
 			if (objJSON.has("rep_image_url")) {
 				rep_image_url = objJSON.getString("rep_image_url");
-				
-				if(profileImage == null) {
+			}
+			
+			try {
+				if(getId() == ShopActivity.getInstance().user.getWholesale_id()) {
 					profileImage = rep_image_url;
 				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
 			}
 
 			if (objJSON.has("customers_cnt")) {

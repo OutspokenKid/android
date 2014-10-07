@@ -64,6 +64,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	private TranslateAnimation taIn, taOut;
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
+	private boolean isMenuOpened;
 	
 	private String[] orders;
 	
@@ -208,6 +209,11 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		} else {
 			read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
 		}
+		
+		if(isMenuOpened) {
+			noticeRelative.setVisibility(View.VISIBLE);
+			cover.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -349,7 +355,13 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 					long id) {
 				
 				try {
-					mActivity.handleUri(Uri.parse(((Notification)notices.get(position)).getUri()));
+					String uriString = ((Notification)notices.get(position)).getUri();
+					
+					if(uriString.contains("cph://home")) {
+						hideNoticeRelative();
+					} else {
+						mActivity.handleUri(Uri.parse(uriString));
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {
@@ -357,7 +369,6 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				}
 				
 				requestReadNotification((Notification)notices.get(position));
-				hideNoticeRelative();
 				checkNewMessage();
 			}
 		});
@@ -714,6 +725,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 
 		if(!animating && noticeRelative.getVisibility() != View.VISIBLE) {
 			
+			isMenuOpened = true;
+			
 			noticeRelative.setVisibility(View.VISIBLE);
 			cover.setVisibility(View.VISIBLE);
 			
@@ -725,6 +738,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	public void hideNoticeRelative() {
 
 		if(!animating && noticeRelative.getVisibility() == View.VISIBLE) {
+			
+			isMenuOpened = false;
 			
 			noticeRelative.setVisibility(View.INVISIBLE);
 			cover.setVisibility(View.INVISIBLE);

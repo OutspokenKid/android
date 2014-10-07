@@ -182,7 +182,8 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 	public void downloadInfo() {
 
 		url = CphConstants.BASE_API_URL + "products" +
-				"?wholesale_id=" + wholesale.getId();
+				"?wholesale_id=" + wholesale.getId() +
+				"&permission_type=all";
 				
 		if(categoryIndex != 0) {
 			url += "&category_id=" + categoryIndex;

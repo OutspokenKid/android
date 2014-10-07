@@ -69,6 +69,7 @@
     <string name="currentPw">현재 비밀번호</string>
     
     <string name="disableSoldout">* 재고가 없는 상품은 체크를 해제해주세요.</string>
+    <string name="duplicatedPhoneNumber">이미 가입된 번호입니다</string>
     
     <string name="employee_designer">디자이너</string>
     <string name="employee_md">MD</string>
@@ -240,7 +241,7 @@
     <string name="totalPrice">총 결제금액</string>
 
     <string name="wannaSignOut">로그아웃 하시겠습니까?</string>
-    <string name="wannaWithdraw">회원 탈퇴하시겠습니까?</string>
+    <string name="wannaWithdraw">회원 탈퇴 하시겠습니까?\n(대표가 탈퇴할 경우 모든 매장정보가 삭제되며 직원은 탈퇴처리됩니다.)</string>
     <string name="wholesale">도매</string>
     <string name="withdraw">회원탈퇴</string>
     <string name="wrongAgentName">사입자 이름을 입력해주세요</string>

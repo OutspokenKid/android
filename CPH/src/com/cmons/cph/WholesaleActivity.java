@@ -182,16 +182,16 @@ public class WholesaleActivity extends ShopActivity {
 			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
 			
 		//상품 상태값 변경 (입금완료)
-//		} else if(url.contains("retails/orders")) {
-//			Bundle bundle = new Bundle();
-//			bundle.putInt("menuIndex", 0);
-//			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
+		} else if(url.contains("retails/orders")) {
+			Bundle bundle = new Bundle();
+			bundle.putInt("menuIndex", 0);
+			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
 		
 		//상품 상태값 변경 (입금완료)
-//		} else if(url.contains("retails/orders")) {
-//			Bundle bundle = new Bundle();
-//			bundle.putInt("menuIndex", 0);
-//			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
+		} else if(url.contains("retails/orders")) {
+			Bundle bundle = new Bundle();
+			bundle.putInt("menuIndex", 0);
+			showPage(CphConstants.PAGE_WHOLESALE_ORDER_LIST, bundle);
 			
 			//products/replies
 

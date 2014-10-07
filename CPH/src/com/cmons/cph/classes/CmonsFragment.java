@@ -148,6 +148,10 @@ public abstract class CmonsFragment extends BaseFragment {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
+						if(!url.equals(CmonsFragment.this.url)) {
+							return;
+						}
+						
 						LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						

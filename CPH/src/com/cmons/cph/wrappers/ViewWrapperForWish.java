@@ -66,7 +66,8 @@ public class ViewWrapperForWish extends ViewWrapper {
 						wish.getColor() + "/" + 
 						wish.getAmount() + "개)");
 				
-				tvPrice.setText(StringUtils.getFormattedNumber(wish.getProduct_price()) + "원");
+				tvPrice.setText(StringUtils.getFormattedNumber(
+						wish.getProduct_price() * wish.getAmount()) + "원");
 			} else {
 				setUnusableView();
 			}

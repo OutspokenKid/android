@@ -70,7 +70,7 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	@Override
 	public void createPage() {
 
-		customerTypes = new String[]{"전체", "거래처공개"};
+		customerTypes = new String[]{"전체", "모두공개", "거래처공개"};
 		orders = new String[]{"최신순", "판매량순"};
 		
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
@@ -199,6 +199,8 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				
 		if(customerType == 0) {
 			url += "&permission_type=all";
+		} else if(customerType == 1) {
+			url += "&permission_type=public";
 		} else {
 			url += "&permission_type=private";
 		}

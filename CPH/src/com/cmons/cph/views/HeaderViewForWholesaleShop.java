@@ -369,7 +369,10 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 			@Override
 			public void onClick(View view) {
 
-				if(wholesale != null) {
+				//도매 대표, 해당 도매의 대표.
+				if(wholesale != null 
+						&& ShopActivity.getInstance().user.getRole() == 100
+						&& ShopActivity.getInstance().user.getWholesale_id() == wholesale.getId()) {
 					ShopActivity.getInstance().showPage(CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE, null);
 				}
 			}

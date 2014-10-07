@@ -77,6 +77,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
+	private boolean isMenuOpened;
 	
 	private ArrayList<Product> products = new ArrayList<Product>();
 	private PagerAdapterForProducts pagerAdapter;
@@ -198,6 +199,11 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			read.setBackgroundResource(R.drawable.main_notice_checkbox_b);
 		} else {
 			read.setBackgroundResource(R.drawable.main_notice_checkbox_a);
+		}
+		
+		if(isMenuOpened) {
+			noticeRelative.setVisibility(View.VISIBLE);
+			cover.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -360,7 +366,13 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					long id) {
 
 				try {
-					mActivity.handleUri(Uri.parse(((Notification)models.get(position)).getUri()));
+					String uriString = ((Notification)models.get(position)).getUri();
+					
+					if(uriString.contains("cph://home")) {
+						hideNoticeRelative();
+					} else {
+						mActivity.handleUri(Uri.parse(uriString));
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {
@@ -368,7 +380,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				}
 				
 				requestReadNotification((Notification)models.get(position));
-				hideNoticeRelative();
 				checkNewMessage();
 			}
 		});
@@ -602,12 +613,12 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 		
-		//http://cph.minsangk.com/notifications/mine
-		url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
-		
 		if(isDownloading || isLastList) {
 			return;
 		}
+		
+		//http://cph.minsangk.com/notifications/mine
+		url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
 		
 		if(SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "showNonReadNotification")) {
 			url += "&filter=unread";
@@ -787,6 +798,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 
 		if(!animating && noticeRelative.getVisibility() != View.VISIBLE) {
 			
+			isMenuOpened = true;
+			
 			refreshPage();
 			
 			noticeRelative.setVisibility(View.VISIBLE);
@@ -800,6 +813,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	public void hideNoticeRelative() {
 
 		if(!animating && noticeRelative.getVisibility() == View.VISIBLE) {
+			
+			isMenuOpened = false;
 			
 			noticeRelative.setVisibility(View.INVISIBLE);
 			cover.setVisibility(View.INVISIBLE);

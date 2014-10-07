@@ -76,7 +76,7 @@ public class ViewWrapperForNotification extends ViewWrapper {
 				tvRegdate.setText(dateString);
 				
 				if(notification.getRead_at() != 0) {
-					tvNotice.setTextColor(Color.rgb(120, 120, 120));
+					tvNotice.setTextColor(Color.rgb(150, 150, 150));
 					icon.setBackgroundResource(R.drawable.mail_icon_b);
 				} else {
 					tvNotice.setTextColor(Color.BLACK);
