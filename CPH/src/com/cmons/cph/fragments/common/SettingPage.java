@@ -26,6 +26,7 @@ public class SettingPage extends CmonsFragmentForShop {
 	private Button btnInfo;
 	private Button btnNotice;
 	private Button btnSuggest;
+	private Button btnFont;
 	private Button btnNotification;
 	private Button btnWithdraw;
 	private Button btnSignout;
@@ -39,6 +40,7 @@ public class SettingPage extends CmonsFragmentForShop {
 		btnInfo = (Button) mThisView.findViewById(R.id.settingPage_btnInfo);
 		btnNotice = (Button) mThisView.findViewById(R.id.settingPage_btnNotice);
 		btnSuggest = (Button) mThisView.findViewById(R.id.settingPage_btnSuggest);
+		btnFont = (Button) mThisView.findViewById(R.id.settingPage_btnFont);
 		btnNotification = (Button) mThisView.findViewById(R.id.settingPage_btnNotification);
 		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
 		btnSignout = (Button) mThisView.findViewById(R.id.settingPage_btnSignout);
@@ -54,6 +56,8 @@ public class SettingPage extends CmonsFragmentForShop {
 	public void createPage() {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
+		
+		setFontButton();
 	}
 
 	@Override
@@ -79,15 +83,6 @@ public class SettingPage extends CmonsFragmentForShop {
 				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
 			}
 		});
-		
-		btnNotification.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTIFICATION_SETTING, null);
-			}
-		});
 	
 		btnSuggest.setOnClickListener(new OnClickListener() {
 
@@ -97,22 +92,22 @@ public class SettingPage extends CmonsFragmentForShop {
 				IntentUtils.sendEmail(mContext, getString(R.string.suggestMail));
 			}
 		});
-		
-		btnSignout.setOnClickListener(new OnClickListener() {
+
+		btnFont.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showAlertDialog(R.string.signOut, R.string.wannaSignOut, 
-						R.string.confirm, R.string.cancel, 
-						new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
+				changeFontSetting();
+			}
+		});
+		
+		btnNotification.setOnClickListener(new OnClickListener() {
 
-						signOut();
-					}
-				}, null);
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(CphConstants.PAGE_COMMON_NOTIFICATION_SETTING, null);
 			}
 		});
 		
@@ -133,6 +128,24 @@ public class SettingPage extends CmonsFragmentForShop {
 				}, null);
 			}
 		});
+		
+		btnSignout.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.signOut, R.string.wannaSignOut, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						mActivity.signOut();
+					}
+				}, null);
+			}
+		});
 	}
 
 	@Override
@@ -147,24 +160,29 @@ public class SettingPage extends CmonsFragmentForShop {
 		//btnNotice.
 		rp = (RelativeLayout.LayoutParams) btnNotice.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;
-		rp.height = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getScreenWidth()/4;
 		
 		//btnSuggest.
 		rp = (RelativeLayout.LayoutParams) btnSuggest.getLayoutParams();
+		rp.height = ResizeUtils.getScreenWidth()/4;
+
+		//btnFont.
+		rp = (RelativeLayout.LayoutParams) btnFont.getLayoutParams();
+		rp.width = ResizeUtils.getScreenWidth()/2;
 		rp.height = ResizeUtils.getScreenWidth()/4;
 		
 		//btnNotification.
 		rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
 		rp.height = ResizeUtils.getScreenWidth()/4;
-		
-		//btnSignout.
-		rp = (RelativeLayout.LayoutParams) btnSignout.getLayoutParams();
+
+		//btnWithdraw.
+		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;
 		rp.height = ResizeUtils.getScreenWidth()/4;
 		
-		//btnWithdraw.
-		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
-		rp.height = ResizeUtils.getScreenWidth()/4;	
+		//btnSignout.
+		rp = (RelativeLayout.LayoutParams) btnSignout.getLayoutParams();
+		rp.height = ResizeUtils.getScreenWidth()/4;
 	}
 
 	@Override
@@ -199,36 +217,23 @@ public class SettingPage extends CmonsFragmentForShop {
 
 //////////////////// Custom methods.
 	
-	public void signOut() {
-
-		url = CphConstants.BASE_API_URL + "users/logout";
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
-
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
-					
-					mActivity.launchSignInActivity();
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-		});
+	public void changeFontSetting() {
+		
+		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
+		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_BIG_FONT, "bigfont", !bigFont);
+		
+		setFontButton();
+	}
+	
+	public void setFontButton() {
+		
+		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
+		
+		if(bigFont) {
+			btnFont.setBackgroundResource(R.drawable.setting_big_btn_a);
+		} else {
+			btnFont.setBackgroundResource(R.drawable.setting_big_btn_b);
+		}
 	}
 	
 	public void withdraw() {

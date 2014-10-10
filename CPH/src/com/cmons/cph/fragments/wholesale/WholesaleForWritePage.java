@@ -2,11 +2,17 @@ package com.cmons.cph.fragments.wholesale;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -51,6 +57,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 	private static final int MODE_COLOR = 0;
 	private static final int MODE_SIZE = 1;
+	private static final int MODE_MIXTURE = 2;
 	
 	private static String[] selectedImageUrls = new String[3];
 	private static OnAfterUploadImage onAfterUploadImage;
@@ -72,7 +79,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
     private TextView tvSize;
     private Button btnSize;
     private TextView tvMixtureRate;
-    private EditText etMixtureRate;
+    private Button btnMixtureRate;
     private TextView tvDescription;
     private EditText etDescription;
     private TextView tvPublic;
@@ -88,6 +95,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
     private ListView listView;
     private ChoiceAdapter colorAdapter;
     private ChoiceAdapter sizeAdapter;
+    private ChoiceAdapter mixtureAdapter;
 
     private Product product;
     private boolean isPublic;
@@ -96,6 +104,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 	private ArrayList<Item> colorItems;
 	private ArrayList<Item> sizeItems;
+	private ArrayList<Item> mixtureItems;
 	private int mode;
 	
 	private boolean uploading;
@@ -195,7 +204,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		tvSize = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvSize);
 		btnSize = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnSize);
 		tvMixtureRate = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvMixtureRate);
-		etMixtureRate = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etMixtureRate);
+		btnMixtureRate = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnMixtureRate);
 		tvDescription = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvDescription);
 		etDescription = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etDescription);
 		tvPublic = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvPublic);
@@ -219,47 +228,19 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		}
 		
 		colorItems = new ArrayList<Item>();
-		colorItems.add(new Item("블랙"));
-		colorItems.add(new Item("화이트"));
-		colorItems.add(new Item("아이보리"));
-		colorItems.add(new Item("그레이"));
-		colorItems.add(new Item("블루"));
-		colorItems.add(new Item("빨간색"));
-		colorItems.add(new Item("주황색"));
-		colorItems.add(new Item("노랑색"));
-		colorItems.add(new Item("카키색"));
-		colorItems.add(new Item("곤색"));
-		colorItems.add(new Item("연두색"));
-		colorItems.add(new Item("하늘색"));
-		colorItems.add(new Item("보라색"));
+		loadBestHitItems(MODE_COLOR);
+		loadBasicItems(MODE_COLOR);
 		colorAdapter = new ChoiceAdapter(colorItems);
 		
 		sizeItems = new ArrayList<Item>();
-		sizeItems.add(new Item("XS"));
-		sizeItems.add(new Item("S"));
-		sizeItems.add(new Item("M"));
-		sizeItems.add(new Item("L"));
-		sizeItems.add(new Item("XL"));
-		sizeItems.add(new Item("XXL"));
-		sizeItems.add(new Item("44"));
-		sizeItems.add(new Item("55"));
-		sizeItems.add(new Item("66"));
-		sizeItems.add(new Item("77"));
-		sizeItems.add(new Item("88"));
-		sizeItems.add(new Item("95"));
-		sizeItems.add(new Item("100"));
-		sizeItems.add(new Item("105"));
-		sizeItems.add(new Item("110"));
-		sizeItems.add(new Item("210"));
-		sizeItems.add(new Item("220"));
-		sizeItems.add(new Item("230"));
-		sizeItems.add(new Item("240"));
-		sizeItems.add(new Item("250"));
-		sizeItems.add(new Item("260"));
-		sizeItems.add(new Item("270"));
-		sizeItems.add(new Item("280"));
-		sizeItems.add(new Item("290"));
+		loadBestHitItems(MODE_SIZE);
+		loadBasicItems(MODE_SIZE);
 		sizeAdapter = new ChoiceAdapter(sizeItems);
+		
+		mixtureItems = new ArrayList<Item>();
+		loadBestHitItems(MODE_MIXTURE);
+		
+		mixtureAdapter = new ChoiceAdapter(mixtureItems);
 		
 		if(product != null) {
 			title = "상품 수정";
@@ -270,51 +251,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			//needPush 설정.
 			needPush = product.getNeed_push() == 1;
 			
-			boolean duplicated = false;
-			
 			//추가 사이즈 설정.
-			String[] sizeStrings = product.getSizes().split("\\|");
-
-			int size = sizeStrings.length;
-			for(int i=0; i<size; i++) {
-				
-				duplicated = false;
-				
-				for(Item item : sizeItems) {
-					if(sizeStrings[i].equals(item.text)) {
-						duplicated = true;
-						item.selected = true;
-					}
-				}
-				
-				if(!duplicated) {
-					Item item = new Item(sizeStrings[i]);
-					item.selected = true;
-					sizeItems.add(item);
-				}
-			}
+			loadAddedItems(MODE_SIZE);
 			
 			//추가 색상 설정.
-			String[] colorStrings = product.getColors().split("\\|");
-
-			size = colorStrings.length;
-			for(int i=0; i<size; i++) {
-				
-				duplicated = false;
-				
-				for(Item item : colorItems) {
-					if(colorStrings[i].equals(item.text)) {
-						duplicated = true;
-						item.selected = true;
-					}
-				}
-				
-				if(!duplicated) {
-					Item item = new Item(colorStrings[i]);
-					item.selected = true;
-					colorItems.add(item);
-				}
-			}
+			loadAddedItems(MODE_COLOR);
+			
+			//추가 혼용률 설정.
+			loadAddedItems(MODE_MIXTURE);
 			
 		} else {
 			title = "상품 등록";
@@ -378,7 +322,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			
 			btnColor.setText(product.getColors().replace("|", "/"));
 			btnSize.setText(product.getSizes().replace("|", "/"));
-			etMixtureRate.setText(product.getMixture_rate());
+			btnMixtureRate.setText(product.getMixture_rate());
 			etDescription.setText(product.getDesc());
 			
 		//등록.
@@ -398,45 +342,42 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			public void onClick(View arg0) {
 
 				if(relativePopup.getVisibility() == View.VISIBLE) {
+
+					String printString = null;
+					ArrayList<Item> targetItems = null;
+					Button targetButton = null;
 					
-					if(mode == MODE_COLOR) {
-						String colorString = null;
-
-						int size = colorItems.size();
-						for(int i=0; i<size; i++) {
-
-							if(colorItems.get(i).selected) {
-								if(colorString == null) {
-									colorString = "";
-								} else {
-									colorString += "/";
-								}
-								
-								colorString += colorItems.get(i).text;
-							}
-						}
+					switch(mode) {
+					
+					case MODE_COLOR:
+						targetItems = colorItems;
+						targetButton = btnColor;
+						break;
 						
-						btnColor.setText(colorString);
-					} else {
-						String sizeString = null;
-
-						int size = sizeItems.size();
-						for(int i=0; i<size; i++) {
-
-							if(sizeItems.get(i).selected) {
-								if(sizeString == null) {
-									sizeString = "";
-								} else {
-									sizeString += "/";
-								}
-								
-								sizeString += sizeItems.get(i).text;
-							}
-						}
+					case MODE_SIZE:
+						targetItems = sizeItems;
+						targetButton = btnSize;
+						break;
 						
-						btnSize.setText(sizeString);
+					case MODE_MIXTURE:
+						targetItems = mixtureItems;
+						targetButton = btnMixtureRate;
+						break;
 					}
 					
+					ArrayList<Item> uniqueSelectedItems = getUniqueSelectedItemList(targetItems);
+					for(Item item : uniqueSelectedItems) {
+						
+						if(printString == null) {
+							printString = "";
+						} else {
+							printString += " / ";
+						}
+						
+						printString += item.text;
+					}
+					
+					targetButton.setText(printString);
 					hidePopup();
 					return;
 				}
@@ -465,6 +406,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
+				//색상.
 				int selectedCount = 0;
 				int size = colorItems.size();
 				for(int i=0; i<size; i++) {
@@ -473,12 +415,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					}
 				}
 				
-				//색상.
 				if(selectedCount == 0) {
 					ToastUtils.showToast(R.string.wrongProductColor);
 					return;
 				}
 				
+				//사이즈.
 				selectedCount = 0;
 				size = sizeItems.size();
 				for(int i=0; i<size; i++) {
@@ -487,17 +429,25 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					}
 				}
 				
-				//사이즈.
 				if(selectedCount == 0) {
 					ToastUtils.showToast(R.string.wrongProductSize);
 					return;
 				}
 				
 				//혼용률.
-				if(etMixtureRate.getText() == null) {
+				selectedCount = 0;
+				size = mixtureItems.size();
+				for(int i=0; i<size; i++) {
+					if(mixtureItems.get(i).selected) {
+						selectedCount++;
+					}
+				}
+				
+				if(selectedCount == 0) {
 					ToastUtils.showToast(R.string.wrongProductMixtureRate);
 					return;
 				}
+				
 				
 				//상품 설명.
 				if(etDescription.getText() == null) {
@@ -625,6 +575,19 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			}
 		});
 		
+		btnMixtureRate.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mode = MODE_MIXTURE;
+				listView.setAdapter(mixtureAdapter);
+				mixtureAdapter.notifyDataSetChanged();
+				showPopup();
+				ToastUtils.showToast(R.string.wrongProductMixtureRate);
+			}
+		});
+		
 		btnPublic1.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -693,11 +656,19 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
+				String item = etAdd.getText().toString();
+				
 				if(mode == MODE_COLOR) {
-					colorAdapter.addItem(etAdd.getText().toString());
+					colorAdapter.addItem(item);
+					
+				} else if(mode == MODE_SIZE){
+					sizeAdapter.addItem(item);
+					
 				} else {
-					sizeAdapter.addItem(etAdd.getText().toString());
+					mixtureAdapter.addItem(item);
 				}
+				
+				etAdd.setText(null);
 			}
 		});
 		
@@ -707,10 +678,28 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 
-				if(mode == MODE_COLOR) {
-					colorAdapter.selectItem(arg2);
-				} else {
-					sizeAdapter.selectItem(arg2);
+				switch(mode) {
+				
+				case MODE_COLOR:
+					
+					if(!colorItems.get(arg2).unusable) {
+						colorAdapter.selectItem(arg2);
+					}
+					break;
+					
+				case MODE_SIZE:
+
+					if (!sizeItems.get(arg2).unusable) {
+						sizeAdapter.selectItem(arg2);
+					}
+					break;
+
+				case MODE_MIXTURE:
+
+					if (!mixtureItems.get(arg2).unusable) {
+						mixtureAdapter.selectItem(arg2);
+					}
+					break;
 				}
 			}
 		});
@@ -832,10 +821,9 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		tvMixtureRate.setPadding(padding, 0, 0, padding);
 		
 		//etMixtureRate.
-		rp = (RelativeLayout.LayoutParams) etMixtureRate.getLayoutParams();
-		etMixtureRate.setMinHeight(editTextHeight);
-		FontUtils.setFontAndHintSize(etMixtureRate, 30, 24);
-		etMixtureRate.setPadding(padding, 0, padding, 0);
+		rp = (RelativeLayout.LayoutParams) btnMixtureRate.getLayoutParams();
+		btnMixtureRate.setMinHeight(editTextHeight);
+		FontUtils.setFontSize(btnMixtureRate, 30);
 		
 		//tvDescription.
 		rp = (RelativeLayout.LayoutParams) tvDescription.getLayoutParams();
@@ -1008,26 +996,41 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					"&product[wholesale_id]=" + mActivity.user.getWholesale_id() +
 					"&product[name]=" + URLEncoder.encode(etName.getText().toString(), "utf-8") +
 					"&product[price]=" + etPrice.getText().toString() +
-					"&product[mixture_rate]=" + URLEncoder.encode(etMixtureRate.getText().toString(), "utf-8") + 
+//					"&product[mixture_rate]=" + URLEncoder.encode(btnMixtureRate.getText().toString(), "utf-8") + 
 					"&product[desc]=" + URLEncoder.encode(etDescription.getText().toString(), "utf-8") +
 					"&product[need_push]=" + (needPush? 1 : 0) +
 					"&product[customers_only]=" + (isPublic? 0 : 1);
+
+			ArrayList<Item> uniqueSelectedItemList = null;
 			
 			//색상 추가.
-			for(Item item : colorItems) {
-				
-				if(item.selected) {
-					url += "&product[colors][]=" + item.text;
-				}
+			uniqueSelectedItemList = getUniqueSelectedItemList(colorItems);
+			for(Item item : uniqueSelectedItemList) {
+				url += "&product[colors][]=" + item.text;
+				saveItemToPrefs(MODE_COLOR, item.text);
 			}
 			
 			//사이즈 추가.
-			for(Item item : sizeItems) {
-				
-				if(item.selected) {
-					url += "&product[sizes][]=" + item.text;
-				}
+			uniqueSelectedItemList = getUniqueSelectedItemList(sizeItems);
+			for(Item item : uniqueSelectedItemList) {
+				url += "&product[sizes][]=" + item.text;
+				saveItemToPrefs(MODE_SIZE, item.text);
 			}
+			
+			//혼용률 추가.
+			String mixtureString = null;
+			uniqueSelectedItemList = getUniqueSelectedItemList(mixtureItems);
+			for(Item item : uniqueSelectedItemList) {
+
+				if(mixtureString != null) {
+					mixtureString += " / ";
+				}
+				
+				mixtureString += item.text;
+				saveItemToPrefs(MODE_MIXTURE, item.text);
+			}
+			
+			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
 			
 			//이미지 주소 추가.
 			for(String imageUrl : selectedImageUrls) {
@@ -1119,26 +1122,43 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					"&product[wholesale_id]=" + mActivity.user.getWholesale_id() +
 					"&product[name]=" + URLEncoder.encode(etName.getText().toString(), "utf-8") +
 					"&product[price]=" + etPrice.getText().toString() +
-					"&product[mixture_rate]=" + URLEncoder.encode(etMixtureRate.getText().toString(), "utf-8") + 
+//					"&product[mixture_rate]=" + URLEncoder.encode(etMixtureRate.getText().toString(), "utf-8") + 
 					"&product[desc]=" + URLEncoder.encode(etDescription.getText().toString(), "utf-8") +
 					"&product[need_push]=" + (needPush? 1 : 0) +
 					"&product[customers_only]=" + (isPublic? 0 : 1);
 			
+			ArrayList<Item> uniqueSelectedItemList = null;
+			
 			//색상 추가.
-			for(Item item : colorItems) {
-				
-				if(item.selected) {
-					url += "&product[colors][]=" + item.text;
-				}
+			uniqueSelectedItemList = getUniqueSelectedItemList(colorItems);
+			for(Item item : uniqueSelectedItemList) {
+				url += "&product[colors][]=" + item.text;
+				saveItemToPrefs(MODE_COLOR, item.text);
 			}
 			
 			//사이즈 추가.
-			for(Item item : sizeItems) {
-				
-				if(item.selected) {
-					url += "&product[sizes][]=" + item.text;
-				}
+			uniqueSelectedItemList = getUniqueSelectedItemList(sizeItems);
+			for(Item item : uniqueSelectedItemList) {
+				url += "&product[sizes][]=" + item.text;
+				saveItemToPrefs(MODE_SIZE, item.text);
 			}
+			
+			//혼용률 추가.
+			String mixtureString = null;
+			uniqueSelectedItemList = getUniqueSelectedItemList(mixtureItems);
+			for(Item item : uniqueSelectedItemList) {
+
+				if(mixtureString != null) {
+					mixtureString += " / ";
+				}
+				
+				mixtureString += item.text;
+				saveItemToPrefs(MODE_MIXTURE, item.text);
+			}
+			
+			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
+			
+			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
 			
 			//이미지 주소 추가.
 			for(String imageUrl : selectedImageUrls) {
@@ -1247,6 +1267,226 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public void loadBestHitItems(int mode) {
+
+		ArrayList<Item> targetItems = null;
+		int targetTitleResId = 0;
+
+		switch(mode) {
+
+		case MODE_COLOR:
+			targetItems = colorItems;
+			targetTitleResId = R.string.bestHitColor;
+			break;
+			
+		case MODE_SIZE:
+			targetItems = sizeItems;
+			targetTitleResId = R.string.bestHitSize;
+			break;
+			
+		case MODE_MIXTURE:
+			targetItems = mixtureItems;
+			targetTitleResId = R.string.bestHitMixture;
+			break;
+		}
+		
+		SharedPreferences prefs = mContext.getSharedPreferences(
+				CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+		
+		Map<String, Integer> map = (Map<String, Integer>)prefs.getAll();
+
+		if(map.size() != 0) {
+			String printString = "================ mode : " + mode;
+
+			for(String key : map.keySet()) {
+				printString += "\n" + key + " : " + map.get(key);
+				targetItems.add(new Item(key, map.get(key)));
+			}
+			
+			LogUtils.log(printString);
+			
+			Comparator<Item> compare = new Comparator<Item>() {
+				
+				@Override
+				public int compare(Item lhs, Item rhs) {
+					
+					//lhs > rhs로 하면 오름차순, 반대로 하면 내림차순.
+					return (lhs.count < rhs.count? 1 : -1);
+				}
+			};
+			
+			Collections.sort(targetItems, compare);
+
+			while(targetItems.size() > 10) {
+				targetItems.remove(targetItems.size() - 1);
+			}
+			
+			Item titleItem = new Item(getString(targetTitleResId));
+			titleItem.unusable = true;
+			targetItems.add(0, titleItem);
+			
+			Item lineItem = new Item("*******");
+			lineItem.unusable = true;
+			targetItems.add(lineItem);
+		}
+	}
+	
+	public void loadBasicItems(int mode) {
+		
+		switch(mode) {
+		
+		case MODE_COLOR:
+			colorItems.add(new Item("블랙"));
+			colorItems.add(new Item("화이트"));
+			colorItems.add(new Item("아이보리"));
+			colorItems.add(new Item("그레이"));
+			colorItems.add(new Item("블루"));
+			colorItems.add(new Item("빨간색"));
+			colorItems.add(new Item("주황색"));
+			colorItems.add(new Item("노랑색"));
+			colorItems.add(new Item("카키색"));
+			colorItems.add(new Item("곤색"));
+			colorItems.add(new Item("연두색"));
+			colorItems.add(new Item("하늘색"));
+			colorItems.add(new Item("보라색"));
+			break;
+			
+		case MODE_SIZE:
+			sizeItems.add(new Item("XS"));
+			sizeItems.add(new Item("S"));
+			sizeItems.add(new Item("M"));
+			sizeItems.add(new Item("L"));
+			sizeItems.add(new Item("XL"));
+			sizeItems.add(new Item("XXL"));
+			sizeItems.add(new Item("44"));
+			sizeItems.add(new Item("55"));
+			sizeItems.add(new Item("66"));
+			sizeItems.add(new Item("77"));
+			sizeItems.add(new Item("88"));
+			sizeItems.add(new Item("95"));
+			sizeItems.add(new Item("100"));
+			sizeItems.add(new Item("105"));
+			sizeItems.add(new Item("110"));
+			sizeItems.add(new Item("210"));
+			sizeItems.add(new Item("220"));
+			sizeItems.add(new Item("230"));
+			sizeItems.add(new Item("240"));
+			sizeItems.add(new Item("250"));
+			sizeItems.add(new Item("260"));
+			sizeItems.add(new Item("270"));
+			sizeItems.add(new Item("280"));
+			sizeItems.add(new Item("290"));
+			break;
+			
+		case MODE_MIXTURE:
+			break;
+		}
+	}
+	
+	public void loadAddedItems(int mode) {
+	
+		int size = 0;
+		boolean duplicated = false;
+		String[] targetStrings = null;
+		ArrayList<Item> targetItems = null;
+		
+		switch(mode) {
+		
+		case MODE_COLOR:
+			targetStrings = product.getColors().split("\\|");
+			targetItems = colorItems;
+			break;
+			
+		case MODE_SIZE:
+			targetStrings = product.getSizes().split("\\|");
+			targetItems = sizeItems;
+			break;
+			
+		case MODE_MIXTURE:
+			targetStrings = product.getMixture_rate().split(" / ");
+			targetItems = mixtureItems;
+			break;
+		}
+		
+		size = targetStrings.length;
+		for(int i=0; i<size; i++) {
+			
+			duplicated = false;
+			
+			for(Item item : targetItems) {
+				if(targetStrings[i].equals(item.text)) {
+					duplicated = true;
+					item.selected = true;
+				}
+			}
+			
+			if(!duplicated) {
+				Item item = new Item(targetStrings[i]);
+				item.selected = true;
+				targetItems.add(item);
+			}
+		}
+	}
+	
+	public void saveItemToPrefs(int mode, String item) {
+		
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(
+					CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+			
+			int count = prefs.getInt(item, 0);
+			Editor ed = prefs.edit();
+			
+			if(prefs.contains(item)) {
+				ed.remove(item);
+			}
+			
+			ed.putInt(item, count + 1);
+			ed.commit();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public ArrayList<Item> getUniqueSelectedItemList(ArrayList<Item> items) {
+
+		ArrayList<Item> uniqueItemList = new ArrayList<Item>();
+		boolean duplicated = false;
+		
+		for(Item item : items) {
+			
+			if(!item.selected) {
+				continue;
+			}
+			
+			try {
+				duplicated = false;
+				
+				for(Item checkingItem : uniqueItemList) {
+					
+					if(!checkingItem.selected) {
+						continue;
+					}
+					
+					if(item.text.equals(checkingItem.text)) {
+						duplicated = true;
+					}
+				}
+				
+				if(!duplicated) {
+					uniqueItemList.add(item);
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		return uniqueItemList;
+	}
+	
 ////////////////////Custom classes.
 	
 	public class ChoiceAdapter extends BaseAdapter {
@@ -1315,9 +1555,16 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 			textView.setText(items.get(position).text);
 			
-			if(items.get(position).selected) {
-				checkBox.setVisibility(View.VISIBLE);
-			} else{
+			if(!items.get(position).unusable) {
+				
+				if(items.get(position).selected) {
+					checkBox.setVisibility(View.VISIBLE);
+					
+				} else{
+					checkBox.setVisibility(View.INVISIBLE);
+				}
+				
+			} else {
 				checkBox.setVisibility(View.INVISIBLE);
 			}
 			
@@ -1356,10 +1603,17 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	public class Item {
 		
 		public String text;
-		boolean selected;
+		public int count;
+		public boolean selected;
+		public boolean unusable;
 		
 		public Item(String text) {
 			this.text = text;
+		}
+		
+		public Item(String text, int count) {
+			this.text = text;
+			this.count = count;
 		}
 	}
 

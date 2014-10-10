@@ -232,6 +232,10 @@ public class WholesaleActivity extends ShopActivity {
 		//대표 승인
 		} else if(url.contains("home")) {
 			//Do nothing.
+			
+		//도매 매장 사용불가 처리
+		} else if(url.equals("wholesales/disable")) {
+			signOut();
 		}
 	}
 

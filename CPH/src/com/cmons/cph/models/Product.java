@@ -33,6 +33,7 @@ public class Product extends BaseModel implements Serializable {
 	private int customers_only;
 	private int status;
 	private String[] product_images;
+	private int sum_amount;
 	
 	private int type;
 	private boolean deletable;
@@ -119,6 +120,10 @@ public class Product extends BaseModel implements Serializable {
 				for(int i=0; i<size; i++) {
 					product_images[i] = arJSON.getString(i);
 				}
+			}
+			
+			if(objJSON.has("sum_amount")) {
+				this.sum_amount = objJSON.getInt("sum_amount");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -260,5 +265,13 @@ public class Product extends BaseModel implements Serializable {
 
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
+	}
+
+	public int getSum_amount() {
+		return sum_amount;
+	}
+
+	public void setSum_amount(int sum_amount) {
+		this.sum_amount = sum_amount;
 	}
 }

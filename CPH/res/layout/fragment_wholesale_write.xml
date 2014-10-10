@@ -218,16 +218,15 @@
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
             
-		    <EditText
-		        android:id="@+id/wholesaleWritePage_etMixtureRate"
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnMixtureRate"
 		        android:layout_width="match_parent"
 		    	android:layout_height="wrap_content"
 		    	android:layout_below="@id/wholesaleWritePage_tvMixtureRate"
 			    android:background="@drawable/text_box"
-			    android:gravity="center"
-			    android:hint="@string/hintForProductMixtureRage"
-			    android:textColor="#000"
-			    android:textColorHint="#555" />
+			    android:text="@string/hintForProductMixtureRage"
+			    android:textColor="#000" 
+				android:gravity="center" />
 		    
 		    <!-- 상품설명. -->
 		    
@@ -235,7 +234,7 @@
 		        android:id="@+id/wholesaleWritePage_tvDescription"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_etMixtureRate"
+		        android:layout_below="@id/wholesaleWritePage_btnMixtureRate"
 		        android:text="@string/productDescription"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />

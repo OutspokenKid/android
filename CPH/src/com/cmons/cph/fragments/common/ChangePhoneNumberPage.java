@@ -159,6 +159,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 			
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					"?no_sms=0" +
+					"&find=1" +
 					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

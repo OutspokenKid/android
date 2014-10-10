@@ -65,6 +65,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
 	private boolean isMenuOpened;
+	private int lastItemIndex;
 	
 	private String[] orders;
 	
@@ -85,12 +86,28 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		}
 		
 		refreshNotices();
+		
+		if(noticeRelative.getVisibility() == View.VISIBLE
+				&& lastItemIndex != 0) {
+			
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					listView.setSelection(lastItemIndex);
+				}
+			}, 1000);
+		}
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
 		headerView.setPlaying(false);
+		
+		if(noticeRelative.getVisibility() == View.VISIBLE) {
+			lastItemIndex = listView.getFirstVisiblePosition();
+		}
 	}
 	
 	@Override
@@ -214,6 +231,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			noticeRelative.setVisibility(View.VISIBLE);
 			cover.setVisibility(View.VISIBLE);
 		}
+		
+		setButtons();
 	}
 
 	@Override
@@ -530,9 +549,6 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	@Override
 	public void downloadInfo() {
 
-		notices.clear();
-		noticeAdapter.notifyDataSetChanged();
-		
 		//http://cph.minsangk.com/products?permission_type=retail&category_id=&sort=date-desc&wholesale_id=&num=10&page=1
 		url = CphConstants.BASE_API_URL + "products" +
 				"?permission_type=retail";
@@ -600,6 +616,33 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	
 //////////////////// Custom methods.
 
+	public void setButtons() {
+		
+		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
+		
+		if(bigFont) {
+			menuButtons[0].setBackgroundResource(R.drawable.big_retail_notice_btn);
+			menuButtons[1].setBackgroundResource(R.drawable.big_retail_customer_btn);
+			menuButtons[2].setBackgroundResource(R.drawable.big_retail_search_btn);
+			menuButtons[3].setBackgroundResource(R.drawable.big_retail_basket_btn);
+			menuButtons[4].setBackgroundResource(R.drawable.big_retail_favorite_shop_btn);
+			menuButtons[5].setBackgroundResource(R.drawable.big_retail_favorite_goods_btn);
+			menuButtons[6].setBackgroundResource(R.drawable.big_retail_staff);
+			menuButtons[7].setBackgroundResource(R.drawable.big_retail_management_btn);
+			menuButtons[8].setBackgroundResource(R.drawable.big_retail_setting_btn);
+		} else {
+			menuButtons[0].setBackgroundResource(R.drawable.retail_menu_sample_btn);
+			menuButtons[1].setBackgroundResource(R.drawable.retail_customer_btn);
+			menuButtons[2].setBackgroundResource(R.drawable.retail_search_btn);
+			menuButtons[3].setBackgroundResource(R.drawable.retail_basket_btn);
+			menuButtons[4].setBackgroundResource(R.drawable.retail_favorite_shop_btn);
+			menuButtons[5].setBackgroundResource(R.drawable.retail_favorite_goods_btn);
+			menuButtons[6].setBackgroundResource(R.drawable.retail_staff2_btn);
+			menuButtons[7].setBackgroundResource(R.drawable.retail_business_btn);
+			menuButtons[8].setBackgroundResource(R.drawable.retail_setting_btn);
+		}
+	}
+	
 	public void refreshNotices() {
 		
 		notices.clear();
@@ -609,7 +652,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	
 	public void downloadNotices() {
 		
-		url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
+		String url = CphConstants.BASE_API_URL + "notifications/mine?num=0";
 
 		if(SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "showNonReadNotification")) {
 			url += "&filter=unread";
@@ -665,7 +708,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 
 	public void checkNewMessage() {
 		
-		url = CphConstants.BASE_API_URL + "notifications/mine?num=0&filter=unread";
+		String url = CphConstants.BASE_API_URL + "notifications/mine?num=0&filter=unread";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

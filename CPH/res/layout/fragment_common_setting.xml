@@ -50,6 +50,26 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/settingPage_btnInfo"
                 android:background="@drawable/setting_notice_btn" />
+
+			<!-- 건의하기. -->
+
+            <Button
+                android:id="@+id/settingPage_btnSuggest"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/settingPage_btnNotice"
+                android:layout_toRightOf="@id/settingPage_btnNotice"
+                android:background="@drawable/setting_suggest_btn" />
+            
+			<!-- 큰글씨. -->
+
+            <Button
+                android:id="@+id/settingPage_btnFont"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignLeft="@id/settingPage_btnNotice"
+                android:layout_below="@id/settingPage_btnNotice"
+                android:background="@drawable/setting_big_btn_b" />
             
 			<!-- 알림설정. -->
 
@@ -57,40 +77,29 @@
                 android:id="@+id/settingPage_btnNotification"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-				android:layout_alignTop="@id/settingPage_btnNotice"
-                android:layout_toRightOf="@id/settingPage_btnNotice"                
+				android:layout_alignTop="@id/settingPage_btnFont"
+                android:layout_toRightOf="@id/settingPage_btnFont"                
                 android:background="@drawable/setting_notification_btn" />
-            
-            <!-- 건의하기. -->
+
+			<!-- 회원탈퇴. -->
 
             <Button
-                android:id="@+id/settingPage_btnSuggest"
-                android:layout_width="match_parent"
+                android:id="@+id/settingPage_btnWithdraw"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_alignLeft="@id/settingPage_btnNotification"
-                android:layout_below="@id/settingPage_btnNotification"
-                android:background="@drawable/setting_suggest_btn" />
-
+                android:layout_alignLeft="@id/settingPage_btnFont"
+                android:layout_below="@id/settingPage_btnFont"
+                android:background="@drawable/setting_withdraw_btn" />
+            
 			<!-- 로그아웃. -->
 
             <Button
                 android:id="@+id/settingPage_btnSignout"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/settingPage_btnNotice"
-                android:background="@drawable/setting_logout_btn" />
-            
-            
-            <!-- 회원탈퇴. -->
-
-            <Button
-                android:id="@+id/settingPage_btnWithdraw"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/settingPage_btnSignout"
-                android:layout_toRightOf="@id/settingPage_btnSignout"
-                android:background="@drawable/setting_withdraw_btn" />
+                android:layout_alignTop="@id/settingPage_btnWithdraw"
+                android:layout_toRightOf="@id/settingPage_btnWithdraw"
+                android:background="@drawable/setting_logout_btn" />
             	
         </RelativeLayout>
         

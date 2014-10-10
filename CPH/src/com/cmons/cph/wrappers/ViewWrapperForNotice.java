@@ -71,16 +71,16 @@ public class ViewWrapperForNotice extends ViewWrapper {
 				notice = (Notice) baseModel;
 				tvNotice.setText(notice.getTitle());
 				
-				LogUtils.log("###where.setValues.  notice.title : " + notice.getTitle());
-				
 				String dateString = StringUtils.getDateString("yyyy.MM.dd\naa hh:mm", 
 						notice.getCreated_at() * 1000);
 				tvRegdate.setText(dateString);
 						
 				if(notice.isRead()) {
+					row.setBackgroundColor(Color.WHITE);
 					tvNotice.setTextColor(Color.rgb(120, 120, 120));
 					icon.setBackgroundResource(R.drawable.mail_icon_b);
 				} else {
+					row.setBackgroundColor(Color.argb(100, 204, 175, 228));
 					tvNotice.setTextColor(Color.BLACK);
 					icon.setBackgroundResource(R.drawable.mail_icon_a);
 				}

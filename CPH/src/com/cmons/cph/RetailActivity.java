@@ -256,7 +256,10 @@ public class RetailActivity extends ShopActivity {
 			
 		//샘플 상태값 변경 (반납요청)
 		} else if(url.equals("retails/samples")) {
-			showPage(CphConstants.PAGE_RETAIL_SAMPLE, null);
+			int status = Integer.parseInt(uri.getQueryParameter("status"));
+			Bundle bundle = new Bundle();
+			bundle.putInt("menuIndex", status);
+			showPage(CphConstants.PAGE_RETAIL_SAMPLE, bundle);
 			
 		//직원 상태값 변경 (승인)
 		//직원 상태값 변경 (거절)
@@ -273,6 +276,10 @@ public class RetailActivity extends ShopActivity {
 		//회원가입
 		} else if(url.equals("users/staffs")) {
 			showPage(CphConstants.PAGE_COMMON_STAFF, null);
+			
+		//소매 매장 사용불가 처리
+		} else if(url.equals("retails/disable")) {
+			signOut();
 		}
 	}
 

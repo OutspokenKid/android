@@ -78,6 +78,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	private AlphaAnimation aaIn, aaOut;
 	private boolean animating;
 	private boolean isMenuOpened;
+	private int lastItemIndex;
 	
 	private ArrayList<Product> products = new ArrayList<Product>();
 	private PagerAdapterForProducts pagerAdapter;
@@ -90,6 +91,17 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		super.onResume();
 		refreshPage();
 		downloadProducts();
+
+		if(noticeRelative.getVisibility() == View.VISIBLE
+				&& lastItemIndex != 0) {
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+					listView.setSelection(lastItemIndex);
+				}
+			}, 1000);
+		}
 	}
 	
 	@Override
@@ -97,6 +109,10 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		super.onPause();
 		
 		needPlay = false;
+		
+		if(noticeRelative.getVisibility() == View.VISIBLE) {
+			lastItemIndex = listView.getFirstVisiblePosition();
+		}
 	}
 	
 	@Override
@@ -205,6 +221,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			noticeRelative.setVisibility(View.VISIBLE);
 			cover.setVisibility(View.VISIBLE);
 		}
+		
+		setButtons();
 	}
 
 	@Override
@@ -358,7 +376,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				hideNoticeRelative();
 			}
 		});
-	
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -663,6 +681,32 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 	
 //////////////////// Custom methods.
 
+	public void setButtons() {
+		
+		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
+		
+		if(bigFont) {
+			btnShop.setBackgroundResource(R.drawable.big_info_btn);
+			btnNotice.setBackgroundResource(R.drawable.big_notice_btn);
+			btnManagement.setBackgroundResource(R.drawable.big_management_btn);
+			btnOrder.setBackgroundResource(R.drawable.big_order_btn);
+			btnSample.setBackgroundResource(R.drawable.big_sample_btn);
+			btnCustomer.setBackgroundResource(R.drawable.big_customer_btn);
+			btnStaff.setBackgroundResource(R.drawable.big_staff_btn);
+			btnSetting.setBackgroundResource(R.drawable.big_setting_btn);
+			
+		} else {
+			btnShop.setBackgroundResource(R.drawable.shop_info_btn);
+			btnNotice.setBackgroundResource(R.drawable.notice_btn);
+			btnManagement.setBackgroundResource(R.drawable.management_btn);
+			btnOrder.setBackgroundResource(R.drawable.order_btn);
+			btnSample.setBackgroundResource(R.drawable.sample_btn);
+			btnCustomer.setBackgroundResource(R.drawable.customer_btn);
+			btnStaff.setBackgroundResource(R.drawable.staff_btn);
+			btnSetting.setBackgroundResource(R.drawable.setting_btn);
+		}
+	}
+	
 	public void downloadProducts() {
 		
 		products.clear();
@@ -701,7 +745,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 							pagerAdapter.notifyDataSetChanged();
 							viewPager.setCurrentItem(0);
 							tvBestTitle.setText(products.get(0).getName());
-							tvBestSellingCount.setText("구매 : " + products.get(0).getOrdered_cnt());
+							tvBestSellingCount.setText("구매 : " + products.get(0).getSum_amount());
 							tvRank.setText("1위");
 							
 							mThisView.findViewById(R.id.wholesaleMainPage_pagerBg).setVisibility(View.INVISIBLE);

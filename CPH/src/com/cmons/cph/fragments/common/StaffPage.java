@@ -3,14 +3,13 @@ package com.cmons.cph.fragments.common;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -99,14 +98,35 @@ public class StaffPage extends CmonsFragmentForShop {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
 					long arg3) {
 
+				int titleResId = 0;
+				int messageResId = 0;
+				
 				if(menuIndex == 0) {
-					approval((User)models.get(arg2));
+					titleResId = R.string.approval;
+					messageResId = R.string.wannaApproval;
 				} else {
-					fire((User)models.get(arg2));
+					titleResId = R.string.fire;
+					messageResId = R.string.wannaFire;
 				}
+				
+				mActivity.showAlertDialog(titleResId, messageResId, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								if(menuIndex == 0) {
+									approval((User)models.get(arg2));
+								} else {
+									fire((User)models.get(arg2));
+								}
+							}
+						}, 
+						null);
 			}
 		});
 	}

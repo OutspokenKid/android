@@ -11,8 +11,12 @@
     <string name="agree">동의</string>
     <string name="amount">수량</string>
     <string name="app_name">CPH</string>
+    <string name="approval">승인</string>
 
     <string name="bank">은행</string>
+    <string name="bestHitColor">* 자주 등록한 색상</string>
+    <string name="bestHitMixture">* 자주 등록한 혼용률</string>
+    <string name="bestHitSize">* 자주 등록한 사이즈</string>
     
     <string name="cancel">취소</string>
     <string name="canceled">취소되었습니다</string>
@@ -113,6 +117,7 @@
     <string name="failToWriteReply">댓글 작성 실패</string>
     <string name="findId">아이디 찾기</string>
     <string name="findPw">비밀번호 찾기</string>
+    <string name="fire">해고</string>
     <string name="floor">층</string>
     <string name="forbiddenRequestSample">해당 매장에서 샘플 요청을 받지 않는 상태입니다.</string>
 
@@ -240,6 +245,8 @@
     <string name="terms">약관</string>
     <string name="totalPrice">총 결제금액</string>
 
+    <string name="wannaApproval">해당 직원을 승인하시겠습니까?</string>
+    <string name="wannaFire">해당 직원을 해고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃 하시겠습니까?</string>
     <string name="wannaWithdraw">회원 탈퇴 하시겠습니까?\n(대표가 탈퇴할 경우 모든 매장정보가 삭제되며 직원은 탈퇴처리됩니다.)</string>
     <string name="wholesale">도매</string>

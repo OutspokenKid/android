@@ -523,6 +523,8 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 
 					if(objJSON.getInt("result") == 1) {
 						
+						hidePopup();
+						
 						if(menuIndex == 0) {
 							ToastUtils.showToast(R.string.complete_changeSampleStatus1);
 						} else if(menuIndex == 1) {
@@ -531,8 +533,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 							ToastUtils.showToast(R.string.complete_changeSampleStatus3);
 						}
 						
-						hidePopup();
-						refreshPage();
+						setMenu(menuIndex + 1);
 					} else {
 						objJSON.getString("message");
 					}

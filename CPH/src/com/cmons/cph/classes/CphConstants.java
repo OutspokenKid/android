@@ -14,6 +14,8 @@ public class CphConstants {
 	public static final String PREFS_DISTURB = "disturb";
 	public static final String PREFS_SHOP = "shop";
 	public static final String PREFS_IMAGE_UPLOAD = "imageupload";
+	public static final String PREFS_BIG_FONT = "bigfont";
+	public static final String PREFS_PRODUCT_UPLOAD = "productupload";
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;

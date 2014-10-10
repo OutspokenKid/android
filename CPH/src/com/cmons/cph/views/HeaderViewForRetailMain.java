@@ -547,6 +547,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 								}
 							}
 						});
+			} else {
+				ivImage.setImageResource(R.drawable.picture_default);
 			}
 			
 			return ivImage;

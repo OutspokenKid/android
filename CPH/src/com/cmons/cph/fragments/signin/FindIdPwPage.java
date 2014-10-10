@@ -235,9 +235,13 @@ public class FindIdPwPage extends CmonsFragment {
 		
 		certifyingPhoneNumber = etPhone.getText().toString();
 		
+		
+		//아이디 찾기 - http://cph.minsangk.com/users/find/id?phone_number=010-2082-1803&no_sms=1
+		//비밀번호 찾기 - http://cph.minsangk.com/users/find/password?phone_number=010-2082-1803&id=minsangk&no_sms=1
 		try {
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					"?no_sms=0" +
+					"&find=1" +
 					"&phone_number=" + URLEncoder.encode(certifyingPhoneNumber, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

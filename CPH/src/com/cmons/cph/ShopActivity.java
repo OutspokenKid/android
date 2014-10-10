@@ -310,6 +310,38 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 		});
 	}
 	
+	public void signOut() {
+
+		String url = CphConstants.BASE_API_URL + "users/logout";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
+					
+					launchSignInActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void launchSignInActivity() {
 		
 		Intent intent = new Intent(this, SignInActivity.class);

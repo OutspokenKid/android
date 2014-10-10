@@ -102,7 +102,17 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 	public void setVariables() {
 
 		title = "샘플관리";
-	
+		
+		if(getArguments() != null) {
+			menuIndex = getArguments().getInt("menuIndex");
+
+			//0,1,2,3 이외에는 오류로 간주, 0으로 보정.
+			if(menuIndex < 0
+					|| menuIndex > 3) {
+				menuIndex = 0;
+			}
+		}
+		
 		AnimationListener al = new AnimationListener() {
 			
 			@Override
