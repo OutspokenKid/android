@@ -419,6 +419,13 @@ public class StringUtils {
 		return str == null || str.length() == 0;
 	}
 	
+	public static boolean isEmpty(EditText editText) {
+		
+		return editText == null 
+				|| editText.getText() == null
+				|| editText.getText().length() == 0;
+	}
+	
 	/**
 	 * Check the string's length.
 	 * 
