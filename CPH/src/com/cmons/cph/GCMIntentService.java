@@ -66,36 +66,19 @@ public class GCMIntentService extends GCMBaseIntentService {
 				
 				PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
 				intent.putExtra("pushObject", po);
-//				
-//				//앱이 실행중인 경우 ShopActivity로 바로 넘김.
-//				if(ShopActivity.getInstance() != null) {
-//					LogUtils.log("###GCMIntentService.onMessage.  App is running, send intent to ShopActivity.");
-//
-//					PowerManager pm = (PowerManager) context
-//							.getSystemService(Context.POWER_SERVICE);
-//					
-//					WakeLock screenWakeLock = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK
-//							| PowerManager.ACQUIRE_CAUSES_WAKEUP, context
-//							.getClass().getName());
-//
-//					if (screenWakeLock != null) {
-//						screenWakeLock.acquire();
-//					}
-//					
-//					final Intent SENDING_INTENT = intent;
-//					ShopActivity.getInstance().runOnUiThread(new Runnable() {
-//						
-//						@Override
-//						public void run() {
-//							ShopActivity.getInstance().handleIntent(SENDING_INTENT);
-//						}
-//					});
-//					
-//				//앱이 실행중이지 않은 경우 Notification 전송.
-//				} else {
-//					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
+				
+				//앱이 실행중이고 탈퇴 푸시인 경우 바로 처리.
+				if(ShopActivity.getInstance() != null
+						&& po != null
+						&& po.uri != null
+						&& po.uri.contains("/disable")) {
+					ShopActivity.getInstance().signOut();
+					
+				//앱이 실행중이지 않은 경우 Notification 전송.
+				} else {
+					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
 					showNotification(context, intent);
-//				}
+				}
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);
