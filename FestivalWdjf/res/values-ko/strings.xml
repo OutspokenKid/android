@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    
+    <!-- 공통. -->
+    <string name="accuse">신고</string>
+    <string name="accuseCompleted">신고 처리 되었습니다</string>
+    <string name="accuseReplyCompleted">댓글을 신고하였습니다</string>
+    <string name="activeLocation">활동 지역</string>
+    <string name="addedProfile">추가 프로필</string>
+    <string name="addedToFriendList">친구 추가 되었습니다</string>
+    <string name="addMe">본인은 친구로 추가할 수 없습니다</string>
+    <string name="agreeWithClause">회원약관에 동의합니다</string>
+    <string name="all">전체</string>
+    <string name="alreadyMember">이미 가입되어있습니다</string>
+    
+    <string name="baseProfile">기본 프로필</string>
+    <string name="birth">생년월일</string>
+
+    <string name="call">전화 걸기</string>
+    <string name="cancel">취소</string>
+    <string name="canceled">취소되었습니다</string>
+    <string name="cantUploadMorePhoto">더 이상 이미지를 업로드할 수 없습니다</string>
+    <string name="checkNetworkStatus">네트워크 상태를 확인해주세요</string>
+    <string name="clause">약관 텍스트</string>
+    <string name="close">닫기</string>
+    <string name="company">직장(학교)</string>
+    <string name="complete">완료</string>
+    <string name="completeSignUp">회원 가입 완료</string>
+    <string name="confirm">확인</string>
+    <string name="confirmPassword">비밀번호 확인</string>
+    <string name="copyReplyCompleted">댓글이 복사되었습니다</string>
+
+    <string name="delete">삭제</string>
+    <string name="deleteCompleted">삭제 완료</string>
+    <string name="deletedFromFriendList">친구에서 제외 되었습니다</string>
+    <string name="deleteMessage">메세지 삭제</string>
+    <string name="disagreeWithClause">거부합니다</string>
+    <string name="dontSeeAgainToday">오늘 다시 보지 않기</string>
+
+    <string name="edit">수정</string>
+    <string name="editPost">글 수정</string>
+    <string name="emailAddress">이메일 주소</string>
+    <string name="event">이벤트</string>
+
+    <string name="failToAccuse">신고 실패</string>
+    <string name="failToAccuseReply">댓글 신고 실패</string>
+    <string name="failToCopyReply">댓글 복사 실패</string>
+    <string name="failToDeleteMessage">메세지 삭제 실패</string>
+    <string name="failToDeletePost">글 삭제 실패</string>
+    <string name="failToDeleteReply">댓글 삭제 실패</string>
+    <string name="failToDownloadImage">이미지 다운로드 실패</string>
+    <string name="failToLaunchToNApp">N-app으로 이동하지 못했습니다</string>
+    <string name="failToLoadBitmap">이미지를 불러오지 못했습니다</string>
+    <string name="failToLoadBitmap_OutOfMemory">메모리가 부족하여 이미지를 불러오지 못했습니다</string>
+    <string name="failToLoadUserInfo">사용자의 정보를 불러오지 못했습니다</string>
+    <string name="failToLoadList">리스트를 불러오지 못했습니다</string>
+    <string name="failToLoadMessageList">메세지를 불러오지 못했습니다</string>
+    <string name="failToLoadPhoto">사진을 불러오지 못했습니다</string>
+    <string name="failToLoadPost">해당 글 정보를 불러오지 못했습니다</string>
+    <string name="failToLoadReplies">댓글을 불러오지 못했습니다</string>
+    <string name="failToLoadUserStatus">사용자 상태 목록을 불러오지 못했습니다</string>
+    <string name="failToLoadWebBrowser">링크 연결 실패</string>
+    <string name="failToSaveImage">이미지 저장 실패</string>
+    <string name="failToScrapPost">스크랩 실패</string>
+    <string name="failToSendMessage">메세지 전송 실패</string>
+    <string name="failToSendPost">글쓰기 실패</string>
+    <string name="failToSendReply">댓글 작성 실패</string>
+    <string name="failToShowVideo">해당 동영상을 열 수 없습니다</string>
+    <string name="failToSignIn">로그인 실패</string>
+    <string name="failToSignOut">로그아웃 실패</string>
+    <string name="failToSignUp">회원가입 실패</string>
+    <string name="failToSubmitAddedProfile">추가 프로필 수정 실패</string>
+    <string name="failToSubmitBaseProfile">기본 프로필 수정 실패</string>
+    <string name="failToSubmitPassword">비밀번호 변경 실패</string>
+    <string name="failToSubmitPushSetting">푸시 설정 변경 실패</string>
+    <string name="findIdAndPw">ID/비밀번호 찾기</string>
+    <string name="female">여성</string>
+    <string name="femaleInit">여</string>
+    <string name="friend">친구</string>
+
+    <string name="gender">성별</string>
+
+    <string name="hintForConfirmNewPw">새 비밀번호를 다시 입력해주세요</string>
+    <string name="hintForCurrentPw">현재 비밀번호를 입력해주세요</string>
+    <string name="hintForId">아이디(영문 소문자 또는 숫자, 5~10자)</string>
+    <string name="hintForPw">비밀번호(4~20자)</string>
+    <string name="hintForPhoneNumber">핸드폰 번호, ID와 비밀번호를 찾는데 사용됩니다</string>
+    <string name="hintForConfirmPw">비밀번호 재 입력</string>
+    <string name="hintForEmail">이메일</string>
+    <string name="hintForNewEmail">새로운 이메일 주소를 입력해주세요</string>
+    <string name="hintForNewPw">새 비밀번호를 입력해주세요(4~20자)</string>
+    <string name="hintForNickname">닉네임(2~14자)</string>
+    <string name="hintForIntroduce">자기 소개를 입력해주세요</string>
+    <string name="hintForPosting">보내기 선택을 하시면 선택하신 앱에서도 글을 확인할 수 있습니다.</string>
+    <string name="hintForReply">댓글을 작성한 회원의 닉네임을 누르면 타겟댓글이 가능합니다.</string>
+    
+    <string name="id">아이디</string>
+    <string name="image">이미지</string>
+    <string name="inputDirectly">직접 입력</string>
+    <string name="inputMoreInfo">추가 정보 입력</string>
+    <string name="inputComplete">입력 완료</string>
+    <string name="inputContent">내용을 입력해주세요</string>
+    <string name="interested">관심사</string>
+    <string name="introduce">자기 소개</string>
+    <string name="introduceNId">N 로고가 보이는 모든 어플리케이션은\n통합 N 아이디 하나로 사용가능합니다</string>
+    <string name="invalidConfirmPw">비밀번호가 일치하지 않습니다</string>
+    <string name="invalidEmail">이메일을 정확히 입력해주세요</string>
+    <string name="invalidId">잘못된 아이디입니다(5~10자로 입력)</string>
+    <string name="invalidNickname">잘못된 닉네임입니다(2~14자로 입력)</string>
+    <string name="invalidPhoneNumber">핸드폰 번호를 입력해주세요</string>
+    <string name="invalidPw">잘못된 비밀번호입니다(4~20자로 입력)</string>
+    <string name="invalidUri">잘못된 uri입니다</string>
+    
+    <string name="job">직업</string>
+    
+    <string name="lastPage">마지막 페이지입니다</string>
+    <string name="leaveMember">회원 탈퇴</string>
+    <string name="lineup">라인업</string>
+    <string name="liveLocation">사는 지역</string>
+    <string name="loadingNewList">새로운 리스트 불러오는 중..</string>
+    <string name="loadingReplies">댓글을 불러오는 중..</string>
+    <string name="location">로케이션</string>
+    
+    <string name="mail1">naver.com</string>
+    <string name="mail2">daum.net</string>
+    <string name="mail3">hotmail.com</string>
+    <string name="mail4">nate.com</string>
+    <string name="mail5">gmail.com</string>
+    <string name="mail6">yahoo.com</string>
+    <string name="male">남성</string>
+    <string name="maleInit">남</string>
+    <string name="menu1">Profile</string>
+    <string name="menu2">In\nStory</string>
+    <string name="menu3">Other\nStory</string>
+    <string name="menu4">Message</string>
+   	<string name="message">메세지</string>
+   	<string name="modifyUserInfo">회원 정보 수정</string>
+   	<string name="music">음악</string>
+    <string name="mustInput">필수 입력 사항</string>
+    <string name="myhome">마이홈</string>
+    <string name="myPost">내 글</string>
+    
+    <string name="needSignIn">로그인이 필요한 서비스 입니다</string>
+    <string name="nickname">닉네임</string>
+    <string name="noContent">내용 없음</string>
+    <string name="noMoreReplies">댓글이 없습니다</string>
+    <string name="noname">이름 없음</string>
+    <string name="notEnoughMemory">메모리가 부족합니다</string>
+    <string name="notice">공지사항</string>
+    <string name="notificationAll">전체 알림</string>
+    <string name="notificationMessage">메세지 알림</string>
+    <string name="notificationReply">댓글 알림</string>
+    
+    <string name="password">비밀번호</string>
+    <string name="phoneNumber">핸드폰 번호</string>
+    <string name="photo">사진</string>
+    <string name="photo_album">앨범</string>
+    <string name="photo_take">촬영</string>
+    <string name="post">작성 글</string>
+    <string name="postingCompleted">글쓰기 완료</string>
+    <string name="preparingService">서비스 준비 중</string>
+    <string name="profile">프로필</string>
+    <string name="profileInfo">프로필 정보</string>
+    <string name="profileSetting">프로필 설정</string>
+    <string name="profilePhotoCondition">200 x 200px 이상의 이미지\n(jpg, gif, png)</string>
+    <string name="pullToRefresh">당겨서 새로고침</string>
+    <string name="pullToLoadNewList">당겨서 새로운 리스트 불러오기</string>
+    <string name="pushSetting">알림 설정</string>
+    <string name="putToRefresh">놓아서 새로고침</string>
+    <string name="putToLoadNewList">놓아서 새로운 리스트 불러오기</string>
+    
+    <string name="recentPost">최신글</string>
+    <string name="recentPostByCategory">&#160;주제별\n&#160;최신글</string>
+    <string name="refreshing">새로고침 중..</string>
+    <string name="reply">댓글</string>
+    <string name="reply_copy">댓글 복사</string>
+    <string name="reply_accuse">댓글 신고</string>
+    <string name="reply_delete">댓글 삭제</string>
+    <string name="replies">개의 댓글</string>
+    <string name="restartApp">앱을 다시 실행해주세요</string>
+    <string name="retainLastSession">두 앱의 로그인 정보가 다릅니다.\n로그인 할 아이디를 선택해주세요.</string>
+    <string name="review">리뷰</string>
+    
+    <string name="saveImageCompleted">이미지 저장 완료</string>
+    <string name="schedule">스케쥴</string>
+    <string name="scrap">스크랩</string>
+    <string name="scrapCompleted">스크랩 완료</string>
+    <string name="search">검색</string>
+    <string name="searching">검색 중..</string>
+    <string name="seeMoreReplies">댓글 더보기</string>
+    <string name="selectAccount">계정 선택</string>
+    <string name="selectBoard">게시판 선택</string>
+    <string name="selectPlease">선택</string>
+    <string name="selectEmail">이메일 선택</string>
+    <string name="selectGender">성별 선택</string>
+    <string name="selectYourGender">성별을 선택해주세요</string>
+    <string name="send">전송</string>
+    <string name="setting">환경 설정</string>
+    <string name="showMember">멤버 보기</string>
+    <string name="signBySNSwillBeUpdatedLater">SNS를 통한 회원가입/로그인은 추 후 업데이트 예정입니다</string>
+    <string name="signIn">로그인</string>
+    <string name="signInCompleted">로그인 완료</string>
+    <string name="signingIn">로그인 중..</string>
+    <string name="signingUp">회원가입 중..</string>
+    <string name="signOut">로그아웃</string>
+	<string name="signUp">회원가입</string>
+	<string name="signUpCompleted">회원 가입 완료</string>
+	<string name="SNSLinkSetting">SNS 연결 설정</string>
+	<string name="status">현재 상태</string>
+	<string name="story">스토리</string>
+	<string name="str_done">완료</string>
+	<string name="submit">등록</string>
+	<string name="submitCompleted">등록 완료</string>
+	<string name="submittingToServer">서버에 등록 중..</string>
+	<string name="submitReply">댓글 등록</string>
+
+	<string name="thereIsNoTStore">티스토어가 지원 되지 않는 기종이거나, 설치되지 않은 상태입니다</string>
+	<string name="titleText_notice">공지사항</string>
+	<string name="touchHere">이 곳을 눌러보세요</string>
+
+	<string name="unknown">알 수 없음</string>
+	<string name="unusableNumber">사용할 수 없는 번호입니다</string>
+	<string name="update">업데이트</string>
+	<string name="updatingGallery">사진 업데이트 중..</string>
+	<string name="updateGalleryCompleted">사진 업데이트 완료</string>
+	<string name="uploadPhoto">사진 올리기</string>
+	<string name="uploadProfilePhoto">프로필 사진 올리기</string>
+	
+	<string name="video">비디오</string>
+	
+	<string name="wait">잠시만 기다려주세요..</string>
+	<string name="wannaAccuse">신고하시겠습니까?</string>
+	<string name="wannaDelete">삭제하시겠습니까?</string>
+	<string name="wannaEdit">수정하시겠습니까?</string>
+	<string name="wannaLaunchNApp">N으로 이동하시겠습니까?</string>
+	<string name="wannaMoveToStore">N 앱이 설치되어 있지않습니다.\n구글플레이로 이동하여 설치하시겠습니까?</string>
+	<string name="wannaSaveImage">해당 이미지를 저장하시겠습니까?</string>
+	<string name="wannaScrap">스크랩하시겠습니까?</string>
+	<string name="wannaSignOut">로그아웃하시겠습니까?</string>
+	<string name="wannaUpdate">현재 앱은 최신버전이 아닙니다.\n업데이트 하시겠습니까?</string>
+	<string name="willBeUpdated">추 후 업데이트 예정입니다</string>
+	<string name="withdrawnMember">탈퇴한 회원입니다</string>
+	<string name="withMe">내가 나와 한 메세지?</string>
+	<string name="write">글 작성</string>
+	<string name="writeAtBoard">게시판에 글 작성</string>
+	
+</resources>

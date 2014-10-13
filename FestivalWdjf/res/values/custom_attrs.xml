@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <!-- Customize -->
+    <string name="app_name">World DJ Festival</string>
+	<string name="googleMapApiKey">AIzaSyC1bG5s6ijWVm0ypip9zNIjh6JZUlaBpgk</string>
+		
+	<!-- Length of logo at IntroActivity.java -->
+	<string name="logo_width">278</string>
+	<string name="logo_height">252</string>
+
+	<!-- sb_id. -->
+	<string name="sb_id">festivalwdjf</string>
+	
+	<!-- Domain -->
+	<string name="domain">http://www.napp.co.kr</string>
+<!-- 	<string name="domain">http://112.169.61.103</string> -->
+
+	<!-- Colors of bg_intro.xml -->
+	<color name="intro_start">#000000</color>
+	<color name="intro_center">#000000</color>
+	<color name="intro_end">#000000</color>
+	
+	<!-- Colors of main menu. -->
+	<color name="color_main_bg1">#ffcc66</color>
+	<color name="color_main_bg2">#98d3c5</color>
+	<color name="color_main_bg3">#89bfe6</color>
+	<color name="color_main_bg4">#f78db8</color>
+	
+	<!-- Color of button cover, select brighter color bitween color_main_big and color_main_small-->
+	<color name="color_button_cover">#99ffffff</color>
+		
+</resources>
