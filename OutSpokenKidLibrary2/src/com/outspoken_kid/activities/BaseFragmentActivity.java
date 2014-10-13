@@ -202,6 +202,37 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		return null;
 	}
 	
+	public BaseFragment getFragmentAt(int index) {
+		
+		try {
+			//Fragment가 없는 경우.
+			if(getFragmentsSize() == 0) {
+				return null;
+				
+			//Fragment가 하나 밖에 없는 경우.
+			} else if(getFragmentsSize() == 1) {
+				return (BaseFragment) getSupportFragmentManager().getFragments().get(0);
+				
+			//Fragment가 여러개 있는 경우.
+			} else {
+				
+				if(index == 0) {
+					return (BaseFragment) getSupportFragmentManager().getFragments().get(0);
+				} else {
+					String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(index - 1).getName();
+					LogUtils.log("###BaseFragmentActivity.getFragmentAt.  index : " + index + ", fragmentTag : " + fragmentTag);
+				    return (BaseFragment) getSupportFragmentManager().findFragmentByTag(fragmentTag);
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
+	}
+	
 	public void startPage(BaseFragment fragment, Bundle bundle) {
 		
 		try {
@@ -288,6 +319,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	
 	public void closePages(int size) {
 
+		if(size == 1) {
+			closeTopPage();
+			return;
+		}
+		
 		try {
 			int fragmentSize = getFragmentsSize();
 			int closeCount = size;
@@ -300,25 +336,26 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				return;
 			}
 			
-			//fragment size : 5
+			//예.
+			//fragment size : 5 - 0, 1, 2, 3, 4
 			//close count : 2
-			//4번째부터 3번째까진 해라.
+			//4부터 3 이상이면 실행.
 			for(int i=fragmentSize-1; i>=fragmentSize - closeCount; i--) {
 
-				//마지막으로 닫힐 페이지.
+				//마지막으로 닫힐 페이지, 3
 				if(i == fragmentSize - closeCount) {
 					//Do nothing.
 					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 마지막으로 닫힐 페이지.");
 					
-				//처음으로 닫힐 페이지.
+				//처음으로 닫힐 페이지, 4
 				} else if(i == fragmentSize - 1) {
 					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 처음으로 닫힐 페이지.");
-					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+					getFragmentAt(i).disableExitAnim(true);
 					
 				//중간 페이지.
 				} else {
 					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 중간 페이지(에니메이션 무시).");
-					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+					getFragmentAt(i).disableExitAnim(false);
 				}
 				
 				getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -336,14 +373,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 
 		closePages(size);
 
-		new Handler().postDelayed(new Runnable() {
-			
-			@Override
-			public void run() {
+		if(getTopFragment() != null) {
+			new Handler().postDelayed(new Runnable() {
 				
-				getTopFragment().refreshPage();
-			}
-		}, 1000);
+				@Override
+				public void run() {
+					
+					getTopFragment().refreshPage();
+				}
+			}, 1000);
+		}
 	}
 
 	@Override
