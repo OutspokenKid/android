@@ -505,7 +505,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 			checkProfileView();
 			
 			if(NetworkUtils.checkNetworkStatus(this) == NetworkUtils.TYPE_NONE) {
-				
 				gestureSlidingLayout.postDelayed(new Runnable() {
 					
 					@Override
@@ -513,7 +512,6 @@ public class MainActivity extends ZonecommsFragmentActivity {
 						ToastUtils.showToast(R.string.checkNetworkStatus);
 					}
 				}, 500);
-
 				gestureSlidingLayout.postDelayed(new Runnable() {
 					
 					@Override
@@ -1412,6 +1410,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 
 	public void checkLoginAndExecute(final OnAfterLoginListener listener) {
 
+		//로그인 되어있지 않은 경우 팝업.
 		if(ZonecommsApplication.myInfo == null) {
 			DialogInterface.OnClickListener ocl = new DialogInterface.OnClickListener() {
 				
@@ -1423,6 +1422,8 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				}
 			};
 			showAlertDialog(R.string.signIn, R.string.needSignIn, R.string.confirm, R.string.cancel, ocl, null);
+			
+		//로그인 되어있는 경우 바로 실행.
 		} else {
 			listener.onAfterLogin();
 		}
