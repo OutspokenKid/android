@@ -287,40 +287,48 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	}
 	
 	public void closePages(int size) {
-		
-		int fragmentSize = getFragmentsSize();
-		int closeCount = size;
-		
-		if(closeCount >= fragmentSize) {
-			closeCount--;
-		}
-		
-		if(closeCount <= 0) {
-			return;
-		}
-		
-		//fragment size : 5
-		//close count : 2
-		//4번째부터 3번째까진 해라.
-		for(int i=fragmentSize-1; i>=fragmentSize - closeCount; i--) {
 
-			//마지막으로 닫힐 페이지.
-			if(i == fragmentSize - closeCount) {
-				//Do nothing.
-				LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 마지막으로 닫힐 페이지.");
-				
-			//처음으로 닫힐 페이지.
-			} else if(i == fragmentSize - 1) {
-				LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 처음으로 닫힐 페이지.");
-				((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
-				
-			//중간 페이지.
-			} else {
-				LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 중간 페이지(에니메이션 무시).");
-				((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+		try {
+			int fragmentSize = getFragmentsSize();
+			int closeCount = size;
+			
+			if(closeCount >= fragmentSize) {
+				closeCount--;
 			}
 			
-			getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			if(closeCount <= 0) {
+				return;
+			}
+			
+			//fragment size : 5
+			//close count : 2
+			//4번째부터 3번째까진 해라.
+			for(int i=fragmentSize-1; i>=fragmentSize - closeCount; i--) {
+
+				//마지막으로 닫힐 페이지.
+				if(i == fragmentSize - closeCount) {
+					//Do nothing.
+					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 마지막으로 닫힐 페이지.");
+					
+				//처음으로 닫힐 페이지.
+				} else if(i == fragmentSize - 1) {
+					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 처음으로 닫힐 페이지.");
+					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(true);
+					
+				//중간 페이지.
+				} else {
+					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 중간 페이지(에니메이션 무시).");
+					((BaseFragment)getSupportFragmentManager().getFragments().get(i)).disableExitAnim(false);
+				}
+				
+				getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+
+			for(int i=0; i<size; i++) {
+				getSupportFragmentManager().popBackStack();
+			}
 		}
 	}
 	

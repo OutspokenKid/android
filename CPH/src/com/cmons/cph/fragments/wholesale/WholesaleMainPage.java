@@ -499,7 +499,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) tvWholesale.getLayoutParams();
 		rp.width = length_long;
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
-		FontUtils.setFontSize(tvWholesale, 22);
 		
 		//pagerBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.
@@ -686,6 +685,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
 		
 		if(bigFont) {
+			FontUtils.setFontSize(tvWholesale, 36);
+			
 			btnShop.setBackgroundResource(R.drawable.big_info_btn);
 			btnNotice.setBackgroundResource(R.drawable.big_notice_btn);
 			btnManagement.setBackgroundResource(R.drawable.big_management_btn);
@@ -696,6 +697,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			btnSetting.setBackgroundResource(R.drawable.big_setting_btn);
 			
 		} else {
+			FontUtils.setFontSize(tvWholesale, 22);
+			
 			btnShop.setBackgroundResource(R.drawable.shop_info_btn);
 			btnNotice.setBackgroundResource(R.drawable.notice_btn);
 			btnManagement.setBackgroundResource(R.drawable.management_btn);

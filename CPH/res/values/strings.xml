@@ -119,6 +119,8 @@
     <string name="findPw">비밀번호 찾기</string>
     <string name="fire">해고</string>
     <string name="floor">층</string>
+    <string name="font_big">메뉴 글씨 크기를 크게 변경하였습니다.</string>
+    <string name="font_small">메뉴 글씨 크기를 작게 변경하였습니다.</string>
     <string name="forbiddenRequestSample">해당 매장에서 샘플 요청을 받지 않는 상태입니다.</string>
 
     <string name="hintForAccount">계좌번호 입력</string>
