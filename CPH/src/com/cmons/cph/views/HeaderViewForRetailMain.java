@@ -81,7 +81,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		
 		createViews();
 		setListeners();
-		setValues();
 	}
 	
 	public void createViews() {
@@ -336,22 +335,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 	public void downloadWholesales() {
 		
-		if(wholesales.size() > 0) {
-			viewPager.setCurrentItem(0);
-			tvPhoneNumber.setText(wholesales.get(0).getPhone_number());
-			tvLocation.setText(wholesales.get(0).getLocation());
-			tvHit.setText(wholesales.get(0).getToday_visited_cnt() + 
-					" / " + wholesales.get(0).getTotal_visited_cnt());
-			tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
-			tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
-			needPlay = true;
-			
-//			if(!isPlaying) {
-//				playPager();
-//			}
-			
-			return;
-		}
+		wholesales.clear();
+		pagerAdapter.notifyDataSetChanged();
 		
 		String url = CphConstants.BASE_API_URL + "wholesales/coverflow";
 		
@@ -361,7 +346,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			public void onError(String url) {
 
 				LogUtils.log("HeaderViewForRetailShop.onError." + "\nurl : " + url);
-
 			}
 
 			@Override
@@ -379,19 +363,22 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 					}
 					
 					pagerAdapter.notifyDataSetChanged();
-					viewPager.setCurrentItem(0);
-					tvPhoneNumber.setText(wholesales.get(0).getPhone_number());
-					tvLocation.setText(wholesales.get(0).getLocation());
-					tvHit.setText(wholesales.get(0).getToday_visited_cnt() + 
-							" / " + wholesales.get(0).getTotal_visited_cnt());
-					tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
-					tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
-					tvRetailName.setText(wholesales.get(0).getName());
 					
-					needPlay = true;
-					
-					if(!isPlaying) {
-						playPager();
+					if(size > 0) {
+						viewPager.setCurrentItem(0);
+						tvPhoneNumber.setText(wholesales.get(0).getPhone_number());
+						tvLocation.setText(wholesales.get(0).getLocation());
+						tvHit.setText(wholesales.get(0).getToday_visited_cnt() + 
+								" / " + wholesales.get(0).getTotal_visited_cnt());
+						tvLike.setText("" + wholesales.get(0).getFavorited_cnt());
+						tvPartner.setText("" + wholesales.get(0).getCustomers_cnt());
+						tvRetailName.setText(wholesales.get(0).getName());
+						
+						needPlay = true;
+						
+						if(!isPlaying) {
+							playPager();
+						}
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -409,8 +396,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			@Override
 			public void onPageSelected(final int position) {
 
-				needWait = true;
-				
 				tvPhoneNumber.setText("010-" + wholesales.get(position).getPhone_number());
 				tvLocation.setText("청평화몰 " + wholesales.get(position).getLocation());
 				tvHit.setText(wholesales.get(position).getToday_visited_cnt() + 
@@ -418,6 +403,8 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 				tvLike.setText("" + wholesales.get(position).getFavorited_cnt());
 				tvPartner.setText("" + wholesales.get(position).getCustomers_cnt());
 				tvRetailName.setText(wholesales.get(position).getName());
+				
+				needWait = true;
 			}
 			
 			@Override
@@ -463,7 +450,6 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 				}
 				
 				if(wholesales != null &&wholesales.size() > 0) {
-					
 					int position = viewPager.getCurrentItem();
 					viewPager.setCurrentItem((position + 1) % wholesales.size(), true);
 				}

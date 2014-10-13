@@ -410,6 +410,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				tvBestTitle.setText(products.get(position).getName());
 				tvBestSellingCount.setText("구매 : " + products.get(position).getOrdered_cnt());
 				tvRank.setText((position + 1) + "위");
+				
 				needWait = true;
 			}
 			
@@ -741,8 +742,6 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 							product.setItemCode(CphConstants.ITEM_PRODUCT);
 							products.add(product);
 						}
-
-						LogUtils.log("###.onCompleted.  products.size : " + products.size());
 						
 						if(size > 0) {
 							pagerAdapter.notifyDataSetChanged();
@@ -804,7 +803,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				
 				playPager();
 			}
-		}, 1500);
+		}, 3000);
 	}
 	
 	public void checkNewMessage() {
