@@ -2,9 +2,6 @@ package com.cmons.cph.fragments.wholesale;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -55,9 +52,10 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
-	private static final int MODE_COLOR = 0;
-	private static final int MODE_SIZE = 1;
-	private static final int MODE_MIXTURE = 2;
+	private static final int MODE_CATEGORY = 0;
+	private static final int MODE_COLOR = 1;
+	private static final int MODE_SIZE = 2;
+	private static final int MODE_MIXTURE = 3;
 	
 	private static String[] selectedImageUrls = new String[3];
 	private static OnAfterUploadImage onAfterUploadImage;
@@ -74,6 +72,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
     private EditText etPrice;
     private TextView tvCategory;
     private Button btnCategory;
+    private Button btnSave;
+    private Button btnClear;
     private TextView tvColor;
     private Button btnColor;
     private TextView tvSize;
@@ -197,6 +197,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		etName = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etName);
 		tvPrice = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvPrice);
 		etPrice = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etPrice);
+		btnSave = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnSave);
+		btnClear = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnClear);
 		tvCategory = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvCategory);
 		btnCategory = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnCategory);
 		tvColor = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvColor);
@@ -228,17 +230,17 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		}
 		
 		colorItems = new ArrayList<Item>();
-		loadBestHitItems(MODE_COLOR);
+//		loadBestHitItems(MODE_COLOR);
 		loadBasicItems(MODE_COLOR);
 		colorAdapter = new ChoiceAdapter(colorItems);
 		
 		sizeItems = new ArrayList<Item>();
-		loadBestHitItems(MODE_SIZE);
+//		loadBestHitItems(MODE_SIZE);
 		loadBasicItems(MODE_SIZE);
 		sizeAdapter = new ChoiceAdapter(sizeItems);
 		
 		mixtureItems = new ArrayList<Item>();
-		loadBestHitItems(MODE_MIXTURE);
+//		loadBestHitItems(MODE_MIXTURE);
 		
 		mixtureAdapter = new ChoiceAdapter(mixtureItems);
 		
@@ -305,21 +307,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			etName.setText(product.getName());
 			etPrice.setText("" + product.getPrice());
 			
-			if(mActivity.categories != null) {
-				String categoryText = null;
-				selectedCategoryIndex = product.getCategory_id();
-				int size = mActivity.categories.length;
-				
-				for(int i=0; i<size; i++) {
-					categoryText = mActivity.categories[i].getCategoryStringById(selectedCategoryIndex);
-					
-					if(categoryText != null) {
-						btnCategory.setText(categoryText);
-						break;
-					}
-				}
-			}
-			
+			btnCategory.setText(getCategoryStringUsingIndex(product.getCategory_id()));
 			btnColor.setText(product.getColors().replace("|", "/"));
 			btnSize.setText(product.getSizes().replace("|", "/"));
 			btnMixtureRate.setText(product.getMixture_rate());
@@ -330,6 +318,18 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			tvNotification.setVisibility(View.VISIBLE);
 			btnNotification.setVisibility(View.VISIBLE);
 			btnDelete.setVisibility(View.INVISIBLE);
+			
+			//저장된 카테고리 설정.
+			loadSavedItems(MODE_CATEGORY);
+			
+			//저장된 사이즈 설정.
+			loadSavedItems(MODE_SIZE);
+			
+			//저장된 색상 설정.
+			loadSavedItems(MODE_COLOR);
+			
+			//저장된 혼용률 설정.
+			loadSavedItems(MODE_MIXTURE);
 		}
 	}
 
@@ -346,22 +346,26 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					String printString = null;
 					ArrayList<Item> targetItems = null;
 					Button targetButton = null;
+					int hintResId = 0;
 					
 					switch(mode) {
 					
 					case MODE_COLOR:
 						targetItems = colorItems;
 						targetButton = btnColor;
+						hintResId = R.string.hintForProductColor;
 						break;
 						
 					case MODE_SIZE:
 						targetItems = sizeItems;
 						targetButton = btnSize;
+						hintResId = R.string.hintForProductSize;
 						break;
 						
 					case MODE_MIXTURE:
 						targetItems = mixtureItems;
 						targetButton = btnMixtureRate;
+						hintResId = R.string.hintForProductMixtureRate;
 						break;
 					}
 					
@@ -377,7 +381,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 						printString += item.text;
 					}
 					
-					targetButton.setText(printString);
+					if(printString != null) {
+						targetButton.setText(printString);
+					} else {
+						targetButton.setText(hintResId);
+					}
+					
 					hidePopup();
 					return;
 				}
@@ -523,6 +532,32 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			}
 		});
 
+		btnSave.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				saveSettings();
+				mActivity.showAlertDialog(
+						R.string.saveSettings, 
+						R.string.complete_saveSettings, 
+						R.string.confirm, null);
+			}
+		});
+		
+		btnClear.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				clearSettings();
+				mActivity.showAlertDialog(
+						R.string.clearSettings, 
+						R.string.complete_clearSettings, 
+						R.string.confirm, null);
+			}
+		});
+		
 		btnCategory.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -781,6 +816,24 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		FontUtils.setFontAndHintSize(etPrice, 30, 24);
 		etPrice.setPadding(padding, 0, padding, 0);
 		
+		//line.
+		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(
+				R.id.wholesaleWritePage_line)).getLayoutParams();
+		rp.topMargin = titleTextHeight;
+		
+		//btnSave.
+		rp = (RelativeLayout.LayoutParams) btnSave.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(140);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.rightMargin = ResizeUtils.getSpecificLength(20);
+		
+		//btnClear.
+		rp = (RelativeLayout.LayoutParams) btnClear.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(140);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		
 		//tvCategory.
 		rp = (RelativeLayout.LayoutParams) tvCategory.getLayoutParams();
 		rp.height = titleTextHeight;
@@ -1007,14 +1060,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			uniqueSelectedItemList = getUniqueSelectedItemList(colorItems);
 			for(Item item : uniqueSelectedItemList) {
 				url += "&product[colors][]=" + item.text;
-				saveItemToPrefs(MODE_COLOR, item.text);
+//				saveItemToPrefs(MODE_COLOR, item.text);
 			}
 			
 			//사이즈 추가.
 			uniqueSelectedItemList = getUniqueSelectedItemList(sizeItems);
 			for(Item item : uniqueSelectedItemList) {
 				url += "&product[sizes][]=" + item.text;
-				saveItemToPrefs(MODE_SIZE, item.text);
+//				saveItemToPrefs(MODE_SIZE, item.text);
 			}
 			
 			//혼용률 추가.
@@ -1027,7 +1080,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				}
 				
 				mixtureString += item.text;
-				saveItemToPrefs(MODE_MIXTURE, item.text);
+//				saveItemToPrefs(MODE_MIXTURE, item.text);
 			}
 			
 			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
@@ -1133,14 +1186,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			uniqueSelectedItemList = getUniqueSelectedItemList(colorItems);
 			for(Item item : uniqueSelectedItemList) {
 				url += "&product[colors][]=" + item.text;
-				saveItemToPrefs(MODE_COLOR, item.text);
+//				saveItemToPrefs(MODE_COLOR, item.text);
 			}
 			
 			//사이즈 추가.
 			uniqueSelectedItemList = getUniqueSelectedItemList(sizeItems);
 			for(Item item : uniqueSelectedItemList) {
 				url += "&product[sizes][]=" + item.text;
-				saveItemToPrefs(MODE_SIZE, item.text);
+//				saveItemToPrefs(MODE_SIZE, item.text);
 			}
 			
 			//혼용률 추가.
@@ -1153,7 +1206,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				}
 				
 				mixtureString += item.text;
-				saveItemToPrefs(MODE_MIXTURE, item.text);
+//				saveItemToPrefs(MODE_MIXTURE, item.text);
 			}
 			
 			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
@@ -1267,70 +1320,70 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	
-	@SuppressWarnings("unchecked")
-	public void loadBestHitItems(int mode) {
-
-		ArrayList<Item> targetItems = null;
-		int targetTitleResId = 0;
-
-		switch(mode) {
-
-		case MODE_COLOR:
-			targetItems = colorItems;
-			targetTitleResId = R.string.bestHitColor;
-			break;
-			
-		case MODE_SIZE:
-			targetItems = sizeItems;
-			targetTitleResId = R.string.bestHitSize;
-			break;
-			
-		case MODE_MIXTURE:
-			targetItems = mixtureItems;
-			targetTitleResId = R.string.bestHitMixture;
-			break;
-		}
-		
-		SharedPreferences prefs = mContext.getSharedPreferences(
-				CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
-		
-		Map<String, Integer> map = (Map<String, Integer>)prefs.getAll();
-
-		if(map.size() != 0) {
-			String printString = "================ mode : " + mode;
-
-			for(String key : map.keySet()) {
-				printString += "\n" + key + " : " + map.get(key);
-				targetItems.add(new Item(key, map.get(key)));
-			}
-			
-			LogUtils.log(printString);
-			
-			Comparator<Item> compare = new Comparator<Item>() {
-				
-				@Override
-				public int compare(Item lhs, Item rhs) {
-					
-					//lhs > rhs로 하면 오름차순, 반대로 하면 내림차순.
-					return (lhs.count < rhs.count? 1 : -1);
-				}
-			};
-			
-			Collections.sort(targetItems, compare);
-
-			while(targetItems.size() > 10) {
-				targetItems.remove(targetItems.size() - 1);
-			}
-			
-			Item titleItem = new Item(getString(targetTitleResId));
-			titleItem.unusable = true;
-			targetItems.add(0, titleItem);
-			
-			Item lineItem = new Item("*******");
-			lineItem.unusable = true;
-			targetItems.add(lineItem);
-		}
-	}
+//	@SuppressWarnings("unchecked")
+//	public void loadBestHitItems(int mode) {
+//
+//		ArrayList<Item> targetItems = null;
+//		int targetTitleResId = 0;
+//
+//		switch(mode) {
+//
+//		case MODE_COLOR:
+//			targetItems = colorItems;
+//			targetTitleResId = R.string.bestHitColor;
+//			break;
+//			
+//		case MODE_SIZE:
+//			targetItems = sizeItems;
+//			targetTitleResId = R.string.bestHitSize;
+//			break;
+//			
+//		case MODE_MIXTURE:
+//			targetItems = mixtureItems;
+//			targetTitleResId = R.string.bestHitMixture;
+//			break;
+//		}
+//		
+//		SharedPreferences prefs = mContext.getSharedPreferences(
+//				CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+//		
+//		Map<String, Integer> map = (Map<String, Integer>)prefs.getAll();
+//
+//		if(map.size() != 0) {
+//			String printString = "================ mode : " + mode;
+//
+//			for(String key : map.keySet()) {
+//				printString += "\n" + key + " : " + map.get(key);
+//				targetItems.add(new Item(key, map.get(key)));
+//			}
+//			
+//			LogUtils.log(printString);
+//			
+//			Comparator<Item> compare = new Comparator<Item>() {
+//				
+//				@Override
+//				public int compare(Item lhs, Item rhs) {
+//					
+//					//lhs > rhs로 하면 오름차순, 반대로 하면 내림차순.
+//					return (lhs.count < rhs.count? 1 : -1);
+//				}
+//			};
+//			
+//			Collections.sort(targetItems, compare);
+//
+//			while(targetItems.size() > 10) {
+//				targetItems.remove(targetItems.size() - 1);
+//			}
+//			
+//			Item titleItem = new Item(getString(targetTitleResId));
+//			titleItem.unusable = true;
+//			targetItems.add(0, titleItem);
+//			
+//			Item lineItem = new Item("*******");
+//			lineItem.unusable = true;
+//			targetItems.add(lineItem);
+//		}
+//	}
 	
 	public void loadBasicItems(int mode) {
 		
@@ -1428,26 +1481,118 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			}
 		}
 	}
-	
-	public void saveItemToPrefs(int mode, String item) {
+
+	public void loadSavedItems(int mode) {
 		
-		try {
-			SharedPreferences prefs = mContext.getSharedPreferences(
-					CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+		int size = 0;
+		boolean duplicated = false;
+		String[] targetStrings = null;
+		ArrayList<Item> targetItems = null;
+		String prefsName = CphConstants.PREFS_PRODUCT_UPLOAD;
+		Button targetButton = null;
+		String key = null;
+		String splitword = null;
+		
+		switch(mode) {
+		
+		case MODE_CATEGORY:
 			
-			int count = prefs.getInt(item, 0);
-			Editor ed = prefs.edit();
-			
-			if(prefs.contains(item)) {
-				ed.remove(item);
+			if(SharedPrefsUtils.checkPrefs(prefsName, "categoryIndex")) {
+				
+				int categoryIndex = SharedPrefsUtils.getIntegerFromPrefs(prefsName, "categoryIndex");
+				String category = SharedPrefsUtils.getStringFromPrefs(prefsName, "category");
+				
+				LogUtils.log("###WholesaleForWritePage.loadSavedItems.  " +
+						"\ncategoryIndex : " + categoryIndex +
+						"\ncategory : " + category);
+				
+				selectedCategoryIndex = categoryIndex;
+				btnCategory.setText(category);
 			}
 			
-			ed.putInt(item, count + 1);
-			ed.commit();
-		} catch (Exception e) {
-			LogUtils.trace(e);
+			return;
+		
+		case MODE_COLOR:
+			key = "colorString";
+			splitword = "\\|";
+			targetItems = colorItems;
+			targetButton = btnColor;
+			break;
+			
+		case MODE_SIZE:
+			key = "sizeString";
+			splitword = "\\|";
+			targetItems = sizeItems;
+			targetButton = btnSize;
+			break;
+			
+		case MODE_MIXTURE:
+			key = "mixtureString";
+			splitword = " / ";
+			targetItems = mixtureItems;
+			targetButton = btnMixtureRate;
+			break;
+		}
+		
+		if(!SharedPrefsUtils.checkPrefs(prefsName, key)) {
+			return;
+		} else {
+			targetStrings = SharedPrefsUtils.getStringFromPrefs(prefsName, key).split(splitword);
+		}
+		
+		LogUtils.log("###WholesaleForWritePage.loadSavedItems.  " +
+				"\targetStrings : " + targetStrings);
+
+		String settingString = null;
+		size = targetStrings.length;
+		for(int i=0; i<size; i++) {
+			
+			duplicated = false;
+			
+			for(Item item : targetItems) {
+				if(targetStrings[i].equals(item.text)) {
+					duplicated = true;
+					item.selected = true;
+				}
+			}
+			
+			if(!duplicated) {
+				Item item = new Item(targetStrings[i]);
+				item.selected = true;
+				targetItems.add(item);
+			}
+			
+			if(settingString == null) {
+				settingString = targetStrings[i];
+			} else {
+				settingString += " / " + targetStrings[i];
+			}
+		}
+		
+		if(settingString != null) {
+			targetButton.setText(settingString);
 		}
 	}
+	
+//	public void saveItemToPrefs(int mode, String item) {
+//		
+//		try {
+//			SharedPreferences prefs = mContext.getSharedPreferences(
+//					CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+//			
+//			int count = prefs.getInt(item, 0);
+//			Editor ed = prefs.edit();
+//			
+//			if(prefs.contains(item)) {
+//				ed.remove(item);
+//			}
+//			
+//			ed.putInt(item, count + 1);
+//			ed.commit();
+//		} catch (Exception e) {
+//			LogUtils.trace(e);
+//		}
+//	}
 
 	public ArrayList<Item> getUniqueSelectedItemList(ArrayList<Item> items) {
 
@@ -1485,6 +1630,195 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		}
 		
 		return uniqueItemList;
+	}
+
+	public void saveSettings() {
+		
+		ArrayList<Item> uniqueColors = getUniqueSelectedItemList(colorItems);
+		ArrayList<Item> uniqueSize = getUniqueSelectedItemList(sizeItems);
+		ArrayList<Item> uniqueMixtures = getUniqueSelectedItemList(mixtureItems);
+		
+		LogUtils.log("#################################");
+		
+		LogUtils.log("#####CategoryIndex.");
+		LogUtils.log(selectedCategoryIndex + ", " + getCategoryStringUsingIndex(selectedCategoryIndex));
+		
+		LogUtils.log("#####UniqueColors.");
+		for(Item item : uniqueColors) {
+			LogUtils.log(item.text);
+		}
+		
+		LogUtils.log("#####UniqueSizes.");
+		for(Item item : uniqueSize) {
+			LogUtils.log(item.text);
+		}
+		
+		LogUtils.log("#####UniqueMixtures.");
+		for(Item item : uniqueMixtures) {
+			LogUtils.log(item.text);
+		}
+		
+		LogUtils.log("#################################");
+		
+		try {
+			String prefsName = CphConstants.PREFS_PRODUCT_UPLOAD;
+			SharedPreferences prefs = mContext.getSharedPreferences(
+					prefsName, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+			
+			//카테고리.
+			if(selectedCategoryIndex != 0) {
+				ed.putInt("categoryIndex", selectedCategoryIndex);
+				ed.putString("category", getCategoryStringUsingIndex(selectedCategoryIndex));
+			} else {
+				ed.remove("categoryIndex");
+				ed.remove("category");
+			}
+			
+			//색상.
+			if(uniqueColors.size() > 0) {
+				String colorString = null;
+				
+				for(Item item : uniqueColors) {
+					
+					if(colorString == null) {
+						colorString = "";
+					} else {
+						colorString += "|";
+					}
+					
+					colorString += item.text;
+				}
+				
+				ed.putString("colorString", colorString);
+			} else {
+				ed.remove("colorString");
+			}
+			
+			//사이즈.
+			if(uniqueSize.size() > 0) {
+				String sizeString = null;
+				
+				for(Item item : uniqueSize) {
+					
+					if(sizeString == null) {
+						sizeString = "";
+					} else {
+						sizeString += "|";
+					}
+					
+					sizeString += item.text;
+				}
+				
+				ed.putString("sizeString", sizeString);
+			} else {
+				ed.remove("sizeString");
+			}
+			
+			//혼용률.
+			if(uniqueMixtures.size() > 0) {
+				String mixtureString = null;
+				
+				for(Item item : uniqueMixtures) {
+					
+					if(mixtureString == null) {
+						mixtureString = "";
+					} else {
+						mixtureString += " / ";
+					}
+					
+					mixtureString += item.text;
+				}
+				
+				ed.putString("mixtureString", mixtureString);
+			} else {
+				ed.remove("mixtureString");
+			}
+			
+			ed.commit();
+			
+			LogUtils.log("#################################");
+			
+			LogUtils.log("#####CategoryIndex.");
+			LogUtils.log(SharedPrefsUtils.getIntegerFromPrefs(prefsName, "categoryIndex") + 
+					", " + SharedPrefsUtils.getStringFromPrefs(prefsName, "category"));
+			
+			LogUtils.log("#####UniqueColors.");
+			LogUtils.log("colorString : " + 
+					SharedPrefsUtils.getStringFromPrefs(prefsName, "colorString"));
+			
+			LogUtils.log("#####UniqueSizes.");
+			LogUtils.log("sizeString : " + 
+					SharedPrefsUtils.getStringFromPrefs(prefsName, "sizeString"));
+			
+			LogUtils.log("#####UniqueMixtures.");
+			LogUtils.log("mixtureString : " + 
+					SharedPrefsUtils.getStringFromPrefs(prefsName, "mixtureString"));
+			
+			LogUtils.log("#################################");
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void clearSettings() {
+		
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(
+					CphConstants.PREFS_PRODUCT_UPLOAD, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+
+			ed.remove("category");
+			ed.remove("categoryIndex");
+			ed.remove("colorString");
+			ed.remove("sizeString");
+			ed.remove("mixtureString");
+			
+			ed.commit();
+			
+			selectedCategoryIndex = 0;
+			
+			colorItems.clear();
+			loadBasicItems(MODE_COLOR);
+			colorAdapter.notifyDataSetChanged();
+			
+			sizeItems.clear();
+			loadBasicItems(MODE_SIZE);
+			sizeAdapter.notifyDataSetChanged();
+			
+			mixtureItems.clear();
+			loadBasicItems(MODE_MIXTURE);
+			mixtureAdapter.notifyDataSetChanged();
+			
+			btnCategory.setText(R.string.hintForProductCategory);
+			btnColor.setText(R.string.hintForProductColor);
+			btnSize.setText(R.string.hintForProductSize);
+			btnMixtureRate.setText(R.string.hintForProductMixtureRate);
+			
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public String getCategoryStringUsingIndex(int index) {
+
+		String categoryText = null;
+		
+		if(mActivity.categories != null) {
+			int size = mActivity.categories.length;
+			
+			for(int i=0; i<size; i++) {
+				categoryText = mActivity.categories[i].getCategoryStringById(index);
+				
+				if(categoryText != null) {
+					break;
+				}
+			}
+		}
+		
+		return categoryText;
 	}
 	
 ////////////////////Custom classes.

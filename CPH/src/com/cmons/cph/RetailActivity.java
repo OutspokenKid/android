@@ -11,6 +11,7 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.fragments.common.ChangeInfoPage;
 import com.cmons.cph.fragments.common.ChangePasswordPage;
 import com.cmons.cph.fragments.common.ChangePhoneNumberPage;
+import com.cmons.cph.fragments.common.GuidePage;
 import com.cmons.cph.fragments.common.NoticeListPage;
 import com.cmons.cph.fragments.common.NoticePage;
 import com.cmons.cph.fragments.common.NotificationSettingPage;
@@ -172,6 +173,9 @@ public class RetailActivity extends ShopActivity {
 			 
 		case CphConstants.PAGE_RETAIL_SAMPLE:
 			 return new RetailForSampleListPage();
+			 
+		case CphConstants.PAGE_COMMON_GUIDE:
+			return new GuidePage();
 		}
 		
 		return null;
@@ -345,16 +349,7 @@ public class RetailActivity extends ShopActivity {
 				&& categories.length > 0
 				&& retail != null
 				&& getFragmentsSize() == 0) {
-			showPage(CphConstants.PAGE_RETAIL_MAIN, null);
-			
-			new Handler().postDelayed(new Runnable() {
-				
-				@Override
-				public void run() {
-
-					checkIntent();
-				}
-			}, 500);
+			showMainPage();
 		} else {
 			new Handler().postDelayed(new Runnable() {
 				
@@ -364,5 +359,26 @@ public class RetailActivity extends ShopActivity {
 				}
 			}, 50);
 		}
+	}
+	
+	public void showGuidePage() {
+
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("isWholesale", false);
+		showPage(CphConstants.PAGE_COMMON_GUIDE, bundle);
+	}
+	
+	public void showMainPage() {
+		
+		showPage(CphConstants.PAGE_RETAIL_MAIN, null);
+		
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+
+				checkIntent();
+			}
+		}, 500);
 	}
 }

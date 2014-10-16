@@ -2,6 +2,7 @@ package com.cmons.cph.fragments.wholesale;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
@@ -133,6 +134,12 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			break;
 		}
 		
+		if(orderSet.getStatus() != 3) {
+			titleBar.getBtnDeny().setVisibility(View.VISIBLE);
+		} else {
+			titleBar.getBtnDeny().setVisibility(View.INVISIBLE);
+		}
+		
 		String dateString = StringUtils.getDateString("yyyy.MM.dd aa hh:mm", 
 				orderSet.getItems()[0].getCreated_at() * 1000);
 		FontUtils.addSpan(tvOrder, dateString, 0, 0.8f);
@@ -202,7 +209,25 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setListeners() {
-	
+		
+		titleBar.getBtnDeny().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.deny, R.string.wannaDenyOrder, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								denyOrder();
+							}
+						}, null);
+			}
+		});
+		
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -387,6 +412,53 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
 					ToastUtils.showToast(R.string.failToChangeOrderStatus);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void denyOrder() {
+		
+		String url = CphConstants.BASE_API_URL + "wholesales/orders/set_status" +
+				"?status=-1";
+		
+		//"?order_ids[]=" + order_ids +
+		int size = orderSet.getItems().length;
+		for(int i=0; i<size; i++) {
+			
+			if(orderSet.getItems()[i].isChecked()) {
+				url += "&order_ids[]=" + orderSet.getItems()[i].getId();
+			}
+		}
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForOrderPage.changeOrderStatus.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeny);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForOrderPage.changeOrderStatus.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						mActivity.closePageWithRefreshPreviousPage();
+						ToastUtils.showToast(R.string.complete_deny);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeny);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeny);
 					LogUtils.trace(oom);
 				}
 			}

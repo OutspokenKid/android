@@ -16,6 +16,7 @@ public class CphConstants {
 	public static final String PREFS_IMAGE_UPLOAD = "imageupload";
 	public static final String PREFS_BIG_FONT = "bigfont";
 	public static final String PREFS_PRODUCT_UPLOAD = "productupload";
+	public static final String PREFS_GUIDE = "guide";
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
@@ -54,6 +55,7 @@ public class CphConstants {
 	public static final int PAGE_COMMON_REPLY = 210;
 	public static final int PAGE_COMMON_SETTING = 211;
 	public static final int PAGE_COMMON_NOTIFICATION_SETTING = 212;
+	public static final int PAGE_COMMON_GUIDE = 213;
 	
 	public static final int PAGE_WHOLESALE_MAIN = 1;
 	public static final int PAGE_WHOLESALE_ACCOUNT = 2;

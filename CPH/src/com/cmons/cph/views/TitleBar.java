@@ -34,6 +34,7 @@ public class TitleBar extends RelativeLayout {
 	private Button btnReply;
 	private Button btnWrite;
 	private Button btnFavorite;
+	private Button btnDeny;
 	
 	private View newBadge;
 	
@@ -378,4 +379,22 @@ public class TitleBar extends RelativeLayout {
 		
 		return btnFavorite;
 	}
+
+	public Button getBtnDeny() {
+		
+		if(btnDeny == null) {
+			btnDeny = new Button(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(92));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			btnDeny.setLayoutParams(rp);
+			btnDeny.setBackgroundResource(R.drawable.deny3_btn);
+			this.addView(btnDeny);
+		}
+		
+		return btnDeny;
+	}
+
 }

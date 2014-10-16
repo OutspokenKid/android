@@ -28,6 +28,7 @@ public class SettingPage extends CmonsFragmentForShop {
 	private Button btnSuggest;
 	private Button btnFont;
 	private Button btnNotification;
+	private Button btnGuide;
 	private Button btnWithdraw;
 	private Button btnSignout;
 	
@@ -42,6 +43,7 @@ public class SettingPage extends CmonsFragmentForShop {
 		btnSuggest = (Button) mThisView.findViewById(R.id.settingPage_btnSuggest);
 		btnFont = (Button) mThisView.findViewById(R.id.settingPage_btnFont);
 		btnNotification = (Button) mThisView.findViewById(R.id.settingPage_btnNotification);
+		btnGuide = (Button) mThisView.findViewById(R.id.settingPage_btnGuide);
 		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
 		btnSignout = (Button) mThisView.findViewById(R.id.settingPage_btnSignout);
 	}
@@ -111,6 +113,22 @@ public class SettingPage extends CmonsFragmentForShop {
 			}
 		});
 		
+		btnGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//도매.
+				if(mActivity.user.getWholesale_id() != 0) {
+					IntentUtils.showDeviceBrowser(mActivity, "http://m.naver.com");
+					
+				//소매.
+				} else {
+					IntentUtils.showDeviceBrowser(mActivity, "http://m.naver.com");
+				}
+			}
+		});
+		
 		btnWithdraw.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -169,6 +187,10 @@ public class SettingPage extends CmonsFragmentForShop {
 		//btnFont.
 		rp = (RelativeLayout.LayoutParams) btnFont.getLayoutParams();
 		rp.width = ResizeUtils.getScreenWidth()/2;
+		rp.height = ResizeUtils.getScreenWidth()/4;
+
+		//btnGuide.
+		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
 		rp.height = ResizeUtils.getScreenWidth()/4;
 		
 		//btnNotification.

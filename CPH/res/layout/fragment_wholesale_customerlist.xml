@@ -186,10 +186,18 @@
 	    	android:textColor="#000" />
 	    
 	    <Button
+	        android:id="@+id/wholesaleCustomerListPage_btnDeny"
+	        android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_alignParentBottom="true"
+	    	android:background="@drawable/deny1_btn" />
+	    
+	    <Button
 	        android:id="@+id/wholesaleCustomerListPage_btnConfirm"
 	        android:layout_width="0dp"
 	    	android:layout_height="0dp"
-	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignParentRight="true"
 	    	android:layout_alignParentBottom="true"
 	    	android:background="@drawable/business_popup_confirm_btn" />
 	    

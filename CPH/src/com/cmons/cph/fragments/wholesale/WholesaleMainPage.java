@@ -408,7 +408,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			public void onPageSelected(final int position) {
 
 				tvBestTitle.setText(products.get(position).getName());
-				tvBestSellingCount.setText("구매 : " + products.get(position).getOrdered_cnt());
+				tvBestSellingCount.setText("구매 : " + products.get(position).getSum_amount());
 				tvRank.setText((position + 1) + "위");
 				
 				needWait = true;

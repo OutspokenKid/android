@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Spannable;
@@ -56,6 +57,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 	private TextView tvOwnerName;
 	private TextView tvPhone;
 	private TextView tvSample;
+	private Button btnDeny;
 	private Button btnConfirm;
 	
 	private int menuIndex;
@@ -97,6 +99,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		tvOwnerName = (TextView) mThisView.findViewById(R.id.wholesaleSamplePage_tvOwnerName);
 		tvPhone = (TextView) mThisView.findViewById(R.id.wholesaleSamplePage_tvPhone);
 		tvSample = (TextView) mThisView.findViewById(R.id.wholesaleSamplePage_tvSample);
+		btnDeny = (Button) mThisView.findViewById(R.id.wholesaleSamplePage_btnDeny);
 		btnConfirm = (Button) mThisView.findViewById(R.id.wholesaleSamplePage_btnConfirm);
 	}
 
@@ -217,6 +220,24 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 			}
 		});
 		
+		btnDeny.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.deny, R.string.wannaDenySample, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								
+								deny(selectedSample.getId());
+							}
+						}, null);
+			}
+		});
+		
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -320,12 +341,16 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		//tvSample.
 		FontUtils.setFontSize(tvSample, 28);
 		tvSample.setPadding(p, p, p, p);
+
+		//btnDeny.
+		rp = (RelativeLayout.LayoutParams) btnDeny.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(160);
+		rp.height = ResizeUtils.getSpecificLength(62);
+		rp.leftMargin = ResizeUtils.getSpecificLength(75);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//btnConfirm.
-		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(209);
-		rp.height = ResizeUtils.getSpecificLength(62);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
+		//Set size at showPopup().
 	}
 
 	@Override
@@ -467,23 +492,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvSample.append(sp2);
 		
-		switch (menuIndex) {
-		case 0:
-			btnConfirm.setBackgroundResource(R.drawable.sample_confirm_popup_btn);
-			break;
-			
-		case 1:
-			btnConfirm.setBackgroundResource(R.drawable.sample_return_popup_btn);
-			break;
-			
-		case 2:
-			btnConfirm.setBackgroundResource(R.drawable.sample_return_done_popup_btn);
-			break;
-			
-		case 3:
-			btnConfirm.setBackgroundResource(R.drawable.sample_delete_popup_btn);
-			break;
-		}
+		setButtons();
 		
 		SoftKeyboardUtils.hideKeyboard(mContext, popupRelative);
 		popupRelative.setVisibility(View.VISIBLE);
@@ -585,6 +594,88 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 				}
 			}
 		});
+	}
+	
+	public void deny(int sample_id) {
+		
+		String url = CphConstants.BASE_API_URL + "wholesales/samples/set_status" + 
+				"?sample_id=" + sample_id + 
+				"&status=-1";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSampleListPage.deny.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeny);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSampleListPage.deny.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						hidePopup();
+						ToastUtils.showToast(R.string.complete_deny);
+						refreshPage();
+					} else {
+						objJSON.getString("message");
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeny);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeny);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void setButtons() {
+
+		switch (menuIndex) {
+		case 0:
+			btnConfirm.setBackgroundResource(R.drawable.sample_confirm_popup_btn);
+			btnDeny.setVisibility(View.VISIBLE);
+			break;
+			
+		case 1:
+			btnConfirm.setBackgroundResource(R.drawable.sample_return_popup_btn);
+			btnDeny.setVisibility(View.INVISIBLE);
+			break;
+			
+		case 2:
+			btnConfirm.setBackgroundResource(R.drawable.sample_return_done_popup_btn);
+			btnDeny.setVisibility(View.INVISIBLE);
+			break;
+			
+		case 3:
+			btnConfirm.setBackgroundResource(R.drawable.sample_delete_popup_btn);
+			btnDeny.setVisibility(View.INVISIBLE);
+			break;
+		}
+
+		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(209), 
+				ResizeUtils.getSpecificLength(62));
+		if(menuIndex == 0) {
+			//(626 / 2) - 21 = 292
+			//(292 - 209) / 2 = 83 / 2 = 41
+			rp.rightMargin = ResizeUtils.getSpecificLength(41);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			
+		} else {
+			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		}
+		
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
+		btnConfirm.setLayoutParams(rp);
 	}
 	
 	@Override

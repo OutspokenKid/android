@@ -3,13 +3,10 @@ package com.cmons.cph.fragments.common;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,11 +18,8 @@ import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.User;
 import com.cmons.cph.views.TitleBar;
-import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class StaffPage extends CmonsFragmentForShop {
 	
@@ -92,41 +86,6 @@ public class StaffPage extends CmonsFragmentForShop {
 			public void onClick(View view) {
 
 				setMenu(1);
-			}
-		});
-
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, final int arg2,
-					long arg3) {
-
-				int titleResId = 0;
-				int messageResId = 0;
-				
-				if(menuIndex == 0) {
-					titleResId = R.string.approval;
-					messageResId = R.string.wannaApproval;
-				} else {
-					titleResId = R.string.fire;
-					messageResId = R.string.wannaFire;
-				}
-				
-				mActivity.showAlertDialog(titleResId, messageResId, 
-						R.string.confirm, R.string.cancel, 
-						new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								if(menuIndex == 0) {
-									approval((User)models.get(arg2));
-								} else {
-									fire((User)models.get(arg2));
-								}
-							}
-						}, 
-						null);
 			}
 		});
 	}
@@ -229,85 +188,15 @@ public class StaffPage extends CmonsFragmentForShop {
 		
 		refreshPage();
 	}
-	
-	public void approval(User user) {
-
-		String url = CphConstants.BASE_API_URL + "users/staffs/accept" +
-				"?staff_id=" + user.getId();
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("StaffPage.approval.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.failToApproval);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("StaffPage.approval.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_approval);
-						refreshPage();
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					ToastUtils.showToast(R.string.failToApproval);
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					ToastUtils.showToast(R.string.failToApproval);
-					LogUtils.trace(oom);
-				}
-			}
-		});
-	}
-	
-	public void fire(User user) {
-
-		String url = CphConstants.BASE_API_URL + "users/staffs/decline" +
-				"?staff_id=" + user.getId();
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("StaffPage.fire.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.failToFire);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("StaffPage.fire.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_fire);
-						refreshPage();
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					ToastUtils.showToast(R.string.failToFire);
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					ToastUtils.showToast(R.string.failToFire);
-					LogUtils.trace(oom);
-				}
-			}
-		});
-
-	}
 
 	@Override
 	public int getBgResourceId() {
 
 		return R.drawable.staff_bg;
+	}
+
+	public int getMenuIndex() {
+		
+		return menuIndex;
 	}
 }

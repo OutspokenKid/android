@@ -90,8 +90,6 @@ public class Category extends BaseModel implements Serializable {
 
 	public String getCategoryStringById(int category_id) {
 		
-		LogUtils.log("###Category.getCategoryStringById.  \ncategory_id : " + category_id + ", id : " + id + ", name : " + name); 
-		
 		if(id == category_id) {
 			return name;
 		} else if(categories != null) {

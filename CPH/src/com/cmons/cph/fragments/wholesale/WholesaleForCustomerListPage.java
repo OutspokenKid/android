@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 	private TextView tvPhone;
 	private TextView tvCategory;
 	private TextView tvAddress;
+	private Button btnDeny;
 	private Button btnConfirm;
 	
 	private int menuIndex;
@@ -95,6 +97,7 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		tvPhone = (TextView) mThisView.findViewById(R.id.wholesaleCustomerListPage_tvPhone);
 		tvCategory = (TextView) mThisView.findViewById(R.id.wholesaleCustomerListPage_tvCategory);
 		tvAddress = (TextView) mThisView.findViewById(R.id.wholesaleCustomerListPage_tvAddress);
+		btnDeny = (Button) mThisView.findViewById(R.id.wholesaleCustomerListPage_btnDeny);
 		btnConfirm = (Button) mThisView.findViewById(R.id.wholesaleCustomerListPage_btnConfirm);
 	}
 
@@ -219,6 +222,24 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 				hidePopup();
 			}
 		});
+
+		btnDeny.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.deny, R.string.wannaDenyCustomer, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								
+								deny(selectedCustomer);
+							}
+						}, null);
+			}
+		});
 		
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
@@ -302,11 +323,19 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) tvAddress.getLayoutParams();
 		tvAddress.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvAddress, 28);
+
+		//btnDeny.
+		rp = (RelativeLayout.LayoutParams) btnDeny.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(160);
+		rp.height = ResizeUtils.getSpecificLength(62);
+		rp.leftMargin = ResizeUtils.getSpecificLength(75);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(254);
 		rp.height = ResizeUtils.getSpecificLength(62);
+		rp.rightMargin = ResizeUtils.getSpecificLength(41);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 
@@ -384,6 +413,12 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		super.downloadInfo();
 	}
 	
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.order_bg;
+	}
+	
 ////////////////////Custom methods.
 	
 	public void setMenu(int menuIndex) {
@@ -455,15 +490,56 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		popupRelative.startAnimation(aaOut);
 	}
 
-	@Override
-	public int getBgResourceId() {
+	public void deny(Customer customer) {
+		
+		String url = CphConstants.BASE_API_URL + "wholesales/customers/answer" +
+				"?retail_id=" + customer.getId() +
+				"&answer=decline";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-		return R.drawable.order_bg;
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForCustomerListPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeny);
+				selectedCustomer = null;
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForCustomerListPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_deny);
+						selectedCustomer = null;
+						hidePopup();
+						new Handler().postDelayed(new Runnable() {
+							
+							@Override
+							public void run() {
+
+								refreshPage();
+							}
+						}, 400);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeny);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeny);
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
-
+	
 	public void approval(Customer customer) {
 		
-		//http://cph.minsangk.com/
 		String url = CphConstants.BASE_API_URL + "wholesales/customers/answer" +
 				"?retail_id=" + customer.getId() +
 				"&answer=accept";

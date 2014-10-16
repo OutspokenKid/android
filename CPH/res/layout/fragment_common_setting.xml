@@ -81,14 +81,25 @@
                 android:layout_toRightOf="@id/settingPage_btnFont"                
                 android:background="@drawable/setting_notification_btn" />
 
+            <!-- 가이드. -->
+
+            <Button
+                android:id="@+id/settingPage_btnGuide"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignLeft="@id/settingPage_btnFont"
+                android:layout_below="@id/settingPage_btnFont"
+                android:background="@drawable/setting_guide_btn" />
+            
+            
 			<!-- 회원탈퇴. -->
 
             <Button
                 android:id="@+id/settingPage_btnWithdraw"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_alignLeft="@id/settingPage_btnFont"
-                android:layout_below="@id/settingPage_btnFont"
+                android:layout_alignLeft="@id/settingPage_btnGuide"
+                android:layout_below="@id/settingPage_btnGuide"
                 android:background="@drawable/setting_withdraw_btn" />
             
 			<!-- 로그아웃. -->

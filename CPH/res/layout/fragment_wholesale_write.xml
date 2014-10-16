@@ -144,13 +144,39 @@
 			    android:inputType="numberDecimal"
 			    android:textColorHint="#555" />
 		    
+		    <!-- 경계선. -->
+		    <View 
+		        android:id="@+id/wholesaleWritePage_line"
+		        android:layout_width="match_parent"
+		        android:layout_height="2px"
+		        android:layout_below="@id/wholesaleWritePage_etPrice"
+		        android:background="#fff" />
+		    
+		    <!-- 초기화. -->
+		    <Button 
+		        android:id="@+id/wholesaleWritePage_btnClear"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_line"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/myshop_save2_btn" />
+		    
+		    <!-- 설정 저장. -->
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnSave"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/wholesaleWritePage_line"
+		        android:layout_toLeftOf="@id/wholesaleWritePage_btnClear"
+		        android:background="@drawable/myshop_save_btn" />
+		    
 		    <!-- 상품분류. -->
 		    
 		    <TextView
 		        android:id="@+id/wholesaleWritePage_tvCategory"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_etPrice"
+		        android:layout_below="@id/wholesaleWritePage_line"
 		        android:text="@string/productCategory"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
@@ -224,7 +250,7 @@
 		    	android:layout_height="wrap_content"
 		    	android:layout_below="@id/wholesaleWritePage_tvMixtureRate"
 			    android:background="@drawable/text_box"
-			    android:text="@string/hintForProductMixtureRage"
+			    android:text="@string/hintForProductMixtureRate"
 			    android:textColor="#000" 
 				android:gravity="center" />
 		    

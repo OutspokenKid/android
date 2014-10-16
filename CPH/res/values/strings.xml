@@ -14,9 +14,9 @@
     <string name="approval">승인</string>
 
     <string name="bank">은행</string>
-    <string name="bestHitColor">* 자주 등록한 색상</string>
-    <string name="bestHitMixture">* 자주 등록한 혼용률</string>
-    <string name="bestHitSize">* 자주 등록한 사이즈</string>
+<!--     <string name="bestHitColor">* 자주 등록한 색상</string> -->
+<!--     <string name="bestHitMixture">* 자주 등록한 혼용률</string> -->
+<!--     <string name="bestHitSize">* 자주 등록한 사이즈</string> -->
     
     <string name="cancel">취소</string>
     <string name="canceled">취소되었습니다</string>
@@ -26,6 +26,7 @@
     <string name="check_pw">영문 숫자 6~64자로 입력해주세요.</string>
     <string name="check_pwConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkDuplication">중복 확인</string>
+    <string name="clearSettings">설정 초기화</string>
     <string name="color">색상</string>
     <string name="companyName">상호명</string>
     <string name="companyPhone">매장 전화번호</string>
@@ -50,17 +51,20 @@
 	<string name="complete_changeSampleStatus3">반납완료 상태로 변경했습니다</string>
 	<string name="complete_changeShopProfile">프로필 변경 완료</string>
 	<string name="complete_checkPhone">인증번호가 전송되었습니다</string>
+	<string name="complete_clearSettings">설정이 초기화되었습니다</string>
 	<string name="complete_deleteFavorite">즐겨찾기 삭제 완료</string>
 	<string name="complete_deleteOrder">주문내역을 삭제했습니다</string>
 	<string name="complete_deleteProduct">상품 삭제 완료</string>
 	<string name="complete_deleteSample">샘플 삭제 완료</string>
 	<string name="complete_deleteWishList">장바구니 삭제 완료</string>
+	<string name="complete_deny">거절 완료</string>
 	<string name="complete_editProduct">상품 수정 완료</string>
 	<string name="complete_fire">해고 완료</string>
 	<string name="complete_order">주문 완료</string>
 	<string name="complete_pullUp">상품이 최상단으로 올라갔습니다</string>
 	<string name="complete_requestPartnership">거래처 신청 완료</string>
 	<string name="complete_requestSample">샘플 요청 완료</string>
+	<string name="complete_saveSettings">설정이 저장되었습니다</string>
 	<string name="complete_signUpWholesaleOwner">정보 입력이 완료되었습니다.\n관리자의 승인 후 가입이 완료됩니다.</string>
 	<string name="complete_signUpRetailOwner">회원가입 완료</string>
 	<string name="complete_signUpEmployee">정보 입력이 완료되었습니다.\n대표의 승인 후 가입이 완료됩니다.</string>
@@ -72,6 +76,7 @@
     <string name="confirmPw">비밀번호 확인</string>
     <string name="currentPw">현재 비밀번호</string>
     
+    <string name="deny">거절</string>
     <string name="disableSoldout">* 재고가 없는 상품은 체크를 해제해주세요.</string>
     <string name="duplicatedPhoneNumber">이미 가입된 번호입니다</string>
     
@@ -99,6 +104,7 @@
     <string name="failToDeleteWishList">장바구니 삭제 실패</string>
     <string name="failToDeleteReply">댓글 삭제 실패</string>
     <string name="failToDeleteSample">샘플 삭제 실패</string>
+    <string name="failToDeny">거절 실패</string>
     <string name="failToEditProduct">상품 수정 실패</string>
     <string name="failToFindId">아이디 찾기 실패</string>
     <string name="failToFindPw">비밀번호 찾기 실패</string>
@@ -142,7 +148,7 @@
     <string name="hintForProductCategory">상품의 분류를 선택해주세요</string>
     <string name="hintForProductColor">상품의 색상을 선택해주세요</string>
     <string name="hintForProductDescription">상품설명을 입력해주세요</string>
-    <string name="hintForProductMixtureRage">직접 입력, 예 : 면 80% 나일론 20%</string>
+    <string name="hintForProductMixtureRate">직접 입력, 예 : 면 80% 나일론 20%</string>
     <string name="hintForProductName">상품명을 입력해주세요</string>
     <string name="hintForProductPrice">상품의 가격을 입력해주세요</string>
     <string name="hintForProductSize">상품의 사이즈를 선택해주세요</string>
@@ -215,6 +221,7 @@
     <string name="retailOnline">소매(인터넷쇼핑몰)</string>
     <string name="roomNumber">호</string>
 
+    <string name="saveSettings">설정 저장</string>
     <string name="search">검색</string>
     <string name="searchCompany">매장 검색</string>
     <string name="searchCompanyName">상호명 검색</string>
@@ -248,6 +255,10 @@
     <string name="totalPrice">총 결제금액</string>
 
     <string name="wannaApproval">해당 직원을 승인하시겠습니까?</string>
+    <string name="wannaDenyCustomer">해당 거래처 요청을 거절하시겠습니까?</string>
+    <string name="wannaDenyOrder">해당 주문을 거절하시겠습니까?</string>
+    <string name="wannaDenySample">해당 샘플 요청을 거절하시겠습니까?</string>
+    <string name="wannaDenyStaff">해당 직원을 거절하시겠습니까?</string>
     <string name="wannaFire">해당 직원을 해고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃 하시겠습니까?</string>
     <string name="wannaWithdraw">회원 탈퇴 하시겠습니까?\n(대표가 탈퇴할 경우 모든 매장정보가 삭제되며 직원은 탈퇴처리됩니다.)</string>

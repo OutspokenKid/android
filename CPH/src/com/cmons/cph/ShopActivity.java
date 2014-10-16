@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.http.cookie.Cookie;
-import org.apache.http.impl.cookie.BasicClientCookie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -110,26 +109,26 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	
 	public void checkSignStatus() {
 		
-		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from prefs. =====================");
-		
-		try {
-			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
-			
-			if(bcc1 != null) {
-				RequestManager.getCookieStore().addCookie(bcc1);
-				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
-			}
-			
-			if(bcc2 != null) {
-				RequestManager.getCookieStore().addCookie(bcc2);
-				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
+//		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from prefs. =====================");
+//		
+//		try {
+//			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+//			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
+//			
+//			if(bcc1 != null) {
+//				RequestManager.getCookieStore().addCookie(bcc1);
+//				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
+//			}
+//			
+//			if(bcc2 != null) {
+//				RequestManager.getCookieStore().addCookie(bcc2);
+//				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
+//			}
+//		} catch (Exception e) {
+//			LogUtils.trace(e);
+//		} catch (Error e) {
+//			LogUtils.trace(e);
+//		}
 		
 		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from cookieStore. =====================");
 		
