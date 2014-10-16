@@ -213,6 +213,10 @@
     <string name="productSelling">판매 중인 상품입니다</string>
     <string name="productSize">상품 사이즈</string>
     <string name="productSoldOut">품절된 상품입니다</string>
+    <string name="productSoldOut2">현재 일시품절상태입니다</string>
+    <string name="productStatus1">상품을 판매상태로 변경하였습니다</string>
+    <string name="productStatus2">상품을 일시품절상태로 변경하였습니다</string>
+    <string name="productStatus3">상품을 품절상태로 변경하였습니다</string>
     <string name="pullUpProduct">상품 끌어올리기</string>
     <string name="pw">비밀번호</string>
     

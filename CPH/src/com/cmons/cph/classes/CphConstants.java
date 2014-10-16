@@ -5,7 +5,7 @@ public class CphConstants {
 	//구글 플레이 콘솔의 프로젝트 아이디.
 	public static final String GCM_SENDER_ID = "536624421053";
 	
-	public static String BASE_API_URL = "http://cph.minsangk.com/";
+	public static String BASE_API_URL = "http://cph-app.co.kr/";
 	
 	public static final String PREFS_COOKIE_CPH_D1 = "cphd1";
 	public static final String PREFS_COOKIE_CPH_S = "cphs";

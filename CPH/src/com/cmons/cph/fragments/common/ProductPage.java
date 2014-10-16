@@ -14,7 +14,6 @@ import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -50,8 +49,7 @@ public class ProductPage extends CmonsFragmentForShop {
 	private Wholesale wholesale;
 	
     private TextView tvStatus;
-    private TextView tvSoldOut;
-    private View checkbox;
+    private View status;
     private Button btnShop;
     private TextView tvImage;
     private ViewPager viewPager;
@@ -81,7 +79,6 @@ public class ProductPage extends CmonsFragmentForShop {
     
     private Product product;
     private PagerAdapterForProducts pagerAdapter;
-    private boolean isSoldOut;
     
 	@Override
 	public void bindViews() {
@@ -90,8 +87,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		ivBg = (ImageView) mThisView.findViewById(R.id.productPage_ivBg);
 		
 		tvStatus = (TextView) mThisView.findViewById(R.id.productPage_tvStatus);
-		tvSoldOut = (TextView) mThisView.findViewById(R.id.productPage_tvSoldOut);
-		checkbox = mThisView.findViewById(R.id.productPage_checkbox);
+		status = mThisView.findViewById(R.id.productPage_status);
 		btnShop = (Button) mThisView.findViewById(R.id.productPage_btnShop);
 		tvImage = (TextView) mThisView.findViewById(R.id.productPage_tvImage);
 		viewPager = (ViewPager) mThisView.findViewById(R.id.productPage_viewPager);
@@ -151,10 +147,29 @@ public class ProductPage extends CmonsFragmentForShop {
 				pageNavigatorView.invalidate();
 			}
 			
-			if(product.getStatus() == -1) {
-				isSoldOut = true;
-				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
-				tvStatus.setText(Html.fromHtml("<B>" + getString(R.string.productSoldOut) + "</B>"));
+			switch(product.getStatus()) {
+			
+			//일시 품절.
+			case -2:
+				status.setBackgroundResource(R.drawable.myshop_soldout2_btn);
+				tvStatus.setText(R.string.productSoldOut2);
+				tvStatus.setTextColor(Color.rgb(255, 108, 0));
+				
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					btnBasket.setAlpha(0.5f);
+					btnSample.setAlpha(0.5f);
+					btnOrder.setAlpha(0.5f);
+				}
+				
+				btnBasket.setEnabled(false);
+				btnSample.setEnabled(false);
+				btnOrder.setEnabled(false);
+				break;
+				
+			//품절.
+			case -1:
+				status.setBackgroundResource(R.drawable.myshop_soldout3_btn);
+				tvStatus.setText(R.string.productSoldOut);
 				tvStatus.setTextColor(Color.RED);
 				
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -166,11 +181,14 @@ public class ProductPage extends CmonsFragmentForShop {
 				btnBasket.setEnabled(false);
 				btnSample.setEnabled(false);
 				btnOrder.setEnabled(false);
-			} else{
-				isSoldOut = false;
-				checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
+				break;
+				
+			//판매중.
+			case 1:
+				status.setBackgroundResource(R.drawable.myshop_soldout_btn);
 				tvStatus.setText(R.string.productSelling);
-				tvStatus.setTextColor(Color.WHITE);
+				tvStatus.setTextColor(Color.rgb(24, 181, 66));
+				break;
 			}
 			
 			tvName2.setText(product.getName());
@@ -197,8 +215,7 @@ public class ProductPage extends CmonsFragmentForShop {
 			tvDescription2.setText(product.getDesc());
 			
 			if(isWholesale) {
-				tvSoldOut.setVisibility(View.VISIBLE);
-				checkbox.setVisibility(View.VISIBLE);
+				status.setVisibility(View.VISIBLE);
 				tvPullUp.setVisibility(View.VISIBLE);
 				tvPullUp2.setVisibility(View.VISIBLE);
 				btnPullUp.setVisibility(View.VISIBLE);
@@ -208,8 +225,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				btnSample.setVisibility(View.GONE);
 				btnOrder.setVisibility(View.GONE);
 			} else {
-				tvSoldOut.setVisibility(View.GONE);
-				checkbox.setVisibility(View.GONE);
+				status.setVisibility(View.GONE);
 				tvPullUp.setVisibility(View.GONE);
 				tvPullUp2.setVisibility(View.GONE);
 				btnPullUp.setVisibility(View.GONE);
@@ -267,8 +283,32 @@ public class ProductPage extends CmonsFragmentForShop {
 					@Override
 					public void onClick(View arg0) {
 
-						isSoldOut = !isSoldOut;
-						submitSoldOut();
+						mActivity.showSelectDialog(null, 
+								new String[]{"판매중", "일시품절", "품절"}, 
+								new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+
+								switch(arg1) {
+								
+								//판매중.
+								case 0:
+									setStatus(1);
+									break;
+									
+								//일시품절.
+								case 1:
+									setStatus(-2);
+									break;
+									
+								//품절.
+								case 2:
+									setStatus(-1);
+									break;
+								}
+							}
+						});
 					}
 				});
 			}
@@ -296,7 +336,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				@Override
 				public void onClick(View view) {
 
-					if(!isSoldOut) {
+					if(product.getStatus() == 1) {
 						addToBasket();
 					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 						ToastUtils.showToast(R.string.productSoldOut);
@@ -309,11 +349,11 @@ public class ProductPage extends CmonsFragmentForShop {
 				@Override
 				public void onClick(View view) {
 
-					if(!isSoldOut && wholesale != null 
+					if(product.getStatus() == 1 && wholesale != null 
 							&& wholesale.getSample_available() == 1) {
 						selectSampleColor();
 					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-						if(isSoldOut) {
+						if(product.getStatus() != 1) {
 							ToastUtils.showToast(R.string.productSoldOut);
 						} else {
 							ToastUtils.showToast(R.string.forbiddenRequestSample);
@@ -327,7 +367,7 @@ public class ProductPage extends CmonsFragmentForShop {
 				@Override
 				public void onClick(View view) {
 
-					if(!isSoldOut) {
+					if(product.getStatus() == 1) {
 						order();
 					} else if(Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
 						ToastUtils.showToast(R.string.productSoldOut);
@@ -400,18 +440,12 @@ public class ProductPage extends CmonsFragmentForShop {
 		FontUtils.setFontSize(tvStatus, 30);
 		tvStatus.setPadding(padding, 0, padding, 0);
 		
-		//checkbox.
-		rp = (RelativeLayout.LayoutParams) checkbox.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(44);
-		rp.height = ResizeUtils.getSpecificLength(43);
-		rp.topMargin = ResizeUtils.getSpecificLength(28);
-		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvSoldOut.
-		rp = (RelativeLayout.LayoutParams) tvSoldOut.getLayoutParams();
-		rp.height = titleTextHeight;
-		rp.rightMargin = padding;
-		tvSoldOut.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
+		//status.
+		rp = (RelativeLayout.LayoutParams) status.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(140);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.rightMargin = ResizeUtils.getSpecificLength(30);
 		
 		//btnShop.
 		rp = (RelativeLayout.LayoutParams) btnShop.getLayoutParams();
@@ -679,16 +713,11 @@ public class ProductPage extends CmonsFragmentForShop {
 		});
 	}
 
-	public void submitSoldOut() {
+	public void setStatus(final int soldoutStatus) {
 		
 		String url = CphConstants.BASE_API_URL + "products/set_status" +
-				"?product_id=" + product.getId();
-		
-		if(isSoldOut) {
-			url += "&status=-1";
-		} else {
-			url += "&status=1";
-		}
+				"?product_id=" + product.getId() +
+				"&status=" + soldoutStatus;
 
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -707,16 +736,35 @@ public class ProductPage extends CmonsFragmentForShop {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
+
+						switch(soldoutStatus) {
 						
-						if(url.contains("&status=-1")) {
+						//일시 품절.
+						case -2:
+							status.setBackgroundResource(R.drawable.myshop_soldout2_btn);
+							tvStatus.setText(R.string.productSoldOut2);
+							tvStatus.setTextColor(Color.rgb(255, 108, 0));
+							ToastUtils.showToast(R.string.productStatus2);
+							break;
+							
+						//품절.
+						case -1:
+							status.setBackgroundResource(R.drawable.myshop_soldout3_btn);
 							tvStatus.setText(R.string.productSoldOut);
-							checkbox.setBackgroundResource(R.drawable.myshop_checkbox_b);
-							product.setStatus(-1);
-						} else {
+							tvStatus.setTextColor(Color.RED);
+							ToastUtils.showToast(R.string.productStatus3);
+							break;
+							
+						//판매중.
+						case 1:
+							status.setBackgroundResource(R.drawable.myshop_soldout_btn);
 							tvStatus.setText(R.string.productSelling);
-							checkbox.setBackgroundResource(R.drawable.myshop_checkbox_a);
-							product.setStatus(1);
+							tvStatus.setTextColor(Color.rgb(24, 181, 66));
+							ToastUtils.showToast(R.string.productStatus1);
+							break;
 						}
+						
+						product.setStatus(soldoutStatus);
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
