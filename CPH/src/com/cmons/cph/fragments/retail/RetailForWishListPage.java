@@ -33,9 +33,7 @@ public class RetailForWishListPage extends CmonsFragmentForRetail {
 	public void onResume() {
 		super.onResume();
 		
-		if(models.size() == 0) {
-			refreshPage();
-		}
+		refreshPage();
 	}
 	
 	@Override

@@ -120,11 +120,13 @@ public class SettingPage extends CmonsFragmentForShop {
 
 				//도매.
 				if(mActivity.user.getWholesale_id() != 0) {
-					IntentUtils.showDeviceBrowser(mActivity, "http://m.naver.com");
+					IntentUtils.showDeviceBrowser(mActivity, 
+							CphConstants.BASE_API_URL + "pages/guides/wholesale");
 					
 				//소매.
 				} else {
-					IntentUtils.showDeviceBrowser(mActivity, "http://m.naver.com");
+					IntentUtils.showDeviceBrowser(mActivity, 
+							CphConstants.BASE_API_URL + "pages/guides/retail");
 				}
 			}
 		});

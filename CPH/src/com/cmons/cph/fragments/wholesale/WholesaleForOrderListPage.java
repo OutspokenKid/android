@@ -51,9 +51,7 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public void onResume() {
 		super.onResume();
 		
-		if(models.size() == 0) {
-			setMenu(menuIndex);
-		}
+		setMenu(menuIndex);
 	}
 	
 	@Override

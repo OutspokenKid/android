@@ -46,9 +46,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	public void onResume() {
 		super.onResume();
 		
-		if(models.size() == 0) {
-			setMenu(menuIndex);
-		}
+		setMenu(menuIndex);
 	}
 	
 	@Override

@@ -1076,10 +1076,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			for(Item item : uniqueSelectedItemList) {
 
 				if(mixtureString != null) {
-					mixtureString += " / ";
+					mixtureString += " / " + item.text;
+				} else {
+					mixtureString = item.text;
 				}
-				
-				mixtureString += item.text;
 //				saveItemToPrefs(MODE_MIXTURE, item.text);
 			}
 			
