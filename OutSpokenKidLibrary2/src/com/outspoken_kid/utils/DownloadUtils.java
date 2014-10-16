@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
@@ -94,6 +95,10 @@ public class DownloadUtils {
 					Request.Method.GET, url, null,
 					onResponseListener, 
 					onErrorListener);
+			jsObjRequest.setRetryPolicy(
+					new DefaultRetryPolicy(5000, 
+							DefaultRetryPolicy.DEFAULT_MAX_RETRIES, 
+							DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 			RequestManager.getRequestQueue().add(jsObjRequest);
 		} catch (Exception e) {
 			LogUtils.trace(e);

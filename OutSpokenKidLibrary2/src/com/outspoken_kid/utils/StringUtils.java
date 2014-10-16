@@ -18,6 +18,7 @@ import android.text.Editable;
 import android.util.Base64InputStream;
 import android.util.Base64OutputStream;
 import android.widget.EditText;
+import android.widget.TextView;
 
 /**
  * v1.0.5
@@ -417,6 +418,13 @@ public class StringUtils {
 	public static boolean isEmpty(CharSequence str) {
 		
 		return str == null || str.length() == 0;
+	}
+	
+	public static boolean isEmpty(TextView textView) {
+		
+		return textView == null 
+				|| textView.getText() == null
+				|| textView.getText().length() == 0;
 	}
 	
 	public static boolean isEmpty(EditText editText) {
