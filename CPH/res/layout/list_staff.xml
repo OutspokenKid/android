@@ -16,20 +16,20 @@
 	    android:layout_height="0dp"
 	    android:textColor="#fff"
 	    android:gravity="center_vertical" />
-	    
+
+    <View 
+        android:id="@+id/list_staff_deny" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:background="@drawable/deny2_btn" />
+    	    
     <View 
         android:id="@+id/list_staff_action" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_centerVertical="true"
 	    android:layout_alignParentRight="true" />
-    
-    <View 
-        android:id="@+id/list_staff_deny" 
-	    android:layout_width="0dp"
-	    android:layout_height="0dp"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@id/list_staff_action"
-	    android:background="@drawable/deny2_btn" />
     
 </RelativeLayout>

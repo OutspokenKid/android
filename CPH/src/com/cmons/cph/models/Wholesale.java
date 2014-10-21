@@ -44,9 +44,7 @@ public class Wholesale extends Shop implements Serializable {
 					profileImage = rep_image_url;
 				}
 			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
+				//무시.
 			}
 
 			if (objJSON.has("customers_cnt")) {

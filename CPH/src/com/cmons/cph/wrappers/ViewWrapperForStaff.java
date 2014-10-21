@@ -67,11 +67,11 @@ public class ViewWrapperForStaff extends ViewWrapper {
 			textView.setPadding(ResizeUtils.getSpecificLength(70), 0, 
 					ResizeUtils.getSpecificLength(160), 0);
 			FontUtils.setFontSize(textView, 30);
-			
+
 			rp = (RelativeLayout.LayoutParams) action.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(112);
 			rp.height = ResizeUtils.getSpecificLength(56);
-			rp.rightMargin = ResizeUtils.getSpecificLength(24);
+			rp.rightMargin = ResizeUtils.getSpecificLength(160);
 			
 			rp = (RelativeLayout.LayoutParams) deny.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(112);
@@ -95,11 +95,17 @@ public class ViewWrapperForStaff extends ViewWrapper {
 						"\n" + user.getPhone_number());
 				
 				if(user.getStatus() == 0) {
-					action.setBackgroundResource(R.drawable.staff_approve_btn);
 					deny.setVisibility(View.VISIBLE);
+					
+					action.setBackgroundResource(R.drawable.staff_approve_btn);
+					RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) action.getLayoutParams();
+					rp.rightMargin = ResizeUtils.getSpecificLength(160);
 				} else {
+					deny.setVisibility(View.GONE);
+					
 					action.setBackgroundResource(R.drawable.staff_layoff_btn);
-					deny.setVisibility(View.INVISIBLE);
+					RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) action.getLayoutParams();
+					rp.rightMargin = ResizeUtils.getSpecificLength(24);
 				}
 				
 				switch(user.getRole()) {

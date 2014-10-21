@@ -324,18 +324,18 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		tvAddress.setPadding(p, p, p, p);
 		FontUtils.setFontSize(tvAddress, 28);
 
-		//btnDeny.
-		rp = (RelativeLayout.LayoutParams) btnDeny.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(62);
-		rp.leftMargin = ResizeUtils.getSpecificLength(75);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
-		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(254);
 		rp.height = ResizeUtils.getSpecificLength(62);
-		rp.rightMargin = ResizeUtils.getSpecificLength(41);
+		rp.leftMargin = ResizeUtils.getSpecificLength(41);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
+		
+		//btnDeny.
+		rp = (RelativeLayout.LayoutParams) btnDeny.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(160);
+		rp.height = ResizeUtils.getSpecificLength(62);
+		rp.rightMargin = ResizeUtils.getSpecificLength(75);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 	}
 

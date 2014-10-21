@@ -346,7 +346,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		rp = (RelativeLayout.LayoutParams) btnDeny.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(160);
 		rp.height = ResizeUtils.getSpecificLength(62);
-		rp.leftMargin = ResizeUtils.getSpecificLength(75);
+		rp.rightMargin = ResizeUtils.getSpecificLength(75);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//btnConfirm.
@@ -665,8 +665,8 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		if(menuIndex == 0) {
 			//(626 / 2) - 21 = 292
 			//(292 - 209) / 2 = 83 / 2 = 41
-			rp.rightMargin = ResizeUtils.getSpecificLength(41);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.leftMargin = ResizeUtils.getSpecificLength(41);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 			rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			
 		} else {

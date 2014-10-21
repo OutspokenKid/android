@@ -202,6 +202,8 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 					checkId();
 				}
 				
+				checkIDDuplicated();
+				
 				focusOnId = hasFocus;
 			}
 		});
@@ -449,15 +451,50 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 	}
 	
 	public boolean checkId() {
-
+		
 		if(StringUtils.checkTextLength(etId, 6, 64) != StringUtils.PASS
 				|| StringUtils.checkForbidContains(etId, false, true, false, true, true, true)) {
+			tvCheckId.setText(R.string.check_id);
 			tvCheckId.setVisibility(View.VISIBLE);
 			return false;
 		} else{
 			tvCheckId.setVisibility(View.INVISIBLE);
 			return true;
 		}
+	}
+	
+	public void checkIDDuplicated() {
+
+		//http://cph-app.co.kr/users/check/id?id=test1007
+		String url = CphConstants.BASE_API_URL + "users/check/id"
+				+ "?id=" + etId.getText().toString();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("SignUpForPersonalPage.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("SignUpForPersonalPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") != 101) {
+						tvCheckId.setVisibility(View.VISIBLE);
+						tvCheckId.setText(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public boolean checkPw() {

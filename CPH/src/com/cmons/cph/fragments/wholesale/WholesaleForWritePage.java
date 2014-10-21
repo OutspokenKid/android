@@ -1801,6 +1801,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			btnSize.setText(R.string.hintForProductSize);
 			btnMixtureRate.setText(R.string.hintForProductMixtureRate);
 			
+			btnCategory.setText(R.string.hintForProductCategory);
+			btnColor.setText(R.string.hintForProductColor);
+			btnSize.setText(R.string.hintForProductSize);
+			btnMixtureRate.setText(R.string.hintForProductMixtureRate);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 		}

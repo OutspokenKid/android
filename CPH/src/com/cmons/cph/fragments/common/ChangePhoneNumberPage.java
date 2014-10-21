@@ -159,7 +159,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 			
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					"?no_sms=0" +
-					"&find=1" +
+					"&find=0" +
 					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -167,7 +167,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
+					LogUtils.log("ChangePhoneNumberPage.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.wrongPhoneNumber);
 				}
 
@@ -175,7 +175,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
+						LogUtils.log("ChangePhoneNumberPage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 
 						if(objJSON.getInt("result") == 1) {
@@ -218,7 +218,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
+					LogUtils.log("ChangePhoneNumberPage.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.wrongCertificationNumber);
 				}
 
@@ -226,7 +226,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
+						LogUtils.log("ChangePhoneNumberPage.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						
 						if(objJSON.getInt("result") == 1) {
@@ -263,7 +263,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("WholeSameForChangePhoneNumber.onError." + "\nurl : " + url);
+				LogUtils.log("ChangePhoneNumberPage.onError." + "\nurl : " + url);
 				ToastUtils.showToast(R.string.failToChangePhoneNumber);
 			}
 
@@ -271,7 +271,7 @@ public class ChangePhoneNumberPage extends CmonsFragmentForShop {
 			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					LogUtils.log("WholeSameForChangePhoneNumber.onCompleted." + "\nurl : " + url
+					LogUtils.log("ChangePhoneNumberPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
