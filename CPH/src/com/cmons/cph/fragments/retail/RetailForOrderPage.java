@@ -1,9 +1,11 @@
 package com.cmons.cph.fragments.retail;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Spannable;
@@ -11,25 +13,31 @@ import android.text.SpannableStringBuilder;
 import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForRetail;
-import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Account;
 import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
+import com.cmons.cph.models.Reply;
 import com.cmons.cph.models.Wholesale;
+import com.cmons.cph.views.OrderView;
+import com.cmons.cph.views.ReplyView;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -43,33 +51,41 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 	private View standBy;
 	private View deposit;
 	private View completed;
-	
-	private Button btnConfirm;
+	private ScrollView scrollView;
+	private LinearLayout orderLinear;
 	private TextView tvPriceText;
 	private TextView tvPrice;
 	private TextView tvAccount;
-	private ListView listView;
+	private Button btnConfirm;
+	private LinearLayout replyLinear;
+	private EditText etReply;
+	private Button btnSubmit;
 	
 	private Wholesale wholesale;
+	
+	private boolean needAutoScroll;
+	
+	ArrayList<Order> orders = new ArrayList<Order>();
+	ArrayList<Reply> replies = new ArrayList<Reply>();
 	
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		downloadWholesale(orderSet.getWholesale_id());
 		
-		if(wholesale == null) {
-			downloadWholesale(orderSet.getWholesale_id());
-		}
-		
-		if(models.size() == 0 && orderSet.getItems() != null) {
+		if(orders.size() == 0 && orderSet.getItems() != null) {
 			int size = orderSet.getItems().length;
 			for(int i=0; i<size; i++) {
 				Order order = orderSet.getItems()[i];
 				order.setItemCode(CphConstants.ITEM_ORDER_RETAIL);
 				order.setParentStatus(orderSet.getStatus());
-				models.add(order);
+				orders.add(order);
 			}
-			adapter.notifyDataSetChanged();
 		}
+		
+		addOrders();
+		loadReplies();
 	}
 	
 	@Override
@@ -86,12 +102,18 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 		deposit = mThisView.findViewById(R.id.retailOrderPage_deposit);
 		completed = mThisView.findViewById(R.id.retailOrderPage_completed);
 		
-		btnConfirm = (Button) mThisView.findViewById(R.id.retailOrderPage_btnConfirm);
+		scrollView = (ScrollView) mThisView.findViewById(R.id.retailOrderPage_scrollView);
+		orderLinear = (LinearLayout) mThisView.findViewById(R.id.retailOrderPage_orderLinear);
+		
 		tvPriceText = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvPriceText);
 		tvPrice = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvPrice);
 		tvAccount = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvAccount);
+		btnConfirm = (Button) mThisView.findViewById(R.id.retailOrderPage_btnConfirm);
 		
-		listView = (ListView) mThisView.findViewById(R.id.retailOrderPage_listView);
+		replyLinear = (LinearLayout) mThisView.findViewById(R.id.retailOrderPage_replyLinear);
+		
+		etReply = (EditText) mThisView.findViewById(R.id.retailOrderPage_etReply);
+		btnSubmit = (Button) mThisView.findViewById(R.id.retailOrderPage_btnSubmit);
 	}
 
 	@Override
@@ -127,11 +149,6 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 				"(청평화몰 " + orderSet.getWholesale_location() + ")");
 		tvOrder.append(sp3);
 		
-		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
-		listView.setAdapter(adapter);
-		listView.setDivider(new ColorDrawable(Color.WHITE));
-		listView.setDividerHeight(1);
-
 		setMenu(orderSet.getStatus());
 	}
 
@@ -175,6 +192,20 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 					deleteOrder();
 					break;
 				}
+			}
+		});
+
+		btnSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(etReply.getText() == null) {
+					ToastUtils.showToast(R.string.wrongReply);
+					return;
+				}
+				
+				writeReply();
 			}
 		});
 	}
@@ -236,6 +267,17 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(180);
+		
+		//etReply.
+		rp = (RelativeLayout.LayoutParams) etReply.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(550);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		etReply.setPadding(p, 0, p, 0);
+		
+		//btnSubmit.
+		rp = (RelativeLayout.LayoutParams) btnSubmit.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
+
 	}
 
 	@Override
@@ -310,7 +352,7 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 			break;
 		}
 	}
-
+	
 	public void downloadWholesale(final int wholesale_id) {
 
 		String url = CphConstants.BASE_API_URL + "wholesales/show" +
@@ -480,6 +522,197 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
 					ToastUtils.showToast(R.string.failToDeleteOrder);
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void clearOrders() {
+		
+		orders.clear();
+		orderLinear.removeAllViews();
+	}
+	
+	public void addOrders() {
+
+		orderLinear.removeAllViews();
+
+		for(Order order : orders) {
+			
+			LogUtils.log("###RetailForOrderpage.addOrders.  order : " + order.getProduct_name());
+			
+			try {
+				OrderView orderView = new OrderView(mContext);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, orderView, 1, 0, null);
+				orderView.setValues(order);
+				orderLinear.addView(orderView);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	public void loadReplies() {
+
+		//http://cph-app.co.kr/orders/replies?order_collapse_key=CICPYwiRYAoqAVoPebtnYSvuVzRmxwdL
+		String url = CphConstants.BASE_API_URL + "orders/replies"
+				+ "?order_collapse_key=" + orderSet.getCollapse_key();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailForOrderPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToLoadReplies);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailForOrderPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						replies.clear();
+						JSONArray arJSON = objJSON.getJSONArray("replies");
+						
+						int size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							replies.add(new Reply(arJSON.getJSONObject(i)));
+						}
+						
+						addReplies();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadReplies);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToLoadReplies);
+				}
+			}
+		});
+	}
+	
+	public void addReplies() {
+
+		replyLinear.removeAllViews();
+		
+		for(Reply reply : replies) {
+			
+			LogUtils.log("###RetailForOrderpage.addReplies.  reply.content : " + reply.getContent());
+			
+			try {
+				ReplyView replyView = new ReplyView(mContext);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, replyView, 1, 0, null);
+				replyView.setValues(reply);
+				replyLinear.addView(replyView);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		if(needAutoScroll) {
+			needAutoScroll = !needAutoScroll;
+			
+			mThisView.postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					scrollView.smoothScrollTo(0, replyLinear.getTop());
+				}
+			}, 500);
+		}
+	}
+
+	public void writeReply() {
+
+		try {
+			//http://cph-app.co.kr/orders/replies/save?order_id=20&content=%EB%8C%93%EA%B8%80%EB%8C%93%EA%B8%80
+			String url = CphConstants.BASE_API_URL + "orders/replies/save" +
+					"?order_collapse_key=" + orderSet.getCollapse_key() +
+					"&content=" + URLEncoder.encode(etReply.getText().toString(), "utf-8");
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailForOrderPage.writeReply.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToWriteReply);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailForOrderPage.writeReply.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							etReply.setText(null);
+							needAutoScroll = true;
+							loadReplies();
+							ToastUtils.showToast(R.string.complete_writeReply);
+							SoftKeyboardUtils.hideKeyboard(mContext, etReply);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToWriteReply);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToWriteReply);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public void deleteReply(final Reply reply) {
+		
+		String url = CphConstants.BASE_API_URL + "orders/replies/delete" +
+				"?order_id=" + reply.getProduct_id() +
+				"&reply_id=" + reply.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("RetailForOrderPage.deleteReply.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeleteReply);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("RetailForOrderPage.deleteReply.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						replies.remove(reply);
+						addReplies();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
 					LogUtils.trace(oom);
 				}
 			}

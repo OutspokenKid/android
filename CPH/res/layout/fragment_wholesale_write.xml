@@ -339,7 +339,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/wholesaleWritePage_titleBar"
         android:visibility="invisible"
-        android:background="#a000" >
+        android:background="#d000" >
         
         <EditText 
             android:id="@+id/wholesaleWritePage_etAdd"

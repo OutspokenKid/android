@@ -361,7 +361,7 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-
+		
 		if(isDownloadLocation) {
 			isDownloadLocation = false;
 			
@@ -486,6 +486,11 @@ public class SignUpForSearchPage extends CmonsFragmentForSignUp {
 	}
 	
 	public void downloadLocation() {
+		
+		floors.clear();
+		
+		currentFloor = null;
+		currentLine = null;
 		
 		isDownloadLocation = true;
 		url = CphConstants.BASE_API_URL + "wholesales/location_parts?num=0";

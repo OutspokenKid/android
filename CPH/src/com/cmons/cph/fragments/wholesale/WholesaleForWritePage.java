@@ -2,6 +2,9 @@ package com.cmons.cph.fragments.wholesale;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -240,7 +243,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		sizeAdapter = new ChoiceAdapter(sizeItems);
 		
 		mixtureItems = new ArrayList<Item>();
-//		loadBestHitItems(MODE_MIXTURE);
+		loadBestHitItems(MODE_MIXTURE);
 		
 		mixtureAdapter = new ChoiceAdapter(mixtureItems);
 		
@@ -701,6 +704,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					
 				} else {
 					mixtureAdapter.addItem(item);
+					saveItemToPrefs(MODE_MIXTURE, item);
 				}
 				
 				etAdd.setText(null);
@@ -1320,10 +1324,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	
-//	@SuppressWarnings("unchecked")
-//	public void loadBestHitItems(int mode) {
+	@SuppressWarnings("unchecked")
+	public void loadBestHitItems(int mode) {
 //
-//		ArrayList<Item> targetItems = null;
+		ArrayList<Item> targetItems = null;
 //		int targetTitleResId = 0;
 //
 //		switch(mode) {
@@ -1339,51 +1343,51 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 //			break;
 //			
 //		case MODE_MIXTURE:
-//			targetItems = mixtureItems;
+			targetItems = mixtureItems;
 //			targetTitleResId = R.string.bestHitMixture;
 //			break;
 //		}
-//		
-//		SharedPreferences prefs = mContext.getSharedPreferences(
-//				CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
-//		
-//		Map<String, Integer> map = (Map<String, Integer>)prefs.getAll();
-//
-//		if(map.size() != 0) {
-//			String printString = "================ mode : " + mode;
-//
-//			for(String key : map.keySet()) {
-//				printString += "\n" + key + " : " + map.get(key);
-//				targetItems.add(new Item(key, map.get(key)));
-//			}
-//			
-//			LogUtils.log(printString);
-//			
-//			Comparator<Item> compare = new Comparator<Item>() {
-//				
-//				@Override
-//				public int compare(Item lhs, Item rhs) {
-//					
-//					//lhs > rhs로 하면 오름차순, 반대로 하면 내림차순.
-//					return (lhs.count < rhs.count? 1 : -1);
-//				}
-//			};
-//			
-//			Collections.sort(targetItems, compare);
-//
-//			while(targetItems.size() > 10) {
-//				targetItems.remove(targetItems.size() - 1);
-//			}
-//			
+		
+		SharedPreferences prefs = mContext.getSharedPreferences(
+				CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+		
+		Map<String, Integer> map = (Map<String, Integer>)prefs.getAll();
+
+		if(map.size() != 0) {
+			String printString = "================ mode : " + mode;
+
+			for(String key : map.keySet()) {
+				printString += "\n" + key + " : " + map.get(key);
+				targetItems.add(new Item(key, map.get(key)));
+			}
+			
+			LogUtils.log(printString);
+			
+			Comparator<Item> compare = new Comparator<Item>() {
+				
+				@Override
+				public int compare(Item lhs, Item rhs) {
+					
+					//lhs > rhs로 하면 오름차순, 반대로 하면 내림차순.
+					return (lhs.count < rhs.count? 1 : -1);
+				}
+			};
+			
+			Collections.sort(targetItems, compare);
+
+			while(targetItems.size() > 10) {
+				targetItems.remove(targetItems.size() - 1);
+			}
+			
 //			Item titleItem = new Item(getString(targetTitleResId));
 //			titleItem.unusable = true;
 //			targetItems.add(0, titleItem);
-//			
+			
 //			Item lineItem = new Item("*******");
 //			lineItem.unusable = true;
 //			targetItems.add(lineItem);
-//		}
-//	}
+		}
+	}
 	
 	public void loadBasicItems(int mode) {
 		
@@ -1574,25 +1578,25 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		}
 	}
 	
-//	public void saveItemToPrefs(int mode, String item) {
-//		
-//		try {
-//			SharedPreferences prefs = mContext.getSharedPreferences(
-//					CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
-//			
-//			int count = prefs.getInt(item, 0);
-//			Editor ed = prefs.edit();
-//			
-//			if(prefs.contains(item)) {
-//				ed.remove(item);
-//			}
-//			
-//			ed.putInt(item, count + 1);
-//			ed.commit();
-//		} catch (Exception e) {
-//			LogUtils.trace(e);
-//		}
-//	}
+	public void saveItemToPrefs(int mode, String item) {
+		
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(
+					CphConstants.PREFS_PRODUCT_UPLOAD + mode, Context.MODE_PRIVATE);
+			
+			int count = prefs.getInt(item, 0);
+			Editor ed = prefs.edit();
+			
+			if(prefs.contains(item)) {
+				ed.remove(item);
+			}
+			
+			ed.putInt(item, count + 1);
+			ed.commit();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+	}
 
 	public ArrayList<Item> getUniqueSelectedItemList(ArrayList<Item> items) {
 

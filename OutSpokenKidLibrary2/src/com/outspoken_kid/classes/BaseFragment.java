@@ -55,7 +55,14 @@ public abstract class BaseFragment extends Fragment
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onCreate.  ");
 		
 		mContext = getActivity();
-		setVariables();
+		
+		try {
+			setVariables();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override
@@ -78,11 +85,17 @@ public abstract class BaseFragment extends Fragment
 		
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onActivityCreated.  ");
 		
-		bindViews();
-		createPage();
-		
-		setListeners();
-		setSizes();
+		try {
+			bindViews();
+			createPage();
+			
+			setListeners();
+			setSizes();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override

@@ -1,32 +1,40 @@
 package com.cmons.cph.fragments.wholesale;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
-import com.cmons.cph.classes.CphAdapter;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Account;
 import com.cmons.cph.models.Order;
 import com.cmons.cph.models.OrderSet;
+import com.cmons.cph.models.Reply;
 import com.cmons.cph.models.Retail;
+import com.cmons.cph.views.OrderView;
+import com.cmons.cph.views.ReplyView;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -36,23 +44,43 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	
 	private TextView tvOrder;
 	private View type;
-	private Button btnOrder;
-	private Button btnStandBy;
-	private Button btnDeposit;
-	private Button btnCompleted;
+	private View order;
+	private View standBy;
+	private View deposit;
+	private View completed;
 	private TextView tvSoldOut;
-	
-	private Button btnConfirm;
+	private ScrollView scrollView;
+	private LinearLayout orderLinear;
 	private TextView tvAccount;
-	private TextView tvTotalPrice;
-	private ListView listView;
+	private TextView tvPrice;
+	private Button btnConfirm;
+	private LinearLayout replyLinear;
+	private EditText etReply;
+	private Button btnSubmit;
 	
 	private long totalPrice = -1;
+	private boolean needAutoScroll;
+	
+	ArrayList<Order> orders = new ArrayList<Order>();
+	ArrayList<Reply> replies = new ArrayList<Reply>();
 	
 	@Override
 	public void onResume() {
 		super.onResume();
 		setTypeImage();
+		
+		if(orders.size() == 0 && orderSet.getItems() != null) {
+			int size = orderSet.getItems().length;
+			for(int i=0; i<size; i++) {
+				Order order = orderSet.getItems()[i];
+				order.setItemCode(CphConstants.ITEM_ORDER_RETAIL);
+				order.setParentStatus(orderSet.getStatus());
+				orders.add(order);
+			}
+		}
+		
+		addOrders();
+		loadReplies();
 	}
 	
 	@Override
@@ -64,17 +92,21 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		tvOrder = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvOrder);
 		type = mThisView.findViewById(R.id.wholesaleOrderPage_type);
 		
-		btnOrder = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnOrder);
-		btnStandBy = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnStandBy);
-		btnDeposit = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnDeposit);
-		btnCompleted = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnCompleted);
+		order = mThisView.findViewById(R.id.wholesaleOrderPage_order);
+		standBy = mThisView.findViewById(R.id.wholesaleOrderPage_standBy);
+		deposit = mThisView.findViewById(R.id.wholesaleOrderPage_deposit);
+		completed = mThisView.findViewById(R.id.wholesaleOrderPage_completed);
 		
+		scrollView = (ScrollView) mThisView.findViewById(R.id.wholesaleOrderPage_scrollView);
+		orderLinear = (LinearLayout) mThisView.findViewById(R.id.wholesaleOrderPage_orderLinear);
 		tvSoldOut = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvSoldOut);
-		btnConfirm = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnConfirm);
 		tvAccount = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvAccount);
-		tvTotalPrice = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvTotalPrice);
+		tvPrice = (TextView) mThisView.findViewById(R.id.wholesaleOrderPage_tvPrice);
+		btnConfirm = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnConfirm);
 		
-		listView = (ListView) mThisView.findViewById(R.id.wholesaleOrderPage_listView);
+		replyLinear = (LinearLayout) mThisView.findViewById(R.id.wholesaleOrderPage_replyLinear);
+		etReply = (EditText) mThisView.findViewById(R.id.wholesaleOrderPage_etReply);
+		btnSubmit = (Button) mThisView.findViewById(R.id.wholesaleOrderPage_btnSubmit);
 	}
 
 	@Override
@@ -95,40 +127,40 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		switch(orderSet.getStatus()) {
 		
 		case 0:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_a);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
+			order.setBackgroundResource(R.drawable.order_recommand_a);
+			standBy.setBackgroundResource(R.drawable.order_wait_b);
+			deposit.setBackgroundResource(R.drawable.order_done_b);
+			completed.setBackgroundResource(R.drawable.order_complete_b);
 			tvSoldOut.setVisibility(View.VISIBLE);
 			btnConfirm.setVisibility(View.VISIBLE);
 			btnConfirm.setBackgroundResource(R.drawable.order_approve_btn);
 			break;
 			
 		case 1:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_a);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			tvSoldOut.setVisibility(View.INVISIBLE);
-			btnConfirm.setVisibility(View.INVISIBLE);
+			order.setBackgroundResource(R.drawable.order_recommand_b);
+			standBy.setBackgroundResource(R.drawable.order_wait_a);
+			deposit.setBackgroundResource(R.drawable.order_done_b);
+			completed.setBackgroundResource(R.drawable.order_complete_b);
+			tvSoldOut.setVisibility(View.GONE);
+			btnConfirm.setVisibility(View.GONE);
 			break;
 			
 		case 2:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_a);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_b);
-			tvSoldOut.setVisibility(View.INVISIBLE);
+			order.setBackgroundResource(R.drawable.order_recommand_b);
+			standBy.setBackgroundResource(R.drawable.order_wait_b);
+			deposit.setBackgroundResource(R.drawable.order_done_a);
+			completed.setBackgroundResource(R.drawable.order_complete_b);
+			tvSoldOut.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.VISIBLE);
 			btnConfirm.setBackgroundResource(R.drawable.retail_complete4_btn);
 			break;
 			
 		case 3:
-			btnOrder.setBackgroundResource(R.drawable.order_recommand_b);
-			btnStandBy.setBackgroundResource(R.drawable.order_wait_b);
-			btnDeposit.setBackgroundResource(R.drawable.order_done_b);
-			btnCompleted.setBackgroundResource(R.drawable.order_complete_a);
-			tvSoldOut.setVisibility(View.INVISIBLE);
+			order.setBackgroundResource(R.drawable.order_recommand_b);
+			standBy.setBackgroundResource(R.drawable.order_wait_b);
+			deposit.setBackgroundResource(R.drawable.order_done_b);
+			completed.setBackgroundResource(R.drawable.order_complete_a);
+			tvSoldOut.setVisibility(View.GONE);
 			btnConfirm.setVisibility(View.VISIBLE);
 			btnConfirm.setBackgroundResource(R.drawable.retail_delete4_btn);
 			break;
@@ -140,14 +172,12 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			titleBar.getBtnDeny().setVisibility(View.INVISIBLE);
 		}
 		
+		tvOrder.setText(null);
 		String dateString = StringUtils.getDateString("yyyy.MM.dd aa hh:mm", 
 				orderSet.getItems()[0].getCreated_at() * 1000);
 		FontUtils.addSpan(tvOrder, dateString, 0, 0.8f);
-		
 		FontUtils.addSpan(tvOrder, "\n" + orderSet.getRetail_name(), 0, 1.5f);
 		FontUtils.addSpan(tvOrder, " (" + orderSet.getRetail_phone_number() + ")", 0, 1);
-		
-		tvSoldOut.setText(R.string.disableSoldout);
 		
 		String accountString = "결제방식 : ";
 
@@ -173,13 +203,9 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		accountString += "\n총 금액";
 		
 		tvAccount.setText(accountString);
-		
-		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
-		listView.setAdapter(adapter);
-		listView.setDivider(new ColorDrawable(Color.WHITE));
-		listView.setDividerHeight(1);
 
-		if(models.size() == 0) {
+		if(orders.size() == 0 && orderSet != null) {
+			
 			for(Order order : orderSet.getItems()) {
 				order.setItemCode(CphConstants.ITEM_ORDER_WHOLESALE);
 				
@@ -190,7 +216,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 				}
 				
 				order.setParentStatus(orderSet.getStatus());
-				models.add(order);
+				orders.add(order);
 			}
 		}
 		
@@ -204,7 +230,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 			}
 		}
 		
-		tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
+		tvPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
 	}
 
 	@Override
@@ -245,6 +271,20 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 				}
 			}
 		});
+
+		btnSubmit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(etReply.getText() == null) {
+					ToastUtils.showToast(R.string.wrongReply);
+					return;
+				}
+				
+				writeReply();
+			}
+		});
 	}
 
 	@Override
@@ -265,25 +305,25 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
-		//btnOrder.
-		rp = (RelativeLayout.LayoutParams) btnOrder.getLayoutParams();
+		//order.
+		rp = (RelativeLayout.LayoutParams) order.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(195);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		
-		//btnStandBy.
-		rp = (RelativeLayout.LayoutParams) btnStandBy.getLayoutParams();
+		//standBy.
+		rp = (RelativeLayout.LayoutParams) standBy.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(220);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		rp.leftMargin = -ResizeUtils.getSpecificLength(40);
 		
-		//btnDeposit.
-		rp = (RelativeLayout.LayoutParams) btnDeposit.getLayoutParams();
+		//deposit.
+		rp = (RelativeLayout.LayoutParams) deposit.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(222);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		rp.leftMargin = -ResizeUtils.getSpecificLength(36);
 		
-		//btnCompleted.
-		rp = (RelativeLayout.LayoutParams) btnCompleted.getLayoutParams();
+		//completed.
+		rp = (RelativeLayout.LayoutParams) completed.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(197);
 		rp.height = ResizeUtils.getSpecificLength(92);
 		rp.leftMargin = -ResizeUtils.getSpecificLength(36);
@@ -296,12 +336,23 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 		//tvAccount.
 		tvAccount.setPadding(p, p, p, p);
 		
-		//tvTotalPrice.
-		tvTotalPrice.setPadding(p, p, p, p);
+		//tvPrice.
+		tvPrice.setPadding(p, p, p, p);
 		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(180);
+		
+		//etReply.
+		rp = (RelativeLayout.LayoutParams) etReply.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(550);
+		rp.height = ResizeUtils.getSpecificLength(92);
+		etReply.setPadding(p, 0, p, 0);
+		
+		//btnSubmit.
+		rp = (RelativeLayout.LayoutParams) btnSubmit.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(92);
+
 	}
 
 	@Override
@@ -339,7 +390,7 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 	public void addToTotalPrice(long addedPrice) {
 		
 		totalPrice += addedPrice;
-		tvTotalPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
+		tvPrice.setText(StringUtils.getFormattedNumber(totalPrice) + "원");
 	}
 
 	public void changeOrderStatus() {
@@ -535,6 +586,203 @@ public class WholesaleForOrderPage extends CmonsFragmentForWholesale {
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void clearOrders() {
+		
+		orders.clear();
+		orderLinear.removeAllViews();
+	}
+	
+	public void addOrders() {
+
+		orderLinear.removeAllViews();
+
+		for(Order order : orders) {
+			
+			LogUtils.log("###WholesaleForOrderpage.addOrders.  order : " + order.getProduct_name());
+			
+			try {
+				OrderView orderView = new OrderView(mContext);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 100, orderView, 1, 0, null);
+				orderView.setValues(order);
+				orderLinear.addView(orderView);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	public void clearReplies() {
+		
+		replies.clear();
+		replyLinear.removeAllViews();
+	}
+
+	public void loadReplies() {
+
+		//http://cph-app.co.kr/orders/replies?order_collapse_key=CICPYwiRYAoqAVoPebtnYSvuVzRmxwdL
+		String url = CphConstants.BASE_API_URL + "orders/replies"
+				+ "?order_collapse_key=" + orderSet.getCollapse_key();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForOrderPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToLoadReplies);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForOrderPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						replies.clear();
+						JSONArray arJSON = objJSON.getJSONArray("replies");
+						
+						int size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							replies.add(new Reply(arJSON.getJSONObject(i)));
+						}
+						
+						addReplies();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadReplies);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToLoadReplies);
+				}
+			}
+		});
+	}
+	
+	public void addReplies() {
+		
+		replyLinear.removeAllViews();
+		
+		for(Reply reply : replies) {
+			
+			LogUtils.log("###WholesaleForOrderpage.addReplies.  reply.content : " + reply.getContent());
+			
+			try {
+				ReplyView replyView = new ReplyView(mContext);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, replyView, 1, 0, null);
+				replyView.setValues(reply);
+				replyLinear.addView(replyView);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		if(needAutoScroll) {
+			needAutoScroll = !needAutoScroll;
+			
+			mThisView.postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					scrollView.smoothScrollTo(0, replyLinear.getTop());
+				}
+			}, 500);
+		}
+	}
+
+	public void writeReply() {
+
+		try {
+			//http://cph-app.co.kr/orders/replies/save?order_id=20&content=%EB%8C%93%EA%B8%80%EB%8C%93%EA%B8%80
+			String url = CphConstants.BASE_API_URL + "orders/replies/save" +
+					"?order_collapse_key=" + orderSet.getCollapse_key() +
+					"&content=" + URLEncoder.encode(etReply.getText().toString(), "utf-8");
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("WholesaleForOrderPage.writeReply.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToWriteReply);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("WholesaleForOrderPage.writeReply.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							etReply.setText(null);
+							needAutoScroll = true;
+							loadReplies();
+							ToastUtils.showToast(R.string.complete_writeReply);
+							SoftKeyboardUtils.hideKeyboard(mContext, etReply);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						ToastUtils.showToast(R.string.failToWriteReply);
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						ToastUtils.showToast(R.string.failToWriteReply);
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public void deleteReply(final Reply reply) {
+		
+		String url = CphConstants.BASE_API_URL + "orders/replies/delete" +
+				"?order_id=" + reply.getProduct_id() +
+				"&reply_id=" + reply.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForOrderPage.deleteReply.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToDeleteReply);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForOrderPage.deleteReply.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						replies.remove(reply);
+						addReplies();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					ToastUtils.showToast(R.string.failToDeleteReply);
 					LogUtils.trace(oom);
 				}
 			}

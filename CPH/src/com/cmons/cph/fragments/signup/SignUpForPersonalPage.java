@@ -533,8 +533,8 @@ public class SignUpForPersonalPage extends CmonsFragmentForSignUp {
 		try {
 			String url = CphConstants.BASE_API_URL + "users/auth/request" +
 					//Test.
-//					"?no_sms=0" +
-					"?no_sms=1" +		//이걸로 하면 문자 안보냄.
+					"?no_sms=0" +
+//					"?no_sms=1" +		//이걸로 하면 문자 안보냄.
 					"&phone_number=" + URLEncoder.encode(phone_number, "utf-8");
 
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

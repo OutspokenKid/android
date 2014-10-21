@@ -70,47 +70,87 @@
 	    android:layout_toRightOf="@id/retailOrderPage_standBy"
 	    android:background="@drawable/order_done_b" />
 	
-	<Button 
-        android:id="@+id/retailOrderPage_btnConfirm" 
+	<EditText
+        android:id="@+id/retailOrderPage_etReply"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignParentBottom="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center_vertical"
+	    android:inputType="textMultiLine"
+	    android:textColor="#000" />
+    
+    <Button 
+        android:id="@+id/retailOrderPage_btnSubmit" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignParentBottom="true"
-	    android:background="@drawable/order_approve_btn" />
+	    android:layout_toRightOf="@id/retailOrderPage_etReply"
+	    android:layout_alignTop="@id/retailOrderPage_etReply"
+	    android:background="@drawable/reply_send_btn" />
 	
-	<TextView 
-        android:id="@+id/retailOrderPage_tvPriceText"
-        android:layout_width="wrap_content"
-    	android:layout_height="0dp"
-    	android:layout_above="@id/retailOrderPage_btnConfirm"
-	    android:layout_alignParentLeft="true"
-	    android:gravity="center_vertical"
-	    android:text="@string/totalPrice"
-    	android:textColor="#fff" />
-	
-	<TextView 
-        android:id="@+id/retailOrderPage_tvPrice"
-        android:layout_width="wrap_content"
-    	android:layout_height="0dp"
-    	android:layout_above="@id/retailOrderPage_btnConfirm"
-	    android:layout_alignParentRight="true"
-	    android:gravity="center_vertical"
-    	android:textColor="#f00" />
-	
-	<TextView 
-        android:id="@+id/retailOrderPage_tvAccount"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_above="@id/retailOrderPage_tvPriceText"
-	    android:layout_alignParentLeft="true"
-    	android:textColor="#fff" />
-	
-	<ListView 
-	    android:id="@+id/retailOrderPage_listView" 
+	<ScrollView
+	    android:id="@+id/retailOrderPage_scrollView"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_above="@id/retailOrderPage_etReply"
 	    android:layout_below="@id/retailOrderPage_order"
-	    android:layout_above="@id/retailOrderPage_tvAccount"
-	    android:layout_alignParentLeft="true"
-	    android:cacheColorHint="#0000" />
+	    android:fillViewport="true" >
+
+	    <RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		    
+		    <LinearLayout 
+		        android:id="@+id/retailOrderPage_orderLinear"
+	        	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentTop="true"
+		    	android:orientation="vertical" />
+		    
+		    <TextView 
+		        android:id="@+id/retailOrderPage_tvAccount"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/retailOrderPage_orderLinear"
+			    android:layout_alignParentLeft="true"
+		    	android:textColor="#fff" />
+
+		    <TextView 
+		        android:id="@+id/retailOrderPage_tvPriceText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/retailOrderPage_tvAccount"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:text="@string/totalPrice"
+		    	android:textColor="#fff" />
+		    		    
+		    <TextView 
+		        android:id="@+id/retailOrderPage_tvPrice"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/retailOrderPage_tvPriceText"
+			    android:layout_alignParentRight="true"
+			    android:gravity="center_vertical"
+		    	android:textColor="#f00" />
+		    
+		    <Button 
+		        android:id="@+id/retailOrderPage_btnConfirm" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_below="@id/retailOrderPage_tvPriceText"
+			    android:background="@drawable/order_approve_btn" />
+		    
+		    <LinearLayout 
+		        android:id="@+id/retailOrderPage_replyLinear"
+	        	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/retailOrderPage_btnConfirm"
+		    	android:orientation="vertical" />
+		    
+		</RelativeLayout>	    
+	    
+	</ScrollView>
     
 </RelativeLayout>

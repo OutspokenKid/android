@@ -37,76 +37,128 @@
     	android:layout_alignBottom="@id/wholesaleOrderPage_tvOrder"
 	    android:layout_alignParentRight="true" />
 
-	<Button 
-        android:id="@+id/wholesaleOrderPage_btnCompleted" 
+	<View 
+        android:id="@+id/wholesaleOrderPage_completed" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/wholesaleOrderPage_tvOrder"
 	    android:layout_alignParentRight="true"
 	    android:background="@drawable/order_complete_b" />
 	
-    <Button 
-        android:id="@+id/wholesaleOrderPage_btnOrder" 
+    <View 
+        android:id="@+id/wholesaleOrderPage_order" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_below="@id/wholesaleOrderPage_tvOrder"
 	    android:layout_alignParentLeft="true"
 	    android:background="@drawable/order_recommand_a" />
        
-	<Button 
-        android:id="@+id/wholesaleOrderPage_btnStandBy" 
+	<View 
+        android:id="@+id/wholesaleOrderPage_standBy" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleOrderPage_btnOrder"
-	    android:layout_toRightOf="@id/wholesaleOrderPage_btnOrder"
+	    android:layout_alignTop="@id/wholesaleOrderPage_order"
+	    android:layout_toRightOf="@id/wholesaleOrderPage_order"
 	    android:background="@drawable/order_wait_b" />
 		
-	<Button 
-        android:id="@+id/wholesaleOrderPage_btnDeposit" 
+	<View 
+        android:id="@+id/wholesaleOrderPage_deposit" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
-	    android:layout_alignTop="@id/wholesaleOrderPage_btnStandBy"
-	    android:layout_toRightOf="@id/wholesaleOrderPage_btnStandBy"
+	    android:layout_alignTop="@id/wholesaleOrderPage_standBy"
+	    android:layout_toRightOf="@id/wholesaleOrderPage_standBy"
 	    android:background="@drawable/order_done_b" />
 	
 	<TextView 
         android:id="@+id/wholesaleOrderPage_tvSoldOut"
         android:layout_width="match_parent"
     	android:layout_height="0dp"
-    	android:layout_below="@id/wholesaleOrderPage_btnOrder"
+    	android:layout_below="@id/wholesaleOrderPage_order"
 	    android:gravity="center_vertical"
+	    android:text="@string/disableSoldout"
     	android:textColor="#fff" />
 	
-	<Button 
-        android:id="@+id/wholesaleOrderPage_btnConfirm" 
+	<EditText
+        android:id="@+id/wholesaleOrderPage_etReply"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignParentBottom="true"
+	    android:background="@drawable/txt_box3"
+	    android:gravity="center_vertical"
+	    android:inputType="textMultiLine"
+	    android:textColor="#000" />
+    
+    <Button 
+        android:id="@+id/wholesaleOrderPage_btnSubmit" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignParentBottom="true"
-	    android:background="@drawable/order_approve_btn" />
+	    android:layout_toRightOf="@id/wholesaleOrderPage_etReply"
+	    android:layout_alignTop="@id/wholesaleOrderPage_etReply"
+	    android:background="@drawable/reply_send_btn" />
 	
-	<TextView 
-        android:id="@+id/wholesaleOrderPage_tvAccount"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_above="@id/wholesaleOrderPage_btnConfirm"
-	    android:layout_alignParentLeft="true"
-    	android:textColor="#fff" />
-	
-	<TextView 
-        android:id="@+id/wholesaleOrderPage_tvTotalPrice"
-        android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:layout_above="@id/wholesaleOrderPage_btnConfirm"
-	    android:layout_alignParentRight="true"
-    	android:textColor="#f00" />
-	
-	<ListView 
-	    android:id="@+id/wholesaleOrderPage_listView" 
+	<ScrollView
+	    android:id="@+id/wholesaleOrderPage_scrollView"
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
+	    android:layout_above="@id/wholesaleOrderPage_etReply"
 	    android:layout_below="@id/wholesaleOrderPage_tvSoldOut"
-	    android:layout_above="@id/wholesaleOrderPage_tvAccount"
-	    android:layout_alignParentLeft="true" 
-	    android:cacheColorHint="#0000" />
+	    android:fillViewport="true" >
+
+	    <RelativeLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		    
+	        <LinearLayout 
+		        android:id="@+id/wholesaleOrderPage_orderLinear"
+	        	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:layout_alignParentTop="true"
+		    	android:orientation="vertical" />
+		    
+		    <TextView 
+		        android:id="@+id/wholesaleOrderPage_tvAccount"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/wholesaleOrderPage_orderLinear"
+			    android:layout_alignParentLeft="true"
+		    	android:textColor="#fff" />
+
+		    <TextView 
+		        android:id="@+id/wholesaleOrderPage_tvPriceText"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/wholesaleOrderPage_tvAccount"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:text="@string/totalPrice"
+		    	android:textColor="#fff" />
+		    		    
+		    <TextView 
+		        android:id="@+id/wholesaleOrderPage_tvPrice"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/wholesaleOrderPage_tvPriceText"
+			    android:layout_alignParentRight="true"
+			    android:gravity="center_vertical"
+		    	android:textColor="#f00" />
+		    
+		    <Button 
+		        android:id="@+id/wholesaleOrderPage_btnConfirm" 
+			    android:layout_width="match_parent"
+			    android:layout_height="0dp"
+			    android:layout_below="@id/wholesaleOrderPage_tvPriceText"
+			    android:background="@drawable/order_approve_btn" />
+		    
+		    <LinearLayout 
+		        android:id="@+id/wholesaleOrderPage_replyLinear"
+	        	android:layout_width="match_parent"
+		    	android:layout_height="wrap_content"
+		    	android:layout_below="@id/wholesaleOrderPage_btnConfirm"
+		    	android:orientation="vertical" />
+	        
+	    </RelativeLayout>
+	    
+	</ScrollView>
     
 </RelativeLayout>

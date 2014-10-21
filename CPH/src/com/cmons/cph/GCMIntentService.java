@@ -72,7 +72,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 						&& po != null
 						&& po.uri != null
 						&& po.uri.contains("/disable")) {
-					ShopActivity.getInstance().signOut();
+					ShopActivity.getInstance().checkSignStatus();
 					
 				//앱이 실행중이지 않은 경우 Notification 전송.
 				} else {

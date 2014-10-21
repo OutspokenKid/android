@@ -111,6 +111,7 @@
     <string name="failToFire">해고 실패</string>
     <string name="failToLoadBitmap">이미지를 불러오지 못했습니다</string>
     <string name="failToLoadBitmap_OutOfMemory">메모리가 부족하여 이미지를 불러오지 못했습니다</string>
+    <string name="failToLoadReplies">댓글을 불러오지 못했습니다</string>
     <string name="failToOrder">주문 실패</string>
     <string name="failToPullUp">상품 끌어올리기 실패</string>
     <string name="failToRequestPartnership">거래처 신청 실패</string>
