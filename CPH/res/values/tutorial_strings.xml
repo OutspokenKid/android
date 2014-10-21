@@ -1,0 +1,37 @@
+<resources>
+
+    <string name="texta01">메인화면 좌측 상단의 가장 큰 버튼은 &quot;내 매장&quot; 메뉴입니다. 터치해 보세요.</string>
+    <string name="texta02">&quot;내 매장&quot; 메뉴에서는 내 매장의 모든 정보를\n확인하실 수 있습니다.</string>
+    <string name="texta03">&quot;매장 프로필 사진&quot; 에서는 다음 두 가지 방법으로 매장 프로필 사진을 등록하실 수 있습니다.\n1. 갤러리/앨범에서 사진 불러오기\n2. 카메라로 직접 사진 찍기</string>
+    <string name="texta04">사진을 찍거나 선택하신 후, 우측 상단의 &quot;완료&quot; 버튼을 터치하시면 &quot;매장 프로필 사진&quot;의 등록이 완료됩니다.</string>
+    <string name="texta05">&quot;내 매장&quot; 메뉴에서 등록한 사진으로 매장 프로필 사진이 변경된 것을 확인하실 수 있습니다.</string>
+    <string name="texta06">&quot;상품 등록&quot; 메뉴에서는 새로운 상품을 등록하실 수 있습니다.\n상품 사진은 중앙에 있는 + 버튼을 터치하시면 되며, 최대 \n3장까지 등록하실 수 있습니다.\n\n(CPH 모바일 앱에서 가장 적합한 상품 사진 사이즈는 360*562px 입니다.)</string>
+    <string name="texta07">상품 사진을 등록하실 때에는 &quot;갤러리/앨범&quot;에서 사진을 불러오거나, 카메라로 직접 사진을 찍어서 등록하실 수 있습니다.</string>
+    <string name="texta08">상품 사진을 등록하신 후, 상품의 자세한 정보를 입력합니다.</string>
+    <string name="texta09">&quot;상품 사이즈&quot; 메뉴를 터치하시면 등록하실 상품의 사이즈를 선택하실 수 있습니다. (중복 선택 가능)\n보기 내용 중 등록하실 사이즈가 없는 경우 &quot;사이즈 추가&quot;를 터치하여 직접 등록하실 수도 있습니다.</string>
+    <string name="texta10">&quot;혼용률&quot;과 &quot;상품 설명&quot;은 직접 입력해 주시면 됩니다. </string>
+    <string name="texta11">&quot;공개 여부&quot; 메뉴는 등록하실 상품의 공개 수준을 결정합니다.\n\ni. 모두공개 - 등록하실 상품의 정보를 모든 소매 고객들에게 공개합니다. (거래처로 등록되지 않은 업체에도 공개됨)\n\nii. 거래처공개 - 등록하실 상품의 정보를 내 거래처로 등록된 소매 고객에게만 공개합니다.</string>
+    <string name="texta12">&quot;거래처알림&quot; 메뉴는 등록하실 상품의 정보를 내 거래처로 등록된 소매 고객에게 알림으로 보낼 것인지를 결정합니다.\n&quot;ON&quot;으로 설정하시면 상품 등록과 동시에 거래처로 새 상품이 등록알림을 전송하며, &quot;OFF&quot;로 설정하시면 상품을 등록해도 거래처로 이와 관련된 알림을 전송하지 않습니다.</string>
+    <string name="texta13">상품정보 입력이 완료되면 화면 우측상단의 &quot;완료&quot;버튼을 터치해 상품등록을 완료합니다.</string>
+    <string name="texta14">상품 등록이 완료되면 내 매장 메인 페이지로 이동되며, 새로운 상품이 등록된 것을 확인하실 수 있습니다.</string>
+    
+	<string name="textb01">CPH 모바일 앱의 소매(온라인/오프라인 동일) 회원의 로그인 후 메인 화면입니다.</string>
+	<string name="textb02">매장 프로필 사진을 클릭하면 해당 매장의 메인 페이지로 이동하게 됩니다.</string>
+	<string name="textb03">화면 우측 상단에 있는 상점 모양의 아이콘을 터치하여 &quot;거래처 추가&quot; 페이지로 이동합니다.</string>
+	<string name="textb04">청평화시장의 매장을 내 거래처로 추가하기 위해 [상호명검색], [전화번호검색], [매장위치검색]을 통해 매장을 추가해주세요.\n\n[주의] 청평화시장 내 매장만 검색이 가능하며 타 상가의 점포는 거래처 추가가 불가능합니다.</string>
+	<string name="textb05">검색된 매장을 터치하여 거래처 추가 신청 작업을 완료합니다. \n\n참고로, 거래처 추가를 신청하신 매장에서 &quot;거래처 승인&quot;을 완료해 주어야만 정상적으로 거래처 등록이 완료됩니다.</string>
+	<string name="textb06">메인 페이지 상단에 있는 매장 프로필 사진을 터치하여 해당 매장의 상세 페이지로 이동합니다.</string>
+	<string name="textb07">매장 상세 페이지로 이동하시면 해당 매장에서 판매하는 상품들을 확인하실 수 있습니다. 상품 주문을 위해 구매를 원하시는 상품을 터치해 주세요.</string>
+	<string name="textb08">상품 상세 페이지에서는 상품의 자세한 정보를 확인하실 수  있습니다.</string>
+	<string name="textb09">상품 상세 페이지 하단에 있는 버튼을 클릭하여 장바구니에 담거나 샘플을 요청하거나 바로 주문을 할 수 있습니다.</string>
+	<string name="textb10">장바구니에 담을 상품의 색상, 사이즈, 수량을 입력합니다. &quot;추가&quot; 버튼을 터치하시면 장바구니에 많은 상품을 담을 수 있습니다.</string>
+	<string name="textb11">&quot;장바구니에 담기&quot; 버튼을 터치하면 선택하신 상품들을 모두 장바구니에 저장하게 됩니다.\n장바구니에 담은 상품들은 &quot;장바구니&quot; 메뉴에서 언제든지 확인이 가능합니다.</string>
+	<string name="textb12">상품 상세 페이지에서 &quot;샘플요청&quot; 버튼을 터치하시면 해당 상품의 샘플을 요청할 수 있습니다.</string>
+	<string name="textb13">샘플을 요청할 상품의 정보를 선택하시면 샘플 요청이 완료됩니다.</string>
+	<string name="textb14">상품 상세 페이지에서 &quot;주문하기&quot; 버튼을 터치하시면 해당 상품을 즉시 구매할 수 있습니다.</string>
+	<string name="textb15">주문할 상품의 색상, 사이즈, 수량을 입력하고 결제 방식을 선택합니다.</string>
+	<string name="textb16">&quot;무통장 입금&quot; 방식을 선택한 경우 해당 점포에서 등록한 계좌 정보를 선택할 수 있습니다. 만약 해당 점포에서 계좌 정보를 등록하지 않은 경우에는 이 방식을 사용하실 수 없습니다.</string>
+	<string name="textb17">&quot;사입자 대납&quot; 방식을 선택한 경우 사입자의 이름과 연락처를 입력합니다.</string>
+	<string name="textb18">결제 방식의 입력이 완료되면 &quot;주문하기&quot; 버튼을 터치하여 상품 주문을 완료합니다.</string>
+    
+</resources>

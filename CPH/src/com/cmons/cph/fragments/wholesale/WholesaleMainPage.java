@@ -102,6 +102,8 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 				}
 			}, 1000);
 		}
+		
+		mActivity.checkGuidePage(mActivity.user.getId(), true);
 	}
 	
 	@Override

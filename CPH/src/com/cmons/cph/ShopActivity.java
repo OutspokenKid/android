@@ -522,6 +522,17 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			LogUtils.trace(e);
 		}
 	}
+
+	public void checkGuidePage(String id, boolean isWholesale) {
+
+		if(!SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_GUIDE, id)) {
+			SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_GUIDE, id, true);
+			
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("isWholesale", isWholesale);
+			showPage(CphConstants.PAGE_COMMON_GUIDE, bundle);
+		}
+	}
 	
 //////////////////// Interfaces.
 	

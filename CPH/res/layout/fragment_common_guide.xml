@@ -3,48 +3,65 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <ImageView 
+    <ImageView
         android:id="@+id/commonGuidePage_ivBg" 
 	    android:layout_width="match_parent"
 	    android:layout_height="match_parent"
-	    android:background="#f00" />
+	    android:scaleType="centerCrop" />
     
-    <android.support.v4.view.ViewPager
+    <View 
+        android:id="@+id/commonGuidePage_topImage" 
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_centerHorizontal="true" />
+    
+    
+    <com.outspoken_kid.views.CustomViewPager
         android:id="@+id/commonGuidePage_viewPager" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
 	    android:layout_alignParentTop="true" />
+    
+    <com.outspoken_kid.views.PageNavigatorView
+		android:id="@+id/commonGuidePage_pageNavigatorView"
+		android:layout_width="match_parent"
+		android:layout_height="0dp"
+		android:layout_below="@id/commonGuidePage_viewPager" />
     
     <Button 
         android:id="@+id/commonGuidePage_btnLeft" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_alignParentLeft="true"
-	    android:layout_centerVertical="true"
-	    android:background="#0f0" />
+	    android:layout_centerVertical="true" />
     
     <Button 
         android:id="@+id/commonGuidePage_btnRight" 
 	    android:layout_width="0dp"
 	    android:layout_height="0dp"
 	    android:layout_alignParentRight="true"
-	    android:layout_centerVertical="true"
-	    android:background="#00f" />
+	    android:layout_centerVertical="true" />
     
     <Button 
         android:id="@+id/commonGuidePage_btnSkip" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"
-	    android:layout_alignParentBottom="true"
-	    android:background="#0ff" />
+	    android:layout_alignParentBottom="true" />
     
-    <TextView
-        android:id="@+id/commonGuidePage_tvDesc" 
-	    android:layout_width="match_parent"
-	    android:layout_height="0dp"
+    <ScrollView
+        android:layout_width="match_parent"
+	    android:layout_height="match_parent"
 	    android:layout_above="@id/commonGuidePage_btnSkip"
-	    android:gravity="center"
-	    android:textColor="#000" 
-	    android:background="#f0f" />
+	    android:layout_below="@id/commonGuidePage_viewPager"
+	    android:fillViewport="true" >
+
+        <TextView
+	        android:id="@+id/commonGuidePage_tvDesc" 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:gravity="center_horizontal"
+		    android:textColor="#000" />
+        
+    </ScrollView>
     
 </RelativeLayout>

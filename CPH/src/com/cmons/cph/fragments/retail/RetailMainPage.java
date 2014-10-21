@@ -98,6 +98,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				}
 			}, 1000);
 		}
+		
+		mActivity.checkGuidePage(mActivity.user.getId(), false);
 	}
 	
 	@Override

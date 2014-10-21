@@ -325,13 +325,6 @@ public class WholesaleActivity extends ShopActivity {
 		}
 	}
 	
-	public void showGuidePage() {
-		
-		Bundle bundle = new Bundle();
-		bundle.putBoolean("isWholesale", true);
-		showPage(CphConstants.PAGE_COMMON_GUIDE, bundle);
-	}
-	
 	public void showMainPage() {
 		
 		showPage(CphConstants.PAGE_WHOLESALE_MAIN, null);

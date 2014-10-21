@@ -361,13 +361,6 @@ public class RetailActivity extends ShopActivity {
 		}
 	}
 	
-	public void showGuidePage() {
-
-		Bundle bundle = new Bundle();
-		bundle.putBoolean("isWholesale", false);
-		showPage(CphConstants.PAGE_COMMON_GUIDE, bundle);
-	}
-	
 	public void showMainPage() {
 		
 		showPage(CphConstants.PAGE_RETAIL_MAIN, null);
