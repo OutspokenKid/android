@@ -32,6 +32,7 @@ import com.cmons.cph.fragments.retail.RetailForShopPage;
 import com.cmons.cph.fragments.retail.RetailForWishListPage;
 import com.cmons.cph.fragments.retail.RetailForWishPage;
 import com.cmons.cph.fragments.retail.RetailMainPage;
+import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.models.Retail;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -284,6 +285,42 @@ public class RetailActivity extends ShopActivity {
 		//소매 매장 사용불가 처리
 		} else if(url.equals("retails/disable")) {
 			signOut();
+			
+		//주문 댓글.
+		} else if(url.equals("orders/replies")) {
+			//"uri": "cph://orders/replies?order_collapse_key=WgncFfghjmRbSbgSWhIfnxCFaurjiPhZ&post_id=119",
+			
+			String order_collapse_key = uri.getQueryParameter("order_collapse_key"); 
+			
+			//http://cph-app.co.kr/retails/orders/show?collapse_key=KBxyqdgxprPeFnAOrvRDomOaEprZiGMH
+			String apiUrl = CphConstants.BASE_API_URL + "retails/orders/show"
+					+ "?collapse_key=" + order_collapse_key;
+			DownloadUtils.downloadJSONString(apiUrl, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("RetailActivity.handleUri.orders/replies.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("RetailActivity.handleUri.orders/replies.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						OrderSet orderSet = new OrderSet(objJSON.getJSONObject("order"));
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("orderSet", orderSet);
+						showPage(CphConstants.PAGE_RETAIL_ORDER, bundle);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 		}
 	}
 

@@ -30,6 +30,7 @@ import com.cmons.cph.fragments.wholesale.WholesaleForSampleListPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForShopPage;
 import com.cmons.cph.fragments.wholesale.WholesaleForWritePage;
 import com.cmons.cph.fragments.wholesale.WholesaleMainPage;
+import com.cmons.cph.models.OrderSet;
 import com.cmons.cph.models.Wholesale;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -176,8 +177,8 @@ public class WholesaleActivity extends ShopActivity {
 		
 		String url = uri.getHost() + uri.getPath();
 		
-		LogUtils.log("###WholesaleActivity.handleIntent.clickOK " +
-				"\nurl : " + url);
+		LogUtils.log("###WholesaleActivity.handleUri" +
+				"\nuri : " + uri);
 		
 		//상품 주문
 		if(url.contains("wholesales/orders")) {
@@ -240,6 +241,42 @@ public class WholesaleActivity extends ShopActivity {
 		//도매 매장 사용불가 처리
 		} else if(url.equals("wholesales/disable")) {
 			signOut();
+			
+		//주문 댓글.
+		} else if(url.equals("orders/replies")) {
+			//"uri": "cph://orders/replies?order_collapse_key=WgncFfghjmRbSbgSWhIfnxCFaurjiPhZ&post_id=119",
+			
+			String order_collapse_key = uri.getQueryParameter("order_collapse_key"); 
+			
+			//http://cph-app.co.kr/wholesales/orders/show?collapse_key=KBxyqdgxprPeFnAOrvRDomOaEprZiGMH
+			String apiUrl = CphConstants.BASE_API_URL + "wholesales/orders/show"
+					+ "?collapse_key=" + order_collapse_key;
+			DownloadUtils.downloadJSONString(apiUrl, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("WholesaleActivity.handleUri.orders/replies.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("WholesaleActivity.handleUri.orders/replies.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						OrderSet orderSet = new OrderSet(objJSON.getJSONObject("order"));
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("orderSet", orderSet);
+						showPage(CphConstants.PAGE_WHOLESALE_ORDER, bundle);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 		}
 	}
 
