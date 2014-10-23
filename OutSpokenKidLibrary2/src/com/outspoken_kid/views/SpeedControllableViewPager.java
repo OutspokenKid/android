@@ -10,15 +10,15 @@ import android.util.AttributeSet;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-public class CustomViewPager extends ViewPager {
+public class SpeedControllableViewPager extends ViewPager {
 
 	private FixedSpeedScroller fixedSpeedScroller;
 	
-	public CustomViewPager(Context context) {
+	public SpeedControllableViewPager(Context context) {
 		this(context, null);
 	}
 	
-	public CustomViewPager(Context context, AttributeSet attrs) {
+	public SpeedControllableViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
