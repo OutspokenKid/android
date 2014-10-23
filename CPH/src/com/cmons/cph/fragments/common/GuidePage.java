@@ -21,15 +21,15 @@ import com.cmons.cph.classes.CmonsFragmentForShop;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.views.CustomViewPager;
 import com.outspoken_kid.views.PageNavigatorView;
+import com.outspoken_kid.views.SpeedControllableViewPager;
 
 public class GuidePage extends CmonsFragmentForShop {
 
 	private boolean isWholesale;
 
 	private View topImage;
-	private CustomViewPager viewPager;
+	private SpeedControllableViewPager viewPager;
 	private PageNavigatorView pageNavigatorView;
 	private Button btnLeft;
 	private Button btnRight;
@@ -53,7 +53,7 @@ public class GuidePage extends CmonsFragmentForShop {
 		ivBg = (ImageView) mThisView.findViewById(R.id.commonGuidePage_ivBg);
 		
 		topImage = mThisView.findViewById(R.id.commonGuidePage_topImage);
-		viewPager = (CustomViewPager) mThisView.findViewById(R.id.commonGuidePage_viewPager);
+		viewPager = (SpeedControllableViewPager) mThisView.findViewById(R.id.commonGuidePage_viewPager);
 		pageNavigatorView = (PageNavigatorView) mThisView.findViewById(R.id.commonGuidePage_pageNavigatorView);
 		btnLeft = (Button) mThisView.findViewById(R.id.commonGuidePage_btnLeft);
 		btnRight = (Button) mThisView.findViewById(R.id.commonGuidePage_btnRight);

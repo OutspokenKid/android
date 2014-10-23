@@ -16,7 +16,7 @@
 	    android:layout_centerHorizontal="true" />
     
     
-    <com.outspoken_kid.views.CustomViewPager
+    <com.outspoken_kid.views.SpeedControllableViewPager
         android:id="@+id/commonGuidePage_viewPager" 
 	    android:layout_width="match_parent"
 	    android:layout_height="0dp"

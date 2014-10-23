@@ -14,6 +14,12 @@
 	    android:layout_height="match_parent"
 	    android:layout_below="@id/retailMainPage_titleBar2"
 	    android:cacheColorHint="#0000" />
+    
+    <com.cmons.cph.views.HeaderViewForRetailMain
+        android:id="@+id/retailMainPage_headerView" 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentTop="true" />
 
     <View 
         android:id="@+id/retailMainPage_cover" 

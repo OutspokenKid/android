@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -48,6 +50,7 @@ import com.outspoken_kid.views.HeaderGridView;
 public class RetailMainPage extends CmonsFragmentForRetail {
 	
 	private HeaderViewForRetailMain headerView;
+	private View blankView;
 	private HeaderGridView gridView;
 
 	private View cover;
@@ -72,6 +75,8 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	private int categoryIndex = 0;
 	private int order = 0;
 	private int totalCount;
+	private int defaultTopMargin = 0;
+	private boolean headerShown;
 	
 	@Override
 	public void onResume() {
@@ -83,6 +88,12 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		
 		if(models.size() == 0) {
 			downloadInfo();
+		}
+		
+		if(headerShown) {
+			headerView.setVisibility(View.VISIBLE);
+		} else {
+			headerView.setVisibility(View.INVISIBLE);
 		}
 		
 		refreshNotices();
@@ -118,6 +129,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.retailMainPage_titleBar);
 		ivBg = (ImageView) mThisView.findViewById(R.id.retailMainPage_ivBg);
 		
+		headerView = (HeaderViewForRetailMain) mThisView.findViewById(R.id.retailMainPage_headerView);
 		gridView = (HeaderGridView) mThisView.findViewById(R.id.retailMainPage_gridView);
 		menuRelative = (RelativeLayout) mThisView.findViewById(R.id.retailMainPage_menuRelative);
 
@@ -195,16 +207,26 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 		orders = new String[]{"최신순", "판매량순"};
 
 		titleBar.getMenuButton().setVisibility(View.VISIBLE);
-		
-		headerView = new HeaderViewForRetailMain(mContext);
+
+		defaultTopMargin = ResizeUtils.getSpecificLength(96);
+		((RelativeLayout.LayoutParams)headerView.getLayoutParams()).topMargin = 
+				defaultTopMargin;
 		headerView.init((RetailActivity)mActivity);
 		headerView.setTotalProduct(totalCount);
-		AbsListView.LayoutParams al = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		headerView.setLayoutParams(al);
-		gridView.addHeaderView(headerView);
-		gridView.setNumColumns(2);
+		
+		//BlankView 더하기. 440 + 92 + 40= 572
+		
+		if(gridView.getHeaderViewCount() == 0) {
+			blankView = new View(mContext);
+			blankView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, 
+					ResizeUtils.getSpecificLength(572)));
+			blankView.setBackgroundColor(Color.TRANSPARENT);
+			gridView.addHeaderView(blankView);
+		}
+		
 		adapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), models);
 		gridView.setAdapter(adapter);
+		gridView.setNumColumns(2);
 		
 		noticeAdapter = new CphAdapter(mContext, getActivity().getLayoutInflater(), notices);
 		listView.setAdapter(noticeAdapter);
@@ -321,6 +343,46 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 			}
 		});
 
+		gridView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(firstVisibleItem == 0 
+						|| firstVisibleItem == 1) {
+					headerView.setVisibility(View.VISIBLE);
+					
+					if(view.getChildAt(0) == null) {
+						//Do nothing.
+						
+						LogUtils.log("###RetailMainPage.onScrollStateChanged.  "
+								+ "fvi : " + firstVisibleItem + 
+								", vic : " + visibleItemCount +
+								", tic : " + totalItemCount);
+					} else {
+						int offset = view.getChildAt(0).getTop();
+						gridViewScrollChanged(offset);
+						
+						LogUtils.log("###RetailMainPage.onScrollStateChanged.  "
+								+ "fvi : " + firstVisibleItem + 
+								", vic : " + visibleItemCount +
+								", tic : " + totalItemCount +
+								", offset : " + offset);
+					}
+					headerShown = true;
+				} else if(firstVisibleItem >= 2) {
+					headerView.setVisibility(View.INVISIBLE);
+					headerShown = false;
+				}
+			}
+		});
+		
 		cover.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -617,7 +679,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	}
 	
 //////////////////// Custom methods.
-
+	
 	public void setButtons() {
 		
 		boolean bigFont = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_BIG_FONT, "bigfont");
@@ -825,5 +887,14 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				}
 			}
 		});
+	}
+
+	public void gridViewScrollChanged(int scrollOffset) {
+
+		if(scrollOffset <= 0) {
+			((RelativeLayout.LayoutParams)headerView.getLayoutParams()).topMargin = 
+					defaultTopMargin + scrollOffset;
+			headerView.requestLayout();
+		}
 	}
 }

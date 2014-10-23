@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -33,6 +32,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.SpeedControllableViewPager;
 
 public class HeaderViewForRetailMain extends RelativeLayout {
 
@@ -40,7 +40,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 	
 	private RetailActivity activity;
 	
-	private ViewPager viewPager;
+	private SpeedControllableViewPager viewPager;
 	private ArrayList<Wholesale> wholesales = new ArrayList<Wholesale>();
 	private PagerAdapterForWholesale pagerAdapter;
 	private boolean needPlay;
@@ -90,7 +90,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		madeCount += 10;
 		
 		//viewPager.					id : 0
-		viewPager = new ViewPager(getContext());
+		viewPager = new SpeedControllableViewPager(getContext());
 		rp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(440));
