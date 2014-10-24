@@ -412,7 +412,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					ToastUtils.showToast(R.string.wrongProductPrice);
 					return;
 					
-				} else if(btnCategory.getText() == null) {
+				} else if(selectedCategoryIndex == 0) {
 					//상품분류를 선택해주세요.
 					ToastUtils.showToast(R.string.wrongProductCategory);
 					return;
@@ -1359,8 +1359,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			String printString = "================ mode : " + mode;
 
 			for(String key : map.keySet()) {
-				printString += "\n" + key + " : " + map.get(key);
-				targetItems.add(new Item(key, map.get(key)));
+				
+				if(map.get(key) != null) {
+					printString += "\n" + key + " : " + map.get(key);
+					targetItems.add(new Item(key, map.get(key)));
+				}
 			}
 			
 			LogUtils.log(printString);
@@ -1471,19 +1474,21 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		size = targetStrings.length;
 		for(int i=0; i<size; i++) {
 			
-			duplicated = false;
-			
-			for(Item item : targetItems) {
-				if(targetStrings[i].equals(item.text)) {
-					duplicated = true;
-					item.selected = true;
+			if(targetStrings[i] != null) {
+				duplicated = false;
+				
+				for(Item item : targetItems) {
+					if(targetStrings[i].equals(item.text)) {
+						duplicated = true;
+						item.selected = true;
+					}
 				}
-			}
-			
-			if(!duplicated) {
-				Item item = new Item(targetStrings[i]);
-				item.selected = true;
-				targetItems.add(item);
+				
+				if(!duplicated) {
+					Item item = new Item(targetStrings[i]);
+					item.selected = true;
+					targetItems.add(item);
+				}
 			}
 		}
 	}
@@ -1553,25 +1558,27 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		size = targetStrings.length;
 		for(int i=0; i<size; i++) {
 			
-			duplicated = false;
-			
-			for(Item item : targetItems) {
-				if(targetStrings[i].equals(item.text)) {
-					duplicated = true;
-					item.selected = true;
+			if(targetStrings[i] != null) {
+				duplicated = false;
+				
+				for(Item item : targetItems) {
+					if(targetStrings[i].equals(item.text)) {
+						duplicated = true;
+						item.selected = true;
+					}
 				}
-			}
-			
-			if(!duplicated) {
-				Item item = new Item(targetStrings[i]);
-				item.selected = true;
-				targetItems.add(item);
-			}
-			
-			if(settingString == null) {
-				settingString = targetStrings[i];
-			} else {
-				settingString += " / " + targetStrings[i];
+				
+				if(!duplicated) {
+					Item item = new Item(targetStrings[i]);
+					item.selected = true;
+					targetItems.add(item);
+				}
+				
+				if(settingString == null) {
+					settingString = targetStrings[i];
+				} else {
+					settingString += " / " + targetStrings[i];
+				}
 			}
 		}
 		
@@ -1727,16 +1734,21 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				
 				for(Item item : uniqueMixtures) {
 					
-					if(mixtureString == null) {
-						mixtureString = "";
-					} else {
-						mixtureString += " / ";
+					if(item.text != null) {
+						
+						if(mixtureString == null) {
+							mixtureString = "";
+						} else {
+							mixtureString += " / ";
+						}
+						
+						mixtureString += item.text;
 					}
-					
-					mixtureString += item.text;
 				}
-				
-				ed.putString("mixtureString", mixtureString);
+
+				if(mixtureString != null) {
+					ed.putString("mixtureString", mixtureString);
+				}
 			} else {
 				ed.remove("mixtureString");
 			}
