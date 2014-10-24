@@ -820,9 +820,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		FontUtils.setFontAndHintSize(etPrice, 30, 24);
 		etPrice.setPadding(padding, 0, padding, 0);
 		
-		//line.
+		//bg.
 		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(
-				R.id.wholesaleWritePage_line)).getLayoutParams();
+				R.id.wholesaleWritePage_bg)).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(910);
 		rp.topMargin = titleTextHeight;
 		
 		//btnSave.
