@@ -545,7 +545,7 @@ public class BaseProfilePage extends BaseFragment {
 		
 		try {
 			String url = ZoneConstants.BASE_URL + "member/update/default_profile" +
-					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.WITHOUT_MEMBER_ID) +
+					"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 					"&member_nickname=" + URLEncoder.encode(nickname, "UTF-8") +
 					"&gender=" + gender +
 					"&birth_year=" + yearString +
