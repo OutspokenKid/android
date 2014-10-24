@@ -325,6 +325,11 @@ public class HeaderViewForRetailShop extends RelativeLayout {
 	public void downloadProfile() {
 		
 		try {
+			if(wholesale.getStatus() == -1) {
+				ivImage.setImageResource(R.drawable.out_bg);
+				return;
+			}
+			
 			if(wholesale != null
 					&& wholesale.getRep_image_url() != null) {
 				DownloadUtils.downloadBitmap(wholesale.getRep_image_url(), new OnBitmapDownloadListener() {

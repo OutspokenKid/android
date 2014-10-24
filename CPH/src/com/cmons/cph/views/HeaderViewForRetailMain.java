@@ -507,18 +507,12 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 
 							@Override
 							public void onError(String url) {
-
-								LogUtils.log("instantiateItem.onError."
-										+ "\nurl : " + url);
 							}
 
 							@Override
 							public void onCompleted(String url, Bitmap bitmap) {
 
 								try {
-									LogUtils.log("instantiateItem.onCompleted."
-											+ "\nurl : " + url);
-									
 									if(bitmap == null) {
 										return;
 									}

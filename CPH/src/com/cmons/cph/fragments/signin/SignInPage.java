@@ -95,7 +95,6 @@ public class SignInPage extends CmonsFragment {
 					KeyEvent event) {
 				
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					
 					checkIdPw();
 				}
 				

@@ -24,19 +24,24 @@ public class IntentHandlerActivity extends Activity {
 		bg.setBackgroundColor(Color.argb(100, 100, 0, 0));
 		setContentView(bg);
 
-		handlingIntent(getIntent());
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			PushObject pushObject = (PushObject) getIntent().getSerializableExtra("pushObject");
+			handlingPushObject(pushObject);
+		}
 	}
 	
-	public void handlingIntent(final Intent intent) {
+	public void handlingPushObject(final PushObject pushObject) {
 
 		try {
 			if(ShopActivity.getInstance() != null
 					&& ShopActivity.getInstance().getFragmentsSize() != 0) {
-
-				LogUtils.log("###IntentHandlerActivity.handlingIntent.  On ShopActivity");
-				ShopActivity.getInstance().handleIntent(intent);
+				LogUtils.log("###IntentHandlerActivity.handlingPushObject.  On ShopActivity"
+						+ "\nmessage : " + pushObject.message
+						+ "\nuriString : " + pushObject.uri);
+				
+				ShopActivity.getInstance().handlePushObject(pushObject);
 			} else {
-				LogUtils.log("###IntentHandlerActivity.handlingIntent.  app is not running.");
+				LogUtils.log("###IntentHandlerActivity.handlingPushObject.  app is not running.");
 				
 				if(IntroActivity.isInIntro) {
 					bg.postDelayed(new Runnable() {
@@ -47,13 +52,13 @@ public class IntentHandlerActivity extends Activity {
 								
 								@Override
 								public void run() {
-									handlingIntent(intent);
+									handlingPushObject(pushObject);
 								}
 							});
 						}
 					}, 5000);
 				} else {
-					showIntroActivity(intent);
+					showIntroActivity(pushObject);
 				}
 			}
 		} catch(Exception e) {
@@ -63,20 +68,16 @@ public class IntentHandlerActivity extends Activity {
 		finish();
 	}
 
-	public void showIntroActivity(Intent intent) {
+	public void showIntroActivity(PushObject pushObject) {
+
+		Intent i = new Intent(this, IntroActivity.class);
 		
-		if(intent != null) {
-			Intent i = new Intent(this, IntroActivity.class);
-			
-			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
-			
-			if(po != null) {
-				i.putExtra("pushObject", po);
-			}
-			
-			i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			startActivity(i);
+		if(pushObject != null) {
+			i.putExtra("pushObject", pushObject);
 		}
+		
+		i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(i);
 	}
 	
 	public static void handleInvalidUri() {

@@ -361,19 +361,9 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 					if(view.getChildAt(0) == null) {
 						//Do nothing.
 						
-						LogUtils.log("###RetailMainPage.onScrollStateChanged.  "
-								+ "fvi : " + firstVisibleItem + 
-								", vic : " + visibleItemCount +
-								", tic : " + totalItemCount);
 					} else {
 						int offset = view.getChildAt(0).getTop();
 						gridViewScrollChanged(offset);
-						
-						LogUtils.log("###RetailMainPage.onScrollStateChanged.  "
-								+ "fvi : " + firstVisibleItem + 
-								", vic : " + visibleItemCount +
-								", tic : " + totalItemCount +
-								", offset : " + offset);
 					}
 					headerShown = true;
 				} else if(firstVisibleItem >= 2) {

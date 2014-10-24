@@ -29,6 +29,7 @@ public class Shop extends BaseModel implements Serializable {
 	private int total_visited_cnt;
 	private int today_visited_cnt;
 	private int favorited_cnt;
+	private int status;
 	
 	private String jsonString;
 	
@@ -86,6 +87,10 @@ public class Shop extends BaseModel implements Serializable {
 			
 			if(objJSON.has("favorited_cnt")) {
 				this.favorited_cnt = objJSON.getInt("favorited_cnt");
+			}
+			
+			if(objJSON.has("status")) {
+				this.status = objJSON.getInt("status");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -192,5 +197,13 @@ public class Shop extends BaseModel implements Serializable {
 
 	public void setJsonString(String jsonString) {
 		this.jsonString = jsonString;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

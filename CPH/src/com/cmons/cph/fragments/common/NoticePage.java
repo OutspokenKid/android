@@ -241,7 +241,7 @@ public class NoticePage extends CmonsFragmentForShop {
 		try {
 			String url = CphConstants.BASE_API_URL + "wholesales/notices/save" +
 					"?notice[title]=" + URLEncoder.encode(etTitle.getText().toString(), "utf-8") +
-					"&notice[content]=" + URLEncoder.encode(etTitle.getText().toString(), "utf-8") +
+					"&notice[content]=" + URLEncoder.encode(etContent.getText().toString(), "utf-8") +
 					"&notice[need_push]=" + (needPush? 1 : 0);
 					
 			if(notice != null) {

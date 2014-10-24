@@ -10,7 +10,7 @@ public class PushObject implements Serializable {
 
 	private static final long serialVersionUID = -8039255353290977219L;
 	
-	public String id;
+	public int id;
 	public String message;
 	public String title;
 	public boolean sound;
@@ -24,7 +24,7 @@ public class PushObject implements Serializable {
 		
 		try {
 			if(objJSON.has("id")) {
-				this.id = objJSON.getString("id");
+				this.id = objJSON.getInt("id");
 			}
 			
 			if(objJSON.has("message")) {

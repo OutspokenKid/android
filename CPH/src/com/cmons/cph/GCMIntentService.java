@@ -65,7 +65,6 @@ public class GCMIntentService extends GCMBaseIntentService {
 				}
 				
 				PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
-				intent.putExtra("pushObject", po);
 				
 				//앱이 실행중이고 탈퇴 푸시인 경우 바로 처리.
 				if(ShopActivity.getInstance() != null
@@ -74,10 +73,13 @@ public class GCMIntentService extends GCMBaseIntentService {
 						&& po.uri.contains("/disable")) {
 					ShopActivity.getInstance().checkSignStatus();
 					
-				//앱이 실행중이지 않은 경우 Notification 전송.
+				//그 외의 경우 Notification 전송.
 				} else {
-					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification.");
-					showNotification(context, intent);
+					LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification."
+							+ "\nmsg : " + intent.getStringExtra("msg")
+							+ "\nmessage : " + po.message
+							+ "\nuri : " + po.uri);
+					showNotification(context, po);
 				}
 			}
 		} catch(Exception e) {
@@ -121,17 +123,16 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 
 	/**
-	 * 앱이 실행중이지 않거나 화면이 꺼져있는 경우..
+	 * 탈퇴 푸시가 아닌 경우.
 	 */
-	public void showNotification(Context context, Intent intent) {
+	public void showNotification(Context context, PushObject pushObject) {
 
 		LogUtils.log("###GCMIntentService.showNotification.  " +
-				"\nintent : " + intent);
+				"\npushObject : " + pushObject);
 
 		try {
-			PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
-			String message = po.message;
-			String uri = po.uri;
+			String message = pushObject.message;
+			String uri = pushObject.uri;
 			
 			LogUtils.log("###GCMIntentService.showNotification.  " +
 					"\nmessage : " + message + 
@@ -144,10 +145,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			int time = (int)(System.currentTimeMillis() % 10000);
 			
 			Intent pushIntent = new Intent(context, IntentHandlerActivity.class);
-			
-			if(intent != null) {
-				pushIntent.putExtra("pushObject", po);
-			}
+			pushIntent.putExtra("pushObject", pushObject);
 
 			pushIntent.putExtra("time", time);
 			pushIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -157,9 +155,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 			int pushSetting = Notification.DEFAULT_LIGHTS
 					| Notification.DEFAULT_SOUND
 					| Notification.DEFAULT_VIBRATE;
-			String push_msg = intent.getStringExtra("message");
+			String push_msg = pushObject.message;
 			
-			PendingIntent pIntent = PendingIntent.getActivity(context, 0, pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pIntent = PendingIntent.getActivity(context, pushObject.id, 
+					pushIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 			Notification noti = new NotificationCompat.Builder(context)
 						.setContentTitle(getString(R.string.app_name))
 						.setContentText(message)

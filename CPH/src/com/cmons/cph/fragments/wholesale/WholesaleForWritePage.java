@@ -623,6 +623,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				mixtureAdapter.notifyDataSetChanged();
 				showPopup();
 				ToastUtils.showToast(R.string.wrongProductMixtureRate);
+				SoftKeyboardUtils.showKeyboard(mContext, btnMixtureRate);
 			}
 		});
 		

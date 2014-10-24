@@ -489,14 +489,13 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	 * pushed_at : 보내진 시간.
 	 * read_at : 유저가 읽은 시간.
 	 */
-	public void handleIntent(Intent intent) {
+	public void handlePushObject(final PushObject pushObject) {
 		
 		LogUtils.log("###WholesaleActivity.handleIntent.  ");
 		
 		try {
-			final PushObject po = (PushObject) intent.getSerializableExtra("pushObject");
-			String message = po.message;
-			final String uriString = po.uri;
+			String message = pushObject.message;
+			String uriString = pushObject.uri;
 			
 			LogUtils.log("message : " + message);
 			LogUtils.log("uriString : " + uriString);
@@ -508,9 +507,8 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 				public void onClick(DialogInterface dialog, int which) {
 
 					try {
-						setPushRead(Integer.parseInt(po.id));
-						Uri uri = Uri.parse(uriString);
-						handleUri(uri);
+						setPushRead(pushObject.id);
+						handleUri(Uri.parse(pushObject.uri));
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (Error e) {
