@@ -482,56 +482,64 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		@Override
 		public Object instantiateItem(ViewGroup container, int position) {
 
-			final int index = position % wholesales.size();
-			final String imageUrl = wholesales.get(index).getRep_image_url();
+			try {
+				final int index = position % wholesales.size();
+				final String imageUrl = wholesales.get(index).getRep_image_url();
 
-			final ImageView ivImage = new ImageView(getContext());
-			ivImage.setScaleType(ScaleType.CENTER_CROP);
-			ivImage.setOnClickListener(new OnClickListener() {
+				final ImageView ivImage = new ImageView(getContext());
+				ivImage.setScaleType(ScaleType.CENTER_CROP);
+				ivImage.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View view) {
+					@Override
+					public void onClick(View view) {
 
-					if(activity != null) {
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("wholesale", wholesales.get(index));
-						activity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+						if(activity != null) {
+							Bundle bundle = new Bundle();
+							bundle.putSerializable("wholesale", wholesales.get(index));
+							activity.showPage(CphConstants.PAGE_RETAIL_SHOP, bundle);
+						}
 					}
-				}
-			});
-			container.addView(ivImage);
+				});
+				container.addView(ivImage);
 
-			if(!StringUtils.isEmpty(imageUrl)) {
-				DownloadUtils.downloadBitmap(imageUrl,
-						new OnBitmapDownloadListener() {
+				if(!StringUtils.isEmpty(imageUrl)) {
+					DownloadUtils.downloadBitmap(imageUrl,
+							new OnBitmapDownloadListener() {
 
-							@Override
-							public void onError(String url) {
-							}
-
-							@Override
-							public void onCompleted(String url, Bitmap bitmap) {
-
-								try {
-									if(bitmap == null) {
-										return;
-									}
-									
-									if(!StringUtils.isEmpty(url)) {
-										ivImage.setImageBitmap(bitmap);
-									}
-								} catch (Exception e) {
-									LogUtils.trace(e);
-								} catch (OutOfMemoryError oom) {
-									LogUtils.trace(oom);
+								@Override
+								public void onError(String url) {
 								}
-							}
-						});
-			} else {
-				ivImage.setImageResource(R.drawable.picture_default);
+
+								@Override
+								public void onCompleted(String url, Bitmap bitmap) {
+
+									try {
+										if(bitmap == null) {
+											return;
+										}
+										
+										if(!StringUtils.isEmpty(url)) {
+											ivImage.setImageBitmap(bitmap);
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
+				} else {
+					ivImage.setImageResource(R.drawable.picture_default);
+				}
+				
+				return ivImage;
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
 			}
 			
-			return ivImage;
+			return null;
 		}
 
 		@Override
