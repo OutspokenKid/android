@@ -1343,7 +1343,8 @@ containing a value of this type.
         public static final int common_signin_btn_text_light=0x7f070022;
         public static final int intro_center=0x7f07001b;
         public static final int intro_end=0x7f07001c;
-        /**  Colors of bg_intro.xml 
+        /**  	<string name="domain">http://112.169.61.103</string> 
+ Colors of bg_intro.xml 
          */
         public static final int intro_start=0x7f07001a;
         public static final int wallet_bright_foreground_disabled_holo_light=0x7f07000f;

@@ -15,7 +15,8 @@
 	
 	<!-- Domain -->
 <!-- 	<string name="domain">http://www.napp.co.kr</string> -->
-	<string name="domain">http://112.169.61.103</string>
+	<string name="domain">http://napp.minsangk.com</string>
+<!-- 	<string name="domain">http://112.169.61.103</string> -->
 
 	<!-- Colors of bg_intro.xml -->
 	<color name="intro_start">#000000</color>
