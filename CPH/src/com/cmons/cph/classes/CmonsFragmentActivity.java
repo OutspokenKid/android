@@ -170,7 +170,7 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 
 					int standardLength = 640;
 					
-					if(ResizeUtils.getScreenWidth() == 1080) {
+					if(ResizeUtils.getScreenWidth() >= 720) {
 						standardLength = 720;
 					}
 					

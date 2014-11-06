@@ -110,8 +110,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	private ArrayList<Item> mixtureItems;
 	private int mode;
 	
-	private boolean uploading;
-	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -122,7 +120,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
 
 				try {
+					boolean uploading = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading"); 
+					
 					if(!uploading) {
+						LogUtils.log("###WholesaleForWritePage.onAfterUploadImage.  "
+								+ "\nresultString : " + resultString);
 						return;
 					}
 					
@@ -158,7 +160,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				} catch (Error e) {
 					LogUtils.trace(e);
 				} finally {
-					uploading = false;
+					SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
 				}
 			}
 		};
@@ -480,18 +482,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 		
-				if(uploading) {
-					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
-					return;
-				}
-				
-				uploading = true;
-				
-				if(ivImages[0].getDrawable() == null) {
-					uploadImage(ivImages[0], 0);
-				} else {
-					choiceMode(0);
-				}
+				upload(0);
 			}
 		});
 		
@@ -500,18 +491,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				if(uploading) {
-					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
-					return;
-				}
-				
-				uploading = true;
-				
-				if(ivImages[1].getDrawable() == null) {
-					uploadImage(ivImages[1], 1);
-				} else {
-					choiceMode(1);
-				}
+				upload(1);
 			}
 		});
 		
@@ -520,18 +500,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				if(uploading) {
-					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
-					return;
-				}
-				
-				uploading = true;
-				
-				if(ivImages[2].getDrawable() == null) {
-					uploadImage(ivImages[2], 2);
-				} else {
-					choiceMode(2);
-				}
+				upload(2);
 			}
 		});
 
@@ -1318,11 +1287,29 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		relativePopup.setVisibility(View.INVISIBLE);
 	}
 
+	public void upload(int index) {
+		
+		boolean uploading = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
+		
+		if(uploading) {
+			ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
+			return;
+		}
+		
+		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading", true);
+		
+		if(ivImages[index].getDrawable() == null) {
+			uploadImage(ivImages[index], index);
+		} else {
+			choiceMode(index);
+		}
+	}
+	
 	public void clear() {
 		
 		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 		selectedImageUrls = new String[3];
-		uploading = false;
+		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	

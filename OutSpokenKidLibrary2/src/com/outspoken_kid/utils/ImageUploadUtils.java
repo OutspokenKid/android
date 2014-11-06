@@ -53,19 +53,22 @@ public class ImageUploadUtils {
 			//가로, 세로 중 긴 값으로 최대치 제한.
 			int length = Math.max(width, height);
 			
+			//이걸로 하면 가로 기준.
+//			int length = width;
+			
 			LogUtils.log("###ImageUploadUtils.getBitmapInSampleSize.  " +
 					"\nstandardLength : " + standardLength +
 					"\nwidth : " + width +
 					"\nheight : " + height +
 					"\nlength : " + length);
 			
-			if (length < standardLength) {
+			if (length <= standardLength) {
 				return 1;
-			} else if (length < standardLength * 2) {
+			} else if (length <= standardLength * 2) {
 				return 2;
-			} else if (length < standardLength * 4) {
+			} else if (length <= standardLength * 4) {
 				return 4;
-			} else if (length < standardLength * 8) {
+			} else if (length <= standardLength * 8) {
 				return 8;
 			} else {
 				return 16;
