@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
@@ -152,6 +153,22 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 			public void onClick(View view) {
 
 				call();
+			}
+		});
+		
+		gridView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
 			}
 		});
 	}

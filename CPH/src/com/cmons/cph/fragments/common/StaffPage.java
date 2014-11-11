@@ -163,7 +163,7 @@ public class StaffPage extends CmonsFragmentForShop {
 	@Override
 	public void downloadInfo() {
 
-		url = CphConstants.BASE_API_URL + "users/staffs";
+		url = CphConstants.BASE_API_URL + "users/staffs?num=0";
 		super.downloadInfo();
 	}
 	

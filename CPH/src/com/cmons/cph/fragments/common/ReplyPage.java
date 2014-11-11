@@ -364,7 +364,8 @@ public class ReplyPage extends CmonsFragmentForShop {
 	public void downloadInfo() {
 		
 		url = CphConstants.BASE_API_URL + "products/replies" +
-				"?product_id=" + product_id;
+				"?product_id=" + product_id +
+				"&num=0";
 		super.downloadInfo();
 	}
 	

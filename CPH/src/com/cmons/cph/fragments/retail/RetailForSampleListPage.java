@@ -350,7 +350,7 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 		
 		//http://cph.minsangk.com/retails/samples
 		url = CphConstants.BASE_API_URL + "retails/samples" +
-				"?status=" + menuIndex;
+				"?status=" + menuIndex + "&num=0";
 		
 		try {
 			if(keyword != null) {

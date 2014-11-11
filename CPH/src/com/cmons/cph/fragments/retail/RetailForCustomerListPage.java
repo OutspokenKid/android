@@ -224,7 +224,7 @@ public class RetailForCustomerListPage extends CmonsFragmentForRetail {
 	public void downloadInfo() {
 		
 		if(menuIndex == 0) {
-			url = CphConstants.BASE_API_URL + "retails/orders";
+			url = CphConstants.BASE_API_URL + "retails/orders?num=0";
 		}
 		
 		super.downloadInfo();

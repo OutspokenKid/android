@@ -370,6 +370,10 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 					headerView.setVisibility(View.INVISIBLE);
 					headerShown = false;
 				}
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
 			}
 		});
 		
@@ -420,7 +424,7 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 				hideNoticeRelative();
 			}
 		});
-	
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override

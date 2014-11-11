@@ -65,6 +65,7 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 
 	@Override
 	public void setListeners() {
+
 	}
 
 	@Override
@@ -98,7 +99,8 @@ public class RetailForFavoriteProductPage extends CmonsFragmentForRetail {
 	@Override
 	public void downloadInfo() {
 
-		url = CphConstants.BASE_API_URL + "retails/favorite/products";
+		url = CphConstants.BASE_API_URL + "retails/favorite/products"
+				+ "?num=0";
 		super.downloadInfo();
 	}
 	

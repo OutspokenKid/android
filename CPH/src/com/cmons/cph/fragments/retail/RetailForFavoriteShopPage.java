@@ -119,7 +119,7 @@ public class RetailForFavoriteShopPage extends CmonsFragmentForRetail {
 	public void downloadInfo() {
 
 		//http://cph.minsangk.com/retails/favorite/wholesales
-		url = CphConstants.BASE_API_URL + "retails/favorite/wholesales";
+		url = CphConstants.BASE_API_URL + "retails/favorite/wholesales?num=0";
 		super.downloadInfo();
 	}
 

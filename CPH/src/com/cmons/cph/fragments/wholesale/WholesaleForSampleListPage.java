@@ -381,7 +381,8 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		
 		//http://cph.minsangk.com/wholesales/samples
 		url = CphConstants.BASE_API_URL + "wholesales/samples" +
-				"?status=" + menuIndex;
+				"?status=" + menuIndex +
+				"&num=0";
 		
 		try {
 			if(keyword != null) {

@@ -52,6 +52,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class WholesaleForWritePage extends CmonsFragmentForWholesale {
@@ -232,9 +233,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 	@Override
 	public void setVariables() {
-
+		
 		if(getArguments() != null) {
 			product = (Product) getArguments().getSerializable("product");
+			LogUtils.log("###WholesaleForWritepage.setVariables.  has product.");
+		} else {
+			LogUtils.log("###WholesaleForWritepage.setVariables.  no product.");
 		}
 		
 		colorItems = new ArrayList<Item>();
@@ -260,16 +264,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			
 			//needPush 설정.
 			needPush = product.getNeed_push() == 1;
-			
-			//추가 사이즈 설정.
-			loadAddedItems(MODE_SIZE);
-			
-			//추가 색상 설정.
-			loadAddedItems(MODE_COLOR);
-			
-			//추가 혼용률 설정.
-			loadAddedItems(MODE_MIXTURE);
-			
 		} else {
 			title = "상품 등록";
 			
@@ -312,13 +306,29 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			
 			downloadImages();
 			
+			//상품명 설정.
 			etName.setText(product.getName());
+			
+			//상품 가격 설정.
 			etPrice.setText("" + product.getPrice());
 			
+			//상품 분류 설정.
 			btnCategory.setText(getCategoryStringUsingIndex(product.getCategory_id()));
-			btnColor.setText(product.getColors().replace("|", "/"));
+			
+			//상품 사이즈 설정.
+			loadAddedItems(MODE_SIZE);
 			btnSize.setText(product.getSizes().replace("|", "/"));
+			
+			//상품 색상 설정.
+			loadAddedItems(MODE_COLOR);
+			btnColor.setText(product.getColors().replace("|", "/"));
+			
+			//상품 혼용률 설정.
+			loadAddedItems(MODE_MIXTURE);
+			selectedCategoryIndex = product.getCategory_id();
 			btnMixtureRate.setText(product.getMixture_rate());
+			
+			//상품 설명 설정.
 			etDescription.setText(product.getDesc());
 			
 		//등록.
@@ -407,12 +417,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					ToastUtils.showToast(R.string.wrongProductImage);
 					return;
 					
-				} else if(etName.getText() == null){
+				} else if(StringUtils.isEmpty(etName)){
 					//상품명을 입력해주세요.
 					ToastUtils.showToast(R.string.wrongProductName);
 					return;
 					
-				} else if(etPrice.getText() == null) {
+				} else if(StringUtils.isEmpty(etPrice)) {
 					//상품가격을 입력해주세요.
 					ToastUtils.showToast(R.string.wrongProductPrice);
 					return;
@@ -465,9 +475,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-				
 				//상품 설명.
-				if(etDescription.getText() == null) {
+				if(StringUtils.isEmpty(etDescription)) {
 					ToastUtils.showToast(R.string.wrongProductDesc);
 					return;
 				}
@@ -1052,11 +1061,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			String mixtureString = null;
 			uniqueSelectedItemList = getUniqueSelectedItemList(mixtureItems);
 			for(Item item : uniqueSelectedItemList) {
+				
+				if(item.text != null) {
 
-				if(mixtureString != null) {
-					mixtureString += " / " + item.text;
-				} else {
-					mixtureString = item.text;
+					if(mixtureString != null) {
+						mixtureString += " / " + item.text;
+					} else {
+						mixtureString = item.text;
+					}
 				}
 //				saveItemToPrefs(MODE_MIXTURE, item.text);
 			}
@@ -1179,11 +1191,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			uniqueSelectedItemList = getUniqueSelectedItemList(mixtureItems);
 			for(Item item : uniqueSelectedItemList) {
 
-				if(mixtureString != null) {
-					mixtureString += " / ";
+				if(item.text != null) {
+					
+					if(mixtureString != null) {
+						mixtureString += " / " + item.text;
+					} else {
+						mixtureString = item.text;
+					}
 				}
-				
-				mixtureString += item.text;
 //				saveItemToPrefs(MODE_MIXTURE, item.text);
 			}
 			

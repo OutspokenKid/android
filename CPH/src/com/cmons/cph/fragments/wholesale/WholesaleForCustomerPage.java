@@ -239,7 +239,8 @@ public class WholesaleForCustomerPage extends CmonsFragmentForWholesale {
 		
 		url = CphConstants.BASE_API_URL + "wholesales/orders" +
 				"?retail_id=" + customer.getId() +
-				"&status=3";
+				"&status=3" +
+				"&num=0";
 		super.downloadInfo();
 	}
 	

@@ -239,12 +239,12 @@ public class WholesaleForOrderListPage extends CmonsFragmentForWholesale {
 	public void downloadInfo() {
 		
 		//http://cph.minsangk.com/wholesales/orders
-		url = CphConstants.BASE_API_URL + "wholesales/orders";
+		url = CphConstants.BASE_API_URL + "wholesales/orders?num=0";
 		
 		if(menuIndex == 0) {
-			url += "?status=in_progress";
+			url += "&status=in_progress";
 		} else {
-			url += "?status=3";
+			url += "&status=3";
 		}
 		
 		try {

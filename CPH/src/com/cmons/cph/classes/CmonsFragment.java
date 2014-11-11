@@ -24,7 +24,7 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class CmonsFragment extends BaseFragment {
 
-	public static final int NUMBER_OF_LISTITEMS = 0;
+	public static final int NUMBER_OF_LISTITEMS = 10;
 
 	protected TitleBar titleBar;
 	protected ImageView ivBg;
@@ -111,7 +111,7 @@ public abstract class CmonsFragment extends BaseFragment {
 	
 	@Override
 	public void downloadInfo() {
-
+		
 		try {
 			if(isDownloading || isLastList) {
 				return;
@@ -135,7 +135,8 @@ public abstract class CmonsFragment extends BaseFragment {
 				url += "&num=" + NUMBER_OF_LISTITEMS;
 			}
 			
-			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+			final String lastUrl = url;
+			DownloadUtils.downloadJSONString(lastUrl, new OnJSONDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -148,11 +149,11 @@ public abstract class CmonsFragment extends BaseFragment {
 				public void onCompleted(String url, JSONObject objJSON) {
 
 					try {
-						if(!url.equals(CmonsFragment.this.url)) {
+						if(!url.equals(lastUrl)) {
 							return;
 						}
 						
-						LogUtils.log("CmonsFragment.onCompleted." + "\nurl : " + url
+						LogUtils.log("CmonsFragment.downloadInfo.onCompleted." + "\nurl : " + url
 								+ "\nresult : " + objJSON);
 						
 						isLastList = parseJSON(objJSON);
@@ -173,18 +174,21 @@ public abstract class CmonsFragment extends BaseFragment {
 			});
 		} catch (Exception e) {
 			LogUtils.trace(e);
+			setPage(false);
 		} catch (Error e) {
 			LogUtils.trace(e);
+			setPage(false);
 		}
 	}
 	
 	@Override
 	public void setPage(boolean successDownload) {
 
+		isRefreshing = false;
+		isDownloading = false;
+		
 		try {
 			hideLoadingView();
-			isRefreshing = false;
-			isDownloading = false;
 			
 			if(successDownload && adapter != null) {
 				adapter.notifyDataSetChanged();
@@ -203,12 +207,13 @@ public abstract class CmonsFragment extends BaseFragment {
 		if(isRefreshing) {
 			return;
 		}
+
+		isRefreshing = true;
+		isDownloading = false;
+		isLastList = false;
+		pageIndex = 1;
 		
 		try {
-			isRefreshing = true;
-			isDownloading = false;
-			isLastList = false;
-			pageIndex = 1;
 			models.clear();
 			adapter.notifyDataSetChanged();
 		} catch (Exception e) {
@@ -228,11 +233,13 @@ public abstract class CmonsFragment extends BaseFragment {
 			return;
 		}
 		
+		isRefreshing = true;
+		isDownloading = false;
+		isLastList = false;
+		pageIndex = 1;
+		
 		try {
-			isRefreshing = true;
-			isDownloading = false;
-			isLastList = false;
-			pageIndex = 1;
+			
 			models.clear();
 		} catch (Exception e) {
 			LogUtils.trace(e);

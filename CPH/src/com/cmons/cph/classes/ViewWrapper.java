@@ -61,7 +61,14 @@ public abstract class ViewWrapper {
 			return;
 		}
 
-		ivImage.setVisibility(View.INVISIBLE);
+		if(ivImage.getTag() != null && url.equals(ivImage.getTag().toString())) {
+			//Do nothing because of same image is already set.
+			return;
+		} else {
+			ivImage.setImageDrawable(null);
+		}
+		
+		ivImage.setImageBitmap(null);
 		
 		ivImage.setTag(url);
 		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {

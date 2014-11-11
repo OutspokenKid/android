@@ -394,14 +394,14 @@ public class WholesaleForCustomerListPage extends CmonsFragmentForWholesale {
 		
 		if(menuIndex == 0) {
 			//http://cph.minsangk.com/wholesales/customers/requested
-			url = CphConstants.BASE_API_URL + "wholesales/customers/requested";
+			url = CphConstants.BASE_API_URL + "wholesales/customers/requested?num=0";
 		} else {
 			//http://cph.minsangk.com/wholesales/customers
-			url = CphConstants.BASE_API_URL + "wholesales/customers";
+			url = CphConstants.BASE_API_URL + "wholesales/customers?num=0";
 			
 			try {
 				if(editText.getText() != null) {
-					url += "?keyword=" + URLEncoder.encode(editText.getText().toString(), "utf-8");
+					url += "&keyword=" + URLEncoder.encode(editText.getText().toString(), "utf-8");
 				}
 			} catch (Exception e) {
 				LogUtils.trace(e);

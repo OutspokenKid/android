@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.LayoutParams;
+import android.widget.AbsListView.OnScrollListener;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
@@ -167,6 +168,22 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 				});
 			}
 		});
+		
+		gridView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
+			}
+		});
 	}
 
 	@Override
@@ -214,8 +231,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		} else {
 			url +="&order=order-desc";
 		}
-		
-		url += "num=0";
 		
 		super.downloadInfo();
 	}
