@@ -36,7 +36,7 @@ public class ImageUploadUtils {
 		
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 1;
+			options.inSampleSize = 2;
 			BitmapFactory.decodeFile(file.getPath(), options);
 
 			int width = 0;
@@ -51,10 +51,11 @@ public class ImageUploadUtils {
 			}
 
 			//가로, 세로 중 긴 값으로 최대치 제한.
-			int length = Math.max(width, height);
-			
+//			int length = Math.max(width, height);
 			//이걸로 하면 가로 기준.
-//			int length = width;
+			int length = width;
+			
+			int sampleSize = 1;
 			
 			LogUtils.log("###ImageUploadUtils.getBitmapInSampleSize.  " +
 					"\nstandardLength : " + standardLength +
@@ -62,24 +63,28 @@ public class ImageUploadUtils {
 					"\nheight : " + height +
 					"\nlength : " + length);
 			
-			if (length <= standardLength) {
-				return 1;
-			} else if (length <= standardLength * 2) {
-				return 2;
-			} else if (length <= standardLength * 4) {
-				return 4;
-			} else if (length <= standardLength * 8) {
-				return 8;
+			int calculateSize = length * options.inSampleSize;
+			
+			if (calculateSize <= standardLength) {
+				sampleSize = 1;
+			} else if (calculateSize <= standardLength * 2) {
+				sampleSize = 2;
+			} else if (calculateSize <= standardLength * 4) {
+				sampleSize = 4;
+			} else if (calculateSize <= standardLength * 8) {
+				sampleSize = 8;
 			} else {
-				return 16;
+				sampleSize = 16;
 			}
+			
+			return sampleSize;
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
 		
-		return 1;
+		return 8;
 	}
 	
 //////////////////// Classes.
@@ -110,33 +115,38 @@ public class ImageUploadUtils {
 				ToastUtils.showToast(R.string.failToLoadBitmap);
 				return null;
 			}
+
+			OutputStream out = null;
+			String tempFilePath = null;
+			Bitmap tempBitmap = null;
+			int degree = 0;
+			BitmapFactory.Options options = null;
 			
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = inSampleSize;
-			int degree = BitmapUtils.GetExifOrientation(filePath);
-			Bitmap tempBitmap = BitmapFactory.decodeFile(filePath, options);
-			tempBitmap = BitmapUtils.GetRotatedBitmap(tempBitmap, degree);
-			String tempFilePath = filePath;
-			
-			if(filePath.contains(".jpg")) {
-				tempFilePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
-			} else if(filePath.contains("jpeg")) {
-				tempFilePath = Environment.getExternalStorageDirectory() + "/temp.jpeg";
-			} else if(filePath.contains("png")) {
-				tempFilePath = Environment.getExternalStorageDirectory() + "/temp.png";
-			}
-			
-			File tempFile = new File(tempFilePath);
-	        OutputStream out = null;
-	        
 	        try {
+	        	options = new BitmapFactory.Options();
+				options.inSampleSize = inSampleSize;
+				degree = BitmapUtils.GetExifOrientation(filePath);
+				tempBitmap = BitmapFactory.decodeFile(filePath, options);
+				tempBitmap = BitmapUtils.GetRotatedBitmap(tempBitmap, degree);
+				tempFilePath = filePath;
+				
+				if(filePath.contains(".jpg")) {
+					tempFilePath = Environment.getExternalStorageDirectory() + "/temp.jpg";
+				} else if(filePath.contains("jpeg")) {
+					tempFilePath = Environment.getExternalStorageDirectory() + "/temp.jpeg";
+				} else if(filePath.contains("png")) {
+					tempFilePath = Environment.getExternalStorageDirectory() + "/temp.png";
+				}
+				
+				File tempFile = new File(tempFilePath);
+	        	
 	            tempFile.createNewFile();
 	            out = new FileOutputStream(tempFile);
 	            
 	            if(tempFilePath.contains(".png")) {
-	            	tempBitmap.compress(CompressFormat.PNG, 100, out);
+	            	tempBitmap.compress(CompressFormat.PNG, 90, out);
 	            } else {
-	            	tempBitmap.compress(CompressFormat.JPEG, 100, out);
+	            	tempBitmap.compress(CompressFormat.JPEG, 90, out);
 	            }
 	            
 	            LogUtils.log("###AsyncUploadImage.doInBackground.  \nfileSize : " + tempFile.length());
@@ -147,14 +157,16 @@ public class ImageUploadUtils {
 	        } catch(OutOfMemoryError oom) {
 				oom.printStackTrace();
 				ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
+	        } catch (Error e) {
+	        	ToastUtils.showToast(R.string.failToLoadBitmap);
+	            LogUtils.trace(e);
 	        } catch (Exception e) {
 	        	ToastUtils.showToast(R.string.failToLoadBitmap);
 	            LogUtils.trace(e);
 	        } finally {
 	        	try {
 	                out.close();
-	            }
-	            catch (Exception e) {}
+	            } catch (Exception e) {}
 	        	
 	        	if(filePath != null && tempFilePath != null && !filePath.equals(tempFilePath) 
 	        			&& tempBitmap != null && !tempBitmap.isRecycled()) {

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -114,6 +115,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
+		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
+		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 		onAfterUploadImage = new OnAfterUploadImage() {
 			
 			@Override
@@ -295,8 +298,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				btnPublic2.setBackgroundResource(R.drawable.myshop_open2_a);
 			}
 			
-			tvNotification.setVisibility(View.INVISIBLE);
-			btnNotification.setVisibility(View.INVISIBLE);
+			tvNotification.setVisibility(View.GONE);
+			btnNotification.setVisibility(View.GONE);
 			btnDelete.setVisibility(View.VISIBLE);
 			
 			//이미지 설정.
@@ -1252,7 +1255,14 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	public void uploadImage(final ImageView ivImage, final int index) {
 		
 		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index", index);
-		mActivity.showUploadPhotoPopup(onAfterUploadImage);
+		mActivity.showUploadPhotoPopup(onAfterUploadImage, new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
+				SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
+			}
+		});
 	}
 	
 	public void choiceMode(final int index) {

@@ -77,7 +77,27 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 		}
 		
 		builder.setTitle(title); 
-		builder.setItems(strings, onClickListener); 
+		builder.setItems(strings, onClickListener);
+		AlertDialog alert = builder.create(); 
+		alert.show(); 
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void showSelectDialog(String title, String[] strings, 
+			DialogInterface.OnClickListener onPositiveClickListener,
+			DialogInterface.OnCancelListener onCancelListener) {
+		
+		android.app.AlertDialog.Builder builder = null;
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+		} else {
+			builder = new AlertDialog.Builder(this);
+		}
+		
+		builder.setTitle(title); 
+		builder.setItems(strings, onPositiveClickListener);
+		builder.setOnCancelListener(onCancelListener);
 		AlertDialog alert = builder.create(); 
 		alert.show(); 
 	}
@@ -86,7 +106,7 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 		
 		CmonsFragmentActivity.onAfterUploadImage = onAfterUploadImage;
 		
-		showSelectDialog("프로필 사진 업로드", 
+		showSelectDialog("사진 업로드", 
 				new String[]{"앨범", "카메라"}, 
 				new DialogInterface.OnClickListener() {
 			
@@ -132,6 +152,59 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				}
 			}
 		});
+	}
+	
+	public void showUploadPhotoPopup(OnAfterUploadImage onAfterUploadImage, 
+			DialogInterface.OnCancelListener onCancelListener) {
+		
+		CmonsFragmentActivity.onAfterUploadImage = onAfterUploadImage;
+		
+		showSelectDialog("사진 업로드", 
+				new String[]{"앨범", "카메라"}, 
+				new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = null;
+				int requestCode = 0;
+				
+				//앨범.
+				if(which == 0) {
+					intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+					intent.setType("image/*");
+					requestCode = CphConstants.REQUEST_ALBUM;
+					
+				//카메라.
+				} else if(which == 1) {
+					intent = new Intent();
+					intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+				    File fileDerectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+				    String fileName = System.currentTimeMillis() + ".jpg";
+				    String filePath = fileDerectory.getPath();
+				    File file = new File(fileDerectory, fileName);
+				    
+				    LogUtils.log("###CmonsFramentActivity.onClick.  Set fileName, filePath." +
+				    		"\nfileName : " + fileName+
+				    		"\nfilePath : " + filePath);
+				    SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "fileName", fileName);
+				    SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "filePath", filePath);
+				    
+				    if(!fileDerectory.exists()) {
+				    	fileDerectory.mkdirs();
+				    }
+				    
+				    Uri uri = Uri.fromFile(file);
+				    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+				    requestCode = CphConstants.REQUEST_CAMERA;
+				}
+				
+				if(intent != null) {
+					startActivityForResult(intent, requestCode);
+				}
+			}
+		}, onCancelListener);
 	}
 	
 	@Override

@@ -462,13 +462,13 @@ public class ProductPage extends CmonsFragmentForShop {
 
 		//viewPager.
 		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-		rp.height = ResizeUtils.getScreenWidth();
+		rp.height = ResizeUtils.getSpecificLength(843);
 		
 		//arrowLeft.
 		rp = (RelativeLayout.LayoutParams) arrowLeft.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(43);
 		rp.height = ResizeUtils.getSpecificLength(66);
-		rp.leftMargin = ResizeUtils.getSpecificLength(40);
+		rp.leftMargin = ResizeUtils.getSpecificLength(24);
 		rp.topMargin = (ResizeUtils.getScreenWidth() - rp.height) / 2;
 		
 		//arrowRight.
@@ -476,7 +476,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		rp.width = ResizeUtils.getSpecificLength(43);
 		rp.height = ResizeUtils.getSpecificLength(66);
 		rp.topMargin = (ResizeUtils.getScreenWidth() - rp.height) / 2;
-		rp.rightMargin = ResizeUtils.getSpecificLength(40);
+		rp.rightMargin = ResizeUtils.getSpecificLength(24);
 		
 		//pageNavigatorView.
 		rp = (RelativeLayout.LayoutParams) pageNavigatorView.getLayoutParams();
