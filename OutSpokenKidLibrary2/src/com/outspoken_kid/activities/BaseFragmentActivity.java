@@ -358,7 +358,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 					getFragmentAt(i).disableExitAnim(false);
 				}
 				
-				getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+				getSupportFragmentManager().popBackStackImmediate();
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

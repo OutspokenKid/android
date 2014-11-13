@@ -272,6 +272,10 @@ public class FontUtils {
 
 	public static void addSpan(TextView textView, String text, int color, float scale) {
 
+		if(textView == null || text == null) {
+			return;
+		}
+		
 		SpannableStringBuilder spb = new SpannableStringBuilder(text);
 		
 		if(color != 0) {
