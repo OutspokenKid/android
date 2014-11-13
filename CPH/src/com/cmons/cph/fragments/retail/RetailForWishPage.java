@@ -119,6 +119,7 @@ public class RetailForWishPage extends CmonsFragmentForRetail {
 		
 		if(wholesaleWish != null) {
 			
+			models.clear();
 			tvInfo.setText(null);
 
 			String dateString = StringUtils.getDateString(

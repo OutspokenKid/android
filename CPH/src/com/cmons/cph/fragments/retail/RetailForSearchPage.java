@@ -129,10 +129,10 @@ public class RetailForSearchPage extends CmonsFragmentForRetail {
 		}
 
 		//http://cph.minsangk.com/products?keyword=%EB%A7%A5%EC%A3%BC
-		
 		try {
 			url = CphConstants.BASE_API_URL + "products" +
 					"?num=0" +
+					"&permission_type=retail" + 
 					"&keyword=" + URLEncoder.encode(keyword, "utf-8");
 		} catch (Exception e) {
 			LogUtils.trace(e);

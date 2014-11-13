@@ -110,6 +110,13 @@ public class ViewWrapperForStaff extends ViewWrapper {
 				
 				switch(user.getRole()) {
 				
+				case 100:
+				case 210:
+				case 220:
+					action.setVisibility(View.GONE);
+					classIcon.setBackgroundResource(R.drawable.class1_icon);
+					break;
+				
 				case 101:
 				case 201:
 					classIcon.setBackgroundResource(R.drawable.class2_icon);

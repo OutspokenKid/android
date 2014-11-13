@@ -155,13 +155,16 @@ public class ReplyView extends RelativeLayout {
 
 		boolean isWholesaleUser = ShopActivity.getInstance() instanceof WholesaleActivity;
 		
+		tvShopName.setText(null);
+		
 		//도매가 쓴 글.
 		if("4100".equals(reply.getType())) {
 			tvShopName.setBackgroundResource(R.drawable.bg20);
-			tvShopName.setText(reply.getWholesale_name());
+			FontUtils.addSpan(tvShopName, reply.getWholesale_name(), 0, 1);
 			
 			//난 소매유저.
 			if(!isWholesaleUser) {
+				FontUtils.addSpan(tvShopName, "  " + reply.getWholesale_phone_number(), 0, 0.5f);
 				btnDelete.setVisibility(View.INVISIBLE);
 			} else {
 				btnDelete.setVisibility(View.VISIBLE);
@@ -170,10 +173,11 @@ public class ReplyView extends RelativeLayout {
 		//소매가 쓴 글.
 		} else {
 			tvShopName.setBackgroundResource(R.drawable.bg21);
-			tvShopName.setText(reply.getRetail_name());
+			FontUtils.addSpan(tvShopName, reply.getRetail_name(), 0, 1);
 			
 			//난 도매유저.
 			if(isWholesaleUser) {
+				FontUtils.addSpan(tvShopName, "  " + reply.getRetail_phone_number(), 0, 0.5f);
 				btnDelete.setVisibility(View.INVISIBLE);
 			} else {
 				btnDelete.setVisibility(View.VISIBLE);

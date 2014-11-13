@@ -161,7 +161,7 @@ public class ViewWrapperForCustomer_retail extends ViewWrapper {
 	
 	public void cancelRequest() {
 		
-		String url = "http://cph.minsangk.com/retails/customers/cancel" +
+		String url = CphConstants.BASE_API_URL + "retails/customers/cancel" +
 				"?wholesale_id=" + wholesale.getId();
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -199,7 +199,7 @@ public class ViewWrapperForCustomer_retail extends ViewWrapper {
 	
 	public void breakPartnerShip() {
 		
-		String url = "http://cph.minsangk.com/retails/customers/delete" +
+		String url = CphConstants.BASE_API_URL + "retails/customers/delete" +
 				"?wholesale_id=" + wholesale.getId();
 
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

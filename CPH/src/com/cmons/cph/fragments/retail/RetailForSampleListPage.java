@@ -58,12 +58,15 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 	private TextView tvOwnerName;
 	private TextView tvPhone;
 	private TextView tvSample;
+	private Button btnConfirm;
 	
 	private int menuIndex;
 	private String keyword;
 	
 	private AlphaAnimation aaIn, aaOut;
 	private boolean isAnimating;
+	
+	private Sample selectedSample;
 	
 	@Override
 	public void onResume() {
@@ -96,6 +99,7 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 		tvOwnerName = (TextView) mThisView.findViewById(R.id.retailSamplePage_tvOwnerName);
 		tvPhone = (TextView) mThisView.findViewById(R.id.retailSamplePage_tvPhone);
 		tvSample = (TextView) mThisView.findViewById(R.id.retailSamplePage_tvSample);
+		btnConfirm = (Button) mThisView.findViewById(R.id.retailSamplePage_btnConfirm);
 	}
 
 	@Override
@@ -239,6 +243,15 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 				hidePopup();
 			}
 		});
+	
+		btnConfirm.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				deleteSample(selectedSample.getId());
+			}
+		});
 	}
 
 	@Override
@@ -320,6 +333,15 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 		//tvSample.
 		FontUtils.setFontSize(tvSample, 28);
 		tvSample.setPadding(p, p, p, p);
+		
+		//btnConfirm.
+		rp = new RelativeLayout.LayoutParams(
+				ResizeUtils.getSpecificLength(209), 
+				ResizeUtils.getSpecificLength(62));
+		rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
+		btnConfirm.setLayoutParams(rp);
 	}
 
 	@Override
@@ -445,9 +467,11 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 			return;
 		}
 		
-		tvShopName.setText("상호명 : " + sample.getRetail_name());
-		tvOwnerName.setText("대표성함 : " + sample.getRetail_owner_name());
-		tvPhone.setText("연락처 : " + sample.getRetail_phone_number());
+		selectedSample = sample;
+		
+		tvShopName.setText("상호명 : " + sample.getWholesale_name());
+		tvOwnerName.setText("대표성함 : " + sample.getWholesale_owner_name());
+		tvPhone.setText("연락처 : " + sample.getWholesale_phone_number());
 		
 		tvSample.setText(null);
 		SpannableStringBuilder sp1 = new SpannableStringBuilder("샘플요청내역\n\n");
@@ -459,6 +483,13 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 				"\n\n사이즈 : " + sample.getSize());
 		sp2.setSpan(new RelativeSizeSpan(0.8f), 0, sp2.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 		tvSample.append(sp2);
+		
+		if(menuIndex == 3) {
+			btnConfirm.setBackgroundResource(R.drawable.sample_delete_popup_btn);
+			btnConfirm.setVisibility(View.VISIBLE);
+		} else {
+			btnConfirm.setVisibility(View.GONE);
+		}
 		
 		SoftKeyboardUtils.hideKeyboard(mContext, popupRelative);
 		popupRelative.setVisibility(View.VISIBLE);
@@ -532,7 +563,7 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("WholesaleForSampleListPage.deleteSample.onError." + "\nurl : " + url);
+				LogUtils.log("RetailForSampleListPage.deleteSample.onError." + "\nurl : " + url);
 				ToastUtils.showToast(R.string.failToDeleteSample);
 			}
 
@@ -540,7 +571,7 @@ public class RetailForSampleListPage extends CmonsFragmentForWholesale {
 			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					LogUtils.log("WholesaleForSampleListPage.deleteSample.onCompleted." + "\nurl : " + url
+					LogUtils.log("RetailForSampleListPage.deleteSample.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {

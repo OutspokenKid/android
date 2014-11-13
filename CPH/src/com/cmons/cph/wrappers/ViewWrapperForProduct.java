@@ -209,7 +209,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 
 	public void deleteFavorite(Product product) {
 
-		String url = "http://cph.minsangk.com/retails/favorite/products/delete" +
+		String url = CphConstants.BASE_API_URL + "retails/favorite/products/delete" +
 				"?id=" + product.getId();
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

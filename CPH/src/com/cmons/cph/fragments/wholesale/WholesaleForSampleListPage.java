@@ -663,6 +663,7 @@ public class WholesaleForSampleListPage extends CmonsFragmentForWholesale {
 		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
 				ResizeUtils.getSpecificLength(209), 
 				ResizeUtils.getSpecificLength(62));
+		
 		if(menuIndex == 0) {
 			//(626 / 2) - 21 = 292
 			//(292 - 209) / 2 = 83 / 2 = 41

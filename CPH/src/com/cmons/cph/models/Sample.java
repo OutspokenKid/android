@@ -23,6 +23,9 @@ public class Sample extends BaseModel implements Serializable {
 	private String retail_name;
 	private String retail_phone_number;
 	private String retail_owner_name;
+	private String wholesale_name;
+	private String wholesale_phone_number;
+	private String wholesale_owner_name;
 	
 	public Sample() {
 	}
@@ -78,6 +81,18 @@ public class Sample extends BaseModel implements Serializable {
 			
 			if(objJSON.has("retail_owner_name")) {
 				this.retail_owner_name = objJSON.getString("retail_owner_name");
+			}
+			
+			if(objJSON.has("wholesale_name")) {
+				this.wholesale_name = objJSON.getString("wholesale_name");
+			}
+			
+			if(objJSON.has("wholesale_phone_number")) {
+				this.wholesale_phone_number = objJSON.getString("wholesale_phone_number");
+			}
+			
+			if(objJSON.has("wholesale_owner_name")) {
+				this.wholesale_owner_name = objJSON.getString("wholesale_owner_name");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -157,5 +172,23 @@ public class Sample extends BaseModel implements Serializable {
 	}
 	public void setRetail_owner_name(String retail_owner_name) {
 		this.retail_owner_name = retail_owner_name;
+	}
+	public String getWholesale_name() {
+		return wholesale_name;
+	}
+	public void setWholesale_name(String wholesale_name) {
+		this.wholesale_name = wholesale_name;
+	}
+	public String getWholesale_phone_number() {
+		return wholesale_phone_number;
+	}
+	public void setWholesale_phone_number(String wholesale_phone_number) {
+		this.wholesale_phone_number = wholesale_phone_number;
+	}
+	public String getWholesale_owner_name() {
+		return wholesale_owner_name;
+	}
+	public void setWholesale_owner_name(String wholesale_owner_name) {
+		this.wholesale_owner_name = wholesale_owner_name;
 	}
 }

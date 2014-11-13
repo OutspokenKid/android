@@ -333,7 +333,7 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 	
 	public void call() {
 
-		IntentUtils.call(mContext, "010" + wholesale.getPhone_number());
+		IntentUtils.call(mContext, wholesale.getPhone_number());
 	}
 
 ////////////////////Custom classes.

@@ -607,7 +607,15 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 	@Override
 	public void downloadInfo() {
 
-		//http://cph.minsangk.com/products?permission_type=retail&category_id=&sort=date-desc&wholesale_id=&num=10&page=1
+		/*
+		http://cph-app.co.kr/products
+		?permission_type=retail
+		&category_id=
+		&sort=order-desc
+		&wholesale_id=
+		&num=10
+		&page=1
+		*/
 		url = CphConstants.BASE_API_URL + "products" +
 				"?permission_type=retail";
 		

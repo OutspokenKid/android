@@ -34,6 +34,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 	private TextView tvDoNotDisturb;
 	
 	private boolean allowNotification;
+	private boolean settingTime;
 	private int startHour, startMinute, endHour, endMinute;
 	
 	@Override
@@ -54,16 +55,48 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 		title = "알림설정";
 		
-		startHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "sh");
-		startMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "sm");
-		endHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "eh");
-		endMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, "em");
+		settingTime = true;
 		
-		if(!SharedPrefsUtils.checkPrefs(CphConstants.PREFS_NOTIFICATION, "allow")) {
-			SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, "allow", true);
+		if(SharedPrefsUtils.checkPrefs(CphConstants.PREFS_DISTURB, 
+				mActivity.user.getId() + "sh")) {
+			startHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, 
+					mActivity.user.getId() + "sh");
+		} else {
+			settingTime = false;
 		}
 		
-		allowNotification = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, "allow");
+		if(SharedPrefsUtils.checkPrefs(CphConstants.PREFS_DISTURB, 
+				mActivity.user.getId() + "sm")) {
+			startMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, 
+					mActivity.user.getId() + "sm");
+		} else {
+			settingTime = false;
+		}
+		
+		if(SharedPrefsUtils.checkPrefs(CphConstants.PREFS_DISTURB, 
+				mActivity.user.getId() + "eh")) {
+			endHour = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, 
+					mActivity.user.getId() + "eh");
+		} else {
+			settingTime = false;
+		}
+		
+		if(SharedPrefsUtils.checkPrefs(CphConstants.PREFS_DISTURB, 
+				mActivity.user.getId() + "em")) {
+			endMinute = SharedPrefsUtils.getIntegerFromPrefs(CphConstants.PREFS_DISTURB, 
+					mActivity.user.getId() + "em");
+		} else {
+			settingTime = false;
+		}
+		
+		if(!SharedPrefsUtils.checkPrefs(CphConstants.PREFS_NOTIFICATION, 
+				mActivity.user.getId() + "allow")) {
+			SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, 
+					mActivity.user.getId() + "allow", true);
+		}
+		
+		allowNotification = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_NOTIFICATION, 
+				mActivity.user.getId() + "allow");
 	}
 
 	@Override
@@ -80,7 +113,10 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		}
 		
 		//시간 설정.
-		checkTime();
+		
+		if(settingTime) {
+			checkTime(false);
+		}
 	}
 
 	@Override
@@ -223,7 +259,8 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 					if(objJSON.getInt("result") == 1) {
 						allowNotification = !allowNotification;
 						
-						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, "allow", allowNotification);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_NOTIFICATION, 
+								mActivity.user.getId() + "allow", allowNotification);
 						
 						if(allowNotification) {
 							btnNotification.setBackgroundResource(R.drawable.setting_notification_btn_switch_b);
@@ -251,7 +288,7 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 				startHour = hourOfDay;
 				startMinute = minute;
-				checkTime();
+				checkTime(true);
 			}
 		};
 		
@@ -267,14 +304,14 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 
 				endHour = hourOfDay;
 				endMinute = minute;
-				checkTime();
+				checkTime(true);
 			}
 		};
 		
 		new TimePickerDialog(mContext, otsl, endHour, endMinute, false).show();
 	}
 	
-	public void checkTime() {
+	public void checkTime(boolean needSubmit) {
 		
 		String text = "";
 
@@ -283,7 +320,10 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 		text += getTimeText(endHour, endMinute);
 		
 		tvTime.setText(text);
-		submitTime();
+		
+		if(needSubmit) {
+			submitTime();
+		}
 	}
 	
 	public String getTimeText(int hour, int minute) {
@@ -367,10 +407,14 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "sh", startHour);
-						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "sm", startMinute);
-						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "eh", endHour);
-						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, "em", endMinute);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "sh", startHour);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "sm", startMinute);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "eh", endHour);
+						SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "em", endMinute);
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -404,10 +448,14 @@ public class NotificationSettingPage extends CmonsFragmentForShop {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "sh");
-						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "sm");
-						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "eh");
-						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, "em");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "sh");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "sm");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "eh");
+						SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_DISTURB, 
+								mActivity.user.getId() + "em");
 						startHour = 0;
 						startMinute = 0;
 						endHour = 0;

@@ -20,6 +20,7 @@ public class Reply extends BaseModel implements Serializable {
 	private int need_push;
 	private int wholesale_id;
 	private String wholesale_name;
+	private String wholesale_phone_number;
 	private long created_at;
 	private int product_id;
 	private int parent_id;
@@ -68,6 +69,10 @@ public class Reply extends BaseModel implements Serializable {
 			
 			if(objJSON.has("wholesale_name")) {
 				this.wholesale_name = objJSON.getString("wholesale_name");
+			}
+			
+			if(objJSON.has("wholesale_phone_number")) {
+				this.wholesale_phone_number = objJSON.getString("wholesale_phone_number");
 			}
 			
 			if(objJSON.has("retail_id")) {
@@ -276,5 +281,13 @@ public class Reply extends BaseModel implements Serializable {
 
 	public void setWholesale_name(String wholesale_name) {
 		this.wholesale_name = wholesale_name;
+	}
+	
+	public String getWholesale_phone_number() {
+		return wholesale_phone_number;
+	}
+
+	public void setWholesale_phone_number(String phone_number) {
+		this.wholesale_phone_number = phone_number;
 	}
 }

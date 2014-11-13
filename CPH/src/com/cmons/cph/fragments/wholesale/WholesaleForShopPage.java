@@ -211,6 +211,20 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	@Override
 	public void downloadInfo() {
 
+		/*
+		http://cph-app.co.kr/products
+		&wholesale_id=
+		?permission_type=retail
+		&category_id=
+		&sort=order-desc
+		&num=10
+		&page=1
+		
+		
+		
+		
+		
+		*/
 		url = CphConstants.BASE_API_URL + "products" +
 				"?wholesale_id=" + getWholesale().getId();
 				
@@ -227,9 +241,9 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		}
 		
 		if(order == 0) {
-			url +="&order=date-desc";
+			url +="&sort=date-desc";
 		} else {
-			url +="&order=order-desc";
+			url +="&sort=order-desc";
 		}
 		
 		super.downloadInfo();

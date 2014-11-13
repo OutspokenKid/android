@@ -396,7 +396,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 			@Override
 			public void onPageSelected(final int position) {
 
-				tvPhoneNumber.setText("010-" + wholesales.get(position).getPhone_number());
+				tvPhoneNumber.setText(wholesales.get(position).getPhone_number());
 				tvLocation.setText("청평화몰 " + wholesales.get(position).getLocation());
 				tvHit.setText(wholesales.get(position).getToday_visited_cnt() + 
 						" / " + wholesales.get(position).getTotal_visited_cnt());
