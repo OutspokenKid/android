@@ -20,6 +20,7 @@ public class CphConstants {
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
+	public static final int REQUEST_MULTIPICK = 3;
 	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	

@@ -114,7 +114,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/productPage_tvName"
-			    android:background="@drawable/text_box"
+			    android:background="#b2ffffff"
 			    android:gravity="center"
 			    android:textColor="#000" />
 		    
@@ -134,7 +134,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/productPage_tvPrice"
-			    android:background="@drawable/text_box"
+			    android:background="#b2ffffff"
 			    android:gravity="center"
 			    android:textColor="#000" />
 		    
@@ -154,7 +154,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/productPage_tvCategory"
-		        android:background="@drawable/text_box"
+		        android:background="#b2ffffff"
 		        android:textColor="#000"
 		        android:gravity="center" />
 		    
@@ -174,7 +174,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/productPage_tvColor"
-		        android:background="@drawable/text_box"
+		        android:background="#b2ffffff"
 		        android:textColor="#000"
 		        android:gravity="center" />
 		    
@@ -194,7 +194,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/productPage_tvSize"
-		        android:background="@drawable/text_box"
+		        android:background="#b2ffffff"
 		        android:textColor="#000"
 		        android:gravity="center" />
 		    
@@ -214,7 +214,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/productPage_tvMixtureRate"
-			    android:background="@drawable/text_box"
+			    android:background="#b2ffffff"
 			    android:gravity="center"
 			    android:textColor="#000" />
 		    
@@ -234,7 +234,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="wrap_content"
 		    	android:layout_below="@id/productPage_tvDescription"
-			    android:background="@drawable/text_box"
+			    android:background="#b2ffffff"
 			    android:gravity="center_horizontal|top"
 			    android:textColor="#000" />
 		    

@@ -38,7 +38,7 @@
     	android:layout_height="0dp"
     	android:layout_alignParentLeft="true"
 	    android:layout_alignParentBottom="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="center_vertical"
 	    android:inputType="textMultiLine"
 	    android:textColor="#000" />
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_above="@id/replyPage_etReply"
-        android:background="@drawable/reply_cell"
+        android:background="#a4a4a4"
         android:text="@string/privateReply"
         android:textColor="#000"
         android:gravity="center_vertical" />
@@ -140,7 +140,7 @@
 		    	android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_alignParentTop="true"
-		    	android:background="@drawable/text_box2"
+		    	android:background="#b2a4a4a4"
 		    	android:textColor="#fff" />
 		    
 		    <View

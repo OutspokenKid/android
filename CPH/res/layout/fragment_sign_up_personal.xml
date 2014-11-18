@@ -262,7 +262,7 @@
 	            android:textColorHint="#ccc"
 	            android:singleLine="true"
 	            android:gravity="center"
-	            android:background="@drawable/text_box3" />
+	            android:background="#b2a4a4a4" />
 	
 	        <!-- 인증번호 발송 -->
 	        

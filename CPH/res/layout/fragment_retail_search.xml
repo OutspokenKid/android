@@ -37,7 +37,7 @@
     	android:layout_height="0dp"
     	android:layout_below="@id/retailSearchPage_tvSearch"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="center"
 	    android:hint="@string/hintForSearchKeyword"
 	    android:textColor="#000"

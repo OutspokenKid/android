@@ -51,7 +51,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvNameText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        
@@ -69,7 +69,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvRegText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        
@@ -95,7 +95,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvOwnerNameText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        
@@ -113,7 +113,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvPhoneText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        
@@ -139,7 +139,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvAddressText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        
@@ -165,7 +165,7 @@
 		        android:layout_width="match_parent"
 		    	android:layout_height="0dp"
 		    	android:layout_below="@id/retailManagementPage_tvMallUrlText"
-		    	android:background="@drawable/txt_box"
+		    	android:background="#b2ffffff"
 			    android:gravity="center"
 		    	android:textColor="#000" />
 	        

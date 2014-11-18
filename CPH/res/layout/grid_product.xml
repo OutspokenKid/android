@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
     	android:layout_height="wrap_content"
     	android:layout_alignParentBottom="true"
-    	android:background="@drawable/myshop_list_cell"
+    	android:background="#b2ffffff"
     	android:gravity="center_vertical"
     	android:maxLines="2"
     	android:ellipsize="end"

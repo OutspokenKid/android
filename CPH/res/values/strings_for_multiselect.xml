@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="action_multi_pick">cph.ACTION_MULTIPLE_PICK</string>
+    
+</resources>

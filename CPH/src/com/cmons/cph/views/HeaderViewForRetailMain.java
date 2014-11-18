@@ -114,7 +114,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		tvPhoneNumber.setGravity(Gravity.CENTER_VERTICAL);
 		tvPhoneNumber.setPadding(ResizeUtils.getSpecificLength(40), 0, 0, 0);
 		FontUtils.setFontSize(tvPhoneNumber, 20);
-		tvPhoneNumber.setBackgroundResource(R.drawable.myshop_pic_cell);
+		tvPhoneNumber.setBackgroundColor(Color.argb(178, 164, 164, 164));
 		addView(tvPhoneNumber);
 		
 		//phoneNumberIcon.
@@ -196,7 +196,7 @@ public class HeaderViewForRetailMain extends RelativeLayout {
 		tvLike.setGravity(Gravity.CENTER_VERTICAL);
 		tvLike.setPadding(ResizeUtils.getSpecificLength(46), 0, 0, 0);
 		FontUtils.setFontSize(tvLike, 20);
-		tvLike.setBackgroundResource(R.drawable.myshop_pic_cell);
+		tvLike.setBackgroundColor(Color.argb(178, 164, 164, 164));
 		addView(tvLike);
 		
 		//likeIcon.

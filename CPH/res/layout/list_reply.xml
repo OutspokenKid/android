@@ -8,7 +8,7 @@
     	android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_alignParentTop="true"
-    	android:background="@drawable/text_box2"
+    	android:background="#b2a4a4a4"
     	android:textColor="#fff" />
     
     <View

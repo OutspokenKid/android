@@ -76,7 +76,7 @@
     	android:layout_height="0dp"
     	android:layout_alignParentLeft="true"
     	android:layout_alignParentBottom="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="center_vertical"
 	    android:inputType="textMultiLine"
 	    android:textColor="#000" />

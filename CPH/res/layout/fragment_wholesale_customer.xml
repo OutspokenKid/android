@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_below="@id/wholesaleCustomerPage_tvShopName"
-	    android:background="@drawable/text_box"
+	    android:background="#b2ffffff"
 	    android:gravity="center_vertical"
     	android:textColor="#000" />
     
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_below="@id/wholesaleCustomerPage_tvOwnerName"
-	    android:background="@drawable/text_box2"
+	    android:background="#b2a4a4a4"
 	    android:gravity="center_vertical"
     	android:textColor="#fff" />
     
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_below="@id/wholesaleCustomerPage_tvPhone"
-	    android:background="@drawable/text_box"
+	    android:background="#b2ffffff"
 	    android:gravity="center_vertical"
     	android:textColor="#000" />
     
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp"
     	android:layout_below="@id/wholesaleCustomerPage_tvCategory"
-	    android:background="@drawable/text_box2"
+	    android:background="#b2a4a4a4"
 	    android:gravity="center_vertical"
     	android:textColor="#fff" />
     

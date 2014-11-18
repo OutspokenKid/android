@@ -171,8 +171,9 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				
 				//앨범.
 				if(which == 0) {
-					intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					intent.setType("image/*");
+					intent = new Intent(getString(R.string.action_multi_pick));
+//					intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//					intent.setType("image/*");
 					requestCode = CphConstants.REQUEST_ALBUM;
 					
 				//카메라.

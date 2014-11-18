@@ -36,7 +36,7 @@
     	android:layout_height="0dp"
     	android:layout_below="@id/noticePage_tvTitleText"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="center"
 	    android:hint="@string/hintForEditNoticeTitle"
 	    android:textColor="#000"
@@ -48,7 +48,7 @@
     	android:layout_height="0dp"
     	android:layout_below="@id/noticePage_tvTitleText"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="center"
 	    android:textColor="#000" />
     
@@ -75,7 +75,7 @@
     	android:layout_height="match_parent"
     	android:layout_below="@id/noticePage_tvContentText"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:hint="@string/hintForEditNoticeContent"
 	    android:gravity="left|top"
 	    android:textColor="#000"
@@ -87,7 +87,7 @@
     	android:layout_height="match_parent"
     	android:layout_below="@id/noticePage_tvContentText"
 	    android:layout_alignParentLeft="true"
-	    android:background="@drawable/txt_box3"
+	    android:background="#b2ffffff"
 	    android:gravity="left|top"
 	    android:textColor="#000" />
     

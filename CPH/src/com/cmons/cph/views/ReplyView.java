@@ -159,7 +159,7 @@ public class ReplyView extends RelativeLayout {
 		
 		//도매가 쓴 글.
 		if("4100".equals(reply.getType())) {
-			tvShopName.setBackgroundResource(R.drawable.bg20);
+			tvShopName.setBackgroundColor(Color.argb(178, 231, 93, 93));
 			FontUtils.addSpan(tvShopName, reply.getWholesale_name(), 0, 1);
 			
 			//난 소매유저.
@@ -172,7 +172,7 @@ public class ReplyView extends RelativeLayout {
 			
 		//소매가 쓴 글.
 		} else {
-			tvShopName.setBackgroundResource(R.drawable.bg21);
+			tvShopName.setBackgroundColor(Color.argb(178, 96, 183, 202));
 			FontUtils.addSpan(tvShopName, reply.getRetail_name(), 0, 1);
 			
 			//난 도매유저.
