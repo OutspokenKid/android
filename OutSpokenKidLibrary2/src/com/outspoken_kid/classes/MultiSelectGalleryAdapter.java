@@ -3,7 +3,9 @@ package com.outspoken_kid.classes;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -12,8 +14,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.outspoken_kid.model.MultiSelectImageInfo;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -22,11 +22,10 @@ public class MultiSelectGalleryAdapter extends BaseAdapter {
 
 	private ArrayList<MultiSelectImageInfo> imageInfos = new ArrayList<MultiSelectImageInfo>();
 	private Context context;
-	private ImageLoader imageLoader;
 	
-	public MultiSelectGalleryAdapter(Context context, ImageLoader imageLoader) {
+	public MultiSelectGalleryAdapter(Context context, ArrayList<MultiSelectImageInfo> imageInfos) {
 		this.context = context;
-		this.imageLoader = imageLoader;
+		this.imageInfos = imageInfos;
 	}
 
 	@Override
@@ -149,27 +148,25 @@ public class MultiSelectGalleryAdapter extends BaseAdapter {
 		holder.imageView.setTag(position);
 
 		try {
-			imageLoader.displayImage("file://" + imageInfos.get(position).sdcardPath,
-					holder.imageView, new SimpleImageLoadingListener() {
-						@Override
-						public void onLoadingStarted(String imageUri, View view) {
-							holder.imageView.setImageDrawable(null);
-							super.onLoadingStarted(imageUri, view);
-						}
-					});
+			Bitmap thumbnail = MediaStore.Images.Thumbnails.getThumbnail(
+					context.getContentResolver(), 
+					imageInfos.get(position).id, MediaStore.Images.Thumbnails.MICRO_KIND, null);
 			
-			holder.setSelected(imageInfos.get(position).isSelected);
-		} catch (Exception e) {
-			e.printStackTrace();
+			if(thumbnail != null) {
+				holder.imageView.setBackgroundColor(Color.WHITE);
+				holder.imageView.setImageBitmap(thumbnail);
+				holder.setSelected(imageInfos.get(position).isSelected);
+			} else {
+				holder.imageView.setImageDrawable(null);
+				holder.imageView.setBackgroundColor(Color.GRAY);
+			}
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		} catch(Error e) {
 			LogUtils.trace(e);
 		}
 
 		return convertView;
-	}
-
-	public void clearCache() {
-		imageLoader.clearDiscCache();
-		imageLoader.clearMemoryCache();
 	}
 
 	public void clear() {
