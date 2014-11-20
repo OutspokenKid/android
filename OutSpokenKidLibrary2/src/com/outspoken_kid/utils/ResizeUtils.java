@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.Window;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * v1.0.1
@@ -99,6 +100,7 @@ public class ResizeUtils {
 				lp.bottomMargin = newMargin[3];
 			}
 			view.setLayoutParams(lp);
+			
 		} else if(view.getLayoutParams() instanceof FrameLayout.LayoutParams) {
 			FrameLayout.LayoutParams fp = (FrameLayout.LayoutParams) view.getLayoutParams();
 			
@@ -118,6 +120,26 @@ public class ResizeUtils {
 				fp.bottomMargin = newMargin[3];
 			}
 			view.setLayoutParams(fp);
+			
+		} else if(view.getLayoutParams() instanceof RelativeLayout.LayoutParams) {
+			RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) view.getLayoutParams();
+			
+			if(newMargin[0] != -1) {
+				rp.leftMargin = newMargin[0];
+			}
+			
+			if(newMargin[1] != -1) {
+				rp.topMargin = newMargin[1];
+			}
+			
+			if(newMargin[2] != -1) {
+				rp.rightMargin = newMargin[2];
+			}
+			
+			if(newMargin[3] != -1) {
+				rp.bottomMargin = newMargin[3];
+			}
+			view.setLayoutParams(rp);
 		}
 	}
 	
