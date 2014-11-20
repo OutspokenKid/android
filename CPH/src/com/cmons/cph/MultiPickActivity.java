@@ -58,12 +58,6 @@ public class MultiPickActivity extends MultiSelectGalleryActivity {
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(16);
 	}
-	
-	@Override
-	public View getNoMediaView() {
-		
-		return tvNoMedia;
-	}
 
 	@Override
 	public View getSelectCompleteButton() {
@@ -75,5 +69,18 @@ public class MultiPickActivity extends MultiSelectGalleryActivity {
 	public GridView getGridView() {
 
 		return gridView;
+	}
+	
+	@Override
+	public void checkImageStatus() {
+		
+		int count = adapter.getCount();
+		
+		if (count == 0) {
+			tvNoMedia.setVisibility(View.VISIBLE);
+		} else {
+			tvNoMedia.setVisibility(View.GONE);
+		}
+		
 	}
 }
