@@ -19,6 +19,8 @@ import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
+import com.outspoken_kid.model.MultiSelectImageInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -41,7 +43,6 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 	private static Bitmap selectedBitmap;
 	private static String selectedImageUrl;
-	private static OnAfterUploadImage onAfterUploadImage;
 	
 	private ImageView ivImage;
 	private ProgressBar progress;
@@ -54,52 +55,61 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		onAfterUploadImage = new OnAfterUploadImage() {
+//		OnAfterUploadImage onAfterUploadImage = new OnAfterUploadImage() {
+//			
+//			@Override
+//			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
+//				
+//				LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  " +
+//						"\nresultString : " + resultString);
+//
+//				if(!uploading) {
+//					return;
+//				}
+//				
+//				/*
+//				{
+//					"result":1,
+//					"message":"OK",
+//					"file":{
+//						"type":"image",
+//						"path":"\/var\/www\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+//						"url":"http:\/\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+//						"original_name":"temp.jpeg",
+//						"image_width":720,
+//						"image_height":960
+//					}
+//				}
+//				*/
+//				try {
+//					JSONObject objJSON = new JSONObject(resultString);
+//
+//					if(objJSON.getInt("result") == 1) {
+//						JSONObject objFile = objJSON.getJSONObject("file");
+//						selectedImageUrl = objFile.getString("url");
+//						downloadProfile();
+//					}
+//				} catch (Exception e) {
+//					LogUtils.trace(e);
+//				} catch (Error e) {
+//					LogUtils.trace(e);
+//				}
+//				
+//				if(thumbnail == null) {
+//					LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
+//				}
+//			}
+//		};
+		
+		CmonsFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			
 			@Override
-			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
-				
-				LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  " +
-						"\nresultString : " + resultString);
+			public void onAfterPickImage(MultiSelectImageInfo[] infos) {
 
-				if(!uploading) {
-					return;
-				}
-				
-				/*
-				{
-					"result":1,
-					"message":"OK",
-					"file":{
-						"type":"image",
-						"path":"\/var\/www\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
-						"url":"http:\/\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
-						"original_name":"temp.jpeg",
-						"image_width":720,
-						"image_height":960
-					}
-				}
-				*/
-				try {
-					JSONObject objJSON = new JSONObject(resultString);
-
-					if(objJSON.getInt("result") == 1) {
-						JSONObject objFile = objJSON.getJSONObject("file");
-						selectedImageUrl = objFile.getString("url");
-						downloadProfile();
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
-				
-				if(thumbnail == null) {
-					LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
-				}
+				//Add info to selectedInfo.
+				//Get Thumbnail and set bitmap to imageView.
 			}
 		};
-		CmonsFragmentActivity.onAfterUploadImage = onAfterUploadImage;
 	}
 	
 	@Override
@@ -185,8 +195,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 				}
 				
 				uploading = true;
-				
-				mActivity.showUploadPhotoPopup(onAfterUploadImage);
+//				mActivity.showUploadPhotoPopup(onAfterUploadImage, 1);
 			}
 		});
 	}

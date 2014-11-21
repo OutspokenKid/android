@@ -68,8 +68,6 @@ public abstract class ViewWrapper {
 			ivImage.setImageDrawable(null);
 		}
 		
-		ivImage.setImageBitmap(null);
-		
 		ivImage.setTag(url);
 		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			

@@ -6,6 +6,7 @@ public class CphConstants {
 	public static final String GCM_SENDER_ID = "536624421053";
 	
 	public static String BASE_API_URL = "http://cph-app.co.kr/";
+	public static String UPLOAD_URL = BASE_API_URL + "files/upload/image";
 	
 	public static final String PREFS_COOKIE_CPH_D1 = "cphd1";
 	public static final String PREFS_COOKIE_CPH_S = "cphs";
