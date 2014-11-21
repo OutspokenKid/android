@@ -59,7 +59,8 @@ public class ImageCacheUtils {
     	}
     }
 
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB) public static void saveImage(Context context, Bitmap bitmap, String fileName, boolean needRecycle) {
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
+	public static void saveImage(Context context, Bitmap bitmap, String fileName, boolean needRecycle) {
 
 		if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
 			(new BackgroundSaveImage(context, bitmap, fileName, needRecycle))

@@ -1,13 +1,9 @@
 package com.outspoken_kid.utils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -19,7 +15,8 @@ import com.outspoken_kid.R;
 public class ImageUploadUtils {
 	
 	public static String getRealPathFromUri(Context context, Uri uri) {
-        String[] projection = { MediaStore.Images.Media.DATA };
+
+		String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null);
         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
@@ -36,7 +33,7 @@ public class ImageUploadUtils {
 		
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 2;
+			options.inSampleSize = 4;
 			BitmapFactory.decodeFile(file.getPath(), options);
 
 			int width = 0;
@@ -94,16 +91,13 @@ public class ImageUploadUtils {
 		private String uploadUrl;
 		private OnAfterUploadImage onAfterUploadImage;
 		private String filePath;
-		private int inSampleSize;
 		private String resultString;
-		private Bitmap thumbnail;
 		
 		public AsyncUploadImage(String uploadUrl, OnAfterUploadImage onAfterUploadImage,
 				String filePath, int inSampleSize) {
 			this.uploadUrl = uploadUrl;
 			this.onAfterUploadImage = onAfterUploadImage;
 			this.filePath = filePath;
-			this.inSampleSize = inSampleSize;
 		}
 		
 		@Override
@@ -116,18 +110,9 @@ public class ImageUploadUtils {
 				return null;
 			}
 
-			OutputStream out = null;
 			String tempFilePath = null;
-			Bitmap tempBitmap = null;
-			int degree = 0;
-			BitmapFactory.Options options = null;
 			
 	        try {
-	        	options = new BitmapFactory.Options();
-				options.inSampleSize = inSampleSize;
-				degree = BitmapUtils.GetExifOrientation(filePath);
-				tempBitmap = BitmapFactory.decodeFile(filePath, options);
-				tempBitmap = BitmapUtils.GetRotatedBitmap(tempBitmap, degree);
 				tempFilePath = filePath;
 				
 				if(filePath.contains(".jpg")) {
@@ -139,20 +124,9 @@ public class ImageUploadUtils {
 				}
 				
 				File tempFile = new File(tempFilePath);
-	        	
 	            tempFile.createNewFile();
-	            out = new FileOutputStream(tempFile);
-	            
-	            if(tempFilePath.contains(".png")) {
-	            	tempBitmap.compress(CompressFormat.PNG, 90, out);
-	            } else {
-	            	tempBitmap.compress(CompressFormat.JPEG, 90, out);
-	            }
-	            
 	            LogUtils.log("###AsyncUploadImage.doInBackground.  \nfileSize : " + tempFile.length());
 	            resultString = HttpUtils.httpPost(uploadUrl, "userfile", tempFile);
-	            LogUtils.log("###AsyncUploadImage.doInBackground.  \nresultString : " + resultString);
-	            
 				tempFile.delete();
 	        } catch(OutOfMemoryError oom) {
 				oom.printStackTrace();
@@ -163,31 +137,7 @@ public class ImageUploadUtils {
 	        } catch (Exception e) {
 	        	ToastUtils.showToast(R.string.failToLoadBitmap);
 	            LogUtils.trace(e);
-	        } finally {
-	        	try {
-	                out.close();
-	            } catch (Exception e) {}
-	        	
-	        	if(filePath != null && tempFilePath != null && !filePath.equals(tempFilePath) 
-	        			&& tempBitmap != null && !tempBitmap.isRecycled()) {
-	        		tempBitmap.recycle();
-	        		tempBitmap = null;
-	        	}
 	        }
-	        
-	        try {
-				options = new BitmapFactory.Options();
-				options.inSampleSize = inSampleSize / 4;
-				
-				thumbnail = BitmapFactory.decodeFile(filePath, options);
-				thumbnail = BitmapUtils.GetRotatedBitmap(thumbnail, degree);
-			} catch(Exception e) {
-				ToastUtils.showToast(R.string.failToLoadBitmap);
-			} catch(OutOfMemoryError oom) {	
-				ToastUtils.showToast(R.string.failToLoadBitmap);
-			} catch(Error e) {
-				ToastUtils.showToast(R.string.failToLoadBitmap);
-			}
 			
 			return null;
 		}
@@ -196,10 +146,14 @@ public class ImageUploadUtils {
 		protected void onPostExecute(Void result) {
 
 			if(onAfterUploadImage != null) {
-				LogUtils.log("###ImageUploadUtils.onPostExecute.  onAfterUploadImage is not null");
-				onAfterUploadImage.onAfterUploadImage(resultString, thumbnail);
+				LogUtils.log("###ImageUploadUtils.onPostExecute."
+						+ "\nonAfterUploadImage is not null"
+						+ "\nresultString : " + resultString);
+				onAfterUploadImage.onAfterUploadImage(resultString);
 			} else {
-				LogUtils.log("###ImageUploadUtils.onPostExecute.  onAfterUploadImage is null");
+				LogUtils.log("###ImageUploadUtils.onPostExecute."
+						+ "\nonAfterUploadImage is null"
+						+ "\nresultString : " + resultString);
 			}
 		}
 	}
@@ -208,6 +162,6 @@ public class ImageUploadUtils {
 	
 	public interface OnAfterUploadImage {
 		
-		public void onAfterUploadImage(String resultString, Bitmap thumbnail);
+		public void onAfterUploadImage(String resultString);
 	}
 }

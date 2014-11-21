@@ -6,6 +6,7 @@ import java.util.Collections;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,99 +15,176 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.outspoken_kid.R;
 import com.outspoken_kid.classes.MultiSelectGalleryAdapter;
 import com.outspoken_kid.model.MultiSelectImageInfo;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
-public abstract class MultiSelectGalleryActivity extends Activity {
+public class MultiSelectGalleryActivity extends Activity {
+
+	protected ArrayList<MultiSelectImageInfo> imageInfos = new ArrayList<MultiSelectImageInfo>();
+	
+	protected TextView tvTitle;
+	protected TextView tvSelectComplete;
+	protected GridView gridView;
+	protected TextView tvNoMedia;
+	protected TextView tvProgressView;
 	
 	protected MultiSelectGalleryAdapter adapter;
-	protected ArrayList<MultiSelectImageInfo> imageInfos = new ArrayList<MultiSelectImageInfo>();
+	protected int selectedImageCount;
 	protected int maxImageCount;
-	
-	private OnCompleteButtonClickedListener onCompleteButtonClickedListener;
-
-	public abstract View getSelectCompleteButton();
-	public abstract GridView getGridView();
-	public abstract void checkImageStatus(); 
+	protected int titleBgColor;
+	protected int textColor;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_multiselectgallery);
+		
 		if(getIntent() == null) {
 			finish();
 		}
+
+		bindViews();
+		setVariables();
+		setSizes();
+		setListeners();
+	}
+	
+	public void setVariables() {
 		
 		maxImageCount = getIntent().getIntExtra("maxImageCount", 1);
-		init();
+		titleBgColor = getIntent().getIntExtra("titleBgColor", Color.rgb(255, 63, 128));
+		textColor = getIntent().getIntExtra("textColor", Color.WHITE);
 	}
+	
+	public void bindViews() {
+		
+		tvTitle = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvTitle);
+		tvSelectComplete = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvSelectComplete);
+		gridView = (GridView) findViewById(R.id.multiSelectGalleryActivity_gridView);
+		tvNoMedia = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvNoMedia);
+		tvProgressView = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvProgressView);
+	}
+	
+	public void setSizes() {
+		
+		RelativeLayout.LayoutParams rp = null;
+		
+		rp = (RelativeLayout.LayoutParams) tvTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(96);
 
-	protected void init() {
+		rp = (RelativeLayout.LayoutParams) tvSelectComplete.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(100);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.rightMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		
+		gridView.setVerticalSpacing(0);
+		gridView.setHorizontalSpacing(0);
+		
+		FontUtils.setFontSize(tvTitle, 30);
+		FontUtils.setFontSize(tvSelectComplete, 30);
+		FontUtils.setFontSize(tvNoMedia, 40);
+		FontUtils.setFontSize(tvProgressView, 24);
+	}
+	
+	public void setListeners() {
 
-		adapter = new MultiSelectGalleryAdapter(getApplicationContext(), imageInfos);
-		getGridView().setAdapter(adapter);
-		getGridView().setFastScrollEnabled(true);
-		getGridView().setColumnWidth(4);
-		getGridView().setCacheColorHint(Color.TRANSPARENT);
-		getGridView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+		gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-				adapter.changeSelection(v, position);
+				
+				if(maxImageCount == 1) {
+					Intent data = new Intent().putExtra("all_path", 
+							new String[]{imageInfos.get(position).sdcardPath});
+					setResult(RESULT_OK, data);
+					finish();
+					
+				} else if(imageInfos.get(position).isSelected
+						|| selectedImageCount < maxImageCount) {
+					adapter.changeSelection(v, position);
+					checkSelectedImageCount();
+				} else {
+					ToastUtils.showToast(getString(R.string.imageSelectLimit1) + 
+							maxImageCount + 
+							getString(R.string.imageSelectLimit2));
+				}
 			}
 		});
 
-		getSelectCompleteButton().setOnClickListener(new View.OnClickListener() {
+		tvSelectComplete.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
+
 				ArrayList<MultiSelectImageInfo> selected = adapter.getSelected();
-
-				String[] allPath = new String[selected.size()];
-				for (int i = 0; i < allPath.length; i++) {
-					allPath[i] = selected.get(i).sdcardPath;
-				}
-
-				Intent data = new Intent().putExtra("all_path", allPath);
-				setResult(RESULT_OK, data);
+				Intent data = new Intent();
 				
-				if(onCompleteButtonClickedListener != null) {
-					onCompleteButtonClickedListener.onCompleteButtonClicked();
+				Bundle bundle = new Bundle();
+				
+				int size = selected.size();
+				bundle.putInt("size", size);
+				
+				for(int i=0; i<size; i++) {
+					bundle.putSerializable("" + i, selected.get(i));
+				}
+				
+				data.putExtra("infos", bundle);
+				
+				if(selectedImageCount > 0) {
+					setResult(RESULT_OK, data);
 				}
 				
 				finish();
 			}
 		});
-		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+	
 		new Handler().post(new Runnable() {
 			
 			@Override
 			public void run() {
+
 				getGalleryImageList();
+				
+				adapter = new MultiSelectGalleryAdapter(getApplicationContext(), tvProgressView, imageInfos);
+				gridView.setAdapter(adapter);
 				adapter.notifyDataSetChanged();
-				checkImageStatus();
+				checkSelectedImageCount();
 			}
 		});
 	}
 	
 	public void getGalleryImageList() {
-		
-		Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
-		String[] projection = {
-				MediaStore.Images.Media._ID,
-				MediaStore.Images.Media.DATA,
-		};
-	    
-		Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-		imageInfos.clear();
+		Cursor cursor = null;
 		
-	    if (cursor != null) {
-	    	
-	    	try {
-	    		int idColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+		try {
+			Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
+			String[] projection = {
+					MediaStore.Images.Media._ID,
+					MediaStore.Images.Media.DATA,
+			};
+		    
+			cursor = getContentResolver().query(uri, projection, null, null, null);
+			imageInfos.clear();
+			
+		    if (cursor != null) {
+		    	
+		    	int idColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media._ID);
 	    		int pathColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
 	    		
 	    		while (cursor.moveToNext()) {
@@ -115,26 +193,54 @@ public abstract class MultiSelectGalleryActivity extends Activity {
 	    			imageInfo.sdcardPath = cursor.getString(pathColumnIndex);
 	    			imageInfos.add(imageInfo);
 	    		}
-	    	} catch(Exception e) {
-	    		LogUtils.trace(e);
-	    		
-	    	} finally {
-	    		cursor.close();
-	    	}
-	    }
-	    
-	    Collections.reverse(imageInfos);
+		    }
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		} finally {
+			
+			if(cursor != null) {
+				cursor.close();
+			}
+		}
+		
+		if(imageInfos.size() == 0) {
+			tvNoMedia.setVisibility(View.VISIBLE);
+			gridView.setVisibility(View.INVISIBLE);
+			
+		} else {
+			Collections.reverse(imageInfos);
+			tvNoMedia.setVisibility(View.INVISIBLE);
+			gridView.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void checkSelectedImageCount() {
+
+		int count = 0;
+		for(MultiSelectImageInfo info : imageInfos) {
+			
+			if(info.isSelected) {
+				count ++;
+			}
+		}
+		selectedImageCount = count;
+		tvTitle.setText(selectedImageCount + "/" + maxImageCount);
+	}
+	
+	@Override
+	public void finish() {
+		super.finish();
+		adapter.clear();
 	}
 
-	public void setOnCompleteButtonClickedListener(
-			OnCompleteButtonClickedListener onCompleteButtonClickedListener) {
-		this.onCompleteButtonClickedListener = onCompleteButtonClickedListener;
-	}
-	
+////////////////////////////Interfaces.
+
 //////////////////// Interfaces.
 	
-	public interface OnCompleteButtonClickedListener {
-		
-		public void onCompleteButtonClicked();
+	public interface OnAfterPickImageListener {
+	
+		public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails);
 	}
 }

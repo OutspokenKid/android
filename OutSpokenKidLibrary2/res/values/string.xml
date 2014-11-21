@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    
+	<string name="confirm">Confirm</string>
+	
+	<string name="imageSelectLimit1">Can not select over&#160;</string>
+	<string name="imageSelectLimit2"></string>
+
+	<string name="loadingMedias">Loading medias</string>
+		
+	<string name="noMedia">No media</string>
+	
 </resources>

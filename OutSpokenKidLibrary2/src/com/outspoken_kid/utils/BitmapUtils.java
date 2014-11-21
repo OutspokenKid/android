@@ -3,6 +3,7 @@ package com.outspoken_kid.utils;
 import java.io.IOException;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 
@@ -41,7 +42,7 @@ public class BitmapUtils {
 	
 	public synchronized static Bitmap GetRotatedBitmap(Bitmap bitmap, int degrees) {
 
-		if (degrees != 0 && bitmap != null) {
+		if (degrees%360 != 0 && bitmap != null) {
 			Matrix m = new Matrix();
 			
 			m.setRotate(degrees, (float) bitmap.getWidth() / 2, (float) bitmap.getHeight() / 2 );
@@ -59,5 +60,20 @@ public class BitmapUtils {
 		}
 		
 		return bitmap;
+	}
+
+	public static Bitmap getBitmapFromSdCardPath(String sdCardPath, int inSampleSize) {
+		
+		try {
+			int degree = BitmapUtils.GetExifOrientation(sdCardPath);
+			BitmapFactory.Options options = new BitmapFactory.Options();
+			options.inSampleSize = inSampleSize;
+			Bitmap thumbnail = BitmapFactory.decodeFile(sdCardPath, options);
+			return BitmapUtils.GetRotatedBitmap(thumbnail, degree);
+		} catch (Exception e) {
+		} catch (Error e) {
+		}
+		
+		return null;
 	}
 }

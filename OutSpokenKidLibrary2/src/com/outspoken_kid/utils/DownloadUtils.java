@@ -33,14 +33,37 @@ public class DownloadUtils {
 		return instance;
 	}
 	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void executeDownloadTask(String url, final OnBitmapDownloadListener onBitmapDownloadListener) {
 		
-		(new AsyncGetBitmap(url, onBitmapDownloadListener)).execute();
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+			(new AsyncGetBitmap(url, onBitmapDownloadListener))
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			(new AsyncGetBitmap(url, onBitmapDownloadListener)).execute();
+		}
 	}
 	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void executeLoadFromMediaStoreTask(String url, final OnBitmapDownloadListener onBitmapDownloadListener) {
+		
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+			(new AsyncGetBitmap(url, onBitmapDownloadListener, true))
+					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			(new AsyncGetBitmap(url, onBitmapDownloadListener, true)).execute();
+		}
+	}
+
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void executeCacheTask(String url, Bitmap bitmap) {
 
-		(new AsyncPutBitmap(url, bitmap)).execute();
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB) {
+			(new AsyncPutBitmap(url, bitmap))
+			.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			(new AsyncPutBitmap(url, bitmap)).execute();
+		}
 	}
 	
 	/**
@@ -147,6 +170,38 @@ public class DownloadUtils {
 	}
 
 	/**
+	 * Load thumbnail bitmap from MediaStore
+	 * 
+	 * @param url(id_thumbnail / id_origin)
+	 * @param isThumbnail
+	 * @param onBitmapDownloadListener
+	 */
+	public static void loadBitmapFromMediaStore(
+			final String url, boolean isThumbnail, 
+			final OnBitmapDownloadListener onBitmapDownloadListener) {
+		
+		if(StringUtils.isEmpty(url)) {
+			return;
+		}
+		
+		try {
+			getInstance().executeLoadFromMediaStoreTask(url, onBitmapDownloadListener);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			
+			if(onBitmapDownloadListener != null) {
+				onBitmapDownloadListener.onError(url);
+			}
+		} catch (Error e) {
+			LogUtils.trace(e);
+			
+			if(onBitmapDownloadListener != null) {
+				onBitmapDownloadListener.onError(url);
+			}
+		}
+	}
+	
+	/**
 	 * String downloader.
 	 * 
 	 * @param url
@@ -197,10 +252,20 @@ public class DownloadUtils {
 
 		private String url;
 		private OnBitmapDownloadListener onBitmapDownloadListener;
+		private boolean isGetFromMediaStore;
 		
-		public AsyncGetBitmap(String url, OnBitmapDownloadListener onBitmapDownloadListener) {
+		public AsyncGetBitmap(String url, 
+				OnBitmapDownloadListener onBitmapDownloadListener) {
 			this.url = url;
 			this.onBitmapDownloadListener = onBitmapDownloadListener;
+		}
+		
+		public AsyncGetBitmap(String url, 
+				OnBitmapDownloadListener onBitmapDownloadListener, 
+				boolean isGetFromMediaStore) {
+			this.url = url;
+			this.onBitmapDownloadListener = onBitmapDownloadListener;
+			this.isGetFromMediaStore = isGetFromMediaStore;
 		}
 		
 		@Override
@@ -222,8 +287,12 @@ public class DownloadUtils {
 			
 			if(bitmap != null && !bitmap.isRecycled()) {
 				onBitmapDownloadListener.onCompleted(url, bitmap);
-			} else {
+				
+			} else if(!isGetFromMediaStore){
 				downloadBitmap();
+				
+			} else if(onBitmapDownloadListener != null){
+				onBitmapDownloadListener.onError(url);
 			}
 		}
 		
