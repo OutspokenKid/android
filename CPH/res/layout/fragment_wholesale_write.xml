@@ -31,8 +31,6 @@
             android:layout_width="match_parent"
 	    	android:layout_height="wrap_content" >
             
-            <!-- 상품 사진 등록. -->
-            
             <TextView
 		        android:id="@+id/wholesaleWritePage_tvImageText"
 		        android:layout_width="match_parent"
@@ -41,60 +39,51 @@
 		        android:text="@string/productPhotoUpload"
 		        android:textColor="#fff"
 		        android:gravity="bottom" />
+        
+            <!-- 사진 등록. -->
             
-            <Button
-		        android:id="@+id/wholesaleWritePage_btnImage1"
+		    <Button
+		        android:id="@+id/wholesaleWritePage_btnUpload"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignBottom="@id/wholesaleWritePage_tvImageText"
+		        android:background="@drawable/myshop_multiupload_btn" />
+		    
+		    <!-- 사진 등록 안내 텍스트. -->
+		    
+		    <TextView
+		        android:id="@+id/wholesaleWritePage_tvUploadImage"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/wholesaleWritePage_tvImageText"
-		        android:layout_alignParentLeft="true"
-		        android:background="@drawable/myshop_pic_add1" />
-            
-            <ImageView 
-                android:id="@+id/wholesaleWritePage_ivImage1"
-		        android:layout_width="0dp"
+		        android:text="@string/uploadImage"
+		        android:textColor="#fff"
+		        android:background="#a000"
+		        android:gravity="center" />
+		    
+		    <!-- 이미지 스크롤. -->
+		    
+		    <HorizontalScrollView
+		        android:id="@+id/wholesaleWritePage_imageScroll"
+		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/wholesaleWritePage_tvImageText"
-		        android:layout_alignParentLeft="true"
-		        android:scaleType="centerCrop" />
-            
-            <Button
-		        android:id="@+id/wholesaleWritePage_btnImage2"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/wholesaleWritePage_ivImage1"
-		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage1"
-		        android:background="@drawable/myshop_pic_add2" />
-            
-            <ImageView 
-                android:id="@+id/wholesaleWritePage_ivImage2"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/wholesaleWritePage_ivImage1"
-		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage1"
-		        android:scaleType="centerCrop" />
-            
-            <Button
-		        android:id="@+id/wholesaleWritePage_btnImage3"
-		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/wholesaleWritePage_ivImage2"
-		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage2"
-		        android:background="@drawable/myshop_pic_add3" />
-            
-            <ImageView 
-                android:id="@+id/wholesaleWritePage_ivImage3"
-		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/wholesaleWritePage_ivImage2"
-		        android:layout_toRightOf="@id/wholesaleWritePage_ivImage2"
-		        android:scaleType="centerCrop" />
+		        android:fillViewport="true" >
+		        
+		        <LinearLayout
+		            android:id="@+id/wholesaleWritePage_imageLinear" 
+		            android:layout_width="wrap_content"
+		        	android:layout_height="match_parent"
+		        	android:orientation="horizontal" />
+		        
+		    </HorizontalScrollView>
 		    
             <TextView
 		        android:id="@+id/wholesaleWritePage_tvImageSizeText"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/wholesaleWritePage_ivImage1"
+		        android:layout_below="@id/wholesaleWritePage_tvUploadImage"
 		        android:text="@string/productPhotoUploadDesc"
 		        android:textColor="#fff"
 		        android:gravity="center_vertical" />

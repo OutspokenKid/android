@@ -26,7 +26,6 @@ import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageL
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.model.MultiSelectImageInfo;
 import com.outspoken_kid.utils.BitmapUtils;
-import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -252,30 +251,26 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 					File file = null;
 					LogUtils.log("###CmonsFragmentActivity.onActivityResult.  ");
 					
-					if (requestCode == CphConstants.REQUEST_ALBUM) {
-						file = new File(ImageUploadUtils.getRealPathFromUri(
-								this, data.getData()));
-					} else {
-						String filePath = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "filePath");
-						String fileName = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "fileName");
-						
-						sdCardPaths = new String[]{filePath + fileName};
-						LogUtils.log("###CmonsFragmentActivity.onActivityResult.  sdCardPath : " + sdCardPaths[0]);
-						file = new File(filePath, fileName);
-					}
+					String filePath = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "filePath");
+					String fileName = SharedPrefsUtils.getStringFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "fileName");
+					
+					file = new File(filePath, fileName);
+					sdCardPaths = new String[]{file.getPath()};
+					LogUtils.log("###CmonsFragmentActivity.onActivityResult.  sdCardPath : " + sdCardPaths[0]);
 
 					int inSampleSize = 1;
 					
 					if(ResizeUtils.getScreenWidth() >= 720) {
-						inSampleSize = ImageUploadUtils.getBitmapInSampleSize(file, 720);
+						inSampleSize = BitmapUtils.getBitmapInSampleSize(file, 720);
 					} else {
-						inSampleSize = ImageUploadUtils.getBitmapInSampleSize(file, 640);
+						inSampleSize = BitmapUtils.getBitmapInSampleSize(file, 640);
 					}
 					
 					inSampleSizes = new int[]{inSampleSize};
 					
 					if(onAfterPickImageListener != null) {
 						(new AsyncGetThumbnailAndReturnTask(sdCardPaths, inSampleSizes)).execute();
+						return;
 					}
 				} catch (OutOfMemoryError oom) {
 					oom.printStackTrace();
@@ -299,9 +294,6 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 			if(resultCode == RESULT_OK) {
 				
 				try {
-					String[] strings = data.getStringArrayExtra("all_path");
-					LogUtils.log("###CmonsFragmentActivity.onActivityResult.  \n" + strings);
-					
 					Bundle bundle = data.getBundleExtra("infos");
 					
 					if(bundle == null) {
@@ -310,13 +302,17 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 
 					ArrayList<MultiSelectImageInfo> infos = new ArrayList<MultiSelectImageInfo>();
 					int size = bundle.getInt("size");
+					LogUtils.log("###CmonsFragmentActivity.onActivityResult.  "
+							+ "size : " + size);
 					
 					for(int i=0; i<size; i++) {
 						infos.add((MultiSelectImageInfo)bundle.getSerializable("" + i));
+						LogUtils.log(i + " : " + infos.get(i).sdcardPath);
 					}
 					
 					if(onAfterPickImageListener != null) {
 						(new AsyncGetThumbnailAndReturnTask(infos)).execute();
+						return;
 					}
 				} catch (OutOfMemoryError oom) {
 					oom.printStackTrace();
@@ -397,15 +393,17 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				thumbnails = new Bitmap[sdCardPaths.length];
 				
 				for(int i=0; i<size; i++) {
-					thumbnails[i] = BitmapUtils.getBitmapFromSdCardPath(sdCardPaths[i], inSampleSizes[i]);
+					//썸네일은 샘플링 사이즈보다 2배 작게.
+					thumbnails[i] = BitmapUtils.getBitmapFromSdCardPath(sdCardPaths[i], inSampleSizes[i]*2);
 				}
 				
 			//앨범으로부터.
 			} else {
-
 				int size = infos.size();
 				thumbnails = new Bitmap[size];
 
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.doInBackground.  size : " + size);
+				
 				for(int i=0; i<size; i++) {
 					thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
 							context.getContentResolver(), 
@@ -429,7 +427,6 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 					
 				//앨범으로부터.
 				} else {
-					
 					int size = infos.size();
 					sdCardPaths = new String[size];
 					
@@ -439,6 +436,12 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 					
 					onAfterPickImageListener.onAfterPickImage(sdCardPaths, thumbnails);
 				}
+				
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.onPostExecute.  "
+						+ "\npath[0] : " + sdCardPaths[0]);
+			} else {
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.onPostExecute.  "
+						+ "\nListener is null.");
 			}
 		}
 	}

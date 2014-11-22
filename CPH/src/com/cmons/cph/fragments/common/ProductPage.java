@@ -138,6 +138,7 @@ public class ProductPage extends CmonsFragmentForShop {
 			pagerAdapter = new PagerAdapterForProducts();
 			viewPager.setAdapter(pagerAdapter);
 			viewPager.requestDisallowInterceptTouchEvent(true);
+			viewPager.setCurrentItem(0);
 			
 			title = product.getName();
 			

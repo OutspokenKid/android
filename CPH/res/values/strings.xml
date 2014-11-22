@@ -166,6 +166,8 @@
     <string name="hintForWriteCompanyOwnerName">성함 입력</string>
     
     <string name="id">아이디</string>
+    <string name="imageSelectLimit">최대 10개까지 선택할 수 있습니다</string>
+    
     <string name="inputPhone">전화번호 입력</string>
     <string name="inputCompanyInfo">매장 정보 입력</string>
     <string name="inputUserInfo">회원 정보 입력</string>
@@ -258,6 +260,9 @@
     
     <string name="terms">약관</string>
     <string name="totalPrice">총 결제금액</string>
+    
+    <string name="uploadImage">사진등록 버튼을 눌러 이미지를 등록해주세요.</string>
+    <string name="uploadingImage">이미지 업로드 중..</string>
 
     <string name="wannaApproval">해당 직원을 승인하시겠습니까?</string>
     <string name="wannaDenyCustomer">해당 거래처 요청을 거절하시겠습니까?</string>

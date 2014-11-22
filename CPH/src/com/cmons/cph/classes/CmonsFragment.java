@@ -215,7 +215,10 @@ public abstract class CmonsFragment extends BaseFragment {
 		
 		try {
 			models.clear();
-			adapter.notifyDataSetChanged();
+			
+			if(adapter != null) {
+				adapter.notifyDataSetChanged();
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

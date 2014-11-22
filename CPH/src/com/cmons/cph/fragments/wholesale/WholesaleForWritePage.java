@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.Gravity;
@@ -26,7 +27,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -41,10 +45,13 @@ import com.cmons.cph.models.Category;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
-import com.outspoken_kid.model.MultiSelectImageInfo;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ImageUploadUtils;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -60,10 +67,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	private static final int MODE_MIXTURE = 3;
 	
     private TextView tvImageText;
-    private Button btnImage1;
-    private Button btnImage2;
-    private Button btnImage3;
-    private ImageView[] ivImages;
+    private Button btnUploadImage;
+    private TextView tvUploadImage;
+    private HorizontalScrollView imageScroll;
+    private LinearLayout imageLinear;
     private TextView tvImageSizeText;
     private TextView tvName;
     private EditText etName;
@@ -105,6 +112,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	private ArrayList<Item> sizeItems;
 	private ArrayList<Item> mixtureItems;
 	private int mode;
+
+	private ArrayList<String> selectedImages = new ArrayList<String>();
+	private ArrayList<FrameLayout> selectedFrames = new ArrayList<FrameLayout>();
+	private int downloadCount;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -114,12 +125,31 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 		
 		CmonsFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
-			
+
 			@Override
-			public void onAfterPickImage(MultiSelectImageInfo[] infos) {
-				
-				//Add infos to arrayList.
-				//Get thumbnail bitmaps and set bitmaps to imageView.
+			public void onAfterPickImage(String[] sdCardPaths,
+					Bitmap[] thumbnails) {
+
+				if(sdCardPaths == null) {
+					LogUtils.log("###WholesaleForWritePage.onAfterPickImage.  sdCardPaths is null.");
+				} else {
+					
+					LogUtils.log("###WholesaleForWritePage.onAfterPickImage.  sdCardPaths");
+					
+					int size = sdCardPaths.length;
+					for(int i=0; i<size; i++) {
+						LogUtils.log("path[" + i + "] : " + sdCardPaths[i]);
+						
+						if(thumbnails[i] == null) {
+							LogUtils.log("thumbnail[" + i + "] : null");
+						} else {
+							LogUtils.log("thumbnail[" + i + "] : not null");
+						}
+						
+						addThumbnailView(selectedImages.size(), sdCardPaths[i], thumbnails[i]);
+						selectedImages.add(sdCardPaths[i]);
+					}
+				}
 			}
 		};
 	}
@@ -146,14 +176,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		ivBg = (ImageView) mThisView.findViewById(R.id.wholesaleWritePage_ivBg);
 		
 		tvImageText = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvImageText);
-		btnImage1 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnImage1);
-		btnImage2 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnImage2);
-		btnImage3 = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnImage3);
+		btnUploadImage = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnUpload);
 		
-		ivImages = new ImageView[3];
-		ivImages[0] = (ImageView) mThisView.findViewById(R.id.wholesaleWritePage_ivImage1);
-		ivImages[1] = (ImageView) mThisView.findViewById(R.id.wholesaleWritePage_ivImage2);
-		ivImages[2] = (ImageView) mThisView.findViewById(R.id.wholesaleWritePage_ivImage3);
+		tvUploadImage = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvUploadImage);
+		imageScroll = (HorizontalScrollView) mThisView.findViewById(R.id.wholesaleWritePage_imageScroll);
+		imageLinear = (LinearLayout) mThisView.findViewById(R.id.wholesaleWritePage_imageLinear);
+		
 		tvImageSizeText = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvImageSizeText);
 		tvName = (TextView) mThisView.findViewById(R.id.wholesaleWritePage_tvName);
 		etName = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etName);
@@ -211,6 +239,16 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		
 		if(product != null) {
 			title = "상품 수정";
+
+			//사진 설정.
+			selectedImages.clear();
+			if(product.getProduct_images() != null
+					&& product.getProduct_images().length > 0) {
+				
+				for(String imageUrl : product.getProduct_images()) {
+					selectedImages.add(imageUrl);
+				}
+			}
 			
 			//isPublic 설정.
 			isPublic = product.getCustomers_only() == 0;
@@ -234,6 +272,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		listView.setDivider(new ColorDrawable(Color.WHITE));
 		listView.setDividerHeight(1);
 		
+		imageScroll.requestDisallowInterceptTouchEvent(true);
+		
 		//수정.
 		if(product != null) {
 			
@@ -252,12 +292,10 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			//이미지 설정.
 			if(product.getProduct_images() != null) {
 				
-				for(int i=0; i<Math.min(3, product.getProduct_images().length); i++) {
-//					selectedImageUrls[i] = product.getProduct_images()[i];
+				for(int i=0; i<product.getProduct_images().length; i++) {
+					addThumbnailViewWithUrl(i, product.getProduct_images()[i]);
 				}
 			}
-			
-			downloadImages();
 			
 			//상품명 설정.
 			etName.setText(product.getName());
@@ -362,16 +400,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-//				if(selectedImageUrls == null 
-//						|| (selectedImageUrls[0] == null
-//							&& selectedImageUrls[1] == null
-//							&& selectedImageUrls[2] == null)) {
-//					//이미지를 등록해주세요.
-//					ToastUtils.showToast(R.string.wrongProductImage);
-//					return;
-//					
-//				} else 
-					if(StringUtils.isEmpty(etName)){
+				if(selectedImages.size() == 0) {
+					//이미지를 등록해주세요.
+					ToastUtils.showToast(R.string.wrongProductImage);
+					return;
+					
+				} else if(StringUtils.isEmpty(etName)){
 					//상품명을 입력해주세요.
 					ToastUtils.showToast(R.string.wrongProductName);
 					return;
@@ -435,38 +469,22 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-				if(product == null) {
-					write();
-				} else {
-					edit();
+				uploadImages(product != null);
+			}
+		});
+		
+		btnUploadImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(selectedImages.size() >= 10) {
+					ToastUtils.showToast(R.string.imageSelectLimit);
+					
+					return;
 				}
-			}
-		});
-		
-		btnImage1.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-		
-				upload(0);
-			}
-		});
-		
-		btnImage2.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				upload(1);
-			}
-		});
-		
-		btnImage3.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				upload(2);
+				
+				mActivity.showUploadPhotoPopup(10 - selectedImages.size());
 			}
 		});
 
@@ -686,8 +704,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		RelativeLayout.LayoutParams rp = null;
 
 		int padding = ResizeUtils.getSpecificLength(16);
-		int imageViewWidth = ResizeUtils.getSpecificLength(240);
-		int imageViewHeight = ResizeUtils.getSpecificLength(375);
+		int imageHeight = ResizeUtils.getSpecificLength(375);
 		int titleTextHeight = ResizeUtils.getSpecificLength(100);
 		int editTextHeight = ResizeUtils.getSpecificLength(92);
 		int buttonHeight = ResizeUtils.getSpecificLength(180);
@@ -697,34 +714,22 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		rp.height = titleTextHeight;
 		FontUtils.setFontSize(tvImageText, 30);
 		tvImageText.setPadding(padding, 0, 0, padding);
-		
-		//btnImage1.
-		rp = (RelativeLayout.LayoutParams) btnImage1.getLayoutParams();
-		rp.width = imageViewWidth;
-		rp.height = imageViewHeight;
-		
-		//ivImage1.
-		rp = (RelativeLayout.LayoutParams) ivImages[0].getLayoutParams();
-		rp.width = imageViewWidth;
-		rp.height = imageViewHeight;
 
-		//btnImage2.
-		rp = (RelativeLayout.LayoutParams) btnImage2.getLayoutParams();
-		rp.width = imageViewWidth;
-		rp.height = imageViewHeight;
+		//btnUploadImage.
+		rp = (RelativeLayout.LayoutParams) btnUploadImage.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(200);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(30);
 		
-		//ivImage2.
-		rp = (RelativeLayout.LayoutParams) ivImages[1].getLayoutParams();
-		rp.width = imageViewWidth;
-		rp.height = imageViewHeight;
-		
-		//btnImage3.
-		rp = (RelativeLayout.LayoutParams) btnImage3.getLayoutParams();
-		rp.height = imageViewHeight;
-		
-		//ivImage3.
-		rp = (RelativeLayout.LayoutParams) ivImages[2].getLayoutParams();
-		rp.height = imageViewHeight;
+		//tvUploadImage.
+		rp = (RelativeLayout.LayoutParams) tvUploadImage.getLayoutParams();
+		rp.height = imageHeight;
+		FontUtils.setFontSize(tvUploadImage, 30);
+
+		//ImageScroll.
+		rp = (RelativeLayout.LayoutParams) imageScroll.getLayoutParams();
+		rp.height = imageHeight;
 		
 		//tvImageSizeText.
 		rp = (RelativeLayout.LayoutParams) tvImageSizeText.getLayoutParams();
@@ -900,44 +905,13 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		return false;
 	}
 	
-//////////////////// Custom methods.
+	@Override
+	public int getBgResourceId() {
 
-	public void downloadImages() {
-
-		for(int i=0; i<3; i++) {
-	
-			final ImageView imageView = ivImages[i];
-//			DownloadUtils.downloadBitmap(selectedImageUrls[i],
-//					new OnBitmapDownloadListener() {
-//
-//						@Override
-//						public void onError(String url) {
-//
-//							LogUtils.log("WholesaleForWritePage.onError."
-//									+ "\nurl : " + url);
-//						}
-//
-//						@Override
-//						public void onCompleted(String url,
-//								Bitmap bitmap) {
-//
-//							try {
-//								LogUtils.log("WholesaleForWritePage.onCompleted."
-//										+ "\nurl : " + url);
-//
-//								if(imageView != null) {
-//									imageView.setImageBitmap(bitmap);
-//								}
-//							} catch (Exception e) {
-//								LogUtils.trace(e);
-//							} catch (OutOfMemoryError oom) {
-//								LogUtils.trace(oom);
-//							}
-//						}
-//					});
-
-		}
+		return R.drawable.myshop_bg;
 	}
+	
+//////////////////// Custom methods.
 	
  	public void delete() {
 		
@@ -1030,12 +1004,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
 			
 			//이미지 주소 추가.
-//			for(String imageUrl : selectedImageUrls) {
-//				
-//				if(imageUrl != null && imageUrl.contains("http")) {
-//					url += "&product[product_images][]=" + imageUrl;
-//				}
-//			}
+			for(String imageUrl : selectedImages) {
+				
+				if(imageUrl != null && imageUrl.contains("http")) {
+					url += "&product[product_images][]=" + imageUrl;
+				}
+			}
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -1161,12 +1135,12 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			url += "&product[mixture_rate]=" + URLEncoder.encode(mixtureString, "utf-8");
 			
 			//이미지 주소 추가.
-//			for(String imageUrl : selectedImageUrls) {
-//				
-//				if(imageUrl != null && imageUrl.contains("http")) {
-//					url += "&product[product_images][]=" + imageUrl;
-//				}
-//			}
+			for(String imageUrl : selectedImages) {
+				
+				if(imageUrl != null && imageUrl.contains("http")) {
+					url += "&product[product_images][]=" + imageUrl;
+				}
+			}
 			
 			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -1221,10 +1195,70 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		}
 	}
 	
-	public void uploadImage(final ImageView ivImage, final int index) {
+	public void uploadImages(final boolean isEdit) {
 		
-		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index", index);
-		mActivity.showUploadPhotoPopup(10);
+		ToastUtils.showToast(R.string.uploadingImage);
+		
+		//초기화.
+		downloadCount = 0;
+		
+		int size = selectedImages.size();
+		for(int i=0; i<size; i++) {
+			
+			if(!selectedImages.get(i).contains("http")) {
+				downloadCount++;
+			}
+		}
+		
+		for(int i=0; i<size; i++) {
+			
+			if(!selectedImages.get(i).contains("http")) {
+				
+				final int INDEX = i;
+				OnAfterUploadImage oaui = new OnAfterUploadImage() {
+					
+					@Override
+					public void onAfterUploadImage(String resultString) {
+						
+						try {
+							//sdCardPath를 imageUrl로 교체.
+							String imageUrl = new JSONObject(resultString).getJSONObject("file").getString("url");
+							selectedImages.remove(INDEX);
+							selectedImages.add(INDEX, imageUrl);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (Error e) {
+							LogUtils.trace(e);
+						}
+						
+						downloadCount--;
+						check(isEdit);
+					}
+				};
+				
+				ImageUploadUtils.uploadImage(CphConstants.UPLOAD_URL, oaui, selectedImages.get(i));
+			}
+		}
+		
+		check(isEdit);
+	}
+	
+	public void check(boolean isEdit) {
+		
+		if(downloadCount == 0) {
+			
+			LogUtils.log("WholesaleForWritePage.check.  url 변환 완료.");
+			
+			for(String url : selectedImages) {
+				LogUtils.log(url);
+			}
+			
+			if(isEdit) {
+				edit();
+			} else {
+				write();
+			}
+		}
 	}
 	
 	public void choiceMode(final int index) {
@@ -1234,19 +1268,81 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 
-				if(which == 0) {
-					uploadImage(ivImages[index], index);
+				if(index == 0) {
+					deleteImage(0);
 				} else {
-					ivImages[index].setImageDrawable(null);
-//					selectedImageUrls[index] = null;
+					
+					if(which == 0) {
+						setImageToMain(index);
+					} else {
+						deleteImage(index);
+					}
 				}
 			}
 		};
 		
-		mActivity.showSelectDialog(null, new String[]{
-				"사진 등록",
-				"사진 삭제"
-		}, ocl);
+		if(index == 0) {
+			mActivity.showSelectDialog(null, new String[]{
+					"이미지 삭제"
+			}, ocl);
+		} else {
+			mActivity.showSelectDialog(null, new String[]{
+					"대표 이미지로 사용",
+					"이미지 삭제"
+			}, ocl);
+		}
+	}
+	
+	public void setImageToMain(int index) {
+		
+		String url = selectedImages.get(index);
+		FrameLayout frame = selectedFrames.get(index);
+		
+		selectedImages.remove(index);
+		selectedFrames.remove(index);
+		
+		imageLinear.removeViewAt(index);
+		imageLinear.addView(frame, 0);
+		imageScroll.smoothScrollTo(0, 0);
+
+		selectedImages.add(0, url);
+		selectedFrames.add(0, frame);
+		
+		frame.getChildAt(1).setVisibility(View.VISIBLE);
+		selectedFrames.get(1).getChildAt(1).setVisibility(View.INVISIBLE);
+		
+		refreshImageFrameIndex();
+	}
+	
+	public void deleteImage(int index) {
+
+		FrameLayout frame = selectedFrames.get(index);
+		
+		selectedImages.remove(index);
+		selectedFrames.remove(index);
+		imageLinear.removeViewAt(index);
+		
+		ViewUnbindHelper.unbindReferences(frame);
+		
+		if(selectedFrames.size() > 0) {
+			selectedFrames.get(0).getChildAt(1).setVisibility(View.VISIBLE);
+		}
+		
+		refreshImageFrameIndex();
+		
+		if(selectedFrames.size() == 0) {
+			tvUploadImage.setVisibility(View.VISIBLE);
+		} else {
+			tvUploadImage.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void refreshImageFrameIndex() {
+		
+		int size = selectedFrames.size();
+		for(int i=0; i<size; i++) {
+			selectedFrames.get(i).getChildAt(1).setTag("" + i);
+		}
 	}
 	
 	public void showPopup() {
@@ -1257,24 +1353,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	public void hidePopup() {
 		
 		relativePopup.setVisibility(View.INVISIBLE);
-	}
-
-	public void upload(int index) {
-		
-		boolean uploading = SharedPrefsUtils.getBooleanFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
-		
-		if(uploading) {
-			ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
-			return;
-		}
-		
-		SharedPrefsUtils.addDataToPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading", true);
-		
-		if(ivImages[index].getDrawable() == null) {
-			uploadImage(ivImages[index], index);
-		} else {
-			choiceMode(index);
-		}
 	}
 	
 	public void clear() {
@@ -1802,6 +1880,108 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		return categoryText;
 	}
 	
+	public void addThumbnailViewWithUrl(int index, String url) {
+		
+		final ImageView ivImage = addThumbnailView(index, url, null);
+		
+		ivImage.setTag(url);
+		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForWritePage.addThumbnailViewWithUrl.onError." + "\nurl : " + url);
+				ivImage.setBackgroundColor(Color.GRAY);
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("WholesaleForWritePage.addThumbnailViewWithUrl.onCompleted." + "\nurl : " + url);
+
+					if(bitmap != null && !bitmap.isRecycled()) {
+						ivImage.setImageBitmap(bitmap);
+						((FrameLayout)ivImage.getParent()).setTag(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public ImageView addThumbnailView(int index, final String url, Bitmap thumbnail) {
+		
+		try {
+			FrameLayout frame = new FrameLayout(mContext);
+			ResizeUtils.viewResize(240, 375, frame, 1, 0, null);
+
+			frame.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					
+					int index = Integer.parseInt(((FrameLayout)view).getChildAt(1).getTag().toString());
+					choiceMode(index);
+				}
+			});
+			
+			//이미지.
+			ImageView ivImage = new ImageView(mContext);
+			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, ivImage, 2, 0, null);
+			ivImage.setScaleType(ScaleType.CENTER_CROP);
+			ivImage.setImageBitmap(thumbnail);
+			frame.addView(ivImage);
+			
+			//대표 사진 프레임.
+			View mainImage = new View(mContext);
+			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, mainImage, 2, 0, null);
+			mainImage.setBackgroundResource(R.drawable.myshop_multiupload_btn_frame);
+			frame.addView(mainImage);
+			
+			frame.getChildAt(1).setTag("" + index);
+			
+			if(index == 0) {
+				mainImage.setVisibility(View.VISIBLE);
+			} else {
+				mainImage.setVisibility(View.INVISIBLE);
+			}
+
+			
+			imageLinear.addView(frame);
+			selectedFrames.add(frame);
+			
+			if(selectedFrames.size() > 3) {
+				mainImage.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						imageScroll.smoothScrollTo(
+								ResizeUtils.getSpecificLength(240) * (selectedImages.size() - 3), 
+								0);
+					}
+				}, 500);
+			}
+			
+			if(selectedFrames.size() == 0) {
+				tvUploadImage.setVisibility(View.VISIBLE);
+			} else {
+				tvUploadImage.setVisibility(View.INVISIBLE);
+			}
+			
+			return ivImage;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
+	}
+	
 ////////////////////Custom classes.
 	
 	public class ChoiceAdapter extends BaseAdapter {
@@ -1930,11 +2110,5 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			this.text = text;
 			this.count = count;
 		}
-	}
-
-	@Override
-	public int getBgResourceId() {
-
-		return R.drawable.myshop_bg;
 	}
 }

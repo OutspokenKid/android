@@ -4,7 +4,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,126 +19,48 @@ import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
-import com.outspoken_kid.model.MultiSelectImageInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-/**
- * 페이지가 날아가는 버그를 수정해야 함.
- * 
- * url, downloadedBitmap을 static으로 관리하면 여러 페이지가 중복해서 나와도 상관 없음.
- * 단, onResume, onPause에서 Bitmap을 해제해줘야 함.
- * 
- * @author HyungGunKim
- *
- */
 public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
-	private static Bitmap selectedBitmap;
-	private static String selectedImageUrl;
+//	private static Bitmap selectedBitmap;
+//	private static String selectedImageUrl;
 	
 	private ImageView ivImage;
 	private ProgressBar progress;
 	private Button btnUpload;
 	private TextView tvProfileDesc;
 	
-	private boolean uploading;
+	private String selectedSdCardPath;
+	private Bitmap selectedBitmap;
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-//		OnAfterUploadImage onAfterUploadImage = new OnAfterUploadImage() {
-//			
-//			@Override
-//			public void onAfterUploadImage(String resultString, Bitmap thumbnail) {
-//				
-//				LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  " +
-//						"\nresultString : " + resultString);
-//
-//				if(!uploading) {
-//					return;
-//				}
-//				
-//				/*
-//				{
-//					"result":1,
-//					"message":"OK",
-//					"file":{
-//						"type":"image",
-//						"path":"\/var\/www\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
-//						"url":"http:\/\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
-//						"original_name":"temp.jpeg",
-//						"image_width":720,
-//						"image_height":960
-//					}
-//				}
-//				*/
-//				try {
-//					JSONObject objJSON = new JSONObject(resultString);
-//
-//					if(objJSON.getInt("result") == 1) {
-//						JSONObject objFile = objJSON.getJSONObject("file");
-//						selectedImageUrl = objFile.getString("url");
-//						downloadProfile();
-//					}
-//				} catch (Exception e) {
-//					LogUtils.trace(e);
-//				} catch (Error e) {
-//					LogUtils.trace(e);
-//				}
-//				
-//				if(thumbnail == null) {
-//					LogUtils.log("###WholesaleForProfileImagepage.onAfterUploadImage.  bitmap is null.");
-//				}
-//			}
-//		};
-		
 		CmonsFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
-			
-			@Override
-			public void onAfterPickImage(MultiSelectImageInfo[] infos) {
 
-				//Add info to selectedInfo.
-				//Get Thumbnail and set bitmap to imageView.
+			@Override
+			public void onAfterPickImage(String[] sdCardPaths,
+					Bitmap[] thumbnails) {
+
+				if(thumbnails != null &&thumbnails.length > 0) {
+					LogUtils.log("###WholesaleForProfileImagePage.onAfterPickImage.  "
+							+ "\nsdCardPath : " + sdCardPaths[0]);
+					selectedSdCardPath = sdCardPaths[0];
+					selectedBitmap = thumbnails[0];
+					ivImage.setImageBitmap(thumbnails[0]);
+				}
 			}
 		};
-	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-
-		titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View arg0) {
-				
-				getActivity().getSupportFragmentManager().popBackStack();
-				clear();
-			}
-		});
-		
-		downloadProfile();
-	}
-	
-	@Override
-	public void onPause() {
-		super.onPause();
-		
-		Drawable d = ivImage.getDrawable();
-        ivImage.setImageDrawable(null);
-        ivImage.setImageBitmap(null);
-
-        if (d != null) {
-            d.setCallback(null);
-        }
 	}
 	
 	@Override
@@ -165,6 +86,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 		titleBar.getBackButton().setVisibility(View.VISIBLE);
 		titleBar.getHomeButton().setVisibility(View.VISIBLE);
+		
+		downloadProfile();
 	}
 
 	@Override
@@ -175,10 +98,44 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				if(selectedImageUrl != null) {
-					uploadImage(selectedImageUrl);
+				//선택된 이미지가 있으면 업로드, 아니면 종료.
+				if(selectedSdCardPath != null) {
+					
+					ToastUtils.showToast(R.string.uploadingImage);
+					
+					OnAfterUploadImage oaui = new OnAfterUploadImage() {
+						
+						@Override
+						public void onAfterUploadImage(String resultString) {
+							
+							/*
+							{
+								"result":1,
+								"message":"OK",
+								"file":{
+									"type":"image",
+									"path":"\/var\/www\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+						이거 쓰면 됨.	"url":"http:\/\/cph.minsangk.com\/images\/20140908\/3199396c502128445ebab645447aba91.jpeg",
+									"original_name":"temp.jpeg",
+									"image_width":720,
+									"image_height":960
+								}
+							}
+							*/
+							
+							try {
+								uploadImage(new JSONObject(resultString).getJSONObject("file").getString("url"));
+							} catch (Exception e) {
+								LogUtils.trace(e);
+								ToastUtils.showToast(R.string.failToChangeProfileImage);
+							} catch (Error e) {
+								LogUtils.trace(e);
+								ToastUtils.showToast(R.string.failToChangeProfileImage);
+							}
+						}
+					};
+					ImageUploadUtils.uploadImage(CphConstants.UPLOAD_URL, oaui, selectedSdCardPath);
 				} else {
-					clear();
 					mActivity.closeTopPage();
 				}
 			}
@@ -188,14 +145,8 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 
 			@Override
 			public void onClick(View view) {
-
-				if(uploading) {
-					ToastUtils.showToast("이미지 업로드중입니다\n잠시만 기다려주세요");
-					return;
-				}
 				
-				uploading = true;
-//				mActivity.showUploadPhotoPopup(onAfterUploadImage, 1);
+				mActivity.showUploadPhotoPopup(1);
 			}
 		});
 	}
@@ -239,15 +190,14 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	}
 
 	@Override
-	public boolean onMenuPressed() {
+	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
-	public boolean onBackPressed() {
-
-		clear();
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -256,17 +206,32 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 		
 		return false;
 	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		clear();
+	}
+	
+	@Override
+	public int getBgResourceId() {
+
+		return R.drawable.shop_bg;
+	}
 	
 //////////////////// Custom methods.
 	
 	public void downloadProfile() {
 		
-		if(selectedImageUrl == null) {
-			selectedImageUrl = Wholesale.profileImage;
+		if(selectedSdCardPath != null 
+				&& selectedBitmap != null 
+				&& !selectedBitmap.isRecycled()) {
+			ivImage.setImageBitmap(selectedBitmap);
+			return;
 		}
 		
 		progress.setVisibility(View.VISIBLE);
-		DownloadUtils.downloadBitmap(selectedImageUrl, new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(Wholesale.profileImage, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -282,14 +247,14 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 				try {
 					LogUtils.log("WholesaleForProfileImagePage.downloadProfile.onCompleted." + 
 							"\nurl : " + url +
-							"\nselectedImageUrl : " + selectedImageUrl +
+							"\nselectedImageUrl : " + Wholesale.profileImage +
 							"\npage : BaseFragment." + fragmentTag);
+					
 					progress.setVisibility(View.INVISIBLE);
-					if(url.equals(selectedImageUrl)) {
+					
+					if(url.equals(Wholesale.profileImage)) {
 						selectedBitmap = bitmap;
 						ivImage.setImageBitmap(selectedBitmap);
-					} else {
-						downloadProfile();
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -339,16 +304,18 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 		});
 	}
 
-	@Override
-	public int getBgResourceId() {
-
-		return R.drawable.shop_bg;
-	}
-	
 	public void clear() {
 		
-		selectedBitmap = null;
-		selectedImageUrl = null;
-		uploading = false;
+		selectedSdCardPath = null;
+		
+		if(selectedBitmap != null) {
+			
+			if(!selectedBitmap.isRecycled()) {
+				selectedBitmap.recycle();
+			}
+			
+			selectedBitmap = null;
+		}
+				
 	}
 }
