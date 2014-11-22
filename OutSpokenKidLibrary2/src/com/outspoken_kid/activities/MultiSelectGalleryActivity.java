@@ -103,8 +103,11 @@ public class MultiSelectGalleryActivity extends Activity {
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				
 				if(maxImageCount == 1) {
-					Intent data = new Intent().putExtra("all_path", 
-							new String[]{imageInfos.get(position).sdcardPath});
+					Intent data = new Intent();
+					Bundle bundle = new Bundle();
+					bundle.putInt("size", 1);
+					bundle.putSerializable("" + 0, imageInfos.get(position));
+					data.putExtra("infos", bundle);
 					setResult(RESULT_OK, data);
 					finish();
 					
@@ -127,9 +130,7 @@ public class MultiSelectGalleryActivity extends Activity {
 
 				ArrayList<MultiSelectImageInfo> selected = adapter.getSelected();
 				Intent data = new Intent();
-				
 				Bundle bundle = new Bundle();
-				
 				int size = selected.size();
 				bundle.putInt("size", size);
 				
