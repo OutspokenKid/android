@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    
+    <View
+        android:id="@+id/signPage_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/login_logo" />
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/signPage_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
+    <Button 
+        android:id="@+id/signPage_btnNext"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="#0f0" />
+
+    <com.outspoken_kid.views.PageNavigatorView
+        android:id="@+id/signPage_navigator" 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true" />
+    
+</RelativeLayout>
