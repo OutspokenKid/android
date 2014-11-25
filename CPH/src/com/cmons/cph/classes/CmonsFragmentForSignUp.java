@@ -16,11 +16,4 @@ public abstract class CmonsFragmentForSignUp extends CmonsFragment {
 			mActivity = (SignUpActivity) getActivity();
 		}
 	}
-	
-	@Override
-	public void onResume() {
-		super.onResume();
-		
-		mActivity.setTitleText(title);
-	}
 }

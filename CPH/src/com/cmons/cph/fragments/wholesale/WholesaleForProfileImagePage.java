@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -13,11 +14,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Wholesale;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -46,7 +47,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		
-		CmonsFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
+		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths,
@@ -146,7 +147,7 @@ public class WholesaleForProfileImagePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 				
-				mActivity.showUploadPhotoPopup(1);
+				mActivity.showUploadPhotoPopup(1, Color.rgb(96, 183, 202));
 			}
 		});
 	}

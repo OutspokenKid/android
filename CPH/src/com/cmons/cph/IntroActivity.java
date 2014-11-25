@@ -126,8 +126,8 @@ public class IntroActivity extends Activity {
 		LogUtils.log("###IntroActivity.checkSession.  Get Cookies from prefs. =====================");
 		
 		try {
-			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
+			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(ShopActivity.getInstance().getCookieName_D1());
+			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(ShopActivity.getInstance().getCookieName_S());
 			
 			if(bcc1 != null) {
 				RequestManager.getCookieStore().addCookie(bcc1);

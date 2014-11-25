@@ -8,11 +8,6 @@ import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class CphApplication extends OutSpokenApplication {
-
-	@Override
-	public void onCreate() {
-		super.onCreate();
-	}
 	
 	public static void initWithActivity(Activity activity) {
 

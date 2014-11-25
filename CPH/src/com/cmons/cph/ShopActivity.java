@@ -64,12 +64,6 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			user = (User) getIntent().getSerializableExtra("user");
 		}
 	}
-
-	@Override
-	public void setTitleText(String title) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void onBackPressed() {
@@ -88,18 +82,6 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 		super.onBackPressed();
 	}
 	
-	@Override
-	public void showLoadingView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hideLoadingView() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 //////////////////// Custom methods.
 	
 	public static ShopActivity getInstance() {
@@ -108,27 +90,6 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	}
 	
 	public void checkSignStatus() {
-		
-//		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from prefs. =====================");
-//		
-//		try {
-//			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-//			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_S);
-//			
-//			if(bcc1 != null) {
-//				RequestManager.getCookieStore().addCookie(bcc1);
-//				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
-//			}
-//			
-//			if(bcc2 != null) {
-//				RequestManager.getCookieStore().addCookie(bcc2);
-//				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
-//			}
-//		} catch (Exception e) {
-//			LogUtils.trace(e);
-//		} catch (Error e) {
-//			LogUtils.trace(e);
-//		}
 		
 		LogUtils.log("###ShopActivity.checkSession.  Get Cookies from cookieStore. =====================");
 		
@@ -328,8 +289,8 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
+					SharedPrefsUtils.clearCookie(getCookieName_D1());
+					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
 					launchSignInActivity();
 				} catch (Exception e) {

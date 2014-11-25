@@ -5,8 +5,8 @@ import android.view.View.OnClickListener;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Category;
+import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;

@@ -56,7 +56,8 @@ public class GCMIntentService extends GCMBaseIntentService {
 		*/
 		try {
 			if(intent != null && intent.getExtras() != null) {
-				BasicClientCookie cookie = SharedPrefsUtils.getCookie(CphConstants.PREFS_COOKIE_CPH_D1);
+				
+				BasicClientCookie cookie = SharedPrefsUtils.getCookie(ShopActivity.getInstance().getCookieName_D1());
 				
 				//로그인이 안되어있는 경우 전체 푸시가 아니면 제한.
 				if(cookie == null) {

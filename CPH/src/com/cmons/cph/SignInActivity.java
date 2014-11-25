@@ -73,17 +73,6 @@ public class SignInActivity extends CmonsFragmentActivity {
 	}
 
 	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
-
-	}
-	
-	@Override
-	public void setTitleText(String title) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void onBackPressed() {
 		
 		if(getFragmentsSize() > 1){
@@ -91,18 +80,6 @@ public class SignInActivity extends CmonsFragmentActivity {
 		} else {
 			super.onBackPressed();
 		}
-	}
-
-	@Override
-	public void showLoadingView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hideLoadingView() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 ///////////////////////// Custom methods.

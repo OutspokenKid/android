@@ -38,12 +38,12 @@ import android.widget.TextView;
 
 import com.cmons.cph.R;
 import com.cmons.cph.ShopActivity.OnAfterSelectCategoryListener;
-import com.cmons.cph.classes.CmonsFragmentActivity;
 import com.cmons.cph.classes.CmonsFragmentForWholesale;
 import com.cmons.cph.classes.CphConstants;
 import com.cmons.cph.models.Category;
 import com.cmons.cph.models.Product;
 import com.cmons.cph.views.TitleBar;
+import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -120,11 +120,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-
-		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
-		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 		
-		CmonsFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
+		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths,
@@ -484,7 +481,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-				mActivity.showUploadPhotoPopup(10 - selectedImages.size());
+				mActivity.showUploadPhotoPopup(10 - selectedImages.size(),
+						Color.rgb(96, 183, 202));
 			}
 		});
 
@@ -1357,9 +1355,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 	public void clear() {
 		
-		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "index");
 //		selectedImageUrls = new String[3];
-		SharedPrefsUtils.removeVariableFromPrefs(CphConstants.PREFS_IMAGE_UPLOAD, "uploading");
 		SoftKeyboardUtils.hideKeyboard(mContext, etDescription);
 	}
 	

@@ -86,12 +86,6 @@ public class WholesaleActivity extends ShopActivity {
 	}
 
 	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getFragmentFrameResId() {
 
 		return R.id.wholesaleActivity_fragmentFrame;

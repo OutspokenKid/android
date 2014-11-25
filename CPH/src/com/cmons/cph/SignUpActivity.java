@@ -97,18 +97,7 @@ public class SignUpActivity extends CmonsFragmentActivity {
 
 		return R.id.signUpActivity_fragmentFrame;
 	}
-	
-	@Override
-	public void onRefreshPage() {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void setTitleText(String title) {
-
-	}
-	
 	@Override
 	public void onBackPressed() {
 		
@@ -120,18 +109,6 @@ public class SignUpActivity extends CmonsFragmentActivity {
 		} else {
 			super.onBackPressed();
 		}
-	}
-
-	@Override
-	public void showLoadingView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void hideLoadingView() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 /////////////////////////// Custom methods.

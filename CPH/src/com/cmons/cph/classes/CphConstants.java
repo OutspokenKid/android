@@ -8,20 +8,13 @@ public class CphConstants {
 	public static String BASE_API_URL = "http://cph-app.co.kr/";
 	public static String UPLOAD_URL = BASE_API_URL + "files/upload/image";
 	
-	public static final String PREFS_COOKIE_CPH_D1 = "cphd1";
-	public static final String PREFS_COOKIE_CPH_S = "cphs";
 	public static final String PREFS_NOTICE = "notice";
 	public static final String PREFS_NOTIFICATION = "notification";
 	public static final String PREFS_DISTURB = "disturb";
 	public static final String PREFS_SHOP = "shop";
-	public static final String PREFS_IMAGE_UPLOAD = "imageupload";
 	public static final String PREFS_BIG_FONT = "bigfont";
 	public static final String PREFS_PRODUCT_UPLOAD = "productupload";
 	public static final String PREFS_GUIDE = "guide";
-	
-	public static final int REQUEST_CAMERA = 1;
-	public static final int REQUEST_ALBUM = 2;
-	public static final int REQUEST_MULTIPICK = 3;
 	
 	public static final int LIST_SIZE_WHOLESALE_NOTICE = 20;
 	

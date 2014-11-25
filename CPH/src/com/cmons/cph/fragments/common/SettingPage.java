@@ -279,8 +279,8 @@ public class SettingPage extends CmonsFragmentForShop {
 					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 					
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_D1);
-					SharedPrefsUtils.clearCookie(CphConstants.PREFS_COOKIE_CPH_S);
+					SharedPrefsUtils.clearCookie(mActivity.getCookieName_D1());
+					SharedPrefsUtils.clearCookie(mActivity.getCookieName_S());
 					
 					mActivity.launchSignInActivity();
 				} catch (Exception e) {

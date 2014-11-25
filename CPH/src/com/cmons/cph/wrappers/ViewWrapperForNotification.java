@@ -8,8 +8,8 @@ import android.widget.AbsListView;
 import android.widget.TextView;
 
 import com.cmons.cph.R;
-import com.cmons.cph.classes.ViewWrapper;
 import com.cmons.cph.models.Notification;
+import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
