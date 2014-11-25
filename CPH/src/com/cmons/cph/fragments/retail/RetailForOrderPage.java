@@ -401,9 +401,11 @@ public class RetailForOrderPage extends CmonsFragmentForRetail {
 									}
 								}
 							}
-						} else {
+						} else if(orderSet.getPayment_type() == 2) {
 							accountString += "사입자대납" +
 									"\n" + orderSet.getPayment_purchaser_info();
+						} else {
+							accountString += "매장 방문시 결제";
 						}
 						
 						tvAccount.setText(accountString);

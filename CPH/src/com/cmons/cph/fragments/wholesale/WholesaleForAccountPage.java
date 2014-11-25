@@ -91,7 +91,7 @@ public class WholesaleForAccountPage extends CmonsFragmentForWholesale {
 
 				final String[] banks = new String[]{
 						"국민", "기업", "농협", "부산", "신한", 
-						"외환", "우리", "제일", "하나", "경남", "광주"
+						"외환", "우리", "제일", "하나", "경남", "광주", "새마을금고"
 				};
 				
 				mActivity.showSelectDialog(null, banks, new DialogInterface.OnClickListener() {

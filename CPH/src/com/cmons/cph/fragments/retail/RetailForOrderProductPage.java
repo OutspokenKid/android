@@ -40,6 +40,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	private static final int PAYMENT_NONE = 0;
 	private static final int PAYMENT_BANK = 1;
 	private static final int PAYMENT_AGENT = 2;
+	private static final int PAYMENT_VISIT = 3;
 	
 	private Product product;
 	private Wholesale wholesale;
@@ -56,9 +57,12 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	private View cbBank;
 	private TextView tvAgent;
 	private View cbAgent;
+	private TextView tvVisit;
+	private View cbVisit;
 	private TextView tvAccount;
 	private EditText etAgentName;
 	private EditText etAgentPhone;
+	private TextView tvVisitSelected;
 	private TextView tvTotalPriceText;
 	private TextView tvTotalPrice;
 	private Button btnOrder;
@@ -71,27 +75,30 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.retailOrderPage_titleBar);
-		ivBg = (ImageView) mThisView.findViewById(R.id.retailOrderPage_ivBg);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.retailOrderProductPage_titleBar);
+		ivBg = (ImageView) mThisView.findViewById(R.id.retailOrderProductPage_ivBg);
 		
-		tvOrderInfo = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvOrderInfo);
-		btnColor = (Button) mThisView.findViewById(R.id.retailOrderPage_btnColor);
-		btnSize = (Button) mThisView.findViewById(R.id.retailOrderPage_btnSize);
-		etCount = (EditText) mThisView.findViewById(R.id.retailOrderPage_etCount);
-		btnAdd = (Button) mThisView.findViewById(R.id.retailOrderPage_btnAdd);
-		tvSelectPayment = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvSelectPayment);
-		innerLinear = (LinearLayout) mThisView.findViewById(R.id.retailOrderPage_innerLinear);
-		tvBank = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvBank);
-		cbBank = mThisView.findViewById(R.id.retailOrderPage_cbBank);
-		tvAgent = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvAgent);
-		cbAgent = mThisView.findViewById(R.id.retailOrderPage_cbAgent);
-		tvAccount = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvAccount);
-		etAgentName = (EditText) mThisView.findViewById(R.id.retailOrderPage_etName);
-		etAgentPhone = (EditText) mThisView.findViewById(R.id.retailOrderPage_etPhone);
-		tvTotalPriceText = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvTotalPriceText);
-		tvTotalPrice = (TextView) mThisView.findViewById(R.id.retailOrderPage_tvTotalPrice);
-		btnOrder = (Button) mThisView.findViewById(R.id.retailOrderPage_btnOrder);
-		btnBasket = (Button) mThisView.findViewById(R.id.retailOrderPage_btnBasket);
+		tvOrderInfo = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvOrderInfo);
+		btnColor = (Button) mThisView.findViewById(R.id.retailOrderProductPage_btnColor);
+		btnSize = (Button) mThisView.findViewById(R.id.retailOrderProductPage_btnSize);
+		etCount = (EditText) mThisView.findViewById(R.id.retailOrderProductPage_etCount);
+		btnAdd = (Button) mThisView.findViewById(R.id.retailOrderProductPage_btnAdd);
+		tvSelectPayment = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvSelectPayment);
+		innerLinear = (LinearLayout) mThisView.findViewById(R.id.retailOrderProductPage_innerLinear);
+		tvBank = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvBank);
+		cbBank = mThisView.findViewById(R.id.retailOrderProductPage_cbBank);
+		tvAgent = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvAgent);
+		cbAgent = mThisView.findViewById(R.id.retailOrderProductPage_cbAgent);
+		tvVisit = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvVisit);
+		cbVisit = mThisView.findViewById(R.id.retailOrderProductPage_cbVisit);
+		tvAccount = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvAccount);
+		etAgentName = (EditText) mThisView.findViewById(R.id.retailOrderProductPage_etName);
+		etAgentPhone = (EditText) mThisView.findViewById(R.id.retailOrderProductPage_etPhone);
+		tvVisitSelected = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvVisitSelected);
+		tvTotalPriceText = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvTotalPriceText);
+		tvTotalPrice = (TextView) mThisView.findViewById(R.id.retailOrderProductPage_tvTotalPrice);
+		btnOrder = (Button) mThisView.findViewById(R.id.retailOrderProductPage_btnOrder);
+		btnBasket = (Button) mThisView.findViewById(R.id.retailOrderProductPage_btnBasket);
 	}
 
 	@Override
@@ -194,7 +201,16 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 			@Override
 			public void onClick(View view) {
 
-				selectAccount();
+				selectBank();
+			}
+		});
+		
+		cbBank.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectBank();
 			}
 		});
 		
@@ -203,18 +219,34 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 			@Override
 			public void onClick(View view) {
 
-				if(type != PAYMENT_AGENT) {
-					type = PAYMENT_AGENT;
-					cbBank.setBackgroundResource(R.drawable.myshop_checkbox_a);
-					cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_b);
-					
-					tvAccount.setVisibility(View.INVISIBLE);
-					tvAccount.setText("");
-					etAgentName.setText("");
-					etAgentPhone.setText("");
-					etAgentName.setVisibility(View.VISIBLE);
-					etAgentPhone.setVisibility(View.VISIBLE);
-				}
+				selectAgent();
+			}
+		});
+		
+		cbAgent.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectAgent();
+			}
+		});
+		
+		tvVisit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectVisit();
+			}
+		});
+		
+		cbVisit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectVisit();
 			}
 		});
 	
@@ -237,15 +269,17 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 					
 				} else if(type == PAYMENT_AGENT){
 					
-					if(etAgentName.getText() == null
-							|| etAgentName.getText().length() == 0) {
-						ToastUtils.showToast(R.string.wrongAgentName);
-						return;
-					} else if(etAgentPhone.getText() == null
-							|| etAgentPhone.getText().length() == 0) {
-						ToastUtils.showToast(R.string.wrongAgentPhone);
-						return;
-					}
+//					if(etAgentName.getText() == null
+//							|| etAgentName.getText().length() == 0) {
+//						ToastUtils.showToast(R.string.wrongAgentName);
+//						return;
+//					} else if(etAgentPhone.getText() == null
+//							|| etAgentPhone.getText().length() == 0) {
+//						ToastUtils.showToast(R.string.wrongAgentPhone);
+//						return;
+//					}
+				} else if(type == PAYMENT_VISIT) {
+					//Check nothing.
 				}
 				
 				order();
@@ -311,27 +345,41 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 		
 		//tvBank.
 		rp = (RelativeLayout.LayoutParams) tvBank.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(260);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		tvBank.setPadding(padding*2, 0, 0, 0);
+		rp.leftMargin = padding;
+		tvBank.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
 		
 		//cbBank.
 		rp = (RelativeLayout.LayoutParams) cbBank.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(44);
 		rp.height = ResizeUtils.getSpecificLength(43);
+		rp.leftMargin = padding / 2;
 		rp.topMargin = ResizeUtils.getSpecificLength(8);
 		rp.rightMargin = padding;
 		
 		//tvAgent.
 		rp = (RelativeLayout.LayoutParams) tvAgent.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(260);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		tvBank.setPadding(padding*2, 0, 0, 0);
+		tvAgent.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
 		
 		//cbAgent.
 		rp = (RelativeLayout.LayoutParams) cbAgent.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(44);
 		rp.height = ResizeUtils.getSpecificLength(43);
+		rp.leftMargin = padding / 2;
+		rp.topMargin = ResizeUtils.getSpecificLength(8);
+		rp.rightMargin = padding;
+		
+		//tvVisit.
+		rp = (RelativeLayout.LayoutParams) tvVisit.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(60);
+		tvVisit.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
+		
+		//cbVisit.
+		rp = (RelativeLayout.LayoutParams) cbVisit.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(44);
+		rp.height = ResizeUtils.getSpecificLength(43);
+		rp.leftMargin = padding / 2;
 		rp.topMargin = ResizeUtils.getSpecificLength(8);
 		rp.rightMargin = padding;
 		
@@ -347,6 +395,10 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 		//etAgentPhone.
 		rp = (RelativeLayout.LayoutParams) etAgentPhone.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(92);
+		
+		//tvVisitSelected.
+		rp = (RelativeLayout.LayoutParams) tvVisitSelected.getLayoutParams();
+		rp.height = editTextHeight;
 		
 		//tvTotalPriceText.
 		rp = (RelativeLayout.LayoutParams) tvTotalPriceText.getLayoutParams();
@@ -379,6 +431,8 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 		FontUtils.setFontSize(etAgentPhone, 30);
 		FontUtils.setFontSize(tvAccount, 34);
 		FontUtils.setFontStyle(tvAccount, FontUtils.BOLD);
+		FontUtils.setFontSize(tvVisitSelected, 34);
+		FontUtils.setFontStyle(tvVisitSelected, FontUtils.BOLD);
 	}
 
 	@Override
@@ -418,7 +472,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 	
 //////////////////// Custom methods.
 
-	public void selectAccount() {
+	public void selectBank() {
 
 		if(wholesale == null
 				|| wholesale.getAccounts() == null
@@ -448,6 +502,7 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				type = PAYMENT_BANK;
 				cbBank.setBackgroundResource(R.drawable.myshop_checkbox_b);
 				cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_a);
+				cbVisit.setBackgroundResource(R.drawable.myshop_checkbox_a);
 
 				tvAccount.setText(strings[which]);
 				tvAccount.setVisibility(View.VISIBLE);
@@ -455,9 +510,45 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				etAgentPhone.setVisibility(View.INVISIBLE);
 				etAgentName.setText("");
 				etAgentPhone.setText("");
-
+				tvVisitSelected.setVisibility(View.INVISIBLE);
 			}
 		});
+	}
+	
+	public void selectAgent() {
+		
+		if(type != PAYMENT_AGENT) {
+			type = PAYMENT_AGENT;
+			cbBank.setBackgroundResource(R.drawable.myshop_checkbox_a);
+			cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_b);
+			cbVisit.setBackgroundResource(R.drawable.myshop_checkbox_a);
+			
+			tvAccount.setVisibility(View.INVISIBLE);
+			tvAccount.setText("");
+			etAgentName.setText("");
+			etAgentPhone.setText("");
+			etAgentName.setVisibility(View.VISIBLE);
+			etAgentPhone.setVisibility(View.VISIBLE);
+			tvVisitSelected.setVisibility(View.INVISIBLE);
+		}
+	}
+	
+	public void selectVisit() {
+
+		if(type != PAYMENT_VISIT) {
+			type = PAYMENT_VISIT;
+			cbBank.setBackgroundResource(R.drawable.myshop_checkbox_a);
+			cbAgent.setBackgroundResource(R.drawable.myshop_checkbox_a);
+			cbVisit.setBackgroundResource(R.drawable.myshop_checkbox_b);
+			
+			tvAccount.setVisibility(View.INVISIBLE);
+			tvAccount.setText("");
+			etAgentName.setText("");
+			etAgentPhone.setText("");
+			etAgentName.setVisibility(View.INVISIBLE);
+			etAgentPhone.setVisibility(View.INVISIBLE);
+			tvVisitSelected.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	public void addOrder() {
@@ -613,8 +704,28 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 				url += "&payment_account_id=" + selectedAccount.getId();
 				
 			} else if(type == PAYMENT_AGENT) {
-				String purchaser_info = (etAgentName.getText().toString() + "/" + 
-						etAgentPhone.getText().toString()).replace(" ", "");
+//				String purchaser_info = etAgentName.getText().toString() + "/" + 
+//						etAgentPhone.getText().toString();
+				
+				String purchaser_info = null;
+				
+				if(!StringUtils.isEmpty(etAgentName)) {
+					purchaser_info = etAgentName.getText().toString();
+				}
+				
+				if(!StringUtils.isEmpty(etAgentPhone)) {
+
+					if(purchaser_info != null) {
+						purchaser_info += "/" + etAgentPhone.getText().toString();
+					} else {
+						purchaser_info = etAgentPhone.getText().toString();
+					}
+				}
+				
+				if(purchaser_info != null) {
+					purchaser_info.replace(" ", "");
+				}
+				
 				url += "&payment_purchaser_info=" + URLEncoder.encode(purchaser_info, "utf-8");
 			}
 			

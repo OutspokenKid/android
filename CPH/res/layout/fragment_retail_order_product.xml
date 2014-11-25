@@ -6,7 +6,7 @@
     <!-- 타이틀바. -->
 
     <com.cmons.cph.views.TitleBar
-        android:id="@+id/retailOrderPage_titleBar"
+        android:id="@+id/retailOrderProductPage_titleBar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentLeft="true"
@@ -15,50 +15,50 @@
     <!-- 배경. -->
 
     <ImageView
-        android:id="@+id/retailOrderPage_ivBg"
+        android:id="@+id/retailOrderProductPage_ivBg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/retailOrderPage_titleBar"
+        android:layout_below="@id/retailOrderProductPage_titleBar"
         android:scaleType="centerCrop" />
 
     <!-- 주문정보 입력 -->
 
     <TextView
-        android:id="@+id/retailOrderPage_tvOrderInfo"
+        android:id="@+id/retailOrderProductPage_tvOrderInfo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/retailOrderPage_titleBar"
+        android:layout_below="@id/retailOrderProductPage_titleBar"
         android:gravity="center_vertical"
         android:textColor="#fff" />
 
     <Button
-        android:id="@+id/retailOrderPage_btnColor"
+        android:id="@+id/retailOrderProductPage_btnColor"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/retailOrderPage_tvOrderInfo"
+        android:layout_below="@id/retailOrderProductPage_tvOrderInfo"
         android:background="@drawable/retail_drop_btn"
         android:gravity="center"
         android:text="@string/color"
         android:textColor="#000" />
 
     <Button
-        android:id="@+id/retailOrderPage_btnSize"
+        android:id="@+id/retailOrderProductPage_btnSize"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/retailOrderPage_btnColor"
-        android:layout_toRightOf="@id/retailOrderPage_btnColor"
+        android:layout_alignTop="@id/retailOrderProductPage_btnColor"
+        android:layout_toRightOf="@id/retailOrderProductPage_btnColor"
         android:background="@drawable/retail_drop2_btn"
         android:gravity="center"
         android:text="@string/size"
         android:textColor="#fff" />
 
     <EditText
-        android:id="@+id/retailOrderPage_etCount"
+        android:id="@+id/retailOrderProductPage_etCount"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/retailOrderPage_btnSize"
-        android:layout_toRightOf="@id/retailOrderPage_btnSize"
+        android:layout_alignTop="@id/retailOrderProductPage_btnSize"
+        android:layout_toRightOf="@id/retailOrderProductPage_btnSize"
         android:background="#b2ffffff"
         android:gravity="center"
         android:hint="@string/amount"
@@ -67,17 +67,17 @@
         android:textColorHint="#555" />
 
     <Button
-        android:id="@+id/retailOrderPage_btnAdd"
+        android:id="@+id/retailOrderProductPage_btnAdd"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/retailOrderPage_etCount"
-        android:layout_toRightOf="@id/retailOrderPage_etCount"
+        android:layout_alignTop="@id/retailOrderProductPage_etCount"
+        android:layout_toRightOf="@id/retailOrderProductPage_etCount"
         android:background="@drawable/retail_add_btn" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/retailOrderPage_btnColor"
+        android:layout_below="@id/retailOrderProductPage_btnColor"
         android:fillViewport="true" >
 
         <RelativeLayout
@@ -87,7 +87,7 @@
 			<!-- 리니어. -->
 
             <LinearLayout
-                android:id="@+id/retailOrderPage_innerLinear"
+                android:id="@+id/retailOrderProductPage_innerLinear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -96,10 +96,10 @@
             <!-- 결제 방식 선택. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvSelectPayment"
+                android:id="@+id/retailOrderProductPage_tvSelectPayment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_innerLinear"
+                android:layout_below="@id/retailOrderProductPage_innerLinear"
                 android:gravity="center_vertical"
                 android:text="@string/selectPayment"
                 android:textColor="#fff" />
@@ -107,10 +107,10 @@
 			<!-- 무통장 입금. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvBank"
-                android:layout_width="0dp"
+                android:id="@+id/retailOrderProductPage_tvBank"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvSelectPayment"
+                android:layout_below="@id/retailOrderProductPage_tvSelectPayment"
                 android:layout_alignParentLeft="true"
                 android:gravity="center_vertical"
                 android:text="@string/payment1"
@@ -119,21 +119,21 @@
             <!-- 무통장 입금 체크박스. -->
 
             <View
-                android:id="@+id/retailOrderPage_cbBank"
+                android:id="@+id/retailOrderProductPage_cbBank"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_alignRight="@id/retailOrderPage_tvBank"
-                android:layout_alignTop="@id/retailOrderPage_tvBank"
+                android:layout_alignTop="@id/retailOrderProductPage_tvBank"
+                android:layout_toRightOf="@id/retailOrderProductPage_tvBank"
                 android:background="@drawable/order_check_box_a" />
 
             <!-- 사입자 대납. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvAgent"
-                android:layout_width="0dp"
+                android:id="@+id/retailOrderProductPage_tvAgent"
+                android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/retailOrderPage_tvBank"
-                android:layout_toRightOf="@id/retailOrderPage_tvBank"
+                android:layout_alignTop="@id/retailOrderProductPage_tvBank"
+                android:layout_toRightOf="@id/retailOrderProductPage_cbBank"
                 android:gravity="center_vertical"
                 android:text="@string/payment2"
                 android:textColor="#fff" />
@@ -141,20 +141,42 @@
             <!-- 사입자 대납 체크박스. -->
 
             <View
-                android:id="@+id/retailOrderPage_cbAgent"
+                android:id="@+id/retailOrderProductPage_cbAgent"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_alignRight="@id/retailOrderPage_tvAgent"
-                android:layout_alignTop="@id/retailOrderPage_tvAgent"
+                android:layout_alignTop="@id/retailOrderProductPage_tvAgent"
+                android:layout_toRightOf="@id/retailOrderProductPage_tvAgent"
+                android:background="@drawable/order_check_box_a" />
+            
+            <!-- 매장 방문시 결제. -->
+
+            <TextView
+                android:id="@+id/retailOrderProductPage_tvVisit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/retailOrderProductPage_tvAgent"
+                android:layout_toRightOf="@id/retailOrderProductPage_cbAgent"
+                android:gravity="center_vertical"
+                android:text="@string/payment3"
+                android:textColor="#fff" />
+
+            <!-- 매장 방문시 결제 체크박스. -->
+
+            <View
+                android:id="@+id/retailOrderProductPage_cbVisit"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignTop="@id/retailOrderProductPage_tvVisit"
+                android:layout_toRightOf="@id/retailOrderProductPage_tvVisit"
                 android:background="@drawable/order_check_box_a" />
             
             <!-- 계좌번호. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvAccount"
+                android:id="@+id/retailOrderProductPage_tvAccount"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvBank"
+                android:layout_below="@id/retailOrderProductPage_tvBank"
                 android:gravity="center"
                 android:textColor="#fff"
                 android:visibility="invisible" />
@@ -162,10 +184,10 @@
             <!-- 사업자 이름. -->
 
             <EditText
-                android:id="@+id/retailOrderPage_etName"
+                android:id="@+id/retailOrderProductPage_etName"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvBank"
+                android:layout_below="@id/retailOrderProductPage_tvBank"
                 android:layout_alignParentLeft="true"
                 android:background="#b2ffffff"
                 android:gravity="center"
@@ -177,11 +199,11 @@
             <!-- 사업자 연락처. -->
 
             <EditText
-                android:id="@+id/retailOrderPage_etPhone"
+                android:id="@+id/retailOrderProductPage_etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_alignTop="@id/retailOrderPage_etName"
-                android:layout_toRightOf="@id/retailOrderPage_etName"
+                android:layout_alignTop="@id/retailOrderProductPage_etName"
+                android:layout_toRightOf="@id/retailOrderProductPage_etName"
                 android:background="#b2a4a4a4"
                 android:gravity="center"
                 android:hint="@string/agentPhone"
@@ -190,13 +212,25 @@
                 android:textColorHint="#555"
                 android:visibility="invisible" />
             
+			<!-- 매장 방문시 결제 선택. -->
+
+            <TextView
+                android:id="@+id/retailOrderProductPage_tvVisitSelected"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_below="@id/retailOrderProductPage_tvBank"
+                android:text="@string/payment3Selected"
+                android:gravity="center"
+                android:textColor="#fff"
+                android:visibility="invisible" />
+            
 			<!-- 총 결제금액 텍스트. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvTotalPriceText"
+                android:id="@+id/retailOrderProductPage_tvTotalPriceText"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvAccount"
+                android:layout_below="@id/retailOrderProductPage_tvAccount"
                 android:gravity="center_vertical"
                 android:text="@string/totalPrice"
                 android:textColor="#fff" />
@@ -204,30 +238,30 @@
             <!-- 총 결제금액. -->
 
             <TextView
-                android:id="@+id/retailOrderPage_tvTotalPrice"
+                android:id="@+id/retailOrderProductPage_tvTotalPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/retailOrderPage_tvTotalPriceText"
+                android:layout_alignTop="@id/retailOrderProductPage_tvTotalPriceText"
                 android:gravity="center_vertical"
                 android:textColor="#f00" />
             
             <!-- 주문버튼. -->
 
             <Button
-                android:id="@+id/retailOrderPage_btnOrder"
+                android:id="@+id/retailOrderProductPage_btnOrder"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvTotalPriceText"
+                android:layout_below="@id/retailOrderProductPage_tvTotalPriceText"
                 android:background="@drawable/retail_order2_btn" />
 
             <!-- 장바구니에 담기 버튼. -->
 
             <Button
-                android:id="@+id/retailOrderPage_btnBasket"
+                android:id="@+id/retailOrderProductPage_btnBasket"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_below="@id/retailOrderPage_tvTotalPriceText"
+                android:layout_below="@id/retailOrderProductPage_tvTotalPriceText"
                 android:background="@drawable/retail_basket3_btn" />
 
         </RelativeLayout>

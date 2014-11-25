@@ -494,7 +494,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvName2.
 		rp = (RelativeLayout.LayoutParams) tvName2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvName2, 24);
+		FontUtils.setFontSize(tvName2, 28);
 		tvName2.setPadding(padding, 0, padding, 0);
 		
 		//tvPrice.
@@ -506,7 +506,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvPrice2.
 		rp = (RelativeLayout.LayoutParams) tvPrice2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvPrice2, 24);
+		FontUtils.setFontSize(tvPrice2, 28);
 		tvPrice2.setPadding(padding, 0, padding, 0);
 		
 		//tvCategory.
@@ -518,7 +518,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvCategory2.
 		rp = (RelativeLayout.LayoutParams) tvCategory2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvCategory2, 24);
+		FontUtils.setFontSize(tvCategory2, 28);
 		
 		//tvColor.
 		rp = (RelativeLayout.LayoutParams) tvColor.getLayoutParams();
@@ -529,7 +529,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvColor2.
 		rp = (RelativeLayout.LayoutParams) tvColor2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvColor2, 24);
+		FontUtils.setFontSize(tvColor2, 28);
 		
 		//tvSize.
 		rp = (RelativeLayout.LayoutParams) tvSize.getLayoutParams();
@@ -540,7 +540,7 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvSize2.
 		rp = (RelativeLayout.LayoutParams) tvSize2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvSize2, 24);
+		FontUtils.setFontSize(tvSize2, 28);
 		
 		//tvMixtureRate.
 		rp = (RelativeLayout.LayoutParams) tvMixtureRate.getLayoutParams();
@@ -551,18 +551,20 @@ public class ProductPage extends CmonsFragmentForShop {
 		//tvMixtureRate2.
 		rp = (RelativeLayout.LayoutParams) tvMixtureRate2.getLayoutParams();
 		rp.height = editTextHeight;
-		FontUtils.setFontSize(tvMixtureRate2, 24);
+		FontUtils.setFontSize(tvMixtureRate2, 28);
 		tvMixtureRate2.setPadding(padding, 0, padding, 0);
 		
 		//tvDescription.
 		rp = (RelativeLayout.LayoutParams) tvDescription.getLayoutParams();
+		rp.height = titleTextHeight;
 		rp.height = titleTextHeight;
 		FontUtils.setFontSize(tvDescription, 30);
 		tvDescription.setPadding(padding, 0, 0, padding);
 		
 		//tvDescription2.
 		rp = (RelativeLayout.LayoutParams) tvDescription2.getLayoutParams();
-		FontUtils.setFontSize(tvDescription2, 24);
+		tvDescription2.setMinHeight(titleTextHeight * 2);
+		FontUtils.setFontSize(tvDescription2, 28);
 		tvDescription2.setPadding(padding, padding, padding, padding);
 		
 		//tvPullUp.

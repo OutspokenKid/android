@@ -197,6 +197,8 @@
     
     <string name="payment1">무통장 입금</string>
     <string name="payment2">사입자 대납</string>
+    <string name="payment3">매장 방문시 결제</string>
+    <string name="payment3Selected">매장 방문시 결제를 선택하셨습니다</string>
     <string name="phoneNumber">휴대폰 번호</string>
     <string name="phoneNumberForWholesale">매장 전화번호</string>
     <string name="phoneNumberForRetail">사업장 전화번호</string>

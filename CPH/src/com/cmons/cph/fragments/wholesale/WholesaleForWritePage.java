@@ -1452,6 +1452,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			break;
 			
 		case MODE_SIZE:
+			sizeItems.add(new Item("FREE"));
 			sizeItems.add(new Item("XS"));
 			sizeItems.add(new Item("S"));
 			sizeItems.add(new Item("M"));
