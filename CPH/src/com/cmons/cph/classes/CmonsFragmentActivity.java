@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -176,6 +177,7 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 				if(which == 0) {
 					intent = new Intent(CmonsFragmentActivity.this, MultiSelectGalleryActivity.class);
 					intent.putExtra("maxImageCount", maxImageCount);
+					intent.putExtra("titleBgColor", Color.rgb(96, 183, 202));
 					requestCode = CphConstants.REQUEST_ALBUM;
 					
 				//카메라.
