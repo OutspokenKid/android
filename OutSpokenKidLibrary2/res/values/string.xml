@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string name="canceled">Canceled</string>
 	<string name="confirm">Confirm</string>
 	
 	<string name="imageSelectLimit1">Can not select over&#160;</string>

@@ -1,28 +1,59 @@
 package com.outspoken_kid.activities;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.cookie.Cookie;
+
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.outspoken_kid.R;
+import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.classes.BaseFragment;
+import com.outspoken_kid.classes.OutSpokenConstants;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.interfaces.OutspokenActivityInterface;
+import com.outspoken_kid.model.MultiSelectImageInfo;
+import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class BaseFragmentActivity extends FragmentActivity 
 		implements OutspokenActivityInterface {
 
+	//For uploadImage.
+	public static OnAfterPickImageListener onAfterPickImageListener;
+	
 	protected Context context;
 	
 	public abstract int getFragmentFrameResId();
 	public abstract void setCustomAnimations(FragmentTransaction ft);
+	public abstract String getCookieName_D1();
+	public abstract String getCookieName_S();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +102,112 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 	protected void onDestroy() {
 		super.onDestroy();
 		LogUtils.log("###BaseFragmentActivity.onDestroy.  ");
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		LogUtils.log("###############################BaseFragmentActivity.onActivityResult.  " +
+				"\nresultCode : " + resultCode +
+				"\nrequestCode : " + requestCode +
+				"\ndata : " + data);
+		
+		switch(requestCode) {
+		
+		case OutSpokenConstants.REQUEST_CAMERA:
+			
+			SharedPrefsUtils.removeVariableFromPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "uploading");
+			if(resultCode == RESULT_OK) {
+
+				String[] sdCardPaths = null;
+				int[] inSampleSizes = null;
+				
+				try {
+					File file = null;
+					LogUtils.log("###BaseFragmentActivity.onActivityResult.  ");
+					
+					String filePath = SharedPrefsUtils.getStringFromPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "filePath");
+					String fileName = SharedPrefsUtils.getStringFromPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "fileName");
+					
+					file = new File(filePath, fileName);
+					sdCardPaths = new String[]{file.getPath()};
+					LogUtils.log("###BaseFragmentActivity.onActivityResult.  sdCardPath : " + sdCardPaths[0]);
+
+					int inSampleSize = 1;
+					
+					if(ResizeUtils.getScreenWidth() >= 720) {
+						inSampleSize = BitmapUtils.getBitmapInSampleSize(file, 720);
+					} else {
+						inSampleSize = BitmapUtils.getBitmapInSampleSize(file, 640);
+					}
+					
+					inSampleSizes = new int[]{inSampleSize};
+					
+					if(onAfterPickImageListener != null) {
+						(new AsyncGetThumbnailAndReturnTask(sdCardPaths, inSampleSizes)).execute();
+						return;
+					}
+				} catch (OutOfMemoryError oom) {
+					oom.printStackTrace();
+					ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
+				} catch (Error e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadBitmap);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadBitmap);
+				}
+			} else {
+				ToastUtils.showToast(R.string.canceled);
+			}
+			break;
+			
+		case OutSpokenConstants.REQUEST_ALBUM:
+			
+			if(resultCode == RESULT_OK) {
+				
+				try {
+					Bundle bundle = data.getBundleExtra("infos");
+					
+					if(bundle == null) {
+						break;
+					}
+
+					ArrayList<MultiSelectImageInfo> infos = new ArrayList<MultiSelectImageInfo>();
+					int size = bundle.getInt("size");
+					LogUtils.log("###BaseFragmentActivity.onActivityResult.  "
+							+ "size : " + size);
+					
+					for(int i=0; i<size; i++) {
+						infos.add((MultiSelectImageInfo)bundle.getSerializable("" + i));
+						LogUtils.log(i + " : " + infos.get(i).sdcardPath);
+					}
+					
+					if(onAfterPickImageListener != null) {
+						(new AsyncGetThumbnailAndReturnTask(infos)).execute();
+						return;
+					}
+				} catch (OutOfMemoryError oom) {
+					oom.printStackTrace();
+					ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
+				} catch (Error e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadBitmap);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToLoadBitmap);
+				}
+			} else {
+				ToastUtils.showToast(R.string.canceled);
+			}
+
+			break;
+		}
+		
+		if(onAfterPickImageListener != null) {
+			onAfterPickImageListener.onAfterPickImage(null, null);
+		}
 	}
 	
 	@Override
@@ -154,6 +291,143 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		}
 	}
 
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
+	public void showSelectDialog(String title, String[] strings, 
+			DialogInterface.OnClickListener onClickListener) {
+		
+		android.app.AlertDialog.Builder builder = null;
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+		} else {
+			builder = new AlertDialog.Builder(this);
+		}
+		
+		builder.setTitle(title); 
+		builder.setItems(strings, onClickListener);
+		AlertDialog alert = builder.create(); 
+		alert.show(); 
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void showSelectDialog(String title, String[] strings, 
+			DialogInterface.OnClickListener onPositiveClickListener,
+			DialogInterface.OnCancelListener onCancelListener) {
+		
+		android.app.AlertDialog.Builder builder = null;
+		
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+		} else {
+			builder = new AlertDialog.Builder(this);
+		}
+		
+		builder.setTitle(title); 
+		builder.setItems(strings, onPositiveClickListener);
+		builder.setOnCancelListener(onCancelListener);
+		AlertDialog alert = builder.create(); 
+		alert.show(); 
+	}
+	
+	public void showUploadPhotoPopup(OnAfterUploadImage onAfterUploadImage, final int maxImageCount) {
+		
+		showSelectDialog("사진 업로드", 
+				new String[]{"앨범", "카메라"}, 
+				new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = null;
+				int requestCode = 0;
+				
+				//앨범.
+				if(which == 0) {
+					intent = new Intent(BaseFragmentActivity.this, MultiSelectGalleryActivity.class);
+					intent.putExtra("maxImageCount", maxImageCount);
+					requestCode = OutSpokenConstants.REQUEST_ALBUM;
+					
+				//카메라.
+				} else if(which == 1) {
+					intent = new Intent();
+					intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+				    File fileDerectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+				    String fileName = System.currentTimeMillis() + ".jpg";
+				    String filePath = fileDerectory.getPath();
+				    File file = new File(fileDerectory, fileName);
+				    
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "fileName", fileName);
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "filePath", filePath);
+				    
+				    if(!fileDerectory.exists()) {
+				    	fileDerectory.mkdirs();
+				    }
+				    
+				    Uri uri = Uri.fromFile(file);
+				    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+				    requestCode = OutSpokenConstants.REQUEST_CAMERA;
+				}
+				
+				if(intent != null) {
+					startActivityForResult(intent, requestCode);
+				}
+			}
+		});
+	}
+
+	public void showUploadPhotoPopup(final int maxImageCount, final int color) {
+		
+		showSelectDialog("사진 업로드", 
+				new String[]{"앨범", "카메라"}, 
+				new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = null;
+				int requestCode = 0;
+				
+				//앨범.
+				if(which == 0) {
+					intent = new Intent(BaseFragmentActivity.this, MultiSelectGalleryActivity.class);
+					intent.putExtra("maxImageCount", maxImageCount);
+					intent.putExtra("titleBgColor", Color.BLACK);
+					
+					requestCode = OutSpokenConstants.REQUEST_ALBUM;
+					
+				//카메라.
+				} else if(which == 1) {
+					intent = new Intent();
+					intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+				    File fileDerectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+				    String fileName = System.currentTimeMillis() + ".jpg";
+				    String filePath = fileDerectory.getPath();
+				    File file = new File(fileDerectory, fileName);
+				    
+				    LogUtils.log("###CmonsFramentActivity.onClick.  Set fileName, filePath." +
+				    		"\nfileName : " + fileName+
+				    		"\nfilePath : " + filePath);
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "fileName", fileName);
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "filePath", filePath);
+				    
+				    if(!fileDerectory.exists()) {
+				    	fileDerectory.mkdirs();
+				    }
+				    
+				    Uri uri = Uri.fromFile(file);
+				    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+				    requestCode = OutSpokenConstants.REQUEST_CAMERA;
+				}
+				
+				if(intent != null) {
+					startActivityForResult(intent, requestCode);
+				}
+			}
+		});
+	}
+	
 	public int getFragmentsSize() {
 		
 		try {
@@ -392,4 +666,115 @@ public abstract class BaseFragmentActivity extends FragmentActivity
         LogUtils.log("###BaseFragmentActivity.onConfigurationChanged.  " +
         		"newConfig : " + newConfig.toString());
     }
+
+	public void saveCookies() {
+		
+		LogUtils.log("###BaseFragmentActivity.saveCookies =====================");
+		List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
+		
+		int size = cookies.size();
+		for(int i=0; i<size; i++) {
+
+			String prefsName = null;
+			
+			if("CPH_D1".equals(cookies.get(i).getName())) {
+				prefsName = getCookieName_D1();
+			} else if("CPH_S".equals(cookies.get(i).getName())) {
+				prefsName = getCookieName_S();
+			} else {
+				continue;
+			}
+			
+			SharedPrefsUtils.saveCookie(prefsName, cookies.get(i));
+			LogUtils.log("		key : " + cookies.get(i).getName());
+		}
+	}
+	
+////////////////////////////Interfaces.
+	
+	public class AsyncGetThumbnailAndReturnTask extends
+			AsyncTask<Void, Void, Void> {
+
+		private String[] sdCardPaths;
+		int[] inSampleSizes;
+
+		private ArrayList<MultiSelectImageInfo> infos;
+		private Bitmap[] thumbnails;
+
+		public AsyncGetThumbnailAndReturnTask(String[] sdCardPaths,
+				int[] inSampleSizes) {
+
+			this.sdCardPaths = sdCardPaths;
+			this.inSampleSizes = inSampleSizes;
+		}
+
+		public AsyncGetThumbnailAndReturnTask(
+				ArrayList<MultiSelectImageInfo> infos) {
+
+			this.infos = infos;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			// 카메라로부터.
+			if (sdCardPaths != null) {
+				int size = sdCardPaths.length;
+				thumbnails = new Bitmap[sdCardPaths.length];
+
+				for (int i = 0; i < size; i++) {
+					// 썸네일은 샘플링 사이즈보다 2배 작게.
+					thumbnails[i] = BitmapUtils.getBitmapFromSdCardPath(
+							sdCardPaths[i], inSampleSizes[i] * 2);
+				}
+
+				// 앨범으로부터.
+			} else {
+				int size = infos.size();
+				thumbnails = new Bitmap[size];
+
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.doInBackground.  size : "
+						+ size);
+
+				for (int i = 0; i < size; i++) {
+					thumbnails[i] = MediaStore.Images.Thumbnails.getThumbnail(
+							context.getContentResolver(), infos.get(i).id,
+							MediaStore.Images.Thumbnails.MINI_KIND, null);
+				}
+			}
+
+			return null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+
+			if (onAfterPickImageListener != null) {
+
+				// 카메라로부터.
+				if (sdCardPaths != null) {
+					onAfterPickImageListener.onAfterPickImage(sdCardPaths,
+							thumbnails);
+
+					// 앨범으로부터.
+				} else {
+					int size = infos.size();
+					sdCardPaths = new String[size];
+
+					for (int i = 0; i < size; i++) {
+						sdCardPaths[i] = infos.get(i).sdcardPath;
+					}
+
+					onAfterPickImageListener.onAfterPickImage(sdCardPaths,
+							thumbnails);
+				}
+
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.onPostExecute.  "
+						+ "\npath[0] : " + sdCardPaths[0]);
+			} else {
+				LogUtils.log("###AsyncGetThumbnailAndReturnTask.onPostExecute.  "
+						+ "\nListener is null.");
+			}
+		}
+	}
 }
