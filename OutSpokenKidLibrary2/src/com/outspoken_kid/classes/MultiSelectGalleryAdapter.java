@@ -137,7 +137,7 @@ public class MultiSelectGalleryAdapter extends BaseAdapter {
 			frame.addView(imageView);
 			
 			View check = new View(context);
-			ResizeUtils.viewResize(78, 51, check, 2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 20, 20});
+			ResizeUtils.viewResize(52, 52, check, 2, Gravity.RIGHT|Gravity.BOTTOM, new int[]{0, 0, 10, 10});
 			check.setBackgroundResource(R.drawable.check);
 			check.setVisibility(View.INVISIBLE);
 			frame.addView(check);

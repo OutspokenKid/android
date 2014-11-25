@@ -38,7 +38,7 @@ public class MultiSelectGalleryActivity extends Activity {
 	
 	protected MultiSelectGalleryAdapter adapter;
 	protected int selectedImageCount;
-	protected int maxImageCount;
+	protected int maxImageCount = 1;
 	protected int titleBgColor;
 	protected int textColor;
 	
@@ -46,22 +46,11 @@ public class MultiSelectGalleryActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_multiselectgallery);
-		
-		if(getIntent() == null) {
-			finish();
-		}
 
 		bindViews();
 		setVariables();
 		setSizes();
 		setListeners();
-	}
-	
-	public void setVariables() {
-		
-		maxImageCount = getIntent().getIntExtra("maxImageCount", 1);
-		titleBgColor = getIntent().getIntExtra("titleBgColor", Color.rgb(255, 63, 128));
-		textColor = getIntent().getIntExtra("textColor", Color.WHITE);
 	}
 	
 	public void bindViews() {
@@ -71,6 +60,19 @@ public class MultiSelectGalleryActivity extends Activity {
 		gridView = (GridView) findViewById(R.id.multiSelectGalleryActivity_gridView);
 		tvNoMedia = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvNoMedia);
 		tvProgressView = (TextView) findViewById(R.id.multiSelectGalleryActivity_tvProgressView);
+	}
+	
+	public void setVariables() {
+		
+		if(getIntent() != null) {
+			maxImageCount = getIntent().getIntExtra("maxImageCount", 1);
+			
+			titleBgColor = getIntent().getIntExtra("titleBgColor", Color.rgb(255, 63, 128));
+			tvTitle.setBackgroundColor(titleBgColor);
+			
+			textColor = getIntent().getIntExtra("textColor", Color.WHITE);
+			tvTitle.setTextColor(textColor);
+		}
 	}
 	
 	public void setSizes() {
@@ -235,8 +237,6 @@ public class MultiSelectGalleryActivity extends Activity {
 		super.finish();
 		adapter.clear();
 	}
-
-////////////////////////////Interfaces.
 
 //////////////////// Interfaces.
 	
