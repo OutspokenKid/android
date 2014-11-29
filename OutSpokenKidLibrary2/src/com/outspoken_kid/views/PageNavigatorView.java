@@ -43,8 +43,8 @@ public class PageNavigatorView extends View {
 		paintOn.setAntiAlias(true);
 		
 		paintOff = new Paint();
-		paintOff.setColor(Color.DKGRAY);
 		paintOff.setAntiAlias(true);
+		paintOff.setColor(Color.DKGRAY);
 		
 		r = ResizeUtils.getSpecificLength(6);
 		p = ResizeUtils.getSpecificLength(12);
@@ -94,6 +94,15 @@ public class PageNavigatorView extends View {
 		this.invalidate();
 	}
 	
+	public void setEmptyOffCircle() {
+		
+		paintOff = new Paint();
+		paintOff.setColor(Color.WHITE);
+		paintOff.setAntiAlias(true);
+		paintOff.setStrokeWidth(2); // 선 굵기
+		paintOff.setStyle(Paint.Style.STROKE);
+	}
+	
 	public void setColor(int selectedColor, int unselectedColor) {
 
 		paintOn = new Paint();
@@ -101,8 +110,8 @@ public class PageNavigatorView extends View {
 		paintOn.setAntiAlias(true);
 		
 		paintOff = new Paint();
-		paintOff.setColor(unselectedColor);
 		paintOff.setAntiAlias(true);
+		paintOff.setColor(unselectedColor);
 	}
 	
 	@Override

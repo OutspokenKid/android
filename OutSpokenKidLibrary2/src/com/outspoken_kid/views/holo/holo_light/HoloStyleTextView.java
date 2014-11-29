@@ -1,7 +1,5 @@
 package com.outspoken_kid.views.holo.holo_light;
 
-import com.outspoken_kid.utils.ResizeUtils;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,6 +8,9 @@ import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
 
 public class HoloStyleTextView extends FrameLayout {
 
@@ -54,12 +55,10 @@ public class HoloStyleTextView extends FrameLayout {
 			padding = 8;
 		}
 		
-		setBackgroundColor(HoloConstants.COLOR_HOLO_BG);
-		
 		textView = new TextView(getContext());
 		textView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textView.setBackgroundColor(Color.TRANSPARENT);
-		textView.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
+		textView.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		textView.setHintTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		this.addView(textView);
 	}

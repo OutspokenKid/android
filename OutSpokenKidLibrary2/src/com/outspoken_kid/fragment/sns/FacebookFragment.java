@@ -27,6 +27,7 @@ public abstract class FacebookFragment extends SNSFragment {
 	private UiLifecycleHelper uiHelper;
 	private FBUserInfo fbUserInfo;
 	private boolean loggedIn;
+	private boolean wasClicked;
 	
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 	  
@@ -53,12 +54,16 @@ public abstract class FacebookFragment extends SNSFragment {
 			@Override
 			public void onClick(View view) {
 
+				LogUtils.log("###FacebookFragment.onClick.  isLoggedIn : " + isLoggedIn());
+				
 				if(isLoggedIn()) {
+					
 					if(onAfterSignInListener != null) {
 						onAfterSignInListener.OnAfterSignIn(fbUserInfo);
 					}
 					
 				} else {
+					wasClicked = true;
 					loginButton.performClick();
 				}
 			}
@@ -119,16 +124,16 @@ public abstract class FacebookFragment extends SNSFragment {
 08-25 13:00:14.958: I/notice(3711): data : Intent { (has extras) }
 		*/
 
+		uiHelper.onActivityResult(requestCode, resultCode, data);
+		
 		//로그인 성공.
 		if(resultCode == Activity.RESULT_OK
 				&& requestCode == 64206) {
 			
-			if(onAfterSignInListener != null) {
-				onAfterSignInListener.OnAfterSignIn(fbUserInfo);
-			}
+//			if(onAfterSignInListener != null) {
+//				onAfterSignInListener.OnAfterSignIn(fbUserInfo);
+//			}
 		}
-		
-		uiHelper.onActivityResult(requestCode, resultCode, data);
 	}
 	
 	@Override
@@ -178,6 +183,8 @@ public abstract class FacebookFragment extends SNSFragment {
 			Exception exception) {
 		
 		if (state.isOpened()) {
+			LogUtils.log("###FacebookFragment.onSessionStateChange.  세션 열린 상태.");
+			
 			loggedIn = true;
 			Request request =  Request.newMeRequest(session, new GraphUserCallback() {       
 
@@ -187,6 +194,15 @@ public abstract class FacebookFragment extends SNSFragment {
 					if(user != null) {
 						fbUserInfo = new FBUserInfo(user);
 						loggedIn = true;
+						
+						if(wasClicked) {
+							wasClicked = false;
+							
+							if(onAfterSignInListener != null) {
+								onAfterSignInListener.OnAfterSignIn(fbUserInfo);
+							}
+						}
+						
 					} else {
 						loggedIn = false;
 					}
@@ -194,7 +210,10 @@ public abstract class FacebookFragment extends SNSFragment {
             });
 			Request.executeBatchAsync(request);
 		} else if (state.isClosed()) {
+			LogUtils.log("###FacebookFragment.onSessionStateChange.  세션 닫힌 상태.");
 			loggedIn = false;
+		} else {
+			LogUtils.log("###FacebookFragment.onSessionStateChange.  모르는 상태.");
 		}
 	}
 
@@ -226,6 +245,10 @@ public abstract class FacebookFragment extends SNSFragment {
 			birthDay = user.getBirthday();
 			linkUrl = user.getLink();
 
+			if(userName == null) {
+				userName = firstName + lastName;
+			}
+			
 			//email.
 			email = user.getProperty("email").toString();
 			

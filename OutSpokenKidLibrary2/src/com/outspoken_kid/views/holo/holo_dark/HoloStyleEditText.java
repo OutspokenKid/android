@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
 
 public class HoloStyleEditText extends FrameLayout {
 

@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.outspoken_kid.views.holo.HoloConstants;
+
 public class HoloStyleTextView extends FrameLayout {
 
 	private TextView textView;

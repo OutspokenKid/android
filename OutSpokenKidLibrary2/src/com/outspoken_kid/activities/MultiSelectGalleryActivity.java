@@ -83,7 +83,7 @@ public class MultiSelectGalleryActivity extends Activity {
 		rp.height = ResizeUtils.getSpecificLength(96);
 
 		rp = (RelativeLayout.LayoutParams) tvSelectComplete.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(100);
+		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(16);

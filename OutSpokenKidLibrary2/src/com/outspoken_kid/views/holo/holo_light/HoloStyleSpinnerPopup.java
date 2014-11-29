@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
 
 /**
  * HoloStyleSpinnerPopup.

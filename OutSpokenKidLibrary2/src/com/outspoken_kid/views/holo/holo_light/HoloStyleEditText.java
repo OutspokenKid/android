@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
 
 public class HoloStyleEditText extends FrameLayout {
 
@@ -61,12 +62,12 @@ public class HoloStyleEditText extends FrameLayout {
 			padding = 8;
 		}
 		
-		setBackgroundColor(HoloConstants.COLOR_HOLO_BG);
+		setBackgroundColor(Color.TRANSPARENT);
 		
 		editText = new EditText(getContext());
 		editText.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		editText.setBackgroundColor(Color.TRANSPARENT);
-		editText.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
+		editText.setTextColor(HoloConstants.COLOR_HOLO_TEXT);
 		editText.setHintTextColor(HoloConstants.COLOR_HOLO_TEXT_HINT);
 		editText.setSingleLine();
 		editText.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -104,6 +105,7 @@ public class HoloStyleEditText extends FrameLayout {
 	protected void onDraw(Canvas canvas) {
 		
 		if(paint == null) {
+			
 			paint = new Paint();
 			paint.setColor(HoloConstants.COLOR_HOLO_TARGET_ON);
 		}

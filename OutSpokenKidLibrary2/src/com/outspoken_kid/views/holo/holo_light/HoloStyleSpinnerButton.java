@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
 import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
 import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
 
@@ -71,7 +72,6 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 			padding = 8;
 		}
 
-		setBackgroundColor(HoloConstants.COLOR_HOLO_BG);
 		setOnClickListener(new OnClickListener() {
 			
 			@Override

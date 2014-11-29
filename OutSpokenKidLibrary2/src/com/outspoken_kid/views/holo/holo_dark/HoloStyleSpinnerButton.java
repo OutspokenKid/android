@@ -1,9 +1,5 @@
 package com.outspoken_kid.views.holo.holo_dark;
 
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
-import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +13,11 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.views.holo.HoloConstants;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonBgPressed;
+import com.outspoken_kid.views.holo.meterials.ViewForButtonCover;
 
 public class HoloStyleSpinnerButton extends FrameLayout {
 

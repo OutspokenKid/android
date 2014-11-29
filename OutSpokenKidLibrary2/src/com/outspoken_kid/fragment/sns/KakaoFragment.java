@@ -25,6 +25,8 @@ public abstract class KakaoFragment extends SNSFragment {
 	private boolean loggedIn;
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     
+    private boolean wasClicked;
+    
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
@@ -36,12 +38,22 @@ public abstract class KakaoFragment extends SNSFragment {
 			@Override
 			public void onClick(View view) {
 
+				LogUtils.log("###KakaoFragment.onClick.  isLoggedIn : " + isLoggedIn());
+				
 				if(isLoggedIn()) {
-					if(onAfterSignInListener != null) {
-						onAfterSignInListener.OnAfterSignIn(kakaoUserInfo);
+					
+					if(kakaoUserInfo != null) {
+						
+						if(onAfterSignInListener != null) {
+							onAfterSignInListener.OnAfterSignIn(kakaoUserInfo);
+						}
+					} else {
+						wasClicked = true;
+						requestMe();
 					}
 					
 				} else {
+					wasClicked = true;
 					loginButton.performClick();
 				}
 			}
@@ -58,7 +70,10 @@ public abstract class KakaoFragment extends SNSFragment {
     		 
          } else if (Session.getCurrentSession().isOpened()){
              // 2. 세션이 오픈된된 상태이면, 다음 activity로 이동한다.
+        	 LogUtils.log("###KakaoFragment.onResume.  세션 열린 상태.");
         	 onSessionOpened();
+         } else {
+        	 LogUtils.log("###KakaoFragment.onResume.  모르는 상태.");
          }
     }
     
@@ -96,11 +111,21 @@ public abstract class KakaoFragment extends SNSFragment {
 
 	private void requestMe() {
 
+		LogUtils.log("###KakaoFragment.requestMe.  ");
+		
 		UserManagement.requestMe(new MeResponseCallback() {
 	        @Override
 	        protected void onSuccess(final UserProfile userProfile) {
-
+	        	
 	        	kakaoUserInfo = new KakaoUserInfo(userProfile);
+	        	
+	        	if(wasClicked) {
+	        		wasClicked = false;
+	        		
+	        		if(onAfterSignInListener != null) {
+						onAfterSignInListener.OnAfterSignIn(kakaoUserInfo);
+					}
+	        	}
 	        }
 
 	        @Override
@@ -119,6 +144,8 @@ public abstract class KakaoFragment extends SNSFragment {
 	
     protected void onSessionOpened(){
     	
+    	LogUtils.log("###KakaoFragment.onSessionOpened.  ");
+    	
     	loggedIn = true;
     	requestMe();
     }
@@ -131,10 +158,6 @@ public abstract class KakaoFragment extends SNSFragment {
             // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈후 보일 페이지로 이동
             
         	KakaoFragment.this.onSessionOpened();
-        	
-        	if(onAfterSignInListener != null) {
-				onAfterSignInListener.OnAfterSignIn(kakaoUserInfo);
-			}
         }
 
         @Override
@@ -153,8 +176,8 @@ public abstract class KakaoFragment extends SNSFragment {
     	
     	public KakaoUserInfo(UserProfile userProfile) {
 
-    		userProfile.getId();
-    		nickname=  userProfile.getNickname();
+    		id = userProfile.getId();
+    		nickname =  userProfile.getNickname();
     		profile_image = userProfile.getProfileImagePath();
     		thumbnail_image = userProfile.getThumbnailImagePath();
     	}

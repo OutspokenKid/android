@@ -1,12 +1,12 @@
 package com.outspoken_kid.views.holo.meterials;
 
-import com.outspoken_kid.views.holo.holo_dark.HoloConstants;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.view.View;
+
+import com.outspoken_kid.views.holo.HoloConstants;
 
 public class ViewForButtonCover extends View {
 	

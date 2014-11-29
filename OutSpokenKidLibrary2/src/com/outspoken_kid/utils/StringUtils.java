@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.net.URLEncoder;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -588,5 +589,47 @@ public class StringUtils {
 	        e.printStackTrace();
 	    }
 	    return null;
+	}
+
+	public static boolean isValidEmail(CharSequence target) {
+		
+		try {
+			return !isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			return false;
+		}
+	}
+	
+	public static boolean isValidEmail(EditText editText) {
+		
+		try {
+			return isValidEmail(editText.getText().toString());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			return false;
+		}
+	}
+
+	public static String getUrlEncodedString(String string) {
+		
+		try {
+			return URLEncoder.encode(string, "utf-8");
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+		
+		return string;
+	}
+	
+	public static String getUrlEncodedString(EditText editText) {
+		
+		try {
+			return getUrlEncodedString(editText.getEditableText().toString());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
 	}
 }
