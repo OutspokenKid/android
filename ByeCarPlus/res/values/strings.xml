@@ -2,7 +2,35 @@
 <resources>
 
     <string name="app_name">ByeCarPlus</string>
-    
-    <string name="lastList">마지막 리스트입니다</string>
 
+    <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
+    <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
+    <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
+    <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
+    <string name="commonInfo">일반정보</string>
+    <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
+    
+    <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
+    
+    <string name="EmailSignIn">Email 로그인</string>
+
+    <string name="failToFindPw">비번 찾기 실패</string>
+    <string name="failToSignIn">로그인 실패</string>
+    <string name="failToSignUp">회원가입 실패</string>
+    
+    <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
+    <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
+    <string name="hintForNickname">별명을 입력해주세요.(3~15자)</string>
+    <string name="hintForPassword">비밀번호를 입력해주세요.</string>
+    <string name="hintForPassword2">비밀번호를 입력해주세요.(8~15자)</string>
+    <string name="hintForPasswordConfirm">비밀번호를 다시 입력해주세요.(8~15자)</string>
+    
+    <string name="lastList">마지막 리스트입니다.</string>
+
+    <string name="SNSSignIn">SNS 로그인</string>
+    
+    <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
+
+    <string name="uploadingImage">이미지 업로드 중..</string>
+    
 </resources>

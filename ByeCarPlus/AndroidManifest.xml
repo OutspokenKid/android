@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.cmons.byecarplus"
+    package="com.byecar.byecarplus"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="19" />
+    
+    <supports-screens android:largeScreens="true" android:anyDensity="true" />
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
-        android:name="com.cmons.byecarplus.classes.BCPApplication"
+        android:name="com.byecar.byecarplus.classes.BCPApplication"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         
@@ -27,6 +33,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <activity android:name=".MainForUserActivity"
+		    android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden|adjustResize"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+        
+        <activity android:name="com.outspoken_kid.activities.MultiSelectGalleryActivity"
+		    android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden|adjustResize"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+
+        <!-- For facebook. -->
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity android:name="com.facebook.LoginActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:label="@string/app_name" />
+        
+        <!-- For kakao. -->
+        <meta-data android:name="com.kakao.sdk.AppKey" android:value="@string/kakao_app_key" />
+        <activity
+	        android:name="com.kakao.LoginActivity"
+	        android:configChanges="orientation|screenSize"/>
+        
     </application>
 
 </manifest>
