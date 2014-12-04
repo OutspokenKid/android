@@ -3,6 +3,7 @@
     <issue id="ContentDescription" severity="ignore" />
     <issue id="InflateParams">
         <ignore path="src/com/byecar/byecarplus/fragments/SignPage.java" />
+        <ignore path="src/com/byecar/byecarplus/fragments/sign/SignPage.java" />
     </issue>
     <issue id="RtlHardcoded" severity="ignore" />
 </lint>

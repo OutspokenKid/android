@@ -1,16 +1,24 @@
 package com.byecar.byecarplus;
 
+import java.util.List;
+
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
+
 import android.content.Intent;
 import android.net.Uri;
 
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.FindPwPage;
-import com.byecar.byecarplus.fragments.SignInPage;
-import com.byecar.byecarplus.fragments.SignPage;
-import com.byecar.byecarplus.fragments.SignUpForCommonPage;
-import com.byecar.byecarplus.fragments.TermOfUsePage;
+import com.byecar.byecarplus.fragments.sign.FindPwPage;
+import com.byecar.byecarplus.fragments.sign.SignInPage;
+import com.byecar.byecarplus.fragments.sign.SignPage;
+import com.byecar.byecarplus.fragments.sign.SignUpForCommonPage;
+import com.byecar.byecarplus.fragments.sign.TermOfUsePage;
+import com.outspoken_kid.classes.RequestManager;
+import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class SignActivity extends BCPFragmentActivity {
 
@@ -53,6 +61,8 @@ public class SignActivity extends BCPFragmentActivity {
 	@Override
 	public void setPage(boolean successDownload) {
 
+		loadCookies();
+		
 		if(getFragmentsSize() == 0) {
 			showPage(BCPConstants.PAGE_SIGN, null);
 		}
@@ -101,6 +111,44 @@ public class SignActivity extends BCPFragmentActivity {
 	
 //////////////////// Custom methods.
 
+	public void loadCookies() {
+		
+		LogUtils.log("###SignActivity.checkSession.  Get Cookies from prefs. =====================");
+		
+		try {
+			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(getCookieName_D1());
+			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(getCookieName_S());
+			
+			if(bcc1 != null) {
+				RequestManager.getCookieStore().addCookie(bcc1);
+				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
+			}
+			
+			if(bcc2 != null) {
+				RequestManager.getCookieStore().addCookie(bcc2);
+				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		LogUtils.log("###SignActivity.checkSession.  Print Cookies from cookieStore. =====================");
+		
+		try {
+			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
+			
+			for(Cookie cookie : cookies) {
+				LogUtils.log("		key : " + cookie.getName() + ", value : " + cookie.getValue());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 	public void launchMainForUserActivity() {
 		
 		Intent intent = new Intent(this, MainForUserActivity.class);

@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments;
+package com.byecar.byecarplus.fragments.sign;
 
 import org.json.JSONObject;
 
@@ -203,6 +203,19 @@ public class SignInPage extends BCPFragmentForSign {
 	public int getBackButtonHeight() {
 
 		return 60;
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		if(ff != null) {
+			ff.logout();
+		}
+		
+		if(kf != null) {
+			kf.logout();
+		}
 	}
 	
 //////////////////// Custom methods.

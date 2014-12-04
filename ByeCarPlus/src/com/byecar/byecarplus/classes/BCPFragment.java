@@ -64,25 +64,17 @@ public abstract class BCPFragment extends BaseFragment {
 				((RelativeLayout.LayoutParams)titleBar.getBackButton().getLayoutParams()).
 						leftMargin = ResizeUtils.getSpecificLength(8);
 				titleBar.getBackButton().setVisibility(View.VISIBLE);
+				
+				titleBar.getBackButton().setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View arg0) {
+						getActivity().getSupportFragmentManager().popBackStack();
+					}
+				});
 			} else {
 				titleBar.getBackButton().setVisibility(View.INVISIBLE);
 			}
-			
-			titleBar.getMenuButton().setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					
-				}
-			});
-			
-			titleBar.getBackButton().setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View arg0) {
-					getActivity().getSupportFragmentManager().popBackStack();
-				}
-			});
 		}
 	}
 	

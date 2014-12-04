@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments;
+package com.byecar.byecarplus.fragments.sign;
 
 import org.json.JSONObject;
 
@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
+import com.byecar.byecarplus.classes.BCPFragmentActivity.OnAfterCheckSessionListener;
 import com.byecar.byecarplus.classes.BCPFragmentForSign;
 import com.outspoken_kid.fragment.sns.FacebookFragment;
 import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
@@ -263,6 +264,15 @@ public class SignPage extends BCPFragmentForSign {
 	@Override
 	public void onResume() {
 		super.onResume();
+
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				checkSession();
+			}
+		}, 1000);
 		
 		playingIndex = 0;
 		needPlay = true;
@@ -277,6 +287,19 @@ public class SignPage extends BCPFragmentForSign {
 		
 		if(currentTask != null) {
 			currentTask.cancel(true);
+		}
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		if(ff != null) {
+			ff.logout();
+		}
+		
+		if(kf != null) {
+			kf.logout();
 		}
 	}
 	
@@ -447,7 +470,7 @@ public class SignPage extends BCPFragmentForSign {
 			}
 		});
 	}
-
+	
 	public void play() {
 
 		LogUtils.log("###SignPage.play.  playingIndex : " + playingIndex);
@@ -553,7 +576,21 @@ public class SignPage extends BCPFragmentForSign {
 			}
 		});
 	}
+	
+	public void checkSession() {
 
+		mActivity.checkSession(new OnAfterCheckSessionListener() {
+			
+			@Override
+			public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
+
+				if(isSuccess) {
+					mActivity.launchMainForUserActivity();
+				}
+			}
+		});
+	}
+	
 	public void signInWithSNS(String sns_key, String sns_user_key, 
 			String nickname, String profileUrl) {
 		/*
@@ -600,7 +637,7 @@ public class SignPage extends BCPFragmentForSign {
 			}
 		});
 	}
-
+	
 //////////////////// Classes.
 	
 	public class AsyncAnimTask extends AsyncTask<Void, Void, Void> {

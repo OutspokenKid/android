@@ -9,6 +9,8 @@
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="commonInfo">일반정보</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
+    <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
+    <string name="currentPrice">현재가</string>
     
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
     
@@ -27,10 +29,14 @@
     
     <string name="lastList">마지막 리스트입니다.</string>
 
+    <string name="remainTime">남은시간</string>
+    
     <string name="SNSSignIn">SNS 로그인</string>
     
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
 
     <string name="uploadingImage">이미지 업로드 중..</string>
+    
+    <string name="won">￦</string>
     
 </resources>

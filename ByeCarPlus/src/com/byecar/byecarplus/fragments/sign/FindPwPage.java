@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments;
+package com.byecar.byecarplus.fragments.sign;
 
 import org.json.JSONObject;
 
@@ -89,7 +89,7 @@ public class FindPwPage extends BCPFragmentForSign {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_find_pw;
+		return R.layout.fragment_sign_find_pw;
 	}
 
 	@Override

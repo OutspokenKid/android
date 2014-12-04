@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="progress_bg">#b2604633</color>
+    <color name="progress_guage">#C9972F</color>
+    
+</resources>

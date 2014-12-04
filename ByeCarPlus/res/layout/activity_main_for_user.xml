@@ -5,26 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#00f500" >
+    android:background="#fff" >
     
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/mainForUserActivity_leftView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:background="#ff0000" >
+	    android:layout_height="0dp" >
 
-        <LinearLayout
-	        android:id="@+id/mainForUserActivity_leftViewInner"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="vertical" />
+        <ImageView 
+            android:id="@+id/mainForUserActivity_ivProfile"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:scaleType="centerCrop" />
         
-    </ScrollView>
-    
+        <ImageView 
+            android:id="@+id/mainForUserActivity_ivBg"
+            android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentTop="true"
+	        android:scaleType="matrix" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvNickname"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForUserActivity_ivProfile"
+	        android:layout_centerHorizontal="true" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvInfo"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForUserActivity_tvNickname"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="center_horizontal"
+	        android:textColor="#e9e6e0" />
+        
+        <Button 
+            android:id="@+id/mainForUserActivity_btnEdit"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/mainForUserActivity_ivProfile"
+	        android:background="@drawable/menu_profile_setting_btn" />
+        
+        <ScrollView
+	        android:id="@+id/mainForUserActivity_scrollView"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_below="@id/mainForUserActivity_btnEdit"
+	        android:fillViewport="true" >
+	
+	        <LinearLayout
+		        android:id="@+id/mainForUserActivity_leftViewInner"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical" />
+	        
+	    </ScrollView>
+        
+    </RelativeLayout>
+
     <FrameLayout
-	    android:id="@+id/mainForUserActivity_fragmentFrame"
+        android:id="@+id/mainForUserActivity_topView"
 	    android:layout_width="match_parent"
-	    android:layout_height="match_parent" />
+	    android:layout_height="match_parent" >
+	
+		<FrameLayout
+		    android:id="@+id/mainForUserActivity_fragmentFrame"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+        
+    </FrameLayout>
 
 </com.outspoken_kid.views.GestureSlidingLayout>

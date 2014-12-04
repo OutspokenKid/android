@@ -2,13 +2,17 @@ package com.byecar.byecarplus.classes;
 
 import java.util.Set;
 
+import org.json.JSONObject;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
@@ -46,17 +50,53 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	@Override
 	public String getCookieName_D1() {
 
-		return "bcpd1";
+		return "BYECAR_D1";
 	}
 	
 	@Override
 	public String getCookieName_S() {
 
-		return "bcps";
+		return "BYECAR_S";
 	}
 
 //////////////////// Custom methods.
 
+	public void checkSession(final OnAfterCheckSessionListener onAfterCheckSessionListener) {
+
+		String url = BCPAPIs.SIGN_CHECK_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("BCPFragmentActivity.checkSession.onError." + "\nurl : " + url);
+
+				if(onAfterCheckSessionListener != null) {
+					onAfterCheckSessionListener.onAfterCheckSession(false, null);
+				}
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("BCPFragmentActivity.checkSession.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						onAfterCheckSessionListener.onAfterCheckSession(true, objJSON);
+					} else {
+						onAfterCheckSessionListener.onAfterCheckSession(false, objJSON);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void showPage(int pageCode, Bundle bundle) {
 
 		String logString = "###ShopActivity.showPage.  ====================" +
@@ -85,5 +125,12 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 					"\n===============================================";
 			LogUtils.log(logString);
 		}
+	}
+
+//////////////////// Interfaces.
+	
+	public interface OnAfterCheckSessionListener {
+		
+		public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON);
 	}
 }

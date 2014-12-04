@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainForUserPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/mainForUserPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/mainForUserPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+            
+            <android.support.v4.view.ViewPager 
+                android:id="@+id/mainForUserPage_viewPager"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignParentTop="true"
+    			android:background="@drawable/main_sample1" />
+            
+            <com.outspoken_kid.views.PageNavigatorView 
+                android:id="@+id/mainForUserPage_pageNavigator"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignBottom="@id/mainForUserPage_viewPager" />
+            
+            <View 
+                android:id="@+id/mainForUserPage_auctionIcon"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignBottom="@id/mainForUserPage_viewPager"
+    			android:layout_alignRight="@id/mainForUserPage_viewPager"
+    			android:background="@drawable/main_hotdeal_mark" />
+            
+            <View 
+                android:id="@+id/mainForUserPage_remainBg"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_below="@id/mainForUserPage_viewPager"
+    			android:background="@drawable/main_car_info_img1_bg" />
+            
+            <ProgressBar 
+                android:id="@+id/mainForUserPage_progressBar"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignTop="@id/mainForUserPage_remainBg"
+    			style="?android:attr/progressBarStyleHorizontal"
+    			android:progressDrawable="@drawable/progressbar_custom"
+    			android:max="100"
+    			android:progress="50" />
+            
+            <TextView 
+                android:id="@+id/mainForUserPage_tvRemainTime"
+        		android:layout_width="wrap_content"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignTop="@id/mainForUserPage_progressBar"
+    			android:textColor="#fff"
+    			android:gravity="top" />
+            
+            <TextView 
+                android:id="@+id/mainForUserPage_tvRemainTimeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="0dp"
+    			android:layout_alignLeft="@id/mainForUserPage_tvRemainTime"
+    			android:layout_alignTop="@id/mainForUserPage_progressBar"
+    			android:text="@string/remainTime"
+    			android:textColor="#fff"
+    			android:gravity="center_vertical" />
+            
+            <View 
+                android:id="@+id/mainForUserPage_timeIcon"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignLeft="@id/mainForUserPage_tvRemainTime"
+    			android:layout_alignTop="@id/mainForUserPage_progressBar"
+    			android:background="@drawable/main_time_icon" />
+            
+            <TextView 
+                android:id="@+id/mainForUserPage_tvCarInfo1"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignParentLeft="true"
+    			android:layout_below="@id/mainForUserPage_progressBar"
+    			android:textColor="#fff"
+    			android:gravity="bottom|left" />
+            
+            <TextView 
+                android:id="@+id/mainForUserPage_tvCarInfo2"
+        		android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"
+    			android:layout_below="@id/mainForUserPage_tvCarInfo1"
+    			android:textColor="#fff"
+    			android:gravity="top|left" />
+            
+            <TextView
+                android:id="@+id/mainForUserPage_tvCurrentPrice"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:layout_below="@id/mainForUserPage_progressBar"
+    			android:textColor="#fff" />
+            
+            <TextView
+                android:id="@+id/mainForUserPage_tvCurrentPriceText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/mainForUserPage_tvCurrentPrice"
+    			android:layout_alignBottom="@id/mainForUserPage_tvCurrentPrice"
+    			android:text="@string/currentPrice"
+    			android:textColor="#fff" />
+            
+            <TextView
+                android:id="@+id/mainForUserPage_tvBidCount"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignRight="@id/mainForUserPage_tvCurrentPrice"
+    			android:layout_below="@id/mainForUserPage_tvCurrentPrice"
+    			android:textColor="#fff" />
+            
+            <Button 
+                android:id="@+id/mainForUserPage_btnAuction"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignParentLeft="true"
+    			android:layout_below="@id/mainForUserPage_remainBg"
+    			android:background="@drawable/main_auction_list_btn" />
+            
+            <Button 
+                android:id="@+id/mainForUserPage_btnRegistration"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignTop="@id/mainForUserPage_btnAuction"
+    			android:layout_toRightOf="@id/mainForUserPage_btnAuction"
+    			android:background="@drawable/main_my_car_btn" />
+
+            <View 
+                android:id="@+id/mainForUserPage_usedMarketTitle"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_btnAuction"
+    			android:background="@drawable/main_used_car_frame" />
+            
+            <LinearLayout
+                android:id="@+id/mainForUserPage_usedMarketLinear"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignTop="@id/mainForUserPage_usedMarketTitle"
+    			android:layout_centerHorizontal="true"
+    			android:orientation="horizontal" />
+            
+            <Button 
+                android:id="@+id/mainForUserPage_btnUsedMarket"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_usedMarketTitle"
+    			android:background="@drawable/main_used_car_btn" />
+            
+            <View 
+                android:id="@+id/mainForUserPage_directMarketTitle"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_btnUsedMarket"
+    			android:background="@drawable/main_direct_frame" />
+            
+            <ImageView 
+                android:id="@+id/mainForUserPage_ivDirectMarket"
+                android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_directMarketTitle"
+    			android:background="@drawable/direct_sample_img" />
+            
+            <Button 
+                android:id="@+id/mainForUserPage_btnDirectMarket"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_ivDirectMarket"
+    			android:background="@drawable/main_direct_btn" />
+            
+            <TextView
+                android:id="@+id/mainForUserPage_tvCopyright"
+        		android:layout_width="match_parent"
+    			android:layout_height="wrap_content"
+    			android:layout_below="@id/mainForUserPage_btnDirectMarket"
+    			android:paddingTop="5dp"
+    			android:paddingBottom="5dp"
+    			android:text="@string/copyright"
+    			android:gravity="center"
+    			android:textColor="#928883" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.byecarplus.views.TitleBar
+        android:id="@+id/mainForUserPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+        
+</RelativeLayout>
