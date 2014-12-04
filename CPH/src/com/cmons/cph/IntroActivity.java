@@ -144,7 +144,7 @@ public class IntroActivity extends Activity {
 			LogUtils.trace(e);
 		}
 		
-		LogUtils.log("###IntroActivity.checkSession.  Get Cookies from cookieStore. =====================");
+		LogUtils.log("###IntroActivity.checkSession.  Print Cookies from cookieStore. =====================");
 		
 		try {
 			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
