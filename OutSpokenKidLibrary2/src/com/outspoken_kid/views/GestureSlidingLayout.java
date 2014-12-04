@@ -1,12 +1,13 @@
 package com.outspoken_kid.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 
 /** 
@@ -266,6 +267,7 @@ public class GestureSlidingLayout extends FrameLayout {
         return false;
 	}
 	
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		
@@ -593,7 +595,7 @@ public class GestureSlidingLayout extends FrameLayout {
 		taIn.setInterpolator(getContext(), android.R.anim.accelerate_decelerate_interpolator);
 		topView.startAnimation(taIn);
 	}
-
+	
 /////////////////////// Get, Set methods.
 	
 	public void setTopView(View topView) {
