@@ -1,13 +1,22 @@
-package com.byecar.byecarplus.fragments;
+package com.byecar.byecarplus.fragments.main_for_user;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -18,12 +27,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPAPIs;
+import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.models.Car;
+import com.byecar.byecarplus.models.Notice;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -43,11 +61,23 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 	private TextView tvBidCount;
 	private Button btnAuction;
 	private Button btnRegistration;
+	private FrameLayout noticeFrame;
+	private ImageView ivNotice;
 	private LinearLayout usedMarketLinear;
 	private UsedCarFrame[] usedCarFrames = new UsedCarFrame[3];
 	private Button btnUsedMarket;
 	private ImageView ivDirectMarket;
 	private Button btnDirectMarket;
+	
+	private ArrayList<Car> bids = new ArrayList<Car>();
+	private ArrayList<Car> dealers = new ArrayList<Car>();
+	private ArrayList<Car> certifieds = new ArrayList<Car>();
+	private Notice notice;
+	
+	private Handler mHandler;
+	private Thread checkTime;
+	private Runnable updateTime;
+	public boolean needRunThread;
 	
 	@Override
 	public void bindViews() {
@@ -67,6 +97,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		tvBidCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvBidCount);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainForUserPage_btnAuction);
 		btnRegistration = (Button) mThisView.findViewById(R.id.mainForUserPage_btnRegistration);
+		noticeFrame = (FrameLayout) mThisView.findViewById(R.id.mainForUserPage_noticeFrame);
+		ivNotice = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivNotice);
 		usedMarketLinear = (LinearLayout) mThisView.findViewById(R.id.mainForUserPage_usedMarketLinear);
 		btnUsedMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnUsedMarket);
 		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
@@ -75,8 +107,43 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		mHandler = new Handler();
+	    updateTime = new Runnable() {
+
+	    	//지난 시간.
+	    	private int passTime;
+	    	
+	    	//남은 시간.
+	    	private int remainTime;
+	    	
+	        public void run() {
+	        	
+	        	if(bids.size() > 0) {
+	        		
+	        		/* 24시간 기준. 24h = 86400s.
+		        	 * bid_until_at - (현재시간) = (남은 시간)
+		        	 * 24시간 - (남은 시간) = (지난 시간).
+		        	 * 
+		        	 * s 단위임.
+		        	 */
+		        	Car currentCar = bids.get(viewPager.getCurrentItem());
+		        	remainTime = (int)(currentCar.getBid_until_at()
+		        			- (System.currentTimeMillis() / 1000));
+		        	passTime = 86400 - remainTime;
+		        	
+		        	if(remainTime <= 0) {
+		        		currentCar.setStatus(Car.BID_COMPLETE);
+		        		return;
+		        	}
+		        	
+		        	String formattedRemainTime = StringUtils.getDateString("hh : mm : ss", remainTime * 1000);
+		        	
+		        	tvRemainTime.setText(formattedRemainTime);
+		        	progressBar.setProgress(passTime);
+	        	}
+	        }
+	    };
 	}
 
 	@Override
@@ -84,16 +151,9 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
-		
-		pageNavigator.setSize(3);
-		pageNavigator.setIndex(0);
-		pageNavigator.setEmptyOffCircle();
-		pageNavigator.invalidate();
+		viewPager.setAdapter(new PagerAdapterForBid());
 		
 		addUsedCarFrames();
-
-		setInfoTexts();
-		setUsedCarFrames();
 	}
 
 	@Override
@@ -136,6 +196,42 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 				}
 			}
 		});
+		
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+
+				setPagerInfo(arg0);
+				
+				if(arg0 == 0) {
+					GestureSlidingLayout.setScrollLock(false);
+				} else {
+					GestureSlidingLayout.setScrollLock(true);
+				}
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	
+		btnAuction.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_AUCTION_LIST, null);
+			}
+		});
 	}
 
 	@Override
@@ -156,12 +252,13 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_auctionIcon).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(96);
 		rp.height = ResizeUtils.getSpecificLength(96);
-		rp.rightMargin = ResizeUtils.getSpecificLength(12);
+		rp.leftMargin = ResizeUtils.getSpecificLength(12);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 		
 		//remainBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_remainBg).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(147);
+		rp.topMargin = -2;
 		
 		//progressBar.
 		rp = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
@@ -176,14 +273,15 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		//tvRemainTimeText.
 		rp = (RelativeLayout.LayoutParams) tvRemainTimeText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.leftMargin = -ResizeUtils.getSpecificLength(5);
 		tvRemainTimeText.setPadding(ResizeUtils.getSpecificLength(22), 0, 0, 0);
 		
 		//timeIcon.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_timeIcon).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(18);
 		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		rp.rightMargin = ResizeUtils.getSpecificLength(5);
+		rp.leftMargin = -ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(7);
 		
 		//tvCarInfo1.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo1.getLayoutParams();
@@ -220,37 +318,47 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
 		
+		//noticeFrame.
+		rp = (RelativeLayout.LayoutParams) noticeFrame.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.height = ResizeUtils.getSpecificLength(336);
+		rp.topMargin = ResizeUtils.getSpecificLength(9);
+		
+		//ivNotice.
+		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 
+				ivNotice, 2, Gravity.TOP, new int[]{0, 88, 0, 0});
+		
 		//usedMarketTitle.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_usedMarketTitle).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
-		rp.height = ResizeUtils.getSpecificLength(342);
+		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.height = ResizeUtils.getSpecificLength(338);
 		rp.topMargin = ResizeUtils.getSpecificLength(9);
 		
 		//usedMarketLinear.
 		rp = (RelativeLayout.LayoutParams) usedMarketLinear.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(246);
 		rp.topMargin = ResizeUtils.getSpecificLength(92);
 		
 		//btnUsedMarket.
 		rp = (RelativeLayout.LayoutParams) btnUsedMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(69);
 		
 		//directMarketTitle.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_directMarketTitle).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(89);
 		rp.topMargin = ResizeUtils.getSpecificLength(9);
 		
 		//ivDirectMarket.
 		rp = (RelativeLayout.LayoutParams) ivDirectMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(248);
 		
 		//btnDirectMarket.
 		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(626);
+		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(69);
 		
 		FontUtils.setFontSize(tvRemainTime, 24);
@@ -314,68 +422,234 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		super.onResume();
 		
 		titleBar.getMenuButton().setVisibility(View.VISIBLE);
+		downloadMainInfos();
+		
+		titleBar.setNoticeCount(5);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		needRunThread = false;
+		checkTime.interrupt();
 	}
 	
 //////////////////// Custom methods.
 	
 	public void addUsedCarFrames() {
 		
-		int[] bgResIds = new int[]{
-				R.drawable.b1,
-				R.drawable.b2,
-				R.drawable.b3,
-		};
-		
 		for(int i=0; i<3; i++) {
-			usedCarFrames[i] = new UsedCarFrame(mContext, i);
+			usedCarFrames[i] = new UsedCarFrame(mContext);
 			usedMarketLinear.addView(usedCarFrames[i]);
-			
-			usedCarFrames[i].getIvImage().setImageResource(bgResIds[i]);
 		}
 	}
-	
-	public void setInfoTexts() {
+
+	public void downloadMainInfos() {
 		
-		tvRemainTime.setText("15 : 40 : 21");
-		
-		tvCarInfo1.setText("기아 소울 1.6 가솔린");
-		tvCarInfo2.setText("2014년 / 60,452km / 서울 관악구");
-		
-		tvCurrentPrice.setText("55,000,000" + getString(R.string.won));
-		tvBidCount.setText("입찰중 3명");
+		//http://byecar.minsangk.com/appinfo/cover.json
+		String url = BCPAPIs.MAIN_COVER_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainForUserPage.downloadMainInfos.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainForUserPage.downloadMainInfos.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					int size = 0;
+					
+					try {
+						bids.clear();
+						JSONArray arJSON = objJSON.getJSONArray("bids");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							bids.add(new Car(arJSON.getJSONObject(i)));
+						}
+
+						viewPager.getAdapter().notifyDataSetChanged();
+						viewPager.setCurrentItem(0);
+						
+						pageNavigator.setSize(bids.size());
+						pageNavigator.setEmptyOffCircle();
+						pageNavigator.invalidate();
+
+						if(bids.size() > 0) {
+							setPagerInfo(0);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
+						dealers.clear();
+						JSONArray arJSON = objJSON.getJSONArray("dealer");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							dealers.add(new Car(arJSON.getJSONObject(i)));
+						}
+						
+						setUsedCarFrames();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
+						certifieds.clear();
+						JSONArray arJSON = objJSON.getJSONArray("certified");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							certifieds.add(new Car(arJSON.getJSONObject(i)));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
+						notice = new Notice(objJSON.getJSONObject("notice"));
+						setNotice();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+
+					runThread();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void setUsedCarFrames() {
 		
-		usedCarFrames[0].setTexts("랜드로버", "레인지로버", 39000000);
-		usedCarFrames[1].setTexts("현대", "제네시스", 18000000);
-		usedCarFrames[2].setTexts("도요타", "캠리", 12000000);
+		for(int i=0; i<Math.min(3, dealers.size()); i++) {
+
+			try {
+				usedCarFrames[i].setTexts(dealers.get(i).getModel_name(), 
+						dealers.get(i).getPrice());
+				
+				usedCarFrames[i].downloadImage(dealers.get(i).getRep_img_url());
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	public void setNotice() {
+
+		ivNotice.setImageDrawable(null);
+		
+		String url = notice.getRep_img_url();
+		ivNotice.setTag(url);
+		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainForUserPage.setNotice.onError." + "\nurl : " + url);
+				noticeFrame.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("MainForUserPage.setNotice.onCompleted." + "\nurl : " + url);
+					
+					if(bitmap != null && !bitmap.isRecycled()) {
+						ivNotice.setImageBitmap(bitmap);
+						noticeFrame.setVisibility(View.VISIBLE);
+					} else {
+						noticeFrame.setVisibility(View.GONE);
+					}
+					return;
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+				
+				noticeFrame.setVisibility(View.GONE);
+			}
+		});
+	}
+	
+	public void setPagerInfo(int index) {
+		
+		tvCarInfo1.setText(bids.get(index).getCar_full_name());
+		tvCarInfo2.setText(bids.get(index).getYear() + "년 / "
+				+ StringUtils.getFormattedNumber(bids.get(index).getMileage()) + "km / "
+				+ bids.get(index).getArea());
+		
+		tvCurrentPrice.setText(StringUtils.getFormattedNumber(bids.get(index).getPrice()) + getString(R.string.won));
+		tvBidCount.setText("입찰자 " + bids.get(index).getBids_cnt() + "명");
+		
+		if(bids.size() > 1) {
+			pageNavigator.setVisibility(View.VISIBLE);
+			pageNavigator.setIndex(index);
+		} else {
+			pageNavigator.setVisibility(View.INVISIBLE);
+		}
+	}
+
+	public void runThread() {
+		
+		needRunThread = true;
+		
+		if(checkTime != null) {
+			checkTime.interrupt();
+		}
+		
+		checkTime = new Thread() {
+			
+	        public void run() {
+	            try {
+	                while(needRunThread) {
+	                	Thread.sleep(1000);
+	                    mHandler.post(updateTime);
+	                }
+	            } catch (Exception e) {
+	            }
+	        }
+	    };
+	    checkTime.start();
 	}
 	
 //////////////////// Custom classes.
 	
 	public class UsedCarFrame extends FrameLayout {
 
-		private int index;
 		private ImageView ivImage;
 		private TextView tvCar;
 		private TextView tvPrice;
 		
-		public UsedCarFrame(Context context, int index) {
+		public UsedCarFrame(Context context) {
 			super(context);
-			this.index = index;
 			init();
 		}
 		
 		public void init() {
 		
-			ResizeUtils.viewResize(185, 224, this, 1, Gravity.CENTER_VERTICAL, 
-					new int[]{index==0?20:16, 0, 0, 0});
+			ResizeUtils.viewResize(184, 224, this, 1, Gravity.CENTER_VERTICAL, 
+					new int[]{20, 0, 0, 0});
 			
 			//ivImage.
 			ivImage = new ImageView(mContext);
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 145, ivImage, 2, 0, null);
 			ivImage.setScaleType(ScaleType.CENTER_CROP);
+			ivImage.setBackgroundResource(R.drawable.main_used_car_sub_frame_default);
 			this.addView(ivImage);
 
 			//frame.
@@ -388,7 +662,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			//tvCar.
 			tvCar = new TextView(mContext);
 			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvCar, 2, 0, new int[]{0, 145, 0, 0});
-			FontUtils.setFontSize(tvCar, 16);
+			tvCar.setTextColor(Color.rgb(57, 57, 57));
+			FontUtils.setFontSize(tvCar, 18);
 			tvCar.setGravity(Gravity.CENTER);
 			this.addView(tvCar);
 			
@@ -404,20 +679,111 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		
 		public void downloadImage(String imageUrl) {
 			
+			ivImage.setImageDrawable(null);
+			
+			ivImage.setTag(url);
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("UsedCarFrame.downloadImage.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("UsedCarFrame.downloadImage.onCompleted." + "\nurl : " + url);
+						
+						if(bitmap != null && !bitmap.isRecycled()) {
+							ivImage.setImageBitmap(bitmap);
+						}
+						
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 		}
 		
-		public void setTexts(String companyName, String modelName, long price) {
+		public void setTexts(String modelName, long price) {
 			
-			tvCar.setText(null);
-			FontUtils.addSpan(tvCar, companyName + " ", Color.rgb(115, 115, 115), 1);
-			FontUtils.addSpan(tvCar, modelName, Color.rgb(57, 57, 57), 1.2f);
-			
+			tvCar.setText(modelName);
 			tvPrice.setText(StringUtils.getFormattedNumber(price) + getString(R.string.won));
 		}
 
 		public ImageView getIvImage() {
 			
 			return ivImage;
+		}
+	}
+
+	public class PagerAdapterForBid extends PagerAdapter {
+
+		@Override
+		public int getCount() {
+	
+			return bids.size();
+		}
+
+		@Override
+		public Object instantiateItem(ViewGroup container, final int position) {
+			
+			final ImageView ivImage = new ImageView(mContext);
+			ivImage.setScaleType(ScaleType.CENTER_CROP);
+			ivImage.setBackgroundResource(R.drawable.main_auction_default);
+			container.addView(ivImage);
+			
+			String url = bids.get(position).getRep_img_url();
+			ivImage.setTag(url);
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("PagerForBid.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("PagerForBid.onCompleted." + "\nurl : " + url);
+						
+						if(ivImage != null && bitmap != null && !bitmap.isRecycled()) {
+							ivImage.setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+			
+			return ivImage;
+		}
+		
+		@Override
+		public void destroyItem(ViewGroup container, int position, Object object) {
+
+			try {
+				View v = (View) object;
+				container.removeView(v);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+		
+		@Override
+		public boolean isViewFromObject(View arg0, Object arg1) {
+
+			return arg0 == arg1;
 		}
 	}
 }

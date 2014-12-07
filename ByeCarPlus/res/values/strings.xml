@@ -31,6 +31,8 @@
 
     <string name="remainTime">남은시간</string>
     
+    <string name="sideMenuTitle1">거래</string>
+    <string name="sideMenuTitle2">서비스</string>
     <string name="SNSSignIn">SNS 로그인</string>
     
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.wrappers.ViewWrapperForAuction;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -26,8 +28,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 		
 		switch (itemCode) {
 		
-//		case CphConstants.ITEM_NOTIFICATION:
-//			return R.layout.list_notice;
+		case BCPConstants.ITEM_AUCTION:
+			return R.layout.list_auction;
 		}
 		
 		return 0;
@@ -37,8 +39,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
 		
 		switch (itemCode) {
-//		case CphConstants.ITEM_ORDER_RETAIL:
-//			return new ViewWrapperForOrder(convertView, itemCode);
+		case BCPConstants.ITEM_AUCTION:
+			return new ViewWrapperForAuction(convertView, itemCode);
 		}
 		
 		return null;

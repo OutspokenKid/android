@@ -13,4 +13,7 @@ public class BCPAPIs {
 	public static String SIGN_IN_WITH_SNS_URL = BASE_API_URL + "/users/sns_join.json";
 	public static String FIND_PW_URL = BASE_API_URL + "/users/find/password.json";
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
+	
+	public static String MAIN_COVER_URL = BASE_API_URL + "/appinfo/cover.json";
+	public static String AUCTION_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 }

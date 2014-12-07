@@ -3,13 +3,17 @@ package com.byecar.byecarplus.views;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.PaintDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class TitleBar extends RelativeLayout {
@@ -17,8 +21,10 @@ public class TitleBar extends RelativeLayout {
 	private View bg;
 	private Button btnMenu;
 	private Button btnBack;
+	private View bottomLine;
 	
 	private Button btnNotice;
+	private TextView tvNoticeCount; 
 	
 	public TitleBar(Context context) {
 		this(context, null, 0);
@@ -53,7 +59,7 @@ public class TitleBar extends RelativeLayout {
 		//btnMenu.
 		btnMenu = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(
-				ResizeUtils.getSpecificLength(220), 
+				ResizeUtils.getSpecificLength(251), 
 				ResizeUtils.getSpecificLength(60));
 		rp.addRule(RelativeLayout.CENTER_VERTICAL);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -70,6 +76,14 @@ public class TitleBar extends RelativeLayout {
 		btnBack.setLayoutParams(rp);
 		btnBack.setVisibility(View.INVISIBLE);
 		this.addView(btnBack);
+		
+		//Bottom line.
+		bottomLine = new View(getContext());
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1);
+		rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+		bottomLine.setLayoutParams(rp);
+		bottomLine.setBackgroundColor(Color.rgb(186, 186, 186));
+		this.addView(bottomLine);
 	}
 
 	public Button getMenuButton() {
@@ -110,6 +124,49 @@ public class TitleBar extends RelativeLayout {
 
 		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 			bg.setAlpha(alpha);
+			bottomLine.setAlpha(alpha);
+		}
+	}
+
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	public void setNoticeCount(int count) {
+		
+		if(tvNoticeCount == null) {
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.topMargin = ResizeUtils.getSpecificLength(16);
+			rp.rightMargin = ResizeUtils.getSpecificLength(32);
+			tvNoticeCount = new TextView(getContext());
+			tvNoticeCount.setLayoutParams(rp);
+			tvNoticeCount.setTextColor(Color.rgb(254, 188, 42));
+			tvNoticeCount.setGravity(Gravity.CENTER);
+			
+			int pv = ResizeUtils.getSpecificLength(2);
+			int ph = ResizeUtils.getSpecificLength(6);
+			tvNoticeCount.setPadding(ph, pv, ph, pv);
+			
+			FontUtils.setFontSize(tvNoticeCount, 20);
+			this.addView(tvNoticeCount);
+			
+			PaintDrawable pd = new PaintDrawable(Color.rgb(61, 32, 10));
+	        pd.setCornerRadius(ResizeUtils.getSpecificLength(10));
+	        
+	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+	        	tvNoticeCount.setBackground(pd);
+			} else {
+				tvNoticeCount.setBackgroundDrawable(pd);
+			}
+		}
+		
+		if(count > 100) {
+			tvNoticeCount.setText("+99");
+		} else if(count <= 0){
+			tvNoticeCount.setVisibility(View.INVISIBLE);
+		} else {
+			tvNoticeCount.setText("" + count);
 		}
 	}
 }

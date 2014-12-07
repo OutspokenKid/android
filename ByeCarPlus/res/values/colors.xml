@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="page_bg">#dcdcdc</color>
     <color name="progress_bg">#b2604633</color>
-    <color name="progress_guage">#C9972F</color>
-    
+    <color name="progress_guage">#febc2a</color>
+	    
 </resources>

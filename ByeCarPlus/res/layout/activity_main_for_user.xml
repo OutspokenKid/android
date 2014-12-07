@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fff" >
+    android:background="@color/page_bg" >
     
     <RelativeLayout
         android:id="@+id/mainForUserActivity_leftView"
@@ -32,7 +32,10 @@
             android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/mainForUserActivity_ivProfile"
-	        android:layout_centerHorizontal="true" />
+	        android:layout_centerHorizontal="true"
+	        android:singleLine="true"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
         
         <TextView 
             android:id="@+id/mainForUserActivity_tvInfo"
@@ -51,20 +54,48 @@
 	        android:layout_below="@id/mainForUserActivity_ivProfile"
 	        android:background="@drawable/menu_profile_setting_btn" />
         
-        <ScrollView
+        <com.outspoken_kid.views.OffsetScrollView
 	        android:id="@+id/mainForUserActivity_scrollView"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:layout_below="@id/mainForUserActivity_btnEdit"
 	        android:fillViewport="true" >
-	
-	        <LinearLayout
-		        android:id="@+id/mainForUserActivity_leftViewInner"
+
+            <RelativeLayout
+                android:id="@+id/mainForUserActivity_innerRelative"
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:orientation="vertical" />
+		        android:layout_height="wrap_content" >
+	
+				<LinearLayout
+			        android:id="@+id/mainForUserActivity_leftViewInner"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical" />                
+                
+            </RelativeLayout>
 	        
-	    </ScrollView>
+	    </com.outspoken_kid.views.OffsetScrollView>
+	    
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvTitle1"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:text="@string/sideMenuTitle1"
+	        android:textColor="#393939" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvTitle2"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:visibility="invisible"
+	        android:text="@string/sideMenuTitle2"
+	        android:textColor="#393939" />
         
     </RelativeLayout>
 

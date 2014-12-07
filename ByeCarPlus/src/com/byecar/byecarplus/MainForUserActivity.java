@@ -1,8 +1,10 @@
 package com.byecar.byecarplus;
 
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
-import org.apache.http.cookie.Cookie;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -11,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,24 +23,27 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.MainForUserPage;
+import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
+import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.models.User;
-import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
+import com.outspoken_kid.views.OffsetScrollView;
+import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
 public class MainForUserActivity extends BCPFragmentActivity {
 
@@ -45,8 +51,12 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
-	private ScrollView scrollView;
+	private OffsetScrollView scrollView;
 	private LinearLayout leftViewInner;
+	private TextView tvTitle1;
+	private TextView tvTitle2;
+	private TextView tvTitleIn1;
+	private TextView tvTitleIn2;
 	
 	private ImageView ivProfile;
 	private ImageView ivBg;
@@ -54,6 +64,13 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	private TextView tvInfo;
 	private Button btnEdit;
 	private Button[] menuButtons;
+
+	private Handler mHandler;
+	private Socket socket;
+    private BufferedReader networkReader;
+	private Thread checkSocket;
+	private Runnable showUpdate;
+	private String socketString;
 	
 	@Override
 	public void bindViews() {
@@ -67,8 +84,11 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		tvInfo = (TextView) findViewById(R.id.mainForUserActivity_tvInfo);
 		btnEdit = (Button) findViewById(R.id.mainForUserActivity_btnEdit);
 		
-		scrollView = (ScrollView) findViewById(R.id.mainForUserActivity_scrollView);
+		scrollView = (OffsetScrollView) findViewById(R.id.mainForUserActivity_scrollView);
 		leftViewInner = (LinearLayout) findViewById(R.id.mainForUserActivity_leftViewInner);
+		
+		tvTitle1 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle1);
+		tvTitle2 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle2);
 	}
 
 	@Override
@@ -83,24 +103,36 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				SoftKeyboardUtils.hideKeyboard(context, gestureSlidingLayout);
 			}
 		});
+	
+//		setSocket(BCPConstants.SOCKET_IP, BCPConstants.SOCKET_PORT);
+		
+		mHandler = new Handler();
+		checkSocket = new Thread() {
+			 
+	        public void run() {
+	            try {
+	                LogUtils.log("###MainForUserActivity.run.  StartThread.");
+	                
+	                while (true) {
+	                    LogUtils.log("###MainForUserActivity.run.  thread is running.");
+	                    socketString = networkReader.readLine();
+	                    mHandler.post(showUpdate);
+	                }
+	            } catch (Exception e) {
+	 
+	            }
+	        }
+	    };
+	    showUpdate = new Runnable() {
+	    	 
+	        public void run() {
+	        	ToastUtils.showToast("Coming word : " + socketString);
+	        }
+	    };
 	}
 
 	@Override
 	public void createPage() {
-
-		LogUtils.log("###MainForUserActivity.checkSession.  Print Cookies from cookieStore. =====================");
-		
-		try {
-			List<Cookie> cookies = RequestManager.getCookieStore().getCookies();
-			
-			for(Cookie cookie : cookies) {
-				LogUtils.log("		key : " + cookie.getName() + ", value : " + cookie.getValue());
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
 		
 		try {
 			setLeftView();
@@ -112,14 +144,94 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		scrollView.setOnScrollChangedListener(new OnScrollChangedListener() {
+
+			int firstOffset = ResizeUtils.getSpecificLength(70) * 4		//buttons.
+							+ ResizeUtils.getSpecificLength(10) * 8		//margins.
+							+ 3;										//lines.
+			int secondOffset = firstOffset + ResizeUtils.getSpecificLength(32);	//title.
+			
+			@Override
+			public void onScrollChanged(int offset) {
+
+				//Show tvTitle1, tvTitleIn2 and hide others.
+				if(offset <= firstOffset) {
+					
+					if(tvTitle1.getVisibility() != View.VISIBLE) {
+						tvTitle1.setVisibility(View.VISIBLE);
+					}
+					
+					if(tvTitle2.getVisibility() == View.VISIBLE) {
+						tvTitle2.setVisibility(View.INVISIBLE);
+					}
+					
+					if(tvTitleIn1.getVisibility() == View.VISIBLE) {
+						tvTitleIn1.setVisibility(View.INVISIBLE);
+					}
+					
+					if(tvTitleIn2.getVisibility() != View.VISIBLE) {
+						tvTitleIn2.setVisibility(View.VISIBLE);
+					}
+					
+				//Show tvTitleIn1, tvTitleIn2 and hide others.
+				} else if(offset <= secondOffset) {
+					
+					if(tvTitle1.getVisibility() == View.VISIBLE) {
+						tvTitle1.setVisibility(View.INVISIBLE);
+					}
+					
+					if(tvTitle2.getVisibility() == View.VISIBLE) {
+						tvTitle2.setVisibility(View.INVISIBLE);
+					}
+
+					if(tvTitleIn1.getVisibility() != View.VISIBLE) {
+						tvTitleIn1.setVisibility(View.VISIBLE);
+					}
+					
+					if(tvTitleIn2.getVisibility() != View.VISIBLE) {
+						tvTitleIn2.setVisibility(View.VISIBLE);
+					}
+					
+				//Show tvTitle2 and hide others.
+				} else {
+					
+					if(tvTitle1.getVisibility() == View.VISIBLE) {
+						tvTitle1.setVisibility(View.INVISIBLE);
+					}
+					
+					if(tvTitle2.getVisibility() != View.VISIBLE) {
+						tvTitle2.setVisibility(View.VISIBLE);
+					}
+					
+					if(tvTitleIn1.getVisibility() == View.VISIBLE) {
+						tvTitleIn1.setVisibility(View.INVISIBLE);
+					}
+					
+					if(tvTitleIn2.getVisibility() == View.VISIBLE) {
+						tvTitleIn2.setVisibility(View.INVISIBLE);
+					}
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
 
 		ResizeUtils.viewResize(492, LayoutParams.MATCH_PARENT, leftView, 2, 0, null);
+
+		RelativeLayout.LayoutParams rp = null;
+		
+		rp = (RelativeLayout.LayoutParams) tvTitle1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(32);
+		tvTitle1.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
+		FontUtils.setFontSize(tvTitle1, 16);
+		
+		rp = (RelativeLayout.LayoutParams) tvTitle2.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(32);
+		tvTitle2.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
+		FontUtils.setFontSize(tvTitle2, 16);
 	}
 
 	@Override
@@ -155,7 +267,10 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_MAIN_FOR_USER:
 			return new MainForUserPage();
 			
+		case BCPConstants.PAGE_AUCTION_LIST:
+			return new AuctionListPage();
 		}
+		
 		return null;
 	}
 
@@ -239,14 +354,42 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	}
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+//        checkSocket.start();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		
 		checkSession();
 	}
 	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+//		try {
+//			socket.close();
+//		} catch (IOException e) {
+//			LogUtils.trace(e);
+//		}
+	}
+	
 //////////////////// Custom methods.
 
+	public void setSocket(String ip, int port) {
+		 
+        try {
+            socket = new Socket(ip, port);
+            networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        } catch (IOException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+    }
+	
 	public void checkSession() {
 		
 		checkSession(new OnAfterCheckSessionListener() {
@@ -256,8 +399,15 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 				if(isSuccess) {
 					saveCookies();
-					user = new User(objJSON);
 					
+					try {
+						user = new User(objJSON.getJSONObject("user"));
+						setLeftViewUserInfo();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
 				} else {
 					
 					try {
@@ -283,20 +433,12 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	
 	public void setLeftView() {
 
-		setImageViews();
+		setImageView();
 		setOtherViews();
 		addButtons();
-		
-		ivProfile.setImageResource(R.drawable.c1);
-		
-		tvNickname.setText("수지짱");
-		
-		tvInfo.setText(null);
-		FontUtils.addSpan(tvInfo, "010 2626 4636", 0, 1);
-		FontUtils.addSpan(tvInfo, "\n서울특별시 관악구 봉천동", 0, 1);
 	}
 	
-	public void setImageViews() {
+	public void setImageView() {
 		
 		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(190);
@@ -340,8 +482,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 	public void addButtons() {
 		
-		menuButtons = new Button[11];
-		
 		int[] bgResIds = new int[] {
 				R.drawable.menu_auction_btn,
 				R.drawable.menu_used_btn,
@@ -355,26 +495,28 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				R.drawable.menu_homepage_btn,
 				R.drawable.menu_term_btn,
 		};
-		
-		int size = 11;
+
+		menuButtons = new Button[bgResIds.length];
+		int size = bgResIds.length;
 		for(int i=0; i<size; i++) {
 	
 			//타이틀 추가 : adadad 60%, text color 393939 
-			if(i == 0 || i == 4) {
-				TextView tvTitle = new TextView(this);
-				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 32, tvTitle, 1, 0, null);
-				tvTitle.setBackgroundColor(Color.argb(99, 173, 173, 173));
-				tvTitle.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-				tvTitle.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
-				FontUtils.setFontSize(tvTitle, 16);
-				tvTitle.setTextColor(Color.rgb(57, 57, 57));
-				tvTitle.setText(i==0? "거래" : "서비스");
-				leftViewInner.addView(tvTitle);
+			if(i == 4) {
+				tvTitleIn2 = new TextView(this);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 32, tvTitleIn2, 1, 0, null);
+				tvTitleIn2.setBackgroundColor(Color.argb(99, 173, 173, 173));
+				tvTitleIn2.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+				tvTitleIn2.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
+				FontUtils.setFontSize(tvTitleIn2, 16);
+				tvTitleIn2.setTextColor(Color.rgb(57, 57, 57));
+				tvTitleIn2.setText(getString(R.string.sideMenuTitle2));
+				leftViewInner.addView(tvTitleIn2);
 			}
 			
 			//버튼 추가.
 			menuButtons[i] = new Button(this);
-			ResizeUtils.viewResize(460, 70, menuButtons[i], 1, Gravity.LEFT, new int[]{0, 10, 0, 10});
+			ResizeUtils.viewResize(460, 70, menuButtons[i], 1, Gravity.LEFT, 
+					new int[]{0, i==0?42:10, 0, 10});
 			menuButtons[i].setBackgroundResource(bgResIds[i]);
 			leftViewInner.addView(menuButtons[i]);
 			
@@ -390,8 +532,71 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				leftViewInner.addView(line);
 			}
 		}
+		
+		tvTitleIn1 = new TextView(this);
+		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+				LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(32));
+		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+		rp.topMargin = ResizeUtils.getSpecificLength(70) * 4		//buttons.
+				+ ResizeUtils.getSpecificLength(10) * 8			//margins.
+				+ 3;											//lines.
+		tvTitleIn1.setLayoutParams(rp);
+		tvTitleIn1.setBackgroundColor(Color.argb(99, 173, 173, 173));
+		tvTitleIn1.setVisibility(View.INVISIBLE);
+		tvTitleIn1.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+		tvTitleIn1.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
+		FontUtils.setFontSize(tvTitleIn1, 16);
+		tvTitleIn1.setTextColor(Color.rgb(57, 57, 57));
+		tvTitleIn1.setText(getString(R.string.sideMenuTitle1));
+		((RelativeLayout)findViewById(R.id.mainForUserActivity_innerRelative)).addView(tvTitleIn1);
 	}
 
+	public void setLeftViewUserInfo() {
+		
+		if(!StringUtils.isEmpty(user.getProfile_img_url())) {
+			
+			ivProfile.setTag(user.getProfile_img_url());
+			DownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("MainForUserActivity.setLeftViewUserInfo.onError." + "\nurl : " + url);
+					ivProfile.setImageDrawable(null);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("MainForUserActivity.setLeftViewUserInfo.onCompleted." + "\nurl : " + url);
+						ivProfile.setImageBitmap(bitmap);;
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ivProfile.setImageDrawable(null);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ivProfile.setImageDrawable(null);
+					}
+				}
+			});
+		}
+		
+		if(!StringUtils.isEmpty(user.getNickname())) {
+			tvNickname.setText(user.getNickname());
+		}
+		
+		tvInfo.setText(null);
+
+		if(!StringUtils.isEmpty(user.getPhone_number())) {
+			FontUtils.addSpan(tvInfo, user.getPhone_number() + "\n\n", 0, 1);
+		}
+		
+		if(!StringUtils.isEmpty(user.getAddress())) {
+			FontUtils.addSpan(tvInfo, user.getAddress(), 0, 1);
+		}
+	}
+	
 	public User getUser() {
 		
 		return user;
