@@ -219,11 +219,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 		&sort=order-desc
 		&num=10
 		&page=1
-		
-		
-		
-		
-		
 		*/
 		url = CphConstants.BASE_API_URL + "products" +
 				"?wholesale_id=" + getWholesale().getId();
@@ -253,11 +248,6 @@ public class WholesaleForShopPage extends CmonsFragmentForWholesale {
 	public boolean parseJSON(JSONObject objJSON) {
 
 		try {
-			//어차피 한번에 다 받을거라 중복으로 다운로드하는 경우 방지.
-			if(models.size() != 0) {
-				return true;
-			}
-			
 			JSONArray arJSON = objJSON.getJSONArray("products");
 			
 			int size = arJSON.length();

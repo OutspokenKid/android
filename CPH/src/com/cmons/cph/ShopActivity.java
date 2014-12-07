@@ -137,13 +137,12 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 	}
 	
 	public void checkGCM() {
-		
+
 		try {
 			GCMRegistrar.checkDevice(this);
 			GCMRegistrar.checkManifest(this);
+			
 			final String regId = GCMRegistrar.getRegistrationId(this);
-
-			LogUtils.log("###ShopActivity.checkGCM.  regId : " + regId);
 			
 			if(regId == null || regId.equals("")) {
 				GCMRegistrar.register(this, CphConstants.GCM_SENDER_ID);
@@ -292,6 +291,8 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 					SharedPrefsUtils.clearCookie(getCookieName_D1());
 					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
+					sendRemoveRegId();
+					
 					launchSignInActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -300,6 +301,14 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 				}
 			}
 		});
+	}
+	
+	public void sendRemoveRegId() {
+		
+		String url = CphConstants.BASE_API_URL + "users/token_register/android" +
+				"?user_id=" + user.getId() +
+				"&device_token=";
+		DownloadUtils.downloadJSONString(url, null);
 	}
 	
 	public void launchSignInActivity() {

@@ -62,7 +62,7 @@ public class ViewWrapperForSample extends ViewWrapper {
 			if(baseModel instanceof Sample) {
 				sample = (Sample) baseModel;
 				
-				tvSample.setText(sample.getRetail_name() + " - " + 
+				tvSample.setText(sample.getWholesale_name() + " - " + 
 						sample.getProduct_name() + 
 						" (" + sample.getSize() + ", " + sample.getColor() + ")");
 			} else {

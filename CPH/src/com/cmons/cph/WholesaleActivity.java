@@ -39,7 +39,7 @@ import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 
 public class WholesaleActivity extends ShopActivity {
-
+	
 	public Wholesale wholesale;
 	
 	@Override

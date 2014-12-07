@@ -33,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -102,6 +103,9 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
     private ChoiceAdapter colorAdapter;
     private ChoiceAdapter sizeAdapter;
     private ChoiceAdapter mixtureAdapter;
+    
+    private View cover;
+    private ProgressBar progress;
 
     private Product product;
     private boolean isPublic;
@@ -126,7 +130,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths,
 					Bitmap[] thumbnails) {
-
+				
 				if(sdCardPaths == null) {
 					LogUtils.log("###WholesaleForWritePage.onAfterPickImage.  sdCardPaths is null.");
 				} else {
@@ -207,6 +211,9 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		etAdd = (EditText) mThisView.findViewById(R.id.wholesaleWritePage_etAdd);
 		btnAdd = (Button) mThisView.findViewById(R.id.wholesaleWritePage_btnAdd);
 		listView = (ListView) mThisView.findViewById(R.id.wholesaleWritePage_listView);
+		
+		cover = mThisView.findViewById(R.id.wholesaleWritePage_cover);
+		progress = (ProgressBar) mThisView.findViewById(R.id.wholesaleWritePage_progress);
 	}
 
 	@Override
@@ -891,6 +898,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 		if(relativePopup.getVisibility() == View.VISIBLE) {
 			hidePopup();
 			return true;
+		} else if(cover.getVisibility() == View.VISIBLE) {
+			return true;
 		}
 
 		clear();
@@ -1016,6 +1025,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 					LogUtils.log("WholesaleForWritePage.write.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.failToWriteProduct);
+					cover.setVisibility(View.INVISIBLE);
+					progress.setVisibility(View.INVISIBLE);
 				}
 
 				@Override
@@ -1039,12 +1050,19 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 						ToastUtils.showToast(R.string.failToWriteProduct);
 						LogUtils.trace(oom);
 					}
+					
+					cover.setVisibility(View.INVISIBLE);
+					progress.setVisibility(View.INVISIBLE);
 				}
 			});
 		} catch (Exception e) {
 			LogUtils.trace(e);
+			cover.setVisibility(View.INVISIBLE);
+			progress.setVisibility(View.INVISIBLE);
 		} catch (Error e) {
 			LogUtils.trace(e);
+			cover.setVisibility(View.INVISIBLE);
+			progress.setVisibility(View.INVISIBLE);
 		}
 	}
 	
@@ -1147,6 +1165,8 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 
 					LogUtils.log("WholesaleForWritePage.edit.onError." + "\nurl : " + url);
 					ToastUtils.showToast(R.string.failToEditProduct);
+					cover.setVisibility(View.INVISIBLE);
+					progress.setVisibility(View.INVISIBLE);
 				}
 
 				@Override
@@ -1184,16 +1204,26 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 						ToastUtils.showToast(R.string.failToEditProduct);
 						LogUtils.trace(oom);
 					}
+					
+					cover.setVisibility(View.INVISIBLE);
+					progress.setVisibility(View.INVISIBLE);
 				}
 			});
 		} catch (Exception e) {
 			LogUtils.trace(e);
+			cover.setVisibility(View.INVISIBLE);
+			progress.setVisibility(View.INVISIBLE);
 		} catch (Error e) {
 			LogUtils.trace(e);
+			cover.setVisibility(View.INVISIBLE);
+			progress.setVisibility(View.INVISIBLE);
 		}
 	}
 	
 	public void uploadImages(final boolean isEdit) {
+		
+		cover.setVisibility(View.VISIBLE);
+		progress.setVisibility(View.VISIBLE);
 		
 		ToastUtils.showToast(R.string.uploadingImage);
 		
@@ -1912,6 +1942,11 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 	
 	public ImageView addThumbnailView(int index, final String url, Bitmap thumbnail) {
 		
+		LogUtils.log("###WholesaleForWritePage.addThumbnailView.  "
+				+ "\nindex : " + index
+				+ "\nurl : " + url
+				+ "\nthumbnail : " + (thumbnail == null? "null":"not null"));
+		
 		try {
 			FrameLayout frame = new FrameLayout(mContext);
 			ResizeUtils.viewResize(240, 375, frame, 1, 0, null);
@@ -1946,7 +1981,6 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 			} else {
 				mainImage.setVisibility(View.INVISIBLE);
 			}
-
 			
 			imageLinear.addView(frame);
 			selectedFrames.add(frame);
@@ -2029,7 +2063,7 @@ public class WholesaleForWritePage extends CmonsFragmentForWholesale {
 				
 				checkBox = new View(mContext);
 				ResizeUtils.viewResize(52, 34, checkBox, 1, Gravity.CENTER_VERTICAL, new int[]{20, 0, 20, 0});
-				checkBox.setBackgroundResource(R.drawable.check);
+				checkBox.setBackgroundResource(R.drawable.check_product);
 				linear.addView(checkBox);
 				
 				ViewHolder holder = new ViewHolder();

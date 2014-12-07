@@ -96,6 +96,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	protected void onRegistered(Context context, String regId) {
 
 		try {
+			
 			String url = CphConstants.BASE_API_URL + "users/token_register/android" +
 					"?user_id=" + ShopActivity.getInstance().user.getId() +
 					"&device_token=" + regId;

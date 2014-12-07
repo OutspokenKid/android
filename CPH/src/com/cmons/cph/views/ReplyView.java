@@ -18,6 +18,7 @@ import com.cmons.cph.fragments.wholesale.WholesaleForOrderPage;
 import com.cmons.cph.models.Reply;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
@@ -164,6 +165,7 @@ public class ReplyView extends RelativeLayout {
 			
 			//난 소매유저.
 			if(!isWholesaleUser) {
+				LogUtils.log("###ReplyView.setValues.  phoneNumber : " + reply.getWholesale_phone_number());
 				FontUtils.addSpan(tvShopName, "  " + reply.getWholesale_phone_number(), 0, 0.5f);
 				btnDelete.setVisibility(View.INVISIBLE);
 			} else {

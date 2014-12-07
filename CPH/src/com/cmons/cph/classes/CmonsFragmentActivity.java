@@ -39,12 +39,12 @@ public abstract class CmonsFragmentActivity extends BaseFragmentActivity {
 	@Override
 	public String getCookieName_D1() {
 
-		return "cphd1";
+		return "CPH_D1";
 	}
 	
 	@Override
 	public String getCookieName_S() {
 
-		return "cphs";
+		return "CPH_S";
 	}
 }

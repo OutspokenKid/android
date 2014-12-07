@@ -125,6 +125,8 @@ public class RetailForOrderProductPage extends CmonsFragmentForRetail {
 			cbBank.setVisibility(View.GONE);
 			tvAgent.setVisibility(View.GONE);
 			cbAgent.setVisibility(View.GONE);
+			tvVisit.setVisibility(View.GONE);
+			cbVisit.setVisibility(View.GONE);
 			tvAccount.setVisibility(View.GONE);
 			etAgentName.setVisibility(View.GONE);
 			etAgentPhone.setVisibility(View.GONE);
