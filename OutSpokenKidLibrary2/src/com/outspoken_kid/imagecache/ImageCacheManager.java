@@ -63,28 +63,32 @@ public class ImageCacheManager {
 	 *            application context
 	 * @param uniqueName
 	 *            name for the cache location
-	 * @param cacheSize
+	 * @param memoryCacheSize
+	 *            max size for the cache
+	 * @param diskCacheSize
 	 *            max size for the cache
 	 * @param compressFormat
 	 *            file type compression format.
 	 * @param quality
 	 */
-	public void init(Context context, String uniqueName, int cacheSize,
+	public void init(Context context, String uniqueName, 
+			int memoryCacheSize, int diskCacheSize,
 			CompressFormat compressFormat, int quality, CacheType type) {
 		switch (type) {
 		case DISK:
-			mImageCache = new DiskLruImageCache(context, uniqueName, cacheSize,
+			mImageCache = new DiskLruImageCache(context, uniqueName, diskCacheSize,
 					compressFormat, quality);
 			break;
 		case MEMORY:
-			mImageCache = new BitmapLruImageCache(cacheSize);
+			mImageCache = new BitmapLruImageCache(memoryCacheSize);
 			break;
 		case DUAL:
-			mImageCache = new DualLruImageCache(context, uniqueName, cacheSize,
+			mImageCache = new DualLruImageCache(context, uniqueName, 
+					memoryCacheSize, diskCacheSize,
 					compressFormat, quality);
 			break;
 		default:
-			mImageCache = new BitmapLruImageCache(cacheSize);
+			mImageCache = new BitmapLruImageCache(memoryCacheSize);
 			break;
 		}
 

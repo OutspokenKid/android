@@ -76,6 +76,9 @@ public abstract class BaseFragment extends Fragment
 		}
 		
 		mThisView = inflater.inflate(getContentViewId(), null);
+		bindViews();
+		createPage();
+		
 		return mThisView;
 	}
 	
@@ -86,9 +89,6 @@ public abstract class BaseFragment extends Fragment
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onActivityCreated.  ");
 		
 		try {
-			bindViews();
-			createPage();
-			
 			setListeners();
 			setSizes();
 		} catch (Exception e) {

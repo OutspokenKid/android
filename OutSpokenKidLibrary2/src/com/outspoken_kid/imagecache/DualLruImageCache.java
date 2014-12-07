@@ -22,9 +22,10 @@ public class DualLruImageCache implements ImageCache {
 	private DiskLruImageCache diskCache;
 	
 	public DualLruImageCache(Context context, String uniqueName,
-			int diskCacheSize, CompressFormat compressFormat, int quality) {
+			int memoryCacheSize, int diskCacheSize, 
+			CompressFormat compressFormat, int quality) {
 		
-		memoryCache = new BitmapLruImageCache(diskCacheSize);
+		memoryCache = new BitmapLruImageCache(memoryCacheSize);
 		diskCache = new DiskLruImageCache(context, uniqueName, diskCacheSize * 10,
 				compressFormat, quality);
 	}

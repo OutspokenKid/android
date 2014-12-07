@@ -18,6 +18,7 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 	protected Context context;
 	protected LayoutInflater inflater;
 	protected ArrayList<BaseModel> models;
+	protected View firstView;
 	
 	public OutSpokenAdapter(Context context, LayoutInflater inflater, ArrayList<BaseModel> models) {
 		
@@ -78,8 +79,11 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 			wrapper.setValues(model);
 			wrapper.setListeners();
 			
-			return convertView;
+			if(position == 0) {
+				firstView = convertView;
+			}
 			
+			return convertView;
 		} catch (Exception e) {
 			LogUtils.trace(e);
 			return getBlankView();
@@ -99,5 +103,10 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 		} else {
 			return null;
 		}
+	}
+
+	public View getFirstView() {
+		
+		return firstView;
 	}
 }

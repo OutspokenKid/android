@@ -44,7 +44,7 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class BaseFragmentActivity extends FragmentActivity 
 		implements OutspokenActivityInterface {
-
+	
 	//For uploadImage.
 	public static OnAfterPickImageListener onAfterPickImageListener;
 	

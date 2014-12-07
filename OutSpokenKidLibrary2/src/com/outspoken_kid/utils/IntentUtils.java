@@ -147,4 +147,22 @@ public class IntentUtils {
 		
 		return false;
 	}
+
+	public static boolean sendEmail(Context context, String mailTo, String body) {
+		
+		try {
+			Intent it = new Intent(Intent.ACTION_SEND);   
+			it.putExtra(Intent.EXTRA_EMAIL, mailTo);   
+			it.putExtra(Intent.EXTRA_TEXT, body);   
+			it.setType("text/plain");   
+			context.startActivity(Intent.createChooser(it, "Choose Email Client"));
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
 }
