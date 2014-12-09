@@ -44,7 +44,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.outspoken_kid.views.holo.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerPopup.OnItemClickedListener;
 import com.zonecomms.clubvera.IntentHandlerActivity;
@@ -228,7 +228,7 @@ public class UserPage extends ZonecommsFragment {
 		tvNickname.setLayoutParams(rp);
 		rp.topMargin = s;
 		tvNickname.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
-		tvNickname.setTextColor(HoloConstants.COLOR_HOLO_TEXT_DARK);
+		tvNickname.setTextColor(Color.rgb(119, 119, 119));
 		tvNickname.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
 		tvNickname.setMaxWidth(l);
 		tvNickname.setEllipsize(TruncateAt.END);

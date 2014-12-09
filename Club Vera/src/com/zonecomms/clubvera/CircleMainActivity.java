@@ -50,7 +50,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.outspoken_kid.views.holo.HoloConstants;
 import com.zonecomms.clubvera.MainActivity.OnAfterLoginListener;
 import com.zonecomms.clubvera.classes.ZoneConstants;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;

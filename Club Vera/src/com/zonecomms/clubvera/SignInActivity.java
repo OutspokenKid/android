@@ -409,6 +409,30 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 		SoftKeyboardUtils.hideKeyboard(this, tvNSeries);
 		super.finish();
 	}
+
+	@Override
+	public int getFragmentFrameResId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setCustomAnimations(FragmentTransaction ft) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getCookieName_D1() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCookieName_S() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 ///////////// Custom methods.
 
@@ -563,17 +587,5 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 	public interface OnAfterSigningInListener {
 
 		public void OnAfterSigningIn(boolean successSignIn);
-	}
-
-	@Override
-	public int getFragmentFrameResId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setCustomAnimations(FragmentTransaction ft) {
-		// TODO Auto-generated method stub
-		
 	}
 }

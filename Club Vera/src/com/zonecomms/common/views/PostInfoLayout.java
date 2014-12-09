@@ -17,7 +17,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.outspoken_kid.views.holo.HoloConstants;
 import com.zonecomms.clubvera.R;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 import com.zonecomms.common.models.Member;

@@ -587,6 +587,18 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		super.onPause();
 	}
+
+	@Override
+	public String getCookieName_D1() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getCookieName_S() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 ///////////////////////// Custom methods.
 
@@ -1523,4 +1535,5 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		
 		public void onAfterLogin();
 	}
+
 }

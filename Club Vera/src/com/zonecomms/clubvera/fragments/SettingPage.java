@@ -31,7 +31,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.WebBrowser;
 import com.outspoken_kid.views.WebBrowser.OnActionWithKeywordListener;
-import com.outspoken_kid.views.holo.holo_light.HoloConstants;
+import com.outspoken_kid.views.holo.HoloConstants;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleButton;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleSpinnerButton;
