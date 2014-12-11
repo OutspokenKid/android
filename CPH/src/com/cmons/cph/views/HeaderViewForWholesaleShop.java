@@ -143,7 +143,7 @@ public class HeaderViewForWholesaleShop extends RelativeLayout {
 		//tvHit.					id : 2
 		tvHit = new TextView(getContext());
 		rp = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, 
+				LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(40));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);

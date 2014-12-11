@@ -166,7 +166,7 @@ public class HeaderViewForRetailShop extends RelativeLayout {
 		//tvLike.
 		tvLike = new TextView(getContext());
 		rp = new RelativeLayout.LayoutParams(
-				LayoutParams.WRAP_CONTENT, 
+				LayoutParams.MATCH_PARENT, 
 				ResizeUtils.getSpecificLength(40));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.ALIGN_BOTTOM, madeCount);

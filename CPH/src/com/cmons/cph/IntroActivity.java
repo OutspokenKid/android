@@ -125,18 +125,25 @@ public class IntroActivity extends Activity {
 
 		LogUtils.log("###IntroActivity.checkSession.  Get Cookies from prefs. =====================");
 		
+		String cookieName1 = "CPH_D1";
+		String cookieName2 = "CPH_S";
+		
 		try {
-			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(ShopActivity.getInstance().getCookieName_D1());
-			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(ShopActivity.getInstance().getCookieName_S());
+			BasicClientCookie bcc1 = SharedPrefsUtils.getCookie(cookieName1);
+			BasicClientCookie bcc2 = SharedPrefsUtils.getCookie(cookieName2);
 			
 			if(bcc1 != null) {
 				RequestManager.getCookieStore().addCookie(bcc1);
-				LogUtils.log("		key : " + bcc1.getName() + ", value : " + bcc1.getValue());
+				LogUtils.log("		key : " + cookieName1 + ", value : " + bcc1.getValue());
+			} else {
+				LogUtils.log("		key : " + cookieName1 + ", value : null");
 			}
 			
 			if(bcc2 != null) {
 				RequestManager.getCookieStore().addCookie(bcc2);
-				LogUtils.log("		key : " + bcc2.getName() + ", value : " + bcc2.getValue());
+				LogUtils.log("		key : " + cookieName2 + ", value : " + bcc2.getValue());
+			} else {
+				LogUtils.log("		key : " + cookieName2 + ", value : null");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
