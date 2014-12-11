@@ -674,19 +674,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		
 		int size = cookies.size();
 		for(int i=0; i<size; i++) {
-			String prefsName = null;
 			
-			if(getCookieName_D1().equals(cookies.get(i).getName())) {
-				prefsName = getCookieName_D1();
-			} else if(getCookieName_S().equals(cookies.get(i).getName())) {
-				prefsName = getCookieName_S();
+			if(getCookieName_D1().equals(cookies.get(i).getName())
+					|| getCookieName_S().equals(cookies.get(i).getName())) {
+				LogUtils.log("\nkey : " + cookies.get(i).getName()
+						+ "\nvalue : " + cookies.get(i).getValue());
+				SharedPrefsUtils.saveCookie(cookies.get(i).getName(), cookies.get(i));
 			} else {
 				continue;
-			}
-
-			if(prefsName != null) {
-				SharedPrefsUtils.saveCookie(prefsName, cookies.get(i));
-				LogUtils.log("		key : " + cookies.get(i).getName());
 			}
 		}
 	}

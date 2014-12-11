@@ -1,5 +1,6 @@
 package com.outspoken_kid.views.holo.holo_light;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,7 +14,6 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.holo.meterials.ViewForButtonBg;
@@ -48,7 +48,6 @@ public class HoloStyleButton extends FrameLayout {
 	private void init() {
 		
 		requestDisallowInterceptTouchEvent(true);
-		textView.setBackgroundColor(Color.TRANSPARENT);
 		
 		viewForBg = new ViewForButtonBg(getContext());
 		viewForBg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -74,6 +73,7 @@ public class HoloStyleButton extends FrameLayout {
 		this.addView(textView);
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		
