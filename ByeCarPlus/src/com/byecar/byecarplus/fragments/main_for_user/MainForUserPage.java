@@ -8,13 +8,16 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -50,6 +53,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 	
 	private OffsetScrollView scrollView;
 	private ViewPager viewPager;
+	private View auctionIcon;
 	private PageNavigatorView pageNavigator;
 	private ProgressBar progressBar;
 	private TextView tvRemainTime;
@@ -86,6 +90,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		
 		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.mainForUserPage_scrollView);
 		viewPager = (ViewPager) mThisView.findViewById(R.id.mainForUserPage_viewPager);
+		auctionIcon = mThisView.findViewById(R.id.mainForUserPage_auctionIcon);
 		pageNavigator = (PageNavigatorView) mThisView.findViewById(R.id.mainForUserPage_pageNavigator);
 		progressBar = (ProgressBar) mThisView.findViewById(R.id.mainForUserPage_progressBar);
 		tvRemainTime = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvRemainTime);
@@ -186,14 +191,51 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			@Override
 			public void onScrollChanged(int offset) {
 				
-				if(offset < 500) {
-					titleBar.setBgAlpha(0.002f * offset);
-					
-				} else if(offset < 700){
-					titleBar.setBgAlpha(1);
-				} else {
-					//Do nothing.
+				try {
+					if(offset < 500) {
+						titleBar.setBgAlpha(0.002f * offset);
+						
+					} else if(offset < 700){
+						titleBar.setBgAlpha(1);
+					} else {
+						//Do nothing.
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
+			}
+		});
+		
+		viewPager.setOnTouchListener(new OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				
+				switch(event.getAction()) {
+				
+				case MotionEvent.ACTION_DOWN:
+					LogUtils.log("###MainForUserPage.onTouch.  down.");
+					GestureSlidingLayout.setScrollLock(true);
+					viewPager.requestDisallowInterceptTouchEvent(true);
+					break;
+					
+				case MotionEvent.ACTION_MOVE:
+					LogUtils.log("###MainForUserPage.onTouch.  move.");
+					GestureSlidingLayout.setScrollLock(true);
+					viewPager.requestDisallowInterceptTouchEvent(true);
+					break;
+					
+				case MotionEvent.ACTION_UP:
+				case MotionEvent.ACTION_CANCEL:
+					LogUtils.log("###MainForUserPage.onTouch.  up or cancel.");
+					GestureSlidingLayout.setScrollLock(false);
+					viewPager.requestDisallowInterceptTouchEvent(false);
+					break;
+				}
+				
+				return false;
 			}
 		});
 		
@@ -203,12 +245,6 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			public void onPageSelected(int arg0) {
 
 				setPagerInfo(arg0);
-				
-				if(arg0 == 0) {
-					GestureSlidingLayout.setScrollLock(false);
-				} else {
-					GestureSlidingLayout.setScrollLock(true);
-				}
 			}
 			
 			@Override
@@ -223,13 +259,22 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 				
 			}
 		});
-	
+		
 		btnAuction.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
 				mActivity.showPage(BCPConstants.PAGE_AUCTION_LIST, null);
+			}
+		});
+	
+		btnRegistration.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_AUCTION_REGISTRATION, null);
 			}
 		});
 	}
@@ -249,9 +294,9 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//auctionIcon.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_auctionIcon).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(96);
-		rp.height = ResizeUtils.getSpecificLength(96);
+		rp = (RelativeLayout.LayoutParams) auctionIcon.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(95);
+		rp.height = ResizeUtils.getSpecificLength(95);
 		rp.leftMargin = ResizeUtils.getSpecificLength(12);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 		
@@ -432,7 +477,10 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		super.onPause();
 		
 		needRunThread = false;
-		checkTime.interrupt();
+		
+		if(checkTime != null) {
+			checkTime.interrupt();
+		}
 	}
 	
 //////////////////// Custom methods.
@@ -602,6 +650,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		} else {
 			pageNavigator.setVisibility(View.INVISIBLE);
 		}
+
+		auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 	}
 
 	public void runThread() {
@@ -761,6 +811,17 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 					} catch (OutOfMemoryError oom) {
 						LogUtils.trace(oom);
 					}
+				}
+			});
+
+			ivImage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("car", bids.get(position));
+					mActivity.showPage(BCPConstants.PAGE_AUCTION_DETAIL, bundle);
 				}
 			});
 			

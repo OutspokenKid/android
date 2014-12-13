@@ -36,8 +36,7 @@
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_alignBottom="@id/mainForUserPage_viewPager"
-    			android:layout_alignLeft="@id/mainForUserPage_viewPager"
-    			android:background="@drawable/main_hotdeal_mark" />
+    			android:layout_alignLeft="@id/mainForUserPage_viewPager" />
             
             <View 
                 android:id="@+id/mainForUserPage_remainBg"

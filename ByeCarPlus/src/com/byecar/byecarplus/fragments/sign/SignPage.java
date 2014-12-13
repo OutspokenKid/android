@@ -666,7 +666,6 @@ public class SignPage extends BCPFragmentForSign {
 			try {
 				Thread.sleep(SLIDE_DURATION - DELAY);
 			} catch (InterruptedException e) {
-				LogUtils.trace(e);
 			}
 			
 			return null;

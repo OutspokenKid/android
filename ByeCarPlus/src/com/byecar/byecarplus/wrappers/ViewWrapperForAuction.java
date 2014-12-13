@@ -76,10 +76,8 @@ public class ViewWrapperForAuction extends ViewWrapper {
 			rp.leftMargin = ResizeUtils.getSpecificLength(12);
 			rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 			
-			//remainBg.
 			rp = (RelativeLayout.LayoutParams) remainBg.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(147);
-			rp.topMargin = -2;
 			
 			//progressBar.
 			rp = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
@@ -163,6 +161,7 @@ public class ViewWrapperForAuction extends ViewWrapper {
 						+ row.getContext().getString(R.string.won));
 				tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
 				
+				setImage(ivImage, car.getRep_img_url());
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

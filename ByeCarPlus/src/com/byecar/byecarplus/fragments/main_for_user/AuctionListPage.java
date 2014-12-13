@@ -4,10 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -32,6 +35,9 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
 	private Button btnResistration;
+	private Button btnGuide;
+	
+	private AlphaAnimation aaIn, aaOut;
 	
 	@Override
 	public void bindViews() {
@@ -41,11 +47,17 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.auctionListPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.auctionListPage_listView);
 		btnResistration = (Button) mThisView.findViewById(R.id.auctionListPage_btnRegistration);
+		btnGuide = (Button) mThisView.findViewById(R.id.auctionListPage_btnGuide);
 	}
 
 	@Override
 	public void setVariables() {
 
+		aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		
+		aaOut = new AlphaAnimation(1, 0);
+		aaOut.setDuration(300);
 	}
 
 	@Override
@@ -63,15 +75,31 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
         		Color.argb(255, 255, 204, 153), 
         		Color.argb(255, 255, 255, 153));
         swipeRefreshLayout.setEnabled(true);
+        
+        listView.setDivider(null);
+		listView.setDividerHeight(0);
 	}
 
 	@Override
 	public void setListeners() {
 
 		listView.setOnScrollListener(new OnScrollListener() {
+
+			int lastStatus = 0;
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				
+				if(scrollState == 0 && lastStatus != 0) {
+					btnResistration.setVisibility(View.VISIBLE);
+					btnResistration.startAnimation(aaIn);
+					
+				} else if(scrollState != 0 && lastStatus == 0) {
+					btnResistration.setVisibility(View.INVISIBLE);
+					btnResistration.startAnimation(aaOut);
+				}
+				
+				lastStatus = scrollState;
 			}
 			
 			@Override
@@ -82,19 +110,23 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 					downloadInfo();
 				}
 
-				if(adapter.getFirstView() == null) {
-					ToastUtils.showToast("adapter.getFirstView() is null");
-				} else {
-					int offset = -adapter.getFirstView().getTop();
-					
-					if(offset < 500) {
-						titleBar.setBgAlpha(0.002f * offset);
+				try {
+					if(adapter.getFirstView() != null) {
+						int offset = -adapter.getFirstView().getTop();
 						
-					} else if(offset < 700){
-						titleBar.setBgAlpha(1);
-					} else {
-						//Do nothing.
+						if(offset < 500) {
+							titleBar.setBgAlpha(0.002f * offset);
+							
+						} else if(offset < 700){
+							titleBar.setBgAlpha(1);
+						} else {
+							//Do nothing.
+						}
 					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
 		});
@@ -106,7 +138,9 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 					long id) {
 				
 				try {
-					ToastUtils.showToast("item clicked, position : " + position);
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("car", (Car) models.get(position));
+					mActivity.showPage(BCPConstants.PAGE_AUCTION_DETAIL, bundle);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {
@@ -131,6 +165,24 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 			    }, 2000);
 			}
 		});
+		
+		btnResistration.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("등록");
+			}
+		});
+		
+		btnGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("가이드");
+			}
+		});
 	}
 
 	@Override
@@ -142,6 +194,13 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 		rp = (RelativeLayout.LayoutParams) btnResistration.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(120);
+		
+		//btnGuide.
+		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 	}
 
 	@Override
@@ -171,7 +230,7 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 	@Override
 	public void downloadInfo() {
 		
-		url = BCPAPIs.AUCTION_URL;
+		url = BCPAPIs.BIDS_LIST_URL;
 		
 		super.downloadInfo();
 	}
@@ -179,15 +238,16 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 
+		int size = 0;
+		
 		try {
 			JSONArray arJSON = objJSON.getJSONArray("onsalecars");
 			
-			int size = arJSON.length();
+			size = arJSON.length();
 			for(int i=0; i<size; i++) {
 				Car car = new Car(arJSON.getJSONObject(i));
 				car.setItemCode(BCPConstants.ITEM_AUCTION);
 				models.add(car);
-				LogUtils.log("###AuctionList.parseJSON.  model : " + car.getModel_name());
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -197,7 +257,11 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 			swipeRefreshLayout.setRefreshing(false);
 		}
 		
-		return false;
+		if(size < NUMBER_OF_LISTITEMS) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

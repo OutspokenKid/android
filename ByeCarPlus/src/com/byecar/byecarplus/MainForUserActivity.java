@@ -29,7 +29,9 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
+import com.byecar.byecarplus.fragments.main_for_user.AuctionDetailPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
+import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -269,6 +271,12 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_AUCTION_LIST:
 			return new AuctionListPage();
+			
+		case BCPConstants.PAGE_AUCTION_DETAIL:
+			return new AuctionDetailPage();
+			
+		case BCPConstants.PAGE_AUCTION_REGISTRATION:
+			return new AuctionRegistrationPage();
 		}
 		
 		return null;

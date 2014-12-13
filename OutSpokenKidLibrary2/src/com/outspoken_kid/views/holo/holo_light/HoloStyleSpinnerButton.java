@@ -72,6 +72,7 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 			padding = 8;
 		}
 
+		setBackgroundColor(Color.TRANSPARENT);
 		setOnClickListener(new OnClickListener() {
 			
 			@Override

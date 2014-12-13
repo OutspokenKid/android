@@ -4,5 +4,6 @@
     <color name="page_bg">#dcdcdc</color>
     <color name="progress_bg">#b2604633</color>
     <color name="progress_guage">#febc2a</color>
+    <color name="color_orange">#febc2a</color>
 	    
 </resources>

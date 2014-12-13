@@ -1,12 +1,16 @@
 package com.byecar.byecarplus.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Car extends BaseModel {
+public class Car extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = 6978779511721704607L;
+	
 	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
 	public static final int STAND_BY = 0;
 	public static final int BIDDING = 10;

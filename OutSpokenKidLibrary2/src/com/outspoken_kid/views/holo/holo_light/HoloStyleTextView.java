@@ -55,6 +55,8 @@ public class HoloStyleTextView extends FrameLayout {
 			padding = 8;
 		}
 		
+		setBackgroundColor(Color.TRANSPARENT);
+		
 		textView = new TextView(getContext());
 		textView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		textView.setBackgroundColor(Color.TRANSPARENT);

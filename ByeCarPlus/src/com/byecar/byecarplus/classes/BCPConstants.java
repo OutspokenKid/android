@@ -14,6 +14,7 @@ public class BCPConstants {
 	public static final int ITEM_NOTICE = 1;
 	public static final int ITEM_AUCTION = 2;
 	
+	//Pages for sign.
 	public static final int PAGE_SIGN = 1;
 	public static final int PAGE_SIGN_IN = 2;
 	public static final int PAGE_SIGN_UP_FOR_COMMON = 3;
@@ -21,6 +22,9 @@ public class BCPConstants {
 	public static final int PAGE_FIND_PW = 5;
 	public static final int PAGE_TERM_OF_USE = 6;
 	
+	//Pages for user.
 	public static final int PAGE_MAIN_FOR_USER = 7;
 	public static final int PAGE_AUCTION_LIST = 8;
+	public static final int PAGE_AUCTION_DETAIL = 9;
+	public static final int PAGE_AUCTION_REGISTRATION = 10;
 }

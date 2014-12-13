@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/auctionDetailPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/auctionDetailPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/auctionDetailPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+    		
+            <ImageView 
+		        android:id="@+id/auctionDetailPage_ivImage"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:scaleType="centerCrop"
+		        android:background="@drawable/main_auction_default" />
+		    
+		    <View
+		        android:id="@+id/auctionDetailPage_auctionIcon"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignBottom="@id/auctionDetailPage_ivImage"
+		        android:layout_alignLeft="@id/auctionDetailPage_ivImage"
+		        android:background="@drawable/main_hotdeal_mark" />
+		
+		    <View
+		        android:id="@+id/auctionDetailPage_remainBg"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/auctionDetailPage_ivImage"
+		        android:background="@drawable/main_car_info_img1_bg" />
+		
+		    <ProgressBar
+		        android:id="@+id/auctionDetailPage_progressBar"
+		        style="?android:attr/progressBarStyleHorizontal"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_remainBg"
+		        android:max="100"
+		        android:progress="50"
+		        android:progressDrawable="@drawable/progressbar_custom" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvRemainTime"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+		        android:layout_centerHorizontal="true"
+		        android:gravity="top"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvRemainTimeText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
+		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+		        android:gravity="center_vertical"
+		        android:text="@string/remainTime"
+		        android:textColor="#fff" />
+		
+		    <View
+		        android:id="@+id/auctionDetailPage_timeIcon"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
+		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+		        android:background="@drawable/main_time_icon" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/auctionDetailPage_progressBar"
+		        android:ellipsize="end"
+		        android:gravity="bottom|left"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/auctionDetailPage_tvCarInfo1"
+		        android:ellipsize="end"
+		        android:gravity="top|left"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvCurrentPrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_below="@id/auctionDetailPage_progressBar"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvCurrentPriceText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@id/auctionDetailPage_tvCurrentPrice"
+		        android:layout_toLeftOf="@id/auctionDetailPage_tvCurrentPrice"
+		        android:text="@string/currentPrice"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvBidCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/auctionDetailPage_tvCurrentPrice"
+		        android:layout_below="@id/auctionDetailPage_tvCurrentPrice"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_headerForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_remainBg"
+		        android:background="@drawable/detail_head1" />
+		    
+		    <View
+		        android:id="@+id/auctionDetailPage_arrowForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_headerForDealer"
+		        android:layout_alignRight="@id/auctionDetailPage_headerForDealer"
+		        android:background="@drawable/detail_toggle_up" />
+		    
+		    
+		    <FrameLayout
+		        android:id="@+id/auctionDetailPage_frameForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_headerForDealer"
+		        android:background="@drawable/detail_body1" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_footerForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_frameForDealer"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_headerForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_footerForDealer"
+		        android:background="@drawable/detail_head2" />
+		    
+		    <View
+		        android:id="@+id/auctionDetailPage_arrowForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_headerForInfo"
+		        android:layout_alignRight="@id/auctionDetailPage_headerForInfo"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/auctionDetailPage_relativeForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_headerForInfo"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" >
+		        
+		        <TextView 
+		            android:id="@+id/auctionDetailPage_tvDetailInfo1"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentLeft="true"
+		        	android:textColor="#737373"
+		        	android:gravity="left" />
+		        
+		        <TextView 
+		            android:id="@+id/auctionDetailPage_tvDetailInfo2"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentRight="true"
+		        	android:textColor="@color/holo_text"
+		        	android:gravity="right" />
+		        
+			</RelativeLayout>
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_footerForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_relativeForInfo"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_headerForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_footerForInfo"
+		        android:background="@drawable/detail_head3" />
+		    
+		    <View
+		        android:id="@+id/auctionDetailPage_arrowForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_headerForOption"
+		        android:layout_alignRight="@id/auctionDetailPage_headerForOption"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/auctionDetailPage_relativeForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_headerForOption"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_footerForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_relativeForOption"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_headerForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_footerForOption"
+		        android:background="@drawable/detail_head4" />
+		    
+		    <View
+		        android:id="@+id/auctionDetailPage_arrowForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/auctionDetailPage_headerForDescription"
+		        android:layout_alignRight="@id/auctionDetailPage_headerForDescription"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <TextView
+		        android:id="@+id/auctionDetailPage_tvDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_headerForDescription"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" />
+		    
+		    <View 
+		        android:id="@+id/auctionDetailPage_footerForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/auctionDetailPage_tvDescription"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:layout_width="10dp"
+		        android:layout_height="10dp"
+		        android:layout_below="@id/auctionDetailPage_footerForDescription" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.byecarplus.views.TitleBar
+        android:id="@+id/auctionDetailPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <Button
+        android:id="@+id/auctionDetailPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/auction_guide_btn" />
+        
+</RelativeLayout>

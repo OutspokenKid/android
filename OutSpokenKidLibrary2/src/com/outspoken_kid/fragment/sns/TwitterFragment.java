@@ -39,15 +39,11 @@ import com.outspoken_kid.views.WebBrowser.OnActionWithKeywordListener;
  *
  */
 public abstract class TwitterFragment extends SNSFragment {
-	
-	public static String TWITTER_CONSUMER_KEY = "pwlAZrf6pYIkAIye12d5uKrAr";
-    public static String TWITTER_CONSUMER_SECRET = "WmeHBWYE0lVsNVr0g5j5keSp89sLJzCjsjCEd8wqMSgUfdUng7";
     
-    public static String TWITTER_CALLBACK_URL = "http://clubvera.twitter.oauth.response";
-    public static String URL_PARAMETER_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
-    public static String PREFERENCE_TWITTER_OAUTH_TOKEN="TWITTER_OAUTH_TOKEN";
-    public static String PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET="TWITTER_OAUTH_TOKEN_SECRET";
-    public static String PREFERENCE_TWITTER_IS_LOGGED_IN="TWITTER_IS_LOGGED_IN";
+    protected String URL_PARAMETER_TWITTER_OAUTH_VERIFIER = "oauth_verifier";
+    protected String PREFERENCE_TWITTER_OAUTH_TOKEN="TWITTER_OAUTH_TOKEN";
+    protected String PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET="TWITTER_OAUTH_TOKEN_SECRET";
+    protected String PREFERENCE_TWITTER_IS_LOGGED_IN="TWITTER_IS_LOGGED_IN";
 	
 	private RequestToken requestToken = null;
     private TwitterFactory twitterFactory = null;
@@ -59,6 +55,9 @@ public abstract class TwitterFragment extends SNSFragment {
 	private String filePath;
 
 	public abstract WebBrowser getWebBrowser();
+	public abstract String getTwitterConsumerKey();
+	public abstract String getTwitterConsumerSecret();
+	public abstract String getTwitterCallBackUrl();
 	
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -180,7 +179,7 @@ public abstract class TwitterFragment extends SNSFragment {
 		}
 		
 		Uri uri = intent.getData();
-		if (uri != null && uri.toString().startsWith(TWITTER_CALLBACK_URL)) {
+		if (uri != null && uri.toString().startsWith(getTwitterCallBackUrl())) {
             String verifier = uri.getQueryParameter(URL_PARAMETER_TWITTER_OAUTH_VERIFIER);
             new TwitterGetAccessTokenTask().execute(verifier);
 		}
@@ -202,7 +201,7 @@ public abstract class TwitterFragment extends SNSFragment {
 
 		if (requestToken == null) {
             try {
-                requestToken = twitterFactory.getInstance().getOAuthRequestToken(TWITTER_CALLBACK_URL);
+                requestToken = twitterFactory.getInstance().getOAuthRequestToken(getTwitterCallBackUrl());
             } catch (TwitterException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
@@ -214,8 +213,8 @@ public abstract class TwitterFragment extends SNSFragment {
 	private void setTwitter() {
 		
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-        configurationBuilder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
-        configurationBuilder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
+        configurationBuilder.setOAuthConsumerKey(getTwitterConsumerKey());
+        configurationBuilder.setOAuthConsumerSecret(getTwitterConsumerSecret());
         Configuration configuration = configurationBuilder.build();
         twitterFactory = new TwitterFactory(configuration);
         twitter = twitterFactory.getInstance();
