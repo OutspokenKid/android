@@ -24,9 +24,6 @@ public class ZonecommsApplication extends OutSpokenApplication {
 		
 		Resources res = getResources();
 		HoloConstants.COLOR_HOLO_BG = res.getColor(R.color.renewal_bg);
-		HoloConstants.COLOR_HOLO_COVER = res.getColor(R.color.color_button_cover);
-		HoloConstants.COLOR_HOLO_TARGET_ON = res.getColor(R.color.color_line_on);
-		HoloConstants.COLOR_HOLO_TARGET_OFF = res.getColor(R.color.color_line_off);
 		HoloConstants.COLOR_HOLO_TEXT = res.getColor(R.color.renewal_text);
 		HoloConstants.COLOR_HOLO_TEXT = res.getColor(R.color.renewal_text_dark);
 		HoloConstants.COLOR_HOLO_TEXT_HINT = res.getColor(R.color.renewal_text_light);

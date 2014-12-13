@@ -120,14 +120,6 @@ public class CircleMainActivity extends Activity {
             
             setSizes();
             setListeners();
-            
-    		//Test.
-    		//HoloConstants 설정. 
-        	HoloConstants.COLOR_HOLO_TARGET_ON = Color.parseColor("#b27a38ff");
-    		HoloConstants.COLOR_HOLO_TARGET_OFF = Color.parseColor("#997a38ff");
-        	
-    		//기존 메인 TitleBar 색 설정.
-    		TitleBar.titleBarColor = Color.parseColor("#b27a38ff");
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

@@ -1,6 +1,7 @@
 package com.zonecomms.clubvera.fragments;
 
 import java.net.URLEncoder;
+import java.util.Locale;
 
 import org.json.JSONObject;
 
@@ -870,25 +871,31 @@ public class SettingPage extends ZonecommsFragment {
 					LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					if(objJSON.has("push_all") && !StringUtils.isEmpty(objJSON.getString("push_all"))
-							&& objJSON.getString("push_all").equals("Y")) {
-						cbNotiAll.setChecked(true);
-					} else {
+					JSONObject objData = objJSON.getJSONObject("data");
+					
+					try {
+						if(objData.getString("push_all").toUpperCase(Locale.getDefault()).equals("Y")) {
+							cbNotiAll.setChecked(true);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
 						cbNotiAll.setChecked(false);
 					}
 					
-					if(objJSON.has("push_message") && !StringUtils.isEmpty(objJSON.getString("push_message"))
-							&& objJSON.getString("push_message").equals("Y")) {
-						cbNotiMessage.setChecked(true);
-					} else {
-						cbNotiMessage.setChecked(false);
+					try {
+						if(objData.getString("push_message").toUpperCase(Locale.getDefault()).equals("Y")) {
+							cbNotiMessage.setChecked(true);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
 					}
 					
-					if(objJSON.has("push_reply") && !StringUtils.isEmpty(objJSON.getString("push_reply"))
-							&& objJSON.getString("push_reply").equals("Y")) {
-						cbNotiReply.setChecked(true);
-					} else {
-						cbNotiReply.setChecked(false);
+					try {
+						if(objData.getString("push_reply").toUpperCase(Locale.getDefault()).equals("Y")) {
+							cbNotiReply.setChecked(true);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);

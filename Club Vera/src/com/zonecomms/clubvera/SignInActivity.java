@@ -105,9 +105,11 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 		tvNSeries.append(sp2); 
 		
 		etId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+		etId.setHint(R.string.id);
 		
 		etPw.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		etPw.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
+		etPw.setHint(R.string.password);
 		
 		final FacebookFragment ff = new FacebookFragment() {
 			
@@ -188,6 +190,24 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 			public WebBrowser getWebBrowser() {
 
 				return webBrowser;
+			}
+
+			@Override
+			public String getTwitterConsumerKey() {
+
+				return getString(R.string.twitter_consumerKey);
+			}
+
+			@Override
+			public String getTwitterConsumerSecret() {
+
+				return getString(R.string.twitter_consumerSecret);
+			}
+
+			@Override
+			public String getTwitterCallBackUrl() {
+
+				return getString(R.string.twitter_callback_url);
 			}
 		};
 	    getSupportFragmentManager().beginTransaction().add(twFrame.getId(), tf, "twFragment").commit();

@@ -3,19 +3,24 @@
 <resources>
 
     <!-- Customize -->
+    <string name="clubAddress">서울특별시 마포구 서교동 356&#8211;1 서교호텔별관 B2F</string>
+	<string name="textForIntroduce">수, 목, 금, 토 \nP.M. 10:00 ~ A.M. 06:00\n\n판타스틱한 조명 시스템, 레이저 시스템, LED 시스템, 강렬한 사운드 시스템을 기반으로 화려한 댄스 플로어, 복층구조, VVIP를 위한 럭셔리한 라운지, 테이블, 룸으로 구성되어 있으며 홍대입구 전철역 1분거리 등 지리적으로 완벽한 편의를 제공하며 평일은 연예인 쇼케이스, 팬미팅 등과 방송 촬영이 진행되며 매주 수,목,금,토, 클럽 베라만의 최고의 파티가 진행되고 있습니다.</string>
     <string name="app_name">VERA</string>
-    <string name="clubAddress">Address of Vera..</string>
     <string name="textForCafe">http://cafe.naver.com/hybridclubvera</string>
 	<string name="textForCall">023380957</string>
 	<string name="textForFacebook">http://www.facebook.com/clubverakorea</string>
-	<string name="textForIntroduce">Text for introtuce.\nText for introtuce.\nText for introtuce.</string>
-
+	
 	<!-- For Facebook. -->
 	<string name="app_id">1459537684333113</string>
 	
 	<!-- For Kakao. -->	
 	<string name="kakao_app_key">a6d444469110017dc9ac295e9bc433eb</string>
-	
+
+	<!-- For Twitter. -->
+	<string name="twitter_consumerKey">pwlAZrf6pYIkAIye12d5uKrAr</string>
+	<string name="twitter_consumerSecret">WmeHBWYE0lVsNVr0g5j5keSp89sLJzCjsjCEd8wqMSgUfdUng7</string>
+	<string name="twitter_callback_url">http://clubvera.twitter.oauth.response</string>
+		
 	<!-- For NaverMap. -->	
 	<string name="naverMapKey">1b4074a32aa9dccf797262dff9f7b1fa</string>
 	<string name="latitude">37.554387</string>
@@ -39,14 +44,5 @@
 	<color name="intro_start">#ffffff</color>
 	<color name="intro_center">#ffffff</color>
 	<color name="intro_end">#ffffff</color>
-	
-	<!-- Colors of main menu. -->
-	<color name="color_main_big">#a7a9ab</color>
-	<color name="color_main_small">#d1d3d4</color>
-	
-	<!-- Color of button cover, select brighter color bitween color_main_big and color_main_small-->
-	<color name="color_line_on">#bd1547</color>
-	<color name="color_line_off">#99bd1547</color>
-	<color name="color_button_cover">#99bd1547</color>
 	
 </resources>
