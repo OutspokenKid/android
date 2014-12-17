@@ -188,7 +188,7 @@ public class GridPage extends ZonecommsListFragment {
 //					+ "?board_nid=" + boardIndex
 					+ "?board_nid=1"
 					+ "&last_sb_spot_nid=" + lastIndexno
-					+ "&image_size=380";
+					+ "&image_size=308";
 		} else if(type == ZoneConstants.TYPE_MEMBER) {
 			
 			String keyword = "";
@@ -230,12 +230,12 @@ public class GridPage extends ZonecommsListFragment {
 			url = ZoneConstants.BASE_URL + "notice/list" 
 					+ "?notice_type=3"
 					+ "&last_notice_nid=" + lastIndexno
-					+ "&image_size=308";
+					+ "&image_size=640";
 		} else if(type == ZoneConstants.TYPE_PHOTO) {
 			url = ZoneConstants.BASE_URL + "link/list"
 					+ "?link_type=1"
 					+ "&last_link_nid=" + lastIndexno
-					+ "&image_size=308";
+					+ "&image_size=640";
 		}
 
 		LogUtils.log("###GridPage.downloadInfo.  url : " + url);

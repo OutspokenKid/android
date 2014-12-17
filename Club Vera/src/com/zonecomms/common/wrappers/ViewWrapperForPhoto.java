@@ -73,7 +73,7 @@ public class ViewWrapperForPhoto extends ViewWrapper {
 					tvTitle.setText(link.getTitle());
 				}
 				
-				setImage(ivImage, link.getLink_datas()[0]);
+				setImage(ivImage, link.getThumbnails()[0]);
 			} else {
 				setUnusableView();
 			}
