@@ -109,6 +109,10 @@ public class CircleMainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circlemain);
         context = this;
+    
+        if(ZonecommsApplication.startupInfo == null) {
+			restartApplication();
+		}
         
         try {
         	ZonecommsApplication.initWithActivity(this);
@@ -517,7 +521,10 @@ public class CircleMainActivity extends Activity {
 			
 			@Override
 			public void onAnimationEnd(Animation animation) {
-				circleHeaderView.showHeader();
+				
+				if(circleHeaderView != null) {
+					circleHeaderView.showHeader();
+				}
 			}
 		});
     	taIn.setInterpolator(this, android.R.anim.accelerate_decelerate_interpolator);
@@ -623,8 +630,6 @@ public class CircleMainActivity extends Activity {
 						isLastList = true;
 						ToastUtils.showToast(R.string.lastPage);
 					}
-					
-					listAdapter.notifyDataSetChanged();
 					
 					if(isFirstLoading) {
 						
@@ -1158,5 +1163,12 @@ public class CircleMainActivity extends Activity {
 		}
 		
 		showAlertDialog(title, message, getString(R.string.confirm), getString(R.string.cancel), ocl, null);
+	}
+
+	public void restartApplication() {
+		
+		startActivity(new Intent(this, IntroActivity.class));
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
 	}
 }

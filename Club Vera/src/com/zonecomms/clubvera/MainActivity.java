@@ -109,6 +109,10 @@ public class MainActivity extends ZonecommsFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		context = this;
 		super.onCreate(savedInstanceState);
+
+		if(ZonecommsApplication.startupInfo == null) {
+			restartApplication();
+		}
 		
 		try {
 			ZonecommsApplication.initWithActivity(this);
@@ -1522,6 +1526,13 @@ public class MainActivity extends ZonecommsFragmentActivity {
 				}
 			}
 		}
+	}
+	
+	public void restartApplication() {
+		
+		startActivity(new Intent(this, IntroActivity.class));
+		overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		finish();
 	}
 	
 /////////////////////////// Interfaces.
