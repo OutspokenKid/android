@@ -369,7 +369,7 @@ public class UserPage extends ZonecommsFragment {
 			bgMenu.setPadding(0, 0, 0, 0);
 			
 			if(i == mode) {
-				bgMenu.setBackgroundColor(Color.rgb(119, 119, 119));
+				bgMenu.setBackgroundColor(TitleBar.titleBarColor);
 			} else {
 				bgMenu.setBackgroundColor(Color.rgb(217, 217, 217));
 			}
