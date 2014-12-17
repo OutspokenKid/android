@@ -550,7 +550,7 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 		String url = ZoneConstants.BASE_URL + "auth/login/sns" +
 				"?sns_id=" + id +
 				"&sns_type=" + type + 
-				"&sns_nickname=" + nickname +
+				"&sns_nickname=" + StringUtils.getUrlEncodedString(nickname) +
 				"&sb_id=" + ZoneConstants.PAPP_ID +
 				"&image_size=640";
 		
