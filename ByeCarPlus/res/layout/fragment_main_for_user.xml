@@ -51,7 +51,7 @@
     			android:layout_height="0dp"
     			android:layout_alignTop="@id/mainForUserPage_remainBg"
     			style="?android:attr/progressBarStyleHorizontal"
-    			android:progressDrawable="@drawable/progressbar_custom"
+    			android:progressDrawable="@drawable/progressbar_custom_orange"
     			android:max="86400"
     			android:progress="0" />
             

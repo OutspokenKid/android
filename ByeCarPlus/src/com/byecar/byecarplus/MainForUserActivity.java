@@ -13,10 +13,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -32,6 +34,7 @@ import com.byecar.byecarplus.classes.BCPFragmentActivity;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionDetailPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
+import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -277,6 +280,9 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_AUCTION_REGISTRATION:
 			return new AuctionRegistrationPage();
+		
+		case BCPConstants.PAGE_EDIT_USER_INFO:
+			return new EditUserInfoPage();
 		}
 		
 		return null;
@@ -479,6 +485,17 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		rp.height = ResizeUtils.getSpecificLength(40);
 		rp.topMargin = ResizeUtils.getSpecificLength(146);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+
+		btnEdit.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("from", EditUserInfoPage.FROM_MENU);
+				showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+			}
+		});
 		
 		rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 		rp.topMargin = ResizeUtils.getSpecificLength(20);

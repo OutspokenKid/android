@@ -169,4 +169,9 @@ public class TitleBar extends RelativeLayout {
 			tvNoticeCount.setText("" + count);
 		}
 	}
+
+	public void hideBottomLine() {
+		
+		bottomLine.setVisibility(View.INVISIBLE);
+	}
 }

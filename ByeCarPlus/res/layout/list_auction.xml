@@ -34,7 +34,7 @@
         android:layout_alignTop="@id/list_bid_remainBg"
         android:max="100"
         android:progress="50"
-        android:progressDrawable="@drawable/progressbar_custom" />
+        android:progressDrawable="@drawable/progressbar_custom_orange" />
 
     <TextView
         android:id="@+id/list_bid_tvRemainTime"

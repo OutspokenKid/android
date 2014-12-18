@@ -20,7 +20,7 @@
         android:layout_below="@id/auctionRegistrationPage_titleBar"
         android:max="100"
         android:progress="50"
-        android:progressDrawable="@drawable/progressbar_custom" />
+        android:progressDrawable="@drawable/progressbar_custom_red" />
     
     <TextView
         android:id="@+id/auctionRegistrationPage_tvPercentage"
@@ -28,7 +28,7 @@
         android:layout_height="0dp"
         android:layout_alignTop="@id/auctionRegistrationPage_progressBar"
         android:layout_centerHorizontal="true"
-        android:gravity="right"
+        android:gravity="right|bottom"
         android:textColor="#fff" />
     
     <TextView
@@ -72,72 +72,25 @@
 		        android:textColor="@color/holo_text_hint" />
             
             <TextView
-		        android:id="@+id/auctionRegistrationPage_tvCertifyPhoneNumber"
+		        android:id="@+id/auctionRegistrationPage_tvInputDealerInfo"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/auctionRegistrationPage_tvWriteAllContents"
 		        android:gravity="center_vertical"
-		        android:text="@string/certifyPhoneNumber"
-		        android:textColor="@color/holo_text" />
-            
-            <TextView
-		        android:id="@+id/auctionRegistrationPage_tvRequireCertifyPhoneNumber"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignParentRight="true"
-		        android:layout_alignTop="@id/auctionRegistrationPage_tvCertifyPhoneNumber"
-		        android:gravity="center_vertical"
-		        android:text="@string/requireCertifyPhoneNumber"
-		        android:textColor="@color/holo_text_hint" />
-            
-            <Button 
-                android:id="@+id/auctionRegistrationPage_btnEditPhoneNumber"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignParentRight="true"
-		        android:layout_alignTop="@id/auctionRegistrationPage_tvCertifyPhoneNumber"
-		        android:visibility="invisible"
-		        android:background="@drawable/registration_phone_info_btn" />
-
-            <Button 
-                android:id="@+id/auctionRegistrationPage_btnCertifyPhoneNumber"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionRegistrationPage_tvCertifyPhoneNumber"
-		        android:background="@drawable/registration_phone_btn" />
-            
-            <TextView
-		        android:id="@+id/auctionRegistrationPage_tvPhoneNumber"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionRegistrationPage_tvCertifyPhoneNumber"
-		        android:background="@drawable/white_round_box"
-		        android:visibility="invisible"
-		        android:gravity="center"
-		        android:textColor="@color/holo_text_hint" />
-            
-            <TextView
-		        android:id="@+id/auctionRegistrationPage_tvInputDealerInfo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/auctionRegistrationPage_tvPhoneNumber"
-		        android:gravity="center_vertical"
 		        android:text="@string/dealerInfo"
 		        android:textColor="@color/holo_text" />
             
             <TextView
-		        android:id="@+id/auctionRegistrationPage_tvRequireInputDealerInfo"
+		        android:id="@+id/auctionRegistrationPage_tvDealerInfoCertified"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
-		        android:layout_alignParentRight="true"
 		        android:layout_alignTop="@id/auctionRegistrationPage_tvInputDealerInfo"
+		        android:layout_toRightOf="@id/auctionRegistrationPage_tvInputDealerInfo"
+		        android:visibility="invisible"
 		        android:gravity="center_vertical"
-		        android:text="@string/requireInputDealerInfo"
-		        android:textColor="@color/holo_text_hint" />
+		        android:text="@string/dealerInfoCertified"
+		        android:textColor="@color/color_green" />
             
             <Button 
                 android:id="@+id/auctionRegistrationPage_btnEditDealerInfo"
@@ -145,16 +98,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignParentRight="true"
 		        android:layout_alignTop="@id/auctionRegistrationPage_tvInputDealerInfo"
-		        android:visibility="invisible"
 		        android:background="@drawable/registration_user_info_btn" />
-
-            <Button 
-                android:id="@+id/auctionRegistrationPage_btnInputDealerInfo"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionRegistrationPage_tvInputDealerInfo"
-		        android:background="@drawable/registration_user_btn" />
             
             <TextView
 		        android:id="@+id/auctionRegistrationPage_tvDealerInfo"
@@ -162,10 +106,9 @@
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/auctionRegistrationPage_tvInputDealerInfo"
-		        android:background="@drawable/white_round_box"
-		        android:visibility="invisible"
-		        android:gravity="center_vertical"
-		        android:textColor="@color/holo_text_hint" />
+		        android:background="@drawable/registration_box1"
+		        android:gravity="center"
+		        android:textColor="@color/color_green" />
             
             <View
                 android:id="@+id/auctionRegistrationPage_lineAfterInfo"
@@ -314,7 +257,7 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginTop="20dp"
 		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="40dp"
+		        android:layout_marginBottom="20dp"
 		        android:background="@color/holo_text_hint" />
             
             <TextView
@@ -383,7 +326,7 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginTop="20dp"
 		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="40dp"
+		        android:layout_marginBottom="20dp"
 		        android:background="@color/holo_text_hint" />
             
             <TextView
@@ -439,14 +382,26 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginTop="20dp"
 		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="40dp"
+		        android:layout_marginBottom="20dp"
 		        android:background="@color/holo_text_hint" />
             
             <RelativeLayout
 		        android:id="@+id/auctionRegistrationPage_relativeForOption"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_below="@id/auctionRegistrationPage_lineAfterDetailCarInfo" />
+		        android:layout_below="@id/auctionRegistrationPage_lineAfterDetailCarInfo" >
+                
+                <TextView
+			        android:id="@+id/auctionRegistrationPage_tvOption"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignParentLeft="true"
+			        android:layout_alignParentTop="true"
+			        android:gravity="center_vertical"
+			        android:text="@string/carOption"
+			        android:textColor="@color/holo_text" />
+                
+            </RelativeLayout>
             
             <View
                 android:id="@+id/auctionRegistrationPage_lineAfterCarOption"
@@ -456,7 +411,7 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginTop="20dp"
 		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="40dp"
+		        android:layout_marginBottom="20dp"
 		        android:background="@color/holo_text_hint" />
             
             <TextView
@@ -479,6 +434,7 @@
 				android:textColorHint="@color/holo_text_hint"
 				android:hint="@string/hintForCarDescriptionFromDealer"
 				android:gravity="left|top"
+				android:padding="10dp"
 				android:background="@drawable/white_round_box" />
 			
 			<TextView
@@ -487,8 +443,8 @@
 		        android:layout_height="wrap_content"
 		        android:layout_alignRight="@id/auctionRegistrationPage_etCarDescriptionFromDealer"
 		        android:layout_alignBottom="@id/auctionRegistrationPage_etCarDescriptionFromDealer"
-		        android:paddingRight="3dp"
-		        android:paddingBottom="3dp"
+		        android:paddingRight="10dp"
+		        android:paddingBottom="10dp"
 		        android:textColor="@color/holo_text_hint" />
 			
 			<View 
@@ -535,7 +491,7 @@
 			
 			<View 
 			    android:layout_width="10dp"
-		        android:layout_height="20dp"
+		        android:layout_height="40dp"
 		        android:layout_below="@id/auctionRegistrationPage_btnComplete" />
             
         </RelativeLayout>

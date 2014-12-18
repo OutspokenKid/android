@@ -731,8 +731,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			
 			ivImage.setImageDrawable(null);
 			
-			ivImage.setTag(url);
-			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+			ivImage.setTag(imageUrl);
+			DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {

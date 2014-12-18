@@ -2,7 +2,12 @@ package com.byecar.byecarplus.fragments.main_for_user;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -11,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
@@ -19,19 +25,15 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
 public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 
+	private static final int MAX_DESC_COUNT = 200;
+	
 	private ProgressBar progressBar;
 	private TextView tvPercentage;
 	private TextView tvPercentage2;
 	private TextView tvWriteAllContents;
-	private TextView tvCertifyPhoneNumberText;
-	private TextView tvRequireCertifyPhoneNumber;
-	private Button btnEditPhoneNumber;
-	private Button btnCertifyPhoneNumber;
-	private TextView tvPhoneNumber;
 	private TextView tvInputDealerInfoText;
-	private TextView tvRequireInputDealerInfo;
+	private TextView tvDealerInfoCertified;
 	private Button btnEditDealerInfo;
-	private Button btnInputDealerInfo;
 	private TextView tvDealerInfo;
 	private TextView tvCarPhotoText;
 	private Button btnCarPhoto1;
@@ -39,6 +41,7 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	private Button btnCarPhoto3;
 	private Button btnCarPhoto4;
 	private TextView tvMainImageText;
+	private TextView tvAddedPhotoText;
 	private Button btnAddedPhoto1;
 	private Button btnAddedPhoto2;
 	private Button btnAddedPhoto3;
@@ -47,12 +50,14 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	private ImageView ivAddedPhoto2;
 	private ImageView ivAddedPhoto3;
 	private ImageView ivAddedPhoto4;
+	private TextView tvCarInfoText;
 	private Button btnCarInfo1;
 	private Button btnCarInfo2;
 	private Button btnCarInfo3;
 	private Button btnCarInfo4;
 	private Button btnCarInfo5;
 	private Button btnCarInfo6;
+	private TextView tvDetailCarInfo;
 	private HoloStyleEditText etDetailCarInfo1;
 	private HoloStyleEditText etDetailCarInfo2;
 	private HoloStyleEditText etDetailCarInfo3;
@@ -68,6 +73,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	private Button btnImmediatlySale;
 	private Button btnComplete;
 	
+	private View[] optionViews;
+	private boolean[] checked;
+	
+	private int progressValue;
+	
 	@Override
 	public void bindViews() {
 		
@@ -77,15 +87,9 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		tvPercentage = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvPercentage);
 		tvPercentage2 = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvPercentage2);
 		tvWriteAllContents = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvWriteAllContents);
-		tvCertifyPhoneNumberText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvCertifyPhoneNumber);
-		tvRequireCertifyPhoneNumber = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvRequireCertifyPhoneNumber);
-		btnEditPhoneNumber = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnEditPhoneNumber);
-		btnCertifyPhoneNumber = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCertifyPhoneNumber);
-		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvPhoneNumber);
 		tvInputDealerInfoText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvInputDealerInfo);
-		tvRequireInputDealerInfo = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvRequireInputDealerInfo);
+		tvDealerInfoCertified = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvDealerInfoCertified);
 		btnEditDealerInfo = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnEditDealerInfo);
-		btnInputDealerInfo = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnInputDealerInfo);
 		tvDealerInfo = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvDealerInfo);
 		tvCarPhotoText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvCarPhoto);
 		btnCarPhoto1 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarPhoto1);
@@ -93,6 +97,7 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		btnCarPhoto3 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarPhoto3);
 		btnCarPhoto4 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarPhoto4);
 		tvMainImageText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvMainImage);
+		tvAddedPhotoText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvAddedPhoto);
 		btnAddedPhoto1 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnAddedPhoto1);
 		btnAddedPhoto2 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnAddedPhoto2);
 		btnAddedPhoto3 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnAddedPhoto3);
@@ -101,12 +106,14 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		ivAddedPhoto2 = (ImageView) mThisView.findViewById(R.id.auctionRegistrationPage_ivAddedPhoto2);
 		ivAddedPhoto3 = (ImageView) mThisView.findViewById(R.id.auctionRegistrationPage_ivAddedPhoto3);
 		ivAddedPhoto4 = (ImageView) mThisView.findViewById(R.id.auctionRegistrationPage_ivAddedPhoto4);
+		tvCarInfoText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvCarInfo);
 		btnCarInfo1 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo1);
 		btnCarInfo2 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo2);
 		btnCarInfo3 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo3);
 		btnCarInfo4 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo4);
 		btnCarInfo5 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo5);
 		btnCarInfo6 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo6);
+		tvDetailCarInfo = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvDetailCarInfo);
 		etDetailCarInfo1 = (HoloStyleEditText) mThisView.findViewById(R.id.auctionRegistrationPage_etDetailCarInfo1);
 		etDetailCarInfo2 = (HoloStyleEditText) mThisView.findViewById(R.id.auctionRegistrationPage_etDetailCarInfo2);
 		etDetailCarInfo3 = (HoloStyleEditText) mThisView.findViewById(R.id.auctionRegistrationPage_etDetailCarInfo3);
@@ -126,20 +133,69 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 
+		titleBar.hideBottomLine();
+		
+		etDetailCarInfo1.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		etDetailCarInfo2.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		etDetailCarInfo3.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		etDetailCarInfo4.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		etDetailCarInfo5.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		
+		etDetailCarInfo1.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		etDetailCarInfo2.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		etDetailCarInfo3.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		etDetailCarInfo4.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		etDetailCarInfo5.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		
+		etDetailCarInfo1.setHint(R.string.hintForDetailCarInfo1);
+		etDetailCarInfo2.setHint(R.string.hintForDetailCarInfo2);
+		etDetailCarInfo3.setHint(R.string.hintForDetailCarInfo3);
+		etDetailCarInfo4.setHint(R.string.hintForDetailCarInfo4);
+		etDetailCarInfo5.setHint(R.string.hintForDetailCarInfo5);
+		
+		etCarDescriptionFromDealer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_DESC_COUNT)});
+		tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
 	}
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		btnEditDealerInfo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("from", EditUserInfoPage.FROM_REGISTRATION);
+				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+			}
+		});
+		
+		etCarDescriptionFromDealer.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+				if(s != null && s.length() != 0) {
+					tvTextCount.setText(s.length() + " / " + MAX_DESC_COUNT + "자");
+				} else {
+					tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}
+		});
 	}
 
 	@Override
@@ -153,12 +209,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		
 		//tvPercentage.
 		rp = (RelativeLayout.LayoutParams) tvPercentage.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(200);
+		rp.width = ResizeUtils.getSpecificLength(105);
 		rp.height = ResizeUtils.getSpecificLength(30);
 		
 		//tvPercentage2.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-				R.id.auctionRegistrationPage_tvPercentage2).getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) tvPercentage2.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(30);
 		
 		//writeIcon.
@@ -169,42 +224,15 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.topMargin = ResizeUtils.getSpecificLength(7);
 		rp.rightMargin = ResizeUtils.getSpecificLength(4);
 		
-		//tvCertifyPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvCertifyPhoneNumberText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
-
-		//tvRequireCertifyPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvRequireCertifyPhoneNumber.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.rightMargin = ResizeUtils.getSpecificLength(26);
-
-		//btnEditPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) btnEditPhoneNumber.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(15);
-		rp.rightMargin = ResizeUtils.getSpecificLength(26);
-
-		//btnCertifyPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) btnCertifyPhoneNumber.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		
-		//tvPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvPhoneNumber.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(126);
-		
 		//tvInputDealerInfo.
 		rp = (RelativeLayout.LayoutParams) tvInputDealerInfoText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
-		//tvRequireInputDealerInfo.
-		rp = (RelativeLayout.LayoutParams) tvRequireInputDealerInfo.getLayoutParams();
+		//tvDealerInfoCertified.
+		rp = (RelativeLayout.LayoutParams) tvDealerInfoCertified.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.rightMargin = ResizeUtils.getSpecificLength(26);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 
 		//btnEditDealerInfo.
 		rp = (RelativeLayout.LayoutParams) btnEditDealerInfo.getLayoutParams();
@@ -212,16 +240,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(40);
 		rp.topMargin = ResizeUtils.getSpecificLength(15);
 		rp.rightMargin = ResizeUtils.getSpecificLength(26);
-
-		//btnInputDealerInfo.
-		rp = (RelativeLayout.LayoutParams) btnInputDealerInfo.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
 		
 		//tvDealerInfo.
 		rp = (RelativeLayout.LayoutParams) tvDealerInfo.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(126);
+		rp.height = ResizeUtils.getSpecificLength(220);
 		
 		//tvCarPhoto.
 		rp = (RelativeLayout.LayoutParams) tvCarPhotoText.getLayoutParams();
@@ -253,9 +276,14 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
-		//tvMainImage.
+		//tvMainImageText.
 		rp = (RelativeLayout.LayoutParams) tvMainImageText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(32);
+		rp.width = ResizeUtils.getSpecificLength(144);
+		
+		//tvAddedPhotoText.
+		rp = (RelativeLayout.LayoutParams) tvAddedPhotoText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(70);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
 		//btnAddedPhoto1.
 		rp = (RelativeLayout.LayoutParams) btnAddedPhoto1.getLayoutParams();
@@ -307,6 +335,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 
+		//tvCarInfo.
+		rp = (RelativeLayout.LayoutParams) tvCarInfoText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(70);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		
 		//btnCarInfo1.
 		rp = (RelativeLayout.LayoutParams) btnCarInfo1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
@@ -343,34 +376,45 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(82);
 		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
+		//tvDetailCarInfo.
+		rp = (RelativeLayout.LayoutParams) tvDetailCarInfo.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(70);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		
 		//etDetailCarInfo1.
 		rp = (RelativeLayout.LayoutParams) etDetailCarInfo1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		
 		//etDetailCarInfo2.
 		rp = (RelativeLayout.LayoutParams) etDetailCarInfo2.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(32);
 		
 		//etDetailCarInfo3.
 		rp = (RelativeLayout.LayoutParams) etDetailCarInfo3.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(32);
 		
 		//etDetailCarInfo4.
 		rp = (RelativeLayout.LayoutParams) etDetailCarInfo4.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(32);
 		
 		//etDetailCarInfo5.
 		rp = (RelativeLayout.LayoutParams) etDetailCarInfo5.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(50);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(32);
+		
+		//writeIcon.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
+				R.id.auctionRegistrationPage_tvOption).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(70);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
 		//tvCarDescriptionFromDealer.
 		rp = (RelativeLayout.LayoutParams) tvCarDescriptionFromDealer.getLayoutParams();
@@ -381,12 +425,6 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp = (RelativeLayout.LayoutParams) etCarDescriptionFromDealer.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
 		rp.height = ResizeUtils.getSpecificLength(160);
-		
-		//termOfUse.
-		rp = (RelativeLayout.LayoutParams) termOfUse.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(313);
-		rp.height = ResizeUtils.getSpecificLength(30);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
 		//termOfUse.
 		rp = (RelativeLayout.LayoutParams) termOfUse.getLayoutParams();
@@ -420,34 +458,29 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(82);
 		rp.topMargin = ResizeUtils.getSpecificLength(25);
 		
-		
-		FontUtils.setFontSize(tvPercentage, 20);
+		FontUtils.setFontSize(tvPercentage, 24);
 		FontUtils.setFontSize(tvPercentage2, 16);
 		FontUtils.setFontSize(tvWriteAllContents, 18);
 		
-		FontUtils.setFontSize(tvCertifyPhoneNumberText, 30);
-		FontUtils.setFontSize(tvRequireCertifyPhoneNumber, 18);
-		FontUtils.setFontSize(tvPhoneNumber, 30);
-		
 		FontUtils.setFontSize(tvInputDealerInfoText, 30);
-		FontUtils.setFontSize(tvRequireInputDealerInfo, 18);
-		FontUtils.setFontSize(tvDealerInfo, 30);
+		FontUtils.setFontSize(tvDealerInfoCertified, 18);
+		FontUtils.setFontSize(tvDealerInfo, 28);
 
 		FontUtils.setFontSize(tvCarPhotoText, 30);
+		FontUtils.setFontSize(tvMainImageText, 20);
+		FontUtils.setFontSize(tvAddedPhotoText, 30);
 		
-		FontUtils.setFontSize(tvMainImageText, 30);
+		FontUtils.setFontSize(tvCarInfoText, 30);
+		FontUtils.setFontSize(tvDetailCarInfo, 30);
+		FontUtils.setFontAndHintSize(etDetailCarInfo1.getEditText(), 26, 20);
+		FontUtils.setFontAndHintSize(etDetailCarInfo2.getEditText(), 26, 20);
+		FontUtils.setFontAndHintSize(etDetailCarInfo3.getEditText(), 26, 20);
+		FontUtils.setFontAndHintSize(etDetailCarInfo4.getEditText(), 26, 20);
+		FontUtils.setFontAndHintSize(etDetailCarInfo5.getEditText(), 26, 20);
 		
-		
-		
-//		private TextView tvMainImageText;
-//		private HoloStyleEditText etDetailCarInfo1;
-//		private HoloStyleEditText etDetailCarInfo2;
-//		private HoloStyleEditText etDetailCarInfo3;
-//		private HoloStyleEditText etDetailCarInfo4;
-//		private HoloStyleEditText etDetailCarInfo5;
-//		private TextView tvCarDescriptionFromDealer;
-//		private EditText etCarDescriptionFromDealer;
-//		private TextView tvTextCount;
+		FontUtils.setFontSize(tvCarDescriptionFromDealer, 30);
+		FontUtils.setFontAndHintSize(etCarDescriptionFromDealer, 26, 20);
+		FontUtils.setFontSize(tvTextCount, 20);
 	}
 
 	@Override
@@ -490,5 +523,121 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(relativeForOption.getChildCount() == 1) {
+			addOptionButtons();
+		}
+		
+		setProgress();
+		setDealerInfo();
+	}
+	
+//////////////////// Custom method.
+	
+	public void addOptionButtons() {
+
+		int size = 30;
+		optionViews = new View[size];
+		checked = new boolean[size];
+		
+		RelativeLayout.LayoutParams rp = null;
+		
+		for(int i=0; i<size; i++) {
+			
+			optionViews[i] = new View(mContext);
+			rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(160), 
+					ResizeUtils.getSpecificLength(80));
+			
+			switch(i % 3) {
+			
+			case 0:
+				rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+				rp.leftMargin = ResizeUtils.getSpecificLength(35);
+				
+				if(i == 0) {
+					rp.addRule(RelativeLayout.BELOW, 
+							R.id.auctionRegistrationPage_tvOption);
+				} else {
+					rp.addRule(RelativeLayout.BELOW, 
+							getResources().getIdentifier("optionView" + (i - 2),	//i - 3 + 1, 윗줄 아이콘. 
+									"id", "com.byecar.byecarplus"));
+				}
+				
+				rp.topMargin = ResizeUtils.getSpecificLength(24);
+				break;
+			case 1:
+				rp.addRule(RelativeLayout.ALIGN_TOP, 
+						getResources().getIdentifier("optionView" + i,				//i - 1 + 1. 왼쪽 아이콘.
+								"id", "com.byecar.byecarplus"));
+				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				break;
+			case 2:
+				rp.addRule(RelativeLayout.ALIGN_TOP, 
+						getResources().getIdentifier("optionView" + i,				//i - 1 + 1. 왼쪽 아이콘.
+								"id", "com.byecar.byecarplus"));
+				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				rp.rightMargin = ResizeUtils.getSpecificLength(35);
+				break;
+			}
+			
+			optionViews[i].setLayoutParams(rp);
+			optionViews[i].setId(getResources().getIdentifier("optionView" + (i + 1), 
+							"id", "com.byecar.byecarplus"));
+			optionViews[i].setBackgroundResource(
+					getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
+							"drawable", "com.byecar.byecarplus"));
+
+			final int INDEX = i;
+			optionViews[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					checked[INDEX] = !checked[INDEX];
+					
+					if(checked[INDEX]) {
+						optionViews[INDEX].setBackgroundResource(
+								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_b", 
+										"drawable", "com.byecar.byecarplus"));
+					} else {
+						optionViews[INDEX].setBackgroundResource(
+								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_a", 
+										"drawable", "com.byecar.byecarplus"));
+					}
+				}
+			});
+			
+			relativeForOption.addView(optionViews[i]);
+		}
+	}
+	
+	public void setProgress() {
+		
+		progressValue = 90;
+
+		progressValue = Math.max(progressValue, 100);
+		progressValue = Math.min(progressValue, 0);
+		
+		if(progressValue == 100) {
+			tvPercentage.getLayoutParams().width = ResizeUtils.getSpecificLength(105);
+		} else {
+			tvPercentage.getLayoutParams().width = ResizeUtils.getSpecificLength(95);
+		}
+		
+		
+		progressBar.setProgress(progressValue);
+		tvPercentage.setText(progressValue + "%");
+	}
+	
+	public void setDealerInfo() {
+
+		tvDealerInfo.setTextColor(getResources().getColor(R.color.color_red));
+		tvDealerInfo.setText(R.string.requireCertifyDealerInfo);
 	}
 }

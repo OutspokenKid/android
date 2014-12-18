@@ -9,7 +9,9 @@
 	<string name="carOption">차량 옵션 및 튜닝</string>
     <string name="carPhoto">차량사진</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
+    <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
+    <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
     <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
     <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
@@ -19,6 +21,7 @@
     <string name="currentPrice">현재가</string>
     
     <string name="dealerInfo">판매자 정보</string>
+    <string name="dealerInfoCertified">판매자 정보가 인증되었습니다.</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>
     <string name="detailCarInfoString2">모델</string>
@@ -45,9 +48,16 @@
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원가입 실패</string>
     
+    <string name="hintForAddress">주소를 입력해주세요.</string>
     <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
+    <string name="hintForDetailCarInfo1">차량번호를 입력해주세요.</string>
+    <string name="hintForDetailCarInfo2">차량색상을 입력해주세요.</string>
+    <string name="hintForDetailCarInfo3">거래 가능 지역을 입력해주세요.</string>
+    <string name="hintForDetailCarInfo4">주행거리를 입력해주세요.</string>
+    <string name="hintForDetailCarInfo5">배기량을 입력해주세요.</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
+    <string name="hintForName">본명을 입력해주세요.</string>
     <string name="hintForNickname">별명을 입력해주세요.(3~15자)</string>
     <string name="hintForPassword">비밀번호를 입력해주세요.</string>
     <string name="hintForPassword2">비밀번호를 입력해주세요.(8~15자)</string>
@@ -57,10 +67,11 @@
     
     <string name="mainImage">대표이미지</string>
 
-    <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
+    <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
+    <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
+    
     <string name="remainTime">남은시간</string>
-    <string name="requireInputDealerInfo">매물을 등록하려면 판매자 정보를 입력해야 합니다.</string>
-    <string name="requireCertifyPhoneNumber">매물을 등록하려면 휴대폰번호를 인증해야 합니다.</string>
+    <string name="requireCertifyDealerInfo">판매자정보를 인증해야 차량을\n등록할 수 있습니다.</string>
     
     <string name="sideMenuTitle1">거래</string>
     <string name="sideMenuTitle2">서비스</string>
@@ -70,6 +81,7 @@
 
     <string name="uploadingImage">이미지 업로드 중..</string>
     
+    <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
     <string name="writePercentage">작성률</string>
     <string name="won">￦</string>
     

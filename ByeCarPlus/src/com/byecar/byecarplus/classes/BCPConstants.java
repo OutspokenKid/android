@@ -27,4 +27,5 @@ public class BCPConstants {
 	public static final int PAGE_AUCTION_LIST = 8;
 	public static final int PAGE_AUCTION_DETAIL = 9;
 	public static final int PAGE_AUCTION_REGISTRATION = 10;
+	public static final int PAGE_EDIT_USER_INFO = 11;
 }

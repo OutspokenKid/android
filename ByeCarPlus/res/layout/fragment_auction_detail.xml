@@ -48,7 +48,7 @@
 		        android:layout_alignTop="@id/auctionDetailPage_remainBg"
 		        android:max="100"
 		        android:progress="50"
-		        android:progressDrawable="@drawable/progressbar_custom" />
+		        android:progressDrawable="@drawable/progressbar_custom_orange" />
 		
 		    <TextView
 		        android:id="@+id/auctionDetailPage_tvRemainTime"
