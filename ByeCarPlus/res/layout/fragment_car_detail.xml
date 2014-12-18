@@ -31,6 +31,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignBottom="@id/auctionDetailPage_ivImage"
 		        android:layout_alignLeft="@id/auctionDetailPage_ivImage"
+		        android:visibility="invisible"
 		        android:background="@drawable/main_hotdeal_mark" />
 		
 		    <View
@@ -40,49 +41,56 @@
 		        android:layout_below="@id/auctionDetailPage_ivImage"
 		        android:background="@drawable/main_car_info_img1_bg" />
 		
-		    <ProgressBar
-		        android:id="@+id/auctionDetailPage_progressBar"
-		        style="?android:attr/progressBarStyleHorizontal"
+		    <RelativeLayout
+		        android:id="@+id/auctionDetailPage_timeRelative"
 		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_remainBg"
-		        android:max="100"
-		        android:progress="50"
-		        android:progressDrawable="@drawable/progressbar_custom_orange" />
-		
-		    <TextView
-		        android:id="@+id/auctionDetailPage_tvRemainTime"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
-		        android:layout_centerHorizontal="true"
-		        android:gravity="top"
-		        android:textColor="#fff" />
-		
-		    <TextView
-		        android:id="@+id/auctionDetailPage_tvRemainTimeText"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
-		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
-		        android:gravity="center_vertical"
-		        android:text="@string/remainTime"
-		        android:textColor="#fff" />
-		
-		    <View
-		        android:id="@+id/auctionDetailPage_timeIcon"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
-		        android:layout_alignTop="@id/auctionDetailPage_progressBar"
-		        android:background="@drawable/main_time_icon" />
+		        android:layout_height="wrap_content"
+		        android:layout_alignTop="@id/auctionDetailPage_remainBg" >
+
+		        <ProgressBar
+			        android:id="@+id/auctionDetailPage_progressBar"
+			        style="?android:attr/progressBarStyleHorizontal"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:max="100"
+			        android:progress="50"
+			        android:progressDrawable="@drawable/progressbar_custom_orange" />
+			
+			    <TextView
+			        android:id="@+id/auctionDetailPage_tvRemainTime"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:layout_centerHorizontal="true"
+			        android:gravity="top"
+			        android:textColor="#fff" />
+			
+			    <TextView
+			        android:id="@+id/auctionDetailPage_tvRemainTimeText"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:gravity="center_vertical"
+			        android:text="@string/remainTime"
+			        android:textColor="#fff" />
+			
+			    <View
+			        android:id="@+id/auctionDetailPage_timeIcon"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:background="@drawable/main_time_icon" />		        
+		        
+		    </RelativeLayout>
 		
 		    <TextView
 		        android:id="@+id/auctionDetailPage_tvCarInfo1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/auctionDetailPage_progressBar"
+		        android:layout_below="@id/auctionDetailPage_timeRelative"
 		        android:ellipsize="end"
 		        android:gravity="bottom|left"
 		        android:singleLine="true"
@@ -104,7 +112,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentRight="true"
-		        android:layout_below="@id/auctionDetailPage_progressBar"
+		        android:layout_below="@id/auctionDetailPage_timeRelative"
 		        android:ellipsize="end"
 		        android:singleLine="true"
 		        android:textColor="#fff" />
@@ -299,5 +307,13 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/auction_guide_btn" />
-        
+ 
+    <Button
+        android:id="@+id/auctionDetailPage_btnBuy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/buy_buy_btn" />
+    
 </RelativeLayout>

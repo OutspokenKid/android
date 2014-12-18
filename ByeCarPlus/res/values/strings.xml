@@ -10,11 +10,13 @@
     <string name="carPhoto">차량사진</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
+    <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
     <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
     <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
     <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
     <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
+    <string name="checkPhoneNumber">올바른 휴대폰 번호를 입력해주세요.</string>
     <string name="commonInfo">일반정보</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
@@ -50,6 +52,7 @@
     
     <string name="hintForAddress">주소를 입력해주세요.</string>
     <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
+    <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
     <string name="hintForDetailCarInfo1">차량번호를 입력해주세요.</string>
     <string name="hintForDetailCarInfo2">차량색상을 입력해주세요.</string>
     <string name="hintForDetailCarInfo3">거래 가능 지역을 입력해주세요.</string>
@@ -62,6 +65,7 @@
     <string name="hintForPassword">비밀번호를 입력해주세요.</string>
     <string name="hintForPassword2">비밀번호를 입력해주세요.(8~15자)</string>
     <string name="hintForPasswordConfirm">비밀번호를 다시 입력해주세요.(8~15자)</string>
+    <string name="hintForPhoneNumber">휴대폰번호를 입력해주세요.</string>
     
     <string name="lastList">마지막 리스트입니다.</string>
     

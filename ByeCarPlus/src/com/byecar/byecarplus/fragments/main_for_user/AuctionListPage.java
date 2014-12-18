@@ -111,7 +111,7 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 				}
 
 				try {
-					if(adapter.getFirstView() != null) {
+					if(adapter.getFirstView() != null && firstVisibleItem == 0) {
 						int offset = -adapter.getFirstView().getTop();
 						
 						if(offset < 500) {
@@ -140,7 +140,7 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 				try {
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("car", (Car) models.get(position));
-					mActivity.showPage(BCPConstants.PAGE_AUCTION_DETAIL, bundle);
+					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

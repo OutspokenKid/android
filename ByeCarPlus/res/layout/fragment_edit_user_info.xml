@@ -52,7 +52,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/touchCameraIcon"
-		        android:textColor="#000"
+		        android:textColor="@color/holo_text"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/editUserInfoPage_profileFrame" />
             
@@ -174,7 +174,17 @@
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/editUserInfoPage_tvCertifyPhoneNumber"
-		        android:gravity="center_vertical" />
+		        android:textColor="@color/color_green"
+		        android:gravity="center" />
+			
+			<View
+		        android:id="@+id/editUserInfoPage_checkIcon"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_toLeftOf="@id/editUserInfoPage_tvPhoneNumber"
+		        android:layout_alignTop="@id/editUserInfoPage_tvPhoneNumber"
+		        android:background="@drawable/user_check"
+		        android:visibility="invisible" />
 			
 			<View
                 android:id="@+id/editUserInfoPage_lineAfterPhoneNumber"
@@ -191,9 +201,14 @@
 		        android:id="@+id/editUserInfoPage_btnConfirm"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:background="@drawable/user_done_btn" 
 		        android:layout_centerHorizontal="true"
-		        android:layout_alignParentBottom="true" />
+		        android:layout_below="@id/editUserInfoPage_lineAfterPhoneNumber" 
+		        android:background="@drawable/user_done_btn" />
+		    
+		    <View
+		        android:layout_width="10dp"
+		        android:layout_height="20dp"
+		        android:layout_below="@id/editUserInfoPage_btnConfirm" />
             
         </RelativeLayout>
         

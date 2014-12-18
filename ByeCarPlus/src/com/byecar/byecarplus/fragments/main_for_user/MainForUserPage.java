@@ -194,11 +194,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 				try {
 					if(offset < 500) {
 						titleBar.setBgAlpha(0.002f * offset);
-						
-					} else if(offset < 700){
-						titleBar.setBgAlpha(1);
 					} else {
-						//Do nothing.
+						titleBar.setBgAlpha(1);
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -275,6 +272,15 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			public void onClick(View view) {
 
 				mActivity.showPage(BCPConstants.PAGE_AUCTION_REGISTRATION, null);
+			}
+		});
+	
+		btnUsedMarket.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_DEALER_LIST, null);
 			}
 		});
 	}
@@ -582,9 +588,22 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		
 		for(int i=0; i<Math.min(3, dealers.size()); i++) {
 
+			final int INDEX = i;
+			
 			try {
 				usedCarFrames[i].setTexts(dealers.get(i).getModel_name(), 
 						dealers.get(i).getPrice());
+
+				usedCarFrames[i].setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("car", bids.get(INDEX));
+						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					}
+				});
 				
 				usedCarFrames[i].downloadImage(dealers.get(i).getRep_img_url());
 			} catch (Exception e) {
@@ -821,7 +840,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("car", bids.get(position));
-					mActivity.showPage(BCPConstants.PAGE_AUCTION_DETAIL, bundle);
+					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				}
 			});
 			

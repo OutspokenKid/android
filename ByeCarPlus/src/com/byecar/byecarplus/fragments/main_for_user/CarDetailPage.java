@@ -2,13 +2,18 @@ package com.byecar.byecarplus.fragments.main_for_user;
 
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
+import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,16 +37,20 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
-public class AuctionDetailPage extends BCPFragmentForMainForUser {
+public class CarDetailPage extends BCPFragmentForMainForUser {
 
 	private int id;
 	private Car car;
 	
 	private OffsetScrollView scrollView;
+
+	private Button btnGuide;
+	private Button btnBuy;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
 	private View remainBg;
+	private RelativeLayout timeRelative;
 	private ProgressBar progressBar;
 	private TextView tvRemainTime;
 	private TextView tvRemainTimeText;
@@ -73,6 +82,8 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 	
 	private View[] optionViews;
 	
+	private AlphaAnimation aaIn, aaOut;
+	
 	@Override
 	public void bindViews() {
 
@@ -80,9 +91,13 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 		
 		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.auctionDetailPage_scrollView);
 		
+		btnBuy = (Button) mThisView.findViewById(R.id.auctionDetailPage_btnBuy);
+		btnGuide = (Button) mThisView.findViewById(R.id.auctionDetailPage_btnGuide);
+		
 		ivImage = (ImageView) mThisView.findViewById(R.id.auctionDetailPage_ivImage);
 		auctionIcon = mThisView.findViewById(R.id.auctionDetailPage_auctionIcon);
 		remainBg = mThisView.findViewById(R.id.auctionDetailPage_remainBg);
+		timeRelative = (RelativeLayout) mThisView.findViewById(R.id.auctionDetailPage_timeRelative);
 		progressBar = (ProgressBar) mThisView.findViewById(R.id.auctionDetailPage_progressBar);
 		tvRemainTime = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvRemainTime);
 		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvRemainTimeText);
@@ -116,6 +131,12 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 	@Override
 	public void setVariables() {
 
+		aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		
+		aaOut = new AlphaAnimation(1, 0);
+		aaOut.setDuration(300);
+		
 		if(getArguments() != null) {
 			
 			if(getArguments().containsKey("car")) {
@@ -139,6 +160,7 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 		}
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void setListeners() {
 
@@ -163,7 +185,39 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 				}
 			}
 		});
+		
+		scrollView.setOnTouchListener(new OnTouchListener() {
+			
+			@SuppressLint("ClickableViewAccessibility")
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
 
+				if(car != null && car.getType() == Car.TYPE_DEALER) {
+					switch(event.getAction()) {
+					
+					case MotionEvent.ACTION_DOWN:
+					case MotionEvent.ACTION_MOVE:
+						
+						if(btnBuy.getVisibility() == View.VISIBLE) {
+							btnBuy.setVisibility(View.INVISIBLE);
+							btnBuy.startAnimation(aaOut);
+						}
+						break;
+						
+					case MotionEvent.ACTION_UP:
+					case MotionEvent.ACTION_CANCEL:
+						if(btnBuy.getVisibility() != View.VISIBLE) {
+							btnBuy.setVisibility(View.VISIBLE);
+							btnBuy.startAnimation(aaIn);
+						}
+						break;
+					}
+				}
+				
+				return false;
+			}
+		});
+		
 		headerForDealer.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -199,12 +253,42 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 				changeMenuOpenStatus(3);
 			}
 		});
+	
+		btnGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("가이드");
+			}
+		});
+		
+		btnBuy.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("구매");
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
 
 		RelativeLayout.LayoutParams rp = null;
+
+		//btnGuide.
+		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		
+		//btnBuy.
+		rp = (RelativeLayout.LayoutParams) btnBuy.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(120);
 		
 		//ivImage.
 		rp = (RelativeLayout.LayoutParams) ivImage.getLayoutParams();
@@ -394,7 +478,7 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_auction_detail;
+		return R.layout.fragment_car_detail;
 	}
 
 	@Override
@@ -736,6 +820,22 @@ public class AuctionDetailPage extends BCPFragmentForMainForUser {
 	}
 	
 	public void setDetailCarInfo() {
+
+		if(car.getType() == Car.TYPE_AUCTION) {
+			auctionIcon.setVisibility(View.VISIBLE);
+			timeRelative.setVisibility(View.VISIBLE);
+			tvBidCount.setVisibility(View.VISIBLE);
+			
+			btnGuide.setVisibility(View.VISIBLE);
+			btnBuy.setVisibility(View.INVISIBLE);
+		} else {
+			auctionIcon.setVisibility(View.INVISIBLE);
+			timeRelative.setVisibility(View.INVISIBLE);
+			tvBidCount.setVisibility(View.INVISIBLE);
+			
+			btnGuide.setVisibility(View.INVISIBLE);
+			btnBuy.setVisibility(View.VISIBLE);
+		}
 		
 		int size = 12;
 		

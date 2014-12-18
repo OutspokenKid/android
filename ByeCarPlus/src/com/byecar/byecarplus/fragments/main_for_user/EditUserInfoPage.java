@@ -5,7 +5,10 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
+import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
@@ -55,6 +59,7 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 	private TextView tvCheckAddress;
 	private TextView tvCertifyPhoneNumber;
 	private TextView tvPhoneNumber;
+	private View checkIcon;
 	private Button btnEditPhoneNumber;
 	private Button btnConfirm;
 	
@@ -64,7 +69,6 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
 	
-	private String phone_auth_key;
 	private int from;
 	
 	@Override
@@ -102,6 +106,7 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 		tvCertifyPhoneNumber = (TextView) mThisView.findViewById(R.id.editUserInfoPage_tvCertifyPhoneNumber);
 		btnEditPhoneNumber = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnEditPhoneNumber);
 		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.editUserInfoPage_tvPhoneNumber);
+		checkIcon = mThisView.findViewById(R.id.editUserInfoPage_checkIcon);
 		btnConfirm = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnConfirm);
 	}
 
@@ -138,6 +143,66 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 			}
 		});
 
+		etName.getEditText().addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+				if(s != null && s.length() != 0) {
+					etName.getEditText().setGravity(Gravity.CENTER);
+				} else {
+					etName.getEditText().setGravity(Gravity.LEFT);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}
+		});
+		
+		etNickname.getEditText().addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+				if(s != null && s.length() != 0) {
+					etNickname.getEditText().setGravity(Gravity.CENTER);
+				} else {
+					etNickname.getEditText().setGravity(Gravity.LEFT);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}
+		});
+
+		etAddress.getEditText().addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+				if(s != null && s.length() != 0) {
+					etAddress.getEditText().setGravity(Gravity.CENTER);
+				} else {
+					etAddress.getEditText().setGravity(Gravity.LEFT);
+				}
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {}
+		});
+		
 		etName.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
 			
 			@Override
@@ -177,6 +242,15 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 				}
 				
 				focusOnAddress = hasFocus;
+			}
+		});
+		
+		btnEditPhoneNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
 			}
 		});
 		
@@ -240,24 +314,25 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 		//btnEditPhoneNumber.
 		rp = (RelativeLayout.LayoutParams) btnEditPhoneNumber.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(15);
+		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		rp.rightMargin = ResizeUtils.getSpecificLength(26);
-		
-		//tvCertifyPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvCertifyPhoneNumber.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
 		//tvPhoneNumber.
 		rp = (RelativeLayout.LayoutParams) tvPhoneNumber.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(95);
 		
+		//checkIcon.
+		rp = (RelativeLayout.LayoutParams) checkIcon.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(24);
+		rp.height = ResizeUtils.getSpecificLength(18);
+		rp.topMargin = ResizeUtils.getSpecificLength(38);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.width = width;
 		rp.height = buttonHeight;
-		rp.topMargin = ResizeUtils.getSpecificLength(800);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
 		FontUtils.setFontSize(tvProfile, 20);
@@ -318,7 +393,33 @@ public class EditUserInfoPage extends BCPFragmentForMainForUser {
 		return false;
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		checkPhoneNumberCertified();
+	}
+	
 ////////////////////Custom methods.
+
+	public void checkPhoneNumberCertified() {
+		
+		tvPhoneNumber.setText(null);
+		
+		checkIcon.setVisibility(View.VISIBLE);
+		FontUtils.addSpan(tvPhoneNumber, "010 9813 8005", 0, 1);
+		
+//		checkIcon.setVisibility(View.INVISIBLE);
+//		tvPhoneNumber.setText(null);
+//		FontUtils.addSpan(tvPhoneNumber, 
+//				R.string.notCertifiedPhoneNumber1, 
+//				getResources().getColor(R.color.color_red), 
+//				1, true);
+//		FontUtils.addSpan(tvPhoneNumber, 
+//				"\n" + getString(R.string.notCertifiedPhoneNumber2), 
+//				getResources().getColor(R.color.color_red), 
+//				0.7f);
+	}
 	
 	public boolean checkInfos() {
 

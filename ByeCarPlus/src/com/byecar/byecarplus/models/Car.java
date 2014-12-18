@@ -11,6 +11,9 @@ public class Car extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 6978779511721704607L;
 	
+	public static final int TYPE_AUCTION = 1;
+	public static final int TYPE_DEALER = 2;
+	
 	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
 	public static final int STAND_BY = 0;
 	public static final int BIDDING = 10;

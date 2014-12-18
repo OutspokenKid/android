@@ -15,13 +15,14 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
-public class ViewWrapperForAuction extends ViewWrapper {
+public class ViewWrapperForCar extends ViewWrapper {
 	
 	private Car car;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
 	private View remainBg;
+	private RelativeLayout timeRelative;
 	private ProgressBar progressBar;
 	private TextView tvRemainTime;
 	private TextView tvRemainTimeText;
@@ -32,7 +33,7 @@ public class ViewWrapperForAuction extends ViewWrapper {
 	private TextView tvCurrentPriceText;
 	private TextView tvBidCount;
 	
-	public ViewWrapperForAuction(View row, int itemCode) {
+	public ViewWrapperForCar(View row, int itemCode) {
 		super(row, itemCode);
 	}
 
@@ -40,19 +41,20 @@ public class ViewWrapperForAuction extends ViewWrapper {
 	public void bindViews() {
 
 		try {
-			ivImage = (ImageView) row.findViewById(R.id.list_bid_ivImage);
-			auctionIcon = row.findViewById(R.id.list_bid_auctionIcon);
-			remainBg = row.findViewById(R.id.list_bid_remainBg);
-			progressBar = (ProgressBar) row.findViewById(R.id.list_bid_progressBar);
-			tvRemainTime = (TextView) row.findViewById(R.id.list_bid_tvRemainTime);
-			tvRemainTimeText = (TextView) row.findViewById(R.id.list_bid_tvRemainTimeText);
-			timeIcon = row.findViewById(R.id.list_bid_timeIcon);
+			ivImage = (ImageView) row.findViewById(R.id.list_car_ivImage);
+			auctionIcon = row.findViewById(R.id.list_car_auctionIcon);
+			remainBg = row.findViewById(R.id.list_car_remainBg);
+			timeRelative = (RelativeLayout) row.findViewById(R.id.list_car_timeRelative);
+			progressBar = (ProgressBar) row.findViewById(R.id.list_car_progressBar);
+			tvRemainTime = (TextView) row.findViewById(R.id.list_car_tvRemainTime);
+			tvRemainTimeText = (TextView) row.findViewById(R.id.list_car_tvRemainTimeText);
+			timeIcon = row.findViewById(R.id.list_car_timeIcon);
 			
-			tvCarInfo1 = (TextView) row.findViewById(R.id.list_bid_tvCarInfo1);
-			tvCarInfo2 = (TextView) row.findViewById(R.id.list_bid_tvCarInfo2);
-			tvCurrentPrice = (TextView) row.findViewById(R.id.list_bid_tvCurrentPrice);
-			tvCurrentPriceText = (TextView) row.findViewById(R.id.list_bid_tvCurrentPriceText);
-			tvBidCount = (TextView) row.findViewById(R.id.list_bid_tvBidCount);
+			tvCarInfo1 = (TextView) row.findViewById(R.id.list_car_tvCarInfo1);
+			tvCarInfo2 = (TextView) row.findViewById(R.id.list_car_tvCarInfo2);
+			tvCurrentPrice = (TextView) row.findViewById(R.id.list_car_tvCurrentPrice);
+			tvCurrentPriceText = (TextView) row.findViewById(R.id.list_car_tvCurrentPriceText);
+			tvBidCount = (TextView) row.findViewById(R.id.list_car_tvBidCount);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -160,6 +162,16 @@ public class ViewWrapperForAuction extends ViewWrapper {
 				tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 						+ row.getContext().getString(R.string.won));
 				tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
+				
+				if(car.getType() == Car.TYPE_AUCTION) {
+					auctionIcon.setVisibility(View.VISIBLE);
+					timeRelative.setVisibility(View.VISIBLE);
+					tvBidCount.setVisibility(View.VISIBLE);
+				} else {
+					auctionIcon.setVisibility(View.INVISIBLE);
+					timeRelative.setVisibility(View.INVISIBLE);
+					tvBidCount.setVisibility(View.INVISIBLE);
+				}
 				
 				setImage(ivImage, car.getRep_img_url());
 			}

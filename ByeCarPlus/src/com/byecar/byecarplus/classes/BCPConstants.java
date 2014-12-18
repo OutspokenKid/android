@@ -24,8 +24,10 @@ public class BCPConstants {
 	
 	//Pages for user.
 	public static final int PAGE_MAIN_FOR_USER = 7;
-	public static final int PAGE_AUCTION_LIST = 8;
-	public static final int PAGE_AUCTION_DETAIL = 9;
+	public static final int PAGE_CAR_DETAIL = 8;
+	public static final int PAGE_AUCTION_LIST = 9;
 	public static final int PAGE_AUCTION_REGISTRATION = 10;
 	public static final int PAGE_EDIT_USER_INFO = 11;
+	public static final int PAGE_CERTIFY_PHONE_NUMBER = 12;
+	public static final int PAGE_DEALER_LIST = 13;
 }

@@ -31,9 +31,11 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.AuctionDetailPage;
+import com.byecar.byecarplus.fragments.main_for_user.CarDetailPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
+import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
+import com.byecar.byecarplus.fragments.main_for_user.DealerCarListPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.models.User;
@@ -275,14 +277,20 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_AUCTION_LIST:
 			return new AuctionListPage();
 			
-		case BCPConstants.PAGE_AUCTION_DETAIL:
-			return new AuctionDetailPage();
+		case BCPConstants.PAGE_CAR_DETAIL:
+			return new CarDetailPage();
 			
 		case BCPConstants.PAGE_AUCTION_REGISTRATION:
 			return new AuctionRegistrationPage();
 		
 		case BCPConstants.PAGE_EDIT_USER_INFO:
 			return new EditUserInfoPage();
+			
+		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
+			return new CertifyPhoneNumberPage();
+			
+		case BCPConstants.PAGE_DEALER_LIST:
+			return new DealerCarListPage();
 		}
 		
 		return null;

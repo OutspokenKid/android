@@ -9,10 +9,9 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextWatcher;
-import android.text.Layout.Alignment;
-import android.text.style.AlignmentSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -289,5 +288,50 @@ public class FontUtils {
 		}
 		
 		textView.append(spb);
+	}
+	
+	public static void addSpan(TextView textView, String text, int color, float scale, boolean bold) {
+
+		if(textView == null || text == null) {
+			return;
+		}
+		
+		SpannableStringBuilder spb = new SpannableStringBuilder(text);
+		
+		if(color != 0) {
+			spb.setSpan(new ForegroundColorSpan(color), 0, spb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		if(scale != 1) {
+			spb.setSpan(new RelativeSizeSpan(scale), 0, spb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		if(bold) {
+			spb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, spb.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		}
+		
+		textView.append(spb);
+	}
+	
+	public static void addSpan(TextView textView, int textResId, int color, float scale) {
+
+		try {
+			addSpan(textView, textView.getContext().getString(textResId), color, scale);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public static void addSpan(TextView textView, int textResId, int color, float scale, boolean bold) {
+
+		try {
+			addSpan(textView, textView.getContext().getString(textResId), color, scale, bold);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }

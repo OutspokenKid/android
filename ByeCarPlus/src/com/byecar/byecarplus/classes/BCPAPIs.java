@@ -15,7 +15,11 @@ public class BCPAPIs {
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
 	
 	public static String MAIN_COVER_URL = BASE_API_URL + "/appinfo/cover.json";
+
 	public static String BIDS_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 	public static String BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
+	
+	public static String DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
+	
 	public static String EDIT_USER_INFO_UR_COMMON = BASE_API_URL + "/users/update/additional_info.json";
 }
