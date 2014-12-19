@@ -97,6 +97,7 @@ public class GestureSlidingLayout extends FrameLayout {
 	private float x0, x1, x2, y0, y1;
 	private int scrollCount;
 	private boolean isAnimating;
+	private boolean isRestrictToSide;
 	
 	/**
 	 * Called before open animation start.
@@ -184,9 +185,19 @@ public class GestureSlidingLayout extends FrameLayout {
 				sideMenuMode = MODE_NONE;
 			}
 			return true;
+			
 		} else {
+			
 			if(ev.getAction() == MotionEvent.ACTION_DOWN) {
-				direction = DIRECTION_CHECK;
+				
+				if(isRestrictToSide 
+						&& sideMenuMode == MODE_NONE
+						&& ev.getX() > CRITERION) {
+					topView.dispatchTouchEvent(ev);
+					return false;
+				} else {
+					direction = DIRECTION_CHECK;
+				}
 			}
 			
 			switch(direction) {
@@ -432,6 +443,7 @@ public class GestureSlidingLayout extends FrameLayout {
 			public void onAnimationEnd(Animation animation) {
 				isAnimating = false;
 				sideMenuMode = MODE_NONE;
+				direction = DIRECTION_CHECK;
 				
 				if(toLeft) {
 					if(onAfterOpenToLeftListener != null) {
@@ -551,6 +563,7 @@ public class GestureSlidingLayout extends FrameLayout {
 
 				isAnimating = false;
 				sideMenuMode = MODE_NONE;
+				direction = DIRECTION_CHECK;
 				
 				if(fromLeft) {
 					isOpenToLeft = false;
@@ -710,6 +723,14 @@ public class GestureSlidingLayout extends FrameLayout {
 		this.isAnimating = isAnimating;
 	}
 	
+	public boolean isRestrictToSide() {
+		return isRestrictToSide;
+	}
+
+	public void setRestrictToSide(boolean isRestrictToSide) {
+		this.isRestrictToSide = isRestrictToSide;
+	}
+
 	public interface OnBeforeOpenListener {
 		
 		public void onBeforeOpen();
