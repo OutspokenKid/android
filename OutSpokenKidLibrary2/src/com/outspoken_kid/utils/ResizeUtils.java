@@ -17,6 +17,8 @@ import android.widget.RelativeLayout;
  * v1.0.1 Remove method for RelativeLayout, optimization(Edit viewResize() and getSpecificLength(), create calculate()).
  */
 public class ResizeUtils {
+
+	public static int KEEP = -2;
 	
 	private static int[] index;
 	
@@ -266,6 +268,89 @@ public class ResizeUtils {
 
 		viewResize(_width, _height, _view, _parentType, _gravity, _margin);
 		
+		
+		if(_padding != null) {
+			setPadding(_view, _padding);
+		}
+	}
+	
+	public static void viewResizeForRelative(int _width, int _height, View _view, int[] rules, int[] targets, int[] _margin) {
+		
+		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) _view.getLayoutParams();
+
+		if(_width == KEEP) {
+			//Do nothing.
+			
+		} else if(_width == LayoutParams.MATCH_PARENT
+				|| _width == LayoutParams.WRAP_CONTENT) {
+			rp.width = _width;
+			
+		} else {
+			rp.width = getSpecificLength(_width);
+		}
+		
+		if(_height == KEEP) {
+			//Do nothing.
+			
+		} if(_height == LayoutParams.MATCH_PARENT
+				|| _height == LayoutParams.WRAP_CONTENT) {
+			rp.height = _height;
+			
+		} else {
+			rp.height = getSpecificLength(_height);
+		}
+		
+		if(rules != null && targets != null 
+				&& rules.length == targets.length) {
+			
+			int size = rules.length;
+			for(int i=0; i<size; i++) {
+				
+				if(targets[i] == 0) {
+					rp.addRule(rules[i]);
+				} else {
+					rp.addRule(rules[i], targets[i]);
+				}
+			}
+		}
+		
+		if(_margin != null) {
+			int[] newMargin = new int[4];
+			
+			if(_margin != null && _margin.length == 4) {
+				for(int i=0; i<4; i++) {
+					if(_margin[i] != -1) {
+						newMargin[i] = getSpecificLength(_margin[i]);;
+					} else {
+						newMargin[i] = -1;
+					}
+				}
+			}
+			
+			if(_margin != null) {
+				if(newMargin[0] != -1) {
+					rp.leftMargin = newMargin[0];
+				}
+				
+				if(newMargin[1] != -1) {
+					rp.topMargin = newMargin[1];
+				}
+				
+				if(newMargin[2] != -1) {
+					rp.rightMargin = newMargin[2];
+				}
+				
+				if(newMargin[3] != -1) {
+					rp.bottomMargin = newMargin[3];
+				}
+			}
+		}
+	}
+	
+	public static void viewResizeForRelative(int _width, int _height, View _view, 
+			int[] rules, int[] targets, int[] _margin, int[] _padding) {
+		
+		viewResizeForRelative(_width, _height, _view, rules, targets, _margin);
 		
 		if(_padding != null) {
 			setPadding(_view, _padding);
