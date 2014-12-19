@@ -139,7 +139,7 @@ public class AuctionListPage extends BCPFragmentForMainForUser {
 				
 				try {
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", (Car) models.get(position));
+					bundle.putInt("id", ((Car) models.get(position)).getId());
 					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {
 					LogUtils.trace(e);

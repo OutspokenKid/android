@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bidDetailPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/bidDetailPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/bidDetailPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+    		
+            <android.support.v4.view.ViewPager 
+                android:id="@+id/bidDetailPage_viewPager"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignParentTop="true"
+    			android:background="@drawable/main_auction_default" />
+            
+            <com.outspoken_kid.views.PageNavigatorView 
+                android:id="@+id/bidDetailPage_pageNavigator"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignBottom="@id/bidDetailPage_viewPager" />
+		    
+		    <View
+		        android:id="@+id/bidDetailPage_bidIcon"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignBottom="@id/bidDetailPage_viewPager"
+		        android:layout_alignLeft="@id/bidDetailPage_viewPager"
+		        android:visibility="invisible"
+		        android:background="@drawable/main_hotdeal_mark" />
+		
+		    <View
+		        android:id="@+id/bidDetailPage_remainBg"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/bidDetailPage_viewPager"
+		        android:background="@drawable/main_car_info_img1_bg" />
+		
+		    <RelativeLayout
+		        android:id="@+id/bidDetailPage_timeRelative"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignTop="@id/bidDetailPage_remainBg" >
+
+		        <ProgressBar
+			        android:id="@+id/bidDetailPage_progressBar"
+			        style="?android:attr/progressBarStyleHorizontal"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:max="100"
+			        android:progress="50"
+			        android:progressDrawable="@drawable/progressbar_custom_orange" />
+			
+			    <TextView
+			        android:id="@+id/bidDetailPage_tvRemainTime"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/bidDetailPage_progressBar"
+			        android:layout_centerHorizontal="true"
+			        android:gravity="top"
+			        android:textColor="#fff" />
+			
+			    <TextView
+			        android:id="@+id/bidDetailPage_tvRemainTimeText"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/bidDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/bidDetailPage_progressBar"
+			        android:gravity="center_vertical"
+			        android:text="@string/remainTime"
+			        android:textColor="#fff" />
+			
+			    <View
+			        android:id="@+id/bidDetailPage_timeIcon"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/bidDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/bidDetailPage_progressBar"
+			        android:background="@drawable/main_time_icon" />		        
+		        
+		    </RelativeLayout>
+		
+		    <TextView
+		        android:id="@+id/bidDetailPage_tvCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/bidDetailPage_timeRelative"
+		        android:ellipsize="end"
+		        android:gravity="bottom|left"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/bidDetailPage_tvCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/bidDetailPage_tvCarInfo1"
+		        android:ellipsize="end"
+		        android:gravity="top|left"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/bidDetailPage_tvCurrentPrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_below="@id/bidDetailPage_timeRelative"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/bidDetailPage_tvCurrentPriceText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@id/bidDetailPage_tvCurrentPrice"
+		        android:layout_toLeftOf="@id/bidDetailPage_tvCurrentPrice"
+		        android:text="@string/currentPrice"
+		        android:textColor="#fff" />
+		
+		    <TextView
+		        android:id="@+id/bidDetailPage_tvBidCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/bidDetailPage_tvCurrentPrice"
+		        android:layout_below="@id/bidDetailPage_tvCurrentPrice"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="#fff" />
+		    
+		    <View 
+		        android:id="@+id/bidDetailPage_headerForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/bidDetailPage_remainBg"
+		        android:background="@drawable/detail_head1" />
+		    
+		    <FrameLayout
+		        android:id="@+id/bidDetailPage_frameForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/bidDetailPage_headerForDealer"
+		        android:background="@drawable/detail_body1" />
+		    
+		    <View 
+		        android:id="@+id/bidDetailPage_footerForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/bidDetailPage_frameForDealer"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View
+                android:id="@+id/bidDetailPage_lineAfterDealer"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:layout_below="@id/bidDetailPage_footerForDealer"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginTop="10dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_marginBottom="20dp"
+		        android:background="@color/holo_text_hint" />
+
+		    <Button 
+		        android:id="@+id/bidDetailPage_btnConfirm"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/bidDetailPage_lineAfterDealer" 
+		        android:background="@drawable/success_complete_btn" />
+		    		    
+		    <View 
+		        android:layout_width="10dp"
+		        android:layout_height="20dp"
+		        android:layout_below="@id/bidDetailPage_footerForDealer" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.byecarplus.views.TitleBar
+        android:id="@+id/bidDetailPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+</RelativeLayout>

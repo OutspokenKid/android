@@ -30,4 +30,8 @@ public class BCPConstants {
 	public static final int PAGE_EDIT_USER_INFO = 11;
 	public static final int PAGE_CERTIFY_PHONE_NUMBER = 12;
 	public static final int PAGE_DEALER_LIST = 13;
+	public static final int PAGE_BID_DETAIL = 15;
+	
+	//Pages for common.
+	public static final int PAGE_COMMON_DEALER = 14	;
 }

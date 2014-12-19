@@ -10,15 +10,11 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -33,6 +29,8 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.ImagePagerAdapter;
+import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.Notice;
 import com.byecar.byecarplus.views.TitleBar;
@@ -44,7 +42,6 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -52,6 +49,7 @@ import com.outspoken_kid.views.PageNavigatorView;
 public class MainForUserPage extends BCPFragmentForMainForUser {
 	
 	private OffsetScrollView scrollView;
+	
 	private ViewPager viewPager;
 	private View auctionIcon;
 	private PageNavigatorView pageNavigator;
@@ -76,6 +74,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 	private ArrayList<Car> bids = new ArrayList<Car>();
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ArrayList<Car> certifieds = new ArrayList<Car>();
+	private ImagePagerAdapter imagePagerAdapter;
 	private Notice notice;
 	
 	private Handler mHandler;
@@ -156,8 +155,8 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
-		viewPager.setAdapter(new PagerAdapterForBid());
 		
+		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
 		addUsedCarFrames();
 	}
 
@@ -205,37 +204,6 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			}
 		});
 		
-		viewPager.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				
-				switch(event.getAction()) {
-				
-				case MotionEvent.ACTION_DOWN:
-					LogUtils.log("###MainForUserPage.onTouch.  down.");
-					GestureSlidingLayout.setScrollLock(true);
-					viewPager.requestDisallowInterceptTouchEvent(true);
-					break;
-					
-				case MotionEvent.ACTION_MOVE:
-					LogUtils.log("###MainForUserPage.onTouch.  move.");
-					GestureSlidingLayout.setScrollLock(true);
-					viewPager.requestDisallowInterceptTouchEvent(true);
-					break;
-					
-				case MotionEvent.ACTION_UP:
-				case MotionEvent.ACTION_CANCEL:
-					LogUtils.log("###MainForUserPage.onTouch.  up or cancel.");
-					GestureSlidingLayout.setScrollLock(false);
-					viewPager.requestDisallowInterceptTouchEvent(false);
-					break;
-				}
-				
-				return false;
-			}
-		});
-		
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -254,6 +222,17 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+
+		imagePagerAdapter.setOnPagerItemClickedListener(new OnPagerItemClickedListener() {
+			
+			@Override
+			public void onPagerItemClicked(int position) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("id", bids.get(position).getId());
+				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 			}
 		});
 		
@@ -522,13 +501,18 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 					int size = 0;
 					
 					try {
+						ArrayList<String> images = new ArrayList<String>();
+						
 						bids.clear();
 						JSONArray arJSON = objJSON.getJSONArray("bids");
 						size = arJSON.length();
 						for(int i=0; i<size; i++) {
-							bids.add(new Car(arJSON.getJSONObject(i)));
+							Car car = new Car(arJSON.getJSONObject(i));
+							bids.add(car);
+							images.add(car.getRep_img_url());
 						}
 
+						imagePagerAdapter.setArrayList(images);
 						viewPager.getAdapter().notifyDataSetChanged();
 						viewPager.setCurrentItem(0);
 						
@@ -600,7 +584,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 					public void onClick(View view) {
 
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("car", bids.get(INDEX));
+						bundle.putInt("id", bids.get(INDEX).getId());
 						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 					}
 				});
@@ -787,83 +771,6 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		public ImageView getIvImage() {
 			
 			return ivImage;
-		}
-	}
-
-	public class PagerAdapterForBid extends PagerAdapter {
-
-		@Override
-		public int getCount() {
-	
-			return bids.size();
-		}
-
-		@Override
-		public Object instantiateItem(ViewGroup container, final int position) {
-			
-			final ImageView ivImage = new ImageView(mContext);
-			ivImage.setScaleType(ScaleType.CENTER_CROP);
-			ivImage.setBackgroundResource(R.drawable.main_auction_default);
-			container.addView(ivImage);
-			
-			String url = bids.get(position).getRep_img_url();
-			ivImage.setTag(url);
-			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
-
-				@Override
-				public void onError(String url) {
-
-					LogUtils.log("PagerForBid.onError." + "\nurl : " + url);
-				}
-
-				@Override
-				public void onCompleted(String url, Bitmap bitmap) {
-
-					try {
-						LogUtils.log("PagerForBid.onCompleted." + "\nurl : " + url);
-						
-						if(ivImage != null && bitmap != null && !bitmap.isRecycled()) {
-							ivImage.setImageBitmap(bitmap);
-						}
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
-					}
-				}
-			});
-
-			ivImage.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", bids.get(position));
-					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
-				}
-			});
-			
-			return ivImage;
-		}
-		
-		@Override
-		public void destroyItem(ViewGroup container, int position, Object object) {
-
-			try {
-				View v = (View) object;
-				container.removeView(v);
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
-			}
-		}
-		
-		@Override
-		public boolean isViewFromObject(View arg0, Object arg1) {
-
-			return arg0 == arg1;
 		}
 	}
 }

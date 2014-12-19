@@ -33,6 +33,12 @@ public class Dealer extends BaseModel {
 	private int right_to_sell_cnt;
 	private int status;
 	
+	private String profile_img_url;
+	private String name;
+	private String address;
+	private String phone_number;
+	private String desc;
+	
 	public Dealer() {
 		
 	}
@@ -42,6 +48,7 @@ public class Dealer extends BaseModel {
 		try {
 			if(objJSON.has("id")) {
 				this.id = objJSON.getInt("id");
+				setIndexno(id);
 			}
 			
 			if(objJSON.has("level")) {
@@ -86,6 +93,26 @@ public class Dealer extends BaseModel {
 			
 			if(objJSON.has("status")) {
 				this.status = objJSON.getInt("status");
+			}
+			
+			if(objJSON.has("profile_img_url")) {
+				this.profile_img_url = objJSON.getString("profile_img_url");
+			}
+			
+			if(objJSON.has("name")) {
+				this.name = objJSON.getString("name");
+			}
+			
+			if(objJSON.has("address")) {
+				this.address = objJSON.getString("address");
+			}
+			
+			if(objJSON.has("phone_number")) {
+				this.phone_number = objJSON.getString("phone_number");
+			}
+			
+			if(objJSON.has("desc")) {
+				this.desc = objJSON.getString("desc");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -165,5 +192,45 @@ public class Dealer extends BaseModel {
 	}
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getProfile_img_url() {
+		return profile_img_url;
+	}
+
+	public void setProfile_img_url(String profile_img_url) {
+		this.profile_img_url = profile_img_url;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhone_number() {
+		return phone_number;
+	}
+
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
 	}
 }

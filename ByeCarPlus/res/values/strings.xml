@@ -47,6 +47,7 @@
 
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadBidsInfo">매물 정보를 불러오지 못했습니다.</string>
+    <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원가입 실패</string>
     

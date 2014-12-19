@@ -3,9 +3,11 @@ package com.byecar.byecarplus.fragments.main_for_user;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,19 +17,19 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
+import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.DealerView;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -36,6 +38,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
+import com.outspoken_kid.views.PageNavigatorView;
 
 public class CarDetailPage extends BCPFragmentForMainForUser {
 
@@ -47,7 +50,8 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 	private Button btnGuide;
 	private Button btnBuy;
 	
-	private ImageView ivImage;
+	private ViewPager viewPager;
+	private PageNavigatorView pageNavigator;
 	private View auctionIcon;
 	private View remainBg;
 	private RelativeLayout timeRelative;
@@ -64,7 +68,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 	private View headerForDealer;
 	private View arrowForDealer;
 	private FrameLayout frameForDealer;
-	private TextView tvNoDealer;
+	private View noDealer;
 	
 	private View headerForInfo;
 	private View arrowForInfo;
@@ -84,48 +88,51 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 	
 	private AlphaAnimation aaIn, aaOut;
 	
+	private ImagePagerAdapter imagePagerAdapter;
+	
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.auctionDetailPage_titleBar);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.carDetailPage_titleBar);
 		
-		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.auctionDetailPage_scrollView);
+		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.carDetailPage_scrollView);
 		
-		btnBuy = (Button) mThisView.findViewById(R.id.auctionDetailPage_btnBuy);
-		btnGuide = (Button) mThisView.findViewById(R.id.auctionDetailPage_btnGuide);
+		btnBuy = (Button) mThisView.findViewById(R.id.carDetailPage_btnBuy);
+		btnGuide = (Button) mThisView.findViewById(R.id.carDetailPage_btnGuide);
 		
-		ivImage = (ImageView) mThisView.findViewById(R.id.auctionDetailPage_ivImage);
-		auctionIcon = mThisView.findViewById(R.id.auctionDetailPage_auctionIcon);
-		remainBg = mThisView.findViewById(R.id.auctionDetailPage_remainBg);
-		timeRelative = (RelativeLayout) mThisView.findViewById(R.id.auctionDetailPage_timeRelative);
-		progressBar = (ProgressBar) mThisView.findViewById(R.id.auctionDetailPage_progressBar);
-		tvRemainTime = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvRemainTime);
-		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvRemainTimeText);
-		timeIcon = mThisView.findViewById(R.id.auctionDetailPage_timeIcon);
+		viewPager = (ViewPager) mThisView.findViewById(R.id.carDetailPage_viewPager);
+		pageNavigator = (PageNavigatorView) mThisView.findViewById(R.id.carDetailPage_pageNavigator);
+		auctionIcon = mThisView.findViewById(R.id.carDetailPage_auctionIcon);
+		remainBg = mThisView.findViewById(R.id.carDetailPage_remainBg);
+		timeRelative = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_timeRelative);
+		progressBar = (ProgressBar) mThisView.findViewById(R.id.carDetailPage_progressBar);
+		tvRemainTime = (TextView) mThisView.findViewById(R.id.carDetailPage_tvRemainTime);
+		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.carDetailPage_tvRemainTimeText);
+		timeIcon = mThisView.findViewById(R.id.carDetailPage_timeIcon);
 		
-		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvCarInfo1);
-		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvCarInfo2);
-		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvCurrentPrice);
-		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvCurrentPriceText);
-		tvBidCount = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvBidCount);
+		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo1);
+		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo2);
+		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPrice);
+		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPriceText);
+		tvBidCount = (TextView) mThisView.findViewById(R.id.carDetailPage_tvBidCount);
 		
-		headerForDealer = mThisView.findViewById(R.id.auctionDetailPage_headerForDealer);
-		arrowForDealer = mThisView.findViewById(R.id.auctionDetailPage_arrowForDealer);
-		frameForDealer = (FrameLayout) mThisView.findViewById(R.id.auctionDetailPage_frameForDealer);
+		headerForDealer = mThisView.findViewById(R.id.carDetailPage_headerForDealer);
+		arrowForDealer = mThisView.findViewById(R.id.carDetailPage_arrowForDealer);
+		frameForDealer = (FrameLayout) mThisView.findViewById(R.id.carDetailPage_frameForDealer);
 		
-		headerForInfo = mThisView.findViewById(R.id.auctionDetailPage_headerForInfo);
-		arrowForInfo = mThisView.findViewById(R.id.auctionDetailPage_arrowForInfo);
-		relativeForInfo = (RelativeLayout) mThisView.findViewById(R.id.auctionDetailPage_relativeForInfo);
-		tvDetailInfo1 = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvDetailInfo1);
-		tvDetailInfo2 = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvDetailInfo2);
+		headerForInfo = mThisView.findViewById(R.id.carDetailPage_headerForInfo);
+		arrowForInfo = mThisView.findViewById(R.id.carDetailPage_arrowForInfo);
+		relativeForInfo = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForInfo);
+		tvDetailInfo1 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvDetailInfo1);
+		tvDetailInfo2 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvDetailInfo2);
 		
-		headerForOption = mThisView.findViewById(R.id.auctionDetailPage_headerForOption);
-		arrowForOption = mThisView.findViewById(R.id.auctionDetailPage_arrowForOption);
-		relativeForOption = (RelativeLayout) mThisView.findViewById(R.id.auctionDetailPage_relativeForOption);
+		headerForOption = mThisView.findViewById(R.id.carDetailPage_headerForOption);
+		arrowForOption = mThisView.findViewById(R.id.carDetailPage_arrowForOption);
+		relativeForOption = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForOption);
 		
-		headerForDescription = mThisView.findViewById(R.id.auctionDetailPage_headerForDescription);
-		arrowForDescription = mThisView.findViewById(R.id.auctionDetailPage_arrowForDescription);
-		tvDescription = (TextView) mThisView.findViewById(R.id.auctionDetailPage_tvDescription);
+		headerForDescription = mThisView.findViewById(R.id.carDetailPage_headerForDescription);
+		arrowForDescription = mThisView.findViewById(R.id.carDetailPage_arrowForDescription);
+		tvDescription = (TextView) mThisView.findViewById(R.id.carDetailPage_tvDescription);
 	}
 
 	@Override
@@ -154,6 +161,8 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
+
+		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
 		
 		if(relativeForOption.getChildCount() == 0) {
 			addOptionViews();
@@ -195,7 +204,6 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				if(car != null && car.getType() == Car.TYPE_DEALER) {
 					switch(event.getAction()) {
 					
-					case MotionEvent.ACTION_DOWN:
 					case MotionEvent.ACTION_MOVE:
 						
 						if(btnBuy.getVisibility() == View.VISIBLE) {
@@ -215,6 +223,32 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				}
 				
 				return false;
+			}
+		});
+		
+		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+			
+			@Override
+			public void onPageSelected(int arg0) {
+
+				if(car.getImages().size() > 1) {
+					pageNavigator.setVisibility(View.VISIBLE);
+					pageNavigator.setIndex(arg0);
+				} else {
+					pageNavigator.setVisibility(View.INVISIBLE);
+				}
+			}
+			
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 		
@@ -290,9 +324,14 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(120);
 		
-		//ivImage.
-		rp = (RelativeLayout.LayoutParams) ivImage.getLayoutParams();
+		//viewPager.
+		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(500);
+		
+		//pageNavigator.
+		rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(16);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
 		
 		//auctionIcon.
 		rp = (RelativeLayout.LayoutParams) auctionIcon.getLayoutParams();
@@ -371,7 +410,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		
 		//footerForDealer.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-				R.id.auctionDetailPage_footerForDealer).getLayoutParams();
+				R.id.carDetailPage_footerForDealer).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
@@ -394,7 +433,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		
 		//footerForInfo.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-				R.id.auctionDetailPage_footerForInfo).getLayoutParams();
+				R.id.carDetailPage_footerForInfo).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
@@ -417,7 +456,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		
 		//footerForOption.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-				R.id.auctionDetailPage_footerForOption).getLayoutParams();
+				R.id.carDetailPage_footerForOption).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
@@ -440,7 +479,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		
 		//footerForDescription.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-				R.id.auctionDetailPage_footerForDescription).getLayoutParams();
+				R.id.carDetailPage_footerForDescription).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
@@ -788,35 +827,16 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 				+ getString(R.string.won));
 		tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
+
+		imagePagerAdapter.setArrayList(car.getImages());
+		viewPager.getAdapter().notifyDataSetChanged();
+		viewPager.setCurrentItem(0);
 		
-		ivImage.setTag(car.getRep_img_url());
-		DownloadUtils.downloadBitmap(car.getRep_img_url(), new OnBitmapDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("AuctionDetailPage.onError." + "\nurl : " + url);
-			}
-
-			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
-
-				try {
-					LogUtils.log("AuctionDetailPage.onCompleted." + "\nurl : " + url);
-					
-					if(ivImage != null && !bitmap.isRecycled()) {
-						ivImage.setImageBitmap(bitmap);
-					}
-					
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-		});
+		pageNavigator.setSize(car.getImages().size());
+		pageNavigator.setEmptyOffCircle();
+		pageNavigator.invalidate();
 	
-		loadDealers();
+		addDealerViews();
 	}
 	
 	public void setDetailCarInfo() {
@@ -948,22 +968,32 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		}
 	}
 	
-	public void loadDealers() {
-		
-		addDealerViews();
-	}
-	
 	public void addDealerViews() {
 		
 		//이전 상태 모두 지우기.
 		frameForDealer.removeAllViews();
-		
-		DealerView dealerView = new DealerView(mContext);
-		ResizeUtils.viewResize(184, 300, dealerView, 2, Gravity.LEFT, new int[]{20, 14, 0, 0});
-		dealerView.setDealerInfo(null);
-		frameForDealer.addView(dealerView);
-		
-		//632 - 552 = 80 ::: 1 (? 184 ? 184 ? 184 ?) 1, 하나당 20. 
-		//20, 20 + 204, 20 + 408
+
+		int size = car.getBids().size();
+		for(int i=0; i<size; i++) {
+			DealerView dealerView = new DealerView(mContext);
+			ResizeUtils.viewResize(184, 300, dealerView, 2, Gravity.LEFT, 
+					new int[]{
+						20 + (i*204),
+						14, 0, 0});
+			dealerView.setDealerInfo(car.getBids().get(i));
+			frameForDealer.addView(dealerView);
+			
+			final int I = i;
+			dealerView.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("id", car.getBids().get(I).getDealer_id());
+					mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER, bundle);
+				}
+			});
+		}
 	}
 }

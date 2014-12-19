@@ -31,9 +31,10 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.CarDetailPage;
+import com.byecar.byecarplus.common.DealerPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
+import com.byecar.byecarplus.fragments.main_for_user.CarDetailPage;
 import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
 import com.byecar.byecarplus.fragments.main_for_user.DealerCarListPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
@@ -103,6 +104,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 		gestureSlidingLayout.setTopView(findViewById(R.id.mainForUserActivity_topView));
 		gestureSlidingLayout.setLeftView(leftView);
+		gestureSlidingLayout.setRestrictToSide(true);
 		gestureSlidingLayout.setOnAfterOpenToLeftListener(new OnAfterOpenListener() {
 			
 			@Override
@@ -291,6 +293,9 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_DEALER_LIST:
 			return new DealerCarListPage();
+			
+		case BCPConstants.PAGE_COMMON_DEALER:
+			return new DealerPage();
 		}
 		
 		return null;

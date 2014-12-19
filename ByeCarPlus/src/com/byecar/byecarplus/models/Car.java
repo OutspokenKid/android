@@ -1,7 +1,9 @@
 package com.byecar.byecarplus.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
@@ -24,28 +26,41 @@ public class Car extends BaseModel implements Serializable {
 	private int type;
 	private int car_id;
 	private int year;
-	private String car_number;
 	private String color;
+	private String car_number;
 	private int mileage;
 	private int displacement;
 	private String fuel_type;
 	private String transmission_type;
 	private int had_accident;
 	private int is_oneman_owned;
-	private String vehicle_id_number;
 	private long price;
 	private int manager_id;
 	private String desc;
 	private int seller_id;
 	private String rep_img_url;
 	private int status;
+	private long bid_begin_at;
 	private long bid_until_at;
+	private int bids_cnt;
 	private String area;
+	private int to_sell_directly;
+	private long end_at;
+	private int selected_dealer_id;
 	private long created_at;
 	private String brand_name;
 	private String model_name;
 	private String car_full_name;
-	private int bids_cnt;
+	
+	private String seller_phone_number;
+	private String seller_address;
+	private String manager_name;
+	
+	private String[] m_images;
+	private String[] a_images;
+	private JSONObject objOptions;
+	private ArrayList<Bid> bids = new ArrayList<Bid>();
+	private ArrayList<String> images = new ArrayList<String>();
 	
 	public Car() {
 		
@@ -102,10 +117,6 @@ public class Car extends BaseModel implements Serializable {
 			if(objJSON.has("is_oneman_owned")) {
 				this.is_oneman_owned = objJSON.getInt("is_oneman_owned");
 			}
-
-			if(objJSON.has("vehicle_id_number")) {
-				this.vehicle_id_number = objJSON.getString("vehicle_id_number");
-			}
 			
 			if(objJSON.has("price")) {
 				this.price = objJSON.getLong("price");
@@ -131,12 +142,29 @@ public class Car extends BaseModel implements Serializable {
 				this.status = objJSON.getInt("status");
 			}
 			
+			if(objJSON.has("bid_begin_at")) {
+				this.bid_begin_at = objJSON.getLong("bid_begin_at");
+			}
+
+			
 			if(objJSON.has("bid_until_at")) {
 				this.bid_until_at = objJSON.getLong("bid_until_at");
 			}
 			
 			if(objJSON.has("area")) {
 				this.area = objJSON.getString("area");
+			}
+			
+			if(objJSON.has("to_sell_directly")) {
+				this.to_sell_directly = objJSON.getInt("to_sell_directly");
+			}
+			
+			if(objJSON.has("end_at")) {
+				this.end_at = objJSON.getLong("end_at");
+			}
+			
+			if(objJSON.has("selected_dealer_id")) {
+				this.selected_dealer_id = objJSON.getInt("selected_dealer_id");
 			}
 			
 			if(objJSON.has("created_at")) {
@@ -158,6 +186,56 @@ public class Car extends BaseModel implements Serializable {
 			if(objJSON.has("bids_cnt")) {
 				this.bids_cnt = objJSON.getInt("bids_cnt");
 			}
+			
+			if(objJSON.has("seller_phone_number")) {
+				this.seller_phone_number = objJSON.getString("seller_phone_number");
+			}
+			
+			if(objJSON.has("seller_address")) {
+				this.seller_address = objJSON.getString("seller_address");
+			}
+			
+			if(objJSON.has("manager_name")) {
+				this.manager_name = objJSON.getString("manager_name");
+			}
+			
+			if(objJSON.has("m_images")) {
+				
+				JSONArray arJSON = objJSON.getJSONArray("m_images");
+				
+				int size = arJSON.length();
+				this.m_images = new String[size];
+				for(int i=0; i<size; i++) {
+					m_images[i] = arJSON.getString(i);
+					getImages().add(m_images[i]);
+				}
+			}
+			
+			if(objJSON.has("a_images")) {
+				
+				JSONArray arJSON = objJSON.getJSONArray("a_images");
+				
+				int size = arJSON.length();
+				this.a_images = new String[size];
+				for(int i=0; i<size; i++) {
+					a_images[i] = arJSON.getString(i);
+					getImages().add(a_images[i]);
+				}
+			}
+			
+			if(objJSON.has("options")) {
+				objOptions = objJSON.getJSONObject("options");
+			}
+			
+			if(objJSON.has("bids")) {
+				JSONArray arJSON = objJSON.getJSONArray("bids");
+				
+				int size = arJSON.length();
+				for(int i=0; i<size; i++) {
+					bids.add(new Bid(arJSON.getJSONObject(i)));
+				}
+			}
+			
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}
@@ -257,14 +335,6 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setIs_oneman_owned(int is_oneman_owned) {
 		this.is_oneman_owned = is_oneman_owned;
-	}
-
-	public String getVehicle_id_number() {
-		return vehicle_id_number;
-	}
-
-	public void setVehicle_id_number(String vehicle_id_number) {
-		this.vehicle_id_number = vehicle_id_number;
 	}
 
 	public long getPrice() {
@@ -370,5 +440,101 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setBids_cnt(int bids_cnt) {
 		this.bids_cnt = bids_cnt;
+	}
+
+	public long getBid_begin_at() {
+		return bid_begin_at;
+	}
+
+	public void setBid_begin_at(long bid_begin_at) {
+		this.bid_begin_at = bid_begin_at;
+	}
+
+	public int getTo_sell_directly() {
+		return to_sell_directly;
+	}
+
+	public void setTo_sell_directly(int to_sell_directly) {
+		this.to_sell_directly = to_sell_directly;
+	}
+
+	public long getEnd_at() {
+		return end_at;
+	}
+
+	public void setEnd_at(long end_at) {
+		this.end_at = end_at;
+	}
+
+	public int getSelected_dealer_id() {
+		return selected_dealer_id;
+	}
+
+	public void setSelected_dealer_id(int selected_dealer_id) {
+		this.selected_dealer_id = selected_dealer_id;
+	}
+
+	public String getSeller_phone_number() {
+		return seller_phone_number;
+	}
+
+	public void setSeller_phone_number(String seller_phone_number) {
+		this.seller_phone_number = seller_phone_number;
+	}
+
+	public String getSeller_address() {
+		return seller_address;
+	}
+
+	public void setSeller_address(String seller_address) {
+		this.seller_address = seller_address;
+	}
+
+	public String getManager_name() {
+		return manager_name;
+	}
+
+	public void setManager_name(String manager_name) {
+		this.manager_name = manager_name;
+	}
+
+	public String[] getM_images() {
+		return m_images;
+	}
+
+	public void setM_images(String[] m_images) {
+		this.m_images = m_images;
+	}
+
+	public String[] getA_images() {
+		return a_images;
+	}
+
+	public void setA_images(String[] a_images) {
+		this.a_images = a_images;
+	}
+
+	public JSONObject getObjOptions() {
+		return objOptions;
+	}
+
+	public void setObjOptions(JSONObject objOptions) {
+		this.objOptions = objOptions;
+	}
+
+	public ArrayList<Bid> getBids() {
+		return bids;
+	}
+
+	public void setBids(ArrayList<Bid> bids) {
+		this.bids = bids;
+	}
+
+	public ArrayList<String> getImages() {
+		return images;
+	}
+
+	public void setImages(ArrayList<String> images) {
+		this.images = images;
 	}
 }

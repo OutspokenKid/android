@@ -33,6 +33,7 @@ public class Notice extends BaseModel {
 		try {
 			if(objJSON.has("id")) {
 				this.id = objJSON.getInt("id");
+				setIndexno(id);
 			}
 			
 			if(objJSON.has("type")) {

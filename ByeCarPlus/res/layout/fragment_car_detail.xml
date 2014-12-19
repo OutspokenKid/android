@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/auctionDetailPage_mainLayout"
+    android:id="@+id/carDetailPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/page_bg" >
     
     <com.outspoken_kid.views.OffsetScrollView
-        android:id="@+id/auctionDetailPage_scrollView"
+        android:id="@+id/carDetailPage_scrollView"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
         android:fillViewport="true" >
         
         <RelativeLayout
-            android:id="@+id/auctionDetailPage_innerRelative"
+            android:id="@+id/carDetailPage_innerRelative"
         	android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
-    		
-            <ImageView 
-		        android:id="@+id/auctionDetailPage_ivImage"
-		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_alignParentTop="true"
-		        android:scaleType="centerCrop"
-		        android:background="@drawable/main_auction_default" />
-		    
+
+            <android.support.v4.view.ViewPager 
+                android:id="@+id/carDetailPage_viewPager"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignParentTop="true"
+    			android:background="@drawable/main_auction_default" />
+            
+            <com.outspoken_kid.views.PageNavigatorView 
+                android:id="@+id/carDetailPage_pageNavigator"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignBottom="@id/carDetailPage_viewPager" />
+            		    
 		    <View
-		        android:id="@+id/auctionDetailPage_auctionIcon"
+		        android:id="@+id/carDetailPage_auctionIcon"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignBottom="@id/auctionDetailPage_ivImage"
-		        android:layout_alignLeft="@id/auctionDetailPage_ivImage"
+		        android:layout_alignBottom="@id/carDetailPage_viewPager"
+		        android:layout_alignLeft="@id/carDetailPage_viewPager"
 		        android:visibility="invisible"
 		        android:background="@drawable/main_hotdeal_mark" />
 		
 		    <View
-		        android:id="@+id/auctionDetailPage_remainBg"
+		        android:id="@+id/carDetailPage_remainBg"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/auctionDetailPage_ivImage"
+		        android:layout_below="@id/carDetailPage_viewPager"
 		        android:background="@drawable/main_car_info_img1_bg" />
 		
 		    <RelativeLayout
-		        android:id="@+id/auctionDetailPage_timeRelative"
+		        android:id="@+id/carDetailPage_timeRelative"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_alignTop="@id/auctionDetailPage_remainBg" >
+		        android:layout_alignTop="@id/carDetailPage_remainBg" >
 
 		        <ProgressBar
-			        android:id="@+id/auctionDetailPage_progressBar"
+			        android:id="@+id/carDetailPage_progressBar"
 			        style="?android:attr/progressBarStyleHorizontal"
 			        android:layout_width="match_parent"
 			        android:layout_height="0dp"
@@ -57,145 +63,145 @@
 			        android:progressDrawable="@drawable/progressbar_custom_orange" />
 			
 			    <TextView
-			        android:id="@+id/auctionDetailPage_tvRemainTime"
+			        android:id="@+id/carDetailPage_tvRemainTime"
 			        android:layout_width="wrap_content"
 			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
 			        android:layout_centerHorizontal="true"
 			        android:gravity="top"
 			        android:textColor="#fff" />
 			
 			    <TextView
-			        android:id="@+id/auctionDetailPage_tvRemainTimeText"
+			        android:id="@+id/carDetailPage_tvRemainTimeText"
 			        android:layout_width="wrap_content"
 			        android:layout_height="0dp"
-			        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
-			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:layout_alignLeft="@id/carDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
 			        android:gravity="center_vertical"
 			        android:text="@string/remainTime"
 			        android:textColor="#fff" />
 			
 			    <View
-			        android:id="@+id/auctionDetailPage_timeIcon"
+			        android:id="@+id/carDetailPage_timeIcon"
 			        android:layout_width="0dp"
 			        android:layout_height="0dp"
-			        android:layout_alignLeft="@id/auctionDetailPage_tvRemainTime"
-			        android:layout_alignTop="@id/auctionDetailPage_progressBar"
+			        android:layout_alignLeft="@id/carDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
 			        android:background="@drawable/main_time_icon" />		        
 		        
 		    </RelativeLayout>
 		
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvCarInfo1"
+		        android:id="@+id/carDetailPage_tvCarInfo1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/auctionDetailPage_timeRelative"
+		        android:layout_below="@id/carDetailPage_timeRelative"
 		        android:ellipsize="end"
 		        android:gravity="bottom|left"
 		        android:singleLine="true"
 		        android:textColor="#fff" />
 		
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvCarInfo2"
+		        android:id="@+id/carDetailPage_tvCarInfo2"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/auctionDetailPage_tvCarInfo1"
+		        android:layout_below="@id/carDetailPage_tvCarInfo1"
 		        android:ellipsize="end"
 		        android:gravity="top|left"
 		        android:singleLine="true"
 		        android:textColor="#fff" />
 		
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvCurrentPrice"
+		        android:id="@+id/carDetailPage_tvCurrentPrice"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentRight="true"
-		        android:layout_below="@id/auctionDetailPage_timeRelative"
+		        android:layout_below="@id/carDetailPage_timeRelative"
 		        android:ellipsize="end"
 		        android:singleLine="true"
 		        android:textColor="#fff" />
 		
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvCurrentPriceText"
+		        android:id="@+id/carDetailPage_tvCurrentPriceText"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_alignBottom="@id/auctionDetailPage_tvCurrentPrice"
-		        android:layout_toLeftOf="@id/auctionDetailPage_tvCurrentPrice"
+		        android:layout_alignBottom="@id/carDetailPage_tvCurrentPrice"
+		        android:layout_toLeftOf="@id/carDetailPage_tvCurrentPrice"
 		        android:text="@string/currentPrice"
 		        android:textColor="#fff" />
 		
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvBidCount"
+		        android:id="@+id/carDetailPage_tvBidCount"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_alignRight="@id/auctionDetailPage_tvCurrentPrice"
-		        android:layout_below="@id/auctionDetailPage_tvCurrentPrice"
+		        android:layout_alignRight="@id/carDetailPage_tvCurrentPrice"
+		        android:layout_below="@id/carDetailPage_tvCurrentPrice"
 		        android:ellipsize="end"
 		        android:singleLine="true"
 		        android:textColor="#fff" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_headerForDealer"
+		        android:id="@+id/carDetailPage_headerForDealer"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_remainBg"
+		        android:layout_below="@id/carDetailPage_remainBg"
 		        android:background="@drawable/detail_head1" />
 		    
 		    <View
-		        android:id="@+id/auctionDetailPage_arrowForDealer"
+		        android:id="@+id/carDetailPage_arrowForDealer"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_headerForDealer"
-		        android:layout_alignRight="@id/auctionDetailPage_headerForDealer"
+		        android:layout_alignTop="@id/carDetailPage_headerForDealer"
+		        android:layout_alignRight="@id/carDetailPage_headerForDealer"
 		        android:background="@drawable/detail_toggle_up" />
 		    
 		    
 		    <FrameLayout
-		        android:id="@+id/auctionDetailPage_frameForDealer"
+		        android:id="@+id/carDetailPage_frameForDealer"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_headerForDealer"
+		        android:layout_below="@id/carDetailPage_headerForDealer"
 		        android:background="@drawable/detail_body1" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_footerForDealer"
+		        android:id="@+id/carDetailPage_footerForDealer"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_frameForDealer"
+		        android:layout_below="@id/carDetailPage_frameForDealer"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_headerForInfo"
+		        android:id="@+id/carDetailPage_headerForInfo"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_footerForDealer"
+		        android:layout_below="@id/carDetailPage_footerForDealer"
 		        android:background="@drawable/detail_head2" />
 		    
 		    <View
-		        android:id="@+id/auctionDetailPage_arrowForInfo"
+		        android:id="@+id/carDetailPage_arrowForInfo"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_headerForInfo"
-		        android:layout_alignRight="@id/auctionDetailPage_headerForInfo"
+		        android:layout_alignTop="@id/carDetailPage_headerForInfo"
+		        android:layout_alignRight="@id/carDetailPage_headerForInfo"
 		        android:background="@drawable/detail_toggle" />
 		    
 		    <RelativeLayout
-		        android:id="@+id/auctionDetailPage_relativeForInfo"
+		        android:id="@+id/carDetailPage_relativeForInfo"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_headerForInfo"
+		        android:layout_below="@id/carDetailPage_headerForInfo"
 		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" >
 		        
 		        <TextView 
-		            android:id="@+id/auctionDetailPage_tvDetailInfo1"
+		            android:id="@+id/carDetailPage_tvDetailInfo1"
 		        	android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
 		        	android:layout_alignParentLeft="true"
@@ -203,7 +209,7 @@
 		        	android:gravity="left" />
 		        
 		        <TextView 
-		            android:id="@+id/auctionDetailPage_tvDetailInfo2"
+		            android:id="@+id/carDetailPage_tvDetailInfo2"
 		        	android:layout_width="wrap_content"
 		        	android:layout_height="wrap_content"
 		        	android:layout_alignParentRight="true"
@@ -213,95 +219,95 @@
 			</RelativeLayout>
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_footerForInfo"
+		        android:id="@+id/carDetailPage_footerForInfo"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_relativeForInfo"
+		        android:layout_below="@id/carDetailPage_relativeForInfo"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_headerForOption"
+		        android:id="@+id/carDetailPage_headerForOption"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_footerForInfo"
+		        android:layout_below="@id/carDetailPage_footerForInfo"
 		        android:background="@drawable/detail_head3" />
 		    
 		    <View
-		        android:id="@+id/auctionDetailPage_arrowForOption"
+		        android:id="@+id/carDetailPage_arrowForOption"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_headerForOption"
-		        android:layout_alignRight="@id/auctionDetailPage_headerForOption"
+		        android:layout_alignTop="@id/carDetailPage_headerForOption"
+		        android:layout_alignRight="@id/carDetailPage_headerForOption"
 		        android:background="@drawable/detail_toggle" />
 		    
 		    <RelativeLayout
-		        android:id="@+id/auctionDetailPage_relativeForOption"
+		        android:id="@+id/carDetailPage_relativeForOption"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_headerForOption"
+		        android:layout_below="@id/carDetailPage_headerForOption"
 		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_footerForOption"
+		        android:id="@+id/carDetailPage_footerForOption"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_relativeForOption"
+		        android:layout_below="@id/carDetailPage_relativeForOption"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_headerForDescription"
+		        android:id="@+id/carDetailPage_headerForDescription"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_footerForOption"
+		        android:layout_below="@id/carDetailPage_footerForOption"
 		        android:background="@drawable/detail_head4" />
 		    
 		    <View
-		        android:id="@+id/auctionDetailPage_arrowForDescription"
+		        android:id="@+id/carDetailPage_arrowForDescription"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/auctionDetailPage_headerForDescription"
-		        android:layout_alignRight="@id/auctionDetailPage_headerForDescription"
+		        android:layout_alignTop="@id/carDetailPage_headerForDescription"
+		        android:layout_alignRight="@id/carDetailPage_headerForDescription"
 		        android:background="@drawable/detail_toggle" />
 		    
 		    <TextView
-		        android:id="@+id/auctionDetailPage_tvDescription"
+		        android:id="@+id/carDetailPage_tvDescription"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_headerForDescription"
+		        android:layout_below="@id/carDetailPage_headerForDescription"
 		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
-		        android:id="@+id/auctionDetailPage_footerForDescription"
+		        android:id="@+id/carDetailPage_footerForDescription"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/auctionDetailPage_tvDescription"
+		        android:layout_below="@id/carDetailPage_tvDescription"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 
 		        android:layout_width="10dp"
 		        android:layout_height="10dp"
-		        android:layout_below="@id/auctionDetailPage_footerForDescription" />
+		        android:layout_below="@id/carDetailPage_footerForDescription" />
             
         </RelativeLayout>
         
     </com.outspoken_kid.views.OffsetScrollView>
     
     <com.byecar.byecarplus.views.TitleBar
-        android:id="@+id/auctionDetailPage_titleBar"
+        android:id="@+id/carDetailPage_titleBar"
         android:layout_width="match_parent"
     	android:layout_height="0dp" />
     
     <Button
-        android:id="@+id/auctionDetailPage_btnGuide"
+        android:id="@+id/carDetailPage_btnGuide"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
@@ -309,7 +315,7 @@
         android:background="@drawable/auction_guide_btn" />
  
     <Button
-        android:id="@+id/auctionDetailPage_btnBuy"
+        android:id="@+id/carDetailPage_btnBuy"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentRight="true"
