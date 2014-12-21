@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -112,18 +113,25 @@ public class IntroActivity extends Activity {
 ////////////////////// Custom methods.
 	
 	public void checkSponserVersion() {
-
+		
 		AsyncStringDownloader.OnCompletedListener ocl = new OnCompletedListener() {
 			
 			@Override
 			public void onErrorRaised(String url, Exception e) {
+				
+				LogUtils.log("###IntroActivity.checkSponserVersion.onErrorRaised"
+						+ "\nurl : " + url);
 				
 				loadOldSponserBitmap();
 			}
 			
 			@Override
 			public void onCompleted(String url, String result) {
-
+				
+				LogUtils.log("###IntroActivity.checkSponserVersion.onCompleted"
+						+ "\nurl : " + url
+						+ "\nresult : " + result);
+				
 				try {
 					JSONObject objJSON = new JSONObject(result);
 					int errorCode = objJSON.getInt("errorCode");
@@ -145,12 +153,19 @@ public class IntroActivity extends Activity {
 			}
 		};
 	
+		LogUtils.log("###IntroActivity.checkSponserVersion 2");
+		
 		int currentSponserVersion = SharedPrefsUtils.getIntegerFromPrefs(ZoneConstants.PREFS_SPONSER, "version");
 		String url = ZoneConstants.BASE_URL + "common/mainbanner" +
 				"?sb_id=" + ZoneConstants.PAPP_ID +
 				"&image_size=640" +
 				"&ver=" + currentSponserVersion;
+		
+		LogUtils.log("###IntroActivity.checkSponserVersion 3");
+		
 		AsyncStringDownloader.download(url, null, ocl);
+		
+		LogUtils.log("###IntroActivity.checkSponserVersion 4");
 	}
 	
 	public void downloadSponserBitmap(final int newVersionCode, String sponserUrl) {
@@ -204,12 +219,19 @@ public class IntroActivity extends Activity {
 			@Override
 			public void onErrorRaised(String url, Exception e) {
 
+				LogUtils.log("###IntroActivity.downloadStartupInfo.onErrorRaised"
+						+ "\nurl : " + url);
+				
 				selectAccount();
 			}
 			
 			@Override
 			public void onCompleted(String url, String result) {
 
+				LogUtils.log("###IntroActivity.downloadStartupInfo.onCompleted"
+						+ "\nurl : " + url
+						+ "\nresult : " + result);
+				
 				try {
 					MainActivity.startupInfo = new StartupInfo(new JSONObject(result));
 				} catch(Exception e) {
@@ -221,7 +243,7 @@ public class IntroActivity extends Activity {
 		};
 		
 		String url = ZoneConstants.BASE_URL + "common/common_popup" +
-				"&image_size=640";
+				"?image_size=640";
 		AsyncStringDownloader.download(url, null, ocl);
 	}
 

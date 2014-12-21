@@ -107,21 +107,24 @@ public class AsyncStringDownloader extends BaseAsyncDownloader {
 	        		retryCount++;
 	        	}
 	        } catch (Exception e) {
+	        	e.printStackTrace();
 	            httpPost.abort();
-	            e.printStackTrace();
 	        }
+	        
 	        return null;
 		}
 		
 		protected void onPostExecute(Void v) {
+			
 			if(mListener != null) {
+				
 				if(result == null) {
 					mListener.onErrorRaised(url, null);
 				} else {
 					mListener.onCompleted(url, result);
 				}
 			}
-
+			
 			downloadComplete(this);
 		};
 		
@@ -142,6 +145,7 @@ public class AsyncStringDownloader extends BaseAsyncDownloader {
 	}
 	
 	protected void addTask(String url, String key, OnCompletedListener listener) {
+		
 		AsyncDownloadTask task = new AsyncDownloadTask(url, key, listener);
 		addTaskToQueue(task);
 	}
@@ -161,6 +165,7 @@ public class AsyncStringDownloader extends BaseAsyncDownloader {
 	}
 	
 	public static void download(String url, String key, OnCompletedListener listener) {
+		
 		AsyncStringDownloader.getInstance().addTask(url, key, listener);
 	}
 	

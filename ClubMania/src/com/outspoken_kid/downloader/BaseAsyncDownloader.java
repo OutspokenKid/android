@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import android.os.AsyncTask;
+
 import com.outspoken_kid.downloader.stringdownloader.AsyncStringDownloader;
 import com.outspoken_kid.utils.StringUtils;
-
-import android.os.AsyncTask;
 
 public abstract class BaseAsyncDownloader {
 	
