@@ -17,15 +17,12 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class NaverFragment extends SNSFragment {
 
-	private static String OAUTH_CLIENT_ID = "R9zCvAtCmbj5yhXjmxc9";
-	private static String OAUTH_CLIENT_SECRET = "3DH1ZAMHS7";
-
 	//네이버 테스트 id, secret.
 //	private static String OAUTH_CLIENT_ID = "jyvqXeaVOVmV";
 //	private static String OAUTH_CLIENT_SECRET = "527300A0_COq1_XV33cf";
 	
-	private static String OAUTH_CLIENT_NAME = "네이버 아이디로 로그인";
-	private static String OAUTH_CALLBACK_URL = "http://static.nid.naver.com/oauth/naverOAuthExp.nhn";
+//	private static String OAUTH_CLIENT_NAME = "네이버 아이디로 로그인";
+//	private static String OAUTH_CALLBACK_URL = "http://static.nid.naver.com/oauth/naverOAuthExp.nhn";
 	
 	private OAuthLogin mOAuthLoginInstance;
 	private OAuthLoginButton mOAuthLoginButton;
@@ -53,13 +50,19 @@ public abstract class NaverFragment extends SNSFragment {
 	    }; 
 	}; 
 
+	public abstract String getOAuthClientId();
+	public abstract String getOAuthClientSecret();
+	public abstract String getOAuthClientName();
+	public abstract String getOAuthCallbackUrl();
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
 		mOAuthLoginInstance = OAuthLogin.getInstance();
-		mOAuthLoginInstance.init(getActivity(), OAUTH_CLIENT_ID, 
-				OAUTH_CLIENT_SECRET, OAUTH_CLIENT_NAME, OAUTH_CALLBACK_URL);
+		mOAuthLoginInstance.init(getActivity(), 
+				getOAuthClientId(), getOAuthClientSecret(), 
+				getOAuthClientName(), getOAuthCallbackUrl());
 	}
 	
 	@Override
