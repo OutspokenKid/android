@@ -235,6 +235,30 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 				
 				return R.drawable.btn_loginn_01;
 			}
+
+			@Override
+			public String getOAuthClientId() {
+
+				return getString(R.string.naver_client_id);
+			}
+
+			@Override
+			public String getOAuthClientSecret() {
+
+				return getString(R.string.naver_client_secret);
+			}
+
+			@Override
+			public String getOAuthClientName() {
+				
+				return getString(R.string.app_name);
+			}
+
+			@Override
+			public String getOAuthCallbackUrl() {
+
+				return null;
+			}
 		};
 	    getSupportFragmentManager().beginTransaction().add(nvFrame.getId(), nf, "nvFragment").commit();
 		nf.setOnAfterSignInListener(new OnAfterSignInListener() {

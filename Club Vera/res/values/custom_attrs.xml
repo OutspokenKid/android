@@ -26,6 +26,11 @@
 	<string name="latitude">37.554387</string>
 	<string name="longitude">126.921952</string>
 	
+	<!-- For NaverLogin. -->
+	<string name="naver_client_id">R9zCvAtCmbj5yhXjmxc9</string>
+	<string name="naver_client_secret">ZfCZHkkLS2</string>
+	
+	
 	<!-- Length of logo at IntroActivity.java -->
 	<string name="logo_width">458</string>
 	<string name="logo_height">91</string>
