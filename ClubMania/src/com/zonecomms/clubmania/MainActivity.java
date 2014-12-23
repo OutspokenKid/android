@@ -1396,7 +1396,6 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	@SuppressLint("NewApi")
-	@SuppressWarnings("deprecation")
 	public void setAnimationDrawable() {
 		
 		try {
@@ -1413,13 +1412,7 @@ public class MainActivity extends FragmentActivity {
 				animationDrawable.addFrame(startupInfo.getLoadingImageSet().getDrawables()[i], time);
 			}
 			animationDrawable.setOneShot(false);
-			
-			if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-				ivAnimationLoadingView.setBackground(animationDrawable);
-			} else {
-				ivAnimationLoadingView.setBackgroundDrawable(animationDrawable);
-			}
-			
+			ivAnimationLoadingView.setImageDrawable(animationDrawable);
 			animationLoaded = true;
 		} catch(Exception e) {
 			animationDrawable = null;

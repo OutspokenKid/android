@@ -111,6 +111,12 @@ public class ViewWrapperForPost extends ViewWrapper {
 					String key = ApplicationManager.getDownloadKeyFromTopFragment();
 	
 					if(!TextUtils.isEmpty(member.getMedia_src())) {
+						
+						if(profileImage.getTag() == null || profileImage.getTag().toString() == null
+								|| !profileImage.getTag().toString().equals(member.getMedia_src())) {
+							profileImage.setVisibility(View.INVISIBLE);
+						}
+						
 						ImageDownloadUtils.downloadImage(member.getMedia_src(), key, profileImage, 60);
 					} else {
 						profileImage.setVisibility(View.INVISIBLE);

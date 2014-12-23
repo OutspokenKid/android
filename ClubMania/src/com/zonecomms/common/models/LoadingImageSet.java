@@ -29,8 +29,14 @@ public class LoadingImageSet {
 			
 			if(objJSON.has("timer")) {
 				String timerString = objJSON.getString("timer");
-				float timer = Float.parseFloat(timerString);
-				time = (int)(timer / ((float)images.length) * 1000);
+				
+				if(timerString != null && timerString.length() > 0) {
+					float timer = Float.parseFloat(timerString);
+					time = (int)(timer / ((float)images.length) * 1000);
+				} else {
+					time = 1000;
+				}
+				
 			}
 			
 		} catch(Exception e) {}

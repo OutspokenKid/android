@@ -16,8 +16,8 @@ public class ZoneConstants {
 	//버튼 커버의 색상 값.
 	public static final int COLOR_BUTTON_COVER = Color.argb(150, 137, 137, 137);
 	
-	public static final String DOMAIN = "http://www.napp.co.kr";
-//	public static final String DOMAIN = "http://112.169.61.103";
+//	public static final String DOMAIN = "http://www.napp.co.kr";
+	public static final String DOMAIN = "http://112.169.61.103";
 	
 	//구글 플레이 콘솔의 프로젝트 아이디.
 	public static final String GCM_SENDER_ID = "726585413534";

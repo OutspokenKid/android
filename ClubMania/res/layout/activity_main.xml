@@ -91,6 +91,7 @@
 	    android:id="@+id/mainActivity_ivAnimationLoadingView"
 	    android:layout_width="0dp"
         android:layout_height="0dp"
+        android:scaleType="centerCrop"
         android:visibility="invisible" />
 
 	<com.outspoken_kid.views.SoftKeyboardDetector
