@@ -121,7 +121,6 @@ public class ViewWrapperForPost extends ViewWrapper {
 					ivImage.setImageBitmap(null);
 				} else {
 					ivImage.setVisibility(View.VISIBLE);
-					imageBg.setBackgroundResource(R.drawable.bg_post);
 					setImage(ivImage, post.getMedia_src());
 				}
 				
