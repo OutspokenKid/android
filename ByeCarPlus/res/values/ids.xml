@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="optionTextView1" type="id" />
-    <item name="optionTextView2" type="id" />
-    <item name="optionView1" type="id" />
-    <item name="optionView2" type="id" />
-    <item name="optionView3" type="id" />
-    <item name="optionView4" type="id" />
-    <item name="optionView5" type="id" />
-    <item name="optionView6" type="id" />
-    <item name="optionView7" type="id" />
-    <item name="optionView8" type="id" />
-    <item name="optionView9" type="id" />
-    <item name="optionView10" type="id" />
-    <item name="optionView11" type="id" />
-    <item name="optionView12" type="id" />
-    <item name="optionView13" type="id" />
-    <item name="optionView14" type="id" />
-    <item name="optionView15" type="id" />
-    <item name="optionView16" type="id" />
-    <item name="optionView17" type="id" />
-    <item name="optionView18" type="id" />
-    <item name="optionView19" type="id" />
-    <item name="optionView20" type="id" />
-    <item name="optionView21" type="id" />
-    <item name="optionView22" type="id" />
-    <item name="optionView23" type="id" />
-    <item name="optionView24" type="id" />
-    <item name="optionView25" type="id" />
-    <item name="optionView26" type="id" />
-    <item name="optionView27" type="id" />
-    <item name="optionView28" type="id" />
-    <item name="optionView29" type="id" />
-    <item name="optionView30" type="id" />
+    <item name="carDetailPage_optionTextView1" type="id" />
+    <item name="carDetailPage_optionTextView2" type="id" />
+    <item name="carDetailPage_optionView1" type="id" />
+    <item name="carDetailPage_optionView2" type="id" />
+    <item name="carDetailPage_optionView3" type="id" />
+    <item name="carDetailPage_optionView4" type="id" />
+    <item name="carDetailPage_optionView5" type="id" />
+    <item name="carDetailPage_optionView6" type="id" />
+    <item name="carDetailPage_optionView7" type="id" />
+    <item name="carDetailPage_optionView8" type="id" />
+    <item name="carDetailPage_optionView9" type="id" />
+    <item name="carDetailPage_optionView10" type="id" />
+    <item name="carDetailPage_optionView11" type="id" />
+    <item name="carDetailPage_optionView12" type="id" />
+    <item name="carDetailPage_optionView13" type="id" />
+    <item name="carDetailPage_optionView14" type="id" />
+    <item name="carDetailPage_optionView15" type="id" />
+    <item name="carDetailPage_optionView16" type="id" />
+    <item name="carDetailPage_optionView17" type="id" />
+    <item name="carDetailPage_optionView18" type="id" />
+    <item name="carDetailPage_optionView19" type="id" />
+    <item name="carDetailPage_optionView20" type="id" />
+    <item name="carDetailPage_optionView21" type="id" />
+    <item name="carDetailPage_optionView22" type="id" />
+    <item name="carDetailPage_optionView23" type="id" />
+    <item name="carDetailPage_optionView24" type="id" />
+    <item name="carDetailPage_optionView25" type="id" />
+    <item name="carDetailPage_optionView26" type="id" />
+    <item name="carDetailPage_optionView27" type="id" />
+    <item name="carDetailPage_optionView28" type="id" />
+    <item name="carDetailPage_optionView29" type="id" />
+    <item name="carDetailPage_optionView30" type="id" />
+    
+	<item name="reviewView_ivImage" type="id" />
+	<item name="reviewView_tvContent" type="id" />
 	    
 </resources>

@@ -271,7 +271,7 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 		
 		//viewPager.
 		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(500);
+		rp.height = ResizeUtils.getSpecificLength(460);
 		
 		//pageNavigator.
 		rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();

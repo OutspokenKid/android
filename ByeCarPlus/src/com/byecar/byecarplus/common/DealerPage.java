@@ -1,14 +1,21 @@
 package com.byecar.byecarplus.common;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +23,8 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
 import com.byecar.byecarplus.models.Dealer;
+import com.byecar.byecarplus.models.Review;
+import com.byecar.byecarplus.views.ReviewView;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -41,12 +50,13 @@ public class DealerPage extends BCPFragmentForMainForUser {
 	private TextView tvDealerInfo2;
 	
 	private View headerForIntro;
-	private View arrowForIntro;
 	private TextView tvIntro;
 	
 	private View headerForReview;
-	private View arrowForReview;
-	private RelativeLayout relativeForReview;
+	private LinearLayout linearForReview;
+	private Button btnMore;
+	
+	ArrayList<Review> reviews = new ArrayList<Review>();
 	
 	@Override
 	public void bindViews() {
@@ -61,12 +71,11 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		tvDealerInfo2 = (TextView) mThisView.findViewById(R.id.dealerPage_tvDealerInfo2);
 
 		headerForIntro = mThisView.findViewById(R.id.dealerPage_headerForIntro);
-		arrowForIntro = mThisView.findViewById(R.id.dealerPage_arrowForIntro);
 		tvIntro = (TextView) mThisView.findViewById(R.id.dealerPage_tvIntro);
 		
 		headerForReview = mThisView.findViewById(R.id.dealerPage_headerForReview);
-		arrowForReview = mThisView.findViewById(R.id.dealerPage_arrowForReview);
-		relativeForReview = (RelativeLayout) mThisView.findViewById(R.id.dealerPage_relativeForReview);
+		linearForReview = (LinearLayout) mThisView.findViewById(R.id.dealerPage_linearForReview);
+		btnMore = (Button) mThisView.findViewById(R.id.dealerPage_btnMore);
 	}
 
 	@Override
@@ -116,22 +125,13 @@ public class DealerPage extends BCPFragmentForMainForUser {
 				}
 			}
 		});
-		
-		headerForIntro.setOnClickListener(new OnClickListener() {
+	
+		btnMore.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				changeMenuOpenStatus(0);
-			}
-		});
-		
-		headerForReview.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				changeMenuOpenStatus(1);
+				loadReviews();
 			}
 		});
 	}
@@ -157,13 +157,6 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(90);
 		rp.topMargin = ResizeUtils.getSpecificLength(5);
 		
-		//arrowForIntro.
-		rp = (RelativeLayout.LayoutParams) arrowForIntro.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(43);
-		rp.height = ResizeUtils.getSpecificLength(43);
-		rp.topMargin = ResizeUtils.getSpecificLength(24);
-		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
 		//tvIntro.
 		rp = (RelativeLayout.LayoutParams) tvIntro.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
@@ -180,16 +173,13 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(90);
 		rp.topMargin = ResizeUtils.getSpecificLength(5);
 		
-		//arrowForReview.
-		rp = (RelativeLayout.LayoutParams) arrowForReview.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(43);
-		rp.height = ResizeUtils.getSpecificLength(43);
-		rp.topMargin = ResizeUtils.getSpecificLength(24);
-		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//relativeForReview.
-		rp = (RelativeLayout.LayoutParams) relativeForReview.getLayoutParams();
+		//linearForReview.
+		rp = (RelativeLayout.LayoutParams) linearForReview.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(632);
+		linearForReview.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(16));
+		
+		//btnMore.
+		ResizeUtils.viewResize(140, 60, btnMore, 1, Gravity.CENTER_HORIZONTAL, null);
 		
 		//footerForReview.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
@@ -200,7 +190,7 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		FontUtils.setFontSize(tvDealerInfo1, 16);
 		FontUtils.setFontStyle(tvDealerInfo1, FontUtils.BOLD);
 		
-		FontUtils.setFontSize(tvDealerInfo2, 32);
+		FontUtils.setFontSize(tvDealerInfo2, 20);
 		FontUtils.setFontStyle(tvDealerInfo2, FontUtils.BOLD);
 		
 		FontUtils.setFontSize(tvIntro, 20);
@@ -261,6 +251,7 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		if(dealer != null) {
 			setDealerInfo();
 			setIntro();
+			loadReviews();
 		} else {
 			downloadCarInfo();
 		}
@@ -270,7 +261,7 @@ public class DealerPage extends BCPFragmentForMainForUser {
 	
 	public void downloadCarInfo() {
 
-		String url = BCPAPIs.BID_SHOW_URL + "?onsalecar_id=" + id;
+		String url = BCPAPIs.DEALER_SHOW_URL + "?dealer_id=" + id;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -297,6 +288,7 @@ public class DealerPage extends BCPFragmentForMainForUser {
 					dealer = new Dealer(objJSON.getJSONObject("dealer"));
 					setDealerInfo();
 					setIntro();
+					loadReviews();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					closePage();
@@ -337,10 +329,11 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		});
 		
 		tvDealerInfo1.setText(null);
-		FontUtils.addSpan(tvDealerInfo1, dealer.getName(), 0, 2, true);
-		FontUtils.addSpan(tvDealerInfo1, dealer.getAddress(), 0, 1, true);
+		FontUtils.addSpan(tvDealerInfo1, dealer.getName(), 0, 1.6f, true);
+		FontUtils.addSpan(tvDealerInfo1, "\n" + dealer.getAddress(), 0, 1, false);
+		FontUtils.addSpan(tvDealerInfo1, "\n" + dealer.getCompany(), 0, 1, false);
 
-		tvDealerInfo2.setText("★" + "우수딜러");
+		tvDealerInfo2.setText("우수딜러");
 	}
 	
 	public void setIntro() {
@@ -348,39 +341,80 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		tvIntro.setText(dealer.getDesc());
 	}
 
+	public void loadReviews() {
+
+		String url = BCPAPIs.DEALER_REVIEW_URL
+				+ "?dealer_id=" + dealer.getId()
+				+ "&last_priority=" + (reviews.size() > 0? reviews.get(reviews.size() - 1).getPriority() : "")
+				+ "&num=" + NUMBER_OF_LISTITEMS;
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("DealerPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("DealerPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					JSONArray arJSON = objJSON.getJSONArray("reviews");
+					
+					ArrayList<Review> newReviews = new ArrayList<Review>();
+					
+					int size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						newReviews.add(new Review(arJSON.getJSONObject(i)));
+					}
+					
+					if(size < NUMBER_OF_LISTITEMS) {
+						btnMore.setVisibility(View.GONE);
+					}
+					
+					addReviewViews(newReviews);
+					reviews.addAll(newReviews);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void addReviewViews(ArrayList<Review> reviews) {
+
+		reviews.get(0).setContent("asdfasdf");
+		reviews.get(0).setReviewer_nickname("아아아아아아아아아아아아아아아아");
+		reviews.get(1).setContent("asdfasdf\n12341234");
+		reviews.get(2).setContent("asdfasdf\n12341234\nasdfadsf");
+		reviews.get(3).setContent("asdfasdf\n12341234\nasdfadsf\nadsfasdfa\nadfadsf\nasdfadsfadf\nadsfadsf");
+		
+		int size = reviews.size();
+		for(int i=0; i<size; i ++) {
+			ReviewView rv = new ReviewView(mContext);
+			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, rv, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
+			rv.setReview(reviews.get(i));
+			linearForReview.addView(rv, linearForReview.getChildCount() - 1);
+		}
+	}
+	
 	public void closePage() {
 		
-		ToastUtils.showToast(R.string.failToLoadDealerInfo);
-		mActivity.closeTopPage();
-	}
+		new Handler().postDelayed(new Runnable() {
 
-	public void changeMenuOpenStatus(int index) {
+			@Override
+			public void run() {
 
-		switch(index) {
-		
-		case 0:
-			
-			if(tvIntro.getVisibility() == View.VISIBLE) {
-				tvIntro.setVisibility(View.GONE);
-				arrowForIntro.setBackgroundResource(R.drawable.detail_toggle);
-			} else {
-				tvIntro.setVisibility(View.VISIBLE);
-				arrowForIntro.setBackgroundResource(R.drawable.detail_toggle_up);
+				ToastUtils.showToast(R.string.failToLoadDealerInfo);
+				mActivity.closeTopPage();
 			}
-			
-			break;
-			
-		case 1:
-			
-			if(relativeForReview.getVisibility() == View.VISIBLE) {
-				relativeForReview.setVisibility(View.GONE);
-				arrowForReview.setBackgroundResource(R.drawable.detail_toggle);
-			} else {
-				relativeForReview.setVisibility(View.VISIBLE);
-				arrowForReview.setBackgroundResource(R.drawable.detail_toggle_up);
-			}
-			
-			break;
-		}
+		}, 1000);
 	}
 }

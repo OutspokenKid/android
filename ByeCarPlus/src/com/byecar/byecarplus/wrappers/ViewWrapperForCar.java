@@ -69,7 +69,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 			
 			//ivImage.
 			rp = (RelativeLayout.LayoutParams) ivImage.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(500);
+			rp.height = ResizeUtils.getSpecificLength(460);
 			
 			//auctionIcon.
 			rp = (RelativeLayout.LayoutParams) auctionIcon.getLayoutParams();

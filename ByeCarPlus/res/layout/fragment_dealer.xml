@@ -39,7 +39,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/dealerPage_ivImage"
-		        android:layout_marginTop="10dp"
+		        android:layout_marginTop="4dp"
 		        android:gravity="center_horizontal"
 		        android:textColor="#fff" />
 		    
@@ -48,10 +48,10 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/dealerPage_ivImage"
-		        android:layout_marginTop="10dp"
+		        android:layout_below="@id/dealerPage_tvDealerInfo1"
+		        android:layout_marginTop="4dp"
 		        android:gravity="center_horizontal"
-		        android:textColor="#fff" />
+		        android:textColor="@color/color_orange" />
 		    
 		    <View 
 		        android:id="@+id/dealerPage_headerForIntro"
@@ -61,21 +61,12 @@
 		        android:layout_below="@id/dealerPage_bg"
 		        android:background="@drawable/dealer_header1" />
 		    
-		    <View
-		        android:id="@+id/dealerPage_arrowForIntro"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/dealerPage_headerForIntro"
-		        android:layout_alignRight="@id/dealerPage_headerForIntro"
-		        android:background="@drawable/detail_toggle_up" />
-		    
 		    <TextView
 		        android:id="@+id/dealerPage_tvIntro"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/dealerPage_headerForIntro"
-		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
@@ -94,29 +85,29 @@
 		        android:layout_below="@id/dealerPage_footerForIntro"
 		        android:background="@drawable/detail_head2" />
 		    
-		    <View
-		        android:id="@+id/dealerPage_arrowForReview"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/dealerPage_headerForReview"
-		        android:layout_alignRight="@id/dealerPage_headerForReview"
-		        android:background="@drawable/detail_toggle" />
-		    
-		    <RelativeLayout
-		        android:id="@+id/dealerPage_relativeForReview"
+		    <LinearLayout
+		        android:id="@+id/dealerPage_linearForReview"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/dealerPage_headerForReview"
-		        android:visibility="gone"
-		        android:background="@drawable/detail_body2" />
+		        android:orientation="vertical"
+		        android:background="@drawable/detail_body2" >
+		        
+		        <Button
+		            android:id="@+id/dealerPage_btnMore"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:background="@drawable/dealer_more_btn" />
+		        
+		    </LinearLayout>
 		    
 		    <View 
 		        android:id="@+id/dealerPage_footerForReview"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/dealerPage_relativeForReview"
+		        android:layout_below="@id/dealerPage_linearForReview"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 

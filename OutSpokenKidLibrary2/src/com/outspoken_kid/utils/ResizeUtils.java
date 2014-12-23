@@ -278,6 +278,11 @@ public class ResizeUtils {
 		
 		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) _view.getLayoutParams();
 
+		if(rp == null) {
+			rp = new RelativeLayout.LayoutParams(0, 0);
+			_view.setLayoutParams(rp);
+		}
+		
 		if(_width == KEEP) {
 			//Do nothing.
 			

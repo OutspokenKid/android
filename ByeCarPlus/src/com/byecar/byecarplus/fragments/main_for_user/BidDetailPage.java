@@ -179,7 +179,7 @@ public class BidDetailPage extends BCPFragmentForMainForUser {
 		
 		//viewPager.
 		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(500);
+		rp.height = ResizeUtils.getSpecificLength(460);
 		
 		//pageNavigator.
 		rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
@@ -397,8 +397,15 @@ public class BidDetailPage extends BCPFragmentForMainForUser {
 
 	public void closePage() {
 		
-		ToastUtils.showToast(R.string.failToLoadBidsInfo);
-		mActivity.closeTopPage();
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				ToastUtils.showToast(R.string.failToLoadBidsInfo);
+				mActivity.closeTopPage();
+			}
+		}, 1000);
 	}
 	
 	public void addDealerViews() {

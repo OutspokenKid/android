@@ -32,6 +32,8 @@ public class BCPConstants {
 	public static final int PAGE_DEALER_LIST = 13;
 	public static final int PAGE_BID_DETAIL = 15;
 	
+	public static final int PAGE_DIRECT = 16;
+	
 	//Pages for common.
 	public static final int PAGE_COMMON_DEALER = 14	;
 }

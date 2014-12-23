@@ -27,7 +27,7 @@ public class Dealer extends BaseModel {
 	private String company;
 	private String employee_card_img_url;
 	private String name_card_img_url;
-	private int virtual_account_number;
+	private String virtual_account_number;
 	private String birthdate;
 	private int right_to_bid_cnt;
 	private int right_to_sell_cnt;
@@ -76,7 +76,7 @@ public class Dealer extends BaseModel {
 			}
 			
 			if(objJSON.has("virtual_account_number")) {
-				this.virtual_account_number = objJSON.getInt("virtual_account_number");
+				this.virtual_account_number = objJSON.getString("virtual_account_number");
 			}
 			
 			if(objJSON.has("birthdate")) {
@@ -163,10 +163,10 @@ public class Dealer extends BaseModel {
 	public void setName_card_img_url(String name_card_img_url) {
 		this.name_card_img_url = name_card_img_url;
 	}
-	public int getVirtual_account_number() {
+	public String getVirtual_account_number() {
 		return virtual_account_number;
 	}
-	public void setVirtual_account_number(int virtual_account_number) {
+	public void setVirtual_account_number(String virtual_account_number) {
 		this.virtual_account_number = virtual_account_number;
 	}
 	public String getBirthdate() {

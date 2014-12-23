@@ -20,6 +20,8 @@ public class BCPAPIs {
 	public static String BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
 	
 	public static String DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
+	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
+	public static String DEALER_REVIEW_URL = BASE_API_URL + "/dealers/reviews.json";
 	
 	public static String EDIT_USER_INFO_UR_COMMON = BASE_API_URL + "/users/update/additional_info.json";
 }

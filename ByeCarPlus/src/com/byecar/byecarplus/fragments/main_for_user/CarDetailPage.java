@@ -84,7 +84,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 	private View arrowForDescription;
 	private TextView tvDescription;
 	
-	private View[] optionViews;
+	private View[] carDetailPage_optionViews;
 	
 	private AlphaAnimation aaIn, aaOut;
 	
@@ -326,7 +326,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		
 		//viewPager.
 		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(500);
+		rp.height = ResizeUtils.getSpecificLength(460);
 		
 		//pageNavigator.
 		rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
@@ -576,7 +576,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		relativeForOption.removeAllViews();
 		
 		int size = 30;
-		optionViews = new View[size];
+		carDetailPage_optionViews = new View[size];
 		
 		RelativeLayout.LayoutParams rp = null;
 		
@@ -596,7 +596,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				rp.leftMargin = ResizeUtils.getSpecificLength(26);
 				rp.rightMargin = ResizeUtils.getSpecificLength(26);
 				rp.addRule(RelativeLayout.BELOW, 
-						getResources().getIdentifier("optionTextView25", 
+						getResources().getIdentifier("carDetailPage_optionTextView25", 
 								"id", "com.byecar.byecarplus"));
 				line.setLayoutParams(rp);
 				line.setBackgroundColor(Color.rgb(232, 232, 232));
@@ -607,15 +607,15 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 			
 			
 		//Views.
-			optionViews[i] = getViewForOption(i);
-			relativeForOption.addView(optionViews[i]);
+			carDetailPage_optionViews[i] = getViewForOption(i);
+			relativeForOption.addView(carDetailPage_optionViews[i]);
 			
 		//Bottom blank.
 			View blank = new View(mContext);
 			rp = new RelativeLayout.LayoutParams(
 					10, ResizeUtils.getSpecificLength(20));
 			rp.addRule(RelativeLayout.BELOW, 
-					getResources().getIdentifier("optionView30", 
+					getResources().getIdentifier("carDetailPage_optionView30", 
 							"id", "com.byecar.byecarplus"));
 			blank.setLayoutParams(rp);
 			relativeForOption.addView(blank);
@@ -637,7 +637,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				rp.leftMargin = ResizeUtils.getSpecificLength(25);
 				textView.setId(getResources().getIdentifier(
-						"optionTextView1", "id", "com.byecar.byecarplus"));
+						"carDetailPage_optionTextView1", "id", "com.byecar.byecarplus"));
 				break;
 				
 			case 1:
@@ -654,11 +654,11 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 			case 3:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				rp.addRule(RelativeLayout.BELOW, 
-						getResources().getIdentifier("optionView25", 
+						getResources().getIdentifier("carDetailPage_optionView25", 
 								"id", "com.byecar.byecarplus"));
 				rp.leftMargin = ResizeUtils.getSpecificLength(35);
 				textView.setId(getResources().getIdentifier(
-						"optionTextView2", "id", "com.byecar.byecarplus"));
+						"carDetailPage_optionTextView2", "id", "com.byecar.byecarplus"));
 				break;
 			}
 			
@@ -695,11 +695,11 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 					
 					if(index == 0) {
 						rp.addRule(RelativeLayout.BELOW, 
-								getResources().getIdentifier("optionTextView1", 
+								getResources().getIdentifier("carDetailPage_optionTextView1", 
 										"id", "com.byecar.byecarplus"));
 					} else {
 						rp.addRule(RelativeLayout.BELOW, 
-								getResources().getIdentifier("optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
+								getResources().getIdentifier("carDetailPage_optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
 										"id", "com.byecar.byecarplus"));
 					}
 					
@@ -707,13 +707,13 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 					break;
 				case 1:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
-							getResources().getIdentifier("optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
+							getResources().getIdentifier("carDetailPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
 									"id", "com.byecar.byecarplus"));
 					rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 					break;
 				case 2:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
-							getResources().getIdentifier("optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
+							getResources().getIdentifier("carDetailPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
 									"id", "com.byecar.byecarplus"));
 					rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 					rp.rightMargin = ResizeUtils.getSpecificLength(35);
@@ -721,7 +721,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				}
 			} else if(index == 24) {
 				rp.addRule(RelativeLayout.BELOW, 
-						getResources().getIdentifier("optionView24",
+						getResources().getIdentifier("carDetailPage_optionView24",
 								"id", "com.byecar.byecarplus"));
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 			} else {
@@ -733,23 +733,23 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 					
 					if(index == 25) {
 						rp.addRule(RelativeLayout.BELOW, 
-								getResources().getIdentifier("optionTextView2", 
+								getResources().getIdentifier("carDetailPage_optionTextView2", 
 										"id", "com.byecar.byecarplus"));
 					} else {
 						rp.addRule(RelativeLayout.BELOW, 
-								getResources().getIdentifier("optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
+								getResources().getIdentifier("carDetailPage_optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
 										"id", "com.byecar.byecarplus"));
 					}
 					break;
 				case 2:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
-							getResources().getIdentifier("optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
+							getResources().getIdentifier("carDetailPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
 									"id", "com.byecar.byecarplus"));
 					rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 					break;
 				case 0:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
-							getResources().getIdentifier("optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
+							getResources().getIdentifier("carDetailPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
 									"id", "com.byecar.byecarplus"));
 					rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 					rp.rightMargin = ResizeUtils.getSpecificLength(35);
@@ -758,7 +758,7 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 			}
 			
 			view.setLayoutParams(rp);
-			view.setId(getResources().getIdentifier("optionView" + (index + 1), 
+			view.setId(getResources().getIdentifier("carDetailPage_optionView" + (index + 1), 
 							"id", "com.byecar.byecarplus"));
 			view.setBackgroundResource(
 					getResources().getIdentifier("detail_optioin" + (index + 1) + "_btn_a", 
@@ -892,11 +892,11 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 		for(int i=0; i<size; i++) {
 			
 //			if(checked[i]) {
-				optionViews[i].setBackgroundResource(
+				carDetailPage_optionViews[i].setBackgroundResource(
 						getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_b", 
 								"drawable", "com.byecar.byecarplus"));
 //			} else {
-//				optionViews[i].setBackgroundResource(
+//				carDetailPage_optionViews[i].setBackgroundResource(
 //						getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
 //								"drawable", "com.byecar.byecarplus"));
 //			}
@@ -910,8 +910,15 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 
 	public void closePage() {
 		
-		ToastUtils.showToast(R.string.failToLoadBidsInfo);
-		mActivity.closeTopPage();
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				ToastUtils.showToast(R.string.failToLoadBidsInfo);
+				mActivity.closeTopPage();
+			}
+		}, 1000);
 	}
 
 	public void changeMenuOpenStatus(int index) {

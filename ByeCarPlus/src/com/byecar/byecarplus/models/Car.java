@@ -58,7 +58,7 @@ public class Car extends BaseModel implements Serializable {
 	
 	private String[] m_images;
 	private String[] a_images;
-	private JSONObject objOptions;
+	private int[] options;
 	private ArrayList<Bid> bids = new ArrayList<Bid>();
 	private ArrayList<String> images = new ArrayList<String>();
 	
@@ -224,7 +224,13 @@ public class Car extends BaseModel implements Serializable {
 			}
 			
 			if(objJSON.has("options")) {
-				objOptions = objJSON.getJSONObject("options");
+				JSONArray arJSON = objJSON.getJSONArray("options");
+				
+				int size = arJSON.length();
+				options = new int[size];
+				for(int i=0; i<size; i++) {
+					options[i] = arJSON.getInt(i);
+				}
 			}
 			
 			if(objJSON.has("bids")) {
@@ -514,14 +520,6 @@ public class Car extends BaseModel implements Serializable {
 		this.a_images = a_images;
 	}
 
-	public JSONObject getObjOptions() {
-		return objOptions;
-	}
-
-	public void setObjOptions(JSONObject objOptions) {
-		this.objOptions = objOptions;
-	}
-
 	public ArrayList<Bid> getBids() {
 		return bids;
 	}
@@ -536,5 +534,13 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setImages(ArrayList<String> images) {
 		this.images = images;
+	}
+
+	public int[] getOptions() {
+		return options;
+	}
+
+	public void setOptions(int[] options) {
+		this.options = options;
 	}
 }
