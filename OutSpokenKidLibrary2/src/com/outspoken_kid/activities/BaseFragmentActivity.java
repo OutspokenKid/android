@@ -623,13 +623,13 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 					
 				//처음으로 닫힐 페이지, 4
 				} else if(i == fragmentSize - 1) {
+					//Do nothing.
 					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 처음으로 닫힐 페이지.");
-					getFragmentAt(i).disableExitAnim(true);
 					
 				//중간 페이지.
 				} else {
 					LogUtils.log("###BaseFragmentPage.closePages.  i : " + i + ", 중간 페이지(에니메이션 무시).");
-					getFragmentAt(i).disableExitAnim(false);
+					getFragmentAt(i).disableExitAnim(true);
 				}
 				
 				getSupportFragmentManager().popBackStackImmediate();
@@ -686,7 +686,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 		}
 	}
 	
-////////////////////////////Interfaces.
+////////////////////////////Classes.
 	
 	public class AsyncGetThumbnailAndReturnTask extends
 			AsyncTask<Void, Void, Void> {
