@@ -16,6 +16,8 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
+	public Bundle bundle;
+	
 	public abstract BCPFragment getFragmentByPageCode(int pageCode);
 	public abstract void handleUri(Uri uri);
 	

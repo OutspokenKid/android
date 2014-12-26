@@ -13,6 +13,8 @@ public class BCPConstants {
 	
 	public static final int ITEM_NOTICE = 1;
 	public static final int ITEM_AUCTION = 2;
+	public static final int ITEM_CAR_BRAND = 11;
+	public static final int ITEM_CAR_TEXT = 12;
 	
 	//Pages for sign.
 	public static final int PAGE_SIGN = 1;
@@ -35,5 +37,7 @@ public class BCPConstants {
 	public static final int PAGE_DIRECT = 16;
 	
 	//Pages for common.
-	public static final int PAGE_COMMON_DEALER = 14	;
+	public static final int PAGE_COMMON_DEALER_CERTIFIER = 14;
+	
+	public static final int PAGE_SEARCH_CAR = 17;
 }

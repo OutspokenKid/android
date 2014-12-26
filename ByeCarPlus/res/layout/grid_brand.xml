@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_brand_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/grid_brand_ivImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/car_search_default"
+        android:scaleType="centerCrop" />
+    
+    <View
+        android:id="@+id/grid_brand_cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/car_search_frame"
+        android:scaleType="centerCrop" />
+
+</FrameLayout>

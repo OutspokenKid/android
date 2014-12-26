@@ -31,7 +31,7 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.common.DealerPage;
+import com.byecar.byecarplus.common.DealerCertifierPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
 import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
 import com.byecar.byecarplus.fragments.main_for_user.CarDetailPage;
@@ -39,6 +39,7 @@ import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
 import com.byecar.byecarplus.fragments.main_for_user.DealerCarListPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
+import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -54,7 +55,7 @@ import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
 public class MainForUserActivity extends BCPFragmentActivity {
-
+	
 	private User user;
 	
 	private GestureSlidingLayout gestureSlidingLayout;
@@ -294,8 +295,11 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_DEALER_LIST:
 			return new DealerCarListPage();
 			
-		case BCPConstants.PAGE_COMMON_DEALER:
-			return new DealerPage();
+		case BCPConstants.PAGE_COMMON_DEALER_CERTIFIER:
+			return new DealerCertifierPage();
+			
+		case BCPConstants.PAGE_SEARCH_CAR:
+			return new SearchCarPage();
 		}
 		
 		return null;

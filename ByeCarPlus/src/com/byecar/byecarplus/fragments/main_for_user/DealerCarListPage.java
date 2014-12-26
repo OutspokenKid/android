@@ -23,14 +23,14 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPAdapter;
 import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
-public class DealerCarListPage extends BCPFragmentForMainForUser {
+public class DealerCarListPage extends BCPFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
@@ -66,7 +66,7 @@ public class DealerCarListPage extends BCPFragmentForMainForUser {
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
 		
-		adapter = new BCPAdapter(mContext, mActivity.getLayoutInflater(), models);
+		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
     	
         swipeRefreshLayout.setColorSchemeColors(

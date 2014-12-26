@@ -10,14 +10,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
-public class CertifyPhoneNumberPage extends BCPFragmentForMainForUser {
+public class CertifyPhoneNumberPage extends BCPFragment {
 
 	private static int MODE_PHONE_NUMBER = 0;
 	private static int MODE_CERTIFICATION_NUMBER = 1;

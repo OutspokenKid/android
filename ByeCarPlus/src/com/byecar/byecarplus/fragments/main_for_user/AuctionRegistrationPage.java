@@ -1,5 +1,8 @@
 package com.byecar.byecarplus.fragments.main_for_user;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -16,14 +19,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.models.CarModelDetailInfo;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
-public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
+public class AuctionRegistrationPage extends BCPFragment {
 
 	private static final int MAX_DESC_COUNT = 200;
 	
@@ -51,12 +61,7 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	private ImageView ivAddedPhoto3;
 	private ImageView ivAddedPhoto4;
 	private TextView tvCarInfoText;
-	private Button btnCarInfo1;
-	private Button btnCarInfo2;
-	private Button btnCarInfo3;
-	private Button btnCarInfo4;
-	private Button btnCarInfo5;
-	private Button btnCarInfo6;
+	private Button btnCarInfos[];
 	private TextView tvDetailCarInfo;
 	private HoloStyleEditText etDetailCarInfo1;
 	private HoloStyleEditText etDetailCarInfo2;
@@ -78,8 +83,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 	
 	private int progressValue;
 	
+	private CarModelDetailInfo carModelDetailInfo;
+	private String[] carInfoStrings = new String[5];
+	
 	@Override
-	public void bindViews() {
+ 	public void bindViews() {
 		
 		titleBar = (TitleBar) mThisView.findViewById(R.id.auctionRegistrationPage_titleBar);
 		
@@ -107,12 +115,15 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		ivAddedPhoto3 = (ImageView) mThisView.findViewById(R.id.auctionRegistrationPage_ivAddedPhoto3);
 		ivAddedPhoto4 = (ImageView) mThisView.findViewById(R.id.auctionRegistrationPage_ivAddedPhoto4);
 		tvCarInfoText = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvCarInfo);
-		btnCarInfo1 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo1);
-		btnCarInfo2 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo2);
-		btnCarInfo3 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo3);
-		btnCarInfo4 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo4);
-		btnCarInfo5 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo5);
-		btnCarInfo6 = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo6);
+		
+		btnCarInfos = new Button[6];
+		btnCarInfos[0] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo1);
+		btnCarInfos[1] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo2);
+		btnCarInfos[2] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo3);
+		btnCarInfos[3] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo4);
+		btnCarInfos[4] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo5);
+		btnCarInfos[5] = (Button) mThisView.findViewById(R.id.auctionRegistrationPage_btnCarInfo6);
+		
 		tvDetailCarInfo = (TextView) mThisView.findViewById(R.id.auctionRegistrationPage_tvDetailCarInfo);
 		etDetailCarInfo1 = (HoloStyleEditText) mThisView.findViewById(R.id.auctionRegistrationPage_etDetailCarInfo1);
 		etDetailCarInfo2 = (HoloStyleEditText) mThisView.findViewById(R.id.auctionRegistrationPage_etDetailCarInfo2);
@@ -176,6 +187,67 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 			}
 		});
+		
+		for(int i=0; i<btnCarInfos.length; i++) {
+			final int INDEX = i;
+			
+			btnCarInfos[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					if(INDEX + 1 != SearchCarPage.TYPE_BRAND && carModelDetailInfo == null) {
+						ToastUtils.showToast(R.string.selectCarFirst);
+						return;
+					}
+					
+					Bundle bundle = new Bundle();
+
+					switch(INDEX) {
+					
+					case 0:
+						bundle.putInt("type", SearchCarPage.TYPE_BRAND);
+						break;
+					case 1:
+						bundle.putInt("type", SearchCarPage.TYPE_YEAR);
+						
+						if(!StringUtils.isEmpty(carModelDetailInfo.getYear_begin())) {
+							bundle.putInt("year_begin", Integer.parseInt(carModelDetailInfo.getYear_begin()));
+						} else {
+							bundle.putInt("year_begin", 1990);
+						}
+						
+						if(!StringUtils.isEmpty(carModelDetailInfo.getYear_end())) {
+							bundle.putInt("year_end", Integer.parseInt(carModelDetailInfo.getYear_end()));
+						} else {
+							
+							try {
+								SimpleDateFormat format = new SimpleDateFormat("yyyy", Locale.getDefault());
+								bundle.putInt("year_end", Integer.parseInt(format.format(System.currentTimeMillis())));
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							}
+						}
+						
+						break;
+					case 2:
+						bundle.putInt("type", SearchCarPage.TYPE_FUEL);
+						break;
+					case 3:
+						bundle.putInt("type", SearchCarPage.TYPE_TRANSMISSION);
+						break;
+					case 4:
+						bundle.putInt("type", SearchCarPage.TYPE_ACCIDENT);
+						break;
+					case 5:
+						bundle.putInt("type", SearchCarPage.TYPE_ONEMANOWNED);
+						break;
+					}
+					
+					mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
+				}
+			});
+		}
 		
 		etCarDescriptionFromDealer.addTextChangedListener(new TextWatcher() {
 			
@@ -340,41 +412,13 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
-		//btnCarInfo1.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo1.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
-		
-		//btnCarInfo2.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		//btnCarInfo3.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo3.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		//btnCarInfo4.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo4.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		//btnCarInfo5.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo5.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
-		
-		//btnCarInfo6.
-		rp = (RelativeLayout.LayoutParams) btnCarInfo6.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(82);
-		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		//btnCarInfos.
+		for(int i=0; i<btnCarInfos.length; i++) {
+			rp = (RelativeLayout.LayoutParams) btnCarInfos[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(586);
+			rp.height = ResizeUtils.getSpecificLength(82);
+			rp.topMargin = ResizeUtils.getSpecificLength(i==0?16:40);
+		}
 		
 		//tvDetailCarInfo.
 		rp = (RelativeLayout.LayoutParams) tvDetailCarInfo.getLayoutParams();
@@ -472,6 +516,11 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		
 		FontUtils.setFontSize(tvCarInfoText, 30);
 		FontUtils.setFontSize(tvDetailCarInfo, 30);
+		
+		for(int i=0; i<btnCarInfos.length; i++) {
+			FontUtils.setFontSize(btnCarInfos[i], 26);
+		}
+		
 		FontUtils.setFontAndHintSize(etDetailCarInfo1.getEditText(), 26, 20);
 		FontUtils.setFontAndHintSize(etDetailCarInfo2.getEditText(), 26, 20);
 		FontUtils.setFontAndHintSize(etDetailCarInfo3.getEditText(), 26, 20);
@@ -535,6 +584,9 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		
 		setProgress();
 		setDealerInfo();
+		
+		checkCarInfos();
+		checkBundle();
 	}
 	
 //////////////////// Custom method.
@@ -640,4 +692,82 @@ public class AuctionRegistrationPage extends BCPFragmentForMainForUser {
 		tvDealerInfo.setTextColor(getResources().getColor(R.color.color_red));
 		tvDealerInfo.setText(R.string.requireCertifyDealerInfo);
 	}
+
+	public void checkBundle() {
+		
+		if(mActivity.bundle != null) {
+			int type = mActivity.bundle.getInt("type");
+			
+			switch(type) {
+			
+			case SearchCarPage.TYPE_TRIM:
+				String url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
+				+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
+				DownloadUtils.downloadJSONString(url,
+					new OnJSONDownloadListener() {
+	
+						@Override
+						public void onError(String url) {
+	
+							LogUtils.log("AuctionRegistrationPage.onError." + "\nurl : " + url);
+	
+						}
+	
+						@Override
+						public void onCompleted(String url,
+								JSONObject objJSON) {
+	
+							try {
+								LogUtils.log("AuctionRegistrationPage.onCompleted."
+										+ "\nurl : " + url
+										+ "\nresult : " + objJSON);
+
+								carModelDetailInfo = new CarModelDetailInfo(objJSON.getJSONObject("car"));
+								checkCarInfos();
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (OutOfMemoryError oom) {
+								LogUtils.trace(oom);
+							}
+						}
+					});
+				break;
+				
+			case SearchCarPage.TYPE_YEAR:
+			case SearchCarPage.TYPE_FUEL:
+			case SearchCarPage.TYPE_TRANSMISSION:
+			case SearchCarPage.TYPE_ACCIDENT:
+			case SearchCarPage.TYPE_ONEMANOWNED:
+				carInfoStrings[type - 5] = mActivity.bundle.getString("text");
+				checkCarInfos();
+				break;
+			}
+			
+			mActivity.bundle = null;
+		}
+	}
+
+	public void checkCarInfos() {
+		
+		if(carModelDetailInfo != null) {
+			btnCarInfos[0].setBackgroundResource(R.drawable.registration_car_info_box);
+			btnCarInfos[0].setText(carModelDetailInfo.getFull_name());
+
+			for(int i=0; i<5; i++) {
+				
+				if(!StringUtils.isEmpty(carInfoStrings[i])) {
+					btnCarInfos[i + 1].setText(carInfoStrings[i]);
+					btnCarInfos[i + 1].setBackgroundResource(R.drawable.registration_car_info_box);
+				} else {
+					int resId = getResources().getIdentifier("registration_car_info" + (i + 2) + "_btn", "drawable", "com.byecar.byecarplus");
+					btnCarInfos[i + 1].setBackgroundResource(resId);
+					btnCarInfos[i + 1].setText(null);
+				}
+			}
+		} else {
+			btnCarInfos[0].setBackgroundResource(R.drawable.registration_car_info1_btn);
+			btnCarInfos[0].setText(null);
+		}
+	}
 }
+

@@ -23,12 +23,14 @@ import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class BCPFragment extends BaseFragment {
-
+	
 	public static final int NUMBER_OF_LISTITEMS = 10;
 
+	protected BCPFragmentActivity mActivity;
+	
 	protected TitleBar titleBar;
 	protected String title;
-	
+
 	protected int pageIndex = 1;
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected BCPAdapter adapter;
@@ -45,6 +47,13 @@ public abstract class BCPFragment extends BaseFragment {
 	 * @return isLastList.
 	 */
 	public abstract boolean parseJSON(JSONObject objJSON);
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		mActivity = (BCPFragmentActivity) getActivity();
+	}
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB) 
 	@Override
@@ -106,7 +115,7 @@ public abstract class BCPFragment extends BaseFragment {
 
 			url += "page=" + pageIndex;
 			
-			if(!url.contains("num=0")) {
+			if(!url.contains("num=")) {
 				url += "&num=" + NUMBER_OF_LISTITEMS;
 			}
 			

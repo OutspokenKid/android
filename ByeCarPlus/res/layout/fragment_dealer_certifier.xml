@@ -34,7 +34,7 @@
 		        android:background="@drawable/dealer_bg" />
             
 		    <TextView
-		        android:id="@+id/dealerPage_tvDealerInfo1"
+		        android:id="@+id/dealerPage_tvInfo1"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
@@ -44,11 +44,11 @@
 		        android:textColor="#fff" />
 		    
 		    <TextView
-		        android:id="@+id/dealerPage_tvDealerInfo2"
+		        android:id="@+id/dealerPage_tvInfo2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/dealerPage_tvDealerInfo1"
+		        android:layout_below="@id/dealerPage_tvInfo1"
 		        android:layout_marginTop="4dp"
 		        android:gravity="center_horizontal"
 		        android:textColor="@color/color_orange" />

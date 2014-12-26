@@ -24,7 +24,7 @@ import android.widget.TextView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.DealerView;
@@ -40,7 +40,7 @@ import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
 
-public class CarDetailPage extends BCPFragmentForMainForUser {
+public class CarDetailPage extends BCPFragment {
 
 	private int id;
 	private Car car;
@@ -997,8 +997,9 @@ public class CarDetailPage extends BCPFragmentForMainForUser {
 				public void onClick(View view) {
 
 					Bundle bundle = new Bundle();
-					bundle.putSerializable("id", car.getBids().get(I).getDealer_id());
-					mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER, bundle);
+					bundle.putBoolean("isCertifier", false);
+					bundle.putInt("id", car.getBids().get(I).getDealer_id());
+					mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
 				}
 			});
 		}

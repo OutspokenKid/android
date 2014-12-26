@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.models.Dealer;
 import com.byecar.byecarplus.models.Review;
 import com.byecar.byecarplus.views.ReviewView;
@@ -36,18 +36,19 @@ import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
-public class DealerPage extends BCPFragmentForMainForUser {
+public class DealerCertifierPage extends BCPFragment {
 
 	private int id;
 	private Dealer dealer;
+	private boolean isCertifier;
 	
 	private OffsetScrollView scrollView;
 
 	private View bg;
 	private ImageView ivImage;
 	
-	private TextView tvDealerInfo1;
-	private TextView tvDealerInfo2;
+	private TextView tvInfo1;
+	private TextView tvInfo2;
 	
 	private View headerForIntro;
 	private TextView tvIntro;
@@ -67,8 +68,8 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		bg = mThisView.findViewById(R.id.dealerPage_bg);
 		ivImage = (ImageView) mThisView.findViewById(R.id.dealerPage_ivImage);
 		
-		tvDealerInfo1 = (TextView) mThisView.findViewById(R.id.dealerPage_tvDealerInfo1);
-		tvDealerInfo2 = (TextView) mThisView.findViewById(R.id.dealerPage_tvDealerInfo2);
+		tvInfo1 = (TextView) mThisView.findViewById(R.id.dealerPage_tvInfo1);
+		tvInfo2 = (TextView) mThisView.findViewById(R.id.dealerPage_tvInfo2);
 
 		headerForIntro = mThisView.findViewById(R.id.dealerPage_headerForIntro);
 		tvIntro = (TextView) mThisView.findViewById(R.id.dealerPage_tvIntro);
@@ -81,14 +82,24 @@ public class DealerPage extends BCPFragmentForMainForUser {
 	@Override
 	public void setVariables() {
 		
-		if(getArguments() != null) {
+		if(getArguments() != null && getArguments().containsKey("isCertifier")) {
 			
-			if(getArguments().containsKey("dealer")) {
-				this.dealer = (Dealer) getArguments().getSerializable("dealer");
-			} else if(getArguments().containsKey("id")) {
-				this.id = getArguments().getInt("id");
+			isCertifier = getArguments().getBoolean("isCertifier");
+			
+			//Dealer.
+			if(!isCertifier) {
+
+				if(getArguments().containsKey("dealer")) {
+					this.dealer = (Dealer) getArguments().getSerializable("dealer");
+				} else if(getArguments().containsKey("id")) {
+					this.id = getArguments().getInt("id");
+				} else {
+					closePage();
+				}
+				
+			//Certifier.
 			} else {
-				closePage();
+				
 			}
 		}
 	}
@@ -98,6 +109,14 @@ public class DealerPage extends BCPFragmentForMainForUser {
 
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
+		
+		if(isCertifier) {
+			headerForIntro.setBackgroundResource(R.drawable.verifier_header1);
+			headerForReview.setBackgroundResource(R.drawable.verifier_header2);
+		} else {
+			headerForIntro.setBackgroundResource(R.drawable.dealer_header1);
+			headerForReview.setBackgroundResource(R.drawable.dealer_header2);
+		}
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -187,11 +206,11 @@ public class DealerPage extends BCPFragmentForMainForUser {
 		rp.width = ResizeUtils.getSpecificLength(632);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
-		FontUtils.setFontSize(tvDealerInfo1, 16);
-		FontUtils.setFontStyle(tvDealerInfo1, FontUtils.BOLD);
+		FontUtils.setFontSize(tvInfo1, 16);
+		FontUtils.setFontStyle(tvInfo1, FontUtils.BOLD);
 		
-		FontUtils.setFontSize(tvDealerInfo2, 20);
-		FontUtils.setFontStyle(tvDealerInfo2, FontUtils.BOLD);
+		FontUtils.setFontSize(tvInfo2, 20);
+		FontUtils.setFontStyle(tvInfo2, FontUtils.BOLD);
 		
 		FontUtils.setFontSize(tvIntro, 20);
 		FontUtils.setFontStyle(tvIntro, FontUtils.BOLD);
@@ -205,19 +224,27 @@ public class DealerPage extends BCPFragmentForMainForUser {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_dealer;
+		return R.layout.fragment_dealer_certifier;
 	}
 
 	@Override
 	public int getBackButtonResId() {
 
-		return R.drawable.dealer_back_btn;
+		if(isCertifier) {
+			return R.drawable.verifier_back_btn;
+		} else {
+			return R.drawable.dealer_back_btn;
+		}
 	}
 
 	@Override
 	public int getBackButtonWidth() {
 
-		return 213;
+		if(isCertifier) {
+			return 235;
+		} else {
+			return 213;
+		}
 	}
 
 	@Override
@@ -328,12 +355,12 @@ public class DealerPage extends BCPFragmentForMainForUser {
 			}
 		});
 		
-		tvDealerInfo1.setText(null);
-		FontUtils.addSpan(tvDealerInfo1, dealer.getName(), 0, 1.6f, true);
-		FontUtils.addSpan(tvDealerInfo1, "\n" + dealer.getAddress(), 0, 1, false);
-		FontUtils.addSpan(tvDealerInfo1, "\n" + dealer.getCompany(), 0, 1, false);
+		tvInfo1.setText(null);
+		FontUtils.addSpan(tvInfo1, dealer.getName(), 0, 1.6f, true);
+		FontUtils.addSpan(tvInfo1, "\n" + dealer.getAddress(), 0, 1, false);
+		FontUtils.addSpan(tvInfo1, "\n" + dealer.getCompany(), 0, 1, false);
 
-		tvDealerInfo2.setText("우수딜러");
+		tvInfo2.setText("우수딜러");
 	}
 	
 	public void setIntro() {
@@ -412,7 +439,12 @@ public class DealerPage extends BCPFragmentForMainForUser {
 			@Override
 			public void run() {
 
-				ToastUtils.showToast(R.string.failToLoadDealerInfo);
+				if(isCertifier) {
+					ToastUtils.showToast(R.string.failToLoadCertifierInfo);
+				} else {
+					ToastUtils.showToast(R.string.failToLoadDealerInfo);
+				}
+				
 				mActivity.closeTopPage();
 			}
 		}, 1000);

@@ -25,10 +25,11 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragmentForMainForUser;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.byecarplus.models.Car;
@@ -46,7 +47,7 @@ import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
 
-public class MainForUserPage extends BCPFragmentForMainForUser {
+public class MainForUserPage extends BCPFragment {
 	
 	private OffsetScrollView scrollView;
 	
@@ -168,10 +169,10 @@ public class MainForUserPage extends BCPFragmentForMainForUser {
 			@Override
 			public void onClick(View v) {
 				
-				if(mActivity.isOpen()) {
-					mActivity.closeMenu();
+				if(((MainForUserActivity)mActivity).isOpen()) {
+					((MainForUserActivity)mActivity).closeMenu();
 				} else {
-					mActivity.openMenu();
+					((MainForUserActivity)mActivity).openMenu();
 				}
 			}
 		});
