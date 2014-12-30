@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
  */
 public class ResizeUtils {
 
-	public static int KEEP = -2;
+	public static int KEEP = -3;
 	
 	private static int[] index;
 	
