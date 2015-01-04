@@ -114,27 +114,24 @@ public class HoloStyleEditText extends FrameLayout {
 			paint2 = new Paint();
 			paint2.setColor(HoloConstants.COLOR_HOLO_TARGET_OFF);
 		}
+
+		/*
+		01-04 20:57:15.829: I/notice(4802): width : 303
+		01-04 20:57:15.829: I/notice(4802): height : 78
+		01-04 20:57:15.829: I/notice(4802):  lengthOn : 4
+		01-04 20:57:15.829: I/notice(4802):  lengthOff : 3
+		01-04 20:57:15.829: I/notice(4802):  padding : 9
+		*/
 		
 		if(editText.isFocused()) {
-
-//			lengthOn = 6;
-//			lengthOff = 4;
-//			padding = 16;
 			
 			for(int i=0; i<lengthOn; i++) {
 				
 				//가로.
-				canvas.drawLine(padding + lengthOn - 1,					 
+				canvas.drawLine(padding + lengthOn,					 
 						getMeasuredHeight() - padding - i, 
-						getMeasuredWidth() - padding - lengthOn -1, 
+						getMeasuredWidth() - padding - lengthOn, 
 						getMeasuredHeight() - padding - i, paint);
-				
-				//21, h-16, w-21, h-16
-				//21, h-17, w-21, h-17
-				//21, h-18, w-21, h-18
-				//21, h-19, w-21, h-19
-				//21, h-20, w-21, h-20
-				//21, h-21, w-21, h-21
 				
 				//왼쪽.
 				canvas.drawLine(padding + i, 
@@ -142,52 +139,21 @@ public class HoloStyleEditText extends FrameLayout {
 						padding + i, 
 						getMeasuredHeight() - (padding - 1), paint);
 				
-				//16, h-32, 16, h-15
-				//17, h-32, 17, h-15
-				//18, h-32, 18, h-15
-				//19, h-32, 19, h-15
-				//20, h-32, 20, h-15
-				//21, h-32, 21, h-15
-				
 				//오른쪽.
 				canvas.drawLine(getMeasuredWidth() - (padding + 1) - i, 
 						getMeasuredHeight() - padding * 2, 
 						getMeasuredWidth() - (padding + 1) - i, 
 						getMeasuredHeight() - (padding - 1), paint);
-				
-				//w-8, h-16, w-8, h-8
-				//w-9, h-16, w-9, h-8
-				//w-10, h-16, w-10, h-8
 			}
-			
-			//가로
-//			canvas.drawLine(8, getMeasuredHeight() - 7, getMeasuredWidth() - 7, getMeasuredHeight() - 7, paint);
-//			canvas.drawLine(8, getMeasuredHeight() - 8, getMeasuredWidth() - 7, getMeasuredHeight() - 8, paint);
-//			canvas.drawLine(8, getMeasuredHeight() - 9, getMeasuredWidth() - 7, getMeasuredHeight() - 9, paint);
-			
-			//왼쪽
-//			canvas.drawLine(8, getMeasuredHeight() - 14, 8, getMeasuredHeight() - 7, paint);
-//			canvas.drawLine(9, getMeasuredHeight() - 14, 9, getMeasuredHeight() - 7, paint);
-//			canvas.drawLine(10, getMeasuredHeight() - 14, 10, getMeasuredHeight() - 7, paint);
-			
-			//오른쪽
-//			canvas.drawLine(getMeasuredWidth() - 7, getMeasuredHeight() - 14, getMeasuredWidth() - 7, getMeasuredHeight() - 7, paint);
-//			canvas.drawLine(getMeasuredWidth() - 8, getMeasuredHeight() - 14, getMeasuredWidth() - 8, getMeasuredHeight() - 7, paint);
-//			canvas.drawLine(getMeasuredWidth() - 9, getMeasuredHeight() - 14, getMeasuredWidth() - 9, getMeasuredHeight() - 7, paint);
 		} else {
 			
 			for(int i=0; i<lengthOff; i++) {
 				
-				//padding = 8, i = 0,1
-				
 				//가로.
-				canvas.drawLine(padding + lengthOff - 1, 
+				canvas.drawLine(padding + lengthOff, 
 						getMeasuredHeight() - padding - i, 
-						getMeasuredWidth() - padding - lengthOff - 1, 
+						getMeasuredWidth() - padding - lengthOff, 
 						getMeasuredHeight() - padding - i, paint2);
-				
-				//10, h-9, w-10, h-9
-				//10, h-8, w-10, h-8
 				
 				//왼쪽.
 				canvas.drawLine(padding + i, 
@@ -195,30 +161,12 @@ public class HoloStyleEditText extends FrameLayout {
 						padding + i, 
 						getMeasuredHeight() - (padding - 1) , paint2);
 				
-				//8, h-16, 8, h-8
-				//9, h-16, 8, h-8
-				
 				//오른쪽.
 				canvas.drawLine(getMeasuredWidth() - (padding + 1) - i, 
 						getMeasuredHeight() - padding * 2, 
 						getMeasuredWidth() - (padding + 1) - i, 
 						getMeasuredHeight() - (padding - 1), paint2);
-				
-				//w-8, h-16, w-8, h-8
-				//w-9, h-16, w-9, h-8
 			}
-			
-			//가로
-//			canvas.drawLine(8, getMeasuredHeight() - 7, getMeasuredWidth() - 7, getMeasuredHeight() - 7, paint2);
-//			canvas.drawLine(8, getMeasuredHeight() - 8, getMeasuredWidth() - 7, getMeasuredHeight() - 8, paint2);
-
-			//왼쪽
-//			canvas.drawLine(8, getMeasuredHeight() - 14, 8, getMeasuredHeight() - 7, paint2);
-//			canvas.drawLine(9, getMeasuredHeight() - 14, 9, getMeasuredHeight() - 7, paint2);
-			
-			//오른쪽
-//			canvas.drawLine(getMeasuredWidth() - 8, getMeasuredHeight() - 14, getMeasuredWidth() - 8, getMeasuredHeight() - 7, paint2);
-//			canvas.drawLine(getMeasuredWidth() - 9, getMeasuredHeight() - 14, getMeasuredWidth() - 9, getMeasuredHeight() - 7, paint2);
 		}
 	}
 

@@ -149,7 +149,6 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 		if(paint == null) {
 			paint = new Paint();
 			paint.setAntiAlias(true);
-//			paint.setARGB(255, 80, 80, 80);
 			paint.setColor(HoloConstants.COLOR_HOLO_TARGET_OFF);
 		}
 		
@@ -178,7 +177,6 @@ public class HoloStyleSpinnerButton extends FrameLayout {
 			//10, h-9, w-10, h-9
 			//10, h-8, w-10, h-8
 		}
-//		canvas.drawLine(7, getMeasuredHeight() - 8, getMeasuredWidth() - 7, getMeasuredHeight() - 8, paint);
 	}
 	
 	public TextView getTextView() {
