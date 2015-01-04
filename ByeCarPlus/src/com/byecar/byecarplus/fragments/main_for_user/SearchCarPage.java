@@ -380,6 +380,12 @@ public class SearchCarPage extends BCPFragment {
 		return false;
 	}
 
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.searchCarPage_mainLayout;
+	}
+	
 //////////////////// Custom methods.
 	
 	public void closePage() {

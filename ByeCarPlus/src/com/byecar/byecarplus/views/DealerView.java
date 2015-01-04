@@ -21,8 +21,11 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class DealerView extends FrameLayout {
 
+	private int index;
+	
 	private ImageView ivImage;
 	private View cover;
+	private View rankBadge;
 	private TextView tvInfo;
 	private TextView tvGrade;
 	private TextView tvPrice;
@@ -30,8 +33,9 @@ public class DealerView extends FrameLayout {
 	private View selectedIcon;
 	private boolean selected;
 	
-	public DealerView(Context context) {
+	public DealerView(Context context, int index) {
 		super(context);
+		this.index = index;
 		init();
 	}
 
@@ -42,13 +46,31 @@ public class DealerView extends FrameLayout {
 		ivImage = new ImageView(getContext());
 		ResizeUtils.viewResize(130, 130, ivImage, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 16, 0, 0});
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		ivImage.setBackgroundResource(R.drawable.menu_default);
+		ivImage.setBackgroundResource(R.drawable.detail_default);
 		this.addView(ivImage);
 		
 		cover = new View(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, cover, 2, 0, null);
 		cover.setBackgroundResource(R.drawable.detail_frame);
 		this.addView(cover);
+		
+		rankBadge = new View(getContext());
+		ResizeUtils.viewResize(54, 54, rankBadge, 2, Gravity.LEFT|Gravity.TOP, null);
+		
+		switch(index) {
+		
+		case 0:
+			rankBadge.setBackgroundResource(R.drawable.detail_rank1);
+			break;
+		case 1:
+			rankBadge.setBackgroundResource(R.drawable.detail_rank2);
+			break;
+		case 2:
+			rankBadge.setBackgroundResource(R.drawable.detail_rank3);
+			break;
+		}
+		
+		this.addView(rankBadge);
 		
 		tvInfo = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 62, tvInfo, 2, Gravity.TOP, new int[]{0, 150, 0, 0});
@@ -81,12 +103,14 @@ public class DealerView extends FrameLayout {
 		FontUtils.setFontStyle(tvGrade, FontUtils.BOLD);
 		FontUtils.setFontSize(tvPrice, 26);
 		FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
+		
+		initInfos();
 	}
 
 	public void setDealerInfo(Bid bid) {
 		
 		tvInfo.setText(null);
-		FontUtils.addSpan(tvInfo, bid.getDealer_name(), getResources().getColor(R.color.holo_text), 1.6f);
+		FontUtils.addSpan(tvInfo, bid.getDealer_name(), getResources().getColor(R.color.holo_text), 1.6f, true);
 		FontUtils.addSpan(tvInfo, "\n" + bid.getDealer_address(), getResources().getColor(R.color.holo_text_hint), 1);
 		
 		tvGrade.setText("우수딜러");
@@ -94,6 +118,8 @@ public class DealerView extends FrameLayout {
 		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()) 
 						+ getContext().getString(R.string.won));
 
+		rankBadge.setVisibility(View.VISIBLE);
+		
 		if(!StringUtils.isEmpty(bid.getDealer_profile_img_url())) {
 			
 			ivImage.setTag(bid.getDealer_profile_img_url());
@@ -140,5 +166,19 @@ public class DealerView extends FrameLayout {
 	public boolean getSelected() {
 		
 		return selected;
+	}
+
+	public void initInfos() {
+		
+		ivImage.setImageDrawable(null);
+
+		tvInfo.setText(null);
+		FontUtils.addSpan(tvInfo, getResources().getString(R.string.standingByBid), 
+				getResources().getColor(R.color.holo_text), 1.6f, true);
+		FontUtils.addSpan(tvInfo, "\n--", getResources().getColor(R.color.holo_text_hint), 1);
+		
+		tvGrade.setText(null);
+		tvPrice.setText("0" + getContext().getString(R.string.won));
+		rankBadge.setVisibility(View.INVISIBLE);
 	}
 }

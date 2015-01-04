@@ -6,15 +6,16 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.byecar.byecarplus.R;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
@@ -96,6 +97,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 		try {
 			View v = (View) object;
 			container.removeView(v);
+			ViewUnbindHelper.unbindReferences(v);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

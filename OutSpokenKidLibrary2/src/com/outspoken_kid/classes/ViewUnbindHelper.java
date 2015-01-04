@@ -1,9 +1,11 @@
 package com.outspoken_kid.classes;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -86,9 +88,10 @@ public class ViewUnbindHelper {
         }
     }
  
-    @SuppressWarnings("deprecation")
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressWarnings("deprecation")
 	private static void unbindViewReferences(View view) {
-    	
+ 
         // Set everything to null (API Level 8)
         try {
             view.setOnClickListener(null);

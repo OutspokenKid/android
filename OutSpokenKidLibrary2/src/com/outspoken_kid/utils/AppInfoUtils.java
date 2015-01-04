@@ -117,4 +117,19 @@ public class AppInfoUtils {
 	public static void setVersionCode(int versionCode) {
 		AppInfoUtils.versionCode = versionCode;
 	}
+
+	/**
+	 * Check Device's version with 'minVersion'
+	 * 
+	 * @param minVersion
+	 * @return If Device's version is same or higher than 'minVersion', return true.  
+	 */
+	public static boolean checkMinVersionLimit(int minVersion) {
+		
+		if (android.os.Build.VERSION.SDK_INT >= minVersion) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }

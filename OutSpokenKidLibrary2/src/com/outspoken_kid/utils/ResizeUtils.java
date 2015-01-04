@@ -18,7 +18,8 @@ import android.widget.RelativeLayout;
  */
 public class ResizeUtils {
 
-	public static int KEEP = -3;
+	public static int ONE = -3;
+	public static int KEEP = -4;
 	
 	private static int[] index;
 	
@@ -187,12 +188,20 @@ public class ResizeUtils {
 		
 		if(_width != LayoutParams.MATCH_PARENT && _width != LayoutParams.WRAP_CONTENT) {
 			scaledWidth = getSpecificLength(_width);
+		
+		} else if(_width == ONE) {
+			scaledWidth = 1;
+			
 		} else {
 			scaledWidth = _width;
 		}
 		
 		if(_height != LayoutParams.MATCH_PARENT && _height != LayoutParams.WRAP_CONTENT) {
 			scaledHeight = getSpecificLength(_height);
+			
+		} else if(_height == ONE) {
+			scaledHeight = 1;
+			
 		} else {
 			scaledHeight = _height;
 		}
@@ -290,6 +299,9 @@ public class ResizeUtils {
 				|| _width == LayoutParams.WRAP_CONTENT) {
 			rp.width = _width;
 			
+		} else if(_width == ONE) {
+			rp.width = 1;
+			
 		} else {
 			rp.width = getSpecificLength(_width);
 		}
@@ -300,6 +312,9 @@ public class ResizeUtils {
 		} if(_height == LayoutParams.MATCH_PARENT
 				|| _height == LayoutParams.WRAP_CONTENT) {
 			rp.height = _height;
+			
+		} else if(_height == ONE) {
+			rp.height = 1;
 			
 		} else {
 			rp.height = getSpecificLength(_height);

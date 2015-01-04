@@ -122,7 +122,7 @@ public class CertifiedRegistrationPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("from", EditUserInfoPage.FROM_REGISTRATION);
+				bundle.putInt("from", EditUserInfoPage.TYPE_DEALER_INFO);
 				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 			}
 		});
@@ -335,6 +335,12 @@ public class CertifiedRegistrationPage extends BCPFragment {
 		
 		setProgress();
 		setDealerInfo();
+	}
+	
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.certifiedRegistrationPage_mainLayout;
 	}
 	
 //////////////////// Custom method.

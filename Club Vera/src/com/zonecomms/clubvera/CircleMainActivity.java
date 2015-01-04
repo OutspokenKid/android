@@ -7,6 +7,7 @@ import java.util.Calendar;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,6 +17,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -124,6 +126,8 @@ public class CircleMainActivity extends Activity {
             
             setSizes();
             setListeners();
+            
+            checkGCM();
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -560,6 +564,8 @@ public class CircleMainActivity extends Activity {
 				
 				if(models.size() == 0) {
 					downloadInfo();
+				} else if(MainActivity.requestRefresh) {
+					onRefreshPage();
 				} else {
 					showNext();
 				}
@@ -654,7 +660,8 @@ public class CircleMainActivity extends Activity {
 		});
     }
     
-    public void setPage(boolean successDownload) {
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void setPage(boolean successDownload) {
     
     	isDownloading = false;
     	
@@ -666,6 +673,16 @@ public class CircleMainActivity extends Activity {
 			
 			if(listAdapter != null) {
 				listAdapter.notifyDataSetChanged();
+			}
+			
+			if(MainActivity.requestRefresh) {
+				MainActivity.requestRefresh = false;
+				
+				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					listView.smoothScrollToPositionFromTop(0, 0);
+				} else {
+					listView.setSelectionAfterHeaderView();
+				}
 			}
 		} else {
 			ToastUtils.showToast(R.string.failToLoadList);
@@ -1019,7 +1036,7 @@ public class CircleMainActivity extends Activity {
 		}
 	}
 	
-	public void updateInfo(String regId) {
+	public void updateInfo(final String regId) {
 		
 		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +

@@ -143,7 +143,7 @@
 		        android:textColor="#fff" />
 		    
 		    <View 
-		        android:id="@+id/carDetailPage_headerForDealer"
+		        android:id="@+id/carDetailPage_headerForType"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
@@ -151,28 +151,36 @@
 		        android:background="@drawable/detail_head1" />
 		    
 		    <View
-		        android:id="@+id/carDetailPage_arrowForDealer"
+		        android:id="@+id/carDetailPage_arrowForType"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/carDetailPage_headerForDealer"
-		        android:layout_alignRight="@id/carDetailPage_headerForDealer"
+		        android:layout_alignTop="@id/carDetailPage_headerForType"
+		        android:layout_alignRight="@id/carDetailPage_headerForType"
 		        android:background="@drawable/detail_toggle_up" />
 		    
 		    
-		    <FrameLayout
-		        android:id="@+id/carDetailPage_frameForDealer"
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForType"
 		        android:layout_width="0dp"
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/carDetailPage_headerForDealer"
+		        android:layout_below="@id/carDetailPage_headerForType"
 		        android:background="@drawable/detail_body1" />
 		    
 		    <View 
-		        android:id="@+id/carDetailPage_footerForDealer"
+		        android:id="@+id/carDetailPage_lineForType"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/carDetailPage_frameForDealer"
+		        android:layout_below="@id/carDetailPage_relativeForType"
+		        android:background="@color/color_ltgray" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_footerForType"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_lineForType"
 		        android:background="@drawable/detail_foot" />
 		    
 		    <View 
@@ -180,7 +188,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/carDetailPage_footerForDealer"
+		        android:layout_below="@id/carDetailPage_footerForType"
 		        android:background="@drawable/detail_head2" />
 		    
 		    <View

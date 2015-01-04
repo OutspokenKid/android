@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settingPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.byecarplus.views.TitleBar
+        android:id="@+id/settingPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <ScrollView
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/settingPage_titleBar"
+    	android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+    		
+            <View 
+                android:id="@+id/settingPage_bg1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:layout_centerHorizontal="true"
+		        android:background="@drawable/setting_push_frame" />
+            
+			<LinearLayout
+			    android:id="@+id/settingPage_alarmLinear"
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignRight="@id/settingPage_bg1"
+			    android:layout_alignBottom="@id/settingPage_bg1"
+			    android:orientation="horizontal"
+			    android:padding="1dp"
+			    android:background="@drawable/setting_toggle_bg" >
+			    
+                <View
+                    android:id="@+id/settingPage_alarmOff"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/setting_toggle_off" />
+                
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+                
+                <View
+                    android:id="@+id/settingPage_alarmOn"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:visibility="invisible"
+                    android:background="@drawable/setting_toggle_on" />
+			    
+			</LinearLayout>
+            
+            <View 
+                android:id="@+id/settingPage_bg2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/settingPage_bg1"
+		        android:background="@drawable/setting_push_frame2" />
+            
+            <Button
+			    android:id="@+id/settingPage_btnWithdraw"
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignRight="@id/settingPage_bg2"
+			    android:layout_alignBottom="@id/settingPage_bg2"
+			    android:background="@drawable/setting_out_btn" />
+            
+            <View 
+                android:id="@+id/settingPage_bg3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/settingPage_bg2"
+		        android:background="@drawable/setting_push_frame3" />
+            
+            <Button
+			    android:id="@+id/settingPage_btnSignOut"
+			    android:layout_width="0dp"
+			    android:layout_height="0dp"
+			    android:layout_alignRight="@id/settingPage_bg3"
+			    android:layout_alignBottom="@id/settingPage_bg3"
+			    android:background="@drawable/setting_logout_btn" />
+            
+        </RelativeLayout>
+        
+    </ScrollView>
+        
+</RelativeLayout>

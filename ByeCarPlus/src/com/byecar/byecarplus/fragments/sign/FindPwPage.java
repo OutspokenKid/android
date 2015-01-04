@@ -128,6 +128,12 @@ public class FindPwPage extends BCPFragmentForSign {
 		return 60;
 	}
 
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.findPwPage_mainLayout;
+	}
+	
 //////////////////// Custom methods.
 
 	public void findPw() {

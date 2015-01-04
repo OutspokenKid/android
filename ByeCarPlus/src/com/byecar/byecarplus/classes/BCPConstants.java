@@ -12,7 +12,11 @@ public class BCPConstants {
 	public static final int REQUEST_ALBUM = 2;
 	
 	public static final int ITEM_NOTICE = 1;
-	public static final int ITEM_AUCTION = 2;
+	public static final int ITEM_FAQ = 2;
+	public static final int ITEM_CAR_AUCTION = 20;
+	public static final int ITEM_CAR_USED = 21;
+	public static final int ITEM_CAR_DIRECT_CERTIFIED = 22;
+	public static final int ITEM_CAR_DIRECT_NORMAL = 23;
 	public static final int ITEM_CAR_BRAND = 11;
 	public static final int ITEM_CAR_TEXT = 12;
 	
@@ -27,17 +31,20 @@ public class BCPConstants {
 	//Pages for user.
 	public static final int PAGE_MAIN_FOR_USER = 7;
 	public static final int PAGE_CAR_DETAIL = 8;
-	public static final int PAGE_AUCTION_LIST = 9;
-	public static final int PAGE_AUCTION_REGISTRATION = 10;
+	public static final int PAGE_CAR_LIST = 9;
+	public static final int PAGE_CAR_REGISTRATION = 10;
 	public static final int PAGE_EDIT_USER_INFO = 11;
 	public static final int PAGE_CERTIFY_PHONE_NUMBER = 12;
-	public static final int PAGE_DEALER_LIST = 13;
-	public static final int PAGE_BID_DETAIL = 15;
 	
-	public static final int PAGE_DIRECT = 16;
+	public static final int PAGE_DIRECT_MARKET = 15;
+	public static final int PAGE_DIRECT_NORMAL_LIST = 20;
 	
 	//Pages for common.
 	public static final int PAGE_COMMON_DEALER_CERTIFIER = 14;
+	public static final int PAGE_COMMON_ASK = 16;
+	public static final int PAGE_COMMON_SETTING = 17;
+	public static final int PAGE_SEARCH_CAR = 18;
+	public static final int PAGE_OPENABLE_POST_LIST = 19;
 	
-	public static final int PAGE_SEARCH_CAR = 17;
+	public static final int PAGE_SELECT_BID = 21;
 }

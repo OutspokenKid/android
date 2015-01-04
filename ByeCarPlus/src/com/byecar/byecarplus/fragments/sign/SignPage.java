@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
@@ -27,6 +28,7 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentActivity.OnAfterCheckSessionListener;
 import com.byecar.byecarplus.classes.BCPFragmentForSign;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.fragment.sns.FacebookFragment;
 import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
 import com.outspoken_kid.fragment.sns.KakaoFragment;
@@ -101,7 +103,7 @@ public class SignPage extends BCPFragmentForSign {
 		navigator.setIndex(0);
 		navigator.setEmptyOffCircle();
 		navigator.invalidate();
-		
+
 		initFloatImageViews();
 		initGuideImageViews();
 		initSignRelative();
@@ -303,6 +305,27 @@ public class SignPage extends BCPFragmentForSign {
 		}
 	}
 	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		ViewUnbindHelper.unbindReferences(floatingImageViews[0]);
+		ViewUnbindHelper.unbindReferences(floatingImageViews[1]);
+		ViewUnbindHelper.unbindReferences(floatingImageViews[2]);
+		
+		ViewUnbindHelper.unbindReferences(guideImageViews[0]);
+		ViewUnbindHelper.unbindReferences(guideImageViews[1]);
+		ViewUnbindHelper.unbindReferences(guideImageViews[2]);
+		
+		ViewUnbindHelper.unbindReferences(signRelative);
+	}
+	
+	@Override
+	public int getRootViewResId() {
+
+		return 0;
+	}
+	
 //////////////////// Custom methods.
 	
 	public void initFloatImageViews() {
@@ -325,7 +348,9 @@ public class SignPage extends BCPFragmentForSign {
 			floatingImageViews[i].setScaleType(ScaleType.MATRIX);
 			mainLayout.addView(floatingImageViews[i], 0);
 
-			Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resIds[i]);
+			BitmapDrawable bd = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), resIds[i]));
+			Bitmap bitmap = bd.getBitmap();
+			
 			floatingImageViews[i].setImageBitmap(bitmap);
 			
 			matrices[i] = getBitmapMatrix(i, bitmap);
@@ -354,12 +379,15 @@ public class SignPage extends BCPFragmentForSign {
 		for(int i=0; i<size; i++) {
 			guideImageViews[i] = new ImageView(mContext);
 			guideImageViews[i].setScaleType(ScaleType.CENTER_CROP);
-			guideImageViews[i].setBackgroundResource(resIds[i]);
+
+			BitmapDrawable bd = new BitmapDrawable(getResources(), BitmapFactory.decodeResource(getResources(), resIds[i]));
+			Bitmap bitmap = bd.getBitmap();
+			guideImageViews[i].setImageBitmap(bitmap);
 		}
 	}
 	
 	public void initSignRelative() {
-
+		
 		signRelative = (RelativeLayout) mActivity.getLayoutInflater().inflate(R.layout.relative_sign, null);
 		
 		RelativeLayout.LayoutParams rp = null;
@@ -703,11 +731,17 @@ public class SignPage extends BCPFragmentForSign {
 			case 1:
 			case 2:
 			case 3:
-				container.addView(guideImageViews[position-1]);
+				if(guideImageViews[position-1].getParent() == null) {
+					container.addView(guideImageViews[position-1]);
+				}
+				
 				return guideImageViews[position-1];
 				
 			case 4:
-				container.addView(signRelative);
+				if(signRelative.getParent() == null) {
+					container.addView(signRelative);
+				}
+				
 				return signRelative;
 				
 			}
@@ -717,15 +751,6 @@ public class SignPage extends BCPFragmentForSign {
 		
 		@Override
 		public void destroyItem(ViewGroup container, int position, Object object) {
-
-			try {
-				View v = (View) object;
-				container.removeView(v);
-			} catch (Exception e) {
-				LogUtils.trace(e);
-			} catch (Error e) {
-				LogUtils.trace(e);
-			}
 		}
 		
 		@Override

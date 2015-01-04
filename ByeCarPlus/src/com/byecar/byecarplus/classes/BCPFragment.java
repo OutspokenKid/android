@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.classes.BaseFragment;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -39,6 +40,7 @@ public abstract class BCPFragment extends BaseFragment {
 	public abstract int getBackButtonResId();
 	public abstract int getBackButtonWidth();
 	public abstract int getBackButtonHeight();
+	public abstract int getRootViewResId();
 	
 	/**
 	 * BaseModel로 파싱해서 models에 넣고, 조건에 따라 isLastList 설정.
@@ -91,6 +93,15 @@ public abstract class BCPFragment extends BaseFragment {
 	public void onResume() {
 		super.onResume();
 		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		if(getRootViewResId() != 0) {
+			ViewUnbindHelper.unbindReferences(mThisView.findViewById(getRootViewResId()));
+		}
 	}
 	
 	@Override

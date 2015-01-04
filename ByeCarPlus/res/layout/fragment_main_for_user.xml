@@ -149,39 +149,43 @@
     			android:layout_toRightOf="@id/mainForUserPage_btnAuction"
     			android:background="@drawable/main_my_car_btn" />
             
-            <FrameLayout
-                android:id="@+id/mainForUserPage_noticeFrame"
+            <View 
+                android:id="@+id/mainForUserPage_noticeTitle"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
     			android:layout_below="@id/mainForUserPage_btnAuction"
-    			android:layout_centerHorizontal="true" >
-                
-                <ImageView 
-	                android:id="@+id/mainForUserPage_ivNotice"
-	                android:layout_width="0dp"
-	    			android:layout_height="0dp"
-	    			android:scaleType="centerCrop"
-	    			android:background="@drawable/direct_notice_default" />
-                
-                <View 
-                    android:layout_width="match_parent"
-	    			android:layout_height="match_parent"
-                    android:background="@drawable/main_notice_frame" />
-                
-            </FrameLayout>
+    			android:background="@drawable/main_notice_frame" />
+            
+            <ImageView 
+                android:id="@+id/mainForUserPage_ivNotice"
+                android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_noticeTitle"
+    			android:scaleType="centerCrop"
+    			android:background="@drawable/notice_sample_img4" />
+            
+            <Button 
+                android:id="@+id/mainForUserPage_btnNotice"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_ivNotice"
+    			android:background="@drawable/main_notice_btn2" />
 
             <View 
                 android:id="@+id/mainForUserPage_usedMarketTitle"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_noticeFrame"
+    			android:layout_below="@id/mainForUserPage_btnNotice"
     			android:background="@drawable/main_used_car_frame" />
             
             <LinearLayout
                 android:id="@+id/mainForUserPage_usedMarketLinear"
         		android:layout_width="0dp"
-    			android:layout_height="0dp"
+    			android:layout_height="wrap_content"
     			android:layout_alignTop="@id/mainForUserPage_usedMarketTitle"
     			android:layout_centerHorizontal="true"
     			android:orientation="horizontal" />
@@ -208,7 +212,7 @@
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
     			android:layout_below="@id/mainForUserPage_directMarketTitle"
-    			android:background="@drawable/direct_notice_default" />
+    			android:background="@drawable/main_direct_sample" />
             
             <Button 
                 android:id="@+id/mainForUserPage_btnDirectMarket"

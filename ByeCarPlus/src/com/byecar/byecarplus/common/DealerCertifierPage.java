@@ -58,6 +58,10 @@ public class DealerCertifierPage extends BCPFragment {
 	private Button btnMore;
 	
 	ArrayList<Review> reviews = new ArrayList<Review>();
+
+	private int scrollOffset;
+	private int standardLength;
+	private float diff;
 	
 	@Override
 	public void bindViews() {
@@ -128,20 +132,8 @@ public class DealerCertifierPage extends BCPFragment {
 			@Override
 			public void onScrollChanged(int offset) {
 
-				try {
-					if(offset < 500) {
-						titleBar.setBgAlpha(0.002f * offset);
-						
-					} else if(offset < 700){
-						titleBar.setBgAlpha(1);
-					} else {
-						//Do nothing.
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
+				scrollOffset = offset;
+				checkPageScrollOffset();
 			}
 		});
 	
@@ -282,6 +274,14 @@ public class DealerCertifierPage extends BCPFragment {
 		} else {
 			downloadCarInfo();
 		}
+		
+		checkPageScrollOffset();
+	}
+	
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.dealerPage_mainLayout;
 	}
 	
 //////////////////// Custom methods.
@@ -448,5 +448,28 @@ public class DealerCertifierPage extends BCPFragment {
 				mActivity.closeTopPage();
 			}
 		}, 1000);
+	}
+
+	public void checkPageScrollOffset() {
+		
+		if(standardLength == 0) {
+			standardLength = ResizeUtils.getSpecificLength(500);
+		}
+		
+		if(diff == 0) {
+			diff = 1f / (float) standardLength; 
+		}
+		
+		try {
+			if(scrollOffset < standardLength) {
+				titleBar.setBgAlpha(diff * scrollOffset);
+			} else {
+				titleBar.setBgAlpha(1);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }

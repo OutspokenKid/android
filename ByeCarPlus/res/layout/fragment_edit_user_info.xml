@@ -196,13 +196,29 @@
 		        android:layout_marginRight="10dp"
 		        android:layout_marginBottom="20dp"
 		        android:background="@color/holo_text_hint" />
+
+			<View 
+			    android:id="@+id/editUserInfoPage_termOfUse"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/editUserInfoPage_lineAfterPhoneNumber"
+		        android:background="@drawable/registration_agree_btn_a" />
 			
+			<Button 
+			    android:id="@+id/editUserInfoPage_btnTermOfUse"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/editUserInfoPage_termOfUse"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/registration_term_btn" />
+						
 		    <Button 
 		        android:id="@+id/editUserInfoPage_btnConfirm"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/editUserInfoPage_lineAfterPhoneNumber" 
+		        android:layout_below="@id/editUserInfoPage_termOfUse" 
 		        android:background="@drawable/user_done_btn" />
 		    
 		    <View

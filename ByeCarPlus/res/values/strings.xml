@@ -4,6 +4,8 @@
     <string name="app_name">ByeCarPlus</string>
 	<string name="addedPhoto">추가사진</string>
 	
+	<string name="buyerInfo">구매자정보</string>
+	
 	<string name="carDescriptionFromDealer">판매자 차량설명</string>
 	<string name="carInfo">차량정보</string>
 	<string name="carOption">차량 옵션 및 튜닝</string>
@@ -19,6 +21,7 @@
     <string name="carSearchString_oneManOwned1">1인신조</string>
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
     
+    <string name="certifier">검증사</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
@@ -33,6 +36,7 @@
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
     <string name="currentPrice">현재가</string>
     
+    <string name="dealer">딜러</string>
     <string name="dealerInfo">판매자 정보</string>
     <string name="dealerInfoCertified">판매자 정보가 인증되었습니다.</string>
     <string name="detailCarInfo">세부차량정보</string>
@@ -57,7 +61,7 @@
     <string name="EmailSignIn">Email 로그인</string>
 
     <string name="failToFindPw">비번 찾기 실패</string>
-    <string name="failToLoadBidsInfo">매물 정보를 불러오지 못했습니다.</string>
+    <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
@@ -88,13 +92,19 @@
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
     
+    <string name="phone">연락처</string>
+    
     <string name="remainTime">남은시간</string>
     <string name="requireCertifyDealerInfo">판매자정보를 인증해야 차량을\n등록할 수 있습니다.</string>
     
+    <string name="salesPrice">판매가</string>
     <string name="selectCarFirst">차량을 먼저 선택해주세요</string>
+    <string name="sellingArea">판매지역</string>
     <string name="sideMenuTitle1">거래</string>
     <string name="sideMenuTitle2">서비스</string>
     <string name="SNSSignIn">SNS 로그인</string>
+    <string name="standingByBid">입찰대기중</string>
+    <string name="standingByRegistration">등록대기중</string>
     
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
 
@@ -103,5 +113,7 @@
     <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
     <string name="writePercentage">작성률</string>
     <string name="won">￦</string>
+    
+    <string name="year">년</string>
     
 </resources>

@@ -5,21 +5,16 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -32,9 +27,11 @@ import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
+import com.byecar.byecarplus.common.OpenablePostListPage;
 import com.byecar.byecarplus.models.Car;
-import com.byecar.byecarplus.models.Notice;
+import com.byecar.byecarplus.models.OpenablePost;
 import com.byecar.byecarplus.views.TitleBar;
+import com.byecar.byecarplus.views.UsedCarView;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -50,7 +47,6 @@ import com.outspoken_kid.views.PageNavigatorView;
 public class MainForUserPage extends BCPFragment {
 	
 	private OffsetScrollView scrollView;
-	
 	private ViewPager viewPager;
 	private View auctionIcon;
 	private PageNavigatorView pageNavigator;
@@ -64,10 +60,11 @@ public class MainForUserPage extends BCPFragment {
 	private TextView tvBidCount;
 	private Button btnAuction;
 	private Button btnRegistration;
-	private FrameLayout noticeFrame;
+	private View noticeTitle;
 	private ImageView ivNotice;
+	private Button btnNotice;
 	private LinearLayout usedMarketLinear;
-	private UsedCarFrame[] usedCarFrames = new UsedCarFrame[3];
+	private UsedCarView[] usedCarViews = new UsedCarView[3];
 	private Button btnUsedMarket;
 	private ImageView ivDirectMarket;
 	private Button btnDirectMarket;
@@ -76,12 +73,16 @@ public class MainForUserPage extends BCPFragment {
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ArrayList<Car> certifieds = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
-	private Notice notice;
+	private OpenablePost notice;
 	
 	private Handler mHandler;
 	private Thread checkTime;
 	private Runnable updateTime;
 	public boolean needRunThread;
+	
+	private int scrollOffset; 
+	private int standardLength;
+	private float diff;
 	
 	@Override
 	public void bindViews() {
@@ -102,8 +103,9 @@ public class MainForUserPage extends BCPFragment {
 		tvBidCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvBidCount);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainForUserPage_btnAuction);
 		btnRegistration = (Button) mThisView.findViewById(R.id.mainForUserPage_btnRegistration);
-		noticeFrame = (FrameLayout) mThisView.findViewById(R.id.mainForUserPage_noticeFrame);
+		noticeTitle = mThisView.findViewById(R.id.mainForUserPage_noticeTitle);
 		ivNotice = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivNotice);
+		btnNotice = (Button) mThisView.findViewById(R.id.mainForUserPage_btnNotice);
 		usedMarketLinear = (LinearLayout) mThisView.findViewById(R.id.mainForUserPage_usedMarketLinear);
 		btnUsedMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnUsedMarket);
 		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
@@ -158,7 +160,6 @@ public class MainForUserPage extends BCPFragment {
 		titleBar.setBgAlpha(0);
 		
 		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
-		addUsedCarFrames();
 	}
 
 	@Override
@@ -191,17 +192,8 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onScrollChanged(int offset) {
 				
-				try {
-					if(offset < 500) {
-						titleBar.setBgAlpha(0.002f * offset);
-					} else {
-						titleBar.setBgAlpha(1);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
+				scrollOffset = offset;
+				checkPageScrollOffset();
 			}
 		});
 		
@@ -242,7 +234,13 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_AUCTION_LIST, null);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", Car.TYPE_AUCTION);
+//				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+				
+				Bundle bundle = new Bundle();
+				bundle.putInt("id", 13);
+				mActivity.showPage(BCPConstants.PAGE_SELECT_BID, bundle);
 			}
 		});
 	
@@ -251,16 +249,38 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_AUCTION_REGISTRATION, null);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
 			}
 		});
 	
+		btnNotice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+				mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+			}
+		});
+		
 		btnUsedMarket.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_DEALER_LIST, null);
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", Car.TYPE_USED);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
+	
+		btnDirectMarket.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_DIRECT_MARKET, null);				
 			}
 		});
 	}
@@ -348,49 +368,54 @@ public class MainForUserPage extends BCPFragment {
 		//btnRegistration.
 		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
-		
-		//noticeFrame.
-		rp = (RelativeLayout.LayoutParams) noticeFrame.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(336);
-		rp.topMargin = ResizeUtils.getSpecificLength(9);
+
+		//noticeTitle.
+		rp = (RelativeLayout.LayoutParams) noticeTitle.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//ivNotice.
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 
-				ivNotice, 2, Gravity.TOP, new int[]{0, 88, 0, 0});
+		rp = (RelativeLayout.LayoutParams) ivNotice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(254);
+		
+		//btnNotice.
+		rp = (RelativeLayout.LayoutParams) btnNotice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
 		
 		//usedMarketTitle.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_usedMarketTitle).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(338);
-		rp.topMargin = ResizeUtils.getSpecificLength(9);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(320);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//usedMarketLinear.
 		rp = (RelativeLayout.LayoutParams) usedMarketLinear.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(246);
-		rp.topMargin = ResizeUtils.getSpecificLength(92);
-		
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.topMargin = ResizeUtils.getSpecificLength(88);
+
 		//btnUsedMarket.
 		rp = (RelativeLayout.LayoutParams) btnUsedMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(69);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
 		
 		//directMarketTitle.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_directMarketTitle).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(89);
-		rp.topMargin = ResizeUtils.getSpecificLength(9);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//ivDirectMarket.
 		rp = (RelativeLayout.LayoutParams) ivDirectMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.width = ResizeUtils.getSpecificLength(608);
 		rp.height = ResizeUtils.getSpecificLength(248);
 		
 		//btnDirectMarket.
 		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(69);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
 		
 		FontUtils.setFontSize(tvRemainTime, 24);
 		FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
@@ -456,6 +481,8 @@ public class MainForUserPage extends BCPFragment {
 		downloadMainInfos();
 		
 		titleBar.setNoticeCount(5);
+		
+		checkPageScrollOffset();
 	}
 	
 	@Override
@@ -468,16 +495,14 @@ public class MainForUserPage extends BCPFragment {
 			checkTime.interrupt();
 		}
 	}
+
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.mainForUserPage_mainLayout;
+	}
 	
 //////////////////// Custom methods.
-	
-	public void addUsedCarFrames() {
-		
-		for(int i=0; i<3; i++) {
-			usedCarFrames[i] = new UsedCarFrame(mContext);
-			usedMarketLinear.addView(usedCarFrames[i]);
-		}
-	}
 
 	public void downloadMainInfos() {
 		
@@ -536,7 +561,7 @@ public class MainForUserPage extends BCPFragment {
 							dealers.add(new Car(arJSON.getJSONObject(i)));
 						}
 						
-						setUsedCarFrames();
+						setUsedCarViews();
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					}
@@ -553,7 +578,7 @@ public class MainForUserPage extends BCPFragment {
 					}
 					
 					try {
-						notice = new Notice(objJSON.getJSONObject("notice"));
+						notice = new OpenablePost(objJSON.getJSONObject("notice"));
 						setNotice();
 					} catch (Exception e) {
 						LogUtils.trace(e);
@@ -569,17 +594,17 @@ public class MainForUserPage extends BCPFragment {
 		});
 	}
 	
-	public void setUsedCarFrames() {
+	public void setUsedCarViews() {
 		
 		for(int i=0; i<Math.min(3, dealers.size()); i++) {
 
 			final int INDEX = i;
 			
 			try {
-				usedCarFrames[i].setTexts(dealers.get(i).getModel_name(), 
+				usedCarViews[i] = new UsedCarView(mContext, i);
+				usedCarViews[i].setTexts(dealers.get(i).getModel_name(), 
 						dealers.get(i).getPrice());
-
-				usedCarFrames[i].setOnClickListener(new OnClickListener() {
+				usedCarViews[i].setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View view) {
@@ -589,8 +614,8 @@ public class MainForUserPage extends BCPFragment {
 						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 					}
 				});
-				
-				usedCarFrames[i].downloadImage(dealers.get(i).getRep_img_url());
+				usedCarViews[i].downloadImage(dealers.get(i).getRep_img_url());
+				usedMarketLinear.addView(usedCarViews[i]);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {
@@ -611,7 +636,9 @@ public class MainForUserPage extends BCPFragment {
 			public void onError(String url) {
 
 				LogUtils.log("MainForUserPage.setNotice.onError." + "\nurl : " + url);
-				noticeFrame.setVisibility(View.GONE);
+				noticeTitle.setVisibility(View.GONE);
+				ivNotice.setVisibility(View.GONE);
+				btnNotice.setVisibility(View.GONE);
 			}
 
 			@Override
@@ -622,9 +649,14 @@ public class MainForUserPage extends BCPFragment {
 					
 					if(bitmap != null && !bitmap.isRecycled()) {
 						ivNotice.setImageBitmap(bitmap);
-						noticeFrame.setVisibility(View.VISIBLE);
+
+						noticeTitle.setVisibility(View.VISIBLE);
+						ivNotice.setVisibility(View.VISIBLE);
+						btnNotice.setVisibility(View.VISIBLE);
 					} else {
-						noticeFrame.setVisibility(View.GONE);
+						noticeTitle.setVisibility(View.GONE);
+						ivNotice.setVisibility(View.GONE);
+						btnNotice.setVisibility(View.GONE);
 					}
 					return;
 				} catch (Exception e) {
@@ -632,8 +664,10 @@ public class MainForUserPage extends BCPFragment {
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
 				}
-				
-				noticeFrame.setVisibility(View.GONE);
+
+				noticeTitle.setVisibility(View.GONE);
+				ivNotice.setVisibility(View.GONE);
+				btnNotice.setVisibility(View.GONE);
 			}
 		});
 	}
@@ -680,98 +714,27 @@ public class MainForUserPage extends BCPFragment {
 	    };
 	    checkTime.start();
 	}
-	
-//////////////////// Custom classes.
-	
-	public class UsedCarFrame extends FrameLayout {
 
-		private ImageView ivImage;
-		private TextView tvCar;
-		private TextView tvPrice;
-		
-		public UsedCarFrame(Context context) {
-			super(context);
-			init();
+	public void checkPageScrollOffset() {
+
+		if(standardLength == 0) {
+			standardLength = ResizeUtils.getSpecificLength(500);
 		}
 		
-		public void init() {
-		
-			ResizeUtils.viewResize(184, 224, this, 1, Gravity.CENTER_VERTICAL, 
-					new int[]{20, 0, 0, 0});
-			
-			//ivImage.
-			ivImage = new ImageView(mContext);
-			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 145, ivImage, 2, 0, null);
-			ivImage.setScaleType(ScaleType.CENTER_CROP);
-			ivImage.setBackgroundResource(R.drawable.main_used_car_sub_frame_default);
-			this.addView(ivImage);
-
-			//frame.
-			View frame = new View(mContext);
-			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 
-					frame, 2, 0, null);
-			frame.setBackgroundResource(R.drawable.main_used_car_sub_frame);
-			this.addView(frame);
-			
-			//tvCar.
-			tvCar = new TextView(mContext);
-			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvCar, 2, 0, new int[]{0, 145, 0, 0});
-			tvCar.setTextColor(Color.rgb(57, 57, 57));
-			FontUtils.setFontSize(tvCar, 18);
-			tvCar.setGravity(Gravity.CENTER);
-			this.addView(tvCar);
-			
-			//tvPrice.
-			tvPrice = new TextView(mContext);
-			ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvPrice, 2, 0, new int[]{0, 184, 0, 0});
-			FontUtils.setFontSize(tvPrice, 24);
-			FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
-			tvPrice.setTextColor(Color.rgb(96, 70, 51));
-			tvPrice.setGravity(Gravity.CENTER);
-			this.addView(tvPrice);
+		if(diff == 0) {
+			diff = 1f / (float) standardLength; 
 		}
 		
-		public void downloadImage(String imageUrl) {
-			
-			ivImage.setImageDrawable(null);
-			
-			ivImage.setTag(imageUrl);
-			DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
-
-				@Override
-				public void onError(String url) {
-
-					LogUtils.log("UsedCarFrame.downloadImage.onError." + "\nurl : " + url);
-				}
-
-				@Override
-				public void onCompleted(String url, Bitmap bitmap) {
-
-					try {
-						LogUtils.log("UsedCarFrame.downloadImage.onCompleted." + "\nurl : " + url);
-						
-						if(bitmap != null && !bitmap.isRecycled()) {
-							ivImage.setImageBitmap(bitmap);
-						}
-						
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
-					}
-				}
-			});
-		}
-		
-		public void setTexts(String modelName, long price) {
-			
-			tvCar.setText(modelName);
-			tvPrice.setText(StringUtils.getFormattedNumber(price) + getString(R.string.won));
-		}
-
-		public ImageView getIvImage() {
-			
-			return ivImage;
+		try {
+			if(scrollOffset < standardLength) {
+				titleBar.setBgAlpha(diff * scrollOffset);
+			} else {
+				titleBar.setBgAlpha(1);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 }

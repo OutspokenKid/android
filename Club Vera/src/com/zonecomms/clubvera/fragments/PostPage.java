@@ -47,8 +47,8 @@ import com.zonecomms.common.models.Reply;
 import com.zonecomms.common.utils.AppInfoUtils;
 import com.zonecomms.common.views.PostInfoLayout;
 import com.zonecomms.common.views.ReplyLoadingView;
-import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.ReplyLoadingView.OnLoadingViewClickedListener;
+import com.zonecomms.common.views.TitleBar;
 import com.zonecomms.common.views.ViewForReply;
 
 public class PostPage extends ZonecommsFragment {
@@ -368,7 +368,6 @@ public class PostPage extends ZonecommsFragment {
 		
 		length = views.size();
 		for(int i=0; i<length; i++) {
-			
 			ViewUnbindHelper.unbindReferences(views.get(i));
 		}
 		
@@ -698,6 +697,8 @@ public class PostPage extends ZonecommsFragment {
 							
 							targets.clear();
 							setTargetViews();
+							
+							SoftKeyboardUtils.hideKeyboard(mContext, editText);
 						} else {
 							ToastUtils.showToast(R.string.failToSendReply);
 						}
@@ -1018,11 +1019,8 @@ public class PostPage extends ZonecommsFragment {
 						final boolean singlePage = ZonecommsApplication.getActivity().getFragmentsSize() <= 1; 
 						
 						if(singlePage) {
-							LogUtils.log("###!!!!!!!!!!!!!!!!!.onCompleted.  ");
 							getActivity().finish();
 						} else {
-							LogUtils.log("###22222222222222222.onCompleted.  fragmentSize : " + 
-									ZonecommsApplication.getActivity().getFragmentsSize());
 							mainActivity.closeTopPage();
 						}
 						

@@ -259,6 +259,7 @@ public class SharedPrefsUtils {
 		return false;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static BasicClientCookie getCookie(String prefsName) {
 
 		try {

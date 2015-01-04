@@ -218,6 +218,12 @@ public class SignInPage extends BCPFragmentForSign {
 		}
 	}
 	
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.signInPage_mainLayout;
+	}
+	
 //////////////////// Custom methods.
 	
 	public void initFacebookFragment() {

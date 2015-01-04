@@ -79,6 +79,7 @@ import com.zonecomms.common.views.TitleBar.OnWriteButtonClickedListener;
 public class MainActivity extends ZonecommsFragmentActivity {
 
 	public static boolean isGoToLeaveMember;
+	public static boolean requestRefresh;
 	
 	private GestureSlidingLayout gestureSlidingLayout;
 	private ScrollView leftView;
@@ -1313,7 +1314,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		}
 	}
 	
-	public void updateInfo(String regId) {
+	public void updateInfo(final String regId) {
 		
 		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +

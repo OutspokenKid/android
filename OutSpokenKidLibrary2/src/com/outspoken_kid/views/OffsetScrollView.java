@@ -9,8 +9,6 @@ public class OffsetScrollView extends ScrollView {
 
 	private OnScrollChangedListener onScrollChangedListener;
 	
-	int offsetY;
-	
 	public OffsetScrollView(Context context) {
 		this(context, null, 0);
 	}
@@ -28,10 +26,8 @@ public class OffsetScrollView extends ScrollView {
 			@Override
 			public void onScrollChanged() {
 
-				offsetY = getScrollY();
-				
 				if(onScrollChangedListener != null) {
-					onScrollChangedListener.onScrollChanged(offsetY);
+					onScrollChangedListener.onScrollChanged(getScrollY());
 				}
 			}
 		});

@@ -307,6 +307,12 @@ public class SignUpForCommonPage extends BCPFragmentForSign {
 		return 60;
 	}
 
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.signUpForCommonPage_mainLayout;
+	}
+	
 //////////////////// Custom methods.
 
 	public boolean checkInfos() {

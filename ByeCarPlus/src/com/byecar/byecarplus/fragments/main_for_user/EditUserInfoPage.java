@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,8 +38,9 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
 public class EditUserInfoPage extends BCPFragment {
 
-	public static final int FROM_MENU = 0;
-	public static final int FROM_REGISTRATION = 1;
+	public static final int TYPE_EDIT_PROFILE = 0;
+	public static final int TYPE_DEALER_INFO = 1;
+	public static final int TYPE_REQUEST_BUYER = 2;
 	
 	private static final int NAME_MIN = 2;
 	private static final int NAME_MAX = 16;
@@ -47,6 +49,7 @@ public class EditUserInfoPage extends BCPFragment {
 	private static final int ADDRESS_MIN = 0;
 	private static final int ADDRESS_MAX = 50;
 	
+	private FrameLayout profileFrame;
 	private Button btnProfile;
 	private ImageView ivProfile;
 	private TextView tvProfile;
@@ -61,6 +64,8 @@ public class EditUserInfoPage extends BCPFragment {
 	private TextView tvPhoneNumber;
 	private View checkIcon;
 	private Button btnEditPhoneNumber;
+	private View termOfUse;
+	private Button btnTermOfUse;
 	private Button btnConfirm;
 	
 	private boolean focusOnName, focusOnNickname, focusOnAddress;
@@ -69,7 +74,7 @@ public class EditUserInfoPage extends BCPFragment {
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
 	
-	private int from;
+	private int type;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -93,6 +98,7 @@ public class EditUserInfoPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.editUserInfoPage_titleBar);
 		
+		profileFrame = (FrameLayout) mThisView.findViewById(R.id.editUserInfoPage_profileFrame);
 		btnProfile = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnProfile);
 		ivProfile = (ImageView) mThisView.findViewById(R.id.editUserInfoPage_ivProfile);
 		tvProfile = (TextView) mThisView.findViewById(R.id.editUserInfoPage_tvProfile);
@@ -107,6 +113,8 @@ public class EditUserInfoPage extends BCPFragment {
 		btnEditPhoneNumber = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnEditPhoneNumber);
 		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.editUserInfoPage_tvPhoneNumber);
 		checkIcon = mThisView.findViewById(R.id.editUserInfoPage_checkIcon);
+		termOfUse = mThisView.findViewById(R.id.editUserInfoPage_termOfUse);
+		btnTermOfUse = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnTermOfUse);
 		btnConfirm = (Button) mThisView.findViewById(R.id.editUserInfoPage_btnConfirm);
 	}
 
@@ -114,13 +122,29 @@ public class EditUserInfoPage extends BCPFragment {
 	public void setVariables() {
 
 		if(getArguments() != null) {
-			from = getArguments().getInt("from");
+			type = getArguments().getInt("type");
 		}
 	}
 
 	@Override
 	public void createPage() {
 
+		if(type == TYPE_REQUEST_BUYER) {
+			profileFrame.setVisibility(View.GONE);
+			tvProfile.setVisibility(View.GONE);
+			termOfUse.setVisibility(View.VISIBLE);
+			btnTermOfUse.setVisibility(View.VISIBLE);
+			tvBaseInfo.setText(R.string.buyerInfo);
+			btnConfirm.setBackgroundResource(R.drawable.request_complete_btn);
+		} else {
+			profileFrame.setVisibility(View.VISIBLE);
+			tvProfile.setVisibility(View.VISIBLE);
+			termOfUse.setVisibility(View.GONE);
+			btnTermOfUse.setVisibility(View.GONE);
+			tvBaseInfo.setText(R.string.commonInfo);
+			btnConfirm.setBackgroundResource(R.drawable.user_done_btn);
+		}
+		
 		etName.setHint(R.string.hintForName);
 		etName.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 		
@@ -285,7 +309,7 @@ public class EditUserInfoPage extends BCPFragment {
 		//tvBaseInfo.
 		rp = (RelativeLayout.LayoutParams) tvBaseInfo.getLayoutParams();
 		rp.leftMargin = ResizeUtils.getSpecificLength(30);
-		rp.topMargin = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etName.
@@ -329,14 +353,26 @@ public class EditUserInfoPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(38);
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
+		//termOfUse.
+		rp = (RelativeLayout.LayoutParams) termOfUse.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(313);
+		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
+
+		//btnTermOfUse.
+		rp = (RelativeLayout.LayoutParams) btnTermOfUse.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(259);
+		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.rightMargin = ResizeUtils.getSpecificLength(30);
+		
 		//btnConfirm.
 		rp = (RelativeLayout.LayoutParams) btnConfirm.getLayoutParams();
 		rp.width = width;
 		rp.height = buttonHeight;
-		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
 		FontUtils.setFontSize(tvProfile, 20);
-		FontUtils.setFontSize(tvBaseInfo, 34);
+		FontUtils.setFontSize(tvBaseInfo, 30);
 		FontUtils.setFontAndHintSize(etName.getEditText(), 30, 20);
 		FontUtils.setFontAndHintSize(etNickname.getEditText(), 30, 20);
 		FontUtils.setFontAndHintSize(etAddress.getEditText(), 30, 20);
@@ -356,17 +392,37 @@ public class EditUserInfoPage extends BCPFragment {
 	@Override
 	public int getBackButtonResId() {
 
-		if(from == FROM_MENU) {
+		switch(type) {
+		case TYPE_EDIT_PROFILE:
 			return R.drawable.menu_profile_back_btn;
-		} else {
+			
+		case TYPE_DEALER_INFO:
 			return R.drawable.user_back_btn;
+			
+		case TYPE_REQUEST_BUYER:
+			return R.drawable.request_back_btn;
+			
+			default:
+				return R.drawable.menu_profile_back_btn;	
 		}
 	}
 
 	@Override
 	public int getBackButtonWidth() {
 
-		return 238;
+		switch(type) {
+		case TYPE_EDIT_PROFILE:
+			return 294;
+			
+		case TYPE_DEALER_INFO:
+			return 238;
+			
+		case TYPE_REQUEST_BUYER:
+			return 210;
+			
+			default:
+				return 294;	
+		}
 	}
 
 	@Override
@@ -398,6 +454,12 @@ public class EditUserInfoPage extends BCPFragment {
 		super.onResume();
 		
 		checkPhoneNumberCertified();
+	}
+	
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.editUserInfoPage_mainLayout;
 	}
 	
 ////////////////////Custom methods.

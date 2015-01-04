@@ -4,6 +4,7 @@
     <color name="color_green">#01a524</color>
     <color name="color_orange">#febc2a</color>
 	<color name="color_red">#ff4747</color>
+	<color name="color_ltgray">#d2d2d2</color>
     
     <color name="page_bg">#dcdcdc</color>
     <color name="progress_bg">#b2604633</color>

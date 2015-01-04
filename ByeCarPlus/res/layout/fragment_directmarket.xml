@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/directMarketPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/directMarketPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/directMarketPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+            
+            <android.support.v4.view.ViewPager 
+                android:id="@+id/directMarketPage_viewPager"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignParentTop="true"
+    			android:background="@drawable/main_auction_default" />
+            
+            <com.outspoken_kid.views.PageNavigatorView 
+                android:id="@+id/directMarketPage_pageNavigator"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignBottom="@id/directMarketPage_viewPager" />
+            
+            <View 
+                android:id="@+id/directMarketPage_certifiedIcon"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignBottom="@id/directMarketPage_viewPager"
+    			android:layout_alignLeft="@id/directMarketPage_viewPager"
+    			android:background="@drawable/directmarket_test_symbol" />
+            
+            <View 
+                android:id="@+id/directMarketPage_remainBg"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_below="@id/directMarketPage_viewPager"
+    			android:background="@drawable/main_car_info_img1_bg" />
+            
+            <TextView 
+                android:id="@+id/directMarketPage_tvCarInfo1"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignParentLeft="true"
+    			android:layout_alignTop="@id/directMarketPage_remainBg"
+    			android:singleLine="true"
+    			android:ellipsize="end"
+    			android:textColor="#fff"
+    			android:gravity="bottom|left" />
+            
+            <TextView 
+                android:id="@+id/directMarketPage_tvCarInfo2"
+        		android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"
+    			android:layout_below="@id/directMarketPage_tvCarInfo1"
+    			android:singleLine="true"
+    			android:ellipsize="end"
+    			android:textColor="#fff"
+    			android:gravity="top|left" />
+            
+            <TextView
+                android:id="@+id/directMarketPage_tvCurrentPrice"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:layout_alignTop="@id/directMarketPage_remainBg"
+    			android:singleLine="true"
+    			android:ellipsize="end"
+    			android:textColor="#fff" />
+            
+            <TextView
+                android:id="@+id/directMarketPage_tvCurrentPriceText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/directMarketPage_tvCurrentPrice"
+    			android:layout_alignBottom="@id/directMarketPage_tvCurrentPrice"
+    			android:text="@string/currentPrice"
+    			android:textColor="#fff" />
+            
+            <Button 
+                android:id="@+id/directMarketPage_btnCertified"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignParentLeft="true"
+    			android:layout_below="@id/directMarketPage_remainBg"
+    			android:background="@drawable/directmarket_verification1_btn" />
+            
+            <Button 
+                android:id="@+id/directMarketPage_btnRequestCertification"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignTop="@id/directMarketPage_btnCertified"
+    			android:layout_toRightOf="@id/directMarketPage_btnCertified"
+    			android:background="@drawable/directmarket_verification2_btn" />
+            
+            <View 
+                android:id="@+id/directMarketPage_directTitle"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/directMarketPage_btnCertified"
+    			android:background="@drawable/directmarket_market_frame" />
+            
+            <LinearLayout
+                android:id="@+id/directMarketPage_normalLinear"
+        		android:layout_width="0dp"
+    			android:layout_height="wrap_content"
+    			android:layout_alignTop="@id/directMarketPage_directTitle"
+    			android:layout_centerHorizontal="true"
+    			android:orientation="vertical" />
+            
+            <Button 
+                android:id="@+id/directMarketPage_btnNormal"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/directMarketPage_normalLinear"
+    			android:background="@drawable/directmarket_market_btn" />
+            
+            <View 
+                android:id="@+id/directMarketPage_bottomBlank"
+        		android:layout_width="10dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/directMarketPage_btnNormal"/>
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.byecarplus.views.TitleBar
+        android:id="@+id/directMarketPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+        
+</RelativeLayout>

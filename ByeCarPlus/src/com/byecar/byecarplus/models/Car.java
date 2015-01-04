@@ -13,8 +13,10 @@ public class Car extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 6978779511721704607L;
 	
-	public static final int TYPE_AUCTION = 1;
-	public static final int TYPE_DEALER = 2;
+	public static final int TYPE_AUCTION = 0;
+	public static final int TYPE_USED = 1;
+	public static final int TYPE_DIRECT_CERTIFIED = 2;
+	public static final int TYPE_DIRECT_NORMAL = 3;
 	
 	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
 	public static final int STAND_BY = 0;
@@ -46,12 +48,14 @@ public class Car extends BaseModel implements Serializable {
 	private String area;
 	private int to_sell_directly;
 	private long end_at;
-	private int selected_dealer_id;
+	private int dealer_id;
 	private long created_at;
 	private String brand_name;
 	private String model_name;
+	private String trim_name;
 	private String car_full_name;
 	
+	private String seller_name;
 	private String seller_phone_number;
 	private String seller_address;
 	private String manager_name;
@@ -61,7 +65,7 @@ public class Car extends BaseModel implements Serializable {
 	private int[] options;
 	private ArrayList<Bid> bids = new ArrayList<Bid>();
 	private ArrayList<String> images = new ArrayList<String>();
-	
+
 	public Car() {
 		
 	}
@@ -163,8 +167,8 @@ public class Car extends BaseModel implements Serializable {
 				this.end_at = objJSON.getLong("end_at");
 			}
 			
-			if(objJSON.has("selected_dealer_id")) {
-				this.selected_dealer_id = objJSON.getInt("selected_dealer_id");
+			if(objJSON.has("dealer_id")) {
+				this.dealer_id = objJSON.getInt("dealer_id");
 			}
 			
 			if(objJSON.has("created_at")) {
@@ -179,12 +183,20 @@ public class Car extends BaseModel implements Serializable {
 				this.model_name = objJSON.getString("model_name");
 			}
 			
+			if(objJSON.has("trim_name")) {
+				this.trim_name = objJSON.getString("trim_name");
+			}
+			
 			if(objJSON.has("car_full_name")) {
 				this.car_full_name = objJSON.getString("car_full_name");
 			}
 			
 			if(objJSON.has("bids_cnt")) {
 				this.bids_cnt = objJSON.getInt("bids_cnt");
+			}
+			
+			if(objJSON.has("seller_name")) {
+				this.seller_name = objJSON.getString("seller_name");
 			}
 			
 			if(objJSON.has("seller_phone_number")) {
@@ -472,14 +484,6 @@ public class Car extends BaseModel implements Serializable {
 		this.end_at = end_at;
 	}
 
-	public int getSelected_dealer_id() {
-		return selected_dealer_id;
-	}
-
-	public void setSelected_dealer_id(int selected_dealer_id) {
-		this.selected_dealer_id = selected_dealer_id;
-	}
-
 	public String getSeller_phone_number() {
 		return seller_phone_number;
 	}
@@ -542,5 +546,29 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setOptions(int[] options) {
 		this.options = options;
+	}
+
+	public int getDealer_id() {
+		return dealer_id;
+	}
+
+	public void setDealer_id(int dealer_id) {
+		this.dealer_id = dealer_id;
+	}
+
+	public String getTrim_name() {
+		return trim_name;
+	}
+
+	public void setTrim_name(String trim_name) {
+		this.trim_name = trim_name;
+	}
+
+	public String getSeller_name() {
+		return seller_name;
+	}
+
+	public void setSeller_name(String seller_name) {
+		this.seller_name = seller_name;
 	}
 }

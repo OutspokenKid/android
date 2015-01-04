@@ -327,6 +327,8 @@ public class AddedProfilePage extends ZonecommsFragment {
 			if(activeLocation != null) {
 				etActive.getEditText().setText(activeLocation);
 			}
+			
+			SoftKeyboardUtils.hideKeyboard(mContext, innerFrame);
 		} else {
 			status = null;
 		}

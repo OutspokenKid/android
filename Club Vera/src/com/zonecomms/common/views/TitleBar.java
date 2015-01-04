@@ -1,7 +1,6 @@
 package com.zonecomms.common.views;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.zonecomms.clubvera.CircleMainActivity;
+import com.zonecomms.clubvera.MainActivity;
 import com.zonecomms.clubvera.R;
 import com.zonecomms.clubvera.classes.ZonecommsApplication;
 
@@ -74,8 +73,9 @@ public class TitleBar extends LinearLayout {
 			@Override
 			public void onClick(View v) {
 				
-				Intent intent = new Intent(getContext(), CircleMainActivity.class);
-				getContext().startActivity(intent);
+//				Intent intent = new Intent(getContext(), CircleMainActivity.class);
+//				getContext().startActivity(intent);
+				MainActivity.requestRefresh = true;
 				ZonecommsApplication.getActivity().finish();
 			}
 		});

@@ -1072,6 +1072,7 @@ public class SignUpActivity extends ZonecommsActivity {
 							};
 							
 							SignInActivity.signIn(etId.getEditText().getText().toString(), etPw.getEditText().getText().toString(), oasl);
+							SoftKeyboardUtils.hideKeyboard(SignUpActivity.this, etId);
 						} else {
 							ToastUtils.showToast(R.string.failToSignUp);
 						}

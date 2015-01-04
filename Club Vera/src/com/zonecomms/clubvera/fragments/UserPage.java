@@ -623,13 +623,18 @@ public class UserPage extends ZonecommsFragment {
 		isRefreshing = true;
 		isLastList = false;
 		lastIndexno = 0;
-		models.clear();
-		targetAdapter.notifyDataSetChanged();
 
-		if(targetAdapter instanceof GridAdapter) {
-			((GridAdapter)targetAdapter).clearHardCache();
-		} else if(targetAdapter instanceof ListAdapter) {
-			((ListAdapter)targetAdapter).clearHardCache();
+		modelsForGrid.clear();
+		modelsForList.clear();
+
+		if(gridAdapter != null) {
+			gridAdapter.notifyDataSetChanged();
+			gridAdapter.clearHardCache();
+		}
+		
+		if(listAdapter != null) {
+			listAdapter.notifyDataSetChanged();
+			listAdapter.clearHardCache();
 		}
 		
 		switch(mode) {
@@ -654,8 +659,6 @@ public class UserPage extends ZonecommsFragment {
 	public void onResume() {
 		super.onResume();
 
-		LogUtils.log("###USerPage.onResume.  mode : " + mode);
-		
 		mainActivity.showTitleBar();
 		mainActivity.getTitleBar().hideCircleButton();
 		mainActivity.getTitleBar().showHomeButton();
@@ -1178,18 +1181,21 @@ public class UserPage extends ZonecommsFragment {
 		isDownloading = false;
 		isLastList = false;
 		mainActivity.showLoadingView();
-		
-		if(targetAdapter != null) {
-			lastIndexno = 0;
-			models.clear();
-			targetAdapter.notifyDataSetChanged();
-			
-			if(targetAdapter instanceof GridAdapter) {
-				((GridAdapter)targetAdapter).clearHardCache();
-			}
-			
-			targetAdapter = null;
+
+		lastIndexno = 0;
+
+		if(gridAdapter != null) {
+			modelsForGrid.clear();
+			gridAdapter.notifyDataSetChanged();
+			gridAdapter.clearHardCache();
 		}
+		
+		if(listAdapter != null) {
+			modelsForList.clear();
+			listAdapter.notifyDataSetChanged();
+		}
+		
+		targetAdapter = null;
 
 		bgMenus[this.mode].setBackgroundColor(Color.rgb(217, 217, 217));
 		bgMenus[mode].setBackgroundColor(TitleBar.titleBarColor);
@@ -1208,6 +1214,9 @@ public class UserPage extends ZonecommsFragment {
 		case 2:
 			targetAdapter = gridAdapter;
 			models = modelsForGrid;
+			
+			LogUtils.log("###UserPage.setMode.  models.size : " + models.size());
+			
 			profileScroll.setVisibility(View.INVISIBLE);
 			swipeRefreshLayoutForGrid.setVisibility(View.VISIBLE);
 			swipeRefreshLayoutForList.setVisibility(View.INVISIBLE);

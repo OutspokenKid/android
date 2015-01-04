@@ -1,0 +1,134 @@
+package com.byecar.byecarplus.fragments.main_for_user;
+
+import org.json.JSONObject;
+
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
+import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.utils.ResizeUtils;
+
+public class SettingPage extends BCPFragment {
+
+	private View bg1;
+	private LinearLayout alarmLinear;
+	private View alarmOn;
+	private View alarmOff;
+	private View bg2;
+	private Button btnWithdraw;
+	private View bg3;
+	private Button btnSignOut;
+	
+	@Override
+	public void bindViews() {
+
+		titleBar = (TitleBar) mThisView.findViewById(R.id.settingPage_titleBar);
+
+		bg1 = mThisView.findViewById(R.id.settingPage_bg1);
+		alarmLinear = (LinearLayout) mThisView.findViewById(R.id.settingPage_alarmLinear);
+		alarmOn = mThisView.findViewById(R.id.settingPage_alarmOn);
+		alarmOff = mThisView.findViewById(R.id.settingPage_alarmOff);
+		bg2 = mThisView.findViewById(R.id.settingPage_bg2);
+		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
+		bg3 = mThisView.findViewById(R.id.settingPage_bg3);
+		btnSignOut = (Button) mThisView.findViewById(R.id.settingPage_btnSignOut);
+	}
+
+	@Override
+	public void setVariables() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void createPage() {
+
+		alarmOn.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void setListeners() {
+
+		alarmLinear.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(alarmOn.getVisibility() == View.VISIBLE) {
+					alarmOn.setVisibility(View.INVISIBLE);
+					alarmOff.setVisibility(View.VISIBLE);
+				} else {
+					alarmOn.setVisibility(View.VISIBLE);
+					alarmOff.setVisibility(View.INVISIBLE);
+				}
+			}
+		});
+	}
+
+	@Override
+	public void setSizes() {
+
+		ResizeUtils.viewResizeForRelative(608, 177, bg1, null, null, new int[]{0, 24, 0, 0});
+		ResizeUtils.viewResizeForRelative(154, 43, alarmLinear, null, null, new int[]{0, 0, 20, 34});
+		ResizeUtils.viewResize(72, LayoutParams.MATCH_PARENT, alarmOff, 1, Gravity.CENTER_VERTICAL, null);
+		ResizeUtils.viewResize(72, LayoutParams.MATCH_PARENT, alarmOn, 1, Gravity.CENTER_VERTICAL, null);
+		ResizeUtils.viewResizeForRelative(608, 177, bg2, null, null, new int[]{0, 14, 0, 0});
+		ResizeUtils.viewResizeForRelative(154, 43, btnWithdraw, null, null, new int[]{0, 0, 20, 34});
+		ResizeUtils.viewResizeForRelative(608, 177, bg3, null, null, new int[]{0, 14, 0, 0});
+		ResizeUtils.viewResizeForRelative(154, 43, btnSignOut, null, null, new int[]{0, 0, 20, 34});
+	}
+
+	@Override
+	public int getContentViewId() {
+
+		return R.layout.fragment_setting;
+	}
+
+	@Override
+	public int getBackButtonResId() {
+
+		return R.drawable.setting_back_btn;
+	}
+
+	@Override
+	public int getBackButtonWidth() {
+
+		return 161;
+	}
+
+	@Override
+	public int getBackButtonHeight() {
+
+		return 60;
+	}
+
+	@Override
+	public boolean parseJSON(JSONObject objJSON) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onMenuPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean onBackPressed() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.settingPage_mainLayout;
+	}
+}

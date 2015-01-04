@@ -537,6 +537,7 @@ public class MessagePage extends ZonecommsListFragment {
 
 						refreshPage();
 						etMessage.getEditText().setText("");
+						SoftKeyboardUtils.hideKeyboard(mContext, mainLayout);
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (OutOfMemoryError oom) {

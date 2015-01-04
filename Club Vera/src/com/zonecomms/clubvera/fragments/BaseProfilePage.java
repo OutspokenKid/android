@@ -463,6 +463,7 @@ public class BaseProfilePage extends ZonecommsFragment {
 			etIntroduce.getEditText().setText(introduce);
 			
 			loadProfile();
+			SoftKeyboardUtils.hideKeyboard(mContext, innerFrame);
 		}
 	}
 

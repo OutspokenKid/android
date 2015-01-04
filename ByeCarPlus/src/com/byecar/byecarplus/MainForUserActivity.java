@@ -32,14 +32,20 @@ import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
 import com.byecar.byecarplus.common.DealerCertifierPage;
-import com.byecar.byecarplus.fragments.main_for_user.AuctionListPage;
-import com.byecar.byecarplus.fragments.main_for_user.AuctionRegistrationPage;
+import com.byecar.byecarplus.common.OpenablePostListPage;
+import com.byecar.byecarplus.common.TermOfUsePage;
+import com.byecar.byecarplus.fragments.main_for_user.AskPage;
 import com.byecar.byecarplus.fragments.main_for_user.CarDetailPage;
+import com.byecar.byecarplus.fragments.main_for_user.CarListPage;
+import com.byecar.byecarplus.fragments.main_for_user.CarRegistrationPage;
 import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
-import com.byecar.byecarplus.fragments.main_for_user.DealerCarListPage;
+import com.byecar.byecarplus.fragments.main_for_user.DirectMarketPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
+import com.byecar.byecarplus.fragments.main_for_user.SelectBidPage;
+import com.byecar.byecarplus.fragments.main_for_user.SettingPage;
+import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -105,7 +111,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 		gestureSlidingLayout.setTopView(findViewById(R.id.mainForUserActivity_topView));
 		gestureSlidingLayout.setLeftView(leftView);
-		gestureSlidingLayout.setRestrictToSide(true);
+//		gestureSlidingLayout.setRestrictToSide(true);
 		gestureSlidingLayout.setOnAfterOpenToLeftListener(new OnAfterOpenListener() {
 			
 			@Override
@@ -113,6 +119,8 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				SoftKeyboardUtils.hideKeyboard(context, gestureSlidingLayout);
 			}
 		});
+		
+		GestureSlidingLayout.setScrollLock(true);
 	
 //		setSocket(BCPConstants.SOCKET_IP, BCPConstants.SOCKET_PORT);
 		
@@ -146,6 +154,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		
 		try {
 			setLeftView();
+			
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			finish();
@@ -277,14 +286,14 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_MAIN_FOR_USER:
 			return new MainForUserPage();
 			
-		case BCPConstants.PAGE_AUCTION_LIST:
-			return new AuctionListPage();
+		case BCPConstants.PAGE_CAR_LIST:
+			return new CarListPage();
 			
 		case BCPConstants.PAGE_CAR_DETAIL:
 			return new CarDetailPage();
 			
-		case BCPConstants.PAGE_AUCTION_REGISTRATION:
-			return new AuctionRegistrationPage();
+		case BCPConstants.PAGE_CAR_REGISTRATION:
+			return new CarRegistrationPage();
 		
 		case BCPConstants.PAGE_EDIT_USER_INFO:
 			return new EditUserInfoPage();
@@ -292,14 +301,32 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
 			return new CertifyPhoneNumberPage();
 			
-		case BCPConstants.PAGE_DEALER_LIST:
-			return new DealerCarListPage();
-			
 		case BCPConstants.PAGE_COMMON_DEALER_CERTIFIER:
 			return new DealerCertifierPage();
 			
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();
+			
+		case BCPConstants.PAGE_DIRECT_MARKET:
+			return new DirectMarketPage();
+			
+		case BCPConstants.PAGE_DIRECT_NORMAL_LIST:
+			return new OpenablePostListPage();
+			
+		case BCPConstants.PAGE_COMMON_ASK:
+			return new AskPage();
+			
+		case BCPConstants.PAGE_COMMON_SETTING:
+			return new SettingPage();
+			
+		case BCPConstants.PAGE_TERM_OF_USE:
+			return new TermOfUsePage();
+			
+		case BCPConstants.PAGE_OPENABLE_POST_LIST:
+			return new OpenablePostListPage();
+			
+		case BCPConstants.PAGE_SELECT_BID:
+			return new SelectBidPage();
 		}
 		
 		return null;
@@ -508,9 +535,18 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("from", EditUserInfoPage.FROM_MENU);
-				showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+				closeMenu();
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						Bundle bundle = new Bundle();
+						bundle.putInt("type", EditUserInfoPage.TYPE_EDIT_PROFILE);
+						showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+					}
+				}, 500);
 			}
 		});
 		
@@ -573,6 +609,88 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				line.setBackgroundColor(Color.argb(99, 173, 173, 173));
 				leftViewInner.addView(line);
 			}
+			
+			
+			final int I = i;
+			menuButtons[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					closeMenu();
+					
+					new Handler().postDelayed(new Runnable() {
+
+						@Override
+						public void run() {
+
+							Bundle bundle = new Bundle();
+							
+							switch(I) {
+							
+//								R.drawable.menu_auction_btn,
+							case 0:
+								bundle.putInt("type", Car.TYPE_AUCTION);
+								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+								break;
+								
+//								R.drawable.menu_used_btn,
+							case 1:
+								bundle.putInt("type", Car.TYPE_USED);
+								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+								break;
+								
+//								R.drawable.menu_my_car_btn,
+							case 2:
+								showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
+								break;
+								
+//								R.drawable.menu_direct_btn,
+							case 3:
+								showPage(BCPConstants.PAGE_DIRECT_MARKET, null);
+								break;
+								
+//								R.drawable.menu_mypage_btn,
+							case 4:
+//								showPage(BCPConstants.PAGE_MYPAGE, null);
+								break;
+								
+//								R.drawable.menu_notice_btn,
+							case 5:
+								bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+								break;
+								
+//								R.drawable.menu_faq_btn,
+							case 6:
+								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
+								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+								break;
+								
+//								R.drawable.menu_service_btn,
+							case 7:
+								showPage(BCPConstants.PAGE_COMMON_ASK, null);
+								break;
+								
+//								R.drawable.menu_setting_btn,
+							case 8:
+								showPage(BCPConstants.PAGE_COMMON_SETTING, null);
+								break;
+								
+//								R.drawable.menu_homepage_btn,
+							case 9:
+//								showPage(BCPConstants.PAGE_COMMON_SETTING, null);
+								break;
+								
+//								R.drawable.menu_term_btn,
+							case 10:
+								showPage(BCPConstants.PAGE_TERM_OF_USE, null);
+								break;
+							}
+						}
+					}, 500);
+				}
+			});
 		}
 		
 		tvTitleIn1 = new TextView(this);

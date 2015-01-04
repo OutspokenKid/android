@@ -130,7 +130,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 	}
 	
 	@Override
-	protected void onRegistered(Context context, String regId) {
+	protected void onRegistered(final Context context, final String regId) {
 
 		try {
 			String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +

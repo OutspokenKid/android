@@ -11,15 +11,15 @@
 	<string name="textForFacebook">http://www.facebook.com/clubverakorea</string>
 	
 	<!-- For Facebook. -->
-	<string name="app_id"></string>
+	<string name="app_id">empty</string>
 	
 	<!-- For Kakao. -->	
-	<string name="kakao_app_key"></string>
+	<string name="kakao_app_key">empty</string>
 
 	<!-- For Twitter. -->
-	<string name="twitter_consumerKey"></string>
-	<string name="twitter_consumerSecret"></string>
-	<string name="twitter_callback_url"></string>
+	<string name="twitter_consumerKey">empty</string>
+	<string name="twitter_consumerSecret">empty</string>
+	<string name="twitter_callback_url">empty</string>
 		
 	<!-- For NaverMap. -->	
 	<string name="naverMapKey">1b4074a32aa9dccf797262dff9f7b1fa</string>
@@ -27,8 +27,8 @@
 	<string name="longitude">126.921952</string>
 	
 	<!-- For NaverLogin. -->
-	<string name="naver_client_id"></string>
-	<string name="naver_client_secret"></string>
+	<string name="naver_client_id">empty</string>
+	<string name="naver_client_secret">empty</string>
 	
 	
 	<!-- Length of logo at IntroActivity.java -->

@@ -97,8 +97,9 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		
 		//tvCertifyPhoneNumber.
 		rp = (RelativeLayout.LayoutParams) tvCertifyPhoneNumber.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(30);
 		rp.leftMargin = ResizeUtils.getSpecificLength(30);
-		rp.topMargin = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPhoneNumber.
@@ -165,6 +166,12 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		return false;
 	}
 
+	@Override
+	public int getRootViewResId() {
+
+		return R.id.certifiedRegistrationPage_mainLayout;
+	}
+	
 //////////////////// Custom methods.
 
 	public boolean checkPhoneNumberLength() {
