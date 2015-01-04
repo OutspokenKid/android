@@ -117,6 +117,7 @@ public class CircleMainActivity extends Activity {
 		}
         
         try {
+        	ZonecommsApplication.setCircleMainActivity(this);
         	ZonecommsApplication.initWithActivity(this);
     		ZonecommsApplication.setupResources(this);
             
@@ -1041,6 +1042,10 @@ public class CircleMainActivity extends Activity {
 		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&registration_id=" + regId;
+		
+		if(!url.contains("member_id=")) {
+			url += "&member_id=";
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

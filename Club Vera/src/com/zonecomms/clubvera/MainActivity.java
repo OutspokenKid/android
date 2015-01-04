@@ -116,6 +116,7 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		}
 		
 		try {
+			ZonecommsApplication.setActivity(this);
 			ZonecommsApplication.initWithActivity(this);
 			ZonecommsApplication.setupResources(this);
 			setPage(true);
@@ -1319,6 +1320,10 @@ public class MainActivity extends ZonecommsFragmentActivity {
 		String url = ZoneConstants.BASE_URL + "push/androiddevicetoken" +
 				"?" + AppInfoUtils.getAppInfo(AppInfoUtils.ALL) +
 				"&registration_id=" + regId;
+		
+		if(!url.contains("member_id=")) {
+			url += "&member_id=";
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

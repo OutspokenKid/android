@@ -31,21 +31,10 @@ public class ZonecommsApplication extends OutSpokenApplication {
 	
 	public static void initWithActivity(Activity activity) {
 		
-		if(activity instanceof MainActivity) {
-			mainActivity = (MainActivity) activity;
-		}
-		
 		OutSpokenApplication.initWithActivity(activity);
 	}
 	
 	public static void setupResources(Activity activity) {
-
-		if(activity instanceof MainActivity) {
-			mainActivity = (MainActivity) activity; 
-		} else if(activity instanceof CircleMainActivity) {
-			circleMainActivity = (CircleMainActivity) activity;
-		}
-
 		
 		ZoneConstants.PAPP_ID = activity.getString(R.string.sb_id);
 		ZoneConstants.DOMAIN = activity.getString(R.string.domain);
