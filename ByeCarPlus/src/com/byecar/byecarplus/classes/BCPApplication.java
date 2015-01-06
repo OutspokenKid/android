@@ -29,6 +29,6 @@ public class BCPApplication extends OutSpokenApplication {
 		RequestManager.initForUsingCookie(activity.getApplicationContext());
 		createImageCache(activity.getApplicationContext());
 		ResizeUtils.setBasicValues(activity, 640);
-		activity.getWindow().setFormat(PixelFormat.RGBA_8888);
+		activity.getWindow().setFormat(PixelFormat.RGBA_4444);
 	}
 }

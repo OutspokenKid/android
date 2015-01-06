@@ -5,6 +5,9 @@ import java.util.Locale;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -18,12 +21,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.models.CarModelDetailInfo;
+import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.activities.BaseFragmentActivity;
+import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -35,6 +42,7 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
 public class CarRegistrationPage extends BCPFragment {
 
+	private static final int MIN_DESC_COUNT = 0;
 	private static final int MAX_DESC_COUNT = 200;
 	
 	public static final int TYPE_REGISTRATION = 0;
@@ -50,29 +58,15 @@ public class CarRegistrationPage extends BCPFragment {
 	private Button btnEditDealerInfo;
 	private TextView tvDealerInfo;
 	private TextView tvCarPhotoText;
-	private Button btnCarPhoto1;
-	private Button btnCarPhoto2;
-	private Button btnCarPhoto3;
-	private Button btnCarPhoto4;
+	private Button[] btnPhotos;
+	private ImageView[] ivPhotos;
 	private TextView tvMainImageText;
 	private TextView tvAddedPhotoText;
-	private Button btnAddedPhoto1;
-	private Button btnAddedPhoto2;
-	private Button btnAddedPhoto3;
-	private Button btnAddedPhoto4;
-	private ImageView ivAddedPhoto1;
-	private ImageView ivAddedPhoto2;
-	private ImageView ivAddedPhoto3;
-	private ImageView ivAddedPhoto4;
 	private View lineAfterPhoto;
 	private TextView tvCarInfoText;
 	private Button btnCarInfos[];
 	private TextView tvDetailCarInfo;
-	private HoloStyleEditText etDetailCarInfo1;
-	private HoloStyleEditText etDetailCarInfo2;
-	private HoloStyleEditText etDetailCarInfo3;
-	private HoloStyleEditText etDetailCarInfo4;
-	private HoloStyleEditText etDetailCarInfo5;
+	private HoloStyleEditText[] etDetailCarInfos;
 	private RelativeLayout relativeForOption;
 	private View lineAfterCarOption;
 	private TextView tvCarDescriptionFromDealer;
@@ -83,16 +77,39 @@ public class CarRegistrationPage extends BCPFragment {
 	private View immediatlySale;
 	private Button btnImmediatlySale;
 	private Button btnComplete;
+	private Button btnRequest;
 	
 	private View[] optionViews;
 	private boolean[] checked;
-	
-	private int progressValue;
 	
 	private CarModelDetailInfo carModelDetailInfo;
 	private String[] carInfoStrings = new String[5];
 	
 	private int type;
+	private boolean isTermOfUseClicked;
+	private boolean isImmediatlySaleClicked;
+	
+	private int selectedImageIndex;
+	private String[] selectedImageSdCardPaths = new String[8];
+	
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		
+		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
+			
+			@Override
+			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
+				
+				if(thumbnails != null && thumbnails.length > 0) {
+					ivPhotos[selectedImageIndex].setImageBitmap(thumbnails[0]);
+					selectedImageSdCardPaths[selectedImageIndex] = sdCardPaths[0];
+				}
+				
+				checkProgress();
+			}
+		};
+	}
 	
 	@Override
  	public void bindViews() {
@@ -108,20 +125,29 @@ public class CarRegistrationPage extends BCPFragment {
 		btnEditDealerInfo = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnEditDealerInfo);
 		tvDealerInfo = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDealerInfo);
 		tvCarPhotoText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto);
-		btnCarPhoto1 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto1);
-		btnCarPhoto2 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto2);
-		btnCarPhoto3 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto3);
-		btnCarPhoto4 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto4);
+		
+		btnPhotos = new Button[8];
+		btnPhotos[0] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto1);
+		btnPhotos[1] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto2);
+		btnPhotos[2] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto3);
+		btnPhotos[3] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarPhoto4);
+		btnPhotos[4] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto1);
+		btnPhotos[5] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto2);
+		btnPhotos[6] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto3);
+		btnPhotos[7] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto4);
+
+		ivPhotos = new ImageView[8];
+		ivPhotos[0] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto1);
+		ivPhotos[1] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto2);
+		ivPhotos[2] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto3);
+		ivPhotos[3] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto4);
+		ivPhotos[4] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto1);
+		ivPhotos[5] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto2);
+		ivPhotos[6] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto3);
+		ivPhotos[7] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto4);
 		tvMainImageText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvMainImage);
 		tvAddedPhotoText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvAddedPhoto);
-		btnAddedPhoto1 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto1);
-		btnAddedPhoto2 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto2);
-		btnAddedPhoto3 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto3);
-		btnAddedPhoto4 = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto4);
-		ivAddedPhoto1 = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto1);
-		ivAddedPhoto2 = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto2);
-		ivAddedPhoto3 = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto3);
-		ivAddedPhoto4 = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivAddedPhoto4);
+		
 		lineAfterPhoto = mThisView.findViewById(R.id.carRegistrationPage_lineAfterPhoto);
 		
 		tvCarInfoText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarInfo);
@@ -135,11 +161,12 @@ public class CarRegistrationPage extends BCPFragment {
 		btnCarInfos[5] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarInfo6);
 		
 		tvDetailCarInfo = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo);
-		etDetailCarInfo1 = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo1);
-		etDetailCarInfo2 = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo2);
-		etDetailCarInfo3 = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo3);
-		etDetailCarInfo4 = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo4);
-		etDetailCarInfo5 = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo5);
+		etDetailCarInfos = new HoloStyleEditText[5];
+		etDetailCarInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo1);
+		etDetailCarInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo2);
+		etDetailCarInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo3);
+		etDetailCarInfos[3] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo4);
+		etDetailCarInfos[4] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo5);
 		relativeForOption = (RelativeLayout) mThisView.findViewById(R.id.carRegistrationPage_relativeForOption);
 		lineAfterCarOption = mThisView.findViewById(R.id.carRegistrationPage_lineAfterCarOption);
 		tvCarDescriptionFromDealer = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarDescriptionFromDealer);
@@ -150,6 +177,7 @@ public class CarRegistrationPage extends BCPFragment {
 		immediatlySale = mThisView.findViewById(R.id.carRegistrationPage_immediatlySale);
 		btnImmediatlySale = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnImmediatlySale);
 		btnComplete = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnComplete);
+		btnRequest = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnRequest);
 	}
 
 	@Override
@@ -165,45 +193,31 @@ public class CarRegistrationPage extends BCPFragment {
 
 		titleBar.hideBottomLine();
 		
-		etDetailCarInfo1.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
-		etDetailCarInfo2.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
-		etDetailCarInfo3.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
-		etDetailCarInfo4.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
-		etDetailCarInfo5.getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+		int size = etDetailCarInfos.length;
+		for(int i=0; i<size; i++) {
+			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+		}
 		
-		etDetailCarInfo1.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
-		etDetailCarInfo2.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
-		etDetailCarInfo3.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
-		etDetailCarInfo4.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
-		etDetailCarInfo5.getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
-		
-		etDetailCarInfo1.setHint(R.string.hintForDetailCarInfo1);
-		etDetailCarInfo2.setHint(R.string.hintForDetailCarInfo2);
-		etDetailCarInfo3.setHint(R.string.hintForDetailCarInfo3);
-		etDetailCarInfo4.setHint(R.string.hintForDetailCarInfo4);
-		etDetailCarInfo5.setHint(R.string.hintForDetailCarInfo5);
+		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo1);
+		etDetailCarInfos[1].setHint(R.string.hintForDetailCarInfo2);
+		etDetailCarInfos[2].setHint(R.string.hintForDetailCarInfo3);
+		etDetailCarInfos[3].setHint(R.string.hintForDetailCarInfo4);
+		etDetailCarInfos[4].setHint(R.string.hintForDetailCarInfo5);
 		
 		etCarDescriptionFromDealer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_DESC_COUNT)});
 		tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
 		
-		type = TYPE_REQUEST_CERTIFICATION;
-		
 		if(type == TYPE_REQUEST_CERTIFICATION) {
+			size = btnPhotos.length;
+			for(int i=0; i<size; i++) {
+				btnPhotos[i].setVisibility(View.GONE);
+				ivPhotos[i].setVisibility(View.GONE);
+			}
+			
 			tvCarPhotoText.setVisibility(View.GONE);
-			btnCarPhoto1.setVisibility(View.GONE);
-			btnCarPhoto2.setVisibility(View.GONE);
-			btnCarPhoto3.setVisibility(View.GONE);
-			btnCarPhoto4.setVisibility(View.GONE);
 			tvMainImageText.setVisibility(View.GONE);
 			tvAddedPhotoText.setVisibility(View.GONE);
-			btnAddedPhoto1.setVisibility(View.GONE);
-			btnAddedPhoto2.setVisibility(View.GONE);
-			btnAddedPhoto3.setVisibility(View.GONE);
-			btnAddedPhoto4.setVisibility(View.GONE);
-			ivAddedPhoto1.setVisibility(View.GONE);
-			ivAddedPhoto2.setVisibility(View.GONE);
-			ivAddedPhoto3.setVisibility(View.GONE);
-			ivAddedPhoto4.setVisibility(View.GONE);
 			lineAfterPhoto.setVisibility(View.GONE);
 			
 			relativeForOption.setVisibility(View.GONE);
@@ -212,6 +226,14 @@ public class CarRegistrationPage extends BCPFragment {
 			tvCarDescriptionFromDealer.setVisibility(View.GONE);
 			etCarDescriptionFromDealer.setVisibility(View.GONE);
 			tvTextCount.setVisibility(View.GONE);
+			
+			tvWriteAllContents.setText(R.string.writeAllContentForRequestCertification);
+			btnRequest.setVisibility(View.VISIBLE);
+			btnComplete.setVisibility(View.INVISIBLE);
+		} else {
+			tvWriteAllContents.setText(R.string.writeAllContentForRegistration);
+			btnRequest.setVisibility(View.INVISIBLE);
+			btnComplete.setVisibility(View.VISIBLE);
 		}
 		
 		if(type == TYPE_REQUEST_CERTIFICATION
@@ -234,6 +256,8 @@ public class CarRegistrationPage extends BCPFragment {
 				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 			}
 		});
+
+		setImageViewsOnClickListener();
 		
 		for(int i=0; i<btnCarInfos.length; i++) {
 			final int INDEX = i;
@@ -243,7 +267,7 @@ public class CarRegistrationPage extends BCPFragment {
 				@Override
 				public void onClick(View view) {
 
-					if(INDEX + 1 != SearchCarPage.TYPE_BRAND && carModelDetailInfo == null) {
+					if(INDEX + 1 != TypeSearchCarPage.TYPE_BRAND && carModelDetailInfo == null) {
 						ToastUtils.showToast(R.string.selectCarFirst);
 						return;
 					}
@@ -253,10 +277,10 @@ public class CarRegistrationPage extends BCPFragment {
 					switch(INDEX) {
 					
 					case 0:
-						bundle.putInt("type", SearchCarPage.TYPE_BRAND);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_BRAND);
 						break;
 					case 1:
-						bundle.putInt("type", SearchCarPage.TYPE_YEAR);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_YEAR);
 						
 						if(!StringUtils.isEmpty(carModelDetailInfo.getYear_begin())) {
 							bundle.putInt("year_begin", Integer.parseInt(carModelDetailInfo.getYear_begin()));
@@ -278,20 +302,20 @@ public class CarRegistrationPage extends BCPFragment {
 						
 						break;
 					case 2:
-						bundle.putInt("type", SearchCarPage.TYPE_FUEL);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_FUEL);
 						break;
 					case 3:
-						bundle.putInt("type", SearchCarPage.TYPE_TRANSMISSION);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_TRANSMISSION);
 						break;
 					case 4:
-						bundle.putInt("type", SearchCarPage.TYPE_ACCIDENT);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_ACCIDENT);
 						break;
 					case 5:
-						bundle.putInt("type", SearchCarPage.TYPE_ONEMANOWNED);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_ONEMANOWNED);
 						break;
 					}
 					
-					mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
+					mActivity.showPage(BCPConstants.PAGE_TYPE_SEARCH_CAR, bundle);
 				}
 			});
 		}
@@ -313,8 +337,97 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 			
 			@Override
-			public void afterTextChanged(Editable s) {}
+			public void afterTextChanged(Editable s) {
+				
+				checkProgress();
+			}
 		});
+		
+		
+	
+		termOfUse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				isTermOfUseClicked = !isTermOfUseClicked;
+				
+				if(isTermOfUseClicked) {
+					termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_b);
+				} else {
+					termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_a);
+				}
+			}
+		});
+		
+		immediatlySale.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				isImmediatlySaleClicked = !isImmediatlySaleClicked;
+				
+				if(isImmediatlySaleClicked) {
+					immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_b);
+				} else {
+					immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_a);
+				}
+			}
+		});
+	
+		btnComplete.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(!isTermOfUseClicked) {
+					ToastUtils.showToast(R.string.agreeTermOfUse);
+					return;
+				} else if(progressBar.getProgress() != 100){
+					String text = getString(R.string.writeAllContentForRegistration);
+					ToastUtils.showToast(text.replace("*", ""));
+				} else {
+					register();
+				}
+			}
+		});
+		
+		btnRequest.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(!isTermOfUseClicked) {
+					ToastUtils.showToast(R.string.agreeTermOfUse);
+					return;
+				} else if(progressBar.getProgress() != 100){
+					String text = getString(R.string.writeAllContentForRegistration);
+					ToastUtils.showToast(text.replace("*", ""));
+				} else {
+					requestCertification();
+				}
+			}
+		});
+	
+		for(int i=0; i<5; i++) {
+			
+			etDetailCarInfos[i].getEditText().addTextChangedListener(new TextWatcher() {
+				
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+				}
+				
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				}
+				
+				@Override
+				public void afterTextChanged(Editable s) {
+					
+					checkProgress();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -371,26 +484,51 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
 		//btnCarPhoto1.
-		rp = (RelativeLayout.LayoutParams) btnCarPhoto1.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[0].getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(144);
+		rp.height = ResizeUtils.getSpecificLength(110);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		
+		//ivPhotos.
+		rp = (RelativeLayout.LayoutParams) ivPhotos[0].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		
 		//btnCarPhoto2.
-		rp = (RelativeLayout.LayoutParams) btnCarPhoto2.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[1].getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(144);
+		rp.height = ResizeUtils.getSpecificLength(110);
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		
+		//ivPhotos.
+		rp = (RelativeLayout.LayoutParams) ivPhotos[1].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//btnCarPhoto3.
-		rp = (RelativeLayout.LayoutParams) btnCarPhoto3.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[2].getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(144);
+		rp.height = ResizeUtils.getSpecificLength(110);
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		
+		//ivPhotos.
+		rp = (RelativeLayout.LayoutParams) ivPhotos[2].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//btnCarPhoto4.
-		rp = (RelativeLayout.LayoutParams) btnCarPhoto4.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[3].getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(144);
+		rp.height = ResizeUtils.getSpecificLength(110);
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		
+		//ivPhotos.
+		rp = (RelativeLayout.LayoutParams) ivPhotos[3].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
@@ -405,51 +543,51 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
 		//btnAddedPhoto1.
-		rp = (RelativeLayout.LayoutParams) btnAddedPhoto1.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[4].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		
 		//ivAddedPhoto1.
-		rp = (RelativeLayout.LayoutParams) ivAddedPhoto1.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) ivPhotos[4].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		
 		//btnAddedPhoto2.
-		rp = (RelativeLayout.LayoutParams) btnAddedPhoto2.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[5].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//ivAddedPhoto2.
-		rp = (RelativeLayout.LayoutParams) ivAddedPhoto2.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) ivPhotos[5].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//btnAddedPhoto3.
-		rp = (RelativeLayout.LayoutParams) btnAddedPhoto3.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[6].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//ivAddedPhoto3.
-		rp = (RelativeLayout.LayoutParams) ivAddedPhoto3.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) ivPhotos[6].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//btnAddedPhoto4.
-		rp = (RelativeLayout.LayoutParams) btnAddedPhoto4.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) btnPhotos[7].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		
 		//ivAddedPhoto4.
-		rp = (RelativeLayout.LayoutParams) ivAddedPhoto4.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) ivPhotos[7].getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(144);
 		rp.height = ResizeUtils.getSpecificLength(110);
 		rp.leftMargin = ResizeUtils.getSpecificLength(10);
@@ -472,34 +610,18 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
-		//etDetailCarInfo1.
-		rp = (RelativeLayout.LayoutParams) etDetailCarInfo1.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		
-		//etDetailCarInfo2.
-		rp = (RelativeLayout.LayoutParams) etDetailCarInfo2.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(32);
-		
-		//etDetailCarInfo3.
-		rp = (RelativeLayout.LayoutParams) etDetailCarInfo3.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(32);
-		
-		//etDetailCarInfo4.
-		rp = (RelativeLayout.LayoutParams) etDetailCarInfo4.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(32);
-		
-		//etDetailCarInfo5.
-		rp = (RelativeLayout.LayoutParams) etDetailCarInfo5.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(32);
+		int size = etDetailCarInfos.length;
+		for(int i=0; i<size; i++) {
+			rp = (RelativeLayout.LayoutParams) etDetailCarInfos[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(586);
+			rp.height = ResizeUtils.getSpecificLength(60);
+			
+			if(i != 0) {
+				rp.topMargin = ResizeUtils.getSpecificLength(32);
+			}
+			
+			FontUtils.setFontAndHintSize(etDetailCarInfos[i].getEditText(), 26, 20);
+		}
 		
 		//writeIcon.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
@@ -549,6 +671,12 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(82);
 		rp.topMargin = ResizeUtils.getSpecificLength(25);
 		
+		//btnRequest.
+		rp = (RelativeLayout.LayoutParams) btnRequest.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(586);
+		rp.height = ResizeUtils.getSpecificLength(82);
+		rp.topMargin = ResizeUtils.getSpecificLength(25);
+		
 		FontUtils.setFontSize(tvPercentage, 24);
 		FontUtils.setFontSize(tvPercentage2, 16);
 		FontUtils.setFontSize(tvWriteAllContents, 18);
@@ -556,6 +684,8 @@ public class CarRegistrationPage extends BCPFragment {
 		FontUtils.setFontSize(tvInputDealerInfoText, 30);
 		FontUtils.setFontSize(tvDealerInfoCertified, 18);
 		FontUtils.setFontSize(tvDealerInfo, 28);
+		FontUtils.setFontStyle(tvDealerInfo, FontUtils.BOLD);
+		tvDealerInfo.setLineSpacing(0, 1.5f);
 
 		FontUtils.setFontSize(tvCarPhotoText, 30);
 		FontUtils.setFontSize(tvMainImageText, 20);
@@ -567,12 +697,6 @@ public class CarRegistrationPage extends BCPFragment {
 		for(int i=0; i<btnCarInfos.length; i++) {
 			FontUtils.setFontSize(btnCarInfos[i], 26);
 		}
-		
-		FontUtils.setFontAndHintSize(etDetailCarInfo1.getEditText(), 26, 20);
-		FontUtils.setFontAndHintSize(etDetailCarInfo2.getEditText(), 26, 20);
-		FontUtils.setFontAndHintSize(etDetailCarInfo3.getEditText(), 26, 20);
-		FontUtils.setFontAndHintSize(etDetailCarInfo4.getEditText(), 26, 20);
-		FontUtils.setFontAndHintSize(etDetailCarInfo5.getEditText(), 26, 20);
 		
 		FontUtils.setFontSize(tvCarDescriptionFromDealer, 30);
 		FontUtils.setFontAndHintSize(etCarDescriptionFromDealer, 26, 20);
@@ -588,13 +712,21 @@ public class CarRegistrationPage extends BCPFragment {
 	@Override
 	public int getBackButtonResId() {
 
-		return R.drawable.registration_back_btn;
+		if(type == TYPE_REQUEST_CERTIFICATION) {
+			return R.drawable.demand_back_btn;
+		} else {
+			return R.drawable.registration_back_btn;
+		}
 	}
 
 	@Override
 	public int getBackButtonWidth() {
 
-		return 220;
+		if(type == TYPE_REQUEST_CERTIFICATION) {
+			return 208;
+		} else {
+			return 220;
+		}
 	}
 
 	@Override
@@ -629,11 +761,10 @@ public class CarRegistrationPage extends BCPFragment {
 			addOptionButtons();
 		}
 		
-		setProgress();
 		setDealerInfo();
-		
 		checkCarInfos();
 		checkBundle();
+		checkProgress();		
 	}
 	
 	@Override
@@ -722,19 +853,18 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 	}
 	
-	public void setProgress() {
-		
-		progressValue = 90;
+	public void setProgress(int progressValue) {
 
-		progressValue = Math.max(progressValue, 100);
-		progressValue = Math.min(progressValue, 0);
-		
+		progressValue = Math.min(progressValue, 100);
+		progressValue = Math.max(progressValue, 0);
+
 		if(progressValue == 100) {
-			tvPercentage.getLayoutParams().width = ResizeUtils.getSpecificLength(105);
+			tvPercentage.getLayoutParams().width = ResizeUtils.getSpecificLength(110);
 		} else {
 			tvPercentage.getLayoutParams().width = ResizeUtils.getSpecificLength(95);
 		}
 		
+		tvPercentage.invalidate();
 		
 		progressBar.setProgress(progressValue);
 		tvPercentage.setText(progressValue + "%");
@@ -742,8 +872,21 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 
-		tvDealerInfo.setTextColor(getResources().getColor(R.color.color_red));
-		tvDealerInfo.setText(R.string.requireCertifyDealerInfo);
+		User user = ((MainForUserActivity) mActivity).getUser();
+		
+		if(!StringUtils.isEmpty(user.getPhone_number())) {
+			tvDealerInfo.setTextColor(getResources().getColor(R.color.color_green));
+			tvDealerInfo.setText(user.getName()
+					+ "\n" + user.getPhone_number()
+					+ "\n" + user.getAddress());
+			tvDealerInfo.setBackgroundResource(R.drawable.registration_box2);
+			tvDealerInfoCertified.setVisibility(View.VISIBLE);
+		} else {
+			tvDealerInfo.setTextColor(getResources().getColor(R.color.color_red));
+			tvDealerInfo.setText(R.string.requireCertifyDealerInfo);
+			tvDealerInfo.setBackgroundResource(R.drawable.registration_box1);
+			tvDealerInfoCertified.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public void checkBundle() {
@@ -753,7 +896,7 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			switch(type) {
 			
-			case SearchCarPage.TYPE_TRIM:
+			case TypeSearchCarPage.TYPE_TRIM:
 				String url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
 				+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
 				DownloadUtils.downloadJSONString(url,
@@ -786,11 +929,11 @@ public class CarRegistrationPage extends BCPFragment {
 					});
 				break;
 				
-			case SearchCarPage.TYPE_YEAR:
-			case SearchCarPage.TYPE_FUEL:
-			case SearchCarPage.TYPE_TRANSMISSION:
-			case SearchCarPage.TYPE_ACCIDENT:
-			case SearchCarPage.TYPE_ONEMANOWNED:
+			case TypeSearchCarPage.TYPE_YEAR:
+			case TypeSearchCarPage.TYPE_FUEL:
+			case TypeSearchCarPage.TYPE_TRANSMISSION:
+			case TypeSearchCarPage.TYPE_ACCIDENT:
+			case TypeSearchCarPage.TYPE_ONEMANOWNED:
 				carInfoStrings[type - 5] = mActivity.bundle.getString("text");
 				checkCarInfos();
 				break;
@@ -821,6 +964,97 @@ public class CarRegistrationPage extends BCPFragment {
 			btnCarInfos[0].setBackgroundResource(R.drawable.registration_car_info1_btn);
 			btnCarInfos[0].setText(null);
 		}
+	}
+
+	public void setImageViewsOnClickListener() {
+		
+		int size = btnPhotos.length;
+		for(int i=0; i<size; i++) {
+			
+			final int INDEX = i;
+			btnPhotos[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					
+					selectedImageIndex = INDEX;
+					mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
+				}
+			});
+		}
+	}
+
+	public void register() {
+
+		((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REGISTRATION);
+	}
+
+	public void requestCertification() {
+		
+		((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_CERTIFICATION);
+	}
+
+	public void checkProgress() {
+		
+		int progress = 0;
+		
+		if(type == TYPE_EDIT|| type == TYPE_REGISTRATION) {
+			
+			//판매자 정보 인증 20.
+			if(tvDealerInfoCertified.getVisibility() == View.VISIBLE) {
+				progress += 20;
+			}
+			
+			//차량 사진 개당 5, 총 20.
+			for(int i=0; i<4; i++) {
+				if(selectedImageSdCardPaths[i] != null) {
+					progress += 5;
+				}
+			}
+			
+			//차량검색 5, 나머지 검색 개당 3, 총 20.
+			for(int i=0; i<6; i++) {
+				
+				if(btnCarInfos[i].length() > 0) {
+					progress += i==0? 5 : 3;
+				}
+			}
+			
+			//세부차량 정보 개당 4, 총 20.
+			for(int i=0; i<5; i++) {
+				if(etDetailCarInfos[i].getEditText().length() > 0) {
+					progress += 4;
+				}
+			}
+			
+			//판매자 차량설명 20.
+			if(etCarDescriptionFromDealer.length() > MIN_DESC_COUNT) {
+				progress += 20;
+			}
+		} else {
+
+			//판매자 정보 인증 30.
+			if(tvDealerInfoCertified.getVisibility() == View.VISIBLE) {
+				progress += 30;
+			}
+			
+			//차량검색 10, 나머지 검색 개당 6, 총 40.
+			for(int i=0; i<6; i++) {
+				
+				if(btnCarInfos[i].length() > 0) {
+					progress += i==0? 10 : 6;
+				}
+			}
+			
+			//세부차량 정보 개당 6, 총 30.
+			for(int i=0; i<5; i++) {
+				if(etDetailCarInfos[i].getEditText().length() > 0) {
+					progress += 6;
+				}
+			}
+		}
+		
+		setProgress(progress);
 	}
 }
 

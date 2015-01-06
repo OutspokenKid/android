@@ -19,6 +19,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -41,17 +42,22 @@ import com.byecar.byecarplus.fragments.main_for_user.CarRegistrationPage;
 import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
 import com.byecar.byecarplus.fragments.main_for_user.DirectMarketPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
+import com.byecar.byecarplus.fragments.main_for_user.LightPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
+import com.byecar.byecarplus.fragments.main_for_user.MyPage;
 import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
 import com.byecar.byecarplus.fragments.main_for_user.SelectBidPage;
 import com.byecar.byecarplus.fragments.main_for_user.SettingPage;
+import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -61,6 +67,11 @@ import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
 public class MainForUserActivity extends BCPFragmentActivity {
+
+	public static final int POPUP_REQUEST_CERTIFICATION = 0;
+	public static final int POPUP_REQUEST_BUY = 1;
+	public static final int POPUP_REGISTRATION = 2;
+	public static final int POPUP_CHOICE_DEALER = 3;
 	
 	private User user;
 	
@@ -79,6 +90,12 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	private TextView tvInfo;
 	private Button btnEdit;
 	private Button[] menuButtons;
+	
+	private RelativeLayout popup;
+	private View popupBg;
+	private View popupImage;
+	private TextView tvPopupText;
+	private Button btnHome;
 
 	private Handler mHandler;
 	private Socket socket;
@@ -104,6 +121,12 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		
 		tvTitle1 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle1);
 		tvTitle2 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle2);
+		
+		popup = (RelativeLayout) findViewById(R.id.mainForUserActivity_popup);
+		popupBg = findViewById(R.id.mainForUserActivity_popupBg);
+		popupImage = findViewById(R.id.mainForUserActivity_popupImage);
+		tvPopupText = (TextView) findViewById(R.id.mainForUserActivity_tvPopupText);
+		btnHome = (Button) findViewById(R.id.mainForUserActivity_btnHome);
 	}
 
 	@Override
@@ -111,7 +134,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 
 		gestureSlidingLayout.setTopView(findViewById(R.id.mainForUserActivity_topView));
 		gestureSlidingLayout.setLeftView(leftView);
-//		gestureSlidingLayout.setRestrictToSide(true);
 		gestureSlidingLayout.setOnAfterOpenToLeftListener(new OnAfterOpenListener() {
 			
 			@Override
@@ -233,6 +255,23 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				}
 			}
 		});
+	
+		btnHome.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hidePopup();
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						clearFragments(true);
+					}
+				}, 300);
+			}
+		});
 	}
 
 	@Override
@@ -251,6 +290,14 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		rp.height = ResizeUtils.getSpecificLength(32);
 		tvTitle2.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
 		FontUtils.setFontSize(tvTitle2, 16);
+		
+		ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
+		ResizeUtils.viewResizeForRelative(304, 314, popupImage, null, null, new int[]{0, 40, 0, 0});
+		ResizeUtils.setMargin(tvPopupText, new int[]{0, 40, 0, 0});
+		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
+		
+		FontUtils.setFontSize(tvPopupText, 30);
+		FontUtils.setFontStyle(tvPopupText, FontUtils.BOLD);
 	}
 
 	@Override
@@ -304,8 +351,8 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_COMMON_DEALER_CERTIFIER:
 			return new DealerCertifierPage();
 			
-		case BCPConstants.PAGE_SEARCH_CAR:
-			return new SearchCarPage();
+		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
+			return new TypeSearchCarPage();
 			
 		case BCPConstants.PAGE_DIRECT_MARKET:
 			return new DirectMarketPage();
@@ -327,6 +374,15 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_SELECT_BID:
 			return new SelectBidPage();
+			
+		case BCPConstants.PAGE_SEARCH_CAR:
+			return new SearchCarPage();
+			
+		case BCPConstants.PAGE_MY:
+			return new MyPage();
+			
+		case BCPConstants.PAGE_LIGHT:
+			return new LightPage();
 		}
 		
 		return null;
@@ -365,6 +421,8 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				try {
 					if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
+					} else if(popup.getVisibility() == View.VISIBLE) {
+						//Do nothing.
 					} else if(getTopFragment() != null && getTopFragment().onBackPressed()) {
 						//Do nothing.
 					} else if(getFragmentsSize() > 1){
@@ -652,7 +710,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 								
 //								R.drawable.menu_mypage_btn,
 							case 4:
-//								showPage(BCPConstants.PAGE_MYPAGE, null);
+								showPage(BCPConstants.PAGE_MY, null);
 								break;
 								
 //								R.drawable.menu_notice_btn,
@@ -760,5 +818,76 @@ public class MainForUserActivity extends BCPFragmentActivity {
 	public User getUser() {
 		
 		return user;
+	}
+
+	public void showPopup(int type) {
+
+		switch(type) {
+		
+		case POPUP_REQUEST_CERTIFICATION:
+			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
+			tvPopupText.setText(R.string.popup_request_certification);
+			break;
+			
+		case POPUP_REQUEST_BUY:
+			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
+			tvPopupText.setText(R.string.popup_request_buy);
+			break;
+			
+		case POPUP_REGISTRATION:
+			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
+			tvPopupText.setText(R.string.popup_registration);
+			break;
+			
+		case POPUP_CHOICE_DEALER:
+			popupImage.setBackgroundResource(R.drawable.dealer_sel_cartoon);
+			tvPopupText.setText(R.string.popup_choice_dealer);
+			break;
+		}
+		
+		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		popup.setVisibility(View.VISIBLE);
+		popup.startAnimation(aaIn);
+	}
+	
+	public void hidePopup() {
+		
+		AlphaAnimation aaOut = new AlphaAnimation(1, 0);
+		aaOut.setDuration(300);
+		popup.setVisibility(View.INVISIBLE);
+		popup.startAnimation(aaOut);
+	}
+	
+	public void signOut() {
+		
+		String url = BCPAPIs.SIGN_OUT_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					SharedPrefsUtils.clearCookie(getCookieName_D1());
+					SharedPrefsUtils.clearCookie(getCookieName_S());
+					
+					launchSignActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

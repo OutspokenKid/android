@@ -19,6 +19,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Interpolator;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
@@ -293,6 +294,29 @@ public class SignPage extends BCPFragmentForSign {
 	}
 	
 	@Override
+	public void onDestroyView() {
+	
+		viewPager.setOnPageChangeListener(null);
+		
+		int size = viewPager.getChildCount();
+		for(int i=0; i<size; i++) {
+			ViewUnbindHelper.unbindReferences(viewPager.getChildAt(i));
+		}
+		
+		kf.setOnAfterSignInListener(null);
+		ff.setOnAfterSignInListener(null);
+		((FrameLayout)mThisView.findViewById(R.id.signPage_snsFrame)).removeAllViews();
+		ViewUnbindHelper.unbindReferences(floatingImageViews[0]);
+		ViewUnbindHelper.unbindReferences(floatingImageViews[1]);
+		ViewUnbindHelper.unbindReferences(floatingImageViews[2]);
+		ViewUnbindHelper.unbindReferences(guideImageViews[0]);
+		ViewUnbindHelper.unbindReferences(guideImageViews[1]);
+		ViewUnbindHelper.unbindReferences(guideImageViews[2]);
+		ViewUnbindHelper.unbindReferences(signRelative);
+		super.onDestroyView();
+	}
+	
+	@Override
 	public void onDetach() {
 		super.onDetach();
 		
@@ -306,24 +330,9 @@ public class SignPage extends BCPFragmentForSign {
 	}
 	
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		
-		ViewUnbindHelper.unbindReferences(floatingImageViews[0]);
-		ViewUnbindHelper.unbindReferences(floatingImageViews[1]);
-		ViewUnbindHelper.unbindReferences(floatingImageViews[2]);
-		
-		ViewUnbindHelper.unbindReferences(guideImageViews[0]);
-		ViewUnbindHelper.unbindReferences(guideImageViews[1]);
-		ViewUnbindHelper.unbindReferences(guideImageViews[2]);
-		
-		ViewUnbindHelper.unbindReferences(signRelative);
-	}
-	
-	@Override
 	public int getRootViewResId() {
 
-		return 0;
+		return R.id.signPage_mainLayout;
 	}
 	
 //////////////////// Custom methods.

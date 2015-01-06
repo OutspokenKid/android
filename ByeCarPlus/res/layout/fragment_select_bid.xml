@@ -33,18 +33,11 @@
 		        android:visibility="invisible"
 		        android:background="@drawable/main_hotdeal_mark2" />
 		
-		    <View
-		        android:id="@+id/selectBidPage_remainBg"
-		        android:layout_width="match_parent"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/selectBidPage_ivImage"
-		        android:background="@drawable/main_car_info_img1_bg" />
-		
 		    <RelativeLayout
 		        android:id="@+id/selectBidPage_timeRelative"
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
-		        android:layout_alignTop="@id/selectBidPage_remainBg" >
+		        android:layout_below="@id/selectBidPage_ivImage" >
 
 		        <ProgressBar
 			        android:id="@+id/selectBidPage_progressBar"
@@ -83,6 +76,13 @@
 			        android:background="@drawable/main_time_icon" />		        
 		        
 		    </RelativeLayout>
+		    
+		    <View
+		        android:id="@+id/selectBidPage_remainBg"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/selectBidPage_timeRelative"
+		        android:background="#fff" />
 		
 		    <TextView
 		        android:id="@+id/selectBidPage_tvCarInfo1"
@@ -93,7 +93,14 @@
 		        android:ellipsize="end"
 		        android:gravity="bottom|left"
 		        android:singleLine="true"
-		        android:textColor="#fff" />
+		        android:textColor="@color/holo_text" />
+		    
+			<View 
+                android:id="@+id/mainForUserPage_line"
+        		android:layout_width="match_parent"
+    			android:layout_height="1px"
+    			android:layout_below="@id/selectBidPage_tvCarInfo1"
+    			android:background="@color/color_ltgray" />
 		
 		    <TextView
 		        android:id="@+id/selectBidPage_tvCarInfo2"
@@ -104,7 +111,7 @@
 		        android:ellipsize="end"
 		        android:gravity="top|left"
 		        android:singleLine="true"
-		        android:textColor="#fff" />
+		        android:textColor="@color/holo_text" />
 		
 		    <TextView
 		        android:id="@+id/selectBidPage_tvCurrentPrice"
@@ -114,7 +121,7 @@
 		        android:layout_below="@id/selectBidPage_timeRelative"
 		        android:ellipsize="end"
 		        android:singleLine="true"
-		        android:textColor="#fff" />
+		        android:textColor="@color/color_orange2" />
 		
 		    <TextView
 		        android:id="@+id/selectBidPage_tvCurrentPriceText"
@@ -123,7 +130,7 @@
 		        android:layout_alignBottom="@id/selectBidPage_tvCurrentPrice"
 		        android:layout_toLeftOf="@id/selectBidPage_tvCurrentPrice"
 		        android:text="@string/currentPrice"
-		        android:textColor="#fff" />
+		        android:textColor="@color/color_orange2" />
 		
 		    <TextView
 		        android:id="@+id/selectBidPage_tvBid"
@@ -133,7 +140,7 @@
 		        android:layout_below="@id/selectBidPage_tvCurrentPrice"
 		        android:ellipsize="end"
 		        android:singleLine="true"
-		        android:textColor="#fff" />
+		        android:textColor="@color/holo_text" />
 		    
 		    <RelativeLayout
 		        android:id="@+id/selectBidPage_relativeForDealer"

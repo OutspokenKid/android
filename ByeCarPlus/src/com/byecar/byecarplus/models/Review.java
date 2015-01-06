@@ -7,25 +7,44 @@ import com.outspoken_kid.utils.LogUtils;
 
 public class Review extends BaseModel {
 
-//	"id": "5",
-//	"dealer_id": "4",
+//	"id": "8",
+//	"type": "901",
+//	"dealer_id": "0",
+//	"certifier_id": "1",
 //	"reviewer_id": "5",
-//	"onsalecar_id": "23",
-//	"content": "그냥그랬음",
-//	"rating": "2",
-//	"created_at": "1419312202",
-//	"reviewer_nickname": "민상kk",
-//	"reviewer_profile_img_url": "abc"
+//	"onsalecar_id": "30",
+//	"content": "good",
+//	"rating": "5",
+//	"created_at": "1419572092",
+//	"priority": "1419572092",
+//	"reviewer_name": "Minsang Kim",
+//	"reviewer_profile_img_url": "http://byecar.minsangk.com/images/20141226/d4c9742ffa63014e718c253b72f31cc6.png",
+//	"onsalecar_rep_img_url": "http://byecar.minsangk.com/images/20141219/24b472c57370af27ce37d28b5d7dda23.png",
+//	"car_full_name": "현대 그랜저 XG Q25 SE",
+//	"onsalecar_year": "1998",
+//	"dealer_profile_img_url": null,
+//	"dealer_name": null,
+//	"certifier_profile_img_url": "http://byecar.minsangk.com",
+//	"certifier_name": "바이카관리자"
 	
 	private int id;
+	private int type;									//
+	private int certifier_id;							//
 	private int dealer_id;
 	private int reviewer_id;
 	private int onsalecar_id;
 	private String content;
 	private int rating;
 	private long created_at;
-	private String reviewer_nickname;
+	private String reviewer_name;						//
 	private String reviewer_profile_img_url;
+	private String onsalecar_rep_img_url;				//
+	private String car_full_name;						//
+	private int onsalecar_year;							//
+	private String dealer_profile_img_url;				//
+	private String dealer_name;							//
+	private String certifier_profile_img_url;			//
+	private String certifier_name;						//
 	private long priority;
 	
 	public Review() {
@@ -37,6 +56,14 @@ public class Review extends BaseModel {
 		try {
 			if(objJSON.has("id")) {
 				this.id = objJSON.getInt("id");
+			}
+			
+			if(objJSON.has("type")) {
+				this.type = objJSON.getInt("type");
+			}
+			
+			if(objJSON.has("certifier_id")) {
+				this.certifier_id = objJSON.getInt("certifier_id");
 			}
 			
 			if(objJSON.has("dealer_id")) {
@@ -60,15 +87,43 @@ public class Review extends BaseModel {
 			}
 			
 			if(objJSON.has("created_at")) {
-				this.created_at = objJSON.getInt("created_at");
+				this.created_at = objJSON.getLong("created_at");
 			}
 			
-			if(objJSON.has("reviewer_nickname")) {
-				this.reviewer_nickname = objJSON.getString("reviewer_nickname");
+			if(objJSON.has("reviewer_name")) {
+				this.reviewer_name = objJSON.getString("reviewer_name");
 			}
 			
 			if(objJSON.has("reviewer_profile_img_url")) {
 				this.reviewer_profile_img_url = objJSON.getString("reviewer_profile_img_url");
+			}
+			
+			if(objJSON.has("onsalecar_rep_img_url")) {
+				this.onsalecar_rep_img_url = objJSON.getString("onsalecar_rep_img_url");
+			}
+			
+			if(objJSON.has("car_full_name")) {
+				this.car_full_name = objJSON.getString("car_full_name");
+			}
+			
+			if(objJSON.has("onsalecar_year")) {
+				this.onsalecar_year = objJSON.getInt("onsalecar_year");
+			}
+			
+			if(objJSON.has("dealer_profile_img_url")) {
+				this.dealer_profile_img_url = objJSON.getString("dealer_profile_img_url");
+			}
+			
+			if(objJSON.has("dealer_name")) {
+				this.dealer_name = objJSON.getString("dealer_name");
+			}
+			
+			if(objJSON.has("certifier_profile_img_url")) {
+				this.certifier_profile_img_url = objJSON.getString("certifier_profile_img_url");
+			}
+			
+			if(objJSON.has("certifier_name")) {
+				this.certifier_name = objJSON.getString("certifier_name");
 			}
 			
 			if(objJSON.has("priority")) {
@@ -130,14 +185,6 @@ public class Review extends BaseModel {
 		this.created_at = created_at;
 	}
 
-	public String getReviewer_nickname() {
-		return reviewer_nickname;
-	}
-
-	public void setReviewer_nickname(String reviewer_nickname) {
-		this.reviewer_nickname = reviewer_nickname;
-	}
-
 	public String getReviewer_profile_img_url() {
 		return reviewer_profile_img_url;
 	}
@@ -152,5 +199,85 @@ public class Review extends BaseModel {
 
 	public void setPriority(long priority) {
 		this.priority = priority;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getCertifier_id() {
+		return certifier_id;
+	}
+
+	public void setCertifier_id(int certifier_id) {
+		this.certifier_id = certifier_id;
+	}
+
+	public String getReviewer_name() {
+		return reviewer_name;
+	}
+
+	public void setReviewer_name(String reviewer_name) {
+		this.reviewer_name = reviewer_name;
+	}
+
+	public String getOnsalecar_rep_img_url() {
+		return onsalecar_rep_img_url;
+	}
+
+	public void setOnsalecar_rep_img_url(String onsalecar_rep_img_url) {
+		this.onsalecar_rep_img_url = onsalecar_rep_img_url;
+	}
+
+	public String getCar_full_name() {
+		return car_full_name;
+	}
+
+	public void setCar_full_name(String car_full_name) {
+		this.car_full_name = car_full_name;
+	}
+
+	public int getOnsalecar_year() {
+		return onsalecar_year;
+	}
+
+	public void setOnsalecar_year(int onsalecar_year) {
+		this.onsalecar_year = onsalecar_year;
+	}
+
+	public String getDealer_profile_img_url() {
+		return dealer_profile_img_url;
+	}
+
+	public void setDealer_profile_img_url(String dealer_profile_img_url) {
+		this.dealer_profile_img_url = dealer_profile_img_url;
+	}
+
+	public String getDealer_name() {
+		return dealer_name;
+	}
+
+	public void setDealer_name(String dealer_name) {
+		this.dealer_name = dealer_name;
+	}
+
+	public String getCertifier_profile_img_url() {
+		return certifier_profile_img_url;
+	}
+
+	public void setCertifier_profile_img_url(String certifier_profile_img_url) {
+		this.certifier_profile_img_url = certifier_profile_img_url;
+	}
+
+	public String getCertifier_name() {
+		return certifier_name;
+	}
+
+	public void setCertifier_name(String certifier_name) {
+		this.certifier_name = certifier_name;
 	}
 }

@@ -266,6 +266,14 @@ public class SelectBidPage extends BCPFragment {
 		checkPageScrollOffset();
 	}
 	
+	@Override
+	public void onDestroyView() {
+
+		scrollView.setOnScrollChangedListener(null);
+		
+		super.onDestroyView();
+	}
+	
 //////////////////// Custom methods.
 
 	public void addViewsForDealer() {

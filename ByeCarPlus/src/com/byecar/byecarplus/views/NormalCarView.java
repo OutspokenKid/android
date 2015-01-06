@@ -112,6 +112,7 @@ public class NormalCarView extends RelativeLayout {
 	public void setCar(Car car) {
 
 		if (car != null) {
+			LogUtils.log("###NormalCarView.setCar.  car is not null.");
 			downloadImage(car.getRep_img_url());
 			
 			tvCar.setText(car.getModel_name());
@@ -120,6 +121,7 @@ public class NormalCarView extends RelativeLayout {
 			tvPrice.setText(StringUtils.getFormattedNumber(car.getPrice())
 					+ getContext().getString(R.string.won));
 		} else {
+			LogUtils.log("###NormalCarView.setCar.  car is null.");
 			setFrameToDefault();
 		}
 	}

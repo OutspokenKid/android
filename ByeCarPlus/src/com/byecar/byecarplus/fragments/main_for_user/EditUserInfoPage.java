@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -18,14 +19,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ImageUploadUtils;
@@ -48,6 +52,8 @@ public class EditUserInfoPage extends BCPFragment {
 	private static final int NICKNAME_MAX = 15;
 	private static final int ADDRESS_MIN = 0;
 	private static final int ADDRESS_MAX = 50;
+
+	private User user;
 	
 	private FrameLayout profileFrame;
 	private Button btnProfile;
@@ -69,11 +75,11 @@ public class EditUserInfoPage extends BCPFragment {
 	private Button btnConfirm;
 	
 	private boolean focusOnName, focusOnNickname, focusOnAddress;
-	private boolean passName, passNickname, passAddress;
+	private boolean passName = true, passNickname = true, passAddress = true;
 	
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
-	
+
 	private int type;
 	
 	@Override
@@ -129,6 +135,12 @@ public class EditUserInfoPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
+		if(((MainForUserActivity)mActivity).getUser() != null) {
+			user = ((MainForUserActivity)mActivity).getUser();
+		} else {
+			closePage();
+		}
+		
 		if(type == TYPE_REQUEST_BUYER) {
 			profileFrame.setVisibility(View.GONE);
 			tvProfile.setVisibility(View.GONE);
@@ -283,8 +295,12 @@ public class EditUserInfoPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				if(checkInfos()) {
-					uploadImage();
+				if(type == TYPE_REQUEST_BUYER) {
+					((MainForUserActivity)mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_BUY);
+				} else {
+					if(checkInfos()) {
+						uploadImage();
+					}
 				}
 			}
 		});
@@ -412,8 +428,6 @@ public class EditUserInfoPage extends BCPFragment {
 
 		switch(type) {
 		case TYPE_EDIT_PROFILE:
-			return 294;
-			
 		case TYPE_DEALER_INFO:
 			return 238;
 			
@@ -453,7 +467,18 @@ public class EditUserInfoPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
+		setUserInfo();
 		checkPhoneNumberCertified();
+	}
+
+	@Override
+	public void onDestroyView() {
+
+		etName.getEditText().setOnFocusChangeListener(null);
+		etNickname.getEditText().setOnFocusChangeListener(null);
+		etAddress.getEditText().setOnFocusChangeListener(null);
+		
+		super.onDestroyView();
 	}
 	
 	@Override
@@ -463,24 +488,72 @@ public class EditUserInfoPage extends BCPFragment {
 	}
 	
 ////////////////////Custom methods.
+	
+	public void setUserInfo() {
+		
+		if(!StringUtils.isEmpty(user.getProfile_img_url())) {
+			selectedImageUrl = user.getProfile_img_url();
+			
+			ivProfile.setTag(user.getProfile_img_url());
+			DownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
 
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("EditUserInfoPage.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("EditUserInfoPage.onCompleted." + "\nurl : " + url);
+
+						if(bitmap != null && !bitmap.isRecycled()) {
+							ivProfile.setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		}
+		
+		if(!StringUtils.isEmpty(user.getName())) {
+			etName.getEditText().setText(user.getName());
+		}
+		
+		if(!StringUtils.isEmpty(user.getNickname())) {
+			etNickname.getEditText().setText(user.getNickname());
+		}
+		
+		if(!StringUtils.isEmpty(user.getAddress())) {
+			etAddress.getEditText().setText(user.getAddress());
+		}
+	}
+	
 	public void checkPhoneNumberCertified() {
 		
 		tvPhoneNumber.setText(null);
 		
-		checkIcon.setVisibility(View.VISIBLE);
-		FontUtils.addSpan(tvPhoneNumber, "010 9813 8005", 0, 1);
-		
-//		checkIcon.setVisibility(View.INVISIBLE);
-//		tvPhoneNumber.setText(null);
-//		FontUtils.addSpan(tvPhoneNumber, 
-//				R.string.notCertifiedPhoneNumber1, 
-//				getResources().getColor(R.color.color_red), 
-//				1, true);
-//		FontUtils.addSpan(tvPhoneNumber, 
-//				"\n" + getString(R.string.notCertifiedPhoneNumber2), 
-//				getResources().getColor(R.color.color_red), 
-//				0.7f);
+		if(!StringUtils.isEmpty(((MainForUserActivity)mActivity).getUser().getPhone_number())) {
+			checkIcon.setVisibility(View.VISIBLE);
+			FontUtils.addSpan(tvPhoneNumber, ((MainForUserActivity)mActivity).getUser().getPhone_number(), 0, 1);
+			
+		} else {
+			checkIcon.setVisibility(View.INVISIBLE);
+			tvPhoneNumber.setText(null);
+			FontUtils.addSpan(tvPhoneNumber, 
+					R.string.notCertifiedPhoneNumber1, 
+					getResources().getColor(R.color.color_red), 
+					1, true);
+			FontUtils.addSpan(tvPhoneNumber, 
+					"\n" + getString(R.string.notCertifiedPhoneNumber2), 
+					getResources().getColor(R.color.color_red), 
+					0.7f);
+		}
 	}
 	
 	public boolean checkInfos() {
@@ -544,8 +617,7 @@ public class EditUserInfoPage extends BCPFragment {
 	
 	public void uploadImage() {
 		
-		if(StringUtils.isEmpty(selectedImageUrl)) {
-			
+		if(StringUtils.isEmpty(selectedSdCardPath)) {
 			confirm();
 			return;
 		}
@@ -588,7 +660,7 @@ public class EditUserInfoPage extends BCPFragment {
 			public void onError(String url) {
 
 				LogUtils.log("EditUserInfoPage.onError." + "\nurl : " + url);
-
+				ToastUtils.showToast(R.string.failToUpdateUserInfo);
 			}
 
 			@Override
@@ -599,16 +671,49 @@ public class EditUserInfoPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
+						User user = ((MainForUserActivity)mActivity).getUser();
+						
+						if(!StringUtils.isEmpty(selectedImageUrl)) {
+							user.setProfile_img_url(selectedImageUrl);
+						}
+						
+						if(!StringUtils.isEmpty(etNickname.getEditText())) {
+							user.setNickname(etNickname.getEditText().getText().toString());
+						}
+						
+						if(!StringUtils.isEmpty(etName.getEditText())) {
+							user.setName(etName.getEditText().getText().toString());
+						}
+						
+						if(!StringUtils.isEmpty(etAddress.getEditText())) {
+							user.setAddress(etAddress.getEditText().getText().toString());
+						}
+						
 						mActivity.closeTopPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToUpdateUserInfo);
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToUpdateUserInfo);
 				}
 			}
 		});
+	}
+
+	public void closePage() {
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				ToastUtils.showToast(R.string.failToLoadUserInfo);
+				mActivity.closeTopPage();
+			}
+		}, 1000);
 	}
 }

@@ -36,6 +36,11 @@ public class ImagePagerAdapter extends PagerAdapter {
 		this.images = images;
 	}
 	
+	public ArrayList<String> getArrayList() {
+		
+		return images;
+	}
+	
 	@Override
 	public int getCount() {
 

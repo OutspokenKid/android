@@ -7,6 +7,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -108,26 +109,35 @@ public class ViewWrapperForCar extends ViewWrapper {
 			rp.width = ResizeUtils.getSpecificLength(340);
 			rp.height = ResizeUtils.getSpecificLength(60);
 			rp.leftMargin = ResizeUtils.getSpecificLength(20);
+			rp.topMargin = ResizeUtils.getSpecificLength(10);
+			
+			//line.
+			rp = (RelativeLayout.LayoutParams) row.findViewById(R.id.list_car_line).getLayoutParams();
+			rp.leftMargin = ResizeUtils.getSpecificLength(10);
+			rp.topMargin = ResizeUtils.getSpecificLength(10);
+			rp.rightMargin = ResizeUtils.getSpecificLength(10);
 			
 			//tvCarInfo2.
 			rp = (RelativeLayout.LayoutParams) tvCarInfo2.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(340);
 			rp.height = ResizeUtils.getSpecificLength(57);
 			rp.leftMargin = ResizeUtils.getSpecificLength(20);
+			rp.topMargin = ResizeUtils.getSpecificLength(24);
 			
 			//tvCurrentPrice.
 			rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-			rp.topMargin = ResizeUtils.getSpecificLength(16);
+			rp.topMargin = ResizeUtils.getSpecificLength(26);
 			rp.rightMargin = ResizeUtils.getSpecificLength(20);
 			
 			//tvCurrentPriceText.
 			rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(10);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(10);
+			rp.rightMargin = ResizeUtils.getSpecificLength(4);
+			rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 			
 			//tvBidCount.
 			rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
-			rp.topMargin = ResizeUtils.getSpecificLength(4);
+			rp.topMargin = ResizeUtils.getSpecificLength(24);
+
 
 			FontUtils.setFontSize(tvRemainTime, 24);
 			FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
@@ -163,13 +173,21 @@ public class ViewWrapperForCar extends ViewWrapper {
 						+ row.getContext().getString(R.string.won));
 				tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
 				
-				if(car.getType() == Car.TYPE_AUCTION) {
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_AUCTION) {
 					auctionIcon.setVisibility(View.VISIBLE);
 					timeRelative.setVisibility(View.VISIBLE);
 					tvBidCount.setVisibility(View.VISIBLE);
+					
+					if(car.getStatus() == 10) {
+						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+					} else if(car.getStatus() == 20) {
+						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+					} else {
+						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+					}
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
-					timeRelative.setVisibility(View.INVISIBLE);
+					timeRelative.setVisibility(View.GONE);
 					tvBidCount.setVisibility(View.INVISIBLE);
 				}
 				

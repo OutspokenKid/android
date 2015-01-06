@@ -279,6 +279,14 @@ public class DealerCertifierPage extends BCPFragment {
 	}
 	
 	@Override
+	public void onDestroyView() {
+		
+		scrollView.setOnScrollChangedListener(null);
+		
+		super.onDestroyView();
+	}
+	
+	@Override
 	public int getRootViewResId() {
 
 		return R.id.dealerPage_mainLayout;
@@ -416,12 +424,6 @@ public class DealerCertifierPage extends BCPFragment {
 	}
 	
 	public void addReviewViews(ArrayList<Review> reviews) {
-
-		reviews.get(0).setContent("asdfasdf");
-		reviews.get(0).setReviewer_nickname("아아아아아아아아아아아아아아아아");
-		reviews.get(1).setContent("asdfasdf\n12341234");
-		reviews.get(2).setContent("asdfasdf\n12341234\nasdfadsf");
-		reviews.get(3).setContent("asdfasdf\n12341234\nasdfadsf\nadsfasdfa\nadfadsf\nasdfadsfadf\nadsfadsf");
 		
 		int size = reviews.size();
 		for(int i=0; i<size; i ++) {

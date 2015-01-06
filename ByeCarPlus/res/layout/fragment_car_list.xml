@@ -25,7 +25,17 @@
         android:layout_height="0dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:background="@drawable/auction_reg_btn" />
+    
+    <Button
+        android:id="@+id/carListPage_btnRequestCertification"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/directmarket_verification_request_btn" />
     
     <com.byecar.byecarplus.views.TitleBar
         android:id="@+id/carListPage_titleBar"
@@ -39,5 +49,14 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/auction_guide_btn" />
+    
+    <Button
+        android:id="@+id/carListPage_btnSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/carListPage_btnGuide"
+        android:layout_toLeftOf="@id/carListPage_btnGuide"
+        android:visibility="invisible"
+        android:background="@drawable/usedmarket_search_btn" />
         
 </RelativeLayout>

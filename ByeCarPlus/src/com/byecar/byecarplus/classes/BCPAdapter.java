@@ -10,11 +10,14 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.wrappers.ViewWrapperForBrand;
 import com.byecar.byecarplus.wrappers.ViewWrapperForCar;
 import com.byecar.byecarplus.wrappers.ViewWrapperForDirectNormal;
+import com.byecar.byecarplus.wrappers.ViewWrapperForMyCar;
+import com.byecar.byecarplus.wrappers.ViewWrapperForMyReview;
 import com.byecar.byecarplus.wrappers.ViewWrapperForOpenablePost;
 import com.byecar.byecarplus.wrappers.ViewWrapperForSearchText;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.ResizeUtils;
 
 /**
  * @author HyungGunKim
@@ -52,6 +55,12 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_NOTICE:
 		case BCPConstants.ITEM_FAQ:
 			return R.layout.list_openable_post;
+			
+		case BCPConstants.ITEM_CAR_MY:
+			return R.layout.list_my_car;
+			
+		case BCPConstants.ITEM_REVIEW:
+			return R.layout.list_my_review;
 		}
 		
 		return 0;
@@ -82,6 +91,12 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_NOTICE:
 		case BCPConstants.ITEM_FAQ:
 			return new ViewWrapperForOpenablePost(convertView, itemCode);
+			
+		case BCPConstants.ITEM_CAR_MY:
+			return new ViewWrapperForMyCar(convertView, itemCode);
+			
+		case BCPConstants.ITEM_REVIEW:
+			return new ViewWrapperForMyReview(convertView, itemCode);
 		}
 		
 		return null;
@@ -92,7 +107,14 @@ public class BCPAdapter extends OutSpokenAdapter {
 	
 		switch (itemCode) {
 		
-		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
+		case BCPConstants.ITEM_CAR_MY:
+		case BCPConstants.ITEM_REVIEW:
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
 			break;
 		}
 	}

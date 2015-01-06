@@ -10,12 +10,203 @@
         android:id="@+id/searchCarPage_titleBar"
         android:layout_width="match_parent"
     	android:layout_height="0dp" />
+    
+    <View
+        android:id="@+id/searchCarPage_bgForButtons"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/searchCarPage_titleBar"
+    	android:background="#fff" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignBottom="@id/searchCarPage_bgForButtons"
+        android:background="@color/color_ltgray" />
+    
+    <Button 
+        android:id="@+id/searchCarPage_btnCommon"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_below="@id/searchCarPage_titleBar" 
+    	android:background="@drawable/filter_detail_tab_a" />
+    
+    <Button 
+        android:id="@+id/searchCarPage_btnDetail"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/searchCarPage_btnCommon"
+    	android:layout_toRightOf="@id/searchCarPage_btnCommon"
+    	android:background="@drawable/filter_normal_tab_b" />
 
+    <RelativeLayout
+        android:id="@+id/searchCarPage_relativeForCommonSearch"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:clickable="true"
+    	android:layout_below="@id/searchCarPage_btnCommon" >
+    	
+        <TextView
+	        android:id="@+id/searchCarPage_tvPriceRangeText"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:gravity="center_vertical"
+	        android:text="@string/priceRange"
+	        android:textColor="@color/holo_text" />
+        
+        <View 
+            android:id="@+id/searchCarPage_priceRangeLine"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@id/searchCarPage_tvPriceRangeText"
+	        android:background="@drawable/filter_bar" />
+        
+        <TextView 
+            android:id="@+id/searchCarPage_tvMinPriceText"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/searchCarPage_priceRangeLine"
+	        android:layout_marginTop="12dp"
+	        android:textColor="@color/holo_text_hint"
+	        android:gravity="center" />
+        
+        <TextView 
+            android:id="@+id/searchCarPage_tvMiddlePriceText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerHorizontal="true"
+	        android:layout_alignTop="@id/searchCarPage_tvMinPriceText"
+	        android:textColor="@color/holo_text_hint"
+	        android:gravity="center" />
+        
+        <TextView 
+            android:id="@+id/searchCarPage_tvMaxPriceText"
+	        android:layout_width="100dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignTop="@id/searchCarPage_tvMinPriceText"
+	        android:textColor="@color/holo_text_hint"
+	        android:gravity="center" />
+        
+        <FrameLayout
+            android:id="@+id/searchCarPage_frameForRelatives"
+            android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+	        android:layout_below="@id/searchCarPage_tvPriceRangeText" >
+            
+            <RelativeLayout
+	            android:id="@+id/searchCarPage_relativeForMinPrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="left" >
+	            
+	            <TextView 
+	                android:id="@+id/searchCarPage_tvMinPrice"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:layout_alignParentLeft="true"
+		        	android:layout_alignParentTop="true"
+		        	android:textColor="@color/holo_text"
+		        	android:gravity="center_horizontal"
+		        	android:clickable="false"
+		        	android:background="@drawable/filter_bubble" />
+	            
+	            <View 
+	                android:id="@+id/searchCarPage_arrowForMinPrice"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:layout_centerHorizontal="true"
+		        	android:layout_below="@id/searchCarPage_tvMinPrice"
+		        	android:clickable="false"
+		        	android:background="@drawable/filter_handle_a" />
+	            
+	        </RelativeLayout>
+	        
+	        <RelativeLayout
+	            android:id="@+id/searchCarPage_relativeForMaxPrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="right" >
+	            
+	            <TextView 
+	                android:id="@+id/searchCarPage_tvMaxPrice"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:layout_alignParentLeft="true"
+		        	android:layout_alignParentTop="true"
+		        	android:gravity="center_horizontal"
+		        	android:textColor="@color/holo_text"
+		        	android:background="@drawable/filter_bubble" />
+	            
+	            <View 
+	                android:id="@+id/searchCarPage_arrowForMaxPrice"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:layout_centerHorizontal="true"
+		        	android:layout_below="@id/searchCarPage_tvMaxPrice"
+		        	android:background="@drawable/filter_handle_b" />
+	            
+	        </RelativeLayout>
+            
+        </FrameLayout>
+        
+        <View 
+            android:id="@+id/searchCarPage_editTextBg"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@id/searchCarPage_priceRangeLine"
+	        android:background="@drawable/filter_search_box" />
+        
+        <EditText 
+            android:id="@+id/searchCarPage_etMinPrice"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignLeft="@id/searchCarPage_editTextBg"
+	        android:layout_alignTop="@id/searchCarPage_editTextBg"
+	        android:textColor="@color/holo_text"
+	        android:textColorHint="@color/holo_text_hint"
+	        android:background="#0000"
+	        android:hint="@string/min"
+	        android:gravity="center"
+	        android:singleLine="true"
+	        android:inputType="number" />
+        
+        <EditText 
+            android:id="@+id/searchCarPage_etMaxPrice"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/searchCarPage_editTextBg"
+	        android:layout_alignRight="@id/searchCarPage_editTextBg"
+	        android:textColor="@color/holo_text"
+	        android:textColorHint="@color/holo_text_hint"
+	        android:background="#0000"
+	        android:hint="@string/max"
+	        android:gravity="center"
+	        android:singleLine="true"
+	        android:inputType="number" />
+        
+        <Button 
+            android:id="@+id/searchCarPage_btnShowCommonSearchResult"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@id/searchCarPage_editTextBg"
+	        android:background="@drawable/filter_result_btn" />
+        
+    </RelativeLayout>
+    
     <ListView
         android:id="@+id/searchCarPage_listView"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:layout_below="@id/searchCarPage_titleBar"
+    	android:layout_below="@id/searchCarPage_btnCommon"
     	android:visibility="invisible"
     	android:cacheColorHint="#0000" />
     
@@ -23,9 +214,57 @@
         android:id="@+id/searchCarPage_gridView"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
-    	android:layout_below="@id/searchCarPage_titleBar"
+    	android:layout_below="@id/searchCarPage_btnCommon"
     	android:visibility="invisible"
     	android:numColumns="4"
     	android:cacheColorHint="#0000" />
+
+    <RelativeLayout
+        android:id="@+id/searchCarPage_relativeForSearchResult"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/searchCarPage_btnCommon"
+    	android:visibility="invisible" >
+
+        <TextView
+	        android:id="@+id/searchCarPage_tvSearchConditionText"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentLeft="true"
+	        android:layout_alignParentTop="true"
+	        android:gravity="center_vertical"
+	        android:text="@string/searchCondition"
+	        android:textColor="@color/holo_text" />
         
+        <TextView
+	        android:id="@+id/searchCarPage_tvSearchCondition"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_below="@id/searchCarPage_tvSearchConditionText"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="center"
+	        android:text="@string/searchCondition"
+	        android:textColor="@color/color_orange" 
+	        android:background="@drawable/white_round_box" />
+        
+        <Button 
+            android:id="@+id/searchCarPage_btnShowDetailSearchResult"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentBottom="true"
+	        android:layout_centerHorizontal="true"
+	        android:background="@drawable/filter_result_btn" />
+        
+        <View
+            android:id="@+id/searchCarPage_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/searchCarPage_btnShowDetailSearchResult"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@color/holo_text_hint" />
+        
+    </RelativeLayout>
+    
 </RelativeLayout>

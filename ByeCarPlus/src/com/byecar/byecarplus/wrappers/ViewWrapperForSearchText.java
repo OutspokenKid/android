@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
+import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
 import com.byecar.byecarplus.models.CarModel;
 import com.byecar.byecarplus.models.CarModelGroup;
 import com.byecar.byecarplus.models.CarSearchString;
@@ -20,7 +20,6 @@ import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForSearchText extends ViewWrapper {
 
@@ -85,6 +84,10 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 	@Override
 	public void setListeners() {
 
+		if(model != null && !model.isNeedClickListener()) {
+			return;
+		}
+		
 		try {
 			if(model != null) {
 				row.setOnClickListener(new OnClickListener() {
@@ -98,28 +101,25 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 							Bundle bundle = new Bundle();
 							
 							if(model instanceof CarModelGroup) {
-								bundle.putInt("type", SearchCarPage.TYPE_MODEL);
+								bundle.putInt("type", TypeSearchCarPage.TYPE_MODEL);
 								bundle.putInt("modelgroup_id", ((CarModelGroup)model).getId());
-								type = BCPConstants.PAGE_SEARCH_CAR;
+								type = BCPConstants.PAGE_TYPE_SEARCH_CAR;
 								mActivity.showPage(type, bundle);
 							
 							} else if(model instanceof CarModel) {
-								bundle.putInt("type", SearchCarPage.TYPE_TRIM);
+								bundle.putInt("type", TypeSearchCarPage.TYPE_TRIM);
 								bundle.putInt("model_id", ((CarModel)model).getId());
-								type = BCPConstants.PAGE_SEARCH_CAR;
+								type = BCPConstants.PAGE_TYPE_SEARCH_CAR;
 								mActivity.showPage(type, bundle);
 								
 							} else if(model instanceof CarTrim) {
 								mActivity.bundle = new Bundle();
-								mActivity.bundle.putInt("type", SearchCarPage.TYPE_TRIM);
+								mActivity.bundle.putInt("type", TypeSearchCarPage.TYPE_TRIM);
 								mActivity.bundle.putInt("trim_id", ((CarTrim) model).getId());
 								mActivity.closePages(4);
 							
 							} else if(model instanceof CarSearchString) {
 								CarSearchString css = (CarSearchString) model;
-								
-								ToastUtils.showToast("type : " + css.getType() + ", text : " + css.getText());
-								
 								mActivity.bundle = new Bundle();
 								mActivity.bundle.putInt("type", css.getType());
 								mActivity.bundle.putString("text", css.getText());

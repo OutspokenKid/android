@@ -94,7 +94,9 @@ public class DirectMarketPage extends BCPFragment {
 		
 		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
 		
-		addNormalCarViews();
+		if(normalLinear.getChildCount() == 0) {
+			addNormalCarViews();
+		}
 	}
 
 	@Override
@@ -138,6 +140,7 @@ public class DirectMarketPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("id", certified.get(position).getId());
+				bundle.putInt("type", Car.TYPE_DIRECT_CERTIFIED);
 				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 			}
 		});
@@ -158,7 +161,9 @@ public class DirectMarketPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 				
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
 		
@@ -198,29 +203,36 @@ public class DirectMarketPage extends BCPFragment {
 		//remainBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.directMarketPage_remainBg).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(147);
-		rp.topMargin = -2;
 		
 		//tvCarInfo1.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		
+		//line.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.directMarketPage_line).getLayoutParams();
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
 		//tvCarInfo2.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo2.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(57);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//tvCurrentPrice.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.topMargin = ResizeUtils.getSpecificLength(26);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCurrentPriceText.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(4);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//btnAuction.
 		rp = (RelativeLayout.LayoutParams) btnCertified.getLayoutParams();
@@ -305,15 +317,20 @@ public class DirectMarketPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if(certified.size() == 0) {
-			downloadCertifiedList();
-		}
-		
-		if(normal.size() == 0) {
-			downloadNormalList();
-		}
+		downloadCertifiedList();
+		downloadNormalList();
 		
 		checkPageScrollOffset();
+	}
+	
+	@Override
+	public void onDestroyView() {
+
+		scrollView.setOnScrollChangedListener(null);
+		viewPager.setOnPageChangeListener(null);
+		imagePagerAdapter.setOnPagerItemClickedListener(null);
+		
+		super.onDestroyView();
 	}
 	
 	@Override
@@ -339,7 +356,9 @@ public class DirectMarketPage extends BCPFragment {
 				normalLinear.addView(line);
 			}
 			
-			normalLinear.addView(new NormalCarView(mContext));
+			NormalCarView ncv = new NormalCarView(mContext);
+			normalCarFrames.add(ncv);
+			normalLinear.addView(ncv);
 			
 			if(i == size -1) {
 				View bottomBlank = new View(mContext);
@@ -433,6 +452,19 @@ public class DirectMarketPage extends BCPFragment {
 						
 						for(int i=0; i<normalCarFrames.size(); i++) {
 							normalCarFrames.get(i).setCar(normal.get(i));
+
+							final int ID = normal.get(i).getId();
+							normalCarFrames.get(i).setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View view) {
+
+									Bundle bundle = new Bundle();
+									bundle.putInt("id", ID);
+									bundle.putInt("type", Car.TYPE_DIRECT_NORMAL);
+									mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+								}
+							});
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);

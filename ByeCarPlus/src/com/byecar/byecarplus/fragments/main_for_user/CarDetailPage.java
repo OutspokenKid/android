@@ -30,6 +30,7 @@ import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.DealerView;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -200,7 +201,8 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 
-				if(car != null && car.getType() == Car.TYPE_USED) {
+				if(car != null && type != Car.TYPE_AUCTION) {
+					
 					switch(event.getAction()) {
 					
 					case MotionEvent.ACTION_MOVE:
@@ -301,7 +303,9 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("구매");
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", EditUserInfoPage.TYPE_REQUEST_BUYER);
+				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 			}
 		});
 	}
@@ -364,32 +368,43 @@ public class CarDetailPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		rp.rightMargin = ResizeUtils.getSpecificLength(5);
 		
+		//remainBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_remainBg).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(147);
+		
 		//tvCarInfo1.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		
+		//line.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_line).getLayoutParams();
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
 		//tvCarInfo2.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo2.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(57);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//tvCurrentPrice.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.topMargin = ResizeUtils.getSpecificLength(26);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCurrentPriceText.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(4);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(4);
-		
+		rp.topMargin = ResizeUtils.getSpecificLength(24);		
 		//headerForType.
 		rp = (RelativeLayout.LayoutParams) headerForType.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
@@ -502,12 +517,12 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.setFontStyle(tvDetailInfo1, FontUtils.BOLD);
 		tvDetailInfo1.setPadding(ResizeUtils.getSpecificLength(20), 
 				ResizeUtils.getSpecificLength(6), 0, 0);
-		tvDetailInfo1.setLineSpacing(0, 1.29f);
+		tvDetailInfo1.setLineSpacing(0, 1.25f);
 		
 		FontUtils.setFontSize(tvDetailInfo2, 20);
 		FontUtils.setFontStyle(tvDetailInfo2, FontUtils.BOLD);
-		tvDetailInfo2.setPadding(0, 0, ResizeUtils.getSpecificLength(20), 0);
-		tvDetailInfo2.setLineSpacing(0, 0.868f);
+		tvDetailInfo2.setPadding(0, ResizeUtils.getSpecificLength(4), ResizeUtils.getSpecificLength(20), 0);
+		tvDetailInfo2.setLineSpacing(0, 0.577f);
 		
 		FontUtils.setFontSize(tvDescription, 20);
 		FontUtils.setFontStyle(tvDescription, FontUtils.BOLD);
@@ -567,6 +582,7 @@ public class CarDetailPage extends BCPFragment {
 		if(car != null) {
 			setMainCarInfo();
 			setDetailCarInfo();
+			setOptionViews();
 			setCarDescription();
 		} else {
 			downloadCarInfo();
@@ -575,6 +591,20 @@ public class CarDetailPage extends BCPFragment {
 		checkPageScrollOffset();
 	}
 
+	@Override
+	public void onDestroyView() {
+		
+		scrollView.setOnScrollChangedListener(null);
+		viewPager.setOnPageChangeListener(null);
+			
+		int size = carDetailPage_optionViews.length;
+		for(int i=0; i<size; i++) {
+			ViewUnbindHelper.unbindReferences(carDetailPage_optionViews[i]);
+		}
+		
+		super.onDestroyView();
+	}
+	
 	@Override
 	public int getRootViewResId() {
 
@@ -815,6 +845,7 @@ public class CarDetailPage extends BCPFragment {
 					car = new Car(objJSON.getJSONObject("onsalecar"));
 					setMainCarInfo();
 					setDetailCarInfo();
+					setOptionViews();
 					setCarDescription();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -874,7 +905,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setDetailCarInfo() {
 
-		if(car.getType() == Car.TYPE_AUCTION) {
+		if(type == Car.TYPE_AUCTION) {
 			auctionIcon.setVisibility(View.VISIBLE);
 			timeRelative.setVisibility(View.VISIBLE);
 			tvBidCount.setVisibility(View.VISIBLE);
@@ -883,7 +914,7 @@ public class CarDetailPage extends BCPFragment {
 			btnBuy.setVisibility(View.INVISIBLE);
 		} else {
 			auctionIcon.setVisibility(View.INVISIBLE);
-			timeRelative.setVisibility(View.INVISIBLE);
+			timeRelative.setVisibility(View.GONE);
 			tvBidCount.setVisibility(View.INVISIBLE);
 			
 			btnGuide.setVisibility(View.INVISIBLE);
@@ -905,40 +936,92 @@ public class CarDetailPage extends BCPFragment {
 		}
 		
 		tvDetailInfo1.setText(infoString);
-		
 		tvDetailInfo2.setText(null);
-		for(int i=0; i<size; i++) {
-			
-			if(i == 0) {
-				FontUtils.addSpan(tvDetailInfo2, "\nDetailInfo" + (i+1), 0, 1.5f);
-			} else if(i == size -1) {
-				FontUtils.addSpan(tvDetailInfo2, "\n\nDetailInfo" + (i+1) + "\n", 0, 1.5f);
-			} else {
-				FontUtils.addSpan(tvDetailInfo2, "\n\nDetailInfo" + (i+1), 0, 1.5f);
-			}
+		
+		float scale = 1.5f;
+		
+		//제조사.
+		FontUtils.addSpan(tvDetailInfo2, "\n" + car.getBrand_name() + "\n", 0, scale);
+		
+		//모델.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + car.getModel_name() + "\n", 0, scale);
+		
+		//세부모델.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + car.getTrim_name() + "\n", 0, scale);
+		
+		//연월식.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + car.getYear() + getString(R.string.year) + "\n", 0, scale);
+		
+		//차량번호.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + car.getCar_number() + "\n", 0, scale);
+		
+		//주행거리.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + StringUtils.getFormattedNumber(car.getMileage()) + "km" + "\n", 0, scale);
+		
+		//배기량.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + StringUtils.getFormattedNumber(car.getDisplacement()) + "cc" + "\n", 0, scale);
+		
+		//판매지역.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + car.getArea() + "\n", 0, scale);
+		
+		//변속기.
+		FontUtils.addSpan(tvDetailInfo2, "\n\n" + 
+				("manual".equals(car.getTransmission_type())? 
+						getString(R.string.carSearchString_transmission2) :
+							getString(R.string.carSearchString_transmission1))
+				+ "\n", 0, scale);
+		
+		//연료.
+		if("lpg".equals(car.getFuel_type())) {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_fuel3) + "\n", 0, scale);
+		} else if("diesel".equals(car.getFuel_type())) {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_fuel2) + "\n", 0, scale);
+		} else {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_fuel1) + "\n", 0, scale);
+		}
+		
+		//사고유무.
+		if(car.getHad_accident() == 2) {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_accident1) + "\n", 0, scale);
+		} else if(car.getHad_accident() == 1) {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_accident2) + "\n", 0, scale);
+		} else {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_accident3) + "\n", 0, scale);
+		}
+		
+		//1인신조.
+		if(car.getIs_oneman_owned() == 1) {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_oneManOwned1) + "\n", 0, scale);
+		} else {
+			FontUtils.addSpan(tvDetailInfo2, "\n\n" + getString(R.string.carSearchString_oneManOwned2), 0, scale);
 		}
 	}
 
 	public void setOptionViews() {
+
+		if(car.getOptions() == null) {
+			return;
+		}
 		
-		int size = 30;
+		for(int i=0; i<30; i++) {
+			carDetailPage_optionViews[i].setBackgroundResource(
+					getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
+							"drawable", "com.byecar.byecarplus"));
+		}
+		
+		int size = car.getOptions().length;
 		for(int i=0; i<size; i++) {
-			
-//			if(checked[i]) {
-				carDetailPage_optionViews[i].setBackgroundResource(
-						getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_b", 
-								"drawable", "com.byecar.byecarplus"));
-//			} else {
-//				carDetailPage_optionViews[i].setBackgroundResource(
-//						getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
-//								"drawable", "com.byecar.byecarplus"));
-//			}
+
+			int index = car.getOptions()[i];
+			carDetailPage_optionViews[index - 1].setBackgroundResource(
+					getResources().getIdentifier("detail_optioin" + index + "_btn_b", 
+							"drawable", "com.byecar.byecarplus"));
 		}
 	}
 	
 	public void setCarDescription() {
 		
-		tvDescription.setText("차 짱 잘나감");
+		tvDescription.setText(car.getDesc());
 	}
 
 	public void closePage() {
@@ -1085,7 +1168,6 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{RelativeLayout.ALIGN_TOP, RelativeLayout.ALIGN_LEFT}, 
 					new int[]{R.id.carDetailPage_used_ivImage, R.id.carDetailPage_used_ivImage}, 
 					null);
-			cover.setBackgroundColor(Color.argb(100, 255, 0, 0));
 			cover.setBackgroundResource(R.drawable.buy_detail_cover);
 			relativeForType.addView(cover);
 			
@@ -1100,7 +1182,6 @@ public class CarDetailPage extends BCPFragment {
 			FontUtils.addSpan(tvInfo1, car.getSeller_name(), 0, 1, true);
 			FontUtils.addSpan(tvInfo1, " " + getString(R.string.dealer), 0, 1);
 			tvInfo1.setTextColor(getResources().getColor(R.color.holo_text));
-			tvInfo1.setBackgroundColor(Color.argb(100, 0, 255, 0));
 			FontUtils.setFontSize(tvInfo1, 30);
 			relativeForType.addView(tvInfo1);
 			
@@ -1113,7 +1194,6 @@ public class CarDetailPage extends BCPFragment {
 			tvInfo2.setId(R.id.carDetailPage_used_tvInfo2);
 			tvInfo2.setText(car.getSeller_address() + "\n" + "소속 없음");
 			tvInfo2.setTextColor(getResources().getColor(R.color.holo_text));
-			tvInfo2.setBackgroundColor(Color.argb(100, 0, 0, 255));
 			tvInfo2.setGravity(Gravity.CENTER);
 			FontUtils.setFontSize(tvInfo2, 16);
 			relativeForType.addView(tvInfo2);
@@ -1127,7 +1207,6 @@ public class CarDetailPage extends BCPFragment {
 			tvGrade.setId(R.id.carDetailPage_used_tvGrade);
 			tvGrade.setText("우수딜러");
 			tvGrade.setTextColor(getResources().getColor(R.color.color_orange));
-			tvGrade.setBackgroundColor(Color.argb(100, 0, 255, 255));
 			FontUtils.setFontSize(tvGrade, 20);
 			relativeForType.addView(tvGrade);
 			
@@ -1191,7 +1270,6 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.addSpan(tvInfo, car.getSeller_name(), 0, 1, true);
 		FontUtils.addSpan(tvInfo, " " + getString(R.string.certifier), 0, 1);
 		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
-		tvInfo.setBackgroundColor(Color.argb(100, 0, 255, 0));
 		FontUtils.setFontSize(tvInfo, 30);
 		relativeForType.addView(tvInfo);
 		
@@ -1267,7 +1345,6 @@ public class CarDetailPage extends BCPFragment {
 		tvInfo.setId(R.id.carDetailPage_normal_tvInfo);
 		tvInfo.setText(car.getSeller_name());
 		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
-		tvInfo.setBackgroundColor(Color.argb(100, 0, 255, 0));
 		FontUtils.setFontSize(tvInfo, 30);
 		FontUtils.setFontStyle(tvInfo, FontUtils.BOLD);
 		relativeForType.addView(tvInfo);
@@ -1317,7 +1394,7 @@ public class CarDetailPage extends BCPFragment {
 		tvArea.setId(R.id.carDetailPage_normal_tvArea);
 		tvArea.setText(null);
 		FontUtils.addSpan(tvArea, R.string.sellingArea, getResources().getColor(R.color.holo_text_hint), 1);
-		FontUtils.addSpan(tvArea, "\n" + "판매하는 지역", 0, 1, true);
+		FontUtils.addSpan(tvArea, "\n" + car.getSeller_address(), 0, 1, true);
 		tvArea.setTextColor(getResources().getColor(R.color.holo_text));
 		tvArea.setGravity(Gravity.CENTER);
 		tvArea.setMinHeight(ResizeUtils.getSpecificLength(64));

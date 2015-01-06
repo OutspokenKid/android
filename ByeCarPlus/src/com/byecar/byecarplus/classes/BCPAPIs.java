@@ -36,4 +36,13 @@ public class BCPAPIs {
 	
 	public static String NOTICE_URL = BASE_API_URL + "/posts/notices.json";
 	public static String FAQ_URL = BASE_API_URL + "/posts/faqs.json";
+	
+	public static String MY_CAR_URL = BASE_API_URL + "/users/mine/onsalecars.json";
+	public static String MY_REVIEW_URL = BASE_API_URL + "/users/mine/reviews.json";
+	
+	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
+	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";
+	public static String PHONE_UPDATE_URL = BASE_API_URL + "/users/update/phone_number.json";
+	
+	public static String SIGN_OUT_URL = BASE_API_URL + "/users/logout.json";
 }

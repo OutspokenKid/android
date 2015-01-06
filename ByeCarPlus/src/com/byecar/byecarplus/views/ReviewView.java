@@ -111,8 +111,8 @@ public class ReviewView extends LinearLayout {
 	
 	public void setReview(Review review) {
 		
-		tvNickname.setText(review.getReviewer_nickname());
+		tvNickname.setText(review.getReviewer_name());
 		tvContent.setText(review.getContent());
-		tvRegdate.setText(StringUtils.getDateString("yyyy. MM. DD", review.getCreated_at()));
+		tvRegdate.setText(StringUtils.getDateString("yyyy년 MM월 dd일", review.getCreated_at() * 1000));
 	}
 }

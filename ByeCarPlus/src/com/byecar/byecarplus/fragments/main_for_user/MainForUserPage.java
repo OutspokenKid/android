@@ -119,24 +119,39 @@ public class MainForUserPage extends BCPFragment {
 	    updateTime = new Runnable() {
 
 	    	//지난 시간.
-	    	private int passTime;
+	    	private long passTime;
 	    	
 	    	//남은 시간.
-	    	private int remainTime;
+	    	private long remainTime;
 	    	
 	        public void run() {
 	        	
 	        	if(bids.size() > 0) {
 	        		
 	        		/* 24시간 기준. 24h = 86400s.
-		        	 * bid_until_at - (현재시간) = (남은 시간)
+		        	 * remainTime = bid_until_at - (현재 시간 / 1000) = (남은 시간) [초]
 		        	 * 24시간 - (남은 시간) = (지난 시간).
+		        	 * 
+		        	 * 11시간 11분 11초
+		        	 * 시간 : 60초 * 60분
+		        	 * 분 : 60초
+		        	 * 초 : 1초
+		        	 * 
+		        	 * 11 * 60초 * 60분 = 11시간 = 11 * 3600 = 39600
+		        	 * 11 * 60초 = 11분 = 11 * 60 = 660
+		        	 * 11초 = 11초 = 11
+		        	 * 
+		        	 * 합계 = 40271
+		        	 * 
+		        	 * 40271 / 3600 = 11
+		        	 * 40271 % 3600 / 60 = 11
+		        	 * 40271 % 3600 % 60 = 11
 		        	 * 
 		        	 * s 단위임.
 		        	 */
 		        	Car currentCar = bids.get(viewPager.getCurrentItem());
-		        	remainTime = (int)(currentCar.getBid_until_at()
-		        			- (System.currentTimeMillis() / 1000));
+		        	remainTime = currentCar.getBid_until_at()
+		        			- (System.currentTimeMillis() / 1000);
 		        	passTime = 86400 - remainTime;
 		        	
 		        	if(remainTime <= 0) {
@@ -144,10 +159,11 @@ public class MainForUserPage extends BCPFragment {
 		        		return;
 		        	}
 		        	
-		        	String formattedRemainTime = StringUtils.getDateString("hh : mm : ss", remainTime * 1000);
-		        	
+		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime * 1000);
 		        	tvRemainTime.setText(formattedRemainTime);
-		        	progressBar.setProgress(passTime);
+		        	
+		        	int percentage = (int)((double)passTime / 86400d * 10000);
+		        	progressBar.setProgress(percentage);
 	        	}
 	        }
 	    };
@@ -225,6 +241,7 @@ public class MainForUserPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("id", bids.get(position).getId());
+				bundle.putInt("type", Car.TYPE_AUCTION);
 				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 			}
 		});
@@ -234,13 +251,9 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-//				Bundle bundle = new Bundle();
-//				bundle.putInt("type", Car.TYPE_AUCTION);
-//				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-				
 				Bundle bundle = new Bundle();
-				bundle.putInt("id", 13);
-				mActivity.showPage(BCPConstants.PAGE_SELECT_BID, bundle);
+				bundle.putInt("type", Car.TYPE_AUCTION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
 	
@@ -306,11 +319,6 @@ public class MainForUserPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(12);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 		
-		//remainBg.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_remainBg).getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(147);
-		rp.topMargin = -2;
-		
 		//progressBar.
 		rp = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(30);
@@ -334,31 +342,43 @@ public class MainForUserPage extends BCPFragment {
 		rp.leftMargin = -ResizeUtils.getSpecificLength(10);
 		rp.topMargin = ResizeUtils.getSpecificLength(7);
 		
+		//remainBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_remainBg).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(147);
+		
 		//tvCarInfo1.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo1.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		
+		//line.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_line).getLayoutParams();
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
 		//tvCarInfo2.
 		rp = (RelativeLayout.LayoutParams) tvCarInfo2.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(340);
 		rp.height = ResizeUtils.getSpecificLength(57);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//tvCurrentPrice.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.topMargin = ResizeUtils.getSpecificLength(26);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvCurrentPriceText.
 		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(4);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(4);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//btnAuction.
 		rp = (RelativeLayout.LayoutParams) btnAuction.getLayoutParams();
@@ -497,6 +517,16 @@ public class MainForUserPage extends BCPFragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+
+		scrollView.setOnScrollChangedListener(null);
+		viewPager.setOnPageChangeListener(null);
+		imagePagerAdapter.setOnPagerItemClickedListener(null);
+		
+		super.onDestroyView();
+	}
+	
+	@Override
 	public int getRootViewResId() {
 
 		return R.id.mainForUserPage_mainLayout;
@@ -609,9 +639,12 @@ public class MainForUserPage extends BCPFragment {
 					@Override
 					public void onClick(View view) {
 
-						Bundle bundle = new Bundle();
-						bundle.putInt("id", bids.get(INDEX).getId());
-						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						if(INDEX < bids.size()) {
+							Bundle bundle = new Bundle();
+							bundle.putInt("id", dealers.get(INDEX).getId());
+							bundle.putInt("type", Car.TYPE_USED);
+							mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						}
 					}
 				});
 				usedCarViews[i].downloadImage(dealers.get(i).getRep_img_url());

@@ -19,6 +19,8 @@ public class BCPConstants {
 	public static final int ITEM_CAR_DIRECT_NORMAL = 23;
 	public static final int ITEM_CAR_BRAND = 11;
 	public static final int ITEM_CAR_TEXT = 12;
+	public static final int ITEM_CAR_MY = 13;
+	public static final int ITEM_REVIEW = 14;
 	
 	//Pages for sign.
 	public static final int PAGE_SIGN = 1;
@@ -43,8 +45,11 @@ public class BCPConstants {
 	public static final int PAGE_COMMON_DEALER_CERTIFIER = 14;
 	public static final int PAGE_COMMON_ASK = 16;
 	public static final int PAGE_COMMON_SETTING = 17;
-	public static final int PAGE_SEARCH_CAR = 18;
+	public static final int PAGE_TYPE_SEARCH_CAR = 18;
 	public static final int PAGE_OPENABLE_POST_LIST = 19;
 	
 	public static final int PAGE_SELECT_BID = 21;
+	public static final int PAGE_SEARCH_CAR = 22;
+	public static final int PAGE_MY = 23;
+	public static final int PAGE_LIGHT = 24;
 }

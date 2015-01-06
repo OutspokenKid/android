@@ -19,7 +19,6 @@
         android:layout_height="0dp"
         android:layout_below="@id/carRegistrationPage_titleBar"
         android:max="100"
-        android:progress="50"
         android:progressDrawable="@drawable/progressbar_custom_red" />
     
     <TextView
@@ -68,7 +67,6 @@
 		        android:layout_alignParentTop="true"
 		        android:padding="10dp"
 		        android:gravity="center"
-		        android:text="@string/writeAllContentForRegistration"
 		        android:textColor="@color/holo_text_hint" />
             
             <TextView
@@ -139,6 +137,14 @@
 		        android:layout_below="@id/carRegistrationPage_tvCarPhoto"
 		        android:background="@drawable/registration_photo1_btn" />
             
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarPhoto"
+		        android:scaleType="centerCrop" />
+            
             <Button 
                 android:id="@+id/carRegistrationPage_btnCarPhoto2"
 		        android:layout_width="0dp"
@@ -146,6 +152,14 @@
 		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto1"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto1"
 		        android:background="@drawable/registration_photo2_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto1"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto1"
+		        android:scaleType="centerCrop" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnCarPhoto3"
@@ -155,6 +169,14 @@
 		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto2"
 		        android:background="@drawable/registration_photo2_btn" />
             
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto2"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto2"
+		        android:scaleType="centerCrop" />
+            
             <Button 
                 android:id="@+id/carRegistrationPage_btnCarPhoto4"
 		        android:layout_width="0dp"
@@ -162,6 +184,14 @@
 		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto3"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto3"
 		        android:background="@drawable/registration_photo2_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto3"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto3"
+		        android:scaleType="centerCrop" />
             
             <TextView
 		        android:id="@+id/carRegistrationPage_tvMainImage"
@@ -486,6 +516,14 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carRegistrationPage_immediatlySale"
 		        android:background="@drawable/registration_complete_btn" />
+			
+			<Button 
+			    android:id="@+id/carRegistrationPage_btnRequest"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_immediatlySale"
+		        android:background="@drawable/demand_complete_btn" />
 			
 			<!-- Bottom blank. -->
 			

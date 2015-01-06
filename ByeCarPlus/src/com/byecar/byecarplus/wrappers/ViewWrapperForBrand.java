@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
+import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
 import com.byecar.byecarplus.models.Brand;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -70,18 +70,22 @@ public class ViewWrapperForBrand extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-	
+		
+		if(brand != null && !brand.isNeedClickListener()) {
+			return;
+		}
+		
 		try {
 			row.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View arg0) {
-
+					
 					if(mActivity != null) {
 						Bundle bundle = new Bundle();
-						bundle.putInt("type", SearchCarPage.TYPE_MODELGROUP);
+						bundle.putInt("type", TypeSearchCarPage.TYPE_MODELGROUP);
 						bundle.putInt("brand_id", brand.getId());
-						mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
+						mActivity.showPage(BCPConstants.PAGE_TYPE_SEARCH_CAR, bundle);
 					}
 				}
 			});

@@ -11,8 +11,8 @@ import android.support.v4.app.FragmentTransaction;
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.LogUtils;
 
 public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	

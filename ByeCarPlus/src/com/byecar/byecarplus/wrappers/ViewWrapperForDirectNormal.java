@@ -2,7 +2,6 @@ package com.byecar.byecarplus.wrappers;
 
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 
@@ -12,7 +11,6 @@ import com.byecar.byecarplus.views.NormalCarView;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForDirectNormal extends ViewWrapper {
 
@@ -50,17 +48,6 @@ public class ViewWrapperForDirectNormal extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-
-		if(car != null) {
-			normalCarView.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					ToastUtils.showToast("normalCarView clicked");
-				}
-			});
-		}
 	}
 
 	@Override

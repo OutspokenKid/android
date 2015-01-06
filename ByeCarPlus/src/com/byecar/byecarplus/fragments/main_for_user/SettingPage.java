@@ -2,6 +2,7 @@ package com.byecar.byecarplus.fragments.main_for_user;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -9,6 +10,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
@@ -67,6 +69,24 @@ public class SettingPage extends BCPFragment {
 					alarmOn.setVisibility(View.VISIBLE);
 					alarmOff.setVisibility(View.INVISIBLE);
 				}
+			}
+		});
+
+		btnSignOut.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.signOut, R.string.wannaSignOut, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						((MainForUserActivity)mActivity).signOut();
+					}
+				}, null);
 			}
 		});
 	}

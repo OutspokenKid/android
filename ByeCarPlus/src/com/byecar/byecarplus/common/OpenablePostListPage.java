@@ -169,6 +169,14 @@ public class OpenablePostListPage extends BCPFragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+
+		listView.setOnScrollListener(null);
+		
+		super.onDestroyView();
+	}
+	
+	@Override
 	public int getRootViewResId() {
 
 		return R.id.openablePostList_mainLayout;

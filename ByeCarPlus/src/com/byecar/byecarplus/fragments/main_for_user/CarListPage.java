@@ -34,8 +34,10 @@ public class CarListPage extends BCPFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
-	private Button btnResistration;
+	private Button btnRegistration;
+	private Button btnRequestCertification;
 	private Button btnGuide;
+	private Button btnSearch;
 	
 	private AlphaAnimation aaIn, aaOut;
 	
@@ -51,8 +53,10 @@ public class CarListPage extends BCPFragment {
 		
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.carListPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.carListPage_listView);
-		btnResistration = (Button) mThisView.findViewById(R.id.carListPage_btnRegistration);
+		btnRegistration = (Button) mThisView.findViewById(R.id.carListPage_btnRegistration);
+		btnRequestCertification = (Button) mThisView.findViewById(R.id.carListPage_btnRequestCertification);
 		btnGuide = (Button) mThisView.findViewById(R.id.carListPage_btnGuide);
+		btnSearch = (Button) mThisView.findViewById(R.id.carListPage_btnSearch);
 	}
 
 	@Override
@@ -75,6 +79,18 @@ public class CarListPage extends BCPFragment {
 		if(type != Car.TYPE_DIRECT_NORMAL) {
 			titleBar.setBgColor(Color.WHITE);
 			titleBar.setBgAlpha(0);
+		}
+		
+		if(type != Car.TYPE_AUCTION) {
+			btnSearch.setVisibility(View.VISIBLE);
+		} else {
+			btnSearch.setVisibility(View.INVISIBLE);
+		}
+
+		if(type == Car.TYPE_AUCTION) {
+			btnRegistration.setVisibility(View.VISIBLE);
+		} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
+			btnRequestCertification.setVisibility(View.VISIBLE);
 		}
 		
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
@@ -101,16 +117,26 @@ public class CarListPage extends BCPFragment {
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				
-				if(scrollState == 0 && lastStatus != 0) {
-					btnResistration.setVisibility(View.VISIBLE);
-					btnResistration.startAnimation(aaIn);
-					
-				} else if(scrollState != 0 && lastStatus == 0) {
-					btnResistration.setVisibility(View.INVISIBLE);
-					btnResistration.startAnimation(aaOut);
+				View target = null;
+				
+				if(type == Car.TYPE_AUCTION) {
+					target = btnRegistration;
+				} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
+					target = btnRequestCertification;
 				}
 				
-				lastStatus = scrollState;
+				if(target != null) {
+					if(scrollState == 0 && lastStatus != 0) {
+						target.setVisibility(View.VISIBLE);
+						target.startAnimation(aaIn);
+						
+					} else if(scrollState != 0 && lastStatus == 0) {
+						target.setVisibility(View.INVISIBLE);
+						target.startAnimation(aaOut);
+					}
+					
+					lastStatus = scrollState;
+				}
 			}
 			
 			@Override
@@ -136,6 +162,7 @@ public class CarListPage extends BCPFragment {
 				try {
 					Bundle bundle = new Bundle();
 					bundle.putInt("id", ((Car) models.get(position)).getId());
+					bundle.putInt("type", type);
 					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -162,12 +189,25 @@ public class CarListPage extends BCPFragment {
 			}
 		});
 		
-		btnResistration.setOnClickListener(new OnClickListener() {
+		btnRegistration.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("등록");
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+			}
+		});
+		
+		btnRequestCertification.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
 		
@@ -177,6 +217,15 @@ public class CarListPage extends BCPFragment {
 			public void onClick(View view) {
 
 				ToastUtils.showToast("가이드");
+			}
+		});
+
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, null);
 			}
 		});
 	}
@@ -192,8 +241,13 @@ public class CarListPage extends BCPFragment {
 			rp.topMargin = ResizeUtils.getSpecificLength(88);
 		}
 		
-		//btnResistration.
-		rp = (RelativeLayout.LayoutParams) btnResistration.getLayoutParams();
+		//btnRegistration.
+		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		
+		//btnRequestCertification.
+		rp = (RelativeLayout.LayoutParams) btnRequestCertification.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(120);
 		
@@ -202,6 +256,12 @@ public class CarListPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(60);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		
+		//btnSearch.
+		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 	}
 
@@ -349,6 +409,16 @@ public class CarListPage extends BCPFragment {
 		}
 	}
 
+	@Override
+	public void onDestroyView() {
+
+		listView.setOnScrollListener(null);
+		listView.setOnItemClickListener(null);
+		swipeRefreshLayout.setOnRefreshListener(null);
+		
+		super.onDestroyView();
+	}
+	
 	@Override
 	public int getRootViewResId() {
 

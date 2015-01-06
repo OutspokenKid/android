@@ -44,7 +44,7 @@
         		android:layout_width="match_parent"
     			android:layout_height="0dp"
     			android:layout_below="@id/directMarketPage_viewPager"
-    			android:background="@drawable/main_car_info_img1_bg" />
+    			android:background="#fff" />
             
             <TextView 
                 android:id="@+id/directMarketPage_tvCarInfo1"
@@ -54,8 +54,15 @@
     			android:layout_alignTop="@id/directMarketPage_remainBg"
     			android:singleLine="true"
     			android:ellipsize="end"
-    			android:textColor="#fff"
+    			android:textColor="@color/holo_text"
     			android:gravity="bottom|left" />
+            
+            <View 
+                android:id="@+id/directMarketPage_line"
+        		android:layout_width="match_parent"
+    			android:layout_height="1px"
+    			android:layout_below="@id/directMarketPage_tvCarInfo1"
+    			android:background="@color/color_ltgray" />
             
             <TextView 
                 android:id="@+id/directMarketPage_tvCarInfo2"
@@ -65,7 +72,7 @@
     			android:layout_below="@id/directMarketPage_tvCarInfo1"
     			android:singleLine="true"
     			android:ellipsize="end"
-    			android:textColor="#fff"
+    			android:textColor="@color/holo_text"
     			android:gravity="top|left" />
             
             <TextView
@@ -76,7 +83,7 @@
     			android:layout_alignTop="@id/directMarketPage_remainBg"
     			android:singleLine="true"
     			android:ellipsize="end"
-    			android:textColor="#fff" />
+    			android:textColor="@color/color_orange2" />
             
             <TextView
                 android:id="@+id/directMarketPage_tvCurrentPriceText"
@@ -85,7 +92,7 @@
     			android:layout_toLeftOf="@id/directMarketPage_tvCurrentPrice"
     			android:layout_alignBottom="@id/directMarketPage_tvCurrentPrice"
     			android:text="@string/currentPrice"
-    			android:textColor="#fff" />
+    			android:textColor="@color/color_orange2" />
             
             <Button 
                 android:id="@+id/directMarketPage_btnCertified"

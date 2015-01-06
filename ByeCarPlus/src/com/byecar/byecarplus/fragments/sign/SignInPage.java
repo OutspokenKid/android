@@ -206,6 +206,20 @@ public class SignInPage extends BCPFragmentForSign {
 	}
 	
 	@Override
+	public int getRootViewResId() {
+
+		return R.id.signInPage_mainLayout;
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		fbFrame.removeAllViews();
+		kkFrame.removeAllViews();
+	}
+	
+	@Override
 	public void onDetach() {
 		super.onDetach();
 		
@@ -216,12 +230,6 @@ public class SignInPage extends BCPFragmentForSign {
 		if(kf != null) {
 			kf.logout();
 		}
-	}
-	
-	@Override
-	public int getRootViewResId() {
-
-		return R.id.signInPage_mainLayout;
 	}
 	
 //////////////////// Custom methods.

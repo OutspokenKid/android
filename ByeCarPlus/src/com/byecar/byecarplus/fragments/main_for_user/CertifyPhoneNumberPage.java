@@ -9,10 +9,15 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
@@ -28,6 +33,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	private Button btnConfirm;
 
 	private int mode;
+	private String requestedPhoneNumber; 
 	
 	@Override
 	public void bindViews() {
@@ -65,11 +71,8 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 			public void onClick(View view) {
 
 				if(mode == MODE_PHONE_NUMBER) {
-					
+
 					if(checkPhoneNumberLength()) {
-						etCertificationNumber.getEditText().requestFocus();
-						btnConfirm.setBackgroundResource(R.drawable.phone_confirm_btn);
-						mode = MODE_CERTIFICATION_NUMBER;
 						sendCertiyingMessage();
 					} else {
 						ToastUtils.showToast(R.string.checkPhoneNumber);
@@ -169,7 +172,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	@Override
 	public int getRootViewResId() {
 
-		return R.id.certifiedRegistrationPage_mainLayout;
+		return R.id.certifyPhoneNumberPage_mainLayout;
 	}
 	
 //////////////////// Custom methods.
@@ -196,9 +199,116 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	
 	public void sendCertiyingMessage() {
 		
+		final String PHONE_NUMBER = etPhoneNumber.getEditText().getText().toString();
+		String url = BCPAPIs.PHONE_AUTH_REQUEST_URL
+				+ "?no_sms=0"
+				+ "&phone_number=" + PHONE_NUMBER;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CertifyPhoneNumberPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSendSMS);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_sendSMS);
+						etCertificationNumber.getEditText().requestFocus();
+						btnConfirm.setBackgroundResource(R.drawable.phone_confirm_btn);
+						mode = MODE_CERTIFICATION_NUMBER;
+						requestedPhoneNumber = PHONE_NUMBER;
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSendSMS);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSendSMS);
+				}
+			}
+		});
 	}
 	
 	public void requestCertifying() {
 		
+		final String RESPONSE_KEY = etCertificationNumber.getEditText().getText().toString();
+		
+		//http://byecar.minsangk.com/users/auth/response?phone_number=010-2082-1803&response_key=1234
+		String url = BCPAPIs.PHONE_AUTH_RESPONSE_URL
+				+ "?phone_number=" + requestedPhoneNumber
+				+ "&response_key=" + RESPONSE_KEY;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CertifyPhoneNumberPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSendAuthRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						updatePhoneNumber(objJSON.getJSONObject("authResponse").getString("phone_auth_key"));
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				}
+			}
+		});
+	}
+	
+	public void updatePhoneNumber(String phone_auth_key) {
+
+		String url = BCPAPIs.PHONE_UPDATE_URL
+				+ "?phone_auth_key=" + phone_auth_key;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CertifyPhoneNumberPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSendAuthRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					ToastUtils.showToast(R.string.complete_auth);
+					((MainForUserActivity) mActivity).getUser().setPhone_number(requestedPhoneNumber);
+					mActivity.closeTopPage();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				}
+			}
+		});
 	}
 }
