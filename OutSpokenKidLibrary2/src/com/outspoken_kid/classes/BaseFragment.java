@@ -54,7 +54,9 @@ public abstract class BaseFragment extends Fragment
 		
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onCreate.  ");
 		
-		mContext = getActivity();
+		if(mContext == null) {
+			mContext = getActivity();
+		}
 		
 		try {
 			setVariables();
@@ -75,7 +77,12 @@ public abstract class BaseFragment extends Fragment
 			return null;
 		}
 		
-		mThisView = inflater.inflate(getContentViewId(), null);
+		if(mThisView == null) {
+			mThisView = inflater.inflate(getContentViewId(), null);
+		} else {
+			((ViewGroup)mThisView.getParent()).removeView(mThisView);
+		}
+		
 		bindViews();
 		createPage();
 		
@@ -84,6 +91,7 @@ public abstract class BaseFragment extends Fragment
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		
 		super.onActivityCreated(savedInstanceState);
 		
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onActivityCreated.  ");
@@ -132,7 +140,6 @@ public abstract class BaseFragment extends Fragment
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onDestroyView.  ");
 	}
 	
@@ -147,6 +154,8 @@ public abstract class BaseFragment extends Fragment
 	public void onDetach() {
 		super.onDetach();
 
+		mContext = null;
+		mThisView = null;
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onDetach.  ");
 	}
 	

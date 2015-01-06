@@ -11,6 +11,7 @@ public abstract class BaseModel {
 	
 	private int indexno;
 	private int itemCode;
+	private boolean needClickListener = true;
 
 	public int getIndexno() {
 		return indexno;
@@ -23,5 +24,11 @@ public abstract class BaseModel {
 	}
 	public void setItemCode(int itemCode) {
 		this.itemCode = itemCode;
+	}
+	public boolean isNeedClickListener() {
+		return needClickListener;
+	}
+	public void setNeedClickListener(boolean needClickListener) {
+		this.needClickListener = needClickListener;
 	}
 }

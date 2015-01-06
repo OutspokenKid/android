@@ -116,7 +116,7 @@ public class ViewUnbindHelper {
         try {
             view.setOnClickListener(null);
         } catch (Exception ignore) {}
- 
+        
         try {
             view.setTouchDelegate(null);
         } catch (Exception ignore) {}

@@ -15,20 +15,9 @@ import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.outspoken_kid.fragment.sns.FacebookFragment;
-import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
-import com.outspoken_kid.fragment.sns.KakaoFragment;
-import com.outspoken_kid.fragment.sns.KakaoFragment.KakaoUserInfo;
-import com.outspoken_kid.fragment.sns.NaverFragment;
-import com.outspoken_kid.fragment.sns.NaverFragment.NaverUserInfo;
-import com.outspoken_kid.fragment.sns.SNSFragment.OnAfterSignInListener;
-import com.outspoken_kid.fragment.sns.TwitterFragment;
-import com.outspoken_kid.fragment.sns.TwitterFragment.TwitterUserInfo;
-import com.outspoken_kid.model.SNSUserInfo;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -103,10 +92,12 @@ public class SignInActivity extends ZonecommsFragmentActivity {
 		
 		SpannableStringBuilder sp2 = new SpannableStringBuilder("\n하나의 아이디로 사용가능합니다.");
 		tvNSeries.append(sp2); 
-		
+
+		etId.getEditText().setSingleLine();
 		etId.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		etId.setHint(R.string.id);
 		
+		etPw.getEditText().setSingleLine();
 		etPw.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		etPw.getEditText().setTransformationMethod(PasswordTransformationMethod.getInstance());
 		etPw.setHint(R.string.password);

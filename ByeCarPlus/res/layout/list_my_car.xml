@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView 
+        android:id="@+id/list_my_car_ivImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/directmarket_default" />
+    
+    <View
+        android:id="@+id/list_my_car_cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/mypage_frame" />
+    
+    <View
+        android:id="@+id/list_my_car_typeIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@id/list_my_car_cover"
+        android:layout_alignTop="@id/list_my_car_cover" />
+    
+    <View
+        android:id="@+id/list_my_car_statusIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/list_my_car_cover"
+        android:layout_toRightOf="@id/list_my_car_typeIcon" />
+
+    <TextView
+        android:id="@+id/list_my_car_tvRegdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/list_my_car_cover"
+        android:layout_alignTop="@id/list_my_car_cover"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/holo_text" />
+
+    <TextView
+        android:id="@+id/list_my_car_tvCarName"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/list_my_car_ivImage"
+        android:layout_toRightOf="@id/list_my_car_ivImage"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/holo_text" />
+
+    <TextView
+        android:id="@+id/list_my_car_tvYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/list_my_car_tvCarName"
+        android:layout_alignRight="@id/list_my_car_cover"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/holo_text" />
+
+    <TextView
+        android:id="@+id/list_my_car_tvInfo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_toRightOf="@id/list_my_car_ivImage"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:gravity="center_vertical"
+        android:textColor="@color/holo_text" />
+    
+</RelativeLayout>

@@ -105,7 +105,6 @@ public class HoloStyleEditText extends FrameLayout {
 	protected void onDraw(Canvas canvas) {
 		
 		if(paint == null) {
-			
 			paint = new Paint();
 			paint.setColor(HoloConstants.COLOR_HOLO_TARGET_ON);
 		}
@@ -114,14 +113,6 @@ public class HoloStyleEditText extends FrameLayout {
 			paint2 = new Paint();
 			paint2.setColor(HoloConstants.COLOR_HOLO_TARGET_OFF);
 		}
-
-		/*
-		01-04 20:57:15.829: I/notice(4802): width : 303
-		01-04 20:57:15.829: I/notice(4802): height : 78
-		01-04 20:57:15.829: I/notice(4802):  lengthOn : 4
-		01-04 20:57:15.829: I/notice(4802):  lengthOff : 3
-		01-04 20:57:15.829: I/notice(4802):  padding : 9
-		*/
 		
 		if(editText.isFocused()) {
 			
