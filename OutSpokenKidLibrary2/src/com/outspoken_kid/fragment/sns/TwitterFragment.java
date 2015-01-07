@@ -83,7 +83,7 @@ public abstract class TwitterFragment extends SNSFragment {
 			}
 		});
         
-        getWebBrowser().putAction("http://clubvera.twitter.oauth.response", 
+        getWebBrowser().putAction("http://clubanswer.twitter.oauth.response", 
         		new OnActionWithKeywordListener() {
 			
 			@Override
@@ -95,7 +95,7 @@ public abstract class TwitterFragment extends SNSFragment {
 						" \n\n########################");
 				getWebBrowser().close();
 				
-				//http://clubvera.twitter.oauth.response/?oauth_token=GpN5ttV3GaZ9OXZ3f6Lb45UoOJPxw3j0&oauth_verifier=beL0EAePg7PmUXCI2ZLMU3bwDEGGBZ4J 
+				//http://clubanswer.twitter.oauth.response/?oauth_token=GpN5ttV3GaZ9OXZ3f6Lb45UoOJPxw3j0&oauth_verifier=beL0EAePg7PmUXCI2ZLMU3bwDEGGBZ4J 
 				Uri uri = Uri.parse(url);
 				Intent intent = new Intent();
 				intent.setData(uri);
