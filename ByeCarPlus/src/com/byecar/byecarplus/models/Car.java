@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
+
+import com.byecar.byecarplus.R;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -13,10 +16,10 @@ public class Car extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 6978779511721704607L;
 	
-	public static final int TYPE_AUCTION = 0;
-	public static final int TYPE_USED = 1;
-	public static final int TYPE_DIRECT_CERTIFIED = 2;
-	public static final int TYPE_DIRECT_NORMAL = 3;
+	public static final int TYPE_AUCTION = 1;
+	public static final int TYPE_USED = 2;
+	public static final int TYPE_DIRECT_CERTIFIED = 3;
+	public static final int TYPE_DIRECT_NORMAL = 4;
 	
 	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
 	public static final int STAND_BY = 0;
@@ -258,6 +261,129 @@ public class Car extends BaseModel implements Serializable {
 			LogUtils.trace(e);
 		}
 	}
+	
+	public static String getFuelTypeString(Context context, String origin) {
+		
+		if(context == null || origin == null) {
+			return null;
+		} else {
+			if(origin.equals("gasoline")) {
+				return context.getString(R.string.carSearchString_fuel1);
+			} else if(origin.equals("diesel")) {
+				return context.getString(R.string.carSearchString_fuel2);
+			} else {
+				return context.getString(R.string.carSearchString_fuel3);
+			}
+		}
+	}
+	
+	public void setFuelTypeString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_fuel1))) {
+				setFuel_type("gasoline");
+			} else if(text.equals(context.getString(R.string.carSearchString_fuel2))) {
+				setFuel_type("diesel");
+			} else {
+				setFuel_type("lpg");
+			}
+		}
+	}
+	
+	public static String getTransmissionTypeString(Context context, String origin) {
+		
+		if(context == null || origin == null) {
+			return null;
+		} else {
+			if(origin.equals("auto")) {
+				return context.getString(R.string.carSearchString_transmission1);
+			} else {
+				return context.getString(R.string.carSearchString_transmission2);
+			}
+		}
+	}
+	
+	public void setTransmissionTypeString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_transmission1))) {
+				setTransmission_type("auto");
+			} else {
+				setTransmission_type("manual");
+			}
+		}
+	}
+	
+	public static String getAccidentTypeString(Context context, int type) {
+		
+		if(context == null) {
+			return null;
+		} else {
+
+			switch(type) {
+			
+			case 0:
+				return context.getString(R.string.carSearchString_accident3);
+				
+			case 1:
+				return context.getString(R.string.carSearchString_accident2);
+				
+				default:
+					return context.getString(R.string.carSearchString_accident1);
+			}
+		}
+	}
+	
+	public void setAccidentType(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_accident3))) {
+				setHad_accident(0);
+			} else if(text.equals(context.getString(R.string.carSearchString_accident2))) {
+				setHad_accident(1);
+			} else {
+				setHad_accident(2);
+			}
+		}
+	}
+	
+	public static String getOneManOwnedTypeString(Context context, int type) {
+
+		if(context == null) {
+			return null;
+		} else {
+
+			if(type == 0) {
+				return context.getString(R.string.carSearchString_oneManOwned2);
+			} else {
+				return context.getString(R.string.carSearchString_oneManOwned1);
+			}
+		}
+	}
+	
+	public void setOneManOwnedType(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_oneManOwned2))) {
+				setIs_oneman_owned(0);
+			} else {
+				setIs_oneman_owned(1);
+			}
+		}
+	}
+
 	
 	public int getId() {
 		return id;

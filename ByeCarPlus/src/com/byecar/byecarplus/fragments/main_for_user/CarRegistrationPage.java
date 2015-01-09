@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -26,12 +27,14 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.CarModelDetailInfo;
 import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -48,6 +51,11 @@ public class CarRegistrationPage extends BCPFragment {
 	public static final int TYPE_REGISTRATION = 0;
 	public static final int TYPE_REQUEST_CERTIFICATION = 1;
 	public static final int TYPE_EDIT = 2;
+	
+	private int id;
+	private int carType;
+	private Car car;
+	private CarModelDetailInfo carModelDetailInfo;
 	
 	private ProgressBar progressBar;
 	private TextView tvPercentage;
@@ -82,7 +90,6 @@ public class CarRegistrationPage extends BCPFragment {
 	private View[] optionViews;
 	private boolean[] checked;
 	
-	private CarModelDetailInfo carModelDetailInfo;
 	private String[] carInfoStrings = new String[5];
 	
 	private int type;
@@ -185,7 +192,16 @@ public class CarRegistrationPage extends BCPFragment {
 	
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
+			
+			id = getArguments().getInt("id");
+			carType = getArguments().getInt("carType");
+			car = (Car) getArguments().getSerializable("car");
 		}
+		
+		//Test.
+		type = TYPE_EDIT;
+		id = 22;
+		carType = car.TYPE_AUCTION;
 	}
 
 	@Override
@@ -236,8 +252,7 @@ public class CarRegistrationPage extends BCPFragment {
 			btnComplete.setVisibility(View.VISIBLE);
 		}
 		
-		if(type == TYPE_REQUEST_CERTIFICATION
-				|| type == TYPE_EDIT) {
+		if(type == TYPE_REQUEST_CERTIFICATION) {
 			immediatlySale.setVisibility(View.GONE);
 			btnImmediatlySale.setVisibility(View.GONE);
 		}
@@ -342,8 +357,6 @@ public class CarRegistrationPage extends BCPFragment {
 				checkProgress();
 			}
 		});
-		
-		
 	
 		termOfUse.setOnClickListener(new OnClickListener() {
 
@@ -761,8 +774,18 @@ public class CarRegistrationPage extends BCPFragment {
 			addOptionButtons();
 		}
 		
+		if(type == TYPE_EDIT && car == null) {
+
+			if(id != 0) {
+				downloadCarInfo(carType);
+			} else if(car != null){
+				setCarInfo();
+			} else {
+				closePage();
+			}
+		}
+		
 		setDealerInfo();
-		checkCarInfos();
 		checkBundle();
 		checkProgress();		
 	}
@@ -853,6 +876,257 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 	}
 	
+	public void downloadCarInfo(int carType) {
+		
+		//다운로드 완료 후 setCarInfo, downloadCarDetailModelInfo 호출.
+		String url = null;
+		
+		switch(carType) {
+		
+		case Car.TYPE_AUCTION:
+			url = BCPAPIs.BID_SHOW_URL;
+			break;
+			
+		case Car.TYPE_USED:
+			url = BCPAPIs.DEALER_SHOW_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_CERTIFIED:
+			url = BCPAPIs.DIRECT_MARKET_CERTIFIED_SHOW_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_NORMAL:
+			url = BCPAPIs.DIRECT_MARKET_NORMAL_SHOW_URL;
+			break;
+		}
+		
+		if(url != null) {
+			url += "?onsalecar_id=" + id;
+		}
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarRegistrationPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					car = new Car(objJSON.getJSONObject("onsalecar"));
+					setCarInfo();
+					downloadCarDetailModelInfo();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void downloadCarDetailModelInfo() {
+		
+		String url = null;
+		
+		if(type == TYPE_EDIT && car != null) {
+			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
+					+ "?car_id=" + car.getCar_id();
+		} else if(type == TYPE_REGISTRATION) {
+			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
+					+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
+		}
+		
+		DownloadUtils.downloadJSONString(url,
+			new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
+
+				}
+
+				@Override
+				public void onCompleted(String url,
+						JSONObject objJSON) {
+
+					try {
+						LogUtils.log("CarRegistrationPage.onCompleted."
+								+ "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						carModelDetailInfo = new CarModelDetailInfo(objJSON.getJSONObject("car"));
+						
+						if(car != null) {
+							//연식.
+							carInfoStrings[0] = "" + car.getYear();
+							
+							//연료.
+							carInfoStrings[1] = Car.getFuelTypeString(mContext, car.getFuel_type()); 
+
+							//변속기.
+							carInfoStrings[2] = Car.getTransmissionTypeString(mContext, car.getTransmission_type());
+							
+							//사고유무.
+							carInfoStrings[3] = Car.getAccidentTypeString(mContext, car.getHad_accident());
+							
+							//1인신조.
+							carInfoStrings[4] = Car.getOneManOwnedTypeString(mContext, car.getIs_oneman_owned());
+						}
+						
+						setBtnCarInfos();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+	}
+	
+	public void setCarInfo() {
+		
+		if(car != null) {
+			
+			//차량 메인 사진.
+			if(car.getM_images() != null 
+					&& car.getM_images().length > 0) {
+
+				int size = car.getM_images().length;
+				for(int i=0; i<size; i++) {
+					final ImageView target = ivPhotos[i];
+
+					String url = car.getM_images()[i];
+					target.setTag(url);
+					DownloadUtils.downloadBitmap(url,
+							new OnBitmapDownloadListener() {
+
+								@Override
+								public void onError(String url) {
+
+									LogUtils.log("CarRegistrationPage.onError." + "\nurl : "
+											+ url);
+
+									// TODO Auto-generated method stub		
+								}
+
+								@Override
+								public void onCompleted(String url,
+										Bitmap bitmap) {
+
+									try {
+										LogUtils.log("CarRegistrationPage.onCompleted."
+												+ "\nurl : " + url);
+
+										if(bitmap != null && !bitmap.isRecycled()) {
+											target.setImageBitmap(bitmap);
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
+					selectedImageSdCardPaths[i] = url;
+				}
+			}
+
+			//차량 추가 사진.
+			if(car.getA_images() != null
+					&& car.getA_images().length > 0) {
+				int size = car.getA_images().length;
+				for(int i=0; i<size; i++) {
+					final ImageView target = ivPhotos[4 + i];
+					String url = car.getA_images()[i];
+					target.setTag(url);
+					DownloadUtils.downloadBitmap(car.getA_images()[i],
+							new OnBitmapDownloadListener() {
+
+								@Override
+								public void onError(String url) {
+
+									LogUtils.log("CarRegistrationPage.onError." + "\nurl : "
+											+ url);
+
+									// TODO Auto-generated method stub		
+								}
+
+								@Override
+								public void onCompleted(String url,
+										Bitmap bitmap) {
+
+									try {
+										LogUtils.log("CarRegistrationPage.onCompleted."
+												+ "\nurl : " + url);
+
+										if(bitmap != null && !bitmap.isRecycled()) {
+											target.setImageBitmap(bitmap);
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
+					selectedImageSdCardPaths[4 + i] = url;
+				}
+			}
+			
+			//차량번호.
+			etDetailCarInfos[0].getEditText().setText(car.getCar_number());
+			
+			//차량색상.
+			etDetailCarInfos[1].getEditText().setText(car.getColor());
+			
+			//거래 가능 지역.
+			etDetailCarInfos[2].getEditText().setText(car.getArea());
+			
+			//주행거리.
+			etDetailCarInfos[3].getEditText().setText("" + car.getMileage());
+			
+			//배기량.
+			etDetailCarInfos[4].getEditText().setText("" + car.getDisplacement());
+			
+			//차량 옵션 및 튜닝.
+			if(car.getOptions() != null) {
+				
+				int size = car.getOptions().length;
+				for(int i=0; i<size; i++) {
+					checked[car.getOptions()[i] - 1] = true;
+					optionViews[car.getOptions()[i] - 1].setBackgroundResource(
+							getResources().getIdentifier("detail_optioin" + car.getOptions()[i] + "_btn_b", 
+									"drawable", "com.byecar.byecarplus"));
+				}
+			}
+			
+			//판매자 차량설명.
+			etCarDescriptionFromDealer.setText(car.getDesc());
+			
+			//즉시 판매.
+			isImmediatlySaleClicked = car.getTo_sell_directly() == 1;
+			
+			if(isImmediatlySaleClicked) {
+				immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_b);
+			} else {
+				immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_a);
+			}
+			
+			//약관 동의.
+			isTermOfUseClicked = true;
+			termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_b);
+		}
+	}
+	
 	public void setProgress(int progressValue) {
 
 		progressValue = Math.min(progressValue, 100);
@@ -894,56 +1168,18 @@ public class CarRegistrationPage extends BCPFragment {
 		if(mActivity.bundle != null) {
 			int type = mActivity.bundle.getInt("type");
 			
-			switch(type) {
-			
-			case TypeSearchCarPage.TYPE_TRIM:
-				String url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
-				+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
-				DownloadUtils.downloadJSONString(url,
-					new OnJSONDownloadListener() {
-	
-						@Override
-						public void onError(String url) {
-	
-							LogUtils.log("AuctionRegistrationPage.onError." + "\nurl : " + url);
-	
-						}
-	
-						@Override
-						public void onCompleted(String url,
-								JSONObject objJSON) {
-	
-							try {
-								LogUtils.log("AuctionRegistrationPage.onCompleted."
-										+ "\nurl : " + url
-										+ "\nresult : " + objJSON);
-
-								carModelDetailInfo = new CarModelDetailInfo(objJSON.getJSONObject("car"));
-								checkCarInfos();
-							} catch (Exception e) {
-								LogUtils.trace(e);
-							} catch (OutOfMemoryError oom) {
-								LogUtils.trace(oom);
-							}
-						}
-					});
-				break;
-				
-			case TypeSearchCarPage.TYPE_YEAR:
-			case TypeSearchCarPage.TYPE_FUEL:
-			case TypeSearchCarPage.TYPE_TRANSMISSION:
-			case TypeSearchCarPage.TYPE_ACCIDENT:
-			case TypeSearchCarPage.TYPE_ONEMANOWNED:
+			if(type == TypeSearchCarPage.TYPE_TRIM) {
+				downloadCarDetailModelInfo();
+			} else {
 				carInfoStrings[type - 5] = mActivity.bundle.getString("text");
-				checkCarInfos();
-				break;
+				setBtnCarInfos();
 			}
 			
 			mActivity.bundle = null;
 		}
 	}
 
-	public void checkCarInfos() {
+	public void setBtnCarInfos() {
 		
 		if(carModelDetailInfo != null) {
 			btnCarInfos[0].setBackgroundResource(R.drawable.registration_car_info_box);
@@ -964,6 +1200,8 @@ public class CarRegistrationPage extends BCPFragment {
 			btnCarInfos[0].setBackgroundResource(R.drawable.registration_car_info1_btn);
 			btnCarInfos[0].setText(null);
 		}
+		
+		checkProgress();
 	}
 
 	public void setImageViewsOnClickListener() {
@@ -998,17 +1236,22 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		int progress = 0;
 		
+		LogUtils.log("###CarRegistrationPage.checkProgress.  ########################################");
+		
 		if(type == TYPE_EDIT|| type == TYPE_REGISTRATION) {
 			
 			//판매자 정보 인증 20.
 			if(tvDealerInfoCertified.getVisibility() == View.VISIBLE) {
 				progress += 20;
+				LogUtils.log("###CarRegistrationPage.checkProgress.  add 20 from certification.");
 			}
 			
 			//차량 사진 개당 5, 총 20.
 			for(int i=0; i<4; i++) {
 				if(selectedImageSdCardPaths[i] != null) {
 					progress += 5;
+					
+					LogUtils.log("###CarRegistrationPage.checkProgress.  add 5 from photo.");
 				}
 			}
 			
@@ -1017,6 +1260,12 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				if(btnCarInfos[i].length() > 0) {
 					progress += i==0? 5 : 3;
+					
+					if(i == 0) {
+						LogUtils.log("###CarRegistrationPage.checkProgress.  add 5 from search.");
+					} else {
+						LogUtils.log("###CarRegistrationPage.checkProgress.  add 3 from search.");
+					}
 				}
 			}
 			
@@ -1024,12 +1273,14 @@ public class CarRegistrationPage extends BCPFragment {
 			for(int i=0; i<5; i++) {
 				if(etDetailCarInfos[i].getEditText().length() > 0) {
 					progress += 4;
+					LogUtils.log("###CarRegistrationPage.checkProgress.  add 4 from detailInfo.");
 				}
 			}
 			
 			//판매자 차량설명 20.
 			if(etCarDescriptionFromDealer.length() > MIN_DESC_COUNT) {
 				progress += 20;
+				LogUtils.log("###CarRegistrationPage.checkProgress.  add 20 from desc.");
 			}
 		} else {
 
@@ -1055,6 +1306,19 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 		
 		setProgress(progress);
+	}
+
+	public void closePage() {
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				ToastUtils.showToast(R.string.failToLoadCarInfo);
+				mActivity.closeTopPage();
+			}
+		}, 1000);
 	}
 }
 

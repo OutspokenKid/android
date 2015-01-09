@@ -41,7 +41,7 @@ public class NormalCarView extends RelativeLayout {
 	private TextView tvPrice;
 
 	public void init() {
-
+		
 		ResizeUtils.viewResize(578, 132, this, 1, Gravity.CENTER_HORIZONTAL, null);
 
 		// ivImage.
@@ -110,7 +110,7 @@ public class NormalCarView extends RelativeLayout {
 	}
 
 	public void setCar(Car car) {
-
+		
 		if (car != null) {
 			LogUtils.log("###NormalCarView.setCar.  car is not null.");
 			downloadImage(car.getRep_img_url());
@@ -166,7 +166,7 @@ public class NormalCarView extends RelativeLayout {
 	}
 
 	public void setFrameToDefault() {
-
+		
 		ivImage.setImageDrawable(null);
 		tvCar.setText(R.string.standingByRegistration);
 		tvCarInfo.setText("--" + getContext().getString(R.string.year) + " / " + "--km");

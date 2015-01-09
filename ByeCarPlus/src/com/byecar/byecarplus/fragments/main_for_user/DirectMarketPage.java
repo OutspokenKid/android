@@ -342,7 +342,7 @@ public class DirectMarketPage extends BCPFragment {
 //////////////////// Custom methods.
 
 	public void addNormalCarViews() {
-	
+		
 		normalLinear.removeAllViews();
 		
 		int size = 3;
@@ -370,7 +370,7 @@ public class DirectMarketPage extends BCPFragment {
 	
 	public void downloadCertifiedList() {
 		
-		String url = BCPAPIs.DIRECT_MARKET_CERTIFIED_URL
+		String url = BCPAPIs.DIRECT_MARKET_CERTIFIED_LIST_URL
 				+ "?num=6";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -422,7 +422,7 @@ public class DirectMarketPage extends BCPFragment {
 	
 	public void downloadNormalList() {
 		
-		String url = BCPAPIs.DIRECT_MARKET_NORMAL_URL
+		String url = BCPAPIs.DIRECT_MARKET_NORMAL_LIST_URL
 				+ "?num=3";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

@@ -31,8 +31,10 @@ public class BCPAPIs {
 	public static String SEARCH_CAR_TRIM = BASE_API_URL + "/cars/trims.json";
 	public static String SEARCH_CAR_DETAIL_INFO = BASE_API_URL + "/cars/show.json";
 	
-	public static String DIRECT_MARKET_CERTIFIED_URL = BASE_API_URL + "/onsalecars/certified/list.json";
-	public static String DIRECT_MARKET_NORMAL_URL = BASE_API_URL + "/onsalecars/normal/list.json";
+	public static String DIRECT_MARKET_CERTIFIED_LIST_URL = BASE_API_URL + "/onsalecars/certified/list.json";
+	public static String DIRECT_MARKET_CERTIFIED_SHOW_URL = BASE_API_URL + "/onsalecars/certified/show.json";
+	public static String DIRECT_MARKET_NORMAL_LIST_URL = BASE_API_URL + "/onsalecars/normal/list.json";
+	public static String DIRECT_MARKET_NORMAL_SHOW_URL = BASE_API_URL + "/onsalecars/normal/show.json";
 	
 	public static String NOTICE_URL = BASE_API_URL + "/posts/notices.json";
 	public static String FAQ_URL = BASE_API_URL + "/posts/faqs.json";

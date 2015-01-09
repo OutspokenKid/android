@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -103,8 +104,13 @@ public class CarListPage extends BCPFragment {
         		Color.argb(255, 255, 255, 153));
         swipeRefreshLayout.setEnabled(true);
         
-        listView.setDivider(null);
-		listView.setDividerHeight(0);
+        if(type != Car.TYPE_DIRECT_NORMAL) {
+        	listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+    		listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
+        } else {
+        	listView.setDivider(null);
+    		listView.setDividerHeight(0);
+        }
 	}
 
 	@Override
@@ -333,11 +339,11 @@ public class CarListPage extends BCPFragment {
 			break;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.DIRECT_MARKET_CERTIFIED_URL;
+			url = BCPAPIs.DIRECT_MARKET_CERTIFIED_LIST_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
-			url = BCPAPIs.DIRECT_MARKET_NORMAL_URL;
+			url = BCPAPIs.DIRECT_MARKET_NORMAL_LIST_URL;
 			break;
 		}
 		
