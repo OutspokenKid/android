@@ -18,9 +18,11 @@ public class BCPAPIs {
 
 	public static String BIDS_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 	public static String BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
+	public static String BID_SAVE_URL = BASE_API_URL + "/onsalecars/bids/save.json";
 	
 	public static String DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
 	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
+	public static String DEALER_SAVE_URL = BASE_API_URL + "/dealers/save.json";
 	public static String DEALER_REVIEW_URL = BASE_API_URL + "/dealers/reviews.json";
 	
 	public static String EDIT_USER_INFO_UR_COMMON = BASE_API_URL + "/users/update/additional_info.json";
@@ -33,8 +35,10 @@ public class BCPAPIs {
 	
 	public static String DIRECT_MARKET_CERTIFIED_LIST_URL = BASE_API_URL + "/onsalecars/certified/list.json";
 	public static String DIRECT_MARKET_CERTIFIED_SHOW_URL = BASE_API_URL + "/onsalecars/certified/show.json";
+	public static String DIRECT_MARKET_CERTIFIED_SAVE_URL = BASE_API_URL + "/onsalecars/certified/save.json";
 	public static String DIRECT_MARKET_NORMAL_LIST_URL = BASE_API_URL + "/onsalecars/normal/list.json";
 	public static String DIRECT_MARKET_NORMAL_SHOW_URL = BASE_API_URL + "/onsalecars/normal/show.json";
+	public static String DIRECT_MARKET_NORMAL_SAVE_URL = BASE_API_URL + "/onsalecars/normal/save.json";
 	
 	public static String NOTICE_URL = BASE_API_URL + "/posts/notices.json";
 	public static String FAQ_URL = BASE_API_URL + "/posts/faqs.json";

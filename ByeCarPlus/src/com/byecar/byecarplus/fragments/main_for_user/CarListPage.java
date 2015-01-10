@@ -82,13 +82,13 @@ public class CarListPage extends BCPFragment {
 			titleBar.setBgAlpha(0);
 		}
 		
-		if(type != Car.TYPE_AUCTION) {
+		if(type != Car.TYPE_BID) {
 			btnSearch.setVisibility(View.VISIBLE);
 		} else {
 			btnSearch.setVisibility(View.INVISIBLE);
 		}
 
-		if(type == Car.TYPE_AUCTION) {
+		if(type == Car.TYPE_BID) {
 			btnRegistration.setVisibility(View.VISIBLE);
 		} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
 			btnRequestCertification.setVisibility(View.VISIBLE);
@@ -125,7 +125,7 @@ public class CarListPage extends BCPFragment {
 				
 				View target = null;
 				
-				if(type == Car.TYPE_AUCTION) {
+				if(type == Car.TYPE_BID) {
 					target = btnRegistration;
 				} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
 					target = btnRequestCertification;
@@ -202,6 +202,7 @@ public class CarListPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				bundle.putInt("carType", Car.TYPE_BID);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
@@ -213,6 +214,7 @@ public class CarListPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
+				bundle.putInt("carType", Car.TYPE_DIRECT_CERTIFIED);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
@@ -282,10 +284,10 @@ public class CarListPage extends BCPFragment {
 
 		switch(type) {
 		
-		case Car.TYPE_AUCTION:
+		case Car.TYPE_BID:
 			return R.drawable.auction_back_btn;
 			
-		case Car.TYPE_USED:
+		case Car.TYPE_DEALER:
 			return R.drawable.usedmarket_search_back_btn;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
@@ -303,10 +305,10 @@ public class CarListPage extends BCPFragment {
 
 		switch(type) {
 		
-		case Car.TYPE_AUCTION:
+		case Car.TYPE_BID:
 			return 251;
 			
-		case Car.TYPE_USED:
+		case Car.TYPE_DEALER:
 			return 216;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
@@ -330,11 +332,11 @@ public class CarListPage extends BCPFragment {
 		
 		switch(type) {
 		
-		case Car.TYPE_AUCTION:
+		case Car.TYPE_BID:
 			url = BCPAPIs.BIDS_LIST_URL;
 			break;
 			
-		case Car.TYPE_USED:
+		case Car.TYPE_DEALER:
 			url = BCPAPIs.DEALER_LIST_URL;
 			break;
 			
@@ -357,11 +359,11 @@ public class CarListPage extends BCPFragment {
 		int itemCode = 0;
 		
 		switch (type) {
-		case Car.TYPE_AUCTION:
-			itemCode = BCPConstants.ITEM_CAR_AUCTION;
+		case Car.TYPE_BID:
+			itemCode = BCPConstants.ITEM_CAR_BID;
 			break;
-		case Car.TYPE_USED:
-			itemCode = BCPConstants.ITEM_CAR_USED;
+		case Car.TYPE_DEALER:
+			itemCode = BCPConstants.ITEM_CAR_DEALER;
 			break;
 		case Car.TYPE_DIRECT_CERTIFIED:
 			itemCode = BCPConstants.ITEM_CAR_DIRECT_CERTIFIED;

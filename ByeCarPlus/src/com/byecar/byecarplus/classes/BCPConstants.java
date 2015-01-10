@@ -13,8 +13,8 @@ public class BCPConstants {
 	
 	public static final int ITEM_NOTICE = 1;
 	public static final int ITEM_FAQ = 2;
-	public static final int ITEM_CAR_AUCTION = 20;
-	public static final int ITEM_CAR_USED = 21;
+	public static final int ITEM_CAR_BID = 20;
+	public static final int ITEM_CAR_DEALER = 21;
 	public static final int ITEM_CAR_DIRECT_CERTIFIED = 22;
 	public static final int ITEM_CAR_DIRECT_NORMAL = 23;
 	public static final int ITEM_CAR_BRAND = 11;

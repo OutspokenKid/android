@@ -38,8 +38,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 		
 		switch (itemCode) {
 		
-		case BCPConstants.ITEM_CAR_AUCTION:
-		case BCPConstants.ITEM_CAR_USED:
+		case BCPConstants.ITEM_CAR_BID:
+		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
 			return R.layout.list_car;
 			
@@ -70,8 +70,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
 		
 		switch (itemCode) {
-		case BCPConstants.ITEM_CAR_AUCTION:
-		case BCPConstants.ITEM_CAR_USED:
+		case BCPConstants.ITEM_CAR_BID:
+		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
 			return new ViewWrapperForCar(convertView, itemCode);
 			

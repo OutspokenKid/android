@@ -201,7 +201,7 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 
-				if(car != null && type != Car.TYPE_AUCTION) {
+				if(car != null && type != Car.TYPE_BID) {
 					
 					switch(event.getAction()) {
 					
@@ -881,12 +881,12 @@ public class CarDetailPage extends BCPFragment {
 		
 		switch(type) {
 		
-		case Car.TYPE_AUCTION:
+		case Car.TYPE_BID:
 			addViewsForAuction();
 			showDesc();
 			break;
 			
-		case Car.TYPE_USED:
+		case Car.TYPE_DEALER:
 			addViewsForUsed();
 			showDesc();
 			break;
@@ -905,7 +905,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setDetailCarInfo() {
 
-		if(type == Car.TYPE_AUCTION) {
+		if(type == Car.TYPE_BID) {
 			auctionIcon.setVisibility(View.VISIBLE);
 			timeRelative.setVisibility(View.VISIBLE);
 			tvBidCount.setVisibility(View.VISIBLE);

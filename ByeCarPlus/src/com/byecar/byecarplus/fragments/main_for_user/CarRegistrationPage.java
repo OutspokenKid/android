@@ -6,6 +6,7 @@ import java.util.Locale;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -37,8 +38,11 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.ImageUploadUtils;
+import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
@@ -197,11 +201,6 @@ public class CarRegistrationPage extends BCPFragment {
 			carType = getArguments().getInt("carType");
 			car = (Car) getArguments().getSerializable("car");
 		}
-		
-		//Test.
-		type = TYPE_EDIT;
-		id = 22;
-		carType = car.TYPE_AUCTION;
 	}
 
 	@Override
@@ -235,6 +234,14 @@ public class CarRegistrationPage extends BCPFragment {
 			tvMainImageText.setVisibility(View.GONE);
 			tvAddedPhotoText.setVisibility(View.GONE);
 			lineAfterPhoto.setVisibility(View.GONE);
+
+			for(int i=2; i<6; i++) {
+				btnCarInfos[i].setVisibility(View.GONE);
+			}
+
+			etDetailCarInfos[1].setVisibility(View.GONE);
+			etDetailCarInfos[3].setVisibility(View.GONE);
+			etDetailCarInfos[4].setVisibility(View.GONE);
 			
 			relativeForOption.setVisibility(View.GONE);
 			lineAfterCarOption.setVisibility(View.GONE);
@@ -244,17 +251,16 @@ public class CarRegistrationPage extends BCPFragment {
 			tvTextCount.setVisibility(View.GONE);
 			
 			tvWriteAllContents.setText(R.string.writeAllContentForRequestCertification);
+			
+			immediatlySale.setVisibility(View.GONE);
+			btnImmediatlySale.setVisibility(View.GONE);
+			
 			btnRequest.setVisibility(View.VISIBLE);
 			btnComplete.setVisibility(View.INVISIBLE);
 		} else {
 			tvWriteAllContents.setText(R.string.writeAllContentForRegistration);
 			btnRequest.setVisibility(View.INVISIBLE);
 			btnComplete.setVisibility(View.VISIBLE);
-		}
-		
-		if(type == TYPE_REQUEST_CERTIFICATION) {
-			immediatlySale.setVisibility(View.GONE);
-			btnImmediatlySale.setVisibility(View.GONE);
 		}
 	}
 
@@ -400,7 +406,8 @@ public class CarRegistrationPage extends BCPFragment {
 					String text = getString(R.string.writeAllContentForRegistration);
 					ToastUtils.showToast(text.replace("*", ""));
 				} else {
-					register();
+					SoftKeyboardUtils.hideKeyboard(mContext, etCarDescriptionFromDealer);
+					uploadImages();
 				}
 			}
 		});
@@ -417,6 +424,7 @@ public class CarRegistrationPage extends BCPFragment {
 					String text = getString(R.string.writeAllContentForRegistration);
 					ToastUtils.showToast(text.replace("*", ""));
 				} else {
+					SoftKeyboardUtils.hideKeyboard(mContext, etCarDescriptionFromDealer);
 					requestCertification();
 				}
 			}
@@ -883,11 +891,11 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		switch(carType) {
 		
-		case Car.TYPE_AUCTION:
+		case Car.TYPE_BID:
 			url = BCPAPIs.BID_SHOW_URL;
 			break;
 			
-		case Car.TYPE_USED:
+		case Car.TYPE_DEALER:
 			url = BCPAPIs.DEALER_SHOW_URL;
 			break;
 			
@@ -936,10 +944,13 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		String url = null;
 		
-		if(type == TYPE_EDIT && car != null) {
-			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
-					+ "?car_id=" + car.getCar_id();
-		} else if(type == TYPE_REGISTRATION) {
+		if(type == TYPE_EDIT) {
+
+			if(car != null) {
+				url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
+						+ "?car_id=" + car.getCar_id();
+			}
+		} else {
 			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
 					+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
 		}
@@ -1169,6 +1180,8 @@ public class CarRegistrationPage extends BCPFragment {
 			int type = mActivity.bundle.getInt("type");
 			
 			if(type == TypeSearchCarPage.TYPE_TRIM) {
+				carInfoStrings[0] = null;
+				btnCarInfos[0].setText(null);
 				downloadCarDetailModelInfo();
 			} else {
 				carInfoStrings[type - 5] = mActivity.bundle.getString("text");
@@ -1224,14 +1237,264 @@ public class CarRegistrationPage extends BCPFragment {
 
 	public void register() {
 
-		((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REGISTRATION);
+		try {
+			String url = null;
+			
+			switch(carType) {
+				
+			case Car.TYPE_BID:
+				url = BCPAPIs.BID_SAVE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.DEALER_SAVE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_NORMAL:
+				url = BCPAPIs.DIRECT_MARKET_NORMAL_SAVE_URL;
+				break;
+			}
+			
+			if(url != null) {
+
+				StringBuilder sb = new StringBuilder("");
+				
+//				onsalecar[id] : 수정 시에만 기재
+				if(car != null) {
+					sb.append("?onsalecar[id]=" + car.getId());
+					sb.append("&");
+				} else {
+					sb.append("?");
+				}
+				
+				//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
+				sb.append("onsalecar[car_id]=").append(carModelDetailInfo.getId());
+				
+				//onsalecar[year] : 연식
+				sb.append("&onsalecar[year]=").append(carInfoStrings[0]);
+				
+				//onsalecar[fuel_type] : 연료 타입 (gasoline/diesel/lpg)
+				sb.append("&onsalecar[fuel_type]=").append(Car.getFuelOriginString(mContext, carInfoStrings[1]));
+				
+				//onsalecar[transmission_type] : 기어 타입 (auto/manual)
+				sb.append("&onsalecar[transmission_type]=").append(Car.getTransmissionOriginString(mContext, carInfoStrings[2]));
+				
+				//onsalecar[had_accident] : 사고유무 (0: 사고여부 모름 / 1: 유사고 / 2: 무사고)
+				sb.append("&onsalecar[had_accident]=").append(Car.getAccidentOriginString(mContext, carInfoStrings[3]));
+				
+				//onsalecar[is_oneman_owned] : 1인신조(1: 1인신조차량 / 0: 1인신조 아님)
+				sb.append("&onsalecar[is_oneman_owned]=").append(Car.getOneManOwnedOriginString(mContext, carInfoStrings[4]));
+				
+				//onsalecar[car_number] : 차량넘버
+				sb.append("&onsalecar[car_number]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[0].getEditText()));
+				
+				//onsalecar[color] : 색상
+				sb.append("&onsalecar[color]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[1].getEditText()));
+				
+				//onsalecar[area] : 판매지역
+				sb.append("&onsalecar[area]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[2].getEditText()));
+				
+				//onsalecar[mileage] : 주행거리
+				sb.append("&onsalecar[mileage]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[3].getEditText()));
+				
+				//onsalecar[displacement] : 배기량
+				sb.append("&onsalecar[displacement]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[4].getEditText()));
+				
+				//onsalecar[options][option_id] : 옵션 아이디를 키로 하는 객체
+				//&onsalecar[options][1]=1
+				//&onsalecar[options][2]=1
+				
+				int size = checked.length;
+				for(int i=0; i<size; i++) {
+					
+					if(checked[i]) {
+						sb.append("&onsalecar[options][")
+								.append((i+1))
+								.append("]=1");
+					}
+				}
+				
+				//onsalecar[desc] : 기타 설명
+				sb.append("&onsalecar[desc]=").append(StringUtils.getUrlEncodedString(etCarDescriptionFromDealer));
+				
+				//onsalecar[to_sell_directly] : 즉시판매 (1: 즉시판매 / 즉시판매 아님)
+				sb.append("&onsalecar[to_sell_directly]=").append(isImmediatlySaleClicked? "1" : "0");
+				
+				//onsalecar[m_images][] : 필수 사진 배열(순서대로 앞측면/뒷측면/시트변속기네비/주행거리)
+//				&onsalecar[m_images][0]=url1
+//				&onsalecar[m_images][1]=url2
+				for(int i=0; i<4; i++) {
+					sb.append("&onsalecar[m_images][")
+							.append(i)
+							.append("]=")
+							.append(selectedImageSdCardPaths[i]);
+				}
+				
+				//onsalecar[a_images][] : 추가 사진 배열 (최대 4장, 순서 무관)
+				for(int i=0; i<4; i++) {
+					if(selectedImageSdCardPaths[i+4] != null) {
+						sb.append("&onsalecar[a_images][")
+						.append(i)
+						.append("]=")
+						.append(selectedImageSdCardPaths[i+4]);
+					}
+				}
+				
+				url += sb.toString();
+				DownloadUtils.downloadJSONString(url,
+						new OnJSONDownloadListener() {
+
+							@Override
+							public void onError(String url) {
+
+								LogUtils.log("CarRegistrationPage.register.onError." + "\nurl : " + url);
+							}
+
+							@Override
+							public void onCompleted(String url,
+									JSONObject objJSON) {
+
+								try {
+									LogUtils.log("CarRegistrationPage.register.onCompleted."
+											+ "\nurl : " + url + "\nresult : "
+											+ objJSON);
+
+									if(objJSON.getInt("result") == 1) {
+										pageRequestCompleted();
+									} else {
+										ToastUtils.showToast(objJSON.getString("message"));
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						});
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 
 	public void requestCertification() {
 		
-		((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_CERTIFICATION);
+		try {
+			StringBuilder sb = new StringBuilder(BCPAPIs.DIRECT_MARKET_CERTIFIED_SAVE_URL);
+			
+			//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
+			sb.append("?onsalecar[car_id]=").append(carModelDetailInfo.getId());
+			
+			//onsalecar[year] : 연식
+			sb.append("&onsalecar[year]=").append(carInfoStrings[0]);
+			
+			//onsalecar[car_number] : 차량넘버
+			sb.append("&onsalecar[car_number]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[0].getEditText()));
+			
+			//onsalecar[area] : 판매지역
+			sb.append("&onsalecar[area]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[2].getEditText()));
+			
+			String url = sb.toString();
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
+
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("CarRegistrationPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							pageRequestCompleted();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void pageRequestCompleted() {
+		
+		switch(type) {
+		
+		case TYPE_REGISTRATION:
+			((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REGISTRATION);
+			break;
+			
+		case TYPE_EDIT:
+			mActivity.showAlertDialog(R.string.edit, R.string.complete_edit, R.string.confirm, 
+					new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							mActivity.closeTopPage();
+						}
+					});
+			break;
+			
+		case TYPE_REQUEST_CERTIFICATION:
+			((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_CERTIFICATION);
+			break;
+		}
 	}
 
+	public void uploadImages() {
+		
+		int size = selectedImageSdCardPaths.length;
+		
+		for(int i=0; i<size; i++) {
+			
+			if(selectedImageSdCardPaths[i] != null
+					&& !selectedImageSdCardPaths[i].contains("http://")) {
+				
+				final int INDEX = i;
+				
+				OnAfterUploadImage oaui = new OnAfterUploadImage() {
+					
+					@Override
+					public void onAfterUploadImage(String resultString) {
+
+						try {
+							selectedImageSdCardPaths[INDEX] = new JSONObject(resultString).getJSONObject("file").getString("url");
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (Error e) {
+							LogUtils.trace(e);
+						}
+						
+						//Recursive call.
+						uploadImages();
+					}
+				};
+				
+				ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedImageSdCardPaths[i]);
+				return;
+			}
+		}
+		
+		//모든 이미지 업로드 완료.
+		register();
+	}
+	
 	public void checkProgress() {
 		
 		int progress = 0;
@@ -1289,19 +1552,22 @@ public class CarRegistrationPage extends BCPFragment {
 				progress += 30;
 			}
 			
-			//차량검색 10, 나머지 검색 개당 6, 총 40.
-			for(int i=0; i<6; i++) {
-				
-				if(btnCarInfos[i].length() > 0) {
-					progress += i==0? 10 : 6;
-				}
+			//차량검색 개당 20, 총 40.
+			if(btnCarInfos[0].length() > 0) {
+				progress += 20;
 			}
 			
-			//세부차량 정보 개당 6, 총 30.
-			for(int i=0; i<5; i++) {
-				if(etDetailCarInfos[i].getEditText().length() > 0) {
-					progress += 6;
-				}
+			if(btnCarInfos[1].length() > 0) {
+				progress += 20;
+			}
+			
+			//세부차량 정보 개당 15, 총 30.
+			if(etDetailCarInfos[0].getEditText().length() > 0) {
+				progress += 15;
+			}
+			
+			if(etDetailCarInfos[2].getEditText().length() > 0) {
+				progress += 15;
 			}
 		}
 		

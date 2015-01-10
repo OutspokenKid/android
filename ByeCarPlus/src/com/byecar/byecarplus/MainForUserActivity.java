@@ -688,13 +688,13 @@ public class MainForUserActivity extends BCPFragmentActivity {
 							
 //								R.drawable.menu_auction_btn,
 							case 0:
-								bundle.putInt("type", Car.TYPE_AUCTION);
+								bundle.putInt("type", Car.TYPE_BID);
 								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 								break;
 								
 //								R.drawable.menu_used_btn,
 							case 1:
-								bundle.putInt("type", Car.TYPE_USED);
+								bundle.putInt("type", Car.TYPE_DEALER);
 								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 								break;
 								

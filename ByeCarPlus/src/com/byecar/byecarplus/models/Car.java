@@ -16,8 +16,8 @@ public class Car extends BaseModel implements Serializable {
 
 	private static final long serialVersionUID = 6978779511721704607L;
 	
-	public static final int TYPE_AUCTION = 1;
-	public static final int TYPE_USED = 2;
+	public static final int TYPE_BID = 1;
+	public static final int TYPE_DEALER = 2;
 	public static final int TYPE_DIRECT_CERTIFIED = 3;
 	public static final int TYPE_DIRECT_NORMAL = 4;
 	
@@ -276,6 +276,22 @@ public class Car extends BaseModel implements Serializable {
 			}
 		}
 	}
+
+	public static String getFuelOriginString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return null;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_fuel1))) {
+				return "gasoline";
+			} else if(text.equals(context.getString(R.string.carSearchString_fuel2))) {
+				return "diesel";
+			} else {
+				return "lpg";
+			}
+		}
+	}
 	
 	public void setFuelTypeString(Context context, String text) {
 		
@@ -302,6 +318,20 @@ public class Car extends BaseModel implements Serializable {
 				return context.getString(R.string.carSearchString_transmission1);
 			} else {
 				return context.getString(R.string.carSearchString_transmission2);
+			}
+		}
+	}
+	
+	public static String getTransmissionOriginString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return null;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_transmission1))) {
+				return "auto";
+			} else {
+				return "manual";
 			}
 		}
 	}
@@ -340,6 +370,22 @@ public class Car extends BaseModel implements Serializable {
 		}
 	}
 	
+	public static String getAccidentOriginString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return null;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_accident3))) {
+				return "0";
+			} else if(text.equals(context.getString(R.string.carSearchString_accident2))) {
+				return "1";
+			} else {
+				return "2";
+			}
+		}
+	}
+	
 	public void setAccidentType(Context context, String text) {
 		
 		if(context == null || text == null) {
@@ -366,6 +412,20 @@ public class Car extends BaseModel implements Serializable {
 				return context.getString(R.string.carSearchString_oneManOwned2);
 			} else {
 				return context.getString(R.string.carSearchString_oneManOwned1);
+			}
+		}
+	}
+	
+	public static String getOneManOwnedOriginString(Context context, String text) {
+		
+		if(context == null || text == null) {
+			return null;
+		} else {
+			
+			if(text.equals(context.getString(R.string.carSearchString_oneManOwned2))) {
+				return "0";
+			} else {
+				return "1";
 			}
 		}
 	}

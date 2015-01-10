@@ -56,22 +56,19 @@
 	        android:gravity="center_vertical"
 	        android:text="@string/priceRange"
 	        android:textColor="@color/holo_text" />
-        
-        <View 
-            android:id="@+id/searchCarPage_priceRangeLine"
+
+        <com.byecar.byecarplus.views.SliderView
+            android:id="@+id/searchCarPage_sliderView"
 	        android:layout_width="0dp"
 	        android:layout_height="0dp"
-	        android:layout_centerHorizontal="true"
-	        android:layout_below="@id/searchCarPage_tvPriceRangeText"
-	        android:background="@drawable/filter_bar" />
+	        android:layout_below="@id/searchCarPage_tvPriceRangeText" />
         
         <TextView 
             android:id="@+id/searchCarPage_tvMinPriceText"
-	        android:layout_width="100dp"
+	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_below="@id/searchCarPage_priceRangeLine"
-	        android:layout_marginTop="12dp"
+	        android:layout_below="@id/searchCarPage_sliderView"
+	        android:layout_alignLeft="@id/searchCarPage_sliderView"
 	        android:textColor="@color/holo_text_hint"
 	        android:gravity="center" />
         
@@ -86,82 +83,19 @@
         
         <TextView 
             android:id="@+id/searchCarPage_tvMaxPriceText"
-	        android:layout_width="100dp"
+	        android:layout_width="0dp"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
 	        android:layout_alignTop="@id/searchCarPage_tvMinPriceText"
+	        android:layout_alignRight="@id/searchCarPage_sliderView"
 	        android:textColor="@color/holo_text_hint"
 	        android:gravity="center" />
-        
-        <FrameLayout
-            android:id="@+id/searchCarPage_frameForRelatives"
-            android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-	        android:layout_below="@id/searchCarPage_tvPriceRangeText" >
-            
-            <RelativeLayout
-	            android:id="@+id/searchCarPage_relativeForMinPrice"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="left" >
-	            
-	            <TextView 
-	                android:id="@+id/searchCarPage_tvMinPrice"
-		        	android:layout_width="0dp"
-		        	android:layout_height="0dp"
-		        	android:layout_alignParentLeft="true"
-		        	android:layout_alignParentTop="true"
-		        	android:textColor="@color/holo_text"
-		        	android:gravity="center_horizontal"
-		        	android:clickable="false"
-		        	android:background="@drawable/filter_bubble" />
-	            
-	            <View 
-	                android:id="@+id/searchCarPage_arrowForMinPrice"
-		        	android:layout_width="0dp"
-		        	android:layout_height="0dp"
-		        	android:layout_centerHorizontal="true"
-		        	android:layout_below="@id/searchCarPage_tvMinPrice"
-		        	android:clickable="false"
-		        	android:background="@drawable/filter_handle_a" />
-	            
-	        </RelativeLayout>
-	        
-	        <RelativeLayout
-	            android:id="@+id/searchCarPage_relativeForMaxPrice"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_gravity="right" >
-	            
-	            <TextView 
-	                android:id="@+id/searchCarPage_tvMaxPrice"
-		        	android:layout_width="0dp"
-		        	android:layout_height="0dp"
-		        	android:layout_alignParentLeft="true"
-		        	android:layout_alignParentTop="true"
-		        	android:gravity="center_horizontal"
-		        	android:textColor="@color/holo_text"
-		        	android:background="@drawable/filter_bubble" />
-	            
-	            <View 
-	                android:id="@+id/searchCarPage_arrowForMaxPrice"
-		        	android:layout_width="0dp"
-		        	android:layout_height="0dp"
-		        	android:layout_centerHorizontal="true"
-		        	android:layout_below="@id/searchCarPage_tvMaxPrice"
-		        	android:background="@drawable/filter_handle_b" />
-	            
-	        </RelativeLayout>
-            
-        </FrameLayout>
         
         <View 
             android:id="@+id/searchCarPage_editTextBg"
 	        android:layout_width="0dp"
 	        android:layout_height="0dp"
 	        android:layout_centerHorizontal="true"
-	        android:layout_below="@id/searchCarPage_priceRangeLine"
+	        android:layout_below="@id/searchCarPage_sliderView"
 	        android:background="@drawable/filter_search_box" />
         
         <EditText 

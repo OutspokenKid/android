@@ -241,7 +241,7 @@ public class MainForUserPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("id", bids.get(position).getId());
-				bundle.putInt("type", Car.TYPE_AUCTION);
+				bundle.putInt("type", Car.TYPE_BID);
 				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 			}
 		});
@@ -252,7 +252,7 @@ public class MainForUserPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", Car.TYPE_AUCTION);
+				bundle.putInt("type", Car.TYPE_BID);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
@@ -262,7 +262,10 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				bundle.putInt("carType", Car.TYPE_BID);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
 	
@@ -283,7 +286,7 @@ public class MainForUserPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", Car.TYPE_USED);
+				bundle.putInt("type", Car.TYPE_DEALER);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
@@ -642,7 +645,7 @@ public class MainForUserPage extends BCPFragment {
 						if(INDEX < bids.size()) {
 							Bundle bundle = new Bundle();
 							bundle.putInt("id", dealers.get(INDEX).getId());
-							bundle.putInt("type", Car.TYPE_USED);
+							bundle.putInt("type", Car.TYPE_DEALER);
 							mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 						}
 					}

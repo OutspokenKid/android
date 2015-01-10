@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -30,19 +29,18 @@ import com.byecar.byecarplus.models.Brand;
 import com.byecar.byecarplus.models.CarModel;
 import com.byecar.byecarplus.models.CarModelGroup;
 import com.byecar.byecarplus.models.CarTrim;
+import com.byecar.byecarplus.views.SliderView;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SearchCarPage extends BCPFragment {
 
 	private static final int MIN_PRICE = 0;
-	private static final int MIDDLE_PRICE = 75000000;
-	private static final int MAX_PRICE = 150000000;
+	private static final int MAX_PRICE = 50000;
 	
 	public static final int TYPE_BRAND = 1;
 	public static final int TYPE_MODELGROUP = 2;
@@ -54,17 +52,10 @@ public class SearchCarPage extends BCPFragment {
 
 	private RelativeLayout relativeForCommonSearch;
 	private TextView tvPriceRangeText;
-	private View priceRangeLine;
+	private SliderView sliderView;
 	private TextView tvMinPriceText;
 	private TextView tvMiddlePriceText;
 	private TextView tvMaxPriceText;
-	private FrameLayout frameForRelatives;
-	private RelativeLayout relativeForMinPrice;
-	private TextView tvMinPrice;
-	private View arrowForMinPrice;
-	private RelativeLayout relativeForMaxPrice;
-	private TextView tvMaxPrice;
-	private View arrowForMaxPrice;
 	private View editTextBg;
 	private EditText etMinPrice;
 	private EditText etMaxPrice;
@@ -100,20 +91,10 @@ public class SearchCarPage extends BCPFragment {
 		
 		relativeForCommonSearch = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForCommonSearch);
 		tvPriceRangeText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvPriceRangeText);
-		priceRangeLine = mThisView.findViewById(R.id.searchCarPage_priceRangeLine);
+		sliderView = (SliderView) mThisView.findViewById(R.id.searchCarPage_sliderView);
 		tvMinPriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMinPriceText);
 		tvMiddlePriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMiddlePriceText);
 		tvMaxPriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMaxPriceText);
-		
-		frameForRelatives = (FrameLayout) mThisView.findViewById(R.id.searchCarPage_frameForRelatives);
-		
-		relativeForMinPrice = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForMinPrice);
-		tvMinPrice = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMinPrice);
-		arrowForMinPrice = mThisView.findViewById(R.id.searchCarPage_arrowForMinPrice);
-		
-		relativeForMaxPrice = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForMaxPrice);
-		tvMaxPrice = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMaxPrice);
-		arrowForMaxPrice = mThisView.findViewById(R.id.searchCarPage_arrowForMaxPrice);
 		
 		editTextBg = mThisView.findViewById(R.id.searchCarPage_editTextBg);
 		etMinPrice = (EditText) mThisView.findViewById(R.id.searchCarPage_etMinPrice);
@@ -157,12 +138,9 @@ public class SearchCarPage extends BCPFragment {
 		listView.setDividerHeight(0);
 		listView.setDivider(null);
 		
-		tvMinPriceText.setText(StringUtils.getFormattedNumber(MIN_PRICE) + getString(R.string.won));
-		tvMiddlePriceText.setText(StringUtils.getFormattedNumber(MIDDLE_PRICE) + getString(R.string.won));
-		tvMaxPriceText.setText(StringUtils.getFormattedNumber(MAX_PRICE) + getString(R.string.won));
-		
-		tvMinPrice.setText(minPrice + getString(R.string.won));
-		tvMaxPrice.setText(maxPrice + getString(R.string.won));
+		tvMinPriceText.setText(R.string.searchPrice1);
+		tvMiddlePriceText.setText(R.string.searchPrice2);
+		tvMaxPriceText.setText(R.string.searchPrice3);
 	}
 
 	@Override
@@ -266,20 +244,19 @@ public class SearchCarPage extends BCPFragment {
 		
 		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
 				tvPriceRangeText, null, null, new int[]{30, 30, 0, 0});
-		ResizeUtils.viewResizeForRelative(530, 11, priceRangeLine, null, null, new int[]{0, 100, 0, 0});
-		ResizeUtils.viewResizeForRelative(120, LayoutParams.WRAP_CONTENT, tvMinPriceText, null, null, null);
-		ResizeUtils.viewResizeForRelative(120, LayoutParams.WRAP_CONTENT, tvMiddlePriceText, null, null, null);
-		ResizeUtils.viewResizeForRelative(120, LayoutParams.WRAP_CONTENT, tvMaxPriceText, null, null, null);
 		
-		ResizeUtils.viewResizeForRelative(114, 42, tvMinPrice, null, null, null);
-		ResizeUtils.viewResizeForRelative(48, 48, arrowForMinPrice, null, null, null);
+		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) sliderView.getLayoutParams();
+		rp.width = LayoutParams.MATCH_PARENT;
+		rp.height = 200;
+		rp.leftMargin = ResizeUtils.getSpecificLength(30);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
+		rp.rightMargin = ResizeUtils.getSpecificLength(30);
+
+		rp = (RelativeLayout.LayoutParams) tvMinPriceText.getLayoutParams();
+		rp.width = sliderView.getNodeWidth();
 		
-		ResizeUtils.viewResizeForRelative(114, 42, tvMaxPrice, null, null, null);
-		ResizeUtils.viewResizeForRelative(48, 48, arrowForMaxPrice, null, null, null);
-		
-		ResizeUtils.setMargin(frameForRelatives, new int[]{0, 40, 0, 0});
-		tvMinPrice.setPadding(0, ResizeUtils.getSpecificLength(6), 0, 0);
-		tvMaxPrice.setPadding(0, ResizeUtils.getSpecificLength(6), 0, 0);
+		rp = (RelativeLayout.LayoutParams) tvMaxPriceText.getLayoutParams();
+		rp.width = sliderView.getNodeWidth();
 		
 		ResizeUtils.viewResizeForRelative(418, 52, editTextBg, null, null, new int[]{0, 70, 0, 0});
 		ResizeUtils.viewResizeForRelative(160, 52, etMinPrice, null, null, null);
@@ -299,9 +276,6 @@ public class SearchCarPage extends BCPFragment {
 		FontUtils.setFontSize(tvMinPriceText, 16);
 		FontUtils.setFontSize(tvMiddlePriceText, 16);
 		FontUtils.setFontSize(tvMaxPriceText, 16);
-		
-		FontUtils.setFontSize(tvMinPrice, 16);
-		FontUtils.setFontSize(tvMaxPrice, 16);
 		
 		FontUtils.setFontSize(etMinPrice, 16);
 		FontUtils.setFontSize(etMaxPrice, 16);

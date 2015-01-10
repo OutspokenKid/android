@@ -33,7 +33,8 @@
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkPhoneNumber">올바른 휴대폰 번호를 입력해주세요.</string>
     <string name="commonInfo">일반정보</string>
-    <string name="complete_auth">인증 되었습니다.</string>
+    <string name="complete_auth">수정되었습니다.</string>
+    <string name="complete_edit">수정 완료</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
     <string name="confirm">확인</string>
@@ -62,6 +63,7 @@
     <string name="detailOptionText4">오디오/AV/네비게이션</string>
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
     
+    <string name="edit">수정</string>
     <string name="EmailSignIn">Email 로그인</string>
 
     <string name="failToFindPw">비번 찾기 실패</string>
@@ -114,6 +116,9 @@
     
     <string name="salesPrice">판매가</string>
     <string name="searchCondition">검색조건</string>
+    <string name="searchPrice1">0</string>
+    <string name="searchPrice2">2억5천</string>
+    <string name="searchPrice3">5억</string>
     <string name="selectCarFirst">차량을 먼저 선택해주세요</string>
     <string name="sellingArea">판매지역</string>
     <string name="sideMenuTitle1">거래</string>

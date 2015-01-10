@@ -173,7 +173,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 						+ row.getContext().getString(R.string.won));
 				tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
 				
-				if(car.getItemCode() == BCPConstants.ITEM_CAR_AUCTION) {
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID) {
 					auctionIcon.setVisibility(View.VISIBLE);
 					timeRelative.setVisibility(View.VISIBLE);
 					tvBidCount.setVisibility(View.VISIBLE);

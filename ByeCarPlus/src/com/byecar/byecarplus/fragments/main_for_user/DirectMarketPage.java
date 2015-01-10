@@ -163,6 +163,7 @@ public class DirectMarketPage extends BCPFragment {
 				
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
+				bundle.putInt("carType", Car.TYPE_DIRECT_NORMAL);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
