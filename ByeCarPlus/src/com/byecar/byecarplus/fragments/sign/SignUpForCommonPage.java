@@ -195,7 +195,12 @@ public class SignUpForCommonPage extends BCPFragmentForSign {
 			public void onClick(View view) {
 
 				if(checkInfos()) {
-					uploadImage();
+					
+					if(!StringUtils.isEmpty(selectedSdCardPath)) {
+						uploadImage();
+					} else {
+						signUp();
+					}
 				}
 			}
 		});
@@ -479,7 +484,7 @@ public class SignUpForCommonPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity();
+						mActivity.launchMainForUserActivity("SignUpForCommonPage.signUp");
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

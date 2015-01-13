@@ -7,6 +7,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
@@ -153,7 +154,9 @@ public class SignActivity extends BCPFragmentActivity {
 		}
 	}
 	
-	public void launchMainForUserActivity() {
+	public void launchMainForUserActivity(String fromString) {
+		
+		Log.i("notice", "from : " + fromString);
 		
 		Intent intent = new Intent(this, MainForUserActivity.class);
 		

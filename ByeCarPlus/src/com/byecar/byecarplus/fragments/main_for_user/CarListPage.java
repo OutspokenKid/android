@@ -3,6 +3,7 @@ package com.byecar.byecarplus.fragments.main_for_user;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -37,15 +37,16 @@ public class CarListPage extends BCPFragment {
 	private ListView listView;
 	private Button btnRegistration;
 	private Button btnRequestCertification;
+	private Button btnCurrentOrder;
+	private Button btnBanner;
 	private Button btnGuide;
 	private Button btnSearch;
-	
-	private AlphaAnimation aaIn, aaOut;
 	
 	private int firstVisibleItem;
 	private int standardLength;
 	private float diff;
 	private int type;
+	private String orderString;
 	
 	@Override
 	public void bindViews() {
@@ -56,44 +57,25 @@ public class CarListPage extends BCPFragment {
 		listView = (ListView) mThisView.findViewById(R.id.carListPage_listView);
 		btnRegistration = (Button) mThisView.findViewById(R.id.carListPage_btnRegistration);
 		btnRequestCertification = (Button) mThisView.findViewById(R.id.carListPage_btnRequestCertification);
+		btnCurrentOrder = (Button) mThisView.findViewById(R.id.carListPage_btnCurrentOrder);
+		btnBanner = (Button) mThisView.findViewById(R.id.carListPage_btnBanner);
 		btnGuide = (Button) mThisView.findViewById(R.id.carListPage_btnGuide);
 		btnSearch = (Button) mThisView.findViewById(R.id.carListPage_btnSearch);
 	}
 
 	@Override
 	public void setVariables() {
-
-		aaIn = new AlphaAnimation(0, 1);
-		aaIn.setDuration(300);
-		
-		aaOut = new AlphaAnimation(1, 0);
-		aaOut.setDuration(300);
 		
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
 		}
+		
+		orderString = "date";
 	}
 
 	@Override
 	public void createPage() {
 
-		if(type != Car.TYPE_DIRECT_NORMAL) {
-			titleBar.setBgColor(Color.WHITE);
-			titleBar.setBgAlpha(0);
-		}
-		
-		if(type != Car.TYPE_BID) {
-			btnSearch.setVisibility(View.VISIBLE);
-		} else {
-			btnSearch.setVisibility(View.INVISIBLE);
-		}
-
-		if(type == Car.TYPE_BID) {
-			btnRegistration.setVisibility(View.VISIBLE);
-		} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
-			btnRequestCertification.setVisibility(View.VISIBLE);
-		}
-		
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
     	
@@ -103,46 +85,52 @@ public class CarListPage extends BCPFragment {
         		Color.argb(255, 255, 204, 153), 
         		Color.argb(255, 255, 255, 153));
         swipeRefreshLayout.setEnabled(true);
-        
-        if(type != Car.TYPE_DIRECT_NORMAL) {
-        	listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+
+		if(type != Car.TYPE_DIRECT_NORMAL) {
+			titleBar.setBgColor(Color.WHITE);
+			titleBar.setBgAlpha(0);
+			
+			listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
     		listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
-        } else {
-        	listView.setDivider(null);
+		} else {
+			listView.setDivider(null);
     		listView.setDividerHeight(0);
-        }
+		}
+		
+		switch(type) {
+		
+		case Car.TYPE_BID:
+			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_a);
+			btnSearch.setVisibility(View.INVISIBLE);
+			btnRegistration.setVisibility(View.VISIBLE);
+			break;
+			
+		case Car.TYPE_DEALER:
+			btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
+			break;
+			
+		case Car.TYPE_DIRECT_CERTIFIED:
+			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_c);
+			btnRequestCertification.setVisibility(View.VISIBLE);
+			break;
+			
+		case Car.TYPE_DIRECT_NORMAL:
+			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_c);
+			btnRegistration.setVisibility(View.VISIBLE);
+			mThisView.findViewById(R.id.carListPage_btnGuide).setBackgroundResource(R.drawable.normal_direct_guide_btn);
+			mThisView.findViewById(R.id.carListPage_btnSearch).setBackgroundResource(R.drawable.normal_direct_search_btn);
+			btnBanner.setVisibility(View.VISIBLE);
+			break;
+		}
 	}
 
 	@Override
 	public void setListeners() {
 
 		listView.setOnScrollListener(new OnScrollListener() {
-
-			int lastStatus = 0;
 			
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				
-				View target = null;
-				
-				if(type == Car.TYPE_BID) {
-					target = btnRegistration;
-				} else if(type == Car.TYPE_DIRECT_CERTIFIED) {
-					target = btnRequestCertification;
-				}
-				
-				if(target != null) {
-					if(scrollState == 0 && lastStatus != 0) {
-						target.setVisibility(View.VISIBLE);
-						target.startAnimation(aaIn);
-						
-					} else if(scrollState != 0 && lastStatus == 0) {
-						target.setVisibility(View.INVISIBLE);
-						target.startAnimation(aaOut);
-					}
-					
-					lastStatus = scrollState;
-				}
 			}
 			
 			@Override
@@ -164,7 +152,7 @@ public class CarListPage extends BCPFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-				
+
 				try {
 					Bundle bundle = new Bundle();
 					bundle.putInt("id", ((Car) models.get(position)).getId());
@@ -192,6 +180,72 @@ public class CarListPage extends BCPFragment {
 			        	refreshPage();
 			        }
 			    }, 2000);
+			}
+		});
+
+		btnCurrentOrder.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				String[] strings = new String[] {
+						null,
+						getString(R.string.order_2)
+				};
+				
+				if(type == Car.TYPE_BID) {
+					strings[0] = getString(R.string.order_1);
+				} else {
+					strings[0] = getString(R.string.order_3);
+				}
+				
+				mActivity.showSelectDialog(title, strings, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						
+						if(which == 0) {
+							orderString = "date";
+							
+							switch(type) {
+							
+							case Car.TYPE_BID:
+								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle1);
+								break;
+								
+							case Car.TYPE_DEALER:
+								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
+								break;
+								
+							case Car.TYPE_DIRECT_CERTIFIED:
+							case Car.TYPE_DIRECT_NORMAL:
+								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle3);
+								break;
+							}
+						} else {
+							orderString = "like";
+							
+							switch(type) {
+							
+							case Car.TYPE_BID:
+								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle2);
+								break;
+								
+							case Car.TYPE_DEALER:
+								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort2_btn);
+								break;
+								
+							case Car.TYPE_DIRECT_CERTIFIED:
+							case Car.TYPE_DIRECT_NORMAL:
+								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle2);
+								break;
+							}
+						}
+						
+						refreshPage();
+						
+					}
+				});
 			}
 		});
 		
@@ -243,21 +297,54 @@ public class CarListPage extends BCPFragment {
 
 		RelativeLayout.LayoutParams rp = null;
 		
+		//swipe_container.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
+				R.id.carListPage_swipe_container).getLayoutParams();
+		rp.bottomMargin = ResizeUtils.getSpecificLength(89);
+		
 		if(type == Car.TYPE_DIRECT_NORMAL) {
-			rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
-					R.id.carListPage_swipe_container).getLayoutParams();
-			rp.topMargin = ResizeUtils.getSpecificLength(88);
+			rp.topMargin = ResizeUtils.getSpecificLength(176);
 		}
+		
+		//buttonBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
+				R.id.carListPage_buttonBg).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(100);
+		
+		int p = ResizeUtils.getSpecificLength(8);
+		
+		//btnCurrentOrder.
+		rp = (RelativeLayout.LayoutParams) btnCurrentOrder.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(72);
+		
+		if(type == Car.TYPE_DEALER) {
+			rp.width = ResizeUtils.getSpecificLength(624);
+			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		} else {
+			rp.width = ResizeUtils.getSpecificLength(72);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			rp.leftMargin = p;
+		}
+
+		rp.bottomMargin = p;
 		
 		//btnRegistration.
 		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(120);
-		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.width = ResizeUtils.getSpecificLength(544);
+		rp.height = ResizeUtils.getSpecificLength(72);
+		rp.rightMargin = p;
+		rp.bottomMargin = p;
 		
 		//btnRequestCertification.
 		rp = (RelativeLayout.LayoutParams) btnRequestCertification.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(120);
-		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.width = ResizeUtils.getSpecificLength(544);
+		rp.height = ResizeUtils.getSpecificLength(72);
+		rp.rightMargin = p;
+		rp.bottomMargin = p;
+
+		//btnBanner.
+		rp = (RelativeLayout.LayoutParams) btnBanner.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(96);
 		
 		//btnGuide.
 		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
@@ -348,6 +435,8 @@ public class CarListPage extends BCPFragment {
 			url = BCPAPIs.DIRECT_MARKET_NORMAL_LIST_URL;
 			break;
 		}
+
+		url += "?order=" + orderString;
 		
 		super.downloadInfo();
 	}

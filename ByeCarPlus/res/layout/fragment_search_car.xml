@@ -107,10 +107,17 @@
 	        android:textColor="@color/holo_text"
 	        android:textColorHint="@color/holo_text_hint"
 	        android:background="#0000"
-	        android:hint="@string/min"
 	        android:gravity="center"
 	        android:singleLine="true"
 	        android:inputType="number" />
+        
+        <Button 
+            android:id="@+id/searchCarPage_btnClearMin"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/searchCarPage_etMinPrice"
+	        android:layout_toRightOf="@id/searchCarPage_etMinPrice"
+	        android:background="@drawable/filter_clear_btn" />
         
         <EditText 
             android:id="@+id/searchCarPage_etMaxPrice"
@@ -121,10 +128,17 @@
 	        android:textColor="@color/holo_text"
 	        android:textColorHint="@color/holo_text_hint"
 	        android:background="#0000"
-	        android:hint="@string/max"
 	        android:gravity="center"
 	        android:singleLine="true"
 	        android:inputType="number" />
+        
+        <Button 
+            android:id="@+id/searchCarPage_btnClearMax"
+	        android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/searchCarPage_etMaxPrice"
+	        android:layout_toRightOf="@id/searchCarPage_etMaxPrice"
+	        android:background="@drawable/filter_clear_btn" />
         
         <Button 
             android:id="@+id/searchCarPage_btnShowCommonSearchResult"

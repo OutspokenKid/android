@@ -19,6 +19,9 @@ public class SliderView extends View {
 	
 	private static int HEIGHT_OF_SELECTED_BAR = 3;
 
+	private Point pointNodeStart = new Point();
+	private Point pointNodeEnd = new Point();
+	
 	private int valueMin = 0;
 	private int valueMax = 100;
 	private int valueDelta = valueMax - valueMin;
@@ -66,8 +69,8 @@ public class SliderView extends View {
 	
 	public void init() {
 
-		Point pointNodeStart = new Point();
-		Point pointNodeEnd = new Point();
+		pointNodeStart = new Point();
+		pointNodeEnd = new Point();
 		pointNodeStart.x = 0;
 		pointNodeStart.y = 0;
 		pointNodeEnd.x = getMeasuredWidth() - nodes[1].getBitmap().getWidth();
@@ -148,7 +151,7 @@ public class SliderView extends View {
         		// calculate the radius from the touch to the centre of the node
 				double radCircle  = Math.sqrt( (double) (((centerX-X)*(centerX-X)) + (centerY-Y)*(centerY-Y)));
         		// if the radius is smaller then 33 (radius of a node is 22), then it must be on the ball
-				if (radCircle < 3*node.getBitmap().getHeight()/2.0){
+				if (radCircle < node.getBitmap().getWidth()){
 					balID = node.getID();
 				}
 			}
@@ -270,49 +273,86 @@ public class SliderView extends View {
 		
 		return 0;
 	}
+
+	public void moveNodes(int start, int end) {
+		
+		/*
+		0~500
+		valMin = 100
+		valMax = 500
+		valMax - valMin = valDelta = 400
+		
+		start = 200
+		start - valMin = 100
+		(start - valMin) / valDelta = 100 / 400 = 0.25
+		
+		end = 300
+		end - valMin = 200
+		(end - valMin) / valDelta = 200 / 400 = 0.5
+		
+01-13 04:58:33.903: I/notice(5497): ###SliderView.moveNodes.  
+01-13 04:58:33.903: I/notice(5497):  strat : 100
+01-13 04:58:33.903: I/notice(5497):  end : 50000
+01-13 04:58:33.903: I/notice(5497):  strat.x : 0
+01-13 04:58:33.903: I/notice(5497):  end.x : 848
+
+		*/
+		float percentageMin = (float)(start - valueMin) / valueDelta;
+		float percentageMax = (float)(end - valueMin) / valueDelta;
+		int endLocation = getMeasuredWidth() - nodes[1].getBitmap().getWidth();
+		
+		pointNodeStart.x = (int)(endLocation * percentageMin);
+		pointNodeEnd.x = (int)(endLocation * percentageMax);
+		invalidate();
+	}
 	
 //////////////////// Classes.
 	
 	public class Node {
 		private Bitmap img;
-		private int coordX = 0;
-		private int coordY = 0;
+		private Point point;
 		private int id;
 	 
 		public Node(Context context, int drawable) {
-			BitmapFactory.Options opts = new BitmapFactory.Options();
-			opts.inJustDecodeBounds = true;
-			img = BitmapFactory.decodeResource(context.getResources(), drawable); 
+			this(context, drawable, null);
 		}
 			
 		public Node(Context context, int drawable, Point point) {
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inJustDecodeBounds = true;
 			img = BitmapFactory.decodeResource(context.getResources(), drawable);
-			coordX= point.x;
-			coordY = point.y;
+			this.point = point;
 		}
 			
 		public void setPoint(Point point) {
-			
-			coordX= point.x;
-			coordY = point.y;
+
+			this.point = point;
 		}
 		
 		void setX(int newValue) {
-			coordX = newValue;
+			point.x = newValue;
 		}
 			
 		public int getX() {
-			return coordX;
+			
+			if(point == null) {
+				return 0;
+			}
+			
+			return point.x;
 		}
 
 		void setY(int newValue) {
-			coordY = newValue;
+			point.y = newValue;
 		}
 			
 		public int getY() {
-			return coordY;
+			
+			if(point == null) {
+				return 0;
+			}
+			
+			return point.y;
 		}
 		
 		public void setID(int id) {

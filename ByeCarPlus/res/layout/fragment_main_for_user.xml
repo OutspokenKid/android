@@ -141,6 +141,25 @@
     			android:textColor="@color/holo_text" />
             
             <Button 
+                android:id="@+id/mainForUserPage_btnLike"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_toLeftOf="@id/mainForUserPage_tvBidCount"
+    			android:layout_alignBottom="@id/mainForUserPage_tvBidCount"
+    			android:gravity="center"
+    			android:textColor="#fff"
+    			android:background="@drawable/main_like_btn_a" />
+            
+            <TextView
+                android:id="@+id/mainForUserPage_tvLikeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/mainForUserPage_btnLike"
+    			android:layout_alignTop="@id/mainForUserPage_btnLike"
+    			android:text="@string/like"
+    			android:textColor="@color/holo_text" />
+            
+            <Button 
                 android:id="@+id/mainForUserPage_btnAuction"
         		android:layout_width="0dp"
     			android:layout_height="0dp"

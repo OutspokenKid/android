@@ -42,7 +42,6 @@ import com.byecar.byecarplus.fragments.main_for_user.CarRegistrationPage;
 import com.byecar.byecarplus.fragments.main_for_user.CertifyPhoneNumberPage;
 import com.byecar.byecarplus.fragments.main_for_user.DirectMarketPage;
 import com.byecar.byecarplus.fragments.main_for_user.EditUserInfoPage;
-import com.byecar.byecarplus.fragments.main_for_user.LightPage;
 import com.byecar.byecarplus.fragments.main_for_user.MainForUserPage;
 import com.byecar.byecarplus.fragments.main_for_user.MyPage;
 import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
@@ -51,6 +50,7 @@ import com.byecar.byecarplus.fragments.main_for_user.SettingPage;
 import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.User;
+import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -176,7 +176,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		
 		try {
 			setLeftView();
-			
+			register();
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			finish();
@@ -380,9 +380,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
-			
-		case BCPConstants.PAGE_LIGHT:
-			return new LightPage();
 		}
 		
 		return null;
@@ -882,6 +879,35 @@ public class MainForUserActivity extends BCPFragmentActivity {
 					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
 					launchSignActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void register() {
+		
+		String url = BCPAPIs.REGISTER_URL
+				+ "?user_id" + user.getId()
+				+ "&device_token" + AppInfoUtils.getUserToken();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainForUserActivity.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainForUserActivity.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

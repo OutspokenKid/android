@@ -4,7 +4,8 @@ public class BCPAPIs {
 
 	public static String BASE_API_URL = "http://byecar.minsangk.com";
 	public static String UPLOAD_URL = BASE_API_URL + "/files/upload/image.json";
-	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/rules";
+	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/policies";
+	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
 	public static String NICKNAME_CHECK_URL = BASE_API_URL + "/users/check/nickname.json";
@@ -51,4 +52,9 @@ public class BCPAPIs {
 	public static String PHONE_UPDATE_URL = BASE_API_URL + "/users/update/phone_number.json";
 	
 	public static String SIGN_OUT_URL = BASE_API_URL + "/users/logout.json";
+	
+	public static String LIKE_URL = BASE_API_URL + "/onsalecars/bids/like.json";
+	public static String UNLIKE_URL = BASE_API_URL + "/onsalecars/bids/unlike.json";
+	
+	public static String PURCHASE_URL = BASE_API_URL + "/onsalecars/dealer/purchase.json";
 }

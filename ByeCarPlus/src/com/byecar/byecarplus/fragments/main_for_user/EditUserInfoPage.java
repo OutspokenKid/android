@@ -81,6 +81,7 @@ public class EditUserInfoPage extends BCPFragment {
 	private String selectedImageUrl;
 
 	private int type;
+	private int carId;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -129,6 +130,7 @@ public class EditUserInfoPage extends BCPFragment {
 
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
+			carId = getArguments().getInt("carId");
 		}
 	}
 
@@ -296,7 +298,7 @@ public class EditUserInfoPage extends BCPFragment {
 			public void onClick(View view) {
 
 				if(type == TYPE_REQUEST_BUYER) {
-					((MainForUserActivity)mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_BUY);
+					purchase();
 				} else {
 					if(checkInfos()) {
 						uploadImage();
@@ -689,6 +691,7 @@ public class EditUserInfoPage extends BCPFragment {
 							user.setAddress(etAddress.getEditText().getText().toString());
 						}
 						
+						ToastUtils.showToast(R.string.complete_editUserInfo);
 						mActivity.closeTopPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
@@ -704,6 +707,40 @@ public class EditUserInfoPage extends BCPFragment {
 		});
 	}
 
+	public void purchase() {
+		
+		String url = BCPAPIs.PURCHASE_URL
+				+ "?onsalecar_id=" + carId;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("EditUserInfoPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("EditUserInfoPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						((MainForUserActivity)mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_BUY);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
 	public void closePage() {
 		
 		new Handler().postDelayed(new Runnable() {

@@ -58,6 +58,7 @@ public class MainForUserPage extends BCPFragment {
 	private TextView tvCurrentPrice;
 	private TextView tvCurrentPriceText;
 	private TextView tvBidCount;
+	private Button btnLike;
 	private Button btnAuction;
 	private Button btnRegistration;
 	private View noticeTitle;
@@ -101,6 +102,7 @@ public class MainForUserPage extends BCPFragment {
 		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCurrentPrice);
 		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCurrentPriceText);
 		tvBidCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvBidCount);
+		btnLike = (Button) mThisView.findViewById(R.id.mainForUserPage_btnLike);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainForUserPage_btnAuction);
 		btnRegistration = (Button) mThisView.findViewById(R.id.mainForUserPage_btnRegistration);
 		noticeTitle = mThisView.findViewById(R.id.mainForUserPage_noticeTitle);
@@ -234,6 +236,15 @@ public class MainForUserPage extends BCPFragment {
 			}
 		});
 
+		btnLike.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setLike(bids.get(viewPager.getCurrentItem()));
+			}
+		});
+		
 		imagePagerAdapter.setOnPagerItemClickedListener(new OnPagerItemClickedListener() {
 			
 			@Override
@@ -383,6 +394,20 @@ public class MainForUserPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
 		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
+		//btnLike.
+		rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
+		rp.bottomMargin = -ResizeUtils.getSpecificLength(8);
+		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
+		
+		//tvLikeText.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_tvLikeText).getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(5);
+		rp.rightMargin = ResizeUtils.getSpecificLength(2);
+		
 		//btnAuction.
 		rp = (RelativeLayout.LayoutParams) btnAuction.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(320);
@@ -450,6 +475,8 @@ public class MainForUserPage extends BCPFragment {
 		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(tvBidCount, 20);
+		FontUtils.setFontSize(btnLike, 18);
+		FontUtils.setFontSize((TextView)mThisView.findViewById(R.id.mainForUserPage_tvLikeText), 20);
 		
 		FontUtils.setFontSize((TextView)mThisView.findViewById(R.id.mainForUserPage_tvCopyright), 16);
 	}
@@ -499,13 +526,12 @@ public class MainForUserPage extends BCPFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		titleBar.getMenuButton().setVisibility(View.VISIBLE);
 		downloadMainInfos();
 		
-		titleBar.setNoticeCount(5);
-		
 		checkPageScrollOffset();
+		checkNotification();
 	}
 	
 	@Override
@@ -726,6 +752,20 @@ public class MainForUserPage extends BCPFragment {
 		}
 
 		auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+		
+		if(bids.get(index).getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+		}
+
+		int likesCount = bids.get(index).getLikes_cnt();
+		
+		if(likesCount > 9999) {
+			likesCount = 9999;
+		}
+		
+		btnLike.setText("" + likesCount);
 	}
 
 	public void runThread() {
@@ -772,5 +812,57 @@ public class MainForUserPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void checkNotification() {
+		
+		titleBar.setNoticeCount(5);
+	}
+
+	public void setLike(Car car) {
+		
+		String url = null;
+		
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+			url = BCPAPIs.LIKE_URL;
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+			url = BCPAPIs.UNLIKE_URL;
+		}
+
+		btnLike.setText("" + car.getLikes_cnt());
+		
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("MainForUserPage.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("MainForUserPage.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

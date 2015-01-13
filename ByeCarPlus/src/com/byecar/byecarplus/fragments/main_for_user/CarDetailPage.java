@@ -9,12 +9,9 @@ import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
@@ -66,6 +63,7 @@ public class CarDetailPage extends BCPFragment {
 	private TextView tvCurrentPrice;
 	private TextView tvCurrentPriceText;
 	private TextView tvBidCount;
+	private Button btnLike;
 	
 	private View headerForType;
 	private View arrowForType;
@@ -87,8 +85,6 @@ public class CarDetailPage extends BCPFragment {
 	private View footerForDescription;
 	
 	private View[] carDetailPage_optionViews;
-	
-	private AlphaAnimation aaIn, aaOut;
 	
 	private ImagePagerAdapter imagePagerAdapter;
 	
@@ -122,6 +118,7 @@ public class CarDetailPage extends BCPFragment {
 		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPrice);
 		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPriceText);
 		tvBidCount = (TextView) mThisView.findViewById(R.id.carDetailPage_tvBidCount);
+		btnLike = (Button) mThisView.findViewById(R.id.carDetailPage_btnLike);
 		
 		headerForType = mThisView.findViewById(R.id.carDetailPage_headerForType);
 		arrowForType = mThisView.findViewById(R.id.carDetailPage_arrowForType);
@@ -146,12 +143,6 @@ public class CarDetailPage extends BCPFragment {
 	@Override
 	public void setVariables() {
 
-		aaIn = new AlphaAnimation(0, 1);
-		aaIn.setDuration(300);
-		
-		aaOut = new AlphaAnimation(1, 0);
-		aaOut.setDuration(300);
-		
 		if(getArguments() != null) {
 			
 			if(getArguments().containsKey("car")) {
@@ -195,38 +186,6 @@ public class CarDetailPage extends BCPFragment {
 			}
 		});
 		
-		scrollView.setOnTouchListener(new OnTouchListener() {
-			
-			@SuppressLint("ClickableViewAccessibility")
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-
-				if(car != null && type != Car.TYPE_BID) {
-					
-					switch(event.getAction()) {
-					
-					case MotionEvent.ACTION_MOVE:
-						
-						if(btnBuy.getVisibility() == View.VISIBLE) {
-							btnBuy.setVisibility(View.INVISIBLE);
-							btnBuy.startAnimation(aaOut);
-						}
-						break;
-						
-					case MotionEvent.ACTION_UP:
-					case MotionEvent.ACTION_CANCEL:
-						if(btnBuy.getVisibility() != View.VISIBLE) {
-							btnBuy.setVisibility(View.VISIBLE);
-							btnBuy.startAnimation(aaIn);
-						}
-						break;
-					}
-				}
-				
-				return false;
-			}
-		});
-		
 		viewPager.setOnPageChangeListener(new OnPageChangeListener() {
 			
 			@Override
@@ -250,6 +209,15 @@ public class CarDetailPage extends BCPFragment {
 			public void onPageScrollStateChanged(int arg0) {
 				// TODO Auto-generated method stub
 				
+			}
+		});
+
+		btnLike.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setLike(car);
 			}
 		});
 		
@@ -322,10 +290,20 @@ public class CarDetailPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
+		//buttonBg.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_buttonBg).getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(100);
+		
 		//btnBuy.
 		rp = (RelativeLayout.LayoutParams) btnBuy.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(120);
-		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.width = ResizeUtils.getSpecificLength(624);
+		rp.height = ResizeUtils.getSpecificLength(72);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
+		
+		if(type != Car.TYPE_BID) {
+			rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
+			rp.bottomMargin = ResizeUtils.getSpecificLength(88);
+		}
 		
 		//viewPager.
 		rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
@@ -404,7 +382,21 @@ public class CarDetailPage extends BCPFragment {
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(24);		
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
+		
+		//btnLike.
+		rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.bottomMargin = -ResizeUtils.getSpecificLength(8);
+		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
+		
+		//tvLikeText.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_tvLikeText).getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(5);
+		rp.rightMargin = ResizeUtils.getSpecificLength(2);
+		
 		//headerForType.
 		rp = (RelativeLayout.LayoutParams) headerForType.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
@@ -513,6 +505,9 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(tvBidCount, 20);
 		
+		FontUtils.setFontSize(btnLike, 18);
+		FontUtils.setFontSize((TextView)mThisView.findViewById(R.id.carDetailPage_tvLikeText), 20);
+		
 		FontUtils.setFontSize(tvDetailInfo1, 20);
 		FontUtils.setFontStyle(tvDetailInfo1, FontUtils.BOLD);
 		tvDetailInfo1.setPadding(ResizeUtils.getSpecificLength(20), 
@@ -580,6 +575,11 @@ public class CarDetailPage extends BCPFragment {
 		super.onResume();
 		
 		if(car != null) {
+			
+			if(type == 0) {
+				type = car.getType();
+			}
+			
 			setMainCarInfo();
 			setDetailCarInfo();
 			setOptionViews();
@@ -843,6 +843,11 @@ public class CarDetailPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					car = new Car(objJSON.getJSONObject("onsalecar"));
+					
+					if(car != null && type == 0) {
+						type = car.getType();
+					}
+					
 					setMainCarInfo();
 					setDetailCarInfo();
 					setOptionViews();
@@ -871,6 +876,20 @@ public class CarDetailPage extends BCPFragment {
 				+ getString(R.string.won));
 		tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
 
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+		}
+
+		int likesCount = car.getLikes_cnt();
+		
+		if(likesCount > 9999) {
+			likesCount = 9999;
+		}
+		
+		btnLike.setText("" + likesCount);
+		
 		imagePagerAdapter.setArrayList(car.getImages());
 		viewPager.getAdapter().notifyDataSetChanged();
 		viewPager.setCurrentItem(0);
@@ -912,6 +931,9 @@ public class CarDetailPage extends BCPFragment {
 			
 			btnGuide.setVisibility(View.VISIBLE);
 			btnBuy.setVisibility(View.INVISIBLE);
+			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);
+			
+			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
 		} else {
 			auctionIcon.setVisibility(View.INVISIBLE);
 			timeRelative.setVisibility(View.GONE);
@@ -919,6 +941,9 @@ public class CarDetailPage extends BCPFragment {
 			
 			btnGuide.setVisibility(View.INVISIBLE);
 			btnBuy.setVisibility(View.VISIBLE);
+			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.VISIBLE);
+			
+			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
 		}
 		
 		int size = 12;
@@ -1440,5 +1465,52 @@ public class CarDetailPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void setLike(Car car) {
+		
+		String url = null;
+
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+			url = BCPAPIs.LIKE_URL;
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+			url = BCPAPIs.UNLIKE_URL;
+		}
+		
+		btnLike.setText("" + car.getLikes_cnt());
+		
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("CarDetailPage.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("CarDetailPage.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

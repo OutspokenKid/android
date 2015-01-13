@@ -2,7 +2,8 @@
 <RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants" >
 
     <ImageView 
         android:id="@+id/list_car_ivImage"
@@ -126,6 +127,25 @@
         android:layout_below="@id/list_car_tvCurrentPrice"
         android:ellipsize="end"
         android:singleLine="true"
+        android:textColor="@color/holo_text" />
+
+    <Button
+        android:id="@+id/list_car_btnLike"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_car_tvBidCount"
+        android:layout_toLeftOf="@id/list_car_tvBidCount"
+        android:background="@drawable/main_like_btn_a"
+        android:gravity="center"
+        android:textColor="#fff" />
+
+    <TextView
+        android:id="@+id/list_car_tvLikeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/list_car_btnLike"
+        android:layout_toLeftOf="@id/list_car_btnLike"
+        android:text="@string/like"
         android:textColor="@color/holo_text" />
     
 </RelativeLayout>

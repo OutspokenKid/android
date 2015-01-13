@@ -68,6 +68,9 @@ public class Car extends BaseModel implements Serializable {
 	private int[] options;
 	private ArrayList<Bid> bids = new ArrayList<Bid>();
 	private ArrayList<String> images = new ArrayList<String>();
+	
+	private int is_liked;
+	private int likes_cnt;
 
 	public Car() {
 		
@@ -257,6 +260,13 @@ public class Car extends BaseModel implements Serializable {
 				}
 			}
 			
+			if(objJSON.has("is_liked")) {
+				this.is_liked = objJSON.getInt("is_liked");
+			}
+			
+			if(objJSON.has("likes_cnt")) {
+				this.likes_cnt = objJSON.getInt("likes_cnt");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}
@@ -756,5 +766,21 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setSeller_name(String seller_name) {
 		this.seller_name = seller_name;
+	}
+
+	public int getIs_liked() {
+		return is_liked;
+	}
+
+	public void setIs_liked(int is_liked) {
+		this.is_liked = is_liked;
+	}
+
+	public int getLikes_cnt() {
+		return likes_cnt;
+	}
+
+	public void setLikes_cnt(int likes_cnt) {
+		this.likes_cnt = likes_cnt;
 	}
 }

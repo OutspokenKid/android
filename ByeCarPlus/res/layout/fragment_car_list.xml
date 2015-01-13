@@ -18,6 +18,19 @@
             android:background="#0000" />
         
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <View 
+        android:id="@+id/carListPage_buttonBg"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_bg" />
+    
+    <Button
+        android:id="@+id/carListPage_btnCurrentOrder"
+        android:layout_width="0dp"
+        android:layout_height="0dp" 
+        android:layout_alignParentBottom="true" />
     
     <Button
         android:id="@+id/carListPage_btnRegistration"
@@ -43,6 +56,14 @@
     	android:layout_height="0dp" />
     
     <Button
+        android:id="@+id/carListPage_btnBanner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/carListPage_titleBar"
+        android:visibility="invisible"
+        android:background="@drawable/normal_direct_banner" />
+    
+    <Button
         android:id="@+id/carListPage_btnGuide"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -56,7 +77,6 @@
         android:layout_height="0dp"
         android:layout_alignTop="@id/carListPage_btnGuide"
         android:layout_toLeftOf="@id/carListPage_btnGuide"
-        android:visibility="invisible"
         android:background="@drawable/usedmarket_search_btn" />
         
 </RelativeLayout>

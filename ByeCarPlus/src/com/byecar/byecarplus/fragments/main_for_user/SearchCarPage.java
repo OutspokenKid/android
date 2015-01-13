@@ -6,8 +6,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -30,11 +33,13 @@ import com.byecar.byecarplus.models.CarModel;
 import com.byecar.byecarplus.models.CarModelGroup;
 import com.byecar.byecarplus.models.CarTrim;
 import com.byecar.byecarplus.views.SliderView;
+import com.byecar.byecarplus.views.SliderView.NodeChangedListener;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SearchCarPage extends BCPFragment {
@@ -59,6 +64,8 @@ public class SearchCarPage extends BCPFragment {
 	private View editTextBg;
 	private EditText etMinPrice;
 	private EditText etMaxPrice;
+	private Button btnClearMin;
+	private Button btnClearMax;
 	private Button btnShowCommonSearchResult;
 	
 	private GridView gridView;
@@ -99,6 +106,8 @@ public class SearchCarPage extends BCPFragment {
 		editTextBg = mThisView.findViewById(R.id.searchCarPage_editTextBg);
 		etMinPrice = (EditText) mThisView.findViewById(R.id.searchCarPage_etMinPrice);
 		etMaxPrice = (EditText) mThisView.findViewById(R.id.searchCarPage_etMaxPrice);
+		btnClearMin = (Button) mThisView.findViewById(R.id.searchCarPage_btnClearMin);
+		btnClearMax = (Button) mThisView.findViewById(R.id.searchCarPage_btnClearMax);
 		
 		btnShowCommonSearchResult = (Button) mThisView.findViewById(R.id.searchCarPage_btnShowCommonSearchResult);
 		
@@ -130,6 +139,9 @@ public class SearchCarPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
+		sliderView.setValues(0, 50000);
+		setPriceEditTexts();
+		
 		gridAdapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), modelsForGrid);
 		gridView.setAdapter(gridAdapter);
 		
@@ -161,6 +173,182 @@ public class SearchCarPage extends BCPFragment {
 			public void onClick(View view) {
 				
 				setMenu(1);
+			}
+		});
+		
+		sliderView.setOnNodeChangedListener(new NodeChangedListener() {
+
+			@Override
+			public void onChanged(boolean nodeStartChanged,
+					boolean nodeEndChanged, int nodeStart, int nodeEnd) {
+
+				
+				if(nodeStartChanged) {
+					minPrice = nodeStart;
+				} else if(nodeEndChanged) {
+					maxPrice = nodeEnd;
+				}
+				
+				setPriceEditTexts();
+			}
+		});
+		
+		etMinPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+
+				if(!hasFocus) {
+					
+					if(StringUtils.isEmpty(etMinPrice.getText())) {
+						minPrice = 0;
+					}
+					
+					etMinPrice.setText(StringUtils.getFormattedNumber(minPrice));
+					sliderView.moveNodes(minPrice, maxPrice);
+				} else {
+					
+					try {
+						etMinPrice.setText(etMinPrice.getText().toString().replace(",", ""));
+					} catch (Exception e) {
+					}
+				}
+			}
+		});
+		
+		etMinPrice.addTextChangedListener(new TextWatcher() {
+			
+			private String lastText = null;
+			private int lastCursorIndex;
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				
+				if(s != null) {
+					lastText = s.toString();
+					lastCursorIndex = etMinPrice.getSelectionStart() - 1;
+				}
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+				try {
+					if(s == null || s.length() == 0) {
+						return;
+					}
+					
+					int tempPrice = Integer.parseInt(s.toString());
+					
+					if(tempPrice < 0) {
+						ToastUtils.showToast(R.string.minPriceMustOverZero);
+						etMinPrice.setText(lastText);
+						etMinPrice.setSelection(lastCursorIndex);
+						return;
+					} else if(tempPrice > maxPrice) {
+						ToastUtils.showToast(R.string.minPriceCantOverMaxPrice);
+						etMinPrice.setText(lastText);
+						etMinPrice.setSelection(lastCursorIndex);
+						return;
+					} else {
+						minPrice = tempPrice;
+						sliderView.moveNodes(minPrice, maxPrice);
+						sliderView.invalidate();
+					}
+				} catch (Exception e) {
+				}
+			}
+		});
+		
+		etMaxPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
+			
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+
+				if(!hasFocus) {
+					
+					if(StringUtils.isEmpty(etMaxPrice.getText())) {
+						maxPrice = 0;
+					}
+					
+					etMaxPrice.setText(StringUtils.getFormattedNumber(maxPrice));
+					sliderView.moveNodes(minPrice, maxPrice);
+				} else {
+				
+					try {
+						etMaxPrice.setText(etMaxPrice.getText().toString().replace(",", ""));
+					} catch (Exception e) {
+					}
+				}
+			}
+		});
+		
+		etMaxPrice.addTextChangedListener(new TextWatcher() {
+			
+			private String lastText = null;
+			private int lastCursorIndex;
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				
+				if(s != null) {
+					lastText = s.toString();
+					lastCursorIndex = etMaxPrice.getSelectionStart() - 1;
+				}
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+				try {
+					if(s == null || s.length() == 0) {
+						return;
+					}
+					
+					int tempPrice = Integer.parseInt(s.toString());
+					
+					if(tempPrice < minPrice) {
+						ToastUtils.showToast(R.string.maxPriceCantOverMinPrice);						
+					} else if(tempPrice > MAX_PRICE) {
+						ToastUtils.showToast(R.string.maxPriceMustLessThanLimit);
+						etMaxPrice.setText(lastText);
+						etMaxPrice.setSelection(lastCursorIndex);
+						return;
+					} else {
+						maxPrice = tempPrice;
+						sliderView.moveNodes(minPrice, maxPrice);
+						sliderView.invalidate();
+					}
+				} catch (Exception e) {
+				}
+			}
+		});
+		
+		btnClearMin.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				etMinPrice.setText(null);
+				etMinPrice.requestFocus();
+			}
+		});
+		
+		btnClearMax.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				etMaxPrice.setText(null);
+				etMaxPrice.requestFocus();
 			}
 		});
 		
@@ -258,9 +446,11 @@ public class SearchCarPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) tvMaxPriceText.getLayoutParams();
 		rp.width = sliderView.getNodeWidth();
 		
-		ResizeUtils.viewResizeForRelative(418, 52, editTextBg, null, null, new int[]{0, 70, 0, 0});
-		ResizeUtils.viewResizeForRelative(160, 52, etMinPrice, null, null, null);
-		ResizeUtils.viewResizeForRelative(160, 52, etMaxPrice, null, null, null);
+		ResizeUtils.viewResizeForRelative(494, 52, editTextBg, null, null, new int[]{0, 70, 0, 0});
+		ResizeUtils.viewResizeForRelative(117, 45, etMinPrice, null, null, new int[]{4, 4, 0, 0});
+		ResizeUtils.viewResizeForRelative(117, 45, etMaxPrice, null, null, new int[]{0, 4, 80, 0});
+		ResizeUtils.viewResizeForRelative(40, 40, btnClearMin, null, null, new int[]{0, 2, 0, 0});
+		ResizeUtils.viewResizeForRelative(40, 40, btnClearMax, null, null, new int[]{0, 2, 0, 0});
 		
 		ResizeUtils.viewResizeForRelative(586, 82, 
 				btnShowCommonSearchResult, null, null, new int[]{0, 60, 0, 0});
@@ -277,8 +467,8 @@ public class SearchCarPage extends BCPFragment {
 		FontUtils.setFontSize(tvMiddlePriceText, 16);
 		FontUtils.setFontSize(tvMaxPriceText, 16);
 		
-		FontUtils.setFontSize(etMinPrice, 16);
-		FontUtils.setFontSize(etMaxPrice, 16);
+		FontUtils.setFontSize(etMinPrice, 22);
+		FontUtils.setFontSize(etMaxPrice, 22);
 		
 		int p = ResizeUtils.getSpecificLength(10);
 		etMinPrice.setPadding(p, 0, p, 0);
@@ -518,5 +708,19 @@ public class SearchCarPage extends BCPFragment {
 				mActivity.closeTopPage();
 			}
 		}, 1000);
+	}
+
+	public void setPriceEditTexts() {
+		
+		etMinPrice.setText(StringUtils.getFormattedNumber(minPrice));
+		etMaxPrice.setText(StringUtils.getFormattedNumber(maxPrice));
+		
+		if(etMinPrice.hasFocus()) {
+			etMinPrice.setSelection(etMinPrice.length());
+		}
+		
+		if(etMaxPrice.hasFocus()) {
+			etMaxPrice.setSelection(etMaxPrice.length());
+		}
 	}
 }

@@ -149,6 +149,25 @@
 		        android:singleLine="true"
 		        android:textColor="@color/holo_text" />
 		    
+		    <Button 
+                android:id="@+id/carDetailPage_btnLike"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_toLeftOf="@id/carDetailPage_tvBidCount"
+    			android:layout_alignBottom="@id/carDetailPage_tvBidCount"
+    			android:gravity="center"
+    			android:textColor="#fff"
+    			android:background="@drawable/main_like_btn_a" />
+            
+            <TextView
+                android:id="@+id/carDetailPage_tvLikeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/carDetailPage_btnLike"
+    			android:layout_alignTop="@id/carDetailPage_btnLike"
+    			android:text="@string/like"
+    			android:textColor="@color/holo_text" />
+		    
 		    <View 
 		        android:id="@+id/carDetailPage_headerForType"
 		        android:layout_width="0dp"
@@ -321,6 +340,23 @@
         android:layout_width="match_parent"
     	android:layout_height="0dp" />
     
+    <View
+        android:id="@+id/carDetailPage_buttonBg" 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/button_bg" />
+    
+    <Button
+        android:id="@+id/carDetailPage_btnBuy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/buy_buy_btn" />
+    
     <Button
         android:id="@+id/carDetailPage_btnGuide"
         android:layout_width="0dp"
@@ -328,14 +364,5 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/auction_guide_btn" />
- 
-    <Button
-        android:id="@+id/carDetailPage_btnBuy"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible"
-        android:background="@drawable/buy_buy_btn" />
     
 </RelativeLayout>

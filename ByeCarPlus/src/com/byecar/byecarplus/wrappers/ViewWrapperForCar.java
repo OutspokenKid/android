@@ -1,16 +1,23 @@
 package com.byecar.byecarplus.wrappers;
 
+import org.json.JSONObject;
+
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -33,6 +40,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private TextView tvCurrentPrice;
 	private TextView tvCurrentPriceText;
 	private TextView tvBidCount;
+	private Button btnLike;
 	
 	public ViewWrapperForCar(View row, int itemCode) {
 		super(row, itemCode);
@@ -56,6 +64,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 			tvCurrentPrice = (TextView) row.findViewById(R.id.list_car_tvCurrentPrice);
 			tvCurrentPriceText = (TextView) row.findViewById(R.id.list_car_tvCurrentPriceText);
 			tvBidCount = (TextView) row.findViewById(R.id.list_car_tvBidCount);
+			btnLike = (Button) row.findViewById(R.id.list_car_btnLike);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -138,6 +147,18 @@ public class ViewWrapperForCar extends ViewWrapper {
 			rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
 			rp.topMargin = ResizeUtils.getSpecificLength(24);
 
+			//btnLike.
+			rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(90);
+			rp.height = ResizeUtils.getSpecificLength(40);
+			rp.bottomMargin = -ResizeUtils.getSpecificLength(8);
+			btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+					ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
+			
+			//tvLikeText.
+			rp = (RelativeLayout.LayoutParams) row.findViewById(R.id.list_car_tvLikeText).getLayoutParams();
+			rp.topMargin = ResizeUtils.getSpecificLength(5);
+			rp.rightMargin = ResizeUtils.getSpecificLength(2);
 
 			FontUtils.setFontSize(tvRemainTime, 24);
 			FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
@@ -149,6 +170,9 @@ public class ViewWrapperForCar extends ViewWrapper {
 			FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
 			FontUtils.setFontSize(tvCurrentPriceText, 20);
 			FontUtils.setFontSize(tvBidCount, 20);
+			
+			FontUtils.setFontSize(btnLike, 18);
+			FontUtils.setFontSize((TextView)row.findViewById(R.id.list_car_tvLikeText), 20);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -185,11 +209,29 @@ public class ViewWrapperForCar extends ViewWrapper {
 					} else {
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
 					}
+					
+					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
 					timeRelative.setVisibility(View.GONE);
 					tvBidCount.setVisibility(View.INVISIBLE);
+					
+					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
 				}
+				
+				if(car.getIs_liked() == 0) {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+				} else {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+				}
+
+				int likesCount = car.getLikes_cnt();
+				
+				if(likesCount > 9999) {
+					likesCount = 9999;
+				}
+				
+				btnLike.setText("" + likesCount);
 				
 				setImage(ivImage, car.getRep_img_url());
 			}
@@ -201,57 +243,69 @@ public class ViewWrapperForCar extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-//	
-//		if(product != null) {
-//			row.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View arg0) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
-//				}
-//			});
-//			
-//			if(product.isDeletable()) {
-//				
-//				row.setOnLongClickListener(new OnLongClickListener() {
-//					
-//					@Override
-//					public boolean onLongClick(View arg0) {
-//						
-//						ShopActivity.getInstance().showAlertDialog("삭제", "해당 물품을 삭제하시겠습니까?",
-//								"확인", "취소", 
-//								new DialogInterface.OnClickListener() {
-//									
-//									@Override
-//									public void onClick(DialogInterface dialog, int which) {
-//										
-//										deleteFavorite(product);
-//									}
-//								}, null);
-//						return false;
-//					}
-//				});
-//			}
-//			
-//			replyIcon.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View view) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
-//				}
-//			});
-//		}
+
+		if(car != null) {
+			
+			btnLike.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					setLike(car);
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void setUnusableView() {
 
+	}
+
+	public void setLike(Car car) {
+		
+		String url = null;
+		
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+			url = BCPAPIs.LIKE_URL;
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+			url = BCPAPIs.UNLIKE_URL;
+		}
+		
+		btnLike.setText("" + car.getLikes_cnt());
+		
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("ViewWrapperForCar.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("ViewWrapperForCar.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }
