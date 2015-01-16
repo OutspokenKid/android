@@ -622,7 +622,7 @@ public class SignPage extends BCPFragmentForSign {
 			public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
 
 				if(isSuccess) {
-					mActivity.launchMainForUserActivity("signInPage.checkSession.");
+					mActivity.launchMainForUserActivity();
 				}
 			}
 		});
@@ -660,7 +660,7 @@ public class SignPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity("signPage.signInWithSNS");
+						mActivity.launchMainForUserActivity();
 						ff.logout();
 						kf.logout();
 					} else {

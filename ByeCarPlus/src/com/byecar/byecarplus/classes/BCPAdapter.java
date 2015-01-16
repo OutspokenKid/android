@@ -96,7 +96,10 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return new ViewWrapperForMyCar(convertView, itemCode);
 			
 		case BCPConstants.ITEM_REVIEW:
-			return new ViewWrapperForMyReview(convertView, itemCode);
+			
+			ViewWrapperForMyReview vwfm = new ViewWrapperForMyReview(convertView, itemCode);
+			vwfm.setActivity(activity);
+			return vwfm;
 		}
 		
 		return null;

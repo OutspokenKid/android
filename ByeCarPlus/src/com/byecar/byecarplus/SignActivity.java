@@ -7,7 +7,6 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
@@ -23,6 +22,8 @@ import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class SignActivity extends BCPFragmentActivity {
 
+	private boolean isMainLaunched;
+	
 	@Override
 	public void bindViews() {
 		// TODO Auto-generated method stub
@@ -154,9 +155,13 @@ public class SignActivity extends BCPFragmentActivity {
 		}
 	}
 	
-	public void launchMainForUserActivity(String fromString) {
+	public void launchMainForUserActivity() {
+
+		if(isMainLaunched) {
+			return;
+		}
 		
-		Log.i("notice", "from : " + fromString);
+		isMainLaunched = true;
 		
 		Intent intent = new Intent(this, MainForUserActivity.class);
 		

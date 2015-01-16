@@ -319,7 +319,7 @@ public class SignInPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity("SignInpage.signIn");
+						mActivity.launchMainForUserActivity();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -364,7 +364,7 @@ public class SignInPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity("SignInPage.signInWithSNS");
+						mActivity.launchMainForUserActivity();
 						ff.logout();
 						kf.logout();
 					} else {

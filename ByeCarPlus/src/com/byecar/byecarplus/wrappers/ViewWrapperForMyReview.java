@@ -1,11 +1,15 @@
 package com.byecar.byecarplus.wrappers;
 
+import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.classes.BCPConstants;
+import com.byecar.byecarplus.classes.BCPFragmentActivity;
 import com.byecar.byecarplus.models.Review;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -15,8 +19,9 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
 public class ViewWrapperForMyReview extends ViewWrapper {
-	
+
 	private Review review;
+	private BCPFragmentActivity mActivity;
 	
 	private View bgTop;
 	private TextView tvCarName;
@@ -88,11 +93,11 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 						"등록일 yyyy년 MM월 dd일", review.getCreated_at() * 1000));
 				tvCarName.setText(review.getCar_full_name());
 				
-//				if(review.getCertifier_id() != 0) {
+				if(review.getCertifier_id() != 0) {
 					tvTo.setText(review.getCertifier_name() + " 검증사에게");
-//				} else if(review.getDealer_id() != 0) {
-//					tvTo.setText(review.getDealer_name() + " 딜러에게");
-//				}
+				} else if(review.getDealer_id() != 0) {
+					tvTo.setText(review.getDealer_name() + " 딜러에게");
+				}
 				
 				tvContent.setText(review.getContent());
 			}
@@ -104,57 +109,30 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-//	
-//		if(product != null) {
-//			row.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View arg0) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
-//				}
-//			});
-//			
-//			if(product.isDeletable()) {
-//				
-//				row.setOnLongClickListener(new OnLongClickListener() {
-//					
-//					@Override
-//					public boolean onLongClick(View arg0) {
-//						
-//						ShopActivity.getInstance().showAlertDialog("삭제", "해당 물품을 삭제하시겠습니까?",
-//								"확인", "취소", 
-//								new DialogInterface.OnClickListener() {
-//									
-//									@Override
-//									public void onClick(DialogInterface dialog, int which) {
-//										
-//										deleteFavorite(product);
-//									}
-//								}, null);
-//						return false;
-//					}
-//				});
-//			}
-//			
-//			replyIcon.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View view) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
-//				}
-//			});
-//		}
+		
+		if(review != null) {
+			btnEditReview.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					if(mActivity != null) {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("review", review);
+						mActivity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+					}
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void setUnusableView() {
 
+	}
+	
+	public void setActivity(BCPFragmentActivity activity) {
+
+		mActivity = activity;
 	}
 }

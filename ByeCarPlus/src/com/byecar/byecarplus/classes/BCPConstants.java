@@ -51,5 +51,5 @@ public class BCPConstants {
 	public static final int PAGE_SELECT_BID = 21;
 	public static final int PAGE_SEARCH_CAR = 22;
 	public static final int PAGE_MY = 23;
-	public static final int PAGE_LIGHT = 24;
+	public static final int PAGE_WRITE_REVIEW = 24;
 }

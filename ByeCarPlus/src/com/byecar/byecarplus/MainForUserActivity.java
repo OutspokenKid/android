@@ -48,6 +48,7 @@ import com.byecar.byecarplus.fragments.main_for_user.SearchCarPage;
 import com.byecar.byecarplus.fragments.main_for_user.SelectBidPage;
 import com.byecar.byecarplus.fragments.main_for_user.SettingPage;
 import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
+import com.byecar.byecarplus.fragments.main_for_user.WriteReviewPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.User;
 import com.outspoken_kid.utils.AppInfoUtils;
@@ -176,7 +177,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		
 		try {
 			setLeftView();
-			register();
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			finish();
@@ -380,6 +380,9 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
+		
+		case BCPConstants.PAGE_WRITE_REVIEW:
+			return new WriteReviewPage();
 		}
 		
 		return null;
@@ -510,28 +513,20 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			@Override
 			public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
 
-				if(isSuccess) {
-					saveCookies();
-					
-					try {
+				try {
+					if(isSuccess) {
+						saveCookies();
 						user = new User(objJSON.getJSONObject("user"));
 						setLeftViewUserInfo();
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (Error e) {
-						LogUtils.trace(e);
-					}
-				} else {
-					
-					try {
+						register();
+					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (Error e) {
-						LogUtils.trace(e);
+						launchSignActivity();
 					}
-		
-					launchSignActivity();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
 		});

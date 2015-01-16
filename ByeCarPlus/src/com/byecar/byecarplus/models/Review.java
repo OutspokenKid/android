@@ -1,12 +1,16 @@
 package com.byecar.byecarplus.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Review extends BaseModel {
+public class Review extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = -7244964158640641747L;
+	
 //	"id": "8",
 //	"type": "901",
 //	"dealer_id": "0",

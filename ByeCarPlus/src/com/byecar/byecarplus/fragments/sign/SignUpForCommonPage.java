@@ -484,7 +484,7 @@ public class SignUpForCommonPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity("SignUpForCommonPage.signUp");
+						mActivity.launchMainForUserActivity();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
