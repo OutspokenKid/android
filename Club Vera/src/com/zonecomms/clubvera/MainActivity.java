@@ -258,11 +258,9 @@ public class MainActivity extends ZonecommsFragmentActivity {
 					IntentHandlerActivity.actionByUri(i.getData());
 				}
 			}, 500);
-		} else {
-			LogUtils.log("###MainActivity.setPage.  data is null");
-			
-			showMainPage();
 		}
+		
+		showMainPage();
 	}
 	
 	@Override

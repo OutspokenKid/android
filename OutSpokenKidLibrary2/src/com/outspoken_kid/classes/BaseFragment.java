@@ -77,14 +77,31 @@ public abstract class BaseFragment extends Fragment
 			return null;
 		}
 		
+		boolean needToCreateView = false;;
+		
 		if(mThisView == null) {
 			mThisView = inflater.inflate(getContentViewId(), null);
+			needToCreateView = true;
+			
 		} else {
 			((ViewGroup)mThisView.getParent()).removeView(mThisView);
+			needToCreateView = false;
+		}
+
+		bindViews();
+
+		if(needToCreateView) {
+			createPage();
 		}
 		
-		bindViews();
-		createPage();
+		try {
+			setListeners();
+			setSizes();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		
 		return mThisView;
 	}
@@ -95,15 +112,6 @@ public abstract class BaseFragment extends Fragment
 		super.onActivityCreated(savedInstanceState);
 		
 		LogUtils.log("###BaseFragment." + fragmentTag + "(" + this + ").onActivityCreated.  ");
-		
-		try {
-			setListeners();
-			setSizes();
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
 	}
 	
 	@Override

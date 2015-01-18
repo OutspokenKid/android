@@ -613,8 +613,11 @@ public class MainPage extends ZonecommsFragment {
 			
 			@Override
 			public void run() {
-				InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
+				try {
+					InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(mThisView.getWindowToken(), 0);
+				} catch (Exception e) {
+				}
 			}
 		}, 1000);
 		

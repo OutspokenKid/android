@@ -157,7 +157,9 @@ public class ViewWrapperForNotice extends ViewWrapper {
 				fp.height = scaledHeight;
 				ivImage.setLayoutParams(fp);
 			}
-			
+		
+			progress.setVisibility(View.VISIBLE);
+			ivImage.setVisibility(View.VISIBLE);
 			setImage(ivImage, notice.getMedias()[0].getMedia_src());
 		} else {
 			progress.setVisibility(View.GONE);

@@ -26,6 +26,7 @@
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
+    <string name="checkReviewContent">후기를 입력해주세요.</string>
     <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
     <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
     <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
@@ -66,7 +67,9 @@
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
     
     <string name="edit">수정</string>
-    <string name="EmailSignIn">Email 로그인</string>
+    <string name="emailSignIn">Email 로그인</string>
+    <string name="evaluateCertifier">검증사님을 평가해주세요.</string>
+    <string name="evaluateDealer">딜러님을 평가해주세요.</string>
 
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
@@ -140,7 +143,9 @@
     <string name="SNSSignIn">SNS 로그인</string>
     <string name="standingByBid">입찰대기중</string>
     <string name="standingByRegistration">등록대기중</string>
-    
+
+    <string name="toCertifier">검증사님께</string>
+    <string name="toDealer">딜러님께</string>
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
 
     <string name="uploadingImage">이미지 업로드 중..</string>

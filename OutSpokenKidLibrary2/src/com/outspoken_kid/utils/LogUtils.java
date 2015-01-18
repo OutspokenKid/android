@@ -12,10 +12,10 @@ import android.util.Log;
  */
 public class LogUtils {
 	
-//	private static final boolean NEED_LOG = true;
-//	private static final boolean NEED_TRACE = true;
-	private static final boolean NEED_LOG = false;
-	private static final boolean NEED_TRACE = false;
+	private static final boolean NEED_LOG = true;
+	private static final boolean NEED_TRACE = true;
+//	private static final boolean NEED_LOG = false;
+//	private static final boolean NEED_TRACE = false;
 	
 	public static void log(String logString) {
 		

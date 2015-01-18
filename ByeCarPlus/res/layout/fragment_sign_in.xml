@@ -54,7 +54,6 @@
 		        android:layout_marginLeft="10dp"
 		        android:layout_marginRight="10dp"
 		        android:background="#aaa4a4a4"
-		        android:text="@string/EmailSignIn"
 		        android:layout_below="@id/signInPage_kkFrame" />
 		    
 		    <TextView
@@ -62,7 +61,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:gravity="center_vertical"
-		        android:text="@string/EmailSignIn"
+		        android:text="@string/emailSignIn"
 		        android:textColor="#000"
 		        android:layout_alignLeft="@id/signInPage_tvSNS"
 		        android:layout_below="@id/signInPage_line" />

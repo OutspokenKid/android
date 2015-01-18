@@ -998,20 +998,15 @@ public class CircleMainActivity extends Activity {
 				}
 				
 				if(!intent.getData().getScheme().equals("popup")) {
-					swipeLayout.post(new Runnable() {
-	    				
-	    				@Override
-	    				public void run() {
-	    					
-	    					launchToMainActivity(intent.getData());
-	    				}
-	    			});
+					launchToMainActivity(intent.getData());
 				} else {
 					String message = intent.getData().getQueryParameter("message");
 					message = URLDecoder.decode(message, "utf-8");
 					
 					showAlertDialog(null, message, getString(R.string.confirm), null, null, null);
 				}
+				
+				intent.setData(null);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
