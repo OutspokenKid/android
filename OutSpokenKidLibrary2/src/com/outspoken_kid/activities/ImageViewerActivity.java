@@ -199,8 +199,14 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	public void setSizes() {
 
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 90, tvTitle, 2, Gravity.TOP, null);
-		btnSave.setLayoutParams(getSaveButtonLayoutParams());
-		btnSave.setBackgroundResource(getSaveButtonBackgroundResId());
+		
+		if(getSaveButtonLayoutParams() != null) {
+			btnSave.setLayoutParams(getSaveButtonLayoutParams());
+		}
+		
+		if(getSaveButtonBackgroundResId() != 0) {
+			btnSave.setBackgroundResource(getSaveButtonBackgroundResId());
+		}
 	}
 
 	@SuppressLint("ClickableViewAccessibility") 

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.models.Certifier;
 import com.byecar.byecarplus.models.Dealer;
 import com.byecar.byecarplus.models.Review;
 import com.byecar.byecarplus.views.ReviewView;
@@ -38,8 +39,10 @@ import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
 public class DealerCertifierPage extends BCPFragment {
 
-	private int id;
+	private int dealer_id;
+	private int certifier_id;
 	private Dealer dealer;
+	private Certifier certifier;
 	private boolean isCertifier;
 	
 	private OffsetScrollView scrollView;
@@ -95,8 +98,8 @@ public class DealerCertifierPage extends BCPFragment {
 
 				if(getArguments().containsKey("dealer")) {
 					this.dealer = (Dealer) getArguments().getSerializable("dealer");
-				} else if(getArguments().containsKey("id")) {
-					this.id = getArguments().getInt("id");
+				} else if(getArguments().containsKey("dealer_id")) {
+					this.dealer_id = getArguments().getInt("dealer_id");
 				} else {
 					closePage();
 				}
@@ -104,6 +107,13 @@ public class DealerCertifierPage extends BCPFragment {
 			//Certifier.
 			} else {
 				
+				if(getArguments().containsKey("certifier")) {
+					this.certifier = (Certifier) getArguments().getSerializable("certifier");
+				} else if(getArguments().containsKey("certifier_id")) {
+					this.certifier_id = getArguments().getInt("certifier_id");
+				} else {
+					closePage();
+				}
 			}
 		}
 	}
@@ -164,29 +174,29 @@ public class DealerCertifierPage extends BCPFragment {
 		
 		//headerForIntro.
 		rp = (RelativeLayout.LayoutParams) headerForIntro.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(5);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//tvIntro.
 		rp = (RelativeLayout.LayoutParams) tvIntro.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.width = ResizeUtils.getSpecificLength(608);
 		
 		//footerForIntro.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.dealerPage_footerForIntro).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.width = ResizeUtils.getSpecificLength(608);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
 		//headerForReview.
 		rp = (RelativeLayout.LayoutParams) headerForReview.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
-		rp.height = ResizeUtils.getSpecificLength(90);
-		rp.topMargin = ResizeUtils.getSpecificLength(5);
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//linearForReview.
 		rp = (RelativeLayout.LayoutParams) linearForReview.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.width = ResizeUtils.getSpecificLength(608);
 		linearForReview.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(16));
 		
 		//btnMore.
@@ -195,7 +205,7 @@ public class DealerCertifierPage extends BCPFragment {
 		//footerForReview.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.dealerPage_footerForReview).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(632);
+		rp.width = ResizeUtils.getSpecificLength(608);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
 		FontUtils.setFontSize(tvInfo1, 16);
@@ -267,12 +277,12 @@ public class DealerCertifierPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if(dealer != null) {
+		if(dealer != null || certifier != null) {
 			setDealerInfo();
 			setIntro();
 			loadReviews();
 		} else {
-			downloadCarInfo();
+			downloadDealerInfo();
 		}
 		
 		checkPageScrollOffset();
@@ -294,23 +304,23 @@ public class DealerCertifierPage extends BCPFragment {
 	
 //////////////////// Custom methods.
 	
-	public void downloadCarInfo() {
+	public void downloadDealerInfo() {
 
-		String url = BCPAPIs.DEALER_SHOW_URL + "?dealer_id=" + id;
+		String url = null;
+		
+		if(!isCertifier) {
+			url = BCPAPIs.DEALER_SHOW_URL + "?dealer_id=" + dealer_id;
+		} else {
+			url = BCPAPIs.CERTIFIER_SHOW_URL + "?certifier_id=" + certifier_id;
+		}
+		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
 				LogUtils.log("DealerPage.onError." + "\nurl : " + url);
-				
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						downloadCarInfo();
-					}
-				}, 1000);
+				closePage();
 			}
 
 			@Override
@@ -320,7 +330,12 @@ public class DealerCertifierPage extends BCPFragment {
 					LogUtils.log("DealerPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 					
-					dealer = new Dealer(objJSON.getJSONObject("dealer"));
+					if(!isCertifier) {
+						dealer = new Dealer(objJSON.getJSONObject("dealer"));
+					} else {
+						certifier = new Certifier(objJSON.getJSONObject("certifier"));
+					}
+					
 					setDealerInfo();
 					setIntro();
 					loadReviews();
@@ -337,7 +352,9 @@ public class DealerCertifierPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 		
-		DownloadUtils.downloadBitmap(dealer.getProfile_img_url(), new OnBitmapDownloadListener() {
+		DownloadUtils.downloadBitmap(
+				!isCertifier ? dealer.getProfile_img_url() : certifier.getProfile_img_url()
+				, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -354,7 +371,6 @@ public class DealerCertifierPage extends BCPFragment {
 					if(ivImage != null && !bitmap.isRecycled()) {
 						ivImage.setImageBitmap(bitmap);
 					}
-					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -364,23 +380,39 @@ public class DealerCertifierPage extends BCPFragment {
 		});
 		
 		tvInfo1.setText(null);
-		FontUtils.addSpan(tvInfo1, dealer.getName(), 0, 1.6f, true);
-		FontUtils.addSpan(tvInfo1, "\n" + dealer.getAddress(), 0, 1, false);
-		FontUtils.addSpan(tvInfo1, "\n" + dealer.getCompany(), 0, 1, false);
-
-		tvInfo2.setText("우수딜러");
+		
+		if(!isCertifier) {
+			FontUtils.addSpan(tvInfo1, dealer.getName(), 0, 1.6f, true);
+			FontUtils.addSpan(tvInfo1, "\n" + dealer.getAddress(), 0, 1, false);
+			FontUtils.addSpan(tvInfo1, "\n" + dealer.getCompany(), 0, 1, false);
+			tvInfo2.setText("우수딜러");
+		} else{
+			FontUtils.addSpan(tvInfo1, certifier.getName(), 0, 1.6f, true);
+			FontUtils.addSpan(tvInfo1, "\n" + getString(R.string.exclusivelyForByeCar), 0, 1, false);
+			tvInfo2.setText(null);
+		}
 	}
 	
 	public void setIntro() {
 		
-		tvIntro.setText(dealer.getDesc());
+		if(!isCertifier) {
+			tvIntro.setText(dealer.getDesc());
+		} else {
+			tvIntro.setText(certifier.getDesc());
+		}
 	}
 
 	public void loadReviews() {
 
-		String url = BCPAPIs.DEALER_REVIEW_URL
-				+ "?dealer_id=" + dealer.getId()
-				+ "&last_priority=" + (reviews.size() > 0? reviews.get(reviews.size() - 1).getPriority() : "")
+		String url = null;
+		
+		if(!isCertifier) {
+			url = BCPAPIs.REVIEW_DEALER_URL;
+		} else {
+			url = BCPAPIs.REVIEW_CERTIFIER_URL;
+		}
+		
+		url += "&last_priority=" + (reviews.size() > 0? reviews.get(reviews.size() - 1).getPriority() : "")
 				+ "&num=" + NUMBER_OF_LISTITEMS;
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

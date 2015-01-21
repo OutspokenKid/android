@@ -3,7 +3,7 @@ package com.byecar.byecarplus.classes;
 public class BCPConstants {
 
 	//구글 플레이 콘솔의 프로젝트 아이디.
-	public static final String GCM_SENDER_ID = "536624421053";
+	public static final String GCM_SENDER_ID = "479358642498";
 	
 	public static final String SOCKET_IP = "";
 	public static final int SOCKET_PORT = 0;

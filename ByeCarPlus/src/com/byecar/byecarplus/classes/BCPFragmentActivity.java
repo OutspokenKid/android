@@ -4,10 +4,12 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
+import com.byecar.byecarplus.ImageViewer;
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -129,6 +131,40 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		}
 	}
 
+	public void showImageViewer(int imageIndex, String title, 
+			String[] imageUrls, String[] thumbnailUrls) {
+
+		Intent intent = new Intent(this, ImageViewer.class);
+		
+		intent.putExtra("imageIndex", imageIndex);
+		
+		if(title != null) {
+			intent.putExtra("title", title);
+		}
+		
+		if(imageUrls != null) {
+			intent.putExtra("imageUrls", imageUrls);
+		}
+		
+		if(thumbnailUrls != null) {
+			intent.putExtra("thumbnailUrls", thumbnailUrls);
+		}
+		
+		startActivity(intent);
+	}
+	
+	public void showImageViewer(String title, int imageResId) {
+		
+		Intent intent = new Intent(this, ImageViewer.class);
+		
+		if(title != null) {
+			intent.putExtra("title", title);
+		}
+		
+		intent.putExtra("imageResId", imageResId);
+		startActivity(intent);
+	}
+	
 //////////////////// Interfaces.
 	
 	public interface OnAfterCheckSessionListener {

@@ -40,7 +40,6 @@ public class Car extends BaseModel implements Serializable {
 	private int had_accident;
 	private int is_oneman_owned;
 	private long price;
-	private int manager_id;
 	private String desc;
 	private int seller_id;
 	private String rep_img_url;
@@ -51,7 +50,20 @@ public class Car extends BaseModel implements Serializable {
 	private String area;
 	private int to_sell_directly;
 	private long end_at;
+
 	private int dealer_id;
+	private String dealer_name;
+	private String dealer_phone_number;
+	private String dealer_address;
+	private String dealer_profile_img_url;
+	private String dealer_company;
+	private int dealer_level;
+
+	private int manager_id;
+	private String manager_name;
+	private String manager_desc;
+	private String manager_profile_img_url;
+	
 	private long created_at;
 	private String brand_name;
 	private String model_name;
@@ -61,7 +73,7 @@ public class Car extends BaseModel implements Serializable {
 	private String seller_name;
 	private String seller_phone_number;
 	private String seller_address;
-	private String manager_name;
+	private String seller_profile_img_url;
 	
 	private String[] m_images;
 	private String[] a_images;
@@ -132,16 +144,8 @@ public class Car extends BaseModel implements Serializable {
 				this.price = objJSON.getLong("price");
 			}
 			
-			if(objJSON.has("manager_id")) {
-				this.manager_id = objJSON.getInt("manager_id");
-			}
-			
 			if(objJSON.has("desc")) {
 				this.desc = objJSON.getString("desc");
-			}
-			
-			if(objJSON.has("seller_id")) {
-				this.seller_id = objJSON.getInt("seller_id");
 			}
 			
 			if(objJSON.has("rep_img_url")) {
@@ -173,10 +177,6 @@ public class Car extends BaseModel implements Serializable {
 				this.end_at = objJSON.getLong("end_at");
 			}
 			
-			if(objJSON.has("dealer_id")) {
-				this.dealer_id = objJSON.getInt("dealer_id");
-			}
-			
 			if(objJSON.has("created_at")) {
 				this.created_at = objJSON.getLong("created_at");
 			}
@@ -201,20 +201,77 @@ public class Car extends BaseModel implements Serializable {
 				this.bids_cnt = objJSON.getInt("bids_cnt");
 			}
 			
-			if(objJSON.has("seller_name")) {
-				this.seller_name = objJSON.getString("seller_name");
+			if(objJSON.has("seller_id")) {
+				this.seller_id = objJSON.getInt("seller_id");
 			}
 			
-			if(objJSON.has("seller_phone_number")) {
-				this.seller_phone_number = objJSON.getString("seller_phone_number");
+			if(seller_id != 0) {
+				
+				if(objJSON.has("seller_name")) {
+					this.seller_name = objJSON.getString("seller_name");
+				}
+				
+				if(objJSON.has("seller_phone_number")) {
+					this.seller_phone_number = objJSON.getString("seller_phone_number");
+				}
+				
+				if(objJSON.has("seller_address")) {
+					this.seller_address = objJSON.getString("seller_address");
+				}
+				
+				if(objJSON.has("seller_profile_img_url")) {
+					this.seller_profile_img_url = objJSON.getString("seller_profile_img_url");
+				}
+			}
+
+			if(objJSON.has("dealer_id")) {
+				this.dealer_id = objJSON.getInt("dealer_id");
+			}
+
+			if(dealer_id != 0) {
+				
+				if(objJSON.has("dealer_name")) {
+					this.dealer_name = objJSON.getString("dealer_name");
+				}
+				
+				if(objJSON.has("dealer_phone_number")) {
+					this.dealer_phone_number = objJSON.getString("dealer_phone_number");
+				}
+				
+				if(objJSON.has("dealer_address")) {
+					this.dealer_address = objJSON.getString("dealer_address");
+				}
+				
+				if(objJSON.has("dealer_profile_img_url")) {
+					this.dealer_profile_img_url = objJSON.getString("dealer_profile_img_url");
+				}
+				
+				if(objJSON.has("dealer_company")) {
+					this.dealer_company = objJSON.getString("dealer_company");
+				}
+				
+				if(objJSON.has("dealer_level")) {
+					this.dealer_level = objJSON.getInt("dealer_level");
+				}
 			}
 			
-			if(objJSON.has("seller_address")) {
-				this.seller_address = objJSON.getString("seller_address");
+			if(objJSON.has("manager_id")) {
+				this.manager_id = objJSON.getInt("manager_id");
 			}
 			
-			if(objJSON.has("manager_name")) {
-				this.manager_name = objJSON.getString("manager_name");
+			if(manager_id != 0) {
+				
+				if(objJSON.has("manager_name")) {
+					this.manager_name = objJSON.getString("manager_name");
+				}
+				
+				if(objJSON.has("manager_desc")) {
+					this.manager_desc = objJSON.getString("manager_desc");
+				}
+				
+				if(objJSON.has("manager_profile_img_url")) {
+					this.manager_profile_img_url = objJSON.getString("manager_profile_img_url");
+				}
 			}
 			
 			if(objJSON.has("m_images")) {
@@ -782,5 +839,77 @@ public class Car extends BaseModel implements Serializable {
 
 	public void setLikes_cnt(int likes_cnt) {
 		this.likes_cnt = likes_cnt;
+	}
+
+	public String getDealer_name() {
+		return dealer_name;
+	}
+
+	public void setDealer_name(String dealer_name) {
+		this.dealer_name = dealer_name;
+	}
+
+	public String getDealer_phone_number() {
+		return dealer_phone_number;
+	}
+
+	public void setDealer_phone_number(String dealer_phone_number) {
+		this.dealer_phone_number = dealer_phone_number;
+	}
+
+	public String getDealer_address() {
+		return dealer_address;
+	}
+
+	public void setDealer_address(String dealer_address) {
+		this.dealer_address = dealer_address;
+	}
+
+	public String getDealer_profile_img_url() {
+		return dealer_profile_img_url;
+	}
+
+	public void setDealer_profile_img_url(String dealer_profile_img_url) {
+		this.dealer_profile_img_url = dealer_profile_img_url;
+	}
+
+	public String getDealer_company() {
+		return dealer_company;
+	}
+
+	public void setDealer_company(String dealer_company) {
+		this.dealer_company = dealer_company;
+	}
+
+	public int getDealer_level() {
+		return dealer_level;
+	}
+
+	public void setDealer_level(int dealer_level) {
+		this.dealer_level = dealer_level;
+	}
+
+	public String getManager_desc() {
+		return manager_desc;
+	}
+
+	public void setManager_desc(String manager_desc) {
+		this.manager_desc = manager_desc;
+	}
+
+	public String getManager_profile_img_url() {
+		return manager_profile_img_url;
+	}
+
+	public void setManager_profile_img_url(String manager_profile_img_url) {
+		this.manager_profile_img_url = manager_profile_img_url;
+	}
+
+	public String getSeller_profile_img_url() {
+		return seller_profile_img_url;
+	}
+
+	public void setSeller_profile_img_url(String seller_profile_img_url) {
+		this.seller_profile_img_url = seller_profile_img_url;
 	}
 }

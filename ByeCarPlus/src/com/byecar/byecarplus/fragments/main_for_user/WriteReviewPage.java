@@ -29,6 +29,8 @@ public class WriteReviewPage extends BCPFragment {
 
 	private Review review;
 	private Car car;
+	private int manager_id;
+	private int dealer_id;
 	
 	private Button btnSubmit;
 	private TextView tvCarName;
@@ -58,6 +60,8 @@ public class WriteReviewPage extends BCPFragment {
 		if(getArguments() != null) {
 			review = (Review) getArguments().getSerializable("review");
 			car = (Car) getArguments().getSerializable("car");
+			manager_id = getArguments().getInt("manager_id");
+			dealer_id = getArguments().getInt("dealer_id");
 		}
 	}
 
@@ -219,24 +223,33 @@ public class WriteReviewPage extends BCPFragment {
 		&review[rating]5
 
 		*/
-		String url = BCPAPIs.DEALER_REVIEW_WRITE_URL
-				+ "?review[content]=" + StringUtils.getUrlEncodedString(etContent)
+
+		String url = null;
+		
+		//딜러.
+		if(dealer_id != 0) {
+			url = BCPAPIs.REVIEW_DEALER_WRITE_URL
+					+ "?dealer_id=" + dealer_id;
+			
+		//검증사.
+		} else if(manager_id != 0){
+			url = BCPAPIs.REVIEW_CERTIFIER_WRITE_URL
+					+ "?certifier_id=" + manager_id;
+			
+		} else {
+			ToastUtils.showToast(R.string.failToWriteReview);
+			return;
+		}
+		
+		url += "?review[content]=" + StringUtils.getUrlEncodedString(etContent)
 				+ "&review[rating]=" + (int)ratingBar.getRating();
 		
 		//수정.
 		if(review != null) {
-			url += "&dealer_id=" + review.getDealer_id()
-					+ "&review[id]=" + review.getId()
-					+ "&review[onsalecar_id]=" + review.getOnsalecar_id()
-					+ "&review[rating]=" + 5;
-		//작성.
-		} else if(car != null) {
-			url += "&dealer_id=" + review.getDealer_id()
-					+ "&review[onsalecar_id]=" + review.getOnsalecar_id()
-					+ "&review[rating]=" + 5;
+			url += "&review[id]=" + review.getId()
+					+ "&review[onsalecar_id]=" + review.getOnsalecar_id();
 		} else {
 			ToastUtils.showToast(R.string.failToWriteReview);
-			return;
 		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {

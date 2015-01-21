@@ -6,7 +6,8 @@
 	<string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
 	
 	<string name="buyerInfo">구매자정보</string>
-	
+
+	<string name="call">전화걸기</string>	
 	<string name="cancel">취소</string>
 	<string name="carDescriptionFromDealer">판매자 차량설명</string>
 	<string name="carInfo">차량정보</string>
@@ -70,7 +71,8 @@
     <string name="emailSignIn">Email 로그인</string>
     <string name="evaluateCertifier">검증사님을 평가해주세요.</string>
     <string name="evaluateDealer">딜러님을 평가해주세요.</string>
-
+	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
+    
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
@@ -150,7 +152,10 @@
 
     <string name="uploadingImage">이미지 업로드 중..</string>
     
+    <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
+    <string name="wannaWithdraw">탈퇴하시겠습니까?</string>
+    <string name="withdraw">회원탈퇴</string>
     <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
     <string name="writeAllContentForRequestCertification">*작성률 100%를 달성해야 검증 신청을 완료할 수 있습니다.</string>
     <string name="writePercentage">작성률</string>

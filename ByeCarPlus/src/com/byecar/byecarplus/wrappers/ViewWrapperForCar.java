@@ -270,12 +270,40 @@ public class ViewWrapperForCar extends ViewWrapper {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
 			car.setLikes_cnt(car.getLikes_cnt() + 1);
 			car.setIs_liked(1);
-			url = BCPAPIs.LIKE_URL;
+
+			switch (car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_CERTIFIED:
+				url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIKE_URL;
+				break;
+			}
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 			car.setLikes_cnt(car.getLikes_cnt() - 1);
 			car.setIs_liked(0);
-			url = BCPAPIs.UNLIKE_URL;
+			
+			switch (car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_CERTIFIED:
+				url = BCPAPIs.CAR_DIRECT_CERTIFIED_UNLIKE_URL;
+				break;
+			}
 		}
 		
 		btnLike.setText("" + car.getLikes_cnt());

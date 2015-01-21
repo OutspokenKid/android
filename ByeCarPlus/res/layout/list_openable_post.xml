@@ -31,7 +31,7 @@
         android:layout_below="@id/list_openable_post_tvHeaderView"
         android:scaleType="fitXY"
         android:visibility="gone" 
-        android:background="@drawable/notice_sample_img4"/>    
+        android:background="@drawable/direct_notice_default"/>    
         
 	<TextView
         android:id="@+id/list_openable_post_tvText"

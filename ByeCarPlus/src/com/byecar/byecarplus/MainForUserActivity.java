@@ -31,7 +31,6 @@ import android.widget.TextView;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
-import com.byecar.byecarplus.classes.BCPFragmentActivity;
 import com.byecar.byecarplus.common.DealerCertifierPage;
 import com.byecar.byecarplus.common.OpenablePostListPage;
 import com.byecar.byecarplus.common.TermOfUsePage;
@@ -50,53 +49,25 @@ import com.byecar.byecarplus.fragments.main_for_user.SettingPage;
 import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
 import com.byecar.byecarplus.fragments.main_for_user.WriteReviewPage;
 import com.byecar.byecarplus.models.Car;
-import com.byecar.byecarplus.models.User;
-import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
-import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
-public class MainForUserActivity extends BCPFragmentActivity {
+public class MainForUserActivity extends MainActivity {
 
 	public static final int POPUP_REQUEST_CERTIFICATION = 0;
 	public static final int POPUP_REQUEST_BUY = 1;
 	public static final int POPUP_REGISTRATION = 2;
 	public static final int POPUP_CHOICE_DEALER = 3;
-	
-	private User user;
-	
-	private GestureSlidingLayout gestureSlidingLayout;
-	private RelativeLayout leftView;
-	private OffsetScrollView scrollView;
-	private LinearLayout leftViewInner;
-	private TextView tvTitle1;
-	private TextView tvTitle2;
-	private TextView tvTitleIn1;
-	private TextView tvTitleIn2;
-	
-	private ImageView ivProfile;
-	private ImageView ivBg;
-	private TextView tvNickname;
-	private TextView tvInfo;
-	private Button btnEdit;
-	private Button[] menuButtons;
-	
-	private RelativeLayout popup;
-	private View popupBg;
-	private View popupImage;
-	private TextView tvPopupText;
-	private Button btnHome;
 
 	private Handler mHandler;
 	private Socket socket;
@@ -506,32 +477,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
         }
     }
 	
-	public void checkSession() {
-		
-		checkSession(new OnAfterCheckSessionListener() {
-			
-			@Override
-			public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
-
-				try {
-					if(isSuccess) {
-						saveCookies();
-						user = new User(objJSON.getJSONObject("user"));
-						setLeftViewUserInfo();
-						register();
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-						launchSignActivity();
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
-			}
-		});
-	}
-	
 	public void launchSignActivity() {
 		
 		Intent intent = new Intent(this, SignActivity.class);
@@ -761,57 +706,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 		((RelativeLayout)findViewById(R.id.mainForUserActivity_innerRelative)).addView(tvTitleIn1);
 	}
 
-	public void setLeftViewUserInfo() {
-		
-		if(!StringUtils.isEmpty(user.getProfile_img_url())) {
-			
-			ivProfile.setTag(user.getProfile_img_url());
-			DownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
-
-				@Override
-				public void onError(String url) {
-
-					LogUtils.log("MainForUserActivity.setLeftViewUserInfo.onError." + "\nurl : " + url);
-					ivProfile.setImageDrawable(null);
-				}
-
-				@Override
-				public void onCompleted(String url, Bitmap bitmap) {
-
-					try {
-						LogUtils.log("MainForUserActivity.setLeftViewUserInfo.onCompleted." + "\nurl : " + url);
-						ivProfile.setImageBitmap(bitmap);;
-					} catch (Exception e) {
-						LogUtils.trace(e);
-						ivProfile.setImageDrawable(null);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
-						ivProfile.setImageDrawable(null);
-					}
-				}
-			});
-		}
-		
-		if(!StringUtils.isEmpty(user.getNickname())) {
-			tvNickname.setText(user.getNickname());
-		}
-		
-		tvInfo.setText(null);
-
-		if(!StringUtils.isEmpty(user.getPhone_number())) {
-			FontUtils.addSpan(tvInfo, user.getPhone_number() + "\n\n", 0, 1);
-		}
-		
-		if(!StringUtils.isEmpty(user.getAddress())) {
-			FontUtils.addSpan(tvInfo, user.getAddress(), 0, 1);
-		}
-	}
-	
-	public User getUser() {
-		
-		return user;
-	}
-
 	public void showPopup(int type) {
 
 		switch(type) {
@@ -867,7 +761,7 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					LogUtils.log("WholesaleForSettingPage.onCompleted." + "\nurl : " + url
+					LogUtils.log("MainForUserActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					SharedPrefsUtils.clearCookie(getCookieName_D1());
@@ -882,19 +776,17 @@ public class MainForUserActivity extends BCPFragmentActivity {
 			}
 		});
 	}
-
-	public void register() {
+	
+	public void withdraw() {
 		
-		String url = BCPAPIs.REGISTER_URL
-				+ "?user_id" + user.getId()
-				+ "&device_token" + AppInfoUtils.getUserToken();
-		
+		String url = BCPAPIs.WITHDRAW_URL;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("MainForUserActivity.onError." + "\nurl : " + url);
+				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+
 			}
 
 			@Override
@@ -903,6 +795,11 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				try {
 					LogUtils.log("MainForUserActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
+
+					SharedPrefsUtils.clearCookie(getCookieName_D1());
+					SharedPrefsUtils.clearCookie(getCookieName_S());
+					
+					launchSignActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -910,5 +807,6 @@ public class MainForUserActivity extends BCPFragmentActivity {
 				}
 			}
 		});
+		
 	}
 }

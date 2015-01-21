@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.byecar.byecarplus.MainForUserActivity;
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPFragment;
@@ -299,7 +299,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 					ToastUtils.showToast(R.string.complete_auth);
-					((MainForUserActivity) mActivity).getUser().setPhone_number(requestedPhoneNumber);
+					MainActivity.user.setPhone_number(requestedPhoneNumber);
 					mActivity.closeTopPage();
 				} catch (Exception e) {
 					LogUtils.trace(e);

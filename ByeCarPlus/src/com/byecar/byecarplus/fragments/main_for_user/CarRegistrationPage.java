@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
@@ -30,7 +31,6 @@ import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.CarModelDetailInfo;
-import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
@@ -892,19 +892,19 @@ public class CarRegistrationPage extends BCPFragment {
 		switch(carType) {
 		
 		case Car.TYPE_BID:
-			url = BCPAPIs.BID_SHOW_URL;
+			url = BCPAPIs.CAR_BID_SHOW_URL;
 			break;
 			
 		case Car.TYPE_DEALER:
-			url = BCPAPIs.DEALER_SHOW_URL;
+			url = BCPAPIs.CAR_DEALER_SHOW_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.DIRECT_MARKET_CERTIFIED_SHOW_URL;
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_SHOW_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
-			url = BCPAPIs.DIRECT_MARKET_NORMAL_SHOW_URL;
+			url = BCPAPIs.CAR_DIRECT_NORMAL_SHOW_URL;
 			break;
 		}
 		
@@ -1157,13 +1157,11 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 
-		User user = ((MainForUserActivity) mActivity).getUser();
-		
-		if(!StringUtils.isEmpty(user.getPhone_number())) {
+		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 			tvDealerInfo.setTextColor(getResources().getColor(R.color.color_green));
-			tvDealerInfo.setText(user.getName()
-					+ "\n" + user.getPhone_number()
-					+ "\n" + user.getAddress());
+			tvDealerInfo.setText(MainActivity.user.getName()
+					+ "\n" + MainActivity.user.getPhone_number()
+					+ "\n" + MainActivity.user.getAddress());
 			tvDealerInfo.setBackgroundResource(R.drawable.registration_box2);
 			tvDealerInfoCertified.setVisibility(View.VISIBLE);
 		} else {
@@ -1243,15 +1241,15 @@ public class CarRegistrationPage extends BCPFragment {
 			switch(carType) {
 				
 			case Car.TYPE_BID:
-				url = BCPAPIs.BID_SAVE_URL;
+				url = BCPAPIs.CAR_BID_SAVE_URL;
 				break;
 				
 			case Car.TYPE_DEALER:
-				url = BCPAPIs.DEALER_SAVE_URL;
+				url = BCPAPIs.CAR_DEALER_SAVE_URL;
 				break;
 				
 			case Car.TYPE_DIRECT_NORMAL:
-				url = BCPAPIs.DIRECT_MARKET_NORMAL_SAVE_URL;
+				url = BCPAPIs.CAR_DIRECT_NORMAL_SAVE_URL;
 				break;
 			}
 			
@@ -1382,7 +1380,7 @@ public class CarRegistrationPage extends BCPFragment {
 	public void requestCertification() {
 		
 		try {
-			StringBuilder sb = new StringBuilder(BCPAPIs.DIRECT_MARKET_CERTIFIED_SAVE_URL);
+			StringBuilder sb = new StringBuilder(BCPAPIs.CAR_DIRECT_CERTIFIED_SAVE_URL);
 			
 			//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
 			sb.append("?onsalecar[car_id]=").append(carModelDetailInfo.getId());

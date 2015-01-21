@@ -290,6 +290,17 @@ public class CarListPage extends BCPFragment {
 				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, null);
 			}
 		});
+	
+		btnBanner.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", Car.TYPE_DIRECT_CERTIFIED);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
 	}
 
 	@Override
@@ -420,19 +431,19 @@ public class CarListPage extends BCPFragment {
 		switch(type) {
 		
 		case Car.TYPE_BID:
-			url = BCPAPIs.BIDS_LIST_URL;
+			url = BCPAPIs.CAR_BID_LIST_URL;
 			break;
 			
 		case Car.TYPE_DEALER:
-			url = BCPAPIs.DEALER_LIST_URL;
+			url = BCPAPIs.CAR_DEALER_LIST_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.DIRECT_MARKET_CERTIFIED_LIST_URL;
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIST_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
-			url = BCPAPIs.DIRECT_MARKET_NORMAL_LIST_URL;
+			url = BCPAPIs.CAR_DIRECT_NORMAL_LIST_URL;
 			break;
 		}
 

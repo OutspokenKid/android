@@ -3,6 +3,8 @@ package com.byecar.byecarplus.fragments.main_for_user;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,13 +26,16 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
+import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.DealerView;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -212,6 +217,28 @@ public class CarDetailPage extends BCPFragment {
 			}
 		});
 
+		imagePagerAdapter.setOnPagerItemClickedListener(new OnPagerItemClickedListener() {
+			
+			@Override
+			public void onPagerItemClicked(int position) {
+
+				ToastUtils.showToast("position : " + position);
+				
+				if(car != null 
+						&& car.getImages() != null
+						&& car.getImages().size() != 0) {
+					int size = car.getImages().size();
+					String[] imageUrls = new String[size];
+					
+					for(int i=0; i<size; i++) {
+						imageUrls[i] = car.getImages().get(i);
+					}
+					
+					mActivity.showImageViewer(position, null, imageUrls, null);
+				}
+			}
+		});
+		
 		btnLike.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -271,9 +298,29 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", EditUserInfoPage.TYPE_REQUEST_BUYER);
-				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+				if(type == Car.TYPE_DIRECT_NORMAL) {
+					
+					if(car.getSeller_id() != 0
+							&& !StringUtils.isEmpty(car.getSeller_phone_number())) {
+						mActivity.showAlertDialog(getString(R.string.call), 
+								car.getSeller_name() + getString(R.string.wannaCallToSeller), 
+								getString(R.string.confirm), 
+								getString(R.string.cancel), 
+								new DialogInterface.OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+										IntentUtils.call(mContext, car.getSeller_phone_number());
+									}
+								}, null);
+					}
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putInt("type", EditUserInfoPage.TYPE_REQUEST_BUYER);
+					bundle.putInt("carId", car.getId());
+					bundle.putInt("carType", car.getType());
+					mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+				}
 			}
 		});
 	}
@@ -514,9 +561,12 @@ public class CarDetailPage extends BCPFragment {
 				ResizeUtils.getSpecificLength(6), 0, 0);
 		tvDetailInfo1.setLineSpacing(0, 1.25f);
 		
-		FontUtils.setFontSize(tvDetailInfo2, 20);
+		FontUtils.setFontSize(tvDetailInfo2, 30);
 		FontUtils.setFontStyle(tvDetailInfo2, FontUtils.BOLD);
-		tvDetailInfo2.setPadding(0, ResizeUtils.getSpecificLength(4), ResizeUtils.getSpecificLength(20), 0);
+		tvDetailInfo2.setPadding(0, 
+				ResizeUtils.getSpecificLength(4), 
+				ResizeUtils.getSpecificLength(20), 
+				ResizeUtils.getSpecificLength(20));
 		tvDetailInfo2.setLineSpacing(0, 0.577f);
 		
 		FontUtils.setFontSize(tvDescription, 20);
@@ -818,13 +868,39 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void downloadCarInfo() {
 
-		String url = BCPAPIs.BID_SHOW_URL + "?onsalecar_id=" + id;
+		String url = null;
+		
+		switch(type) {
+		
+		case Car.TYPE_BID:
+			url = BCPAPIs.CAR_BID_SHOW_URL;
+			break;
+			
+		case Car.TYPE_DEALER:
+			url = BCPAPIs.CAR_DEALER_SHOW_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_CERTIFIED:
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_SHOW_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_NORMAL:
+			url = BCPAPIs.CAR_DIRECT_NORMAL_SHOW_URL;
+			break;
+		}
+		
+		if(url == null) {
+			return;
+		}
+		
+		url += "?onsalecar_id=" + id;
+		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("AuctionDetailPage.onError." + "\nurl : " + url);
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
 				
 				new Handler().postDelayed(new Runnable() {
 
@@ -839,7 +915,7 @@ public class CarDetailPage extends BCPFragment {
 			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					LogUtils.log("AuctionDetailPage.onCompleted." + "\nurl : " + url
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					car = new Car(objJSON.getJSONObject("onsalecar"));
@@ -963,7 +1039,7 @@ public class CarDetailPage extends BCPFragment {
 		tvDetailInfo1.setText(infoString);
 		tvDetailInfo2.setText(null);
 		
-		float scale = 1.5f;
+		float scale = 1f;
 		
 		//제조사.
 		FontUtils.addSpan(tvDetailInfo2, "\n" + car.getBrand_name() + "\n", 0, scale);
@@ -1158,7 +1234,7 @@ public class CarDetailPage extends BCPFragment {
 
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("isCertifier", false);
-						bundle.putInt("id", car.getBids().get(I).getDealer_id());
+						bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
 						mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
 					}
 				});
@@ -1174,10 +1250,10 @@ public class CarDetailPage extends BCPFragment {
 		headerForType.setBackgroundResource(R.drawable.buy_header1);
 		relativeForType.setBackgroundResource(R.drawable.detail_body4);
 		
-		if(car.getSeller_id() != 0) {
+		if(car.getDealer_id() != 0) {
 			
 			//ivImage.
-			ImageView ivImage = new ImageView(mContext);
+			final ImageView ivImage = new ImageView(mContext);
 			ResizeUtils.viewResizeForRelative(130, 130, ivImage, 
 					new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.CENTER_HORIZONTAL}, 
 					new int[]{0, 0}, 
@@ -1186,6 +1262,35 @@ public class CarDetailPage extends BCPFragment {
 			ivImage.setBackgroundResource(R.drawable.detail_default);
 			ivImage.setScaleType(ScaleType.CENTER_CROP);
 			relativeForType.addView(ivImage);
+			
+			ivImage.setTag(car.getDealer_profile_img_url());
+			DownloadUtils.downloadBitmap(car.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+
+					// TODO Auto-generated method stub		
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
+
+						if(bitmap != null && !bitmap.isRecycled()
+								&& ivImage != null) {
+							ivImage.setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
 			
 			//cover.
 			View cover = new View(mContext);
@@ -1204,7 +1309,7 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{0, 20, 0, 0});
 			tvInfo1.setId(R.id.carDetailPage_used_tvInfo1);
 			tvInfo1.setText(null);
-			FontUtils.addSpan(tvInfo1, car.getSeller_name(), 0, 1, true);
+			FontUtils.addSpan(tvInfo1, car.getDealer_name(), 0, 1, true);
 			FontUtils.addSpan(tvInfo1, " " + getString(R.string.dealer), 0, 1);
 			tvInfo1.setTextColor(getResources().getColor(R.color.holo_text));
 			FontUtils.setFontSize(tvInfo1, 30);
@@ -1217,7 +1322,7 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{R.id.carDetailPage_used_tvInfo1, 0}, 
 					new int[]{0, 5, 0, 0});
 			tvInfo2.setId(R.id.carDetailPage_used_tvInfo2);
-			tvInfo2.setText(car.getSeller_address() + "\n" + "소속 없음");
+			tvInfo2.setText(car.getDealer_address() + "\n" + car.getDealer_company());
 			tvInfo2.setTextColor(getResources().getColor(R.color.holo_text));
 			tvInfo2.setGravity(Gravity.CENTER);
 			FontUtils.setFontSize(tvInfo2, 16);
@@ -1252,6 +1357,17 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{R.id.carDetailPage_used_line, 0}, 
 					new int[]{0, 0, 0, 20});
 			btnMoveToPage.setBackgroundResource(R.drawable.buy_dealer_btn);
+			btnMoveToPage.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					Bundle bundle = new Bundle();
+					bundle.putBoolean("isCertifier", false);
+					bundle.putInt("dealer_id", car.getDealer_id());
+					mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+				}
+			});
 			relativeForType.addView(btnMoveToPage);
 		}
 	}
@@ -1265,7 +1381,7 @@ public class CarDetailPage extends BCPFragment {
 		relativeForType.setBackgroundResource(R.drawable.detail_body4);
 
 		//ivImage.
-		ImageView ivImage = new ImageView(mContext);
+		final ImageView ivImage = new ImageView(mContext);
 		ResizeUtils.viewResizeForRelative(130, 130, ivImage, 
 				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.CENTER_HORIZONTAL}, 
 				new int[]{0, 0}, 
@@ -1274,6 +1390,35 @@ public class CarDetailPage extends BCPFragment {
 		ivImage.setBackgroundResource(R.drawable.detail_default);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		relativeForType.addView(ivImage);
+		
+		ivImage.setTag(car.getManager_profile_img_url());
+		DownloadUtils.downloadBitmap(car.getManager_profile_img_url(), new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+
+				// TODO Auto-generated method stub		
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
+
+					if(bitmap != null && !bitmap.isRecycled()
+							&& ivImage != null) {
+						ivImage.setImageBitmap(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 		
 		//cover.
 		View cover = new View(mContext);
@@ -1292,7 +1437,7 @@ public class CarDetailPage extends BCPFragment {
 				new int[]{0, 20, 0, 0});
 		tvInfo.setId(R.id.carDetailPage_certified_tvInfo);
 		tvInfo.setText(null);
-		FontUtils.addSpan(tvInfo, car.getSeller_name(), 0, 1, true);
+		FontUtils.addSpan(tvInfo, car.getManager_name(), 0, 1, true);
 		FontUtils.addSpan(tvInfo, " " + getString(R.string.certifier), 0, 1);
 		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
 		FontUtils.setFontSize(tvInfo, 30);
@@ -1305,7 +1450,7 @@ public class CarDetailPage extends BCPFragment {
 				new int[]{R.id.carDetailPage_certified_tvInfo, 0}, 
 				new int[]{0, 20, 0, 0});
 		tvDesc.setId(R.id.carDetailPage_certified_tvDesc);
-		tvDesc.setText("검증사 소개");
+		tvDesc.setText(car.getManager_desc());
 		tvDesc.setTextColor(getResources().getColor(R.color.holo_text));
 		tvDesc.setGravity(Gravity.CENTER);
 		tvDesc.setMinHeight(ResizeUtils.getSpecificLength(64));
@@ -1330,6 +1475,17 @@ public class CarDetailPage extends BCPFragment {
 				new int[]{R.id.carDetailPage_certified_line, 0}, 
 				new int[]{0, 0, 0, 20});
 		btnMoveToPage.setBackgroundResource(R.drawable.verification_home_btn);
+		btnMoveToPage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("isCertifier", true);
+				bundle.putInt("certifier_id", car.getManager_id());
+				mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+			}
+		});
 		relativeForType.addView(btnMoveToPage);
 	}
 	
@@ -1342,7 +1498,7 @@ public class CarDetailPage extends BCPFragment {
 		relativeForType.setBackgroundResource(R.drawable.detail_body4);
 		
 		//ivImage.
-		ImageView ivImage = new ImageView(mContext);
+		final ImageView ivImage = new ImageView(mContext);
 		ResizeUtils.viewResizeForRelative(130, 130, ivImage, 
 				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.CENTER_HORIZONTAL}, 
 				new int[]{0, 0}, 
@@ -1351,6 +1507,35 @@ public class CarDetailPage extends BCPFragment {
 		ivImage.setBackgroundResource(R.drawable.detail_default);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		relativeForType.addView(ivImage);
+		
+		ivImage.setTag(car.getSeller_profile_img_url());
+		DownloadUtils.downloadBitmap(car.getSeller_profile_img_url(), new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+
+				// TODO Auto-generated method stub		
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
+
+					if(bitmap != null && !bitmap.isRecycled()
+							&& ivImage != null) {
+						ivImage.setImageBitmap(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 		
 		//cover.
 		View cover = new View(mContext);
@@ -1475,12 +1660,49 @@ public class CarDetailPage extends BCPFragment {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
 			car.setLikes_cnt(car.getLikes_cnt() + 1);
 			car.setIs_liked(1);
-			url = BCPAPIs.LIKE_URL;
+			
+			switch(car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_CERTIFIED:
+				url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_NORMAL:
+				url = BCPAPIs.CAR_DIRECT_NORMAL_LIKE_URL;
+				break;
+			
+			}
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 			car.setLikes_cnt(car.getLikes_cnt() - 1);
 			car.setIs_liked(0);
-			url = BCPAPIs.UNLIKE_URL;
+			
+			switch(car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_CERTIFIED:
+				url = BCPAPIs.CAR_DIRECT_CERTIFIED_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT_NORMAL:
+				url = BCPAPIs.CAR_DIRECT_NORMAL_UNLIKE_URL;
+				break;
+			}
 		}
 		
 		btnLike.setText("" + car.getLikes_cnt());

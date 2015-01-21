@@ -327,7 +327,7 @@ public class SelectBidPage extends BCPFragment {
 
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("isCertifier", false);
-						bundle.putInt("id", car.getBids().get(I).getDealer_id());
+						bundle.putInt("certifier_id", car.getBids().get(I).getDealer_id());
 						mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
 					}
 				});
@@ -395,7 +395,7 @@ public class SelectBidPage extends BCPFragment {
 
 	public void downloadCarInfo() {
 
-		String url = BCPAPIs.BID_SHOW_URL + "?onsalecar_id=" + id;
+		String url = BCPAPIs.CAR_BID_SHOW_URL + "?onsalecar_id=" + id;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

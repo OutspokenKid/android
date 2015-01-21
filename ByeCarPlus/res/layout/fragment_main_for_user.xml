@@ -190,7 +190,7 @@
     			android:layout_centerHorizontal="true"
     			android:layout_below="@id/mainForUserPage_noticeTitle"
     			android:scaleType="centerCrop"
-    			android:background="@drawable/notice_sample_img4" />
+    			android:background="@drawable/direct_notice_default" />
             
             <Button 
                 android:id="@+id/mainForUserPage_btnNotice"

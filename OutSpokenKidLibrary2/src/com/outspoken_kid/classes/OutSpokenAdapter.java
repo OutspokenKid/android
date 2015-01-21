@@ -65,11 +65,10 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 			BaseModel model = models.get(position);
 			int itemCode = model.getItemCode();
 			
-			if(convertView == null) {									//Create new Layout.
+			if(convertView == null) {
 				convertView = inflater.inflate(getLayoutResIdByItemCode(itemCode), null);
 				wrapper = getViewWrapperByItemCode(convertView, itemCode);
 				wrapper.setRow(convertView);
-				
 			} else {
 				wrapper = (ViewWrapper) convertView.getTag();
 				wrapper.setRow(convertView);
@@ -108,5 +107,14 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 	public View getFirstView() {
 		
 		return firstView;
+	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		super.notifyDataSetChanged();
+		
+		if(models.size() == 0) {
+			firstView = null;
+		}
 	}
 }

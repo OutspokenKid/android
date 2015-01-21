@@ -19,11 +19,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
@@ -80,8 +82,11 @@ public class EditUserInfoPage extends BCPFragment {
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
 
+	private boolean isTermOfUseClicked;
+	
 	private int type;
 	private int carId;
+	private int carType;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -131,14 +136,15 @@ public class EditUserInfoPage extends BCPFragment {
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
 			carId = getArguments().getInt("carId");
+			carType = getArguments().getInt("carType");
 		}
 	}
 
 	@Override
 	public void createPage() {
 
-		if(((MainForUserActivity)mActivity).getUser() != null) {
-			user = ((MainForUserActivity)mActivity).getUser();
+		if(MainActivity.user != null) {
+			user = MainActivity.user;
 		} else {
 			closePage();
 		}
@@ -292,13 +298,55 @@ public class EditUserInfoPage extends BCPFragment {
 			}
 		});
 		
+		termOfUse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				isTermOfUseClicked = !isTermOfUseClicked;
+				
+				if(isTermOfUseClicked) {
+					termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_b);
+				} else {
+					termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_a);
+				}
+			}
+		});
+		
+		btnTermOfUse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_TERM_OF_USE, null);
+			}
+		});
+		
 		btnConfirm.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
 				if(type == TYPE_REQUEST_BUYER) {
-					purchase();
+					
+					if(!checkName()) {
+						ToastUtils.showToast(R.string.checkName);
+					
+					} else if(!checkNickname()) {
+						ToastUtils.showToast(R.string.checkNickname);
+					
+					} else if(!checkAddress()) {
+						ToastUtils.showToast(R.string.checkAddress);
+						
+					} else if(tvPhoneNumber.getVisibility() != View.VISIBLE) {
+						ToastUtils.showToast(R.string.checkPhoneNumber);
+						
+					} else if(!isTermOfUseClicked) {
+						ToastUtils.showToast(R.string.agreeTermOfUse);
+						
+					} else {
+						purchase();
+					}
 				} else {
 					if(checkInfos()) {
 						uploadImage();
@@ -540,9 +588,9 @@ public class EditUserInfoPage extends BCPFragment {
 		
 		tvPhoneNumber.setText(null);
 		
-		if(!StringUtils.isEmpty(((MainForUserActivity)mActivity).getUser().getPhone_number())) {
+		if(!StringUtils.isEmpty(user.getPhone_number())) {
 			checkIcon.setVisibility(View.VISIBLE);
-			FontUtils.addSpan(tvPhoneNumber, ((MainForUserActivity)mActivity).getUser().getPhone_number(), 0, 1);
+			FontUtils.addSpan(tvPhoneNumber, user.getPhone_number(), 0, 1);
 			
 		} else {
 			checkIcon.setVisibility(View.INVISIBLE);
@@ -673,7 +721,6 @@ public class EditUserInfoPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						User user = ((MainForUserActivity)mActivity).getUser();
 						
 						if(!StringUtils.isEmpty(selectedImageUrl)) {
 							user.setProfile_img_url(selectedImageUrl);
@@ -708,9 +755,27 @@ public class EditUserInfoPage extends BCPFragment {
 	}
 
 	public void purchase() {
+
+		switch(carType) {
 		
-		String url = BCPAPIs.PURCHASE_URL
-				+ "?onsalecar_id=" + carId;
+		case Car.TYPE_DEALER:
+			url = BCPAPIs.CAR_DEALER_PURCHASES_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_CERTIFIED:
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_PURCHASES_URL;
+			break;
+			
+		case Car.TYPE_DIRECT_NORMAL:
+			url = BCPAPIs.CAR_DIRECT_NORMAL_PURCHASES_URL;
+			break;
+		}
+		
+		if(url == null) {
+			return;
+		}
+		
+		url += "?onsalecar_id=" + carId;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

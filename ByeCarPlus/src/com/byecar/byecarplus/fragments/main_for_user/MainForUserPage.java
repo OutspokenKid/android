@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
@@ -241,7 +242,13 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				setLike(bids.get(viewPager.getCurrentItem()));
+				try {
+					setLike(bids.get(viewPager.getCurrentItem()));
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
 			}
 		});
 		
@@ -532,6 +539,8 @@ public class MainForUserPage extends BCPFragment {
 		
 		checkPageScrollOffset();
 		checkNotification();
+		
+		((MainActivity) mActivity).setLeftViewUserInfo();
 	}
 	
 	@Override
@@ -543,6 +552,8 @@ public class MainForUserPage extends BCPFragment {
 		if(checkTime != null) {
 			checkTime.interrupt();
 		}
+
+		((MainActivity) mActivity).clearLeftViewUserInfo();
 	}
 	
 	@Override
@@ -667,8 +678,8 @@ public class MainForUserPage extends BCPFragment {
 
 					@Override
 					public void onClick(View view) {
-
-						if(INDEX < bids.size()) {
+						
+						if(INDEX < dealers.size()) {
 							Bundle bundle = new Bundle();
 							bundle.putInt("id", dealers.get(INDEX).getId());
 							bundle.putInt("type", Car.TYPE_DEALER);
@@ -827,12 +838,12 @@ public class MainForUserPage extends BCPFragment {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
 			car.setLikes_cnt(car.getLikes_cnt() + 1);
 			car.setIs_liked(1);
-			url = BCPAPIs.LIKE_URL;
+			url = BCPAPIs.CAR_BID_LIKE_URL;
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 			car.setLikes_cnt(car.getLikes_cnt() - 1);
 			car.setIs_liked(0);
-			url = BCPAPIs.UNLIKE_URL;
+			url = BCPAPIs.CAR_BID_UNLIKE_URL;
 		}
 
 		btnLike.setText("" + car.getLikes_cnt());
