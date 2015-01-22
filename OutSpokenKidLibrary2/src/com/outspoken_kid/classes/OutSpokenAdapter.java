@@ -65,7 +65,8 @@ public abstract class OutSpokenAdapter extends BaseAdapter {
 			BaseModel model = models.get(position);
 			int itemCode = model.getItemCode();
 			
-			if(convertView == null) {
+			if(convertView == null
+					|| (convertView.getTag() != null && ((ViewWrapper)convertView.getTag()).getItemCode() != itemCode)) {
 				convertView = inflater.inflate(getLayoutResIdByItemCode(itemCode), null);
 				wrapper = getViewWrapperByItemCode(convertView, itemCode);
 				wrapper.setRow(convertView);
