@@ -21,7 +21,7 @@ import com.outspoken_kid.utils.ToastUtils;
  */
 public abstract class OutSpokenApplication extends Application {
 	
-	protected static int MEMORY_CACHE_SIZE = 1024*1024*5;
+	protected static int MEMORY_CACHE_SIZE = 1024*1024*10;
 	protected static int DISK_CACHE_SIZE = 1024*1024*20;
 	protected static CompressFormat DISK_IMAGECACHE_COMPRESS_FORMAT = CompressFormat.PNG;
 	protected static int DISK_IMAGECACHE_QUALITY = 100;  //PNG is lossless so quality is ignored but must be provided
