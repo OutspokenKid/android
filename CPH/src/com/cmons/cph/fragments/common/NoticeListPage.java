@@ -100,7 +100,7 @@ public class NoticeListPage extends CmonsFragmentForShop {
 					Bundle bundle = new Bundle();
 					bundle.putBoolean("isEdit", true);
 					bundle.putString("title", "공지사항 추가");
-					mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, bundle);
+					mActivity.showPage(CphConstants.PAGE_NOTICE, bundle);
 				}
 			});
 		}
@@ -138,7 +138,7 @@ public class NoticeListPage extends CmonsFragmentForShop {
 				bundle.putSerializable("notice", (Notice)models.get(arg2));
 				bundle.putBoolean("isEdit", isEdit);
 				bundle.putString("title", title);
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE, bundle);
+				mActivity.showPage(CphConstants.PAGE_NOTICE, bundle);
 			}
 		});
 	}

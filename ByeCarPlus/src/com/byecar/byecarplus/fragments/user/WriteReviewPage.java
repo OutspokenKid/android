@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -31,6 +31,7 @@ public class WriteReviewPage extends BCPFragment {
 	private Car car;
 	private int manager_id;
 	private int dealer_id;
+	private int onsalecar_id;
 	
 	private Button btnSubmit;
 	private TextView tvCarName;
@@ -58,16 +59,32 @@ public class WriteReviewPage extends BCPFragment {
 	public void setVariables() {
 
 		if(getArguments() != null) {
-			review = (Review) getArguments().getSerializable("review");
 			car = (Car) getArguments().getSerializable("car");
-			manager_id = getArguments().getInt("manager_id");
-			dealer_id = getArguments().getInt("dealer_id");
+			
+			if(getArguments().containsKey("review")) {
+				review = (Review) getArguments().getSerializable("review");
+				manager_id = review.getCertifier_id();
+				dealer_id = review.getDealer_id();
+				onsalecar_id = review.getOnsalecar_id();
+			} else {
+				manager_id = getArguments().getInt("manager_id");
+				dealer_id = getArguments().getInt("dealer_id");
+				onsalecar_id = getArguments().getInt("onsalecar_id");
+			}
 		}
 	}
 
 	@Override
 	public void createPage() {
 
+		ratingBar.setMinRating(1);
+		ratingBar.setMaxRating(5);
+		ratingBar.setLengths(ResizeUtils.getSpecificLength(43),
+				ResizeUtils.getSpecificLength(34));
+		ratingBar.setEmptyStarColor(Color.rgb(195, 195, 195));
+		ratingBar.setFilledStarColor(Color.rgb(254, 188, 42));
+		ratingBar.setUnitRating(OutSpokenRatingBar.UNIT_ONE);
+		
 		//수정.
 		if(review != null) {
 			tvRegdate.setText(StringUtils.getDateString(
@@ -82,6 +99,7 @@ public class WriteReviewPage extends BCPFragment {
 				tvTo.setText(review.getDealer_name() + getString(R.string.toDealer));
 			}
 			
+			ratingBar.setRating(review.getRating());
 			etContent.setText(review.getContent());
 			
 		//첫 작성.
@@ -97,16 +115,9 @@ public class WriteReviewPage extends BCPFragment {
 //				tvRegdate.setText(R.string.evaluateDealer);
 //				tvTo.setText(review.getDealer_name() + " 딜러에게");
 //			}
+//			
+//			ratingBar.setRating(3);
 		}
-		
-		ratingBar.setMinRating(1);
-		ratingBar.setMaxRating(5);
-		ratingBar.setLengths(ResizeUtils.getSpecificLength(43),
-				ResizeUtils.getSpecificLength(34));
-		ratingBar.setRating(3);
-		ratingBar.setEmptyStarColor(Color.rgb(195, 195, 195));
-		ratingBar.setFilledStarColor(Color.rgb(254, 188, 42));
-		ratingBar.setUnitRating(OutSpokenRatingBar.UNIT_ONE);
 	}
 
 	@Override
@@ -241,15 +252,13 @@ public class WriteReviewPage extends BCPFragment {
 			return;
 		}
 		
-		url += "?review[content]=" + StringUtils.getUrlEncodedString(etContent)
-				+ "&review[rating]=" + (int)ratingBar.getRating();
+		url += "&review[content]=" + StringUtils.getUrlEncodedString(etContent)
+				+ "&review[rating]=" + (int)ratingBar.getRating()
+				+ "&review[onsalecar_id]=" + onsalecar_id;
 		
 		//수정.
 		if(review != null) {
-			url += "&review[id]=" + review.getId()
-					+ "&review[onsalecar_id]=" + review.getOnsalecar_id();
-		} else {
-			ToastUtils.showToast(R.string.failToWriteReview);
+			url += "&review[id]=" + review.getId();
 		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
@@ -291,7 +300,16 @@ public class WriteReviewPage extends BCPFragment {
 						}
 						*/
 						if(review != null) {
-							review = new Review(objJSON.getJSONObject("review"));
+
+							try {
+								JSONObject objReview = objJSON.getJSONObject("review");
+								review.setContent(objReview.getString("content"));
+								review.setRating(objReview.getInt("rating"));
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (Error e) {
+								LogUtils.trace(e);
+							}
 						} else if(car != null) {
 							//set Car's rating.
 						}

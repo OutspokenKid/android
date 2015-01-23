@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -328,7 +328,7 @@ public class SelectBidPage extends BCPFragment {
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("isCertifier", false);
 						bundle.putInt("certifier_id", car.getBids().get(I).getDealer_id());
-						mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+						mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
 					}
 				});
 				

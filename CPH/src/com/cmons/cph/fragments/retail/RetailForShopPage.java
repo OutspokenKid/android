@@ -107,7 +107,7 @@ public class RetailForShopPage extends CmonsFragmentForRetail {
 				bundle.putBoolean("isAppNotice", false);
 				bundle.putBoolean("isOurNotice", false);
 				bundle.putInt("wholesale_id", wholesale.getId());
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+				mActivity.showPage(CphConstants.PAGE_NOTICE_LIST, bundle);
 			}
 		});
 		

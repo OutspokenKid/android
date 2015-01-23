@@ -58,18 +58,13 @@ public abstract class ViewWrapper {
 	public void setImage(final ImageView ivImage, String url) {
 		
 		if(ivImage == null) {
-			LogUtils.log("###where.setImage.  ivImage is null, return.");
 			return;
 		} else if(url == null || url.length() == 0) {
-			LogUtils.log("###where.setImage.  url is null, return.");
 			ivImage.setImageDrawable(null);
 			ivImage.setTag(null);
 			return;
-		}
-
-		if(ivImage.getTag() != null && url.equals(ivImage.getTag().toString())) {
+		} else if(ivImage.getTag() != null && url.equals(ivImage.getTag().toString())) {
 			//Do nothing because of same image is already set.
-			LogUtils.log("###where.setImage.  tag is same, return.");
 			return;
 		} else {
 			ivImage.setImageDrawable(null);

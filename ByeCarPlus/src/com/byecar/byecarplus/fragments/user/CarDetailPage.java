@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -222,8 +222,6 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onPagerItemClicked(int position) {
 
-				ToastUtils.showToast("position : " + position);
-				
 				if(car != null 
 						&& car.getImages() != null
 						&& car.getImages().size() != 0) {
@@ -1235,7 +1233,7 @@ public class CarDetailPage extends BCPFragment {
 						Bundle bundle = new Bundle();
 						bundle.putBoolean("isCertifier", false);
 						bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
-						mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+						mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
 					}
 				});
 			}
@@ -1365,7 +1363,7 @@ public class CarDetailPage extends BCPFragment {
 					Bundle bundle = new Bundle();
 					bundle.putBoolean("isCertifier", false);
 					bundle.putInt("dealer_id", car.getDealer_id());
-					mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+					mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
 				}
 			});
 			relativeForType.addView(btnMoveToPage);
@@ -1483,7 +1481,7 @@ public class CarDetailPage extends BCPFragment {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isCertifier", true);
 				bundle.putInt("certifier_id", car.getManager_id());
-				mActivity.showPage(BCPConstants.PAGE_COMMON_DEALER_CERTIFIER, bundle);
+				mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
 			}
 		});
 		relativeForType.addView(btnMoveToPage);

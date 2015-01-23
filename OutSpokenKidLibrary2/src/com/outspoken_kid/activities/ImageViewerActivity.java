@@ -64,7 +64,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	protected ArrayList<ThumbnailSet> thumbnailSets = new ArrayList<ThumbnailSet>();
 	protected ImageFrame[] imageFrames;
 	protected ThumbnailFrame[] frames;
-	protected int imageIndex;
+	protected int index;
 	protected int thumbnailIndex;
 	protected int imageResId;
 	
@@ -114,7 +114,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 	public void setVariables() {
 
 		if(getIntent() != null) {
-			imageIndex = getIntent().getIntExtra("index", 0);
+			index = getIntent().getIntExtra("index", 0);
 
 			if(getIntent().hasExtra("imageUrls")) {
 				imageUrls = getIntent().getStringArrayExtra("imageUrls");
@@ -123,8 +123,8 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			
 			if(getIntent().hasExtra("title")) {
 				title = getIntent().getStringExtra("title");
-			} else if(imageUrls.length > 1) {
-				tvTitle.setText((imageIndex + 1) + "/" + imageUrls.length);
+			} else if(imageUrls.length > 0) {
+				tvTitle.setText((index + 1) + "/" + imageUrls.length);
 			}
 			
 			if(getIntent().hasExtra("thumbnailUrls")) {
@@ -276,13 +276,13 @@ public abstract class ImageViewerActivity extends BaseActivity {
 						viewPagerForThumbnails.setCurrentItem(position/4, true);
 					}
 					
-					imageIndex = position;
+					index = position;
 					
 					if(frames != null) {
 						int size = frames.length;
 						for(int i=0; i<size; i++) {
 							if(frames[i] != null) {
-								frames[i].update(imageIndex);
+								frames[i].update(index);
 								
 							}
 						}
@@ -310,10 +310,10 @@ public abstract class ImageViewerActivity extends BaseActivity {
 						
 						if(atStart) {
 							atStart = false;
-						} else if(thumbnailIndex > position && imageIndex != position * 4 + 3) {
+						} else if(thumbnailIndex > position && index != position * 4 + 3) {
 							viewPagerForImages.setCurrentItem(position * 4 + 3, true);
 							
-						} else if(thumbnailIndex < position && imageIndex != position * 4) {
+						} else if(thumbnailIndex < position && index != position * 4) {
 							viewPagerForImages.setCurrentItem(position * 4, true);
 						}
 						
@@ -357,7 +357,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			setTitle(title);
 		}
 
-		LogUtils.log("ImageViewerActivity.setPage.  position : " + imageIndex + ", imageResId : " + imageResId);
+		LogUtils.log("ImageViewerActivity.setPage.  position : " + index + ", imageResId : " + imageResId);
 		
 		if(imageResId == 0) {
 			mainLayout.postDelayed(new Runnable() {
@@ -365,13 +365,13 @@ public abstract class ImageViewerActivity extends BaseActivity {
 				@Override
 				public void run() {
 
-					if(imageIndex != 0) {
+					if(index != 0) {
 						atStart = true;
 						
 						if(viewPagerForImages != null 
 								&& viewPagerForImages.getAdapter() != null
-								&& viewPagerForImages.getAdapter().getCount() > imageIndex) {
-							viewPagerForImages.setCurrentItem(imageIndex);
+								&& viewPagerForImages.getAdapter().getCount() > index) {
+							viewPagerForImages.setCurrentItem(index);
 						}
 
 					} else if(frames != null && frames.length > 1 && frames[0] != null){
@@ -458,7 +458,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			
 			try {
 				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imageResId);
-				ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + imageIndex, false);
+				ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + index, false);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {
@@ -467,11 +467,11 @@ public abstract class ImageViewerActivity extends BaseActivity {
 			
 		} else {
 			
-			if(imageFrames != null && imageFrames[imageIndex] != null) {
-				Bitmap bitmap = imageFrames[imageIndex].getBitmap();
+			if(imageFrames != null && imageFrames[index] != null) {
+				Bitmap bitmap = imageFrames[index].getBitmap();
 				
 				if(bitmap != null) {
-					ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + imageIndex, false);
+					ImageCacheUtils.saveImage(context, bitmap, imageTitle + "_" + index, false);
 				}
 			}
 		}

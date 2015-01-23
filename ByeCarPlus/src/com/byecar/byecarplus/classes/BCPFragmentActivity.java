@@ -136,7 +136,7 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 
 		Intent intent = new Intent(this, ImageViewer.class);
 		
-		intent.putExtra("imageIndex", imageIndex);
+		intent.putExtra("index", imageIndex);
 		
 		if(title != null) {
 			intent.putExtra("title", title);

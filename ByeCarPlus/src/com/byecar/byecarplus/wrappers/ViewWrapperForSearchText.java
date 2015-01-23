@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
+import com.byecar.byecarplus.common.TypeSearchCarPage;
 import com.byecar.byecarplus.models.CarModel;
 import com.byecar.byecarplus.models.CarModelGroup;
 import com.byecar.byecarplus.models.CarSearchString;

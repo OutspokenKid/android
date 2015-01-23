@@ -26,6 +26,7 @@ public class OutSpokenRatingBar extends View {
 	private int topMargin;
 	
 	private boolean isInit;
+	private boolean touchable = true;
 	
 	private int length_8;
 	private int length_10;
@@ -160,6 +161,10 @@ public class OutSpokenRatingBar extends View {
 	
 	@SuppressLint("ClickableViewAccessibility")
 	public boolean onTouchEvent(MotionEvent event) {
+	
+		if(!touchable) {
+			return false;
+		}
 		
 		X = (int)event.getX(); 
 		
@@ -395,5 +400,14 @@ public class OutSpokenRatingBar extends View {
 		} else {
 			//ignore.
 		}
+	}
+
+
+	public boolean isTouchable() {
+		return touchable;
+	}
+
+	public void setTouchable(boolean touchable) {
+		this.touchable = touchable;
 	}
 }

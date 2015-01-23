@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.common;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -24,11 +24,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
-import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.fragments.user.EditUserInfoPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.CarModelDetailInfo;
 import com.byecar.byecarplus.views.TitleBar;
@@ -51,6 +51,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 	private static final int MIN_DESC_COUNT = 0;
 	private static final int MAX_DESC_COUNT = 200;
+	
+	private static final int MAX_PRICE = 50000;
 	
 	public static final int TYPE_REGISTRATION = 0;
 	public static final int TYPE_REQUEST_CERTIFICATION = 1;
@@ -75,8 +77,12 @@ public class CarRegistrationPage extends BCPFragment {
 	private TextView tvMainImageText;
 	private TextView tvAddedPhotoText;
 	private View lineAfterPhoto;
+	private TextView tvPriceText;
+	private EditText etPrice;
+	private Button btnClearPrice;
+	private View lineAfterPrice;
 	private TextView tvCarInfoText;
-	private Button btnCarInfos[];
+	private Button[] btnCarInfos;
 	private TextView tvDetailCarInfo;
 	private HoloStyleEditText[] etDetailCarInfos;
 	private RelativeLayout relativeForOption;
@@ -160,6 +166,12 @@ public class CarRegistrationPage extends BCPFragment {
 		tvAddedPhotoText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvAddedPhoto);
 		
 		lineAfterPhoto = mThisView.findViewById(R.id.carRegistrationPage_lineAfterPhoto);
+		
+		tvPriceText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvPrice);
+		etPrice = (EditText) mThisView.findViewById(R.id.carRegistrationPage_etPrice);
+		btnClearPrice = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnClearPrice);
+		
+		lineAfterPrice = mThisView.findViewById(R.id.carRegistrationPage_lineAfterPrice);
 		
 		tvCarInfoText = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarInfo);
 		
@@ -262,6 +274,32 @@ public class CarRegistrationPage extends BCPFragment {
 			btnRequest.setVisibility(View.INVISIBLE);
 			btnComplete.setVisibility(View.VISIBLE);
 		}
+		
+		if(type == TYPE_REGISTRATION) {
+			
+			switch(carType) {
+			
+			case Car.TYPE_BID:
+				tvPriceText.setText(R.string.priceForBid);
+				etPrice.setHint(R.string.hintForPriceBid);
+				break;
+				
+			case Car.TYPE_DIRECT_NORMAL:
+				tvPriceText.setText(R.string.priceForNormal);
+				etPrice.setHint(R.string.hintForPriceNormal);
+				break;
+			}
+			
+			tvPriceText.setVisibility(View.VISIBLE);
+			etPrice.setVisibility(View.VISIBLE);
+			btnClearPrice.setVisibility(View.VISIBLE);
+			lineAfterPrice.setVisibility(View.VISIBLE);
+		} else {
+			tvPriceText.setVisibility(View.GONE);
+			etPrice.setVisibility(View.GONE);
+			btnClearPrice.setVisibility(View.GONE);
+			lineAfterPrice.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -340,6 +378,69 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			});
 		}
+		
+		etPrice.addTextChangedListener(new TextWatcher() {
+			
+			private String lastText = null;
+			private int lastCursorIndex;
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				
+				if(s != null) {
+					lastText = s.toString();
+					lastCursorIndex = etPrice.getSelectionStart() - 1;
+				}
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				
+				try {
+					if(s == null || s.length() == 0) {
+						return;
+					}
+					
+					String text = s.toString();
+					
+					if(text.contains(".") 
+							|| (text.length() > 1 && text.charAt(0) == '0')) {
+						etPrice.setText(lastText);
+						etPrice.setSelection(lastCursorIndex);
+					}
+					
+					int tempPrice = Integer.parseInt(text);
+					
+					if(tempPrice < 1) {
+						ToastUtils.showToast(R.string.minPriceMustOverZero);
+						etPrice.setText(lastText);
+						etPrice.setSelection(lastCursorIndex);
+					} else if(tempPrice > MAX_PRICE) {
+						ToastUtils.showToast(R.string.maxPriceMustLessThanLimit);
+						etPrice.setText(lastText);
+						etPrice.setSelection(lastCursorIndex);
+						return;
+					}
+					
+					checkProgress();
+				} catch (Exception e) {
+				}
+			}
+		});
+		
+		btnClearPrice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				etPrice.setText(null);
+				etPrice.requestFocus();
+			}
+		});
 		
 		etCarDescriptionFromDealer.addTextChangedListener(new TextWatcher() {
 			
@@ -504,55 +605,34 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
 		
-		//btnCarPhoto1.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[0].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		
-		//ivPhotos.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[0].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		
-		//btnCarPhoto2.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[1].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivPhotos.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[1].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//btnCarPhoto3.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[2].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivPhotos.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[2].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//btnCarPhoto4.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[3].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivPhotos.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[3].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		for(int i=0; i<8; i++) {
+
+			//btnCarPhoto1.
+			rp = (RelativeLayout.LayoutParams) btnPhotos[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(144);
+			rp.height = ResizeUtils.getSpecificLength(110);
+			
+			if(i == 0 || i == 4) {
+				rp.leftMargin = ResizeUtils.getSpecificLength(20);
+				rp.topMargin = ResizeUtils.getSpecificLength(6);
+			} else {
+				rp.leftMargin = ResizeUtils.getSpecificLength(10);
+			}
+			
+			//ivPhotos.
+			rp = (RelativeLayout.LayoutParams) ivPhotos[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(144);
+			rp.height = ResizeUtils.getSpecificLength(110);
+			rp.leftMargin = ResizeUtils.getSpecificLength(20);
+			rp.topMargin = ResizeUtils.getSpecificLength(6);
+			
+			if(i == 0 || i == 4) {
+				rp.leftMargin = ResizeUtils.getSpecificLength(20);
+				rp.topMargin = ResizeUtils.getSpecificLength(6);
+			} else {
+				rp.leftMargin = ResizeUtils.getSpecificLength(10);
+			}
+		}
 		
 		//tvMainImageText.
 		rp = (RelativeLayout.LayoutParams) tvMainImageText.getLayoutParams();
@@ -562,58 +642,28 @@ public class CarRegistrationPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) tvAddedPhotoText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
-		
-		//btnAddedPhoto1.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[4].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		
-		//ivAddedPhoto1.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[4].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		
-		//btnAddedPhoto2.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[5].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivAddedPhoto2.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[5].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//btnAddedPhoto3.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[6].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivAddedPhoto3.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[6].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//btnAddedPhoto4.
-		rp = (RelativeLayout.LayoutParams) btnPhotos[7].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
-		
-		//ivAddedPhoto4.
-		rp = (RelativeLayout.LayoutParams) ivPhotos[7].getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(144);
-		rp.height = ResizeUtils.getSpecificLength(110);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 
-		//tvCarInfo.
+		//tvPriceText.
+		rp = (RelativeLayout.LayoutParams) tvPriceText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(70);
+		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		
+		//etPrice.
+		rp = (RelativeLayout.LayoutParams) etPrice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(590);
+		rp.height = ResizeUtils.getSpecificLength(86);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		etPrice.setPadding(ResizeUtils.getSpecificLength(138), 0, 
+				ResizeUtils.getSpecificLength(138), 0);
+		
+		//btnClearPrice.
+		rp = (RelativeLayout.LayoutParams) btnClearPrice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(40);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
+		rp.rightMargin = ResizeUtils.getSpecificLength(20);
+		
+		//tvCarInfoText.
 		rp = (RelativeLayout.LayoutParams) tvCarInfoText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(70);
 		rp.leftMargin = ResizeUtils.getSpecificLength(26);
@@ -701,6 +751,9 @@ public class CarRegistrationPage extends BCPFragment {
 		FontUtils.setFontSize(tvPercentage, 24);
 		FontUtils.setFontSize(tvPercentage2, 16);
 		FontUtils.setFontSize(tvWriteAllContents, 18);
+		
+		FontUtils.setFontSize(tvPriceText, 30);
+		FontUtils.setFontAndHintSize(etPrice, 26, 20);
 		
 		FontUtils.setFontSize(tvInputDealerInfoText, 30);
 		FontUtils.setFontSize(tvDealerInfoCertified, 18);
@@ -1435,7 +1488,7 @@ public class CarRegistrationPage extends BCPFragment {
 		switch(type) {
 		
 		case TYPE_REGISTRATION:
-			((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REGISTRATION);
+			((MainActivity) mActivity).showPopup(MainActivity.POPUP_REGISTRATION);
 			break;
 			
 		case TYPE_EDIT:
@@ -1450,7 +1503,7 @@ public class CarRegistrationPage extends BCPFragment {
 			break;
 			
 		case TYPE_REQUEST_CERTIFICATION:
-			((MainForUserActivity) mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_CERTIFICATION);
+			((MainActivity) mActivity).showPopup(MainActivity.POPUP_REQUEST_CERTIFICATION);
 			break;
 		}
 	}
@@ -1501,10 +1554,10 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		if(type == TYPE_EDIT|| type == TYPE_REGISTRATION) {
 			
-			//판매자 정보 인증 20.
+			//판매자 정보 인증 10.
 			if(tvDealerInfoCertified.getVisibility() == View.VISIBLE) {
-				progress += 20;
-				LogUtils.log("###CarRegistrationPage.checkProgress.  add 20 from certification.");
+				progress += 10;
+				LogUtils.log("###CarRegistrationPage.checkProgress.  add 10 from certification.");
 			}
 			
 			//차량 사진 개당 5, 총 20.
@@ -1514,6 +1567,12 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					LogUtils.log("###CarRegistrationPage.checkProgress.  add 5 from photo.");
 				}
+			}
+			
+			//가격 입력 10.
+			if(etPrice.length() > 0) {
+				progress += 10;
+				LogUtils.log("###CarRegistrationPage.checkProgress.  add 10 from price.");
 			}
 			
 			//차량검색 5, 나머지 검색 개당 3, 총 20.

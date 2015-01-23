@@ -40,17 +40,17 @@ public class CphConstants {
 	public static final int ITEM_ORDERSET_WHOLESALE2 = 24;
 	public static final int ITEM_ORDERSET_RETAIL = 25;
 	
-	public static final int PAGE_COMMON_CHANGE_INFO = 203;
-	public static final int PAGE_COMMON_CHANGE_PASSWORD = 204;
-	public static final int PAGE_COMMON_CHANGE_PHONENUMBER = 205;
-	public static final int PAGE_COMMON_STAFF = 206;
-	public static final int PAGE_COMMON_NOTICE_LIST = 207;
-	public static final int PAGE_COMMON_NOTICE = 208;
-	public static final int PAGE_COMMON_PRODUCT = 209;
-	public static final int PAGE_COMMON_REPLY = 210;
-	public static final int PAGE_COMMON_SETTING = 211;
-	public static final int PAGE_COMMON_NOTIFICATION_SETTING = 212;
-	public static final int PAGE_COMMON_GUIDE = 213;
+	public static final int PAGE_CHANGE_INFO = 203;
+	public static final int PAGE_CHANGE_PASSWORD = 204;
+	public static final int PAGE_CHANGE_PHONENUMBER = 205;
+	public static final int PAGE_STAFF = 206;
+	public static final int PAGE_NOTICE_LIST = 207;
+	public static final int PAGE_NOTICE = 208;
+	public static final int PAGE_PRODUCT = 209;
+	public static final int PAGE_REPLY = 210;
+	public static final int PAGE_SETTING = 211;
+	public static final int PAGE_NOTIFICATION_SETTING = 212;
+	public static final int PAGE_GUIDE = 213;
 	
 	public static final int PAGE_WHOLESALE_MAIN = 1;
 	public static final int PAGE_WHOLESALE_ACCOUNT = 2;

@@ -155,7 +155,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 					Bundle bundle = new Bundle();
 					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
 					bundle.putSerializable("product", product);
-					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_PRODUCT, bundle);
 				}
 			});
 			
@@ -188,7 +188,7 @@ public class ViewWrapperForProduct extends ViewWrapper {
 
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("product", product);
-					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+					ShopActivity.getInstance().showPage(CphConstants.PAGE_REPLY, bundle);
 				}
 			});
 		}

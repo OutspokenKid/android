@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import java.util.ArrayList;
 
@@ -21,13 +21,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
-import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
+import com.byecar.byecarplus.common.CarRegistrationPage;
 import com.byecar.byecarplus.common.OpenablePostListPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.models.OpenablePost;
@@ -40,12 +40,11 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
 
-public class MainForUserPage extends BCPFragment {
+public class MainPage extends BCPFragment {
 	
 	private OffsetScrollView scrollView;
 	private ViewPager viewPager;
@@ -158,7 +157,7 @@ public class MainForUserPage extends BCPFragment {
 		        	passTime = 86400 - remainTime;
 		        	
 		        	if(remainTime <= 0) {
-		        		currentCar.setStatus(Car.BID_COMPLETE);
+		        		currentCar.setStatus(Car.STATUS_BID_COMPLETE);
 		        		return;
 		        	}
 		        	
@@ -189,10 +188,10 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View v) {
 				
-				if(((MainForUserActivity)mActivity).isOpen()) {
-					((MainForUserActivity)mActivity).closeMenu();
+				if(((MainActivity)mActivity).isOpen()) {
+					((MainActivity)mActivity).closeMenu();
 				} else {
-					((MainForUserActivity)mActivity).openMenu();
+					((MainActivity)mActivity).openMenu();
 				}
 			}
 		});
@@ -202,7 +201,7 @@ public class MainForUserPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("Notice button clicked.");
+				mActivity.showPage(BCPConstants.PAGE_NOTIFICATION, null);
 			}
 		});
 		
@@ -687,7 +686,7 @@ public class MainForUserPage extends BCPFragment {
 						}
 					}
 				});
-				usedCarViews[i].downloadImage(dealers.get(i).getRep_img_url());
+				usedCarViews[i].setImageUrl(dealers.get(i).getRep_img_url());
 				usedMarketLinear.addView(usedCarViews[i]);
 			} catch (Exception e) {
 				LogUtils.trace(e);

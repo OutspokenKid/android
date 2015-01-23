@@ -252,7 +252,7 @@ public class ProductPage extends CmonsFragmentForShop {
 
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("product", product);
-					mActivity.showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+					mActivity.showPage(CphConstants.PAGE_REPLY, bundle);
 				}
 			});
 

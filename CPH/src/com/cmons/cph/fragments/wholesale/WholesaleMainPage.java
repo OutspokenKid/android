@@ -322,7 +322,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 					return;
 				}
 				
-				mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, null);
+				mActivity.showPage(CphConstants.PAGE_STAFF, null);
 			}
 		});
 		
@@ -331,7 +331,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_COMMON_SETTING, null);
+				mActivity.showPage(CphConstants.PAGE_SETTING, null);
 			}
 		});
 		
@@ -940,7 +940,7 @@ public class WholesaleMainPage extends CmonsFragmentForWholesale {
 						Bundle bundle = new Bundle();
 						bundle.putSerializable("product", products.get(position));
 						bundle.putBoolean("isWholesale", true);
-						mActivity.showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
+						mActivity.showPage(CphConstants.PAGE_PRODUCT, bundle);
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					} catch (Error e) {

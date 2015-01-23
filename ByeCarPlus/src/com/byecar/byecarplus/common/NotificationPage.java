@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.common;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -6,11 +6,10 @@ import org.json.JSONObject;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.byecar.byecarplus.R;
@@ -18,28 +17,22 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPAdapter;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
-import com.byecar.byecarplus.models.Car;
-import com.byecar.byecarplus.models.Review;
+import com.byecar.byecarplus.models.Notification;
 import com.byecar.byecarplus.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class MyPage extends BCPFragment {
+public class NotificationPage extends BCPFragment {
 
-	private Button btnCar;
-	private Button btnReview;
-	
 	private ListView listView;
-	private int menuIndex;
 	
 	@Override
 	public void bindViews() {
 
-		titleBar = (TitleBar) mThisView.findViewById(R.id.myPage_titleBar);
-		
-		btnCar = (Button) mThisView.findViewById(R.id.myPage_btnCar);
-		btnReview = (Button) mThisView.findViewById(R.id.myPage_btnReview);
-		listView = (ListView) mThisView.findViewById(R.id.myPage_listView);
+		titleBar = (TitleBar) mThisView.findViewById(R.id.notificationPage_titleBar);
+		listView = (ListView) mThisView.findViewById(R.id.notificationPage_listView);
 	}
 
 	@Override
@@ -54,29 +47,12 @@ public class MyPage extends BCPFragment {
 		adapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
-		listView.setDividerHeight(ResizeUtils.getSpecificLength(20));
+		listView.setDividerHeight(ResizeUtils.getSpecificLength(38));
+		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 	}
 
 	@Override
 	public void setListeners() {
-
-		btnCar.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(0);
-			}
-		});
-		
-		btnReview.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				setMenu(1);
-			}
-		});
 		
 		listView.setOnScrollListener(new OnScrollListener() {
 			
@@ -93,34 +69,53 @@ public class MyPage extends BCPFragment {
 				}
 			}
 		});
+	
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View row, int position,
+					long arg3) {
+				
+				try {
+					Notification notification = (Notification) models.get(position);
+					
+					//Action.
+					
+					if(notification.getRead_at() == 0) {
+						requestReadNotification(notification.getId());
+						notification.setRead_at(System.currentTimeMillis()/1000);
+						adapter.notifyDataSetChanged();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, 
-				mThisView.findViewById(R.id.myPage_bgForButtons), null, null, null);
-		
-		ResizeUtils.viewResizeForRelative(320, 88, btnCar, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnReview, null, null, null);
 	}
 
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_my;
+		return R.layout.fragment_notification;
 	}
 
 	@Override
 	public int getBackButtonResId() {
 
-		return R.drawable.mypage_back_btn;
+		return R.drawable.push_back_btn;
 	}
 
 	@Override
 	public int getBackButtonWidth() {
 
-		return 235;
+		return 164;
 	}
 
 	@Override
@@ -132,18 +127,13 @@ public class MyPage extends BCPFragment {
 	@Override
 	public int getRootViewResId() {
 
-		return R.id.myPage_mainLayout;
+		return R.id.notificationPage_mainLayout;
 	}
 
 	@Override
 	public void downloadInfo() {
-
-		if(menuIndex == 0) {
-			url = BCPAPIs.MY_CAR_URL;
-		} else {
-			url = BCPAPIs.MY_REVIEW_URL;
-		}
 		
+		url = BCPAPIs.NOTIFICATION_URL;
 		super.downloadInfo();
 	}
 	
@@ -153,26 +143,14 @@ public class MyPage extends BCPFragment {
 		try {
 			JSONArray arJSON = null;
 			int size = 0;
+
+			arJSON = objJSON.getJSONArray("notifications");
+			size = arJSON.length();
 			
-			if(menuIndex == 0) {
-				arJSON = objJSON.getJSONArray("onsalecars");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					Car car = new Car(arJSON.getJSONObject(i));
-					car.setItemCode(BCPConstants.ITEM_CAR_MY);
-					models.add(car);
-				}
-			} else {
-				
-				arJSON = objJSON.getJSONArray("reviews");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					Review review = new Review(arJSON.getJSONObject(i));
-					review.setItemCode(BCPConstants.ITEM_REVIEW);
-					models.add(review);
-				}
+			for(int i=0; i<size; i++) {
+				Notification notification = new Notification(arJSON.getJSONObject(i));
+				notification.setItemCode(BCPConstants.ITEM_NOTIFICATION);
+				models.add(notification);
 			}
 			
 			if(size < NUMBER_OF_LISTITEMS) {
@@ -218,18 +196,33 @@ public class MyPage extends BCPFragment {
 	
 //////////////////// Custom methods.
 	
-	public void setMenu(int menuIndex) {
+	public void requestReadNotification(int notification_id) {
 		
-		this.menuIndex = menuIndex;
-		
-		if(menuIndex == 0) {
-			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_a);
-			btnReview.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
-		} else {
-			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
-			btnReview.setBackgroundResource(R.drawable.mypage_tab2_tab_a);
-		}
-		
-		refreshPage();
+		String url = BCPAPIs.NOTIFICATION_READ_URL
+				+ "notification_id=" + notification_id;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("NotificationPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("NotificationPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

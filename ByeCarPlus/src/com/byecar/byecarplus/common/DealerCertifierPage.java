@@ -407,13 +407,12 @@ public class DealerCertifierPage extends BCPFragment {
 		String url = null;
 		
 		if(!isCertifier) {
-			url = BCPAPIs.REVIEW_DEALER_URL;
+			url = BCPAPIs.REVIEW_DEALER_URL
+					+ "?dealer_id=" + dealer_id;
 		} else {
-			url = BCPAPIs.REVIEW_CERTIFIER_URL;
+			url = BCPAPIs.REVIEW_CERTIFIER_URL
+					+ "?certifier_id=" + certifier_id;
 		}
-		
-		url += "&last_priority=" + (reviews.size() > 0? reviews.get(reviews.size() - 1).getPriority() : "")
-				+ "&num=" + NUMBER_OF_LISTITEMS;
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

@@ -1,5 +1,7 @@
 package com.byecar.byecarplus.wrappers;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -8,6 +10,7 @@ import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -54,8 +57,8 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		try {
 			ResizeUtils.viewResizeForRelative(186, 132, ivImage, null, null, new int[]{31, 84, 0, 0});
 			ResizeUtils.viewResizeForRelative(608, 232, cover, null, null, new int[]{0, 0, 0, 0});
-			ResizeUtils.viewResizeForRelative(135, 30, typeIcon, null, null, new int[]{18, 24, 0, 0});
-			ResizeUtils.viewResizeForRelative(92, 39, statusIcon, null, null, new int[]{15, 18, 0, 0});
+			ResizeUtils.viewResizeForRelative(135, 30, typeIcon, null, null, new int[]{18, 20, 0, 0});
+			ResizeUtils.viewResizeForRelative(92, 39, statusIcon, null, null, new int[]{15, 15, 0, 0});
 			ResizeUtils.setMargin(tvRegdate, new int[]{0, 26, 18, 0});
 			ResizeUtils.viewResizeForRelative(290, 64, tvCarName, null, null, new int[]{16, 4, 0, 0});
 			ResizeUtils.setMargin(tvYear, new int[]{0, 20, 30, 0});
@@ -73,12 +76,64 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void setValues(BaseModel baseModel) {
 
 		try {
 			if(baseModel instanceof Car) {
 				car = (Car) baseModel;
+
+				switch(car.getType()) {
+				
+				case Car.TYPE_BID:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title1);
+					break;
+					
+				case Car.TYPE_DEALER:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title2);
+					break;
+					
+				case Car.TYPE_DIRECT_CERTIFIED:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
+					break;
+					
+				case Car.TYPE_DIRECT_NORMAL:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title4);
+					break;
+					
+				default:
+					if(AppInfoUtils.checkMinVersionLimit(16)) {
+						typeIcon.setBackground(null);
+					} else {
+						typeIcon.setBackgroundDrawable(null);
+					}
+				}
+
+				switch(car.getStatus()) {
+				
+				case Car.STATUS_STAND_BY_APPROVAL:
+				case Car.STATUS_STAND_BY_BID:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
+					break;
+					
+				case Car.STATUS_BIDDING:
+				case Car.STATUS_BID_COMPLETE:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
+					break;
+					
+				case Car.STATUS_TRADE_COMPLETE:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
+					break;
+					
+				default:
+					if(AppInfoUtils.checkMinVersionLimit(16)) {
+						statusIcon.setBackground(null);
+					} else {
+						statusIcon.setBackgroundDrawable(null);
+					}
+				}
 				
 				tvRegdate.setText(StringUtils.getDateString(
 						"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
@@ -106,7 +161,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 //					Bundle bundle = new Bundle();
 //					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
 //					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
+//					ShopActivity.getInstance().showPage(CphConstants.PAGE_PRODUCT, bundle);
 //				}
 //			});
 //			
@@ -139,7 +194,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 //
 //					Bundle bundle = new Bundle();
 //					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+//					ShopActivity.getInstance().showPage(CphConstants.PAGE_REPLY, bundle);
 //				}
 //			});
 //		}

@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.sign;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -17,8 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.SignActivity;
 import com.byecar.byecarplus.classes.BCPAPIs;
-import com.byecar.byecarplus.classes.BCPFragmentForSign;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
@@ -33,7 +34,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
-public class SignUpForCommonPage extends BCPFragmentForSign {
+public class SignUpPage extends BCPFragment {
 
 	private static final int NICKNAME_MIN = 3;
 	private static final int NICKNAME_MAX = 15;
@@ -484,7 +485,7 @@ public class SignUpForCommonPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity();
+						((SignActivity)mActivity).launchMainForUserActivity();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

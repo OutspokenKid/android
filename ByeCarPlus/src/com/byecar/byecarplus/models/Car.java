@@ -21,11 +21,12 @@ public class Car extends BaseModel implements Serializable {
 	public static final int TYPE_DIRECT_CERTIFIED = 3;
 	public static final int TYPE_DIRECT_NORMAL = 4;
 	
-	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
-	public static final int STAND_BY = 0;
-	public static final int BIDDING = 10;
-	public static final int BID_COMPLETE = 20;
-	public static final int TRADE_COMPLETE = 30;
+	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
+	public static final int STATUS_STAND_BY_APPROVAL = 0;
+	public static final int STATUS_STAND_BY_BID = 5;
+	public static final int STATUS_BIDDING = 10;
+	public static final int STATUS_BID_COMPLETE = 20;
+	public static final int STATUS_TRADE_COMPLETE = 30;
 	
 	private int id;
 	private int type;

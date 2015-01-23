@@ -12,6 +12,7 @@ import com.byecar.byecarplus.wrappers.ViewWrapperForCar;
 import com.byecar.byecarplus.wrappers.ViewWrapperForDirectNormal;
 import com.byecar.byecarplus.wrappers.ViewWrapperForMyCar;
 import com.byecar.byecarplus.wrappers.ViewWrapperForMyReview;
+import com.byecar.byecarplus.wrappers.ViewWrapperForNotification;
 import com.byecar.byecarplus.wrappers.ViewWrapperForOpenablePost;
 import com.byecar.byecarplus.wrappers.ViewWrapperForSearchText;
 import com.outspoken_kid.classes.OutSpokenAdapter;
@@ -38,6 +39,16 @@ public class BCPAdapter extends OutSpokenAdapter {
 		
 		switch (itemCode) {
 		
+		case BCPConstants.ITEM_NOTICE:
+		case BCPConstants.ITEM_FAQ:
+			return R.layout.list_openable_post;
+		
+		case BCPConstants.ITEM_NOTIFICATION:
+			return R.layout.list_notification;
+			
+		case BCPConstants.ITEM_REVIEW:
+			return R.layout.list_my_review;
+			
 		case BCPConstants.ITEM_CAR_BID:
 		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
@@ -52,15 +63,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_TEXT: 
 			return R.layout.list_search_text;
 			
-		case BCPConstants.ITEM_NOTICE:
-		case BCPConstants.ITEM_FAQ:
-			return R.layout.list_openable_post;
-			
 		case BCPConstants.ITEM_CAR_MY:
 			return R.layout.list_my_car;
-			
-		case BCPConstants.ITEM_REVIEW:
-			return R.layout.list_my_review;
 		}
 		
 		return 0;
@@ -70,6 +74,19 @@ public class BCPAdapter extends OutSpokenAdapter {
 	public ViewWrapper getViewWrapperByItemCode(View convertView, int itemCode) {
 		
 		switch (itemCode) {
+		
+		case BCPConstants.ITEM_NOTICE:
+		case BCPConstants.ITEM_FAQ:
+			return new ViewWrapperForOpenablePost(convertView, itemCode);
+			
+		case BCPConstants.ITEM_NOTIFICATION:
+			return new ViewWrapperForNotification(convertView, itemCode);
+			
+		case BCPConstants.ITEM_REVIEW:
+			ViewWrapperForMyReview vwfm = new ViewWrapperForMyReview(convertView, itemCode);
+			vwfm.setActivity(activity);
+			return vwfm;
+			
 		case BCPConstants.ITEM_CAR_BID:
 		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
@@ -88,18 +105,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 			vwfst.setActivity(activity);
 			return vwfst;
 			
-		case BCPConstants.ITEM_NOTICE:
-		case BCPConstants.ITEM_FAQ:
-			return new ViewWrapperForOpenablePost(convertView, itemCode);
-			
 		case BCPConstants.ITEM_CAR_MY:
 			return new ViewWrapperForMyCar(convertView, itemCode);
-			
-		case BCPConstants.ITEM_REVIEW:
-			
-			ViewWrapperForMyReview vwfm = new ViewWrapperForMyReview(convertView, itemCode);
-			vwfm.setActivity(activity);
-			return vwfm;
 		}
 		
 		return null;
@@ -107,11 +114,19 @@ public class BCPAdapter extends OutSpokenAdapter {
 	
 	@Override
 	public void setRow(int itemCode, int position, View convertView) {
-	
-		switch (itemCode) {
 		
-		case BCPConstants.ITEM_CAR_MY:
+		switch (itemCode) {
+
+		case BCPConstants.ITEM_NOTIFICATION:
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(38), 0, 0);
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
+		
 		case BCPConstants.ITEM_REVIEW:
+		case BCPConstants.ITEM_CAR_MY:
 			
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);

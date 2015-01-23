@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.sign;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -11,9 +11,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.SignActivity;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragmentForSign;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.fragment.sns.FacebookFragment;
 import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
@@ -30,7 +31,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
-public class SignInPage extends BCPFragmentForSign {
+public class SignInPage extends BCPFragment {
 
 	private TextView tvSNS;
 	private FrameLayout fbFrame;
@@ -319,7 +320,7 @@ public class SignInPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity();
+						((SignActivity)mActivity).launchMainForUserActivity();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
@@ -364,7 +365,7 @@ public class SignInPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity();
+						((SignActivity)mActivity).launchMainForUserActivity();
 						ff.logout();
 						kf.logout();
 					} else {

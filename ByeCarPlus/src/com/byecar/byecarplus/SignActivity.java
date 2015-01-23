@@ -11,11 +11,11 @@ import android.net.Uri;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
+import com.byecar.byecarplus.common.FindPwPage;
 import com.byecar.byecarplus.common.TermOfUsePage;
-import com.byecar.byecarplus.fragments.sign.FindPwPage;
-import com.byecar.byecarplus.fragments.sign.SignInPage;
-import com.byecar.byecarplus.fragments.sign.SignPage;
-import com.byecar.byecarplus.fragments.sign.SignUpForCommonPage;
+import com.byecar.byecarplus.fragments.user.SignInPage;
+import com.byecar.byecarplus.fragments.user.SignPage;
+import com.byecar.byecarplus.fragments.user.SignUpPage;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -94,17 +94,13 @@ public class SignActivity extends BCPFragmentActivity {
 			return new SignInPage();
 		
 		case BCPConstants.PAGE_SIGN_UP_FOR_COMMON:
-			return new SignUpForCommonPage();
+			return new SignUpPage();
 		
 		case BCPConstants.PAGE_FIND_PW:
 			return new FindPwPage();
 			
 		case BCPConstants.PAGE_TERM_OF_USE:
 			return new TermOfUsePage();
-			
-//		case BCPConstants.PAGE_LIGHT:
-//			return new LightPage();
-			
 		}
 		return null;
 	}
@@ -163,7 +159,7 @@ public class SignActivity extends BCPFragmentActivity {
 		
 		isMainLaunched = true;
 		
-		Intent intent = new Intent(this, MainForUserActivity.class);
+		Intent intent = new Intent(this, MainActivity.class);
 		
 		if(getIntent() != null && getIntent().getData() != null) {
 			intent.setData(getIntent().getData());

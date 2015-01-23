@@ -498,7 +498,7 @@ public abstract class ShopActivity extends CmonsFragmentActivity {
 			
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("isWholesale", isWholesale);
-			showPage(CphConstants.PAGE_COMMON_GUIDE, bundle);
+			showPage(CphConstants.PAGE_GUIDE, bundle);
 		}
 	}
 	

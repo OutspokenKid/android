@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.common;
 
 import org.json.JSONObject;
 
@@ -10,7 +10,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.byecar.byecarplus.MainForUserActivity;
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPFragment;
@@ -90,7 +90,7 @@ public class SettingPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						((MainForUserActivity)mActivity).signOut();
+						((MainActivity)mActivity).signOut();
 					}
 				}, null);
 			}
@@ -108,7 +108,7 @@ public class SettingPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						((MainForUserActivity)mActivity).withdraw();
+						((MainActivity)mActivity).withdraw();
 					}
 				}, null);
 			}

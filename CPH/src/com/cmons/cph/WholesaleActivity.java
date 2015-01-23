@@ -108,13 +108,13 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_MANAGEMENT:
 			return new WholesaleForManagementPage();
 			
-		case CphConstants.PAGE_COMMON_NOTICE_LIST:
+		case CphConstants.PAGE_NOTICE_LIST:
 			return new NoticeListPage();
 			
-		case CphConstants.PAGE_COMMON_NOTICE:
+		case CphConstants.PAGE_NOTICE:
 			return new NoticePage();
 			
-		case CphConstants.PAGE_COMMON_NOTIFICATION_SETTING:
+		case CphConstants.PAGE_NOTIFICATION_SETTING:
 			return new NotificationSettingPage();
 			
 		case CphConstants.PAGE_WHOLESALE_ORDER_LIST:
@@ -123,7 +123,7 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_ORDER:
 			return new WholesaleForOrderPage();
 			
-		case CphConstants.PAGE_COMMON_PRODUCT:
+		case CphConstants.PAGE_PRODUCT:
 			return new ProductPage();
 			
 		case CphConstants.PAGE_WHOLESALE_PROFILE_IMAGE:
@@ -132,7 +132,7 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_SAMPLE_LIST:
 			return new WholesaleForSampleListPage();
 			
-		case CphConstants.PAGE_COMMON_SETTING:
+		case CphConstants.PAGE_SETTING:
 			return new SettingPage();
 			
 		case CphConstants.PAGE_WHOLESALE_SHOP:
@@ -141,25 +141,25 @@ public class WholesaleActivity extends ShopActivity {
 		case CphConstants.PAGE_WHOLESALE_WRITE:
 			return new WholesaleForWritePage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_INFO:
+		case CphConstants.PAGE_CHANGE_INFO:
 			return new ChangeInfoPage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_PASSWORD:
+		case CphConstants.PAGE_CHANGE_PASSWORD:
 			return new ChangePasswordPage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_PHONENUMBER:
+		case CphConstants.PAGE_CHANGE_PHONENUMBER:
 			return new ChangePhoneNumberPage();
 			
-		case CphConstants.PAGE_COMMON_STAFF:
+		case CphConstants.PAGE_STAFF:
 			return new StaffPage();
 			
-		case CphConstants.PAGE_COMMON_REPLY:
+		case CphConstants.PAGE_REPLY:
 			return new ReplyPage();
 			
 		case CphConstants.PAGE_WHOLESALE_CUSTOMER:
 			return new WholesaleForCustomerPage();
 			
-		case CphConstants.PAGE_COMMON_GUIDE:
+		case CphConstants.PAGE_GUIDE:
 			return new GuidePage();
 		}
 		
@@ -199,14 +199,14 @@ public class WholesaleActivity extends ShopActivity {
 			int product_id = Integer.parseInt(uri.getQueryParameter("product_id"));
 			Bundle bundle = new Bundle();
 			bundle.putInt("product_id", product_id);
-			showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+			showPage(CphConstants.PAGE_REPLY, bundle);
 			
 		//전체 공지 작성 (need_push:1)
 		} else if(url.contains("notices")) {
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("isAppNotice", true);
 			bundle.putBoolean("isOurNotice", false);
-			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+			showPage(CphConstants.PAGE_NOTICE_LIST, bundle);
 			
 		//샘플 요청
 		} else if(url.contains("wholesales/samples")) {
@@ -226,7 +226,7 @@ public class WholesaleActivity extends ShopActivity {
 			
 		//회원가입
 		} else if(url.contains("users/staffs")) {
-			showPage(CphConstants.PAGE_COMMON_STAFF, null);
+			showPage(CphConstants.PAGE_STAFF, null);
 			
 		//대표 승인
 		} else if(url.contains("home")) {

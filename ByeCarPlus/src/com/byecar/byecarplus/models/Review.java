@@ -66,14 +66,6 @@ public class Review extends BaseModel implements Serializable {
 				this.type = objJSON.getInt("type");
 			}
 			
-			if(objJSON.has("certifier_id")) {
-				this.certifier_id = objJSON.getInt("certifier_id");
-			}
-			
-			if(objJSON.has("dealer_id")) {
-				this.dealer_id = objJSON.getInt("dealer_id");
-			}
-			
 			if(objJSON.has("reviewer_id")) {
 				this.reviewer_id = objJSON.getInt("reviewer_id");
 			}
@@ -114,20 +106,34 @@ public class Review extends BaseModel implements Serializable {
 				this.onsalecar_year = objJSON.getInt("onsalecar_year");
 			}
 			
-			if(objJSON.has("dealer_profile_img_url")) {
-				this.dealer_profile_img_url = objJSON.getString("dealer_profile_img_url");
+			if(objJSON.has("dealer_id")) {
+				this.dealer_id = objJSON.getInt("dealer_id");
 			}
 			
-			if(objJSON.has("dealer_name")) {
-				this.dealer_name = objJSON.getString("dealer_name");
+			if(dealer_id != 0) {
+				
+				if(objJSON.has("dealer_profile_img_url")) {
+					this.dealer_profile_img_url = objJSON.getString("dealer_profile_img_url");
+				}
+				
+				if(objJSON.has("dealer_name")) {
+					this.dealer_name = objJSON.getString("dealer_name");
+				}
 			}
 			
-			if(objJSON.has("certifier_profile_img_url")) {
-				this.certifier_profile_img_url = objJSON.getString("certifier_profile_img_url");
+			if(objJSON.has("certifier_id")) {
+				this.certifier_id = objJSON.getInt("certifier_id");
 			}
 			
-			if(objJSON.has("certifier_name")) {
-				this.certifier_name = objJSON.getString("certifier_name");
+			if(certifier_id != 0) {
+				
+				if(objJSON.has("certifier_profile_img_url")) {
+					this.certifier_profile_img_url = objJSON.getString("certifier_profile_img_url");
+				}
+				
+				if(objJSON.has("certifier_name")) {
+					this.certifier_name = objJSON.getString("certifier_name");
+				}
 			}
 			
 			if(objJSON.has("priority")) {

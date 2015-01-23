@@ -215,7 +215,7 @@ public class ViewWrapperForOrder extends ViewWrapper {
 			Bundle bundle = new Bundle();
 			bundle.putSerializable("product", product);
 			bundle.putBoolean("isWholesale", (ShopActivity.getInstance().user.getWholesale_id() != 0? true : false));
-			ShopActivity.getInstance().showPage(CphConstants.PAGE_COMMON_PRODUCT, bundle);
+			ShopActivity.getInstance().showPage(CphConstants.PAGE_PRODUCT, bundle);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.fragments.main_for_user.TypeSearchCarPage;
+import com.byecar.byecarplus.common.TypeSearchCarPage;
 import com.byecar.byecarplus.models.Brand;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;

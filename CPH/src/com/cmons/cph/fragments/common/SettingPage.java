@@ -70,7 +70,7 @@ public class SettingPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_INFO, null);
+				mActivity.showPage(CphConstants.PAGE_CHANGE_INFO, null);
 			}
 		});
 		
@@ -82,7 +82,7 @@ public class SettingPage extends CmonsFragmentForShop {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isAppNotice", true);
 				bundle.putBoolean("isOurNotice", false);
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+				mActivity.showPage(CphConstants.PAGE_NOTICE_LIST, bundle);
 			}
 		});
 	
@@ -109,7 +109,7 @@ public class SettingPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_COMMON_NOTIFICATION_SETTING, null);
+				mActivity.showPage(CphConstants.PAGE_NOTIFICATION_SETTING, null);
 			}
 		});
 		

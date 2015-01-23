@@ -1,5 +1,6 @@
 package com.byecar.byecarplus.wrappers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,6 +18,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.views.OutSpokenRatingBar;
 
 public class ViewWrapperForMyReview extends ViewWrapper {
 
@@ -28,6 +30,7 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 	private Button btnEditReview;
 	private TextView tvRegdate;
 	private TextView tvTo;
+	private OutSpokenRatingBar ratingBar;
 	private TextView tvContent;
 	private View bgBottom;
 	
@@ -44,8 +47,16 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 			btnEditReview = (Button) row.findViewById(R.id.list_my_review_btnEditReview);
 			tvRegdate = (TextView) row.findViewById(R.id.list_my_review_tvRegdate);
 			tvTo = (TextView) row.findViewById(R.id.list_my_review_tvTo);
+			ratingBar = (OutSpokenRatingBar) row.findViewById(R.id.list_my_review_ratingBar);
 			tvContent = (TextView) row.findViewById(R.id.list_my_review_tvContent);
 			bgBottom = row.findViewById(R.id.list_my_review_bgBottom);
+			
+			ratingBar.setMinRating(1);
+			ratingBar.setMaxRating(5);
+			ratingBar.setEmptyStarColor(Color.rgb(195, 195, 195));
+			ratingBar.setFilledStarColor(Color.rgb(254, 188, 42));
+			ratingBar.setUnitRating(OutSpokenRatingBar.UNIT_ONE);
+			ratingBar.setTouchable(false);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -65,8 +76,10 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 			tvContent.setMinHeight(ResizeUtils.getSpecificLength(90));
 			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvTo, 
 					null, null, new int[]{30, 0, 0, 0});
+			ResizeUtils.viewResizeForRelative(120, 24, ratingBar, null, null, new int[]{0, 0, 26, 0});
+			ratingBar.setLengths(ResizeUtils.getSpecificLength(18),
+					ResizeUtils.getSpecificLength(6));
 			ResizeUtils.viewResizeForRelative(608, 29, bgBottom, null, null, new int[]{0, 0, 0, 0});
-			
 			int p = ResizeUtils.getSpecificLength(30);
 			tvContent.setPadding(p, p, p, 0);
 			
@@ -99,6 +112,7 @@ public class ViewWrapperForMyReview extends ViewWrapper {
 					tvTo.setText(review.getDealer_name() + " 딜러에게");
 				}
 				
+				ratingBar.setRating(review.getRating());
 				tvContent.setText(review.getContent());
 			}
 		} catch (Exception e) {

@@ -117,7 +117,7 @@ public abstract class BCPFragment extends BaseFragment {
 	@Override
 	public void onDetach() {
 		
-		if(getRootViewResId() != 0) {
+		if(getRootViewResId() != 0 && mThisView != null) {
 			ViewUnbindHelper.unbindReferences(mThisView.findViewById(getRootViewResId()));
 		}
 		
@@ -230,10 +230,6 @@ public abstract class BCPFragment extends BaseFragment {
 		
 		try {
 			models.clear();
-			
-			if(adapter != null) {
-				adapter.notifyDataSetChanged();
-			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

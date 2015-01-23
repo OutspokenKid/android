@@ -23,6 +23,7 @@
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:background="@drawable/splash_login_btn" />
     
     <Button 
@@ -31,6 +32,7 @@
         android:layout_height="0dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
+        android:visibility="invisible"
         android:background="@drawable/next_btn" />
 
     <com.outspoken_kid.views.PageNavigatorView
@@ -38,12 +40,19 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible" />
     
     <FrameLayout
         android:id="@+id/signPage_snsFrame" 
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:visibility="invisible" />
+    
+    <View 
+        android:id="@+id/signPage_cover" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true" />
     
 </RelativeLayout>

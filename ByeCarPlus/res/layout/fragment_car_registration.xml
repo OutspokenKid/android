@@ -291,11 +291,52 @@
 		        android:background="@color/holo_text_hint" />
             
             <TextView
-		        android:id="@+id/carRegistrationPage_tvCarInfo"
+		        android:id="@+id/carRegistrationPage_tvPrice"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/carRegistrationPage_lineAfterPhoto"
+		        android:gravity="center_vertical"
+		        android:textColor="@color/holo_text" />
+            
+            <EditText
+			    android:id="@+id/carRegistrationPage_etPrice"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_tvPrice"
+		        android:inputType="numberDecimal|numberSigned"
+		        android:singleLine="true"
+		        android:textColor="@color/color_orange"
+				android:textColorHint="@color/holo_text_hint"
+				android:gravity="center"
+				android:background="@drawable/registration_cash_box" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnClearPrice"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignRight="@id/carRegistrationPage_etPrice"
+		        android:layout_alignTop="@id/carRegistrationPage_etPrice"
+		        android:background="@drawable/filter_clear_btn" />
+            
+            <View
+                android:id="@+id/carRegistrationPage_lineAfterPrice"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:layout_below="@id/carRegistrationPage_etPrice"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginTop="20dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_marginBottom="20dp"
+		        android:background="@color/holo_text_hint" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvCarInfo"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_lineAfterPrice"
 		        android:gravity="center_vertical"
 		        android:text="@string/carInfo"
 		        android:textColor="@color/holo_text" />
@@ -306,6 +347,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_tvCarInfo"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info1_btn" />
             
             <Button 
@@ -314,6 +357,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo1"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info2_btn" />
             
             <Button 
@@ -322,6 +367,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo2"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info3_btn" />
             
             <Button 
@@ -330,6 +377,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo3"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info4_btn" />
             
             <Button 
@@ -338,6 +387,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo4"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info5_btn" />
             
             <Button 
@@ -346,6 +397,8 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo5"
 		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
 		        android:background="@drawable/registration_car_info6_btn" />
             
             <View

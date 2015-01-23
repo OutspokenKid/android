@@ -89,6 +89,7 @@
     <item name="normalCarView_tvPrice" type="id" />
     
 	<item name="reviewView_ivImage" type="id" />
+	<item name="reviewView_tvCarName" type="id" />
 	<item name="reviewView_tvContent" type="id" />
 	    
 </resources>

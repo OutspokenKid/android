@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.common;
 
 import java.util.ArrayList;
 
@@ -313,7 +313,15 @@ public class SearchCarPage extends BCPFragment {
 						return;
 					}
 					
-					int tempPrice = Integer.parseInt(s.toString());
+					String text = s.toString();
+					
+					if(text.contains(".") 
+							|| (text.length() > 1 && text.charAt(0) == '0')) {
+						etMaxPrice.setText(lastText);
+						etMaxPrice.setSelection(lastCursorIndex);
+					}
+					
+					int tempPrice = Integer.parseInt(text);
 					
 					if(tempPrice < minPrice) {
 						ToastUtils.showToast(R.string.maxPriceCantOverMinPrice);						

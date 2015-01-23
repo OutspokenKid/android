@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -20,13 +20,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
-import com.byecar.byecarplus.MainForUserActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.models.Car;
-import com.byecar.byecarplus.models.User;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
@@ -55,8 +53,6 @@ public class EditUserInfoPage extends BCPFragment {
 	private static final int ADDRESS_MIN = 0;
 	private static final int ADDRESS_MAX = 50;
 
-	private User user;
-	
 	private FrameLayout profileFrame;
 	private Button btnProfile;
 	private ImageView ivProfile;
@@ -96,6 +92,10 @@ public class EditUserInfoPage extends BCPFragment {
 			
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
+				
+				LogUtils.log("###EditUserInfoPage.onAfterPickImage.  "
+						+ "\n sdCardPaths : " + sdCardPaths
+						+ "\n thumbnails : " + thumbnails);
 				
 				if(thumbnails != null && thumbnails.length > 0) {
 					ivProfile.setImageBitmap(thumbnails[0]);
@@ -143,9 +143,7 @@ public class EditUserInfoPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-		if(MainActivity.user != null) {
-			user = MainActivity.user;
-		} else {
+		if(MainActivity.user == null) {
 			closePage();
 		}
 		
@@ -541,11 +539,14 @@ public class EditUserInfoPage extends BCPFragment {
 	
 	public void setUserInfo() {
 		
-		if(!StringUtils.isEmpty(user.getProfile_img_url())) {
-			selectedImageUrl = user.getProfile_img_url();
+		if(selectedSdCardPath == null 
+				&& !StringUtils.isEmpty(MainActivity.user.getProfile_img_url())) {
+			LogUtils.log("###EditUserInfoPage.setUserInfo.  selectedSdCardPath : " + selectedSdCardPath);
 			
-			ivProfile.setTag(user.getProfile_img_url());
-			DownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
+			selectedImageUrl = MainActivity.user.getProfile_img_url();
+			
+			ivProfile.setTag(MainActivity.user.getProfile_img_url());
+			DownloadUtils.downloadBitmap(MainActivity.user.getProfile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -569,18 +570,20 @@ public class EditUserInfoPage extends BCPFragment {
 					}
 				}
 			});
+		} else {
+			LogUtils.log("###EditUserInfoPage.setUserInfo.  selectedSdCardPath : " + selectedSdCardPath);
 		}
 		
-		if(!StringUtils.isEmpty(user.getName())) {
-			etName.getEditText().setText(user.getName());
+		if(!StringUtils.isEmpty(MainActivity.user.getName())) {
+			etName.getEditText().setText(MainActivity.user.getName());
 		}
 		
-		if(!StringUtils.isEmpty(user.getNickname())) {
-			etNickname.getEditText().setText(user.getNickname());
+		if(!StringUtils.isEmpty(MainActivity.user.getNickname())) {
+			etNickname.getEditText().setText(MainActivity.user.getNickname());
 		}
 		
-		if(!StringUtils.isEmpty(user.getAddress())) {
-			etAddress.getEditText().setText(user.getAddress());
+		if(!StringUtils.isEmpty(MainActivity.user.getAddress())) {
+			etAddress.getEditText().setText(MainActivity.user.getAddress());
 		}
 	}
 	
@@ -588,9 +591,9 @@ public class EditUserInfoPage extends BCPFragment {
 		
 		tvPhoneNumber.setText(null);
 		
-		if(!StringUtils.isEmpty(user.getPhone_number())) {
+		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 			checkIcon.setVisibility(View.VISIBLE);
-			FontUtils.addSpan(tvPhoneNumber, user.getPhone_number(), 0, 1);
+			FontUtils.addSpan(tvPhoneNumber, MainActivity.user.getPhone_number(), 0, 1);
 			
 		} else {
 			checkIcon.setVisibility(View.INVISIBLE);
@@ -722,20 +725,29 @@ public class EditUserInfoPage extends BCPFragment {
 
 					if(objJSON.getInt("result") == 1) {
 						
+						LogUtils.log("###EditUserInfoPage.onCompleted.  "
+								+ "\nbefore url : " + MainActivity.user.getProfile_img_url());
+						
 						if(!StringUtils.isEmpty(selectedImageUrl)) {
-							user.setProfile_img_url(selectedImageUrl);
+							MainActivity.user.setProfile_img_url(selectedImageUrl);
 						}
+
+						LogUtils.log("###EditUserInfoPage.onCompleted.  "
+								+ "\nafter url : " + MainActivity.user.getProfile_img_url());
+						
+						LogUtils.log("###EditUserInfoPage.onCompleted.  "
+								+ "\nafter MainActivity.user url : " + MainActivity.user.getProfile_img_url());
 						
 						if(!StringUtils.isEmpty(etNickname.getEditText())) {
-							user.setNickname(etNickname.getEditText().getText().toString());
+							MainActivity.user.setNickname(etNickname.getEditText().getText().toString());
 						}
 						
 						if(!StringUtils.isEmpty(etName.getEditText())) {
-							user.setName(etName.getEditText().getText().toString());
+							MainActivity.user.setName(etName.getEditText().getText().toString());
 						}
 						
 						if(!StringUtils.isEmpty(etAddress.getEditText())) {
-							user.setAddress(etAddress.getEditText().getText().toString());
+							MainActivity.user.setAddress(etAddress.getEditText().getText().toString());
 						}
 						
 						ToastUtils.showToast(R.string.complete_editUserInfo);
@@ -793,7 +805,7 @@ public class EditUserInfoPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						((MainForUserActivity)mActivity).showPopup(MainForUserActivity.POPUP_REQUEST_BUY);
+						((MainActivity)mActivity).showPopup(MainActivity.POPUP_REQUEST_BUY);
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

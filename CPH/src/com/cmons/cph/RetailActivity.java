@@ -124,28 +124,28 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_MANAGEMENT:
 			return new RetailForManagementPage();
 			
-		case CphConstants.PAGE_COMMON_SETTING:
+		case CphConstants.PAGE_SETTING:
 			return new SettingPage();
 			
-		case CphConstants.PAGE_COMMON_NOTICE_LIST:
+		case CphConstants.PAGE_NOTICE_LIST:
 			return new NoticeListPage();
 			
-		case CphConstants.PAGE_COMMON_NOTICE:
+		case CphConstants.PAGE_NOTICE:
 			return new NoticePage();
 			
-		case CphConstants.PAGE_COMMON_NOTIFICATION_SETTING:
+		case CphConstants.PAGE_NOTIFICATION_SETTING:
 			return new NotificationSettingPage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_INFO:
+		case CphConstants.PAGE_CHANGE_INFO:
 			return new ChangeInfoPage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_PASSWORD:
+		case CphConstants.PAGE_CHANGE_PASSWORD:
 			return new ChangePasswordPage();
 			
-		case CphConstants.PAGE_COMMON_CHANGE_PHONENUMBER:
+		case CphConstants.PAGE_CHANGE_PHONENUMBER:
 			return new ChangePhoneNumberPage();
 			
-		case CphConstants.PAGE_COMMON_STAFF:
+		case CphConstants.PAGE_STAFF:
 			return new StaffPage();
 			
 		case CphConstants.PAGE_RETAIL_WISH:
@@ -154,13 +154,13 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_SHOP:
 			 return new RetailForShopPage();
 			 
-		case CphConstants.PAGE_COMMON_PRODUCT:
+		case CphConstants.PAGE_PRODUCT:
 			 return new ProductPage();
 			 
 		case CphConstants.PAGE_RETAIL_ORDER_PRODUCT:
 			 return new RetailForOrderProductPage();
 			 
-		case CphConstants.PAGE_COMMON_REPLY:
+		case CphConstants.PAGE_REPLY:
 			 return new ReplyPage();
 			 
 		case CphConstants.PAGE_RETAIL_ORDER:
@@ -169,7 +169,7 @@ public class RetailActivity extends ShopActivity {
 		case CphConstants.PAGE_RETAIL_SAMPLE:
 			 return new RetailForSampleListPage();
 			 
-		case CphConstants.PAGE_COMMON_GUIDE:
+		case CphConstants.PAGE_GUIDE:
 			return new GuidePage();
 		}
 		
@@ -193,14 +193,14 @@ public class RetailActivity extends ShopActivity {
 			int product_id = Integer.parseInt(uri.getQueryParameter("product_id"));
 			Bundle bundle = new Bundle();
 			bundle.putInt("product_id", product_id);
-			showPage(CphConstants.PAGE_COMMON_REPLY, bundle);
+			showPage(CphConstants.PAGE_REPLY, bundle);
 			
 		//전체 공지 작성 (need_push:1)
 		} else if(url.equals("notices")) {
 			Bundle bundle = new Bundle();
 			bundle.putBoolean("isAppNotice", true);
 			bundle.putBoolean("isOurNotice", false);
-			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+			showPage(CphConstants.PAGE_NOTICE_LIST, bundle);
 			
 		//도매 공지 작성 (need_push:1)
 		} else if(url.equals("wholesales/notices")) {
@@ -209,7 +209,7 @@ public class RetailActivity extends ShopActivity {
 			bundle.putBoolean("isAppNotice", false);
 			bundle.putBoolean("isOurNotice", false);
 			bundle.putInt("wholesale_id", wholesale_id);
-			showPage(CphConstants.PAGE_COMMON_NOTICE_LIST, bundle);
+			showPage(CphConstants.PAGE_NOTICE_LIST, bundle);
 			
 		//상품 등록
 		} else if(url.equals("products")) {
@@ -274,7 +274,7 @@ public class RetailActivity extends ShopActivity {
 			
 		//회원가입
 		} else if(url.equals("users/staffs")) {
-			showPage(CphConstants.PAGE_COMMON_STAFF, null);
+			showPage(CphConstants.PAGE_STAFF, null);
 			
 		//소매 매장 사용불가 처리
 		} else if(url.equals("retails/disable")) {

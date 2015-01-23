@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.sign;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONObject;
 
@@ -25,10 +25,11 @@ import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
 
 import com.byecar.byecarplus.R;
+import com.byecar.byecarplus.SignActivity;
 import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPConstants;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.BCPFragmentActivity.OnAfterCheckSessionListener;
-import com.byecar.byecarplus.classes.BCPFragmentForSign;
 import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.fragment.sns.FacebookFragment;
 import com.outspoken_kid.fragment.sns.FacebookFragment.FBUserInfo;
@@ -44,7 +45,7 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.PageNavigatorView;
 
-public class SignPage extends BCPFragmentForSign {
+public class SignPage extends BCPFragment {
 
 	private static final int SLIDE_DURATION = 30000;
 	private static final int ANIM_DURATION = 1000;
@@ -77,7 +78,9 @@ public class SignPage extends BCPFragmentForSign {
 	private int playingIndex;
 	private boolean needPlay;
 	private AsyncAnimTask currentTask;
-	private Matrix[] matrices; 
+	private Matrix[] matrices;
+	
+	private View cover; 
 	
 	@Override
 	public void bindViews() {
@@ -86,6 +89,8 @@ public class SignPage extends BCPFragmentForSign {
 		btnMember = (Button) mThisView.findViewById(R.id.signPage_btnMember);
 		btnNext = (Button) mThisView.findViewById(R.id.signPage_btnNext);
 		navigator = (PageNavigatorView) mThisView.findViewById(R.id.signPage_navigator);
+		
+		cover = mThisView.findViewById(R.id.signPage_cover);
 	}
 
 	@Override
@@ -622,10 +627,32 @@ public class SignPage extends BCPFragmentForSign {
 			public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
 
 				if(isSuccess) {
-					mActivity.launchMainForUserActivity();
+					((SignActivity)mActivity).launchMainForUserActivity();
+				} else {
+					hideCover();
+					showButtons();
 				}
 			}
 		});
+	}
+	
+	public void hideCover() {
+		
+		cover.setVisibility(View.INVISIBLE);
+	}
+	
+	public void showButtons() {
+		
+		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		
+		btnMember.setVisibility(View.VISIBLE);
+		btnNext.setVisibility(View.VISIBLE);
+		navigator.setVisibility(View.VISIBLE);
+		
+		btnMember.startAnimation(aaIn);
+		btnNext.startAnimation(aaIn);
+		navigator.startAnimation(aaIn);
 	}
 	
 	public void signInWithSNS(String sns_key, String sns_user_key, 
@@ -660,7 +687,7 @@ public class SignPage extends BCPFragmentForSign {
 							+ "\nresult : " + objJSON);
 					
 					if(objJSON.getInt("result") == 1) {
-						mActivity.launchMainForUserActivity();
+						((SignActivity)mActivity).launchMainForUserActivity();
 						ff.logout();
 						kf.logout();
 					} else {

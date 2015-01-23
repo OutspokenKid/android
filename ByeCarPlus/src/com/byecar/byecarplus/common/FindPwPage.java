@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.sign;
+package com.byecar.byecarplus.common;
 
 import org.json.JSONObject;
 
@@ -10,18 +10,18 @@ import android.widget.RelativeLayout;
 
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.classes.BCPAPIs;
-import com.byecar.byecarplus.classes.BCPFragmentForSign;
+import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
-public class FindPwPage extends BCPFragmentForSign {
+public class FindPwPage extends BCPFragment {
 
 	private HoloStyleEditText etEmail;
 	private Button btnFindPw;

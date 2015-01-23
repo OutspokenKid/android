@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import java.util.ArrayList;
 
@@ -24,6 +24,7 @@ import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
 import com.byecar.byecarplus.classes.ImagePagerAdapter;
 import com.byecar.byecarplus.classes.ImagePagerAdapter.OnPagerItemClickedListener;
+import com.byecar.byecarplus.common.CarRegistrationPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.NormalCarView;
 import com.byecar.byecarplus.views.TitleBar;

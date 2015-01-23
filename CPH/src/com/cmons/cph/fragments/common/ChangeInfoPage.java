@@ -50,7 +50,7 @@ public class ChangeInfoPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_PASSWORD, null);
+				mActivity.showPage(CphConstants.PAGE_CHANGE_PASSWORD, null);
 			}
 		});
 		
@@ -59,7 +59,7 @@ public class ChangeInfoPage extends CmonsFragmentForShop {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(CphConstants.PAGE_COMMON_CHANGE_PHONENUMBER, null);
+				mActivity.showPage(CphConstants.PAGE_CHANGE_PHONENUMBER, null);
 			}
 		});
 	}

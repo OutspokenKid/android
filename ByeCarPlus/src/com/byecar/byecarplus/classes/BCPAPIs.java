@@ -74,6 +74,8 @@ public class BCPAPIs {
 	
 	public static String MY_CAR_URL = BASE_API_URL + "/users/mine/onsalecars.json";
 	public static String MY_REVIEW_URL = BASE_API_URL + "/users/mine/reviews.json";
+	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
+	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";

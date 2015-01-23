@@ -3,6 +3,7 @@ package com.byecar.byecarplus.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,6 +25,8 @@ public class UsedCarView extends FrameLayout {
 	private ImageView ivImage;
 	private TextView tvCar;
 	private TextView tvPrice;
+	
+	private String imageUrl;
 	
 	public UsedCarView(Context context, int index) {
 		super(context);
@@ -108,5 +111,35 @@ public class UsedCarView extends FrameLayout {
 	public ImageView getIvImage() {
 		
 		return ivImage;
+	}
+	
+	@Override
+	protected void onWindowVisibilityChanged(int visibility) {
+		super.onWindowVisibilityChanged(visibility);
+
+		if(visibility == View.VISIBLE) {
+			
+			if(!StringUtils.isEmpty(imageUrl)) {
+				downloadImage(imageUrl);
+			}
+		} else {
+			Drawable d = ivImage.getDrawable();
+			ivImage.setImageDrawable(null);
+	        
+	        if (d != null) {
+	            d.setCallback(null);
+	        }
+		}
+		
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+		
+		downloadImage(imageUrl);
 	}
 }

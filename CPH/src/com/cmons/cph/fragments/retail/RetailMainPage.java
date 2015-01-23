@@ -496,13 +496,13 @@ public class RetailMainPage extends CmonsFragmentForRetail {
 								mActivity.showPage(CphConstants.PAGE_RETAIL_FAVORITE_PRODUCT, bundle);
 								break;
 							case 6:
-								mActivity.showPage(CphConstants.PAGE_COMMON_STAFF, bundle);
+								mActivity.showPage(CphConstants.PAGE_STAFF, bundle);
 								break;
 							case 7:
 								mActivity.showPage(CphConstants.PAGE_RETAIL_MANAGEMENT, bundle);
 								break;
 							case 8:
-								mActivity.showPage(CphConstants.PAGE_COMMON_SETTING, bundle);
+								mActivity.showPage(CphConstants.PAGE_SETTING, bundle);
 								break;
 							}
 						}

@@ -1,4 +1,4 @@
-package com.byecar.byecarplus.fragments.main_for_user;
+package com.byecar.byecarplus.fragments.user;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,6 +25,7 @@ import com.byecar.byecarplus.classes.BCPAPIs;
 import com.byecar.byecarplus.classes.BCPAdapter;
 import com.byecar.byecarplus.classes.BCPConstants;
 import com.byecar.byecarplus.classes.BCPFragment;
+import com.byecar.byecarplus.common.CarRegistrationPage;
 import com.byecar.byecarplus.models.Car;
 import com.byecar.byecarplus.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
@@ -79,11 +80,13 @@ public class CarListPage extends BCPFragment {
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
     	
+		//56 24 0
+		//254 188 42
         swipeRefreshLayout.setColorSchemeColors(
-        		Color.argb(255, 255, 102, 153), 
-        		Color.argb(255, 255, 153, 153), 
-        		Color.argb(255, 255, 204, 153), 
-        		Color.argb(255, 255, 255, 153));
+        		Color.argb(255, 254, 188, 42),
+        		Color.argb(255, 56, 24, 0), 
+        		Color.argb(255, 254, 188, 42), 
+        		Color.argb(255, 56, 24, 0));
         swipeRefreshLayout.setEnabled(true);
 
 		if(type != Car.TYPE_DIRECT_NORMAL) {
@@ -256,7 +259,7 @@ public class CarListPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
-				bundle.putInt("carType", Car.TYPE_BID);
+				bundle.putInt("carType", type);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
