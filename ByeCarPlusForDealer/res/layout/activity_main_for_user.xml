@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.outspoken_kid.views.GestureSlidingLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainForUserActivity_gestureSlidingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/page_bg" >
+    
+    <RelativeLayout
+        android:id="@+id/mainForUserActivity_leftView"
+        android:layout_width="0dp"
+	    android:layout_height="0dp" >
+
+        <ImageView 
+            android:id="@+id/mainForUserActivity_ivProfile"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:background="@drawable/menu_default"
+	        android:scaleType="centerCrop" />
+        
+        <ImageView 
+            android:id="@+id/mainForUserActivity_ivBg"
+            android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentTop="true"
+	        android:scaleType="matrix" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvNickname"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForUserActivity_ivProfile"
+	        android:layout_centerHorizontal="true"
+	        android:singleLine="true"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvInfo"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForUserActivity_tvNickname"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="center_horizontal"
+	        android:textColor="#e9e6e0" />
+        
+        <Button 
+            android:id="@+id/mainForUserActivity_btnEdit"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/mainForUserActivity_ivProfile"
+	        android:background="@drawable/menu_profile_setting_btn" />
+        
+        <com.outspoken_kid.views.OffsetScrollView
+	        android:id="@+id/mainForUserActivity_scrollView"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_below="@id/mainForUserActivity_btnEdit"
+	        android:fillViewport="true" >
+
+            <RelativeLayout
+                android:id="@+id/mainForUserActivity_innerRelative"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+	
+				<LinearLayout
+			        android:id="@+id/mainForUserActivity_leftViewInner"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical" />                
+                
+            </RelativeLayout>
+	        
+	    </com.outspoken_kid.views.OffsetScrollView>
+	    
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvTitle1"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:text="@string/sideMenuTitle1"
+	        android:textColor="#393939" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvTitle2"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:visibility="invisible"
+	        android:text="@string/sideMenuTitle2"
+	        android:textColor="#393939" />
+        
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mainForUserActivity_topView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+		<FrameLayout
+		    android:id="@+id/mainForUserActivity_fragmentFrame"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+        
+    </FrameLayout>
+    
+    <RelativeLayout
+        android:id="@+id/mainForUserActivity_popup"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="#c000"
+	    android:visibility="invisible" >
+        
+        <View 
+            android:id="@+id/mainForUserActivity_popupBg"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerInParent="true"
+	    	android:background="@drawable/white_round_box_with_shadow" />
+        
+        <View 
+            android:id="@+id/mainForUserActivity_popupImage"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignTop="@id/mainForUserActivity_popupBg"
+	    	android:layout_centerHorizontal="true" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvPopupText"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_below="@id/mainForUserActivity_popupImage"
+	    	android:layout_centerHorizontal="true"
+	    	android:textColor="@color/holo_text" />
+        
+        <Button 
+            android:id="@+id/mainForUserActivity_btnHome"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignBottom="@id/mainForUserActivity_popupBg"
+	    	android:background="@drawable/complete_home_btn" />
+        
+    </RelativeLayout>
+
+</com.outspoken_kid.views.GestureSlidingLayout>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="carDetailPage_optionTextView1" type="id" />
+    <item name="carDetailPage_optionTextView2" type="id" />
+    <item name="carDetailPage_optionView1" type="id" />
+    <item name="carDetailPage_optionView2" type="id" />
+    <item name="carDetailPage_optionView3" type="id" />
+    <item name="carDetailPage_optionView4" type="id" />
+    <item name="carDetailPage_optionView5" type="id" />
+    <item name="carDetailPage_optionView6" type="id" />
+    <item name="carDetailPage_optionView7" type="id" />
+    <item name="carDetailPage_optionView8" type="id" />
+    <item name="carDetailPage_optionView9" type="id" />
+    <item name="carDetailPage_optionView10" type="id" />
+    <item name="carDetailPage_optionView11" type="id" />
+    <item name="carDetailPage_optionView12" type="id" />
+    <item name="carDetailPage_optionView13" type="id" />
+    <item name="carDetailPage_optionView14" type="id" />
+    <item name="carDetailPage_optionView15" type="id" />
+    <item name="carDetailPage_optionView16" type="id" />
+    <item name="carDetailPage_optionView17" type="id" />
+    <item name="carDetailPage_optionView18" type="id" />
+    <item name="carDetailPage_optionView19" type="id" />
+    <item name="carDetailPage_optionView20" type="id" />
+    <item name="carDetailPage_optionView21" type="id" />
+    <item name="carDetailPage_optionView22" type="id" />
+    <item name="carDetailPage_optionView23" type="id" />
+    <item name="carDetailPage_optionView24" type="id" />
+    <item name="carDetailPage_optionView25" type="id" />
+    <item name="carDetailPage_optionView26" type="id" />
+    <item name="carDetailPage_optionView27" type="id" />
+    <item name="carDetailPage_optionView28" type="id" />
+    <item name="carDetailPage_optionView29" type="id" />
+    <item name="carDetailPage_optionView30" type="id" />
+
+    <item name="carDetailPage_used_ivImage" type="id" />
+    <item name="carDetailPage_used_tvInfo1" type="id" />
+    <item name="carDetailPage_used_tvInfo2" type="id" />
+    <item name="carDetailPage_used_tvGrade" type="id" />
+    <item name="carDetailPage_used_line" type="id" />
+    
+    <item name="carDetailPage_certified_ivImage" type="id" />
+    <item name="carDetailPage_certified_tvInfo" type="id" />
+    <item name="carDetailPage_certified_tvDesc" type="id" />
+    <item name="carDetailPage_certified_line" type="id" />
+    
+    <item name="carDetailPage_normal_ivImage" type="id" />
+    <item name="carDetailPage_normal_tvInfo" type="id" />
+    <item name="carDetailPage_normal_line1" type="id" />
+    <item name="carDetailPage_normal_tvPhone" type="id" />
+    <item name="carDetailPage_normal_line2" type="id" />
+    <item name="carDetailPage_normal_tvArea" type="id" />
+    
+    <item name="carRegistrationPage_optionTextView1" type="id" />
+    <item name="carRegistrationPage_optionTextView2" type="id" />
+    <item name="carRegistrationPage_optionView1" type="id" />
+    <item name="carRegistrationPage_optionView2" type="id" />
+    <item name="carRegistrationPage_optionView3" type="id" />
+    <item name="carRegistrationPage_optionView4" type="id" />
+    <item name="carRegistrationPage_optionView5" type="id" />
+    <item name="carRegistrationPage_optionView6" type="id" />
+    <item name="carRegistrationPage_optionView7" type="id" />
+    <item name="carRegistrationPage_optionView8" type="id" />
+    <item name="carRegistrationPage_optionView9" type="id" />
+    <item name="carRegistrationPage_optionView10" type="id" />
+    <item name="carRegistrationPage_optionView11" type="id" />
+    <item name="carRegistrationPage_optionView12" type="id" />
+    <item name="carRegistrationPage_optionView13" type="id" />
+    <item name="carRegistrationPage_optionView14" type="id" />
+    <item name="carRegistrationPage_optionView15" type="id" />
+    <item name="carRegistrationPage_optionView16" type="id" />
+    <item name="carRegistrationPage_optionView17" type="id" />
+    <item name="carRegistrationPage_optionView18" type="id" />
+    <item name="carRegistrationPage_optionView19" type="id" />
+    <item name="carRegistrationPage_optionView20" type="id" />
+    <item name="carRegistrationPage_optionView21" type="id" />
+    <item name="carRegistrationPage_optionView22" type="id" />
+    <item name="carRegistrationPage_optionView23" type="id" />
+    <item name="carRegistrationPage_optionView24" type="id" />
+    <item name="carRegistrationPage_optionView25" type="id" />
+    <item name="carRegistrationPage_optionView26" type="id" />
+    <item name="carRegistrationPage_optionView27" type="id" />
+    <item name="carRegistrationPage_optionView28" type="id" />
+    <item name="carRegistrationPage_optionView29" type="id" />
+    <item name="carRegistrationPage_optionView30" type="id" />
+    
+    <item name="normalCarView_ivImage" type="id" />
+    <item name="normalCarView_tvPrice" type="id" />
+    
+	<item name="reviewView_ivImage" type="id" />
+	<item name="reviewView_tvCarName" type="id" />
+	<item name="reviewView_tvContent" type="id" />
+	    
+</resources>

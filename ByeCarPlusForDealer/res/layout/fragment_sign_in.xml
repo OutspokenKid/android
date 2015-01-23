@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signInPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.byecarplusfordealer.views.TitleBar
+        android:id="@+id/signInPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <ScrollView
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/signInPage_titleBar"
+    	android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+
+            <TextView
+		        android:id="@+id/signInPage_tvSNS"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:gravity="center_vertical"
+		        android:text="@string/SNSSignIn"
+		        android:textColor="#000"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true" />
+		    
+		    <FrameLayout 
+		        android:id="@+id/signInPage_fbFrame"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:background="@drawable/login_facebook2_btn" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_tvSNS" />
+		    
+		    <FrameLayout
+                android:id="@+id/signInPage_kkFrame"
+		       	android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:background="@drawable/login_kakao2_btn" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_fbFrame" />
+		    
+		    <View
+		        android:id="@+id/signInPage_line"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginRight="10dp"
+		        android:background="#aaa4a4a4"
+		        android:layout_below="@id/signInPage_kkFrame" />
+		    
+		    <TextView
+		        android:id="@+id/signInPage_tvEmail"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:gravity="center_vertical"
+		        android:text="@string/emailSignIn"
+		        android:textColor="#000"
+		        android:layout_alignLeft="@id/signInPage_tvSNS"
+		        android:layout_below="@id/signInPage_line" />
+		    
+		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+		        android:id="@+id/signInPage_etEmail"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_tvEmail" />
+		        
+		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+		        android:id="@+id/signInPage_etPw"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_etEmail" />
+		    
+		    <Button 
+		        android:id="@+id/signInPage_btnSignIn"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:background="@drawable/login_login2_btn" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_etPw" />
+		    
+		    <Button 
+		        android:id="@+id/signInPage_btnFindPw"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:background="@drawable/login_password_btn" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signInPage_btnSignIn" />
+		            
+            
+        </RelativeLayout>
+        
+    </ScrollView>
+        
+</RelativeLayout>

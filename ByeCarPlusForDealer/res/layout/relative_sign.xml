@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+	<!-- btnTermOfUse -->
+	
+	<Button
+	    android:id="@+id/signRelative_btnTermOfUse"
+	    android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:layout_centerHorizontal="true"
+    	android:background="@drawable/term_btn" />
+	
+	
+	<!-- btnSignIn -->
+	
+	<Button
+	    android:id="@+id/signRelative_btnSignIn"
+	    android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_above="@id/signRelative_btnTermOfUse"
+    	android:background="@drawable/login_login_btn" />
+	
+	<!-- btnSignUp -->
+	
+	<Button
+	    android:id="@+id/signRelative_btnSignUp"
+	    android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/signRelative_btnSignIn"
+    	android:layout_toRightOf="@id/signRelative_btnSignIn"
+    	android:background="@drawable/login_signin_btn" />
+	
+	<!-- btnKakao -->
+
+	<Button
+	    android:id="@+id/signRelative_btnKakao"
+	    android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignLeft="@id/signRelative_btnSignIn"
+    	android:layout_above="@id/signRelative_btnSignIn"
+    	android:background="@drawable/login_kakao_btn" />
+
+	<!-- btnFacebook -->
+		
+	<Button
+	    android:id="@+id/signRelative_btnFacebook"
+	    android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignLeft="@id/signRelative_btnKakao"
+    	android:layout_above="@id/signRelative_btnKakao"
+    	android:background="@drawable/login_facebook_btn" />
+    
+</RelativeLayout>

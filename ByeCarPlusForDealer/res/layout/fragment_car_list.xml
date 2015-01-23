@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/carListPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/carListPage_swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ListView
+            android:id="@+id/carListPage_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#0000" />
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <View 
+        android:id="@+id/carListPage_buttonBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_bg" />
+    
+    <Button
+        android:id="@+id/carListPage_btnCurrentOrder"
+        android:layout_width="0dp"
+        android:layout_height="0dp" 
+        android:layout_alignParentBottom="true" />
+    
+    <Button
+        android:id="@+id/carListPage_btnRegistration"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/auction_reg_btn" />
+    
+    <Button
+        android:id="@+id/carListPage_btnRequestCertification"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/directmarket_verification_request_btn" />
+    
+    <com.byecar.byecarplusfordealer.views.TitleBar
+        android:id="@+id/carListPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <Button
+        android:id="@+id/carListPage_btnBanner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/carListPage_titleBar"
+        android:visibility="invisible"
+        android:background="@drawable/normal_direct_banner" />
+    
+    <Button
+        android:id="@+id/carListPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/auction_guide_btn" />
+    
+    <Button
+        android:id="@+id/carListPage_btnSearch"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/carListPage_btnGuide"
+        android:layout_toLeftOf="@id/carListPage_btnGuide"
+        android:background="@drawable/usedmarket_search_btn" />
+        
+</RelativeLayout>

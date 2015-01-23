@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="color_green">#01a524</color>
+    <color name="color_orange">#febc2a</color>
+    <color name="color_orange2">#ff9600</color>
+	<color name="color_red">#ff4747</color>
+	<color name="color_ltgray">#d2d2d2</color>
+    
+	<color name="titlebar_bg">#febc2a</color>
+	
+    <color name="page_bg">#dcdcdc</color>
+    <color name="progress_bg">#b2604633</color>
+    <color name="progress_guage_orange">#febc2a</color>
+    <color name="progress_guage_red">#ff4747</color>
+    
+</resources>

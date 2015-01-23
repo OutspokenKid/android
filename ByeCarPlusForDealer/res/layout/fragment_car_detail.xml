@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/carDetailPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/carDetailPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/carDetailPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+
+            <android.support.v4.view.ViewPager 
+                android:id="@+id/carDetailPage_viewPager"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_alignParentTop="true"
+    			android:background="@drawable/main_auction_default" />
+            
+            <com.outspoken_kid.views.PageNavigatorView 
+                android:id="@+id/carDetailPage_pageNavigator"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignBottom="@id/carDetailPage_viewPager" />
+            		    
+		    <View
+		        android:id="@+id/carDetailPage_auctionIcon"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignBottom="@id/carDetailPage_viewPager"
+		        android:layout_alignLeft="@id/carDetailPage_viewPager"
+		        android:visibility="invisible"
+		        android:background="@drawable/main_hotdeal_mark" />
+		
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_timeRelative"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/carDetailPage_viewPager" >
+
+		        <ProgressBar
+			        android:id="@+id/carDetailPage_progressBar"
+			        style="?android:attr/progressBarStyleHorizontal"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:max="10000"
+			        android:progress="5000"
+			        android:progressDrawable="@drawable/progressbar_custom_orange" />
+			
+			    <TextView
+			        android:id="@+id/carDetailPage_tvRemainTime"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
+			        android:layout_centerHorizontal="true"
+			        android:gravity="top"
+			        android:textColor="#fff" />
+			
+			    <TextView
+			        android:id="@+id/carDetailPage_tvRemainTimeText"
+			        android:layout_width="wrap_content"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/carDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
+			        android:gravity="center_vertical"
+			        android:text="@string/remainTime"
+			        android:textColor="#fff" />
+			
+			    <View
+			        android:id="@+id/carDetailPage_timeIcon"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/carDetailPage_tvRemainTime"
+			        android:layout_alignTop="@id/carDetailPage_progressBar"
+			        android:background="@drawable/main_time_icon" />		        
+		        
+		    </RelativeLayout>
+		    
+		    <View
+		        android:id="@+id/carDetailPage_remainBg"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carDetailPage_timeRelative"
+		        android:background="#fff" />
+		
+		    <TextView
+		        android:id="@+id/carDetailPage_tvCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carDetailPage_timeRelative"
+		        android:ellipsize="end"
+		        android:gravity="bottom|left"
+		        android:singleLine="true"
+		        android:textColor="@color/holo_text" />
+		    
+		    <View 
+                android:id="@+id/carDetailPage_line"
+        		android:layout_width="match_parent"
+    			android:layout_height="1px"
+    			android:layout_below="@id/carDetailPage_tvCarInfo1"
+    			android:background="@color/color_ltgray" />
+		
+		    <TextView
+		        android:id="@+id/carDetailPage_tvCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carDetailPage_tvCarInfo1"
+		        android:ellipsize="end"
+		        android:gravity="top|left"
+		        android:singleLine="true"
+		        android:textColor="@color/holo_text" />
+		
+		    <TextView
+		        android:id="@+id/carDetailPage_tvCurrentPrice"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentRight="true"
+		        android:layout_below="@id/carDetailPage_timeRelative"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="@color/color_orange2" />
+		
+		    <TextView
+		        android:id="@+id/carDetailPage_tvCurrentPriceText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignBottom="@id/carDetailPage_tvCurrentPrice"
+		        android:layout_toLeftOf="@id/carDetailPage_tvCurrentPrice"
+		        android:text="@string/currentPrice"
+		        android:textColor="@color/color_orange2" />
+		
+		    <TextView
+		        android:id="@+id/carDetailPage_tvBidCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/carDetailPage_tvCurrentPrice"
+		        android:layout_below="@id/carDetailPage_tvCurrentPrice"
+		        android:ellipsize="end"
+		        android:singleLine="true"
+		        android:textColor="@color/holo_text" />
+		    
+		    <Button 
+                android:id="@+id/carDetailPage_btnLike"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_toLeftOf="@id/carDetailPage_tvBidCount"
+    			android:layout_alignBottom="@id/carDetailPage_tvBidCount"
+    			android:gravity="center"
+    			android:textColor="#fff"
+    			android:background="@drawable/main_like_btn_a" />
+            
+            <TextView
+                android:id="@+id/carDetailPage_tvLikeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_toLeftOf="@id/carDetailPage_btnLike"
+    			android:layout_alignTop="@id/carDetailPage_btnLike"
+    			android:text="@string/like"
+    			android:textColor="@color/holo_text" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_headerForType"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_remainBg"
+		        android:background="@drawable/detail_head1" />
+		    
+		    <View
+		        android:id="@+id/carDetailPage_arrowForType"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carDetailPage_headerForType"
+		        android:layout_alignRight="@id/carDetailPage_headerForType"
+		        android:background="@drawable/detail_toggle_up" />
+		    
+		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForType"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_headerForType"
+		        android:background="@drawable/detail_body1" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_lineForType"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForType"
+		        android:background="@color/color_ltgray" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_footerForType"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_lineForType"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_headerForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_footerForType"
+		        android:background="@drawable/detail_head2" />
+		    
+		    <View
+		        android:id="@+id/carDetailPage_arrowForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carDetailPage_headerForInfo"
+		        android:layout_alignRight="@id/carDetailPage_headerForInfo"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_headerForInfo"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" >
+		        
+		        <TextView 
+		            android:id="@+id/carDetailPage_tvDetailInfo1"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentLeft="true"
+		        	android:textColor="#737373"
+		        	android:gravity="left" />
+		        
+		        <TextView 
+		            android:id="@+id/carDetailPage_tvDetailInfo2"
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:layout_alignParentRight="true"
+		        	android:textColor="@color/holo_text"
+		        	android:gravity="right" />
+		        
+			</RelativeLayout>
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_footerForInfo"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForInfo"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_headerForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_footerForInfo"
+		        android:background="@drawable/detail_head3" />
+		    
+		    <View
+		        android:id="@+id/carDetailPage_arrowForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carDetailPage_headerForOption"
+		        android:layout_alignRight="@id/carDetailPage_headerForOption"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_headerForOption"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_footerForOption"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForOption"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_headerForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_footerForOption"
+		        android:background="@drawable/detail_head4" />
+		    
+		    <View
+		        android:id="@+id/carDetailPage_arrowForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carDetailPage_headerForDescription"
+		        android:layout_alignRight="@id/carDetailPage_headerForDescription"
+		        android:background="@drawable/detail_toggle" />
+		    
+		    <TextView
+		        android:id="@+id/carDetailPage_tvDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_headerForDescription"
+		        android:visibility="gone"
+		        android:background="@drawable/detail_body2" />
+		    
+		    <View 
+		        android:id="@+id/carDetailPage_footerForDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_tvDescription"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:layout_width="10dp"
+		        android:layout_height="10dp"
+		        android:layout_below="@id/carDetailPage_footerForDescription" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.byecarplusfordealer.views.TitleBar
+        android:id="@+id/carDetailPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <View
+        android:id="@+id/carDetailPage_buttonBg" 
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/button_bg" />
+    
+    <Button
+        android:id="@+id/carDetailPage_btnBuy"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:background="@drawable/buy_buy_btn" />
+    
+    <Button
+        android:id="@+id/carDetailPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/auction_guide_btn" />
+    
+</RelativeLayout>
