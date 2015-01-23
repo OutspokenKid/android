@@ -11,11 +11,7 @@ import android.net.Uri;
 import com.byecar.byecarplusfordealer.classes.BCPConstants;
 import com.byecar.byecarplusfordealer.classes.BCPFragment;
 import com.byecar.byecarplusfordealer.classes.BCPFragmentActivity;
-import com.byecar.byecarplusfordealer.common.FindPwPage;
-import com.byecar.byecarplusfordealer.common.TermOfUsePage;
-import com.byecar.byecarplusfordealer.fragments.user.SignInPage;
 import com.byecar.byecarplusfordealer.fragments.user.SignPage;
-import com.byecar.byecarplusfordealer.fragments.user.SignUpPage;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -89,18 +85,6 @@ public class SignActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_SIGN:
 			return new SignPage();
-		
-		case BCPConstants.PAGE_SIGN_IN:
-			return new SignInPage();
-		
-		case BCPConstants.PAGE_SIGN_UP_FOR_COMMON:
-			return new SignUpPage();
-		
-		case BCPConstants.PAGE_FIND_PW:
-			return new FindPwPage();
-			
-		case BCPConstants.PAGE_TERM_OF_USE:
-			return new TermOfUsePage();
 		}
 		return null;
 	}
@@ -159,13 +143,13 @@ public class SignActivity extends BCPFragmentActivity {
 		
 		isMainLaunched = true;
 		
-		Intent intent = new Intent(this, MainActivity.class);
-		
-		if(getIntent() != null && getIntent().getData() != null) {
-			intent.setData(getIntent().getData());
-		}
-		
-		startActivity(intent);
-		finish();
+//		Intent intent = new Intent(this, MainActivity.class);
+//		
+//		if(getIntent() != null && getIntent().getData() != null) {
+//			intent.setData(getIntent().getData());
+//		}
+//		
+//		startActivity(intent);
+//		finish();
 	}
 }

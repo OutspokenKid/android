@@ -489,7 +489,7 @@ public class SearchCarPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 		
-		return R.layout.fragment_search_car;
+		return R.layout.fragment_common_search_car;
 	}
 
 	@Override

@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ByeCarPlus</string>
+    <string name="app_name">ByeCarPlus For Dealer</string>
+
+    <string name="lastList">마지막 리스트입니다.</string>
+    
+    <string name="signIn">로그인</string>
+
+</resources>
+
+<!-- 
+    
 	<string name="addedPhoto">추가사진</string>
 	<string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
 	
@@ -105,7 +114,6 @@
 	<string name="hintForPriceBid">경매 시작가격을 입력해주세요.</string>
 	<string name="hintForPriceNormal">판매 가격을 입력해주세요.</string>
 	        
-    <string name="lastList">마지막 리스트입니다.</string>
     <string name="like">좋아요</string>
     
     <string name="mainImage">대표이미지</string>
@@ -166,5 +174,4 @@
     <string name="won">￦</string>
     
     <string name="year">년</string>
-    
-</resources>
+-->    

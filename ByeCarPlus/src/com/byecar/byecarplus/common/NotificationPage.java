@@ -103,7 +103,7 @@ public class NotificationPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_notification;
+		return R.layout.fragment_common_notification;
 	}
 
 	@Override

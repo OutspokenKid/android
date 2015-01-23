@@ -53,7 +53,7 @@ public class TitleBar extends RelativeLayout {
 		rp = new RelativeLayout.LayoutParams(
 				LayoutParams.MATCH_PARENT, 
 				LayoutParams.MATCH_PARENT);
-		bg.setBackgroundColor(getContext().getResources().getColor(R.color.titlebar_bg));
+		bg.setBackgroundColor(getContext().getResources().getColor(R.color.titlebar_bg_brown));
 		this.addView(bg);
 		
 		//btnMenu.

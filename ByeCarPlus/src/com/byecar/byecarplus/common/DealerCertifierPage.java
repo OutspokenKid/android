@@ -226,7 +226,7 @@ public class DealerCertifierPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_dealer_certifier;
+		return R.layout.fragment_common_dealer_certifier;
 	}
 
 	@Override

@@ -83,10 +83,11 @@ public class CarListPage extends BCPFragment {
 		//56 24 0
 		//254 188 42
         swipeRefreshLayout.setColorSchemeColors(
-        		Color.argb(255, 254, 188, 42),
-        		Color.argb(255, 56, 24, 0), 
-        		Color.argb(255, 254, 188, 42), 
-        		Color.argb(255, 56, 24, 0));
+        		getResources().getColor(R.color.titlebar_bg_orange),
+        		getResources().getColor(R.color.titlebar_bg_brown), 
+        		getResources().getColor(R.color.titlebar_bg_orange), 
+        		getResources().getColor(R.color.titlebar_bg_brown));
+        
         swipeRefreshLayout.setEnabled(true);
 
 		if(type != Car.TYPE_DIRECT_NORMAL) {

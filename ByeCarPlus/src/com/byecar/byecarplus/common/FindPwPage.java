@@ -89,7 +89,7 @@ public class FindPwPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_sign_find_pw;
+		return R.layout.fragment_common_find_pw;
 	}
 
 	@Override

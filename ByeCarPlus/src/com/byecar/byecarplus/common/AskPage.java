@@ -68,7 +68,7 @@ public class AskPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_ask;
+		return R.layout.fragment_common_ask;
 	}
 
 	@Override

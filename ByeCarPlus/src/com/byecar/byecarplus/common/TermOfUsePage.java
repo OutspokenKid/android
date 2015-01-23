@@ -54,7 +54,7 @@ public class TermOfUsePage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_term_of_use;
+		return R.layout.fragment_common_term_of_use;
 	}
 
 	@Override

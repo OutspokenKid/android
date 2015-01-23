@@ -78,7 +78,7 @@ public class OpenablePostListPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_openable_post_list;
+		return R.layout.fragment_common_openable_post_list;
 	}
 
 	@Override

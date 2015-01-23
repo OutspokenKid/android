@@ -131,7 +131,7 @@ public class SettingPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_setting;
+		return R.layout.fragment_common_setting;
 	}
 
 	@Override

@@ -130,7 +130,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_certify_phone_number;
+		return R.layout.fragment_common_certify_phone_number;
 	}
 
 	@Override

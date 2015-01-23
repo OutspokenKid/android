@@ -780,7 +780,7 @@ public class CarRegistrationPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_car_registration;
+		return R.layout.fragment_common_car_registration;
 	}
 
 	@Override
