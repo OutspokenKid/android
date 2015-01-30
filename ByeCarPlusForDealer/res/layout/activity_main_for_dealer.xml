@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.outspoken_kid.views.GestureSlidingLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainForDealerActivity_gestureSlidingLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/page_bg" >
+    
+    <RelativeLayout
+        android:id="@+id/mainForDealerActivity_leftView"
+        android:layout_width="0dp"
+	    android:layout_height="0dp" >
+
+        <ImageView 
+            android:id="@+id/mainForDealerActivity_ivProfile"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:background="@drawable/menu_default"
+	        android:scaleType="centerCrop" />
+        
+        <ImageView 
+            android:id="@+id/mainForDealerActivity_ivBg"
+            android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_alignParentTop="true"
+	        android:scaleType="matrix" />
+        
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvNickname"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForDealerActivity_ivProfile"
+	        android:layout_centerHorizontal="true"
+	        android:singleLine="true"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
+        
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvInfo"
+            android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_below="@id/mainForDealerActivity_tvNickname"
+	        android:layout_centerHorizontal="true"
+	        android:gravity="center_horizontal"
+	        android:textColor="#e9e6e0" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnEdit"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignParentRight="true"
+	        android:layout_below="@id/mainForDealerActivity_ivProfile"
+	        android:background="@drawable/menu_profile_setting_btn" />
+        
+        <com.outspoken_kid.views.OffsetScrollView
+	        android:id="@+id/mainForDealerActivity_scrollView"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:layout_below="@id/mainForDealerActivity_btnEdit"
+	        android:fillViewport="true" >
+
+            <RelativeLayout
+                android:id="@+id/mainForDealerActivity_innerRelative"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content" >
+	
+				<LinearLayout
+			        android:id="@+id/mainForDealerActivity_leftViewInner"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical" />                
+                
+            </RelativeLayout>
+	        
+	    </com.outspoken_kid.views.OffsetScrollView>
+	    
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvTitle"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForDealerActivity_scrollView"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:text="@string/sideMenuTitle2"
+	        android:textColor="#393939" />
+        
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mainForDealerActivity_topView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+	
+		<FrameLayout
+		    android:id="@+id/mainForDealerActivity_fragmentFrame"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent" />
+        
+    </FrameLayout>
+    
+    <RelativeLayout
+        android:id="@+id/mainForDealerActivity_popup"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="#c000"
+	    android:visibility="invisible" >
+        
+        <View 
+            android:id="@+id/mainForDealerActivity_popupBg"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerInParent="true"
+	    	android:background="@drawable/white_round_box_with_shadow" />
+        
+        <View 
+            android:id="@+id/mainForDealerActivity_popupImage"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignTop="@id/mainForDealerActivity_popupBg"
+	    	android:layout_centerHorizontal="true" />
+        
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvPopupText"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:layout_below="@id/mainForDealerActivity_popupImage"
+	    	android:layout_centerHorizontal="true"
+	    	android:textColor="@color/holo_text" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnHome"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignBottom="@id/mainForDealerActivity_popupBg"
+	    	android:background="@drawable/complete_home_btn" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnRecharge"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignBottom="@id/mainForDealerActivity_popupBg"
+	    	android:background="@drawable/empty_ticket_btn" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnMore"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_above="@id/mainForDealerActivity_btnHome"
+	    	android:visibility="invisible"
+	    	android:background="@drawable/reg_complete_btn2" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnClose"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_above="@id/mainForDealerActivity_btnHome"
+	    	android:visibility="invisible"
+	    	android:background="@drawable/empty_ticket_btn2" />
+        
+    </RelativeLayout>
+
+</com.outspoken_kid.views.GestureSlidingLayout>

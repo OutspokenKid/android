@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/signUpForDealerPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/signUpForDealerPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+        
+	<ScrollView
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/signUpForDealerPage_titleBar"
+    	android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+    
+            <TextView
+		        android:id="@+id/signUpForDealerPage_tvCertifyPhoneNumberText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:gravity="center_vertical"
+		        android:text="@string/certifyPhoneNumber"
+		        android:textColor="@color/holo_text" />
+            
+            <TextView 
+                android:id="@+id/signUpForDealerPage_tvCertified"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_tvCertifyPhoneNumberText"
+		        android:layout_centerHorizontal="true"
+		        android:gravity="center"
+		        android:textColor="@color/color_red"
+		        android:text="@string/requireCertifyPhoneNumber"
+		        android:background="@drawable/registration_box1" />
+            
+            <Button 
+                android:id="@+id/signUpForDealerPage_btnCertifyPhoneNumber"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/signUpForDealerPage_tvCertifyPhoneNumberText"
+				android:layout_alignParentRight="true"		        
+		        android:background="@drawable/registration_phone_info_btn" />
+            
+    		<View
+                android:id="@+id/signUpForDealerPage_lineAfterCertify"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:layout_below="@id/signUpForDealerPage_tvCertified"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginTop="20dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_marginBottom="20dp"
+		        android:background="@color/holo_text_hint" />
+    		
+			<TextView
+		        android:id="@+id/signUpForDealerPage_tvInfoText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/signUpForDealerPage_lineAfterCertify"
+		        android:gravity="center_vertical"
+		        android:text="@string/addedInfo"
+		        android:textColor="@color/holo_text" />
+			
+			<Button 
+                android:id="@+id/signUpForDealerPage_btnImage1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/signUpForDealerPage_tvInfoText"
+		        android:background="@drawable/sign2_picture2_btn" />
+            
+            <ImageView
+                android:id="@+id/signUpForDealerPage_ivImage1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/signUpForDealerPage_btnImage1"
+		        android:layout_alignLeft="@id/signUpForDealerPage_btnImage1"
+		        android:scaleType="centerCrop" />
+            
+            <Button 
+                android:id="@+id/signUpForDealerPage_btnImage2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/signUpForDealerPage_btnImage1"
+		        android:layout_toRightOf="@id/signUpForDealerPage_btnImage1"
+		        android:background="@drawable/sign2_picture3_btn" />
+            
+            <ImageView
+                android:id="@+id/signUpForDealerPage_ivImage2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/signUpForDealerPage_btnImage2"
+		        android:layout_alignLeft="@id/signUpForDealerPage_btnImage2"
+		        android:scaleType="centerCrop" />
+
+            <TextView
+		        android:id="@+id/signUpForDealerPage_tvUploadText"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signUpForDealerPage_btnImage1"
+		        android:gravity="center_vertical"
+		        android:text="@string/touchImageIcon"
+		        android:textColor="@color/holo_text" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_tvUploadText"
+		        android:layout_centerHorizontal="true" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo1"
+		        android:layout_centerHorizontal="true" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo2"
+		        android:layout_centerHorizontal="true" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo3"
+		        android:layout_centerHorizontal="true" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo5"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo4"
+		        android:layout_centerHorizontal="true" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/signUpForDealerPage_etInfo6"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo5"
+		        android:layout_centerHorizontal="true" />
+            
+            <View
+                android:id="@+id/signUpForDealerPage_lineAfterInfo"
+		        android:layout_width="match_parent"
+		        android:layout_height="1dp"
+		        android:layout_below="@id/signUpForDealerPage_etInfo6"
+		        android:layout_marginLeft="10dp"
+		        android:layout_marginTop="20dp"
+		        android:layout_marginRight="10dp"
+		        android:layout_marginBottom="20dp"
+		        android:background="@color/holo_text_hint" />
+            
+            <TextView
+		        android:id="@+id/signUpForDealerPage_tvIntroduce"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/signUpForDealerPage_lineAfterInfo"
+		        android:gravity="center_vertical"
+		        android:text="@string/introduce"
+		        android:textColor="@color/holo_text" />
+            
+			<EditText
+			    android:id="@+id/signUpForDealerPage_etIntroduce"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signUpForDealerPage_tvIntroduce"
+		        android:textColor="@color/holo_text"
+				android:textColorHint="@color/holo_text_hint"
+				android:hint="@string/hintForIntroduce"
+				android:gravity="left|top"
+				android:padding="10dp"
+				android:background="@drawable/white_round_box" />
+
+			<TextView
+		        android:id="@+id/signUpForDealerPage_tvTermOfUse"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/signUpForDealerPage_etIntroduce"
+		        android:gravity="center_vertical"
+		        android:text="@string/regardAgree"
+		        android:textColor="@color/holo_text" />
+			
+			<Button 
+			    android:id="@+id/signUpForDealerPage_btnTermOfUse"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/signUpForDealerPage_tvTermOfUse"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/sign2_term_btn" />
+			
+			<Button 
+			    android:id="@+id/signUpForDealerPage_btnSignUp"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signUpForDealerPage_tvTermOfUse"
+		        android:background="@drawable/sign2_signup_btn" />
+
+			<!-- Bottom blank. -->
+			
+			<View 
+			    android:layout_width="10dp"
+		        android:layout_height="20dp"
+		        android:layout_below="@id/signUpForDealerPage_btnSignUp" />
+						
+        </RelativeLayout>
+        
+    </ScrollView>
+		    
+</RelativeLayout>

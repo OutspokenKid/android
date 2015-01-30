@@ -211,6 +211,18 @@ public class FontUtils {
 		});
 	}
 	
+	public static void setFontAndHintSize(final com.outspoken_kid.views.holo.holo_dark.HoloStyleEditText editText, 
+			final int fontSize, final int hintSize) {
+		
+		setFontAndHintSize(editText.getEditText(), fontSize, hintSize);
+	}
+	
+	public static void setFontAndHintSize(final com.outspoken_kid.views.holo.holo_light.HoloStyleEditText editText, 
+			final int fontSize, final int hintSize) {
+		
+		setFontAndHintSize(editText.getEditText(), fontSize, hintSize);
+	}
+	
 	/**
 	 * 커스텀 폰트 적용.
 	 * http://t.dittos.pe.kr/post/9665021933

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.holo.HoloConstants;
@@ -40,23 +41,35 @@ public class HoloStyleEditText extends FrameLayout {
 		
 		//QHD
 		if(ResizeUtils.getScreenWidth() >= 1440) {
+			
+			LogUtils.log("###HoloStyleEditText.init.  QHD(" + ResizeUtils.getScreenWidth() + ")");
+			
 			lengthOn = 8;
 			lengthOff = 6;
 			padding = 18;
 			
 		//Full HD
 		} else if(ResizeUtils.getScreenWidth() >= 1080) {
+			
+			LogUtils.log("###HoloStyleEditText.init.  Full HD(" + ResizeUtils.getScreenWidth() + ")");
+			
 			lengthOn = 6;
 			lengthOff = 4;
 			padding = 16;
 			
 		//HD
 		} else if(ResizeUtils.getScreenWidth() >= 720) {
+			
+			LogUtils.log("###HoloStyleEditText.init.  HD(" + ResizeUtils.getScreenWidth() + ")");
+			
 			lengthOn = 4;
 			lengthOff = 3;
 			padding = 9;
 			
 		} else {
+			
+			LogUtils.log("###HoloStyleEditText.init.  Under HD(" + ResizeUtils.getScreenWidth() + ")");
+			
 			lengthOn = 3;
 			lengthOff = 2;
 			padding = 8;

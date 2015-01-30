@@ -1,67 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/signPage_mainLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
-
+    android:layout_height="match_parent" >
+    
     <ImageView 
         android:id="@+id/signPage_ivBg"
     	android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:scaleType="centerCrop" />
     
-    <View
-        android:id="@+id/signPage_logo"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentTop="true"
-    	android:layout_centerHorizontal="true"
-    	android:background="@drawable/d_splash_logo" />
-
-    <TextView
-        android:id="@+id/signPage_tvSignInText"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
-    	android:text="@string/signIn"
-    	android:textColor="@color/holo_text_hint" />
+    <ScrollView 
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:fillViewport="true" >
+	    
+	    <RelativeLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
+		
+		    <View
+		        android:id="@+id/signPage_logo"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentTop="true"
+		    	android:layout_centerHorizontal="true"
+		    	android:background="@drawable/d_splash_logo" />
+		
+		    <TextView
+		        android:id="@+id/signPage_tvSignInText"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/signPage_logo"
+		    	android:layout_centerHorizontal="true"
+		    	android:visibility="invisible"
+		    	android:text="@string/signIn"
+		    	android:textColor="#eee5e0" />
+		    
+		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+				android:id="@+id/signPage_etEmail"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/signPage_tvSignInText"
+		    	android:layout_centerHorizontal="true"
+		    	android:visibility="invisible" />
+		    
+		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+				android:id="@+id/signPage_etPw"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/signPage_etEmail"
+		    	android:layout_centerHorizontal="true"
+		    	android:visibility="invisible" />
+			
+		    <Button
+		        android:id="@+id/signPage_btnSignUp"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignParentLeft="true"
+		    	android:layout_below="@id/signPage_etPw"
+		    	android:background="@drawable/d_splash_signup_btn"
+		    	android:visibility="invisible" />
+		    
+		    <Button
+		        android:id="@+id/signPage_btnSignIn"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_alignTop="@id/signPage_btnSignUp"
+		    	android:layout_toRightOf="@id/signPage_btnSignUp"
+		    	android:background="@drawable/d_splash_login_btn"
+		    	android:visibility="invisible" />
+		    
+		    <Button
+		        android:id="@+id/signPage_btnFindPw"
+		    	android:layout_width="0dp"
+		    	android:layout_height="0dp"
+		    	android:layout_below="@id/signPage_btnSignUp"
+		    	android:layout_centerHorizontal="true"
+		    	android:background="@drawable/pass_btn"
+		    	android:visibility="invisible" />
+		
+		</RelativeLayout>
+	    
+	</ScrollView>
     
-    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-		android:id="@+id/signPage_etEmail"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_below="@id/signPage_tvSignInText"
-    	android:layout_centerHorizontal="true" />
-    
-    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-		android:id="@+id/signPage_etPw"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_below="@id/signPage_tvSignInText"
-    	android:layout_centerHorizontal="true" />
-	
-    <Button
-        android:id="@+id/signPage_btnSignUp"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignParentLeft="true"
-    	android:layout_below="@id/signPage_etPw"
-    	android:background="@drawable/d_splash_signup_btn" />
-    
-    <Button
-        android:id="@+id/signPage_btnSignIn"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/signPage_btnSignUp"
-    	android:layout_alignRight="@id/signPage_btnSignUp"
-    	android:background="@drawable/d_splash_login_btn" />
-    
-    <Button
-        android:id="@+id/signPage_btnFindPw"
-    	android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_below="@id/signPage_btnSignUp"
-    	android:layout_centerHorizontal="true"
-    	android:background="@drawable/d_splash_login_btn" />
-
-</RelativeLayout>
+</FrameLayout>

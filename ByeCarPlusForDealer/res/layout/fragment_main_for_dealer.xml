@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/mainPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <View
+        android:id="@+id/mainPage_bgForButtons"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/mainPage_titleBar"
+    	android:background="#fff" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignBottom="@id/mainPage_bgForButtons"
+        android:background="@color/color_ltgray" />
+    
+    <Button 
+        android:id="@+id/mainPage_btnAuction"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_alignTop="@id/mainPage_bgForButtons"
+    	android:background="@drawable/main_tab1_tab_a" />
+    
+    <Button 
+        android:id="@+id/mainPage_btnMyBids"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/mainPage_btnAuction"
+    	android:layout_toRightOf="@id/mainPage_btnAuction"
+    	android:background="@drawable/main_tab2_tab_b" />
+    
+    <Button 
+        android:id="@+id/mainPage_btnUsed"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/mainPage_btnMyBids"
+    	android:layout_toRightOf="@id/mainPage_btnMyBids"
+    	android:background="@drawable/main_tab3_tab_b" />
+    
+    <Button 
+        android:id="@+id/mainPage_btnOnSale"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/mainPage_btnUsed"
+    	android:layout_toRightOf="@id/mainPage_btnUsed"
+    	android:background="@drawable/main_tab4_tab_b" />
+    
+    <ImageView 
+        android:id="@+id/mainPage_ivBanner"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/mainPage_bgForButtons"
+    	android:visibility="gone"
+    	android:scaleType="centerCrop" />
+    
+    <ListView
+        android:id="@+id/mainPage_listView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/mainPage_ivBanner"
+    	android:cacheColorHint="#0000" />
+
+    <View 
+       	android:id="@+id/mainPage_icon"
+       	android:layout_width="0dp"
+   		android:layout_height="0dp"
+   		android:layout_alignTop="@id/mainPage_listView"
+   		android:layout_centerHorizontal="true"
+   		android:background="@drawable/sell_toon" />
+    
+    <Button
+	    android:id="@+id/mainPage_btnRegistration2"
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_below="@id/mainPage_icon"
+   		android:layout_centerHorizontal="true"
+	    android:background="@drawable/auction_reg_btn" />
+    
+    <RelativeLayout
+        android:id="@+id/mainPage_buttonRelative"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:visibility="visible"
+    	android:background="@drawable/button_bg" >
+    	
+		<Button
+		    android:id="@+id/mainPage_btnOrderSmall"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentBottom="true"
+		    android:background="@drawable/sort_toggle_a" />
+		
+		<Button
+		    android:id="@+id/mainPage_btnSearch"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:layout_toRightOf="@id/mainPage_btnOrderSmall"
+		    android:layout_alignTop="@id/mainPage_btnOrderSmall"
+		    android:background="@drawable/car_search_btn" />
+		
+		<Button
+		    android:id="@+id/mainPage_btnRegistration"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:layout_toRightOf="@id/mainPage_btnSearch"
+		    android:layout_alignTop="@id/mainPage_btnSearch"
+		    android:background="@drawable/used_reg_btn" />
+		
+		<Button
+		    android:id="@+id/mainPage_btnOrderBig"
+		    android:layout_width="0dp"
+		    android:layout_height="0dp"
+		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentBottom="true"
+		    android:visibility="invisible"
+		    android:background="@drawable/used_sort1_btn" />
+        
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/mainPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/main_guide_btn" />
+    
+    <Button
+        android:id="@+id/mainPage_btnNotice"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/mainPage_btnGuide"
+        android:layout_toLeftOf="@id/mainPage_btnGuide"
+        android:background="@drawable/main_notice_btn" />
+    
+</RelativeLayout>

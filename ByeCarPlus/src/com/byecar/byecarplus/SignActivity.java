@@ -8,14 +8,14 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.classes.BCPFragment;
-import com.byecar.byecarplus.classes.BCPFragmentActivity;
-import com.byecar.byecarplus.common.FindPwPage;
-import com.byecar.byecarplus.common.TermOfUsePage;
-import com.byecar.byecarplus.fragments.user.SignInPage;
-import com.byecar.byecarplus.fragments.user.SignPage;
-import com.byecar.byecarplus.fragments.user.SignUpPage;
+import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPFragment;
+import com.byecar.classes.BCPFragmentActivity;
+import com.byecar.fragments.FindPwPage;
+import com.byecar.fragments.SignUpPage;
+import com.byecar.fragments.TermOfUsePage;
+import com.byecar.fragments.user.SignInPage;
+import com.byecar.fragments.user.SignPage;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -93,7 +93,7 @@ public class SignActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_SIGN_IN:
 			return new SignInPage();
 		
-		case BCPConstants.PAGE_SIGN_UP_FOR_COMMON:
+		case BCPConstants.PAGE_SIGN_UP_FOR_USER:
 			return new SignUpPage();
 		
 		case BCPConstants.PAGE_FIND_PW:

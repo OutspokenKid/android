@@ -6,9 +6,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
-import com.byecar.byecarplus.classes.BCPAPIs;
-import com.byecar.byecarplus.classes.BCPConstants;
-import com.byecar.byecarplus.models.PushObject;
+import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPConstants;
+import com.byecar.models.PushObject;
 import com.google.android.gcm.GCMBaseIntentService;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
