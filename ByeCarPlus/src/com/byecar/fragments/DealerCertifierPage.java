@@ -289,14 +289,6 @@ public class DealerCertifierPage extends BCPFragment {
 	}
 	
 	@Override
-	public void onDestroyView() {
-		
-		scrollView.setOnScrollChangedListener(null);
-		
-		super.onDestroyView();
-	}
-	
-	@Override
 	public int getRootViewResId() {
 
 		return R.id.dealerPage_mainLayout;

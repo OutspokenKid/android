@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myCompletedListPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/myCompletedListPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <View
+        android:id="@+id/myCompletedListPage_bgForButtons"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/myCompletedListPage_titleBar"
+    	android:background="#fff" />
+    
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignBottom="@id/myCompletedListPage_bgForButtons"
+        android:background="@color/color_ltgray" />
+    
+    <Button 
+        android:id="@+id/myCompletedListPage_btnAuction"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignParentLeft="true"
+    	android:layout_below="@id/myCompletedListPage_titleBar" 
+    	android:background="@drawable/deal_tab1_a" />
+    
+    <Button 
+        android:id="@+id/myCompletedListPage_btnDealer"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/myCompletedListPage_btnAuction"
+    	android:layout_toRightOf="@id/myCompletedListPage_btnAuction"
+    	android:background="@drawable/deal_tab2_b" />
+
+    <ListView 
+        android:id="@+id/myCompletedListPage_listView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/myCompletedListPage_bgForButtons"
+    	android:cacheColorHint="#0000" />
+    
+</RelativeLayout>

@@ -381,20 +381,6 @@ public class TypeSearchCarPage extends BCPFragment {
 		return R.id.typeSearchCarPage_mainLayout;
 	}
 	
-	@Override
-	public void onDestroyView() {
-
-		if(listView != null) {
-			listView.setOnScrollListener(null);	
-		}
-		
-		if(gridView != null) {
-			gridView.setOnScrollListener(null);	
-		}
-		
-		super.onDestroyView();
-	}
-	
 //////////////////// Custom methods.
 	
 	public void closePage() {

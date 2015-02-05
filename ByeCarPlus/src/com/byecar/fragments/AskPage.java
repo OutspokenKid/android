@@ -17,9 +17,6 @@ public class AskPage extends BCPFragment {
 	private Button btnKakao;
 	private Button btnFacebook;
 	private Button btnEmail;
-	private FrameLayout policyFrame;
-	private Button btnPolicy;
-	private Button btnCar;
 	
 	@Override
 	public void bindViews() {
@@ -30,9 +27,6 @@ public class AskPage extends BCPFragment {
 		btnKakao = (Button) mThisView.findViewById(R.id.askPage_btnKakao);
 		btnFacebook = (Button) mThisView.findViewById(R.id.askPage_btnFacebook);
 		btnEmail = (Button) mThisView.findViewById(R.id.askPage_btnEmail);
-		policyFrame = (FrameLayout) mThisView.findViewById(R.id.askPage_policyFrame);
-		btnPolicy = (Button) mThisView.findViewById(R.id.askPage_btnPolicy);
-		btnCar = (Button) mThisView.findViewById(R.id.askPage_btnCar);
 	}
 
 	@Override
@@ -60,9 +54,6 @@ public class AskPage extends BCPFragment {
 		ResizeUtils.viewResize(488, 82, btnKakao, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 90, 0, 0});
 		ResizeUtils.viewResize(488, 82, btnFacebook, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 196, 0, 0});
 		ResizeUtils.viewResize(488, 82, btnEmail, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 302, 0, 0});
-		ResizeUtils.viewResizeForRelative(608, 304, policyFrame, null, null, new int[]{0, 36, 0, 0});
-		ResizeUtils.viewResize(488, 82, btnPolicy, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 90, 0, 0});
-		ResizeUtils.viewResize(488, 82, btnCar, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 196, 0, 0});
 	}
 
 	@Override

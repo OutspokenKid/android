@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myGradePage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f5f5f5" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/myGradePage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <View 
+        android:id="@+id/myGradePage_gradeView"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerHorizontal="true"
+    	android:layout_below="@id/myGradePage_titleBar" />
+    
+    <Button 
+        android:id="@+id/myGradePage_btnCall"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerHorizontal="true"
+    	android:layout_below="@id/myGradePage_gradeView"
+    	android:background="@drawable/grade_tell_btn" />
+    
+</RelativeLayout>

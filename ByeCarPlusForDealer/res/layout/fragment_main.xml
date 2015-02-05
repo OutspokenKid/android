@@ -64,18 +64,25 @@
     	android:visibility="gone"
     	android:scaleType="centerCrop" />
     
-    <ListView
-        android:id="@+id/mainPage_listView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/mainPage_swipe_container"
         android:layout_width="match_parent"
-    	android:layout_height="match_parent"
-    	android:layout_below="@id/mainPage_ivBanner"
-    	android:cacheColorHint="#0000" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/mainPage_ivBanner" >
+
+        <ListView
+	        android:id="@+id/mainPage_listView"
+	        android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:cacheColorHint="#0000" />
+            
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <View 
        	android:id="@+id/mainPage_icon"
        	android:layout_width="0dp"
    		android:layout_height="0dp"
-   		android:layout_alignTop="@id/mainPage_listView"
+   		android:layout_below="@id/mainPage_ivBanner"
    		android:layout_centerHorizontal="true"
    		android:background="@drawable/sell_toon" />
     
@@ -101,7 +108,7 @@
 		    android:layout_height="0dp"
 		    android:layout_alignParentLeft="true"
 		    android:layout_alignParentBottom="true"
-		    android:background="@drawable/sort_toggle_a" />
+		    android:background="@drawable/sort_toggle_c" />
 		
 		<Button
 		    android:id="@+id/mainPage_btnSearch"
@@ -137,13 +144,5 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/main_guide_btn" />
-    
-    <Button
-        android:id="@+id/mainPage_btnNotice"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignTop="@id/mainPage_btnGuide"
-        android:layout_toLeftOf="@id/mainPage_btnGuide"
-        android:background="@drawable/main_notice_btn" />
     
 </RelativeLayout>

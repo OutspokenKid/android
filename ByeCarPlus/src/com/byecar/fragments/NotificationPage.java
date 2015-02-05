@@ -186,14 +186,6 @@ public class NotificationPage extends BCPFragment {
 		}
 	}
 	
-	@Override
-	public void onDestroyView() {
-		
-		listView.setOnScrollListener(null);
-		
-		super.onDestroyView();
-	}
-	
 //////////////////// Custom methods.
 	
 	public void requestReadNotification(int notification_id) {

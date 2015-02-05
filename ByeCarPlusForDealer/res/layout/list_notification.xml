@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+	android:cacheColorHint="@android:color/transparent" >
+
+    <ImageView 
+        android:id="@+id/list_notification_ivImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/push_notice" />
+    
+    <View
+        android:id="@+id/list_notification_cover"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@id/list_notification_ivImage"
+        android:layout_alignTop="@id/list_notification_ivImage"
+        android:background="@drawable/mypage_frame" />
+    
+    <View
+        android:id="@+id/list_notification_newIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignLeft="@id/list_notification_ivImage"
+        android:layout_alignTop="@id/list_notification_ivImage"
+        android:background="@drawable/push_new" />
+
+    <TextView
+        android:id="@+id/list_notification_tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/list_notification_ivImage"
+        android:layout_toRightOf="@id/list_notification_ivImage"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:gravity="center_vertical"
+        android:textColor="@color/holo_text" />
+    
+    <TextView
+        android:id="@+id/list_notification_tvRegdate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/list_notification_cover"
+        android:layout_alignBottom="@id/list_notification_cover"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/holo_text_hint" />
+
+</RelativeLayout>

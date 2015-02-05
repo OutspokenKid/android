@@ -5,6 +5,7 @@ public class BCPAPIs {
 	public static String BASE_API_URL = "http://byecar.minsangk.com";
 	public static String UPLOAD_URL = BASE_API_URL + "/files/upload/image.json";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
+	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
 	
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
 	public static String SIGN_IN_URL = BASE_API_URL + "/users/login.json";
@@ -14,8 +15,36 @@ public class BCPAPIs {
 	public static String SIGN_UP_URL = BASE_API_URL + "/users/join.json";
 	public static String SIGN_OUT_URL = BASE_API_URL + "/users/logout.json";
 	public static String WITHDRAW_URL = BASE_API_URL + "/users/withdraw.json";
+	public static String DEALER_INFO_URL = BASE_API_URL + "/dealers/show.json";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";
 	public static String PHONE_UPDATE_URL = BASE_API_URL + "/users/update/phone_number.json";
+	
+	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
+	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
+	
+	public static String NOTICE_URL = BASE_API_URL + "/posts/notices.json";
+	public static String FAQ_URL = BASE_API_URL + "/posts/faqs.json";
+	
+	public static String CAR_BID_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
+	public static String CAR_BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
+	public static String CAR_BID_LIKE_URL = BASE_API_URL + "/onsalecars/bids/like.json";
+	public static String CAR_BID_UNLIKE_URL = BASE_API_URL + "/onsalecars/bids/unlike.json";
+	
+	public static String CAR_DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
+	public static String CAR_DEALER_SHOW_URL = BASE_API_URL + "/onsalecars/dealer/show.json";
+	public static String CAR_DEALER_SAVE_URL = BASE_API_URL + "/onsalecars/dealer/save.json";
+	public static String CAR_DEALER_LIKE_URL = BASE_API_URL + "/onsalecars/dealer/like.json";
+	public static String CAR_DEALER_UNLIKE_URL = BASE_API_URL + "/onsalecars/dealer/unlike.json";
+	
+	public static String MY_BIDS_URL = BASE_API_URL + "/users/mine/onsalecars.json";
+	public static String MY_CAR_URL = BASE_API_URL + "/users/mine/onsalecars.json";
+	public static String MY_REVIEW_URL = BASE_API_URL + "/dealers/reviews.json";
+	
+	public static String SEARCH_CAR_BRAND = BASE_API_URL + "/cars/brands.json";
+	public static String SEARCH_CAR_MODELGROUP = BASE_API_URL + "/cars/modelgroups.json";
+	public static String SEARCH_CAR_MODEL = BASE_API_URL + "/cars/models.json";
+	public static String SEARCH_CAR_TRIM = BASE_API_URL + "/cars/trims.json";
+	public static String SEARCH_CAR_DETAIL_INFO = BASE_API_URL + "/cars/show.json";
 }

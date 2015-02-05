@@ -1,10 +1,20 @@
 package com.byecar.fragments.dealer;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -12,14 +22,22 @@ import android.widget.RelativeLayout;
 
 import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPAdapter;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
+import com.byecar.fragments.CarRegistrationPage;
+import com.byecar.fragments.OpenablePostListPage;
+import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class MainPage extends BCPFragment {
 
+	private SwipeRefreshLayout swipeRefreshLayout;
+	
 	private Button btnGuide;
-	private Button btnNotice;
 	private Button btnAuction;
 	private Button btnMyBids;
 	private Button btnUsed;
@@ -38,6 +56,7 @@ public class MainPage extends BCPFragment {
 	private Button btnOrderBig;
 	
 	private int menuIndex;
+	private String orderString;
 	
 	@Override
 	public void bindViews() {
@@ -45,13 +64,13 @@ public class MainPage extends BCPFragment {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.mainPage_titleBar);
 		
 		btnGuide = (Button) mThisView.findViewById(R.id.mainPage_btnGuide);
-		btnNotice = (Button) mThisView.findViewById(R.id.mainPage_btnNotice);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainPage_btnAuction);
 		btnMyBids = (Button) mThisView.findViewById(R.id.mainPage_btnMyBids);
 		btnUsed = (Button) mThisView.findViewById(R.id.mainPage_btnUsed);
 		btnOnSale = (Button) mThisView.findViewById(R.id.mainPage_btnOnSale);
 		ivBanner = (ImageView) mThisView.findViewById(R.id.mainPage_ivBanner);
 		
+		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.mainPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.mainPage_listView);
 		
 		icon = mThisView.findViewById(R.id.mainPage_icon);
@@ -66,13 +85,27 @@ public class MainPage extends BCPFragment {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		orderString = "date";
 	}
 
 	@Override
 	public void createPage() {
-
+		
+		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
+		listView.setAdapter(adapter);
+		
+		swipeRefreshLayout.setColorSchemeColors(
+        		getResources().getColor(R.color.titlebar_bg_brown),
+        		getResources().getColor(R.color.titlebar_bg_orange),
+        		getResources().getColor(R.color.titlebar_bg_brown), 
+        		getResources().getColor(R.color.titlebar_bg_orange));
+        
+        swipeRefreshLayout.setEnabled(true);
+		
+		ivBanner.setImageResource(R.drawable.main_banner_sample);
+		ivBanner.setVisibility(View.VISIBLE);
+		
 		setMenu(0);
 	}
 
@@ -91,7 +124,70 @@ public class MainPage extends BCPFragment {
 				}
 			}
 		});
-	
+
+		titleBar.getBtnNotice().setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_NOTIFICATION, null);
+			}
+		});
+		
+		ivBanner.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+				mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+			}
+		});
+		
+		listView.setOnScrollListener(new OnScrollListener() {
+			
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
+			
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+				
+				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+					downloadInfo();
+				}
+			}
+		});
+
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+
+				try {
+					int type = 0;
+
+					if(menuIndex < 2) {
+						type = Car.TYPE_BID;
+					} else {
+						type = Car.TYPE_DEALER;
+					}
+					
+					Bundle bundle = new Bundle();
+					bundle.putInt("id", ((Car) models.get(position)).getId());
+					bundle.putInt("type", type);
+					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
+			}
+		});
+		
 		btnAuction.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -127,6 +223,72 @@ public class MainPage extends BCPFragment {
 				setMenu(3);
 			}
 		});
+	
+		btnOrderSmall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setOrder();
+			}
+		});
+		
+		btnOrderBig.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setOrder();
+			}
+		});
+	
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, null);
+			}
+		});
+		
+		btnRegistration.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+			}
+		});
+		
+		btnRegistration2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+			}
+		});
+		
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+
+				swipeRefreshLayout.setRefreshing(true);
+				
+				new Handler().postDelayed(new Runnable() {
+			        @Override 
+			        public void run() {
+			        	
+			        	refreshPage();
+			        }
+			    }, 2000);
+			}
+		});
 	}
 
 	@Override
@@ -141,7 +303,6 @@ public class MainPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(88);
 		
 		ResizeUtils.viewResizeForRelative(60, 60, btnGuide, null, null, new int[]{0, 14, 12, 0});
-		ResizeUtils.viewResizeForRelative(60, 60, btnNotice, null, null, new int[]{0, 0, 6, 0});
 		ResizeUtils.viewResizeForRelative(160, 88, btnAuction, null, null, null);
 		ResizeUtils.viewResizeForRelative(160, 88, btnMyBids, null, null, null);
 		ResizeUtils.viewResizeForRelative(160, 88, btnUsed, null, null, null);
@@ -161,7 +322,7 @@ public class MainPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_main_for_dealer;
+		return R.layout.fragment_main;
 	}
 
 	@Override
@@ -189,9 +350,80 @@ public class MainPage extends BCPFragment {
 	}
 
 	@Override
+	public void downloadInfo() {
+
+		switch(menuIndex) {
+			
+		case 0:
+			url = BCPAPIs.CAR_BID_LIST_URL;
+			break;
+			
+		case 1:
+			url = BCPAPIs.MY_BIDS_URL + "?status=10";
+			break;
+			
+		case 2:
+			url = BCPAPIs.CAR_DEALER_LIST_URL;
+			break;
+			
+		case 3:
+			url = BCPAPIs.MY_CAR_URL + "?status=in_progress";
+			break;
+		}
+		
+		url += (url != null && url.contains("?") ? "&" : "?")
+				+ "order=" + orderString;
+		
+		super.downloadInfo();
+	}
+	
+	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-		// TODO Auto-generated method stub
-		return false;
+
+		int size = 0;
+		int itemCode = 0;
+		
+		switch (menuIndex) {
+		case 0:
+			itemCode = BCPConstants.ITEM_CAR_BID;
+			break;
+		case 1:
+			itemCode = BCPConstants.ITEM_CAR_BID_MY;
+			break;
+		case 2:
+			itemCode = BCPConstants.ITEM_CAR_DEALER;
+			break;
+		case 3:
+			itemCode = BCPConstants.ITEM_CAR_DEALER_IN_PROGRESS;
+			break;
+		}
+		
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("onsalecars");
+			
+			size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Car car = new Car(arJSON.getJSONObject(i));
+				car.setItemCode(itemCode);
+				models.add(car);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		} finally {
+			swipeRefreshLayout.setRefreshing(false);
+		}
+		
+		if((menuIndex == 1 || menuIndex == 3) && models.size() == 0) {
+			showIconAndButton();
+		}
+		
+		if(size < NUMBER_OF_LISTITEMS) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -210,7 +442,13 @@ public class MainPage extends BCPFragment {
 	public void onResume() {
 		
 		super.onResume();
+		
 		titleBar.getMenuButton().setVisibility(View.VISIBLE);
+		checkNotification();
+		
+		if(models.size() == 0) {
+			downloadInfo();
+		}
 	}
 	
 //////////////////// Custom methods.
@@ -281,6 +519,7 @@ public class MainPage extends BCPFragment {
 			btnSearch.setVisibility(View.INVISIBLE);
 			btnRegistration.setVisibility(View.INVISIBLE);
 			btnOrderBig.setVisibility(View.VISIBLE);
+			ResizeUtils.setMargin(swipeRefreshLayout, new int[]{0, 0, 0, 88});
 			break;
 			
 		case 2:
@@ -290,22 +529,72 @@ public class MainPage extends BCPFragment {
 			btnSearch.setVisibility(View.VISIBLE);
 			btnRegistration.setVisibility(View.VISIBLE);
 			btnOrderBig.setVisibility(View.INVISIBLE);
+			ResizeUtils.setMargin(swipeRefreshLayout, new int[]{0, 0, 0, 88});
 			break;
 		
 		case 1:
 		case 3:
 			buttonRelative.setVisibility(View.INVISIBLE);
 			ResizeUtils.setMargin(listView, new int[]{0, 0, 0, 0});
+			ResizeUtils.setMargin(swipeRefreshLayout, new int[]{0, 0, 0, 0});
 			break;
 		}
 	}
 	
-	public void showIconAndButton(int index) {
+	public void showIconAndButton() {
 		
 		icon.setVisibility(View.VISIBLE);
 		
-		if(index == 3) {
+		if(menuIndex == 3) {
 			btnRegistration2.setVisibility(View.VISIBLE);
 		}
+	}
+
+	public void setOrder() {
+
+		String[] strings = new String[] {
+				null,
+				getString(R.string.order_2)
+		};
+		
+		if(menuIndex == 0) {
+			strings[0] = getString(R.string.order_1);
+		} else if(menuIndex == 2) {
+			strings[0] = getString(R.string.order_3);
+		} else {
+			return;
+		}
+		
+		mActivity.showSelectDialog(title, strings, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				
+				if(which == 0) {
+					orderString = "date";
+					
+					if(menuIndex == 0) {
+						btnOrderBig.setBackgroundResource(R.drawable.used_sort1_btn);
+					} else {
+						btnOrderSmall.setBackgroundResource(R.drawable.sort_toggle_c);
+					}
+				} else {
+					orderString = "like";
+					
+					if(menuIndex == 0) {
+						btnOrderBig.setBackgroundResource(R.drawable.used_sort2_btn);
+					} else {
+						btnOrderSmall.setBackgroundResource(R.drawable.sort_toggle_b);
+					}
+				}
+				
+				refreshPage();
+			}
+		});
+	}
+
+	public void checkNotification() {
+		
+		titleBar.setNoticeCount(5);
 	}
 }

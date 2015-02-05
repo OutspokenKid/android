@@ -105,7 +105,7 @@ public class TitleBar extends RelativeLayout {
 					ResizeUtils.getSpecificLength(60));
 			rp.addRule(RelativeLayout.CENTER_VERTICAL);
 			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			rp.rightMargin = ResizeUtils.getSpecificLength(30);
+			rp.rightMargin = ResizeUtils.getSpecificLength(80);
 			btnNotice.setLayoutParams(rp);
 			btnNotice.setBackgroundResource(R.drawable.main_notice_btn);
 			this.addView(btnNotice);
@@ -138,10 +138,11 @@ public class TitleBar extends RelativeLayout {
 			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 			rp.topMargin = ResizeUtils.getSpecificLength(16);
-			rp.rightMargin = ResizeUtils.getSpecificLength(32);
+			rp.rightMargin = ResizeUtils.getSpecificLength(82);
+			
 			tvNoticeCount = new TextView(getContext());
 			tvNoticeCount.setLayoutParams(rp);
-			tvNoticeCount.setTextColor(Color.rgb(254, 188, 42));
+			tvNoticeCount.setTextColor(getContext().getResources().getColor(R.color.titlebar_bg_brown));
 			tvNoticeCount.setGravity(Gravity.CENTER);
 			
 			int pv = ResizeUtils.getSpecificLength(2);
@@ -151,7 +152,7 @@ public class TitleBar extends RelativeLayout {
 			FontUtils.setFontSize(tvNoticeCount, 20);
 			this.addView(tvNoticeCount);
 			
-			PaintDrawable pd = new PaintDrawable(Color.rgb(61, 32, 10));
+			PaintDrawable pd = new PaintDrawable(getContext().getResources().getColor(R.color.titlebar_bg_orange));
 	        pd.setCornerRadius(ResizeUtils.getSpecificLength(10));
 	        
 	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {

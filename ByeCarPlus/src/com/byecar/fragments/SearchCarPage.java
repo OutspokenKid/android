@@ -604,17 +604,6 @@ public class SearchCarPage extends BCPFragment {
 		return R.id.searchCarPage_mainLayout;
 	}
 	
-	@Override
-	public void onDestroyView() {
-		
-		gridView.setOnScrollListener(null);
-		gridView.setOnItemClickListener(null);
-		listView.setOnScrollListener(null);
-		listView.setOnItemClickListener(null);
-		
-		super.onDestroyView();
-	}
-	
 //////////////////// Custom methods.
 
 	public void setMenu(int menuIndex) {

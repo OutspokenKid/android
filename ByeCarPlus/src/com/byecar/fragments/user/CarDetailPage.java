@@ -638,20 +638,6 @@ public class CarDetailPage extends BCPFragment {
 		
 		checkPageScrollOffset();
 	}
-
-	@Override
-	public void onDestroyView() {
-		
-		scrollView.setOnScrollChangedListener(null);
-		viewPager.setOnPageChangeListener(null);
-			
-		int size = carDetailPage_optionViews.length;
-		for(int i=0; i<size; i++) {
-			ViewUnbindHelper.unbindReferences(carDetailPage_optionViews[i]);
-		}
-		
-		super.onDestroyView();
-	}
 	
 	@Override
 	public int getRootViewResId() {

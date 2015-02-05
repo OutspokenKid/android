@@ -225,14 +225,6 @@ public class MyPage extends BCPFragment {
 		}
 	}
 	
-	@Override
-	public void onDestroyView() {
-		
-		listView.setOnScrollListener(null);
-		
-		super.onDestroyView();
-	}
-	
 //////////////////// Custom methods.
 	
 	public void setMenu(int menuIndex) {

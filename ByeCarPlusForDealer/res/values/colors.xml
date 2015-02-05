@@ -15,4 +15,9 @@
     <color name="progress_guage_orange">#febc2a</color>
     <color name="progress_guage_red">#ff4747</color>
     
+    <color name="color_dealer_level1">#a6ce3a</color>
+    <color name="color_dealer_level2">#455bff</color>
+    <color name="color_dealer_level3">#febc2a</color>
+    <color name="color_dealer_level4">#ff4747</color>
+    
 </resources>

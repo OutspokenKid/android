@@ -33,9 +33,22 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
+import com.byecar.fragments.AskPage;
+import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
+import com.byecar.fragments.NotificationPage;
+import com.byecar.fragments.OpenablePostListPage;
+import com.byecar.fragments.SearchCarPage;
+import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
+import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.fragments.dealer.MainPage;
+import com.byecar.fragments.dealer.MyCompletedListPage;
+import com.byecar.fragments.dealer.MyGradePage;
+import com.byecar.fragments.dealer.MyPage;
+import com.byecar.fragments.dealer.MyReviewPage;
+import com.byecar.fragments.dealer.MyTicketPage;
+import com.byecar.models.Dealer;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -59,6 +72,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public static final int POPUP_NOT_ENOUGH = 2;
 
 	public static User user;
+	public static Dealer dealer;
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
@@ -249,33 +263,45 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_MAIN:
 			return new MainPage();
+		
+		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
+			return new CertifyPhoneNumberPage();
+
+		case BCPConstants.PAGE_NOTIFICATION:
+			return new NotificationPage();
 			
 //		case BCPConstants.PAGE_EDIT_USER_INFO:
 //			return new EditUserInfoPage();
 			
-		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
-			return new CertifyPhoneNumberPage();
-			
 //		case BCPConstants.PAGE_DEALER_CERTIFIER:
 //			return new DealerCertifierPage();
 			
-//		case BCPConstants.PAGE_MY:
-//			return new MyPage();
+		case BCPConstants.PAGE_MY:
+			return new MyPage();
+			
+		case BCPConstants.PAGE_MY_GRADE:
+			return new MyGradePage();
+			
+		case BCPConstants.PAGE_MY_TICKET:
+			return new MyTicketPage();
+			
+		case BCPConstants.PAGE_MY_COMPLETED_LIST:
+			return new MyCompletedListPage();
+			
+		case BCPConstants.PAGE_MY_REVIEW:
+			return new MyReviewPage();
 			
 //		case BCPConstants.PAGE_WRITE_REVIEW:
 //			return new WriteReviewPage();
 			
-//		case BCPConstants.PAGE_OPENABLE_POST_LIST:
-//			return new OpenablePostListPage();
+		case BCPConstants.PAGE_OPENABLE_POST_LIST:
+			return new OpenablePostListPage();
 			
-//		case BCPConstants.PAGE_ASK:
-//			return new AskPage();
+		case BCPConstants.PAGE_ASK:
+			return new AskPage();
 			
-//		case BCPConstants.PAGE_NOTIFICATION:
-//			return new NotificationPage();
-			
-//		case BCPConstants.PAGE_SETTING:
-//			return new SettingPage();
+		case BCPConstants.PAGE_SETTING:
+			return new SettingPage();
 		
 //		case BCPConstants.PAGE_CAR_DETAIL:
 //			return new CarDetailPage();
@@ -283,8 +309,8 @@ public class MainActivity extends BCPFragmentActivity {
 //		case BCPConstants.PAGE_CAR_LIST:
 //			return new CarListPage();
 			
-//		case BCPConstants.PAGE_CAR_REGISTRATION:
-//			return new CarRegistrationPage();
+		case BCPConstants.PAGE_CAR_REGISTRATION:
+			return new CarRegistrationPage();
 			
 //		case BCPConstants.PAGE_SELECT_BID:
 //			return new SelectBidPage();
@@ -295,11 +321,11 @@ public class MainActivity extends BCPFragmentActivity {
 //		case BCPConstants.PAGE_DIRECT_NORMAL_LIST:
 //			return new OpenablePostListPage();
 		
-//		case BCPConstants.PAGE_SEARCH_CAR:
-//			return new SearchCarPage();
+		case BCPConstants.PAGE_SEARCH_CAR:
+			return new SearchCarPage();
 			
-//		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
-//			return new TypeSearchCarPage();
+		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
+			return new TypeSearchCarPage();
 		}
 		
 		return null;
@@ -468,7 +494,7 @@ public class MainActivity extends BCPFragmentActivity {
 		rp = (RelativeLayout.LayoutParams) btnEdit.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(160);
 		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(146);
+		rp.topMargin = ResizeUtils.getSpecificLength(250);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 
 		btnEdit.setOnClickListener(new OnClickListener() {
@@ -492,7 +518,7 @@ public class MainActivity extends BCPFragmentActivity {
 		});
 		
 		rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		FontUtils.setFontSize(tvNickname, 30);
@@ -553,29 +579,29 @@ public class MainActivity extends BCPFragmentActivity {
 							switch(I) {
 							
 							case 0:
-//								showPage(BCPConstants.PAGE_MY, null);
+								showPage(BCPConstants.PAGE_MY, null);
 								break;
 								
 //								R.drawable.menu_notice_btn,
 							case 1:
-//								bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-//								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+								bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
 //								R.drawable.menu_faq_btn,
 							case 2:
-//								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
-//								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
+								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
 //								R.drawable.menu_service_btn,
 							case 3:
-//								showPage(BCPConstants.PAGE_ASK, null);
+								showPage(BCPConstants.PAGE_ASK, null);
 								break;
 								
 //								R.drawable.menu_setting_btn,
 							case 4:
-//								showPage(BCPConstants.PAGE_SETTING, null);
+								showPage(BCPConstants.PAGE_SETTING, null);
 								break;
 								
 //								R.drawable.menu_homepage_btn,
@@ -714,7 +740,7 @@ public class MainActivity extends BCPFragmentActivity {
 								+ "\nresult : " + objJSON);
 						
 						user = new User(objJSON.getJSONObject("user"));
-						setLeftViewUserInfo();
+						downloadDealerInfo();
 						checkGCM();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
@@ -724,6 +750,36 @@ public class MainActivity extends BCPFragmentActivity {
 					LogUtils.trace(e);
 				} catch (Error e) {
 					LogUtils.trace(e);
+				}
+			}
+		});
+	}
+	
+	public void downloadDealerInfo() {
+
+		String url = BCPAPIs.DEALER_INFO_URL + "?dealer_id=" + user.getDealer_id();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainActivity.downloadDealerInfo.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainActivity.downloadDealerInfo.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					dealer = new Dealer(objJSON.getJSONObject("dealer"));
+					setLeftViewUserInfo();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 				}
 			}
 		});
@@ -773,12 +829,44 @@ public class MainActivity extends BCPFragmentActivity {
 				tvNickname.setText(user.getNickname());
 			}
 			
+			tvInfo.setLineSpacing(0, 0.8f);
+			
+			//딜러 레벨
+			switch(dealer.getLevel()) {
+
+			case Dealer.LEVEL_FRESH_MAN:
+				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel1) + "\n\n", 
+						getResources().getColor(R.color.color_dealer_level1), 1.3f, true);
+				break;
+
+			case Dealer.LEVEL_NORAML_DEALER:
+				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel2) + "\n\n", 
+						getResources().getColor(R.color.color_dealer_level2), 1.3f, true);
+				break;
+				
+			case Dealer.LEVEL_SUPERB_DEALER:
+				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel3) + "\n\n", 
+						getResources().getColor(R.color.color_dealer_level3), 1.3f, true);
+				break;
+				
+			case Dealer.LEVEL_POWER_DEALER:
+				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel4) + "\n\n", 
+						getResources().getColor(R.color.color_dealer_level4), 1.3f, true);
+				break;
+			}
+			
 			if(!StringUtils.isEmpty(user.getPhone_number())) {
 				FontUtils.addSpan(tvInfo, user.getPhone_number() + "\n\n", 0, 1);
 			}
 			
+			//딜러 회사
+			
+			if(!StringUtils.isEmpty(dealer.getCompany())) {
+				FontUtils.addSpan(tvInfo, dealer.getCompany() + "\n\n", 0, 1);
+			}
+			
 			if(!StringUtils.isEmpty(user.getAddress())) {
-				FontUtils.addSpan(tvInfo, user.getAddress(), 0, 1);
+				FontUtils.addSpan(tvInfo, user.getAddress() + "\n", 0, 1);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

@@ -80,8 +80,6 @@ public class CarListPage extends BCPFragment {
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
     	
-		//56 24 0
-		//254 188 42
         swipeRefreshLayout.setColorSchemeColors(
         		getResources().getColor(R.color.titlebar_bg_orange),
         		getResources().getColor(R.color.titlebar_bg_brown), 
@@ -247,7 +245,6 @@ public class CarListPage extends BCPFragment {
 						}
 						
 						refreshPage();
-						
 					}
 				});
 			}
@@ -521,16 +518,6 @@ public class CarListPage extends BCPFragment {
 		}
 	}
 
-	@Override
-	public void onDestroyView() {
-
-		listView.setOnScrollListener(null);
-		listView.setOnItemClickListener(null);
-		swipeRefreshLayout.setOnRefreshListener(null);
-		
-		super.onDestroyView();
-	}
-	
 	@Override
 	public int getRootViewResId() {
 

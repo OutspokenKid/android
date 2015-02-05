@@ -38,6 +38,7 @@ public abstract class BCPFragment extends BaseFragment {
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected BCPAdapter adapter;
 	protected String url;
+	protected String lastUrl;
 
 	public abstract int getBackButtonResId();
 	public abstract int getBackButtonWidth();
@@ -150,7 +151,7 @@ public abstract class BCPFragment extends BaseFragment {
 				url += "&num=" + NUMBER_OF_LISTITEMS;
 			}
 			
-			final String lastUrl = url;
+			lastUrl = url;
 			DownloadUtils.downloadJSONString(lastUrl, new OnJSONDownloadListener() {
 
 				@Override
@@ -230,6 +231,7 @@ public abstract class BCPFragment extends BaseFragment {
 		
 		try {
 			models.clear();
+			adapter.notifyDataSetChanged();
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

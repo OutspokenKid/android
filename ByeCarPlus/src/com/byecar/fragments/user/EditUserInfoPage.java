@@ -518,16 +518,6 @@ public class EditUserInfoPage extends BCPFragment {
 		setUserInfo();
 		checkPhoneNumberCertified();
 	}
-
-	@Override
-	public void onDestroyView() {
-
-		etName.getEditText().setOnFocusChangeListener(null);
-		etNickname.getEditText().setOnFocusChangeListener(null);
-		etAddress.getEditText().setOnFocusChangeListener(null);
-		
-		super.onDestroyView();
-	}
 	
 	@Override
 	public int getRootViewResId() {

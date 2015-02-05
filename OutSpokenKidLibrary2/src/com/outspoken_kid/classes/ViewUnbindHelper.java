@@ -6,10 +6,17 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
+
+import com.outspoken_kid.views.OffsetScrollView;
  
 /**
  * Utility class to help unbinding resources consumed by Views in Activity.
@@ -150,6 +157,26 @@ public class ViewUnbindHelper {
         } else if (view instanceof WebView) {
             ((WebView)view).destroyDrawingCache();
             ((WebView)view).destroy();
+        } else if(view instanceof ListView) {
+        	((ListView)view).setOnScrollListener(null);
+        	((ListView)view).setOnItemClickListener(null);
+        } else if(view instanceof GridView) {
+        	((GridView)view).setOnScrollListener(null);
+        	((GridView)view).setOnItemClickListener(null);
+        } else if(view instanceof ViewPager) {
+        	ViewPager viewPager = (ViewPager)view;
+        	viewPager.setOnPageChangeListener(null);
+        	
+        	int size = ((ViewPager)view).getChildCount();
+    		for(int i=0; i<size; i++) {
+    			ViewUnbindHelper.unbindReferences(viewPager.getChildAt(i));
+    		}
+        } else if(view instanceof SwipeRefreshLayout) {
+        	((SwipeRefreshLayout)view).setOnRefreshListener(null);
+        } else if(view instanceof OffsetScrollView) {
+        	((OffsetScrollView)view).setOnScrollChangedListener(null);
+        } else if(view instanceof EditText) {
+        	((EditText)view).setOnFocusChangeListener(null);
         }
  
         try {

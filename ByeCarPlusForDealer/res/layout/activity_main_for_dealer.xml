@@ -45,7 +45,7 @@
 	        android:layout_below="@id/mainForDealerActivity_tvNickname"
 	        android:layout_centerHorizontal="true"
 	        android:gravity="center_horizontal"
-	        android:textColor="#e9e6e0" />
+	        android:textColor="@color/holo_text_hint" />
         
         <Button 
             android:id="@+id/mainForDealerActivity_btnEdit"

@@ -304,13 +304,6 @@ public class SignPage extends BCPFragment {
 	@Override
 	public void onDetach() {
 		
-		viewPager.setOnPageChangeListener(null);
-		
-		int size = viewPager.getChildCount();
-		for(int i=0; i<size; i++) {
-			ViewUnbindHelper.unbindReferences(viewPager.getChildAt(i));
-		}
-		
 		kf.setOnAfterSignInListener(null);
 		ff.setOnAfterSignInListener(null);
 		((FrameLayout)mThisView.findViewById(R.id.signPage_snsFrame)).removeAllViews();

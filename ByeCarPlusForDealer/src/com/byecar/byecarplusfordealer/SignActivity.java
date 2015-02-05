@@ -68,7 +68,6 @@ public class SignActivity extends BCPFragmentActivity {
 		
 		if(getFragmentsSize() == 0) {
 			showPage(BCPConstants.PAGE_SIGN, null);
-//			showPage(BCPConstants.PAGE_LIGHT, null);
 		}
 	}
 

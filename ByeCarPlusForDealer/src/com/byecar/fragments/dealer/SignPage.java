@@ -237,14 +237,6 @@ public class SignPage extends BCPFragment {
 			}
 		}, 1000);
 	}
-
-	@Override
-	public void onDetach() {
-		
-		ivBg.setImageDrawable(null);
-		
-		super.onDetach();
-	}
 	
 	@Override
 	public int getRootViewResId() {

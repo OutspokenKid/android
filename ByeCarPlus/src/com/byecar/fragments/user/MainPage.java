@@ -558,8 +558,6 @@ public class MainPage extends BCPFragment {
 	@Override
 	public void onDestroyView() {
 		
-		scrollView.setOnScrollChangedListener(null);
-		viewPager.setOnPageChangeListener(null);
 		imagePagerAdapter.setOnPagerItemClickedListener(null);
 		
 		super.onDestroyView();
