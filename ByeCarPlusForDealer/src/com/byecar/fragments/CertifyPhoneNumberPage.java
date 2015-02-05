@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPFragment;
+import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.SignUpForDealerPage;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -270,8 +272,13 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 							SignUpForDealerPage.phone_auth_key = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
 							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
 							mActivity.closeTopPage();
+						} else if(getArguments() != null && getArguments().getBoolean("forEditDealerInfo")) {
+							EditDealerInfoPage.PHONE_AUTH_KEY = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
+							EditDealerInfoPage.tempPhoneNumber = requestedPhoneNumber;
+							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
+							mActivity.closeTopPage();
 						} else {
-							updatePhoneNumber(objJSON.getJSONObject("authResponse").getString("phone_auth_key"));							
+							updatePhoneNumber(objJSON.getJSONObject("authResponse").getString("phone_auth_key"));
 						}
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
@@ -287,7 +294,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		});
 	}
 	
-	public void updatePhoneNumber(String phone_auth_key) {
+	public void updatePhoneNumber(final String phone_auth_key) {
 
 		String url = BCPAPIs.PHONE_UPDATE_URL
 				+ "?phone_auth_key=" + phone_auth_key;
@@ -306,9 +313,16 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 				try {
 					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-//					MainActivity.user.setPhone_number(requestedPhoneNumber);
-					ToastUtils.showToast(R.string.complete_auth);
-					mActivity.closeTopPage();
+					
+					if(objJSON.getInt("result") == 1) {
+						MainActivity.user.setPhone_number(requestedPhoneNumber);
+						MainActivity.dealer.setPhone_number(requestedPhoneNumber);
+						ToastUtils.showToast(R.string.complete_auth);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToSendAuthRequest);

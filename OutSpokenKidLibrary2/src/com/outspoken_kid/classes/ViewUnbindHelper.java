@@ -16,6 +16,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.views.OffsetScrollView;
  
 /**
@@ -149,7 +150,9 @@ public class ViewUnbindHelper {
             if (d instanceof BitmapDrawable) {
                 Bitmap bm = ((BitmapDrawable)d).getBitmap();
                 
-                if(bm != null && !bm.isRecycled()) {
+                //Honeycomb 이상에선 recycle 할 필요 없다.
+                if(!AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)
+                		&& bm != null && !bm.isRecycled()) {
                 	bm.recycle();
                 }
             }

@@ -42,6 +42,7 @@ import com.byecar.fragments.SearchCarPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
+import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.MainPage;
 import com.byecar.fragments.dealer.MyCompletedListPage;
 import com.byecar.fragments.dealer.MyGradePage;
@@ -270,8 +271,8 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_NOTIFICATION:
 			return new NotificationPage();
 			
-//		case BCPConstants.PAGE_EDIT_USER_INFO:
-//			return new EditUserInfoPage();
+		case BCPConstants.PAGE_EDIT_DEALER_INFO:
+			return new EditDealerInfoPage();
 			
 //		case BCPConstants.PAGE_DEALER_CERTIFIER:
 //			return new DealerCertifierPage();
@@ -509,9 +510,7 @@ public class MainActivity extends BCPFragmentActivity {
 					@Override
 					public void run() {
 
-//						Bundle bundle = new Bundle();
-//						bundle.putInt("type", EditUserInfoPage.TYPE_EDIT_PROFILE);
-//						showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+						showPage(BCPConstants.PAGE_EDIT_DEALER_INFO, null);
 					}
 				}, 500);
 			}

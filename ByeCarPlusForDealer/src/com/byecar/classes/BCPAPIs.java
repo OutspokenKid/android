@@ -8,7 +8,7 @@ public class BCPAPIs {
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
 	
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
-	public static String SIGN_IN_URL = BASE_API_URL + "/users/login.json";
+	public static String SIGN_IN_URL = BASE_API_URL + "/users/login/dealer.json";
 	public static String FIND_PW_URL = BASE_API_URL + "/users/find/password.json";
 	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/policies";
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
@@ -16,6 +16,7 @@ public class BCPAPIs {
 	public static String SIGN_OUT_URL = BASE_API_URL + "/users/logout.json";
 	public static String WITHDRAW_URL = BASE_API_URL + "/users/withdraw.json";
 	public static String DEALER_INFO_URL = BASE_API_URL + "/dealers/show.json";
+	public static String EDIT_DEALER_INFO_URL = BASE_API_URL + "/users/update/additional_info.json";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";

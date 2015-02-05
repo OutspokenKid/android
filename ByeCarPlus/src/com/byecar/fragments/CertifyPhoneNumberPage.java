@@ -13,6 +13,7 @@ import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPFragment;
+import com.byecar.fragments.user.EditUserInfoPage;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -269,6 +270,12 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 //							SignUpForDealerPage.phone_number = objJSON.getJSONObject("authResponse").getString("phone_number");
 //							SignUpForDealerPage.phone_auth_key = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
 //							mActivity.closeTopPage();
+							
+						} else if(getArguments() != null && getArguments().getBoolean("forEditUserInfo")) {
+							EditUserInfoPage.PHONE_AUTH_KEY = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
+							EditUserInfoPage.tempPhoneNumber = requestedPhoneNumber;
+							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
+							mActivity.closeTopPage();
 						} else {
 							updatePhoneNumber(objJSON.getJSONObject("authResponse").getString("phone_auth_key"));
 						}
@@ -286,7 +293,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		});
 	}
 	
-	public void updatePhoneNumber(String phone_auth_key) {
+	public void updatePhoneNumber(final String phone_auth_key) {
 
 		String url = BCPAPIs.PHONE_UPDATE_URL
 				+ "?phone_auth_key=" + phone_auth_key;
@@ -305,9 +312,15 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 				try {
 					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-					ToastUtils.showToast(R.string.complete_auth);
-					MainActivity.user.setPhone_number(requestedPhoneNumber);
-					mActivity.closeTopPage();
+					
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_auth);
+						MainActivity.user.setPhone_number(requestedPhoneNumber);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToSendAuthRequest);

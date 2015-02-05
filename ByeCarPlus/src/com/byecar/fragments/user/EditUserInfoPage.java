@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputType;
@@ -52,6 +53,9 @@ public class EditUserInfoPage extends BCPFragment {
 	private static final int NICKNAME_MAX = 15;
 	private static final int ADDRESS_MIN = 0;
 	private static final int ADDRESS_MAX = 50;
+	
+	public static String PHONE_AUTH_KEY;
+	public static String tempPhoneNumber;
 
 	private FrameLayout profileFrame;
 	private Button btnProfile;
@@ -133,6 +137,8 @@ public class EditUserInfoPage extends BCPFragment {
 	@Override
 	public void setVariables() {
 
+		PHONE_AUTH_KEY = "";
+		
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
 			carId = getArguments().getInt("carId");
@@ -292,7 +298,9 @@ public class EditUserInfoPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("forEditUserInfo", true);
+				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, bundle);
 			}
 		});
 		
@@ -581,7 +589,11 @@ public class EditUserInfoPage extends BCPFragment {
 		
 		tvPhoneNumber.setText(null);
 		
-		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+		
+		if(tempPhoneNumber != null) {
+			checkIcon.setVisibility(View.VISIBLE);
+			tvPhoneNumber.setText(tempPhoneNumber);
+		} else if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 			checkIcon.setVisibility(View.VISIBLE);
 			FontUtils.addSpan(tvPhoneNumber, MainActivity.user.getPhone_number(), 0, 1);
 			
@@ -691,7 +703,7 @@ public class EditUserInfoPage extends BCPFragment {
 		
 		//?phone_auth_key=&user[nickname]=&user[profile_img_url]=&user[name]=&user[address]=
 		String url = BCPAPIs.EDIT_USER_INFO_UR_COMMON
-				+ "?phone_auth_key="
+				+ "?phone_auth_key=" + PHONE_AUTH_KEY
 				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(etNickname.getEditText())
 				+ "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(selectedImageUrl)
 				+ "&user[name]=" + StringUtils.getUrlEncodedString(etName.getEditText())
@@ -718,15 +730,13 @@ public class EditUserInfoPage extends BCPFragment {
 						LogUtils.log("###EditUserInfoPage.onCompleted.  "
 								+ "\nbefore url : " + MainActivity.user.getProfile_img_url());
 						
+						if(!StringUtils.isEmpty(PHONE_AUTH_KEY)) {
+							MainActivity.user.setPhone_number(tvPhoneNumber.getText().toString());
+						}
+						
 						if(!StringUtils.isEmpty(selectedImageUrl)) {
 							MainActivity.user.setProfile_img_url(selectedImageUrl);
 						}
-
-						LogUtils.log("###EditUserInfoPage.onCompleted.  "
-								+ "\nafter url : " + MainActivity.user.getProfile_img_url());
-						
-						LogUtils.log("###EditUserInfoPage.onCompleted.  "
-								+ "\nafter MainActivity.user url : " + MainActivity.user.getProfile_img_url());
 						
 						if(!StringUtils.isEmpty(etNickname.getEditText())) {
 							MainActivity.user.setNickname(etNickname.getEditText().getText().toString());

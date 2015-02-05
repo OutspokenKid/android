@@ -37,6 +37,7 @@
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
+    <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
     <string name="confirm">확인</string>
@@ -59,6 +60,7 @@
     <string name="failToSendSMS">SMS를 발송하지 못했습니다.</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원가입 실패</string>
+    <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
     
     <string name="hintForAssociation">조합을 입력해주세요.</string>
     <string name="hintForAddress">주소를 입력해주세요. (ex 서울시 강남구 도곡동)</string>
@@ -151,7 +153,6 @@
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkReviewContent">후기를 입력해주세요.</string>
     <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
-    <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
     
@@ -182,7 +183,6 @@
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadUserInfo">사용자 정보를 불러오지 못했습니다.</string>
-    <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
     <string name="failToWriteReview">리뷰를 작성하지 못했습니다.</string>
 
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>

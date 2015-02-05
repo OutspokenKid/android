@@ -34,6 +34,7 @@ public class BCPConstants {
 	public static final int PAGE_FIND_PW = 4;
 	public static final int PAGE_TERM_OF_USE = 5;
 	public static final int PAGE_CERTIFY_PHONE_NUMBER = 6;
+	public static final int PAGE_EDIT_DEALER_INFO = 7;
 	
 	//Pages for dealer.
 	public static final int PAGE_MAIN = 10;
