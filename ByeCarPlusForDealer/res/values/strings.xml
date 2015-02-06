@@ -43,6 +43,7 @@
     <string name="confirm">확인</string>
     <string name="currentPrice">현재가</string>
     
+    <string name="dealer">딜러</string>
     <string name="dealerInfo">판매자 정보</string>
     <string name="dealerInfoCertified">판매자 정보가 인증되었습니다.</string>
     <string name="dealerLevel1">새내기</string>
@@ -50,10 +51,27 @@
     <string name="dealerLevel3">우수딜러</string>
     <string name="dealerLevel4">파워딜러</string>
     <string name="detailCarInfo">세부차량정보</string>
+    <string name="detailCarInfoString1">제조사</string>
+    <string name="detailCarInfoString2">모델</string>
+    <string name="detailCarInfoString3">세부모델</string>
+    <string name="detailCarInfoString4">연월식</string>
+    <string name="detailCarInfoString5">차량번호</string>
+    <string name="detailCarInfoString6">주행거리</string>
+    <string name="detailCarInfoString7">배기량</string>
+    <string name="detailCarInfoString8">판매지역</string>
+    <string name="detailCarInfoString9">변속기</string>
+    <string name="detailCarInfoString10">연료</string>
+    <string name="detailCarInfoString11">사고유무</string>
+    <string name="detailCarInfoString12">1인신조</string>
+    <string name="detailOptionText1">내/외장 옵션</string>
+    <string name="detailOptionText2">편의장치</string>
+    <string name="detailOptionText3">안전장치</string>
+    <string name="detailOptionText4">오디오/AV/네비게이션</string>
     
     <string name="edit">수정</string>
 
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
+    <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToSendAuthRequest">인증번호를 발송하지 못했습니다.</string>
@@ -126,6 +144,7 @@
     <string name="signIn">로그인</string>
     <string name="signOut">로그아웃</string>
 	<string name="sideMenuTitle2">서비스</string>
+	<string name="standingByBid">입찰대기중</string>
     
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
     <string name="touchImageIcon">사원증이미지, 명함이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
@@ -149,30 +168,12 @@
 	<string name="buyerInfo">구매자정보</string>
 
 	<string name="call">전화걸기</string>	
-    <string name="certifier">검증사</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkReviewContent">후기를 입력해주세요.</string>
     <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
     
-    <string name="dealer">딜러</string>
-    <string name="detailCarInfoString1">제조사</string>
-    <string name="detailCarInfoString2">모델</string>
-    <string name="detailCarInfoString3">세부모델</string>
-    <string name="detailCarInfoString4">연월식</string>
-    <string name="detailCarInfoString5">차량번호</string>
-    <string name="detailCarInfoString6">주행거리</string>
-    <string name="detailCarInfoString7">배기량</string>
-    <string name="detailCarInfoString8">판매지역</string>
-    <string name="detailCarInfoString9">변속기</string>
-    <string name="detailCarInfoString10">연료</string>
-    <string name="detailCarInfoString11">사고유무</string>
-    <string name="detailCarInfoString12">1인신조</string>
-    <string name="detailOptionText1">내/외장 옵션</string>
-    <string name="detailOptionText2">편의장치</string>
-    <string name="detailOptionText3">안전장치</string>
-    <string name="detailOptionText4">오디오/AV/네비게이션</string>
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
     
     <string name="emailSignIn">Email 로그인</string>
@@ -181,7 +182,6 @@
 	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
     
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
-    <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadUserInfo">사용자 정보를 불러오지 못했습니다.</string>
     <string name="failToWriteReview">리뷰를 작성하지 못했습니다.</string>
 
@@ -198,7 +198,6 @@
     <string name="sellingArea">판매지역</string>
     <string name="sideMenuTitle1">거래</string>
     <string name="SNSSignIn">SNS 로그인</string>
-    <string name="standingByBid">입찰대기중</string>
     <string name="standingByRegistration">등록대기중</string>
 
     <string name="toCertifier">검증사님께</string>

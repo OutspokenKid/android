@@ -124,7 +124,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 			}
 		
 		case BCPConstants.ITEM_REVIEW:
-			
+		case BCPConstants.ITEM_CAR_MY_AUCTION:
+		case BCPConstants.ITEM_CAR_MY_DEALER:
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);
 			} else {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -84,6 +85,7 @@ public class SearchCarPage extends BCPFragment {
 	private int minPrice;
 	private int maxPrice;
 	private String conditionString;
+	private int trim_id;
 	
 	private ArrayList<BaseModel> modelsForGrid = new ArrayList<BaseModel>();
 	private ArrayList<BaseModel> modelsForList = new ArrayList<BaseModel>();
@@ -422,9 +424,38 @@ public class SearchCarPage extends BCPFragment {
 					
 				case TYPE_TRIM:
 					conditionString += " / " + ((CarTrim)modelsForList.get(position)).getName();
+					trim_id = ((CarTrim)modelsForList.get(position)).getId();
 					showSelectedCondition();
 					break;
 				}
+			}
+		});
+
+		btnShowCommonSearchResult.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				String conditionString = StringUtils.getFormattedNumber(minPrice * 10000) + "원 부터 ~ "
+						+ StringUtils.getFormattedNumber(maxPrice * 10000) + "원 까지";
+				
+				Bundle bundle = new Bundle();
+				bundle.putInt("price_min", minPrice * 10000);
+				bundle.putInt("price_max", maxPrice * 10000);
+				bundle.putString("conditionString", conditionString);
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
+			}
+		});
+		
+		btnShowDetailSearchResult.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("trim_id", trim_id);
+				bundle.putString("conditionString", conditionString);
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
 			}
 		});
 	}

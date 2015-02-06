@@ -19,6 +19,7 @@ import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
+import com.byecar.models.Dealer;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
@@ -554,7 +555,8 @@ public class EditDealerInfoPage extends BCPFragment {
 				+ "&user[address]=" + StringUtils.getUrlEncodedString(etInfos[3].getEditText())
 				+ "&dealer[association]=" + StringUtils.getUrlEncodedString(etInfos[4].getEditText())
 				+ "&dealer[complex]=" + StringUtils.getUrlEncodedString(etInfos[5].getEditText())
-				+ "&dealer[company]=" + StringUtils.getUrlEncodedString(etInfos[6].getEditText());
+				+ "&dealer[company]=" + StringUtils.getUrlEncodedString(etInfos[6].getEditText())
+				+ "&user[desc]=" + StringUtils.getUrlEncodedString(etIntroduce);
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -621,6 +623,23 @@ public class EditDealerInfoPage extends BCPFragment {
 						
 						if(!StringUtils.isEmpty(etInfos[6].getEditText())) {
 							MainActivity.dealer.setCompany(etInfos[6].getEditText().getText().toString());
+						}
+						
+						if(!StringUtils.isEmpty(etIntroduce)) {
+							MainActivity.dealer.setDesc(etIntroduce.getText().toString());
+						}
+						
+						if(getArguments() != null
+								&& getArguments().containsKey("dealer")) {
+							
+							Dealer dealer = (Dealer) getArguments().getSerializable("dealer");
+							dealer.setProfile_img_url(MainActivity.dealer.getProfile_img_url());
+							dealer.setName(MainActivity.dealer.getName());
+							dealer.setAddress(MainActivity.dealer.getAddress());
+							dealer.setAssociation(MainActivity.dealer.getAssociation());
+							dealer.setComplex(MainActivity.dealer.getComplex());
+							dealer.setCompany(MainActivity.dealer.getCompany());
+							dealer.setDesc(MainActivity.dealer.getDesc());
 						}
 						
 						ToastUtils.showToast(R.string.complete_editUserInfo);

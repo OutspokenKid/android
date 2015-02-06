@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -94,6 +96,8 @@ public class MainPage extends BCPFragment {
 		
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+		listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
 		
 		swipeRefreshLayout.setColorSchemeColors(
         		getResources().getColor(R.color.titlebar_bg_brown),

@@ -1,12 +1,16 @@
 package com.byecar.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Dealer extends BaseModel {
+public class Dealer extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = -8849437565592296066L;
+	
 //	"id": "1",
 //	"level": "1",
 //	"association": "마법사길드",

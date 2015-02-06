@@ -34,11 +34,14 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.fragments.AskPage;
+import com.byecar.fragments.CarDetailPage;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
+import com.byecar.fragments.DealerCertifierPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.fragments.SearchCarPage;
+import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
@@ -97,13 +100,14 @@ public class MainActivity extends BCPFragmentActivity {
 	private Button btnHome;
 	private Button btnClose;
 	
-	
 	private Handler mHandler;
 	private Socket socket;
     private BufferedReader networkReader;
 	private Thread checkSocket;
 	private Runnable showUpdate;
 	private String socketString;
+	
+	private boolean animating;
 	
 	@Override
 	public void bindViews() {
@@ -187,12 +191,78 @@ public class MainActivity extends BCPFragmentActivity {
 
 	@Override
 	public void setListeners() {
-	
+		
+		btnMore.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
+				hidePopup();
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						clearFragments(true);
+					}
+				}, 300);
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
+						animating = false;
+					}
+				}, 600);
+			}
+		});
+		
+		btnRecharge.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
+				hidePopup();
+			
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						ToastUtils.showToast("충전하기");
+						animating = false;
+					}
+				}, 300);
+				
+			}
+		});
+		
 		btnHome.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
 				hidePopup();
 				new Handler().postDelayed(new Runnable() {
 
@@ -200,6 +270,29 @@ public class MainActivity extends BCPFragmentActivity {
 					public void run() {
 
 						clearFragments(true);
+						animating = false;
+					}
+				}, 300);
+			}
+		});
+
+		btnClose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
+				hidePopup();
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						animating = false;
 					}
 				}, 300);
 			}
@@ -274,8 +367,8 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_EDIT_DEALER_INFO:
 			return new EditDealerInfoPage();
 			
-//		case BCPConstants.PAGE_DEALER_CERTIFIER:
-//			return new DealerCertifierPage();
+		case BCPConstants.PAGE_DEALER:
+			return new DealerCertifierPage();
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
@@ -292,9 +385,6 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_MY_REVIEW:
 			return new MyReviewPage();
 			
-//		case BCPConstants.PAGE_WRITE_REVIEW:
-//			return new WriteReviewPage();
-			
 		case BCPConstants.PAGE_OPENABLE_POST_LIST:
 			return new OpenablePostListPage();
 			
@@ -304,26 +394,17 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_SETTING:
 			return new SettingPage();
 		
-//		case BCPConstants.PAGE_CAR_DETAIL:
-//			return new CarDetailPage();
-			
-//		case BCPConstants.PAGE_CAR_LIST:
-//			return new CarListPage();
+		case BCPConstants.PAGE_CAR_DETAIL:
+			return new CarDetailPage();
 			
 		case BCPConstants.PAGE_CAR_REGISTRATION:
 			return new CarRegistrationPage();
-			
-//		case BCPConstants.PAGE_SELECT_BID:
-//			return new SelectBidPage();
-			
-//		case BCPConstants.PAGE_DIRECT_MARKET:
-//			return new DirectMarketPage();
-			
-//		case BCPConstants.PAGE_DIRECT_NORMAL_LIST:
-//			return new OpenablePostListPage();
 		
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();
+			
+		case BCPConstants.PAGE_SEARCH_RESULT:
+			return new SearchResultPage();
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
@@ -622,24 +703,46 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public void showPopup(int type) {
 		
+//		private Button btnMore;
+//		private Button btnRecharge;
+//		private Button btnHome;
+//		private Button btnClose;
 		switch(type) {
 		
 		case POPUP_REQUEST_REGISTRATION:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
 			tvPopupText.setText(R.string.popup_registration);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
+//			private Button btnMore;
+//			private Button btnHome;
+			btnMore.setVisibility(View.VISIBLE);
+			btnRecharge.setVisibility(View.INVISIBLE);
+			btnHome.setVisibility(View.VISIBLE);
+			btnClose.setVisibility(View.INVISIBLE);
+			
 			break;
 			
 		case POPUP_REQUEST_BID:
 			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
 			tvPopupText.setText(R.string.popup_bid);
 			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
+//			private Button btnHome;
+			btnMore.setVisibility(View.INVISIBLE);
+			btnRecharge.setVisibility(View.INVISIBLE);
+			btnHome.setVisibility(View.VISIBLE);
+			btnClose.setVisibility(View.INVISIBLE);
 			break;
 			
 		case POPUP_NOT_ENOUGH:
 			popupImage.setBackgroundResource(R.drawable.empty_cartoon);
 			tvPopupText.setText(R.string.popup_not_enough);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
+//			private Button btnRecharge;
+//			private Button btnClose;
+			btnMore.setVisibility(View.INVISIBLE);
+			btnRecharge.setVisibility(View.VISIBLE);
+			btnHome.setVisibility(View.INVISIBLE);
+			btnClose.setVisibility(View.VISIBLE);
 			break;
 			
 			default:
@@ -867,11 +970,55 @@ public class MainActivity extends BCPFragmentActivity {
 			if(!StringUtils.isEmpty(user.getAddress())) {
 				FontUtils.addSpan(tvInfo, user.getAddress() + "\n", 0, 1);
 			}
+
+			ivProfile.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					showMyDealerPage();
+				}
+			});
+			
+			tvNickname.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					showMyDealerPage();
+				}
+			});
+			
+			tvInfo.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					
+					showMyDealerPage();
+				}
+			});
+			
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+	
+	public void showMyDealerPage() {
+		
+		closeMenu();
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("dealer_id", dealer.getId());
+				showPage(BCPConstants.PAGE_DEALER, bundle);
+			}
+		}, 500);
 	}
 	
 	public void checkGCM() {

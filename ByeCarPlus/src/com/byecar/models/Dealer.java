@@ -1,12 +1,16 @@
 package com.byecar.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Dealer extends BaseModel {
+public class Dealer extends BaseModel implements Serializable {
 
+	private static final long serialVersionUID = -8849437565592296066L;
+	
 //	"id": "1",
 //	"level": "1",
 //	"association": "마법사길드",
@@ -19,6 +23,11 @@ public class Dealer extends BaseModel {
 //	"right_to_bid_cnt": "1",
 //	"right_to_sell_cnt": "1",
 //	"status": "1"
+
+	public static final int LEVEL_FRESH_MAN = 1;
+	public static final int LEVEL_NORAML_DEALER = 2;
+	public static final int LEVEL_SUPERB_DEALER = 3;
+	public static final int LEVEL_POWER_DEALER = 4;
 	
 	private int id;
 	private int level;

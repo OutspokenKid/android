@@ -47,10 +47,12 @@ public class BCPConstants {
 	public static final int PAGE_OPENABLE_POST_LIST = 17;
 	public static final int PAGE_ASK = 18;
 	public static final int PAGE_SETTING = 19;
+	public static final int PAGE_DEALER = 20;
 	
 	//Pages for car.
 	public static final int PAGE_CAR_DETAIL = 31;
 	public static final int PAGE_CAR_REGISTRATION = 32;
 	public static final int PAGE_SEARCH_CAR = 37;
-	public static final int PAGE_TYPE_SEARCH_CAR = 38;
+	public static final int PAGE_SEARCH_RESULT = 38;
+	public static final int PAGE_TYPE_SEARCH_CAR = 39;
 }

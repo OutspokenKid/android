@@ -57,7 +57,6 @@ public class CarRegistrationPage extends BCPFragment {
 	public static final int TYPE_EDIT = 2;
 	
 	private int id;
-	private int carType;
 	private Car car;
 	private CarModelDetailInfo carModelDetailInfo;
 	
@@ -203,7 +202,6 @@ public class CarRegistrationPage extends BCPFragment {
 			type = getArguments().getInt("type");
 			
 			id = getArguments().getInt("id");
-			carType = getArguments().getInt("carType");
 			car = (Car) getArguments().getSerializable("car");
 		}
 	}
@@ -236,19 +234,9 @@ public class CarRegistrationPage extends BCPFragment {
 		btnComplete.setVisibility(View.VISIBLE);
 		
 		if(type == TYPE_REGISTRATION) {
-			
-			switch(carType) {
-			
-			case Car.TYPE_BID:
-				tvPriceText.setText(R.string.priceForBid);
-				etPrice.setHint(R.string.hintForPriceBid);
-				break;
-				
-			case Car.TYPE_DIRECT_NORMAL:
-				tvPriceText.setText(R.string.priceForNormal);
-				etPrice.setHint(R.string.hintForPriceNormal);
-				break;
-			}
+
+			tvPriceText.setText(R.string.priceForNormal);
+			etPrice.setHint(R.string.hintForPriceNormal);
 			
 			tvPriceText.setVisibility(View.VISIBLE);
 			etPrice.setVisibility(View.VISIBLE);
@@ -565,8 +553,6 @@ public class CarRegistrationPage extends BCPFragment {
 			rp = (RelativeLayout.LayoutParams) ivPhotos[i].getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(144);
 			rp.height = ResizeUtils.getSpecificLength(110);
-			rp.leftMargin = ResizeUtils.getSpecificLength(20);
-			rp.topMargin = ResizeUtils.getSpecificLength(6);
 			
 			if(i == 0 || i == 4) {
 				rp.leftMargin = ResizeUtils.getSpecificLength(20);
@@ -636,7 +622,7 @@ public class CarRegistrationPage extends BCPFragment {
 			FontUtils.setFontAndHintSize(etDetailCarInfos[i].getEditText(), 26, 20);
 		}
 		
-		//writeIcon.
+		//tvOption.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.carRegistrationPage_tvOption).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(70);
@@ -714,6 +700,9 @@ public class CarRegistrationPage extends BCPFragment {
 			FontUtils.setFontSize(btnCarInfos[i], 26);
 		}
 		
+		FontUtils.setFontSize((TextView)mThisView.findViewById(
+				R.id.carRegistrationPage_tvOption), 30);
+		
 		FontUtils.setFontSize(tvCarDescriptionFromDealer, 30);
 		FontUtils.setFontAndHintSize(etCarDescriptionFromDealer, 26, 20);
 		FontUtils.setFontSize(tvTextCount, 20);
@@ -772,7 +761,7 @@ public class CarRegistrationPage extends BCPFragment {
 		if(type == TYPE_EDIT && car == null) {
 
 			if(id != 0) {
-				downloadCarInfo(carType);
+				downloadCarInfo();
 			} else if(car != null){
 				setCarInfo();
 			} else {
@@ -795,6 +784,8 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void addOptionButtons() {
 
+		LogUtils.log("###CarRegistrationPage.addOptionButtons.  ");
+		
 		int size = 30;
 		optionViews = new View[size];
 		checked = new boolean[size];
@@ -820,7 +811,7 @@ public class CarRegistrationPage extends BCPFragment {
 				} else {
 					rp.addRule(RelativeLayout.BELOW, 
 							getResources().getIdentifier("carRegistrationPage_optionView" + (i - 2),	//i - 3 + 1, 윗줄 아이콘. 
-									"id", "com.byecar.byecarplus"));
+									"id", "com.byecar.byecarplusfordealer"));
 				}
 				
 				rp.topMargin = ResizeUtils.getSpecificLength(24);
@@ -828,13 +819,13 @@ public class CarRegistrationPage extends BCPFragment {
 			case 1:
 				rp.addRule(RelativeLayout.ALIGN_TOP, 
 						getResources().getIdentifier("carRegistrationPage_optionView" + i,				//i - 1 + 1. 왼쪽 아이콘.
-								"id", "com.byecar.byecarplus"));
+								"id", "com.byecar.byecarplusfordealer"));
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				break;
 			case 2:
 				rp.addRule(RelativeLayout.ALIGN_TOP, 
 						getResources().getIdentifier("carRegistrationPage_optionView" + i,				//i - 1 + 1. 왼쪽 아이콘.
-								"id", "com.byecar.byecarplus"));
+								"id", "com.byecar.byecarplusfordealer"));
 				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				rp.rightMargin = ResizeUtils.getSpecificLength(35);
 				break;
@@ -842,10 +833,10 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			optionViews[i].setLayoutParams(rp);
 			optionViews[i].setId(getResources().getIdentifier("carRegistrationPage_optionView" + (i + 1), 
-							"id", "com.byecar.byecarplus"));
+							"id", "com.byecar.byecarplusfordealer"));
 			optionViews[i].setBackgroundResource(
 					getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
-							"drawable", "com.byecar.byecarplus"));
+							"drawable", "com.byecar.byecarplusfordealer"));
 
 			final int INDEX = i;
 			optionViews[i].setOnClickListener(new OnClickListener() {
@@ -858,11 +849,11 @@ public class CarRegistrationPage extends BCPFragment {
 					if(checked[INDEX]) {
 						optionViews[INDEX].setBackgroundResource(
 								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_b", 
-										"drawable", "com.byecar.byecarplus"));
+										"drawable", "com.byecar.byecarplusfordealer"));
 					} else {
 						optionViews[INDEX].setBackgroundResource(
 								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_a", 
-										"drawable", "com.byecar.byecarplus"));
+										"drawable", "com.byecar.byecarplusfordealer"));
 					}
 				}
 			});
@@ -871,13 +862,10 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 	}
 	
-	public void downloadCarInfo(int carType) {
+	public void downloadCarInfo() {
 		
-		url = BCPAPIs.CAR_DEALER_SHOW_URL;
-		
-		if(url != null) {
-			url += "?onsalecar_id=" + id;
-		}
+		url = BCPAPIs.CAR_DEALER_SHOW_URL
+				+ "?onsalecar_id=" + id;
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -1083,7 +1071,7 @@ public class CarRegistrationPage extends BCPFragment {
 					checked[car.getOptions()[i] - 1] = true;
 					optionViews[car.getOptions()[i] - 1].setBackgroundResource(
 							getResources().getIdentifier("detail_optioin" + car.getOptions()[i] + "_btn_b", 
-									"drawable", "com.byecar.byecarplus"));
+									"drawable", "com.byecar.byecarplusfordealer"));
 				}
 			}
 			
@@ -1169,7 +1157,7 @@ public class CarRegistrationPage extends BCPFragment {
 					btnCarInfos[i + 1].setText(carInfoStrings[i]);
 					btnCarInfos[i + 1].setBackgroundResource(R.drawable.registration_car_info_box);
 				} else {
-					int resId = getResources().getIdentifier("registration_car_info" + (i + 2) + "_btn", "drawable", "com.byecar.byecarplus");
+					int resId = getResources().getIdentifier("registration_car_info" + (i + 2) + "_btn", "drawable", "com.byecar.byecarplusfordealer");
 					btnCarInfos[i + 1].setBackgroundResource(resId);
 					btnCarInfos[i + 1].setText(null);
 				}

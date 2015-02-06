@@ -40,6 +40,7 @@ import com.byecar.fragments.DealerCertifierPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.fragments.SearchCarPage;
+import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
@@ -106,6 +107,8 @@ public class MainActivity extends BCPFragmentActivity {
 	private Thread checkSocket;
 	private Runnable showUpdate;
 	private String socketString;
+	
+	private boolean animating;
 	
 	@Override
 	public void bindViews() {
@@ -263,6 +266,12 @@ public class MainActivity extends BCPFragmentActivity {
 			@Override
 			public void onClick(View view) {
 
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
 				hidePopup();
 				new Handler().postDelayed(new Runnable() {
 
@@ -270,6 +279,7 @@ public class MainActivity extends BCPFragmentActivity {
 					public void run() {
 
 						clearFragments(true);
+						animating = false;
 					}
 				}, 300);
 			}
@@ -385,6 +395,9 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();
+			
+		case BCPConstants.PAGE_SEARCH_RESULT:
+			return new SearchResultPage();
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
