@@ -329,7 +329,7 @@ public class DirectMarketPage extends BCPFragment {
 	public void onDestroyView() {
 
 		imagePagerAdapter.setOnPagerItemClickedListener(null);
-		
+		scrollView.setOnScrollChangedListener(null);
 		super.onDestroyView();
 	}
 	

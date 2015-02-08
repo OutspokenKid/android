@@ -17,6 +17,7 @@
     	android:layout_height="match_parent"
     	android:layout_below="@id/typeSearchCarPage_titleBar"
     	android:visibility="invisible"
+    	android:listSelector="@android:color/transparent"
     	android:cacheColorHint="#0000" />
     
     <GridView
@@ -26,6 +27,7 @@
     	android:layout_below="@id/typeSearchCarPage_titleBar"
     	android:visibility="invisible"
     	android:numColumns="4"
+    	android:listSelector="@android:color/transparent"
     	android:cacheColorHint="#0000" />
         
 </RelativeLayout>

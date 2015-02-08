@@ -119,15 +119,38 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(38), 0, 0);
+				
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(38));
+				
 			} else {
 				convertView.setPadding(0, 0, 0, 0);
 			}
 		
+		case BCPConstants.ITEM_NOTICE:
+		case BCPConstants.ITEM_FAQ:	
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(0), 0, 0);
+				
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(26));
+				
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
+			break;
+			
 		case BCPConstants.ITEM_REVIEW:
 		case BCPConstants.ITEM_CAR_MY_AUCTION:
 		case BCPConstants.ITEM_CAR_MY_DEALER:
+			
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);
+				
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(20));
+				
 			} else {
 				convertView.setPadding(0, 0, 0, 0);
 			}

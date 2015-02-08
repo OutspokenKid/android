@@ -224,9 +224,15 @@ public class ViewWrapperForCar extends ViewWrapper {
 						+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 						+ car.getArea());
 				
+				if(car.getType() == Car.TYPE_BID) {
+					tvCurrentPriceText.setText(R.string.currentPrice);
+				} else {
+					tvCurrentPriceText.setText(R.string.salesPrice);
+				}
+				
 				tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 						+ row.getContext().getString(R.string.won));
-				tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
+				tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 				
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID
 					|| car.getItemCode() == BCPConstants.ITEM_CAR_BID_MY) {

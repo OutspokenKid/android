@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Dealer extends BaseModel implements Serializable {
+public class Dealer extends BCPBaseModel implements Serializable {
 
 	private static final long serialVersionUID = -8849437565592296066L;
 	
@@ -53,6 +52,8 @@ public class Dealer extends BaseModel implements Serializable {
 	}
 	
 	public Dealer(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {

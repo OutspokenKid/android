@@ -2,10 +2,9 @@ package com.byecar.models;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Notification extends BaseModel {
+public class Notification extends BCPBaseModel {
 
 	private int id;
 	private int receiver_id;
@@ -21,6 +20,8 @@ public class Notification extends BaseModel {
 	}
 	
 	public Notification(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {

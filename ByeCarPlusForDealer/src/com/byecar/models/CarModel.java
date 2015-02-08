@@ -2,10 +2,9 @@ package com.byecar.models;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class CarModel extends BaseModel {
+public class CarModel extends BCPBaseModel {
 
 	private int id;
 	private int brand_id;
@@ -15,13 +14,14 @@ public class CarModel extends BaseModel {
 	private String year_begin;
 	private String year_end;
 	private int cars_cnt;
-	private int priority;
 	
 	public CarModel() {
 		
 	}
 	
 	public CarModel(JSONObject objJSON) {
+		
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {
@@ -54,10 +54,6 @@ public class CarModel extends BaseModel {
 			
 			if(objJSON.has("cars_cnt")) {
 				this.cars_cnt = objJSON.getInt("cars_cnt");
-			}
-			
-			if(objJSON.has("priority")) {
-				this.priority = objJSON.getInt("priority");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -113,11 +109,5 @@ public class CarModel extends BaseModel {
 	}
 	public void setCars_cnt(int cars_cnt) {
 		this.cars_cnt = cars_cnt;
-	}
-	public int getPriority() {
-		return priority;
-	}
-	public void setPriority(int priority) {
-		this.priority = priority;
 	}
 }

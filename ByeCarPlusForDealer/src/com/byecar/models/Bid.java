@@ -2,10 +2,9 @@ package com.byecar.models;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Bid extends BaseModel {
+public class Bid extends BCPBaseModel {
 
 //	"id": "3",
 //	"onsalecar_id": "13",
@@ -32,6 +31,8 @@ public class Bid extends BaseModel {
 	}
 	
 	public Bid(JSONObject objJSON) {
+		
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {

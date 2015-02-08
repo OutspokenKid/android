@@ -21,7 +21,7 @@ public class PushObject implements Serializable {
 	}
 	
 	public PushObject(JSONObject objJSON) {
-		
+
 		try {
 			if(objJSON.has("id")) {
 				this.id = objJSON.getInt("id");

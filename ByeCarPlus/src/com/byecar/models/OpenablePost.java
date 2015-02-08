@@ -1,14 +1,10 @@
 package com.byecar.models;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class OpenablePost extends BaseModel {
+public class OpenablePost extends BCPBaseModel {
 	
 	private int id;
 	private int type;
@@ -23,9 +19,7 @@ public class OpenablePost extends BaseModel {
 	private int to_show_cover;
 	private int need_to_push;
 	private long created_at;
-	private long priority;
 	private String author_nickname;
-	private ArrayList<Reply> replies = new ArrayList<Reply>();
 	
 	private boolean isOpened;
 	
@@ -34,6 +28,8 @@ public class OpenablePost extends BaseModel {
 	}
 	
 	public OpenablePost(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {
@@ -95,16 +91,6 @@ public class OpenablePost extends BaseModel {
 			
 			if(objJSON.has("author_nickname")) {
 				this.author_nickname = objJSON.getString("author_nickname");
-			}
-			
-			if(objJSON.has("replies")) {
-
-				JSONArray arJSON = objJSON.getJSONArray("replies");
-				
-				int size = arJSON.length();
-				for(int i=0; i<size; i++) {
-					this.replies.add(new Reply(arJSON.getJSONObject(i)));
-				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -209,14 +195,6 @@ public class OpenablePost extends BaseModel {
 		this.author_nickname = author_nickname;
 	}
 
-	public ArrayList<Reply> getReplies() {
-		return replies;
-	}
-
-	public void setReplies(ArrayList<Reply> replies) {
-		this.replies = replies;
-	}
-
 	public int getTo_show_cover() {
 		return to_show_cover;
 	}
@@ -231,14 +209,6 @@ public class OpenablePost extends BaseModel {
 
 	public void setNeed_to_push(int need_to_push) {
 		this.need_to_push = need_to_push;
-	}
-
-	public long getPriority() {
-		return priority;
-	}
-
-	public void setPriority(long priority) {
-		this.priority = priority;
 	}
 
 	public boolean isOpened() {

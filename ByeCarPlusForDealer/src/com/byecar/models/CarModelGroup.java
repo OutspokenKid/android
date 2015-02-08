@@ -2,17 +2,15 @@ package com.byecar.models;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class CarModelGroup extends BaseModel {
+public class CarModelGroup extends BCPBaseModel {
 
 	private int id;
 	private int brand_id;
 	private String name;
 	private int certified;
 	private int cars_cnt;
-	private int priority;
 	private String encar_code;
 	
 	public CarModelGroup() {
@@ -20,6 +18,8 @@ public class CarModelGroup extends BaseModel {
 	}
 	
 	public CarModelGroup(JSONObject objJSON) {
+	
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {
@@ -40,10 +40,6 @@ public class CarModelGroup extends BaseModel {
 			
 			if(objJSON.has("cars_cnt")) {
 				this.cars_cnt = objJSON.getInt("cars_cnt");
-			}
-			
-			if(objJSON.has("priority")) {
-				this.priority = objJSON.getInt("priority");
 			}
 			
 			if(objJSON.has("encar_code")) {
@@ -86,13 +82,6 @@ public class CarModelGroup extends BaseModel {
 	public void setCars_cnt(int cars_cnt) {
 		this.cars_cnt = cars_cnt;
 	}
-	public int getPriority() {
-		return priority;
-	}
-	public void setPriority(int priority) {
-		this.priority = priority;
-	}
-
 	public String getEncar_code() {
 		return encar_code;
 	}

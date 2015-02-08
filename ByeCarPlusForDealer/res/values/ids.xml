@@ -39,6 +39,7 @@
     <item name="carDetailPage_used_tvInfo2" type="id" />
     <item name="carDetailPage_used_tvGrade" type="id" />
     <item name="carDetailPage_used_line" type="id" />
+    <item name="carDetailPage_used_btnMoveToPage" type="id" />
     
     <item name="carDetailPage_certified_ivImage" type="id" />
     <item name="carDetailPage_certified_tvInfo" type="id" />

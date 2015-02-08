@@ -91,7 +91,7 @@
     			android:layout_height="wrap_content"
     			android:layout_toLeftOf="@id/directMarketPage_tvCurrentPrice"
     			android:layout_alignBottom="@id/directMarketPage_tvCurrentPrice"
-    			android:text="@string/currentPrice"
+    			android:text="@string/salesPrice"
     			android:textColor="@color/color_orange2" />
             
             <Button 

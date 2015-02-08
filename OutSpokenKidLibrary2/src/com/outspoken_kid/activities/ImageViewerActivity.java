@@ -360,7 +360,7 @@ public abstract class ImageViewerActivity extends BaseActivity {
 		LogUtils.log("ImageViewerActivity.setPage.  position : " + index + ", imageResId : " + imageResId);
 		
 		if(imageResId == 0) {
-			mainLayout.postDelayed(new Runnable() {
+			mainLayout.post(new Runnable() {
 				
 				@Override
 				public void run() {
@@ -371,14 +371,14 @@ public abstract class ImageViewerActivity extends BaseActivity {
 						if(viewPagerForImages != null 
 								&& viewPagerForImages.getAdapter() != null
 								&& viewPagerForImages.getAdapter().getCount() > index) {
-							viewPagerForImages.setCurrentItem(index);
+							viewPagerForImages.setCurrentItem(index, false);
 						}
 
 					} else if(frames != null && frames.length > 1 && frames[0] != null){
 						frames[0].update(0);
 					}
 				}
-			}, 100);
+			});
 		}
 	}
 

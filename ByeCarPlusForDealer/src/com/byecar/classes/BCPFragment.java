@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.models.BCPBaseModel;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.classes.ViewUnbindHelper;
@@ -34,7 +35,7 @@ public abstract class BCPFragment extends BaseFragment {
 	protected TitleBar titleBar;
 	protected String title;
 
-	protected int pageIndex = 1;
+	protected long last_priority = 0;
 	protected ArrayList<BaseModel> models = new ArrayList<BaseModel>();
 	protected BCPAdapter adapter;
 	protected String url;
@@ -145,7 +146,11 @@ public abstract class BCPFragment extends BaseFragment {
 				url += "?";
 			}
 
-			url += "page=" + pageIndex;
+			url += "last_priority=";
+					
+			if(last_priority != 0) {
+				 url += last_priority;
+			}
 			
 			if(!url.contains("num=")) {
 				url += "&num=" + NUMBER_OF_LISTITEMS;
@@ -174,7 +179,7 @@ public abstract class BCPFragment extends BaseFragment {
 						
 						isLastList = parseJSON(objJSON);
 						
-						if(isLastList && pageIndex > 2) {
+						if(isLastList && last_priority != 0) {
 							ToastUtils.showToast(R.string.lastList);
 						}
 						
@@ -208,7 +213,10 @@ public abstract class BCPFragment extends BaseFragment {
 			
 			if(successDownload && adapter != null) {
 				adapter.notifyDataSetChanged();
-				pageIndex++;
+				
+				if(models.size() > 0) {
+					last_priority = ((BCPBaseModel)models.get(models.size() - 1)).getPriority();
+				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -227,7 +235,7 @@ public abstract class BCPFragment extends BaseFragment {
 		isRefreshing = true;
 		isDownloading = false;
 		isLastList = false;
-		pageIndex = 1;
+		last_priority = 0;
 		
 		try {
 			models.clear();
@@ -252,7 +260,7 @@ public abstract class BCPFragment extends BaseFragment {
 		isRefreshing = true;
 		isDownloading = false;
 		isLastList = false;
-		pageIndex = 1;
+		last_priority = 0;
 		
 		try {
 			models.clear();

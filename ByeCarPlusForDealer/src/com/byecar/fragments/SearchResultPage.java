@@ -78,7 +78,7 @@ public class SearchResultPage extends BCPFragment {
 
 				try {
 					Bundle bundle = new Bundle();
-					bundle.putInt("id", ((Car) models.get(position)).getId());
+					bundle.putSerializable("car", (Car) models.get(position));
 					bundle.putInt("type", Car.TYPE_DEALER);
 					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {

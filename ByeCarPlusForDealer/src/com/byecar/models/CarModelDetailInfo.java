@@ -2,10 +2,9 @@ package com.byecar.models;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class CarModelDetailInfo extends BaseModel {
+public class CarModelDetailInfo extends BCPBaseModel {
 
 	private int id;
 	private int brand_id;
@@ -21,6 +20,8 @@ public class CarModelDetailInfo extends BaseModel {
 	}
 	
 	public CarModelDetailInfo(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {

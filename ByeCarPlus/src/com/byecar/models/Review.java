@@ -4,10 +4,9 @@ import java.io.Serializable;
 
 import org.json.JSONObject;
 
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Review extends BaseModel implements Serializable {
+public class Review extends BCPBaseModel implements Serializable {
 
 	private static final long serialVersionUID = -7244964158640641747L;
 	
@@ -49,13 +48,14 @@ public class Review extends BaseModel implements Serializable {
 	private String dealer_name;							//
 	private String certifier_profile_img_url;			//
 	private String certifier_name;						//
-	private long priority;
 	
 	public Review() {
 		
 	}
 	
 	public Review(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {
@@ -201,14 +201,6 @@ public class Review extends BaseModel implements Serializable {
 
 	public void setReviewer_profile_img_url(String reviewer_profile_img_url) {
 		this.reviewer_profile_img_url = reviewer_profile_img_url;
-	}
-
-	public long getPriority() {
-		return priority;
-	}
-
-	public void setPriority(long priority) {
-		this.priority = priority;
 	}
 
 	public int getType() {

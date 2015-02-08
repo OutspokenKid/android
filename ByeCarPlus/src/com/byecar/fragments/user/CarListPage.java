@@ -141,7 +141,7 @@ public class CarListPage extends BCPFragment {
 				
 				CarListPage.this.firstVisibleItem = firstVisibleItem;
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 
@@ -157,7 +157,7 @@ public class CarListPage extends BCPFragment {
 
 				try {
 					Bundle bundle = new Bundle();
-					bundle.putInt("id", ((Car) models.get(position)).getId());
+					bundle.putSerializable("car", (Car) models.get(position));
 					bundle.putInt("type", type);
 					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {
@@ -519,6 +519,13 @@ public class CarListPage extends BCPFragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+		
+		listView.setOnScrollListener(null);
+		super.onDestroyView();
+	}
+	
+	@Override
 	public int getRootViewResId() {
 
 		return R.id.carListPage_mainLayout;
@@ -539,8 +546,11 @@ public class CarListPage extends BCPFragment {
 			}
 			
 			try {
-				if(adapter.getFirstView() != null) {
-					
+				if(models.size() == 0) {
+					titleBar.setBgAlpha(0);
+					return;
+				} else if(adapter.getFirstView() != null) {
+
 					if(firstVisibleItem == 0) {
 						int offset = -adapter.getFirstView().getTop();
 						

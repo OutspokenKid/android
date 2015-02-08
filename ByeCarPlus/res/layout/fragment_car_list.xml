@@ -15,6 +15,8 @@
             android:id="@+id/carListPage_listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+    		android:cacheColorHint="#0000"
             android:background="#0000" />
         
     </android.support.v4.widget.SwipeRefreshLayout>
@@ -29,7 +31,7 @@
     <Button
         android:id="@+id/carListPage_btnCurrentOrder"
         android:layout_width="0dp"
-        android:layout_height="0dp" 
+        android:layout_height="0dp"
         android:layout_alignParentBottom="true" />
     
     <Button

@@ -9,10 +9,9 @@ import org.json.JSONObject;
 import android.content.Context;
 
 import com.byecar.byecarplus.R;
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.LogUtils;
 
-public class Car extends BaseModel implements Serializable {
+public class Car extends BCPBaseModel implements Serializable {
 
 	private static final long serialVersionUID = 6978779511721704607L;
 	
@@ -85,11 +84,73 @@ public class Car extends BaseModel implements Serializable {
 	private int is_liked;
 	private int likes_cnt;
 
+	public void copyValuesFromNewItem(Car newCar) {
+		
+		this.id = newCar.id;
+		this.type = newCar.type;
+		this.car_id = newCar.car_id;
+		this.year = newCar.year;
+		this.color = newCar.color;
+		this.car_number = newCar.car_number;
+		this.mileage = newCar.mileage;
+		this.displacement = newCar.displacement;
+		this.fuel_type = newCar.fuel_type;
+		this.transmission_type = newCar.transmission_type;
+		this.had_accident = newCar.had_accident;
+		this.is_oneman_owned = newCar.is_oneman_owned;
+		this.price = newCar.price;
+		this.desc = newCar.desc;
+		this.seller_id = newCar.seller_id;
+		this.rep_img_url = newCar.rep_img_url;
+		this.status = newCar.status;
+		this.bid_begin_at = newCar.bid_begin_at;
+		this.bid_until_at = newCar.bid_until_at;
+		this.bids_cnt = newCar.bids_cnt;
+		this.area = newCar.area;
+		this.to_sell_directly = newCar.to_sell_directly;
+		this.end_at = newCar.end_at;
+
+		this.dealer_id = newCar.dealer_id;
+		this.dealer_name = newCar.dealer_name;
+		this.dealer_phone_number = newCar.dealer_phone_number;
+		this.dealer_address = newCar.dealer_address;
+		this.dealer_profile_img_url = newCar.dealer_profile_img_url;
+		this.dealer_company = newCar.dealer_company;
+		this.dealer_level = newCar.dealer_level;
+
+		this.manager_id = newCar.manager_id;
+		this.manager_name = newCar.manager_name;
+		this.manager_desc = newCar.manager_desc;
+		this.manager_profile_img_url = newCar.manager_profile_img_url;
+		
+		this.created_at = newCar.created_at;
+		this.brand_name = newCar.brand_name;
+		this.model_name = newCar.model_name;
+		this.trim_name = newCar.trim_name;
+		this.car_full_name = newCar.car_full_name;
+		
+		this.seller_name = newCar.seller_name;
+		this.seller_phone_number = newCar.seller_phone_number;
+		this.seller_address = newCar.seller_address;
+		this.seller_profile_img_url = newCar.seller_profile_img_url;
+		
+		this.m_images = newCar.m_images;
+		this.a_images = newCar.a_images;
+		this.options = newCar.options;
+		this.bids = newCar.bids;
+		this.images = newCar.images;
+		
+		this.is_liked = newCar.is_liked;
+		this.likes_cnt = newCar.likes_cnt;
+	}
+	
 	public Car() {
 		
 	}
 	
 	public Car(JSONObject objJSON) {
+		
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {

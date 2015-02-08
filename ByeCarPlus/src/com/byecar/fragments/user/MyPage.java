@@ -92,7 +92,7 @@ public class MyPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}

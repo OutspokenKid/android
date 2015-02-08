@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
@@ -130,6 +131,14 @@ public class DealerCertifierPage extends BCPFragment {
 
 		titleBar.setBgColor(Color.WHITE);
 		titleBar.setBgAlpha(0);
+		
+		//내 페이지.
+		if((dealer != null && dealer.getId() == MainActivity.dealer.getId())
+				|| dealer_id != 0 && dealer_id == MainActivity.dealer.getId()) {
+			btnEditDealerInfo.setVisibility(View.VISIBLE);
+		} else {
+			btnEditDealerInfo.setVisibility(View.INVISIBLE);
+		}
 		
 //		if(isCertifier) {
 //			headerForIntro.setBackgroundResource(R.drawable.verifier_header1);
@@ -313,6 +322,13 @@ public class DealerCertifierPage extends BCPFragment {
 		}
 		
 		checkPageScrollOffset();
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		scrollView.setOnScrollChangedListener(null);
 	}
 	
 	@Override

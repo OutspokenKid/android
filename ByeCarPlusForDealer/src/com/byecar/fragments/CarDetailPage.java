@@ -745,21 +745,15 @@ public class CarDetailPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if(car != null) {
-			
-			if(type == 0) {
-				type = car.getType();
-			}
-			
-			setMainCarInfo();
-			setDetailCarInfo();
-			setOptionViews();
-			setCarDescription();
-		} else {
-			downloadCarInfo();
-		}
-		
+		downloadCarInfo();
 		checkPageScrollOffset();
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		scrollView.setOnScrollChangedListener(null);
 	}
 	
 	@Override
@@ -992,7 +986,11 @@ public class CarDetailPage extends BCPFragment {
 			return;
 		}
 		
-		url += "?onsalecar_id=" + id;
+		if(car == null) {
+			url += "?onsalecar_id=" + id;
+		} else if(car != null) {
+			url += "?onsalecar_id=" + car.getId();
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -1017,11 +1015,8 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					car = new Car(objJSON.getJSONObject("onsalecar"));
-					
-					if(car != null && type == 0) {
-						type = car.getType();
-					}
+					Car newCar = new Car(objJSON.getJSONObject("onsalecar"));
+					car.copyValuesFromNewItem(newCar);
 					
 					setMainCarInfo();
 					setDetailCarInfo();
@@ -1049,7 +1044,7 @@ public class CarDetailPage extends BCPFragment {
 		
 		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 				+ getString(R.string.won));
-		tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
+		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
 		if(car.getIs_liked() == 0) {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
@@ -1462,7 +1457,8 @@ public class CarDetailPage extends BCPFragment {
 			ResizeUtils.viewResizeForRelative(164, 24, btnMoveToPage, 
 					new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
 					new int[]{R.id.carDetailPage_used_line, 0}, 
-					new int[]{0, 0, 0, 20});
+					null);
+			btnMoveToPage.setId(R.id.carDetailPage_used_btnMoveToPage);
 			btnMoveToPage.setBackgroundResource(R.drawable.buy_dealer_btn);
 			btnMoveToPage.setOnClickListener(new OnClickListener() {
 
@@ -1476,6 +1472,13 @@ public class CarDetailPage extends BCPFragment {
 				}
 			});
 			relativeForType.addView(btnMoveToPage);
+			
+			View bottomBlank = new View(mContext);
+			ResizeUtils.viewResizeForRelative(10, 20, bottomBlank, 
+					new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
+					new int[]{R.id.carDetailPage_used_btnMoveToPage, 0}, 
+					new int[]{0, 0, 0, 20});
+			relativeForType.addView(bottomBlank);
 		}
 	}
 

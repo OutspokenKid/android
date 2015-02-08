@@ -62,7 +62,7 @@ public class OpenablePostListPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}
@@ -112,8 +112,6 @@ public class OpenablePostListPage extends BCPFragment {
 		} else {
 			url = BCPAPIs.FAQ_URL;
 		}
-		
-		url += "?num=0";
 		
 		super.downloadInfo();
 	}

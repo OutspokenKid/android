@@ -245,6 +245,10 @@ public class SearchCarPage extends BCPFragment {
 					}
 					
 					int tempPrice = Integer.parseInt(s.toString());
+		
+					if(tempPrice == Integer.parseInt(lastText)) {
+						return;
+					}
 					
 					if(tempPrice < 0) {
 						ToastUtils.showToast(R.string.minPriceMustOverZero);
@@ -316,6 +320,9 @@ public class SearchCarPage extends BCPFragment {
 					}
 					
 					String text = s.toString();
+					if(text.equals(lastText)) {
+						return;
+					}
 					
 					if(text.contains(".") 
 							|| (text.length() > 1 && text.charAt(0) == '0')) {
@@ -372,7 +379,7 @@ public class SearchCarPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}
@@ -398,7 +405,7 @@ public class SearchCarPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}

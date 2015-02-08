@@ -45,6 +45,7 @@
         android:layout_width="match_parent"
     	android:layout_height="match_parent"
     	android:layout_below="@id/myCompletedListPage_bgForButtons"
+    	android:listSelector="@android:color/transparent"
     	android:cacheColorHint="#0000" />
     
 </RelativeLayout>

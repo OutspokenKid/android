@@ -1,8 +1,7 @@
 package com.byecar.models;
 
-import com.outspoken_kid.model.BaseModel;
 
-public class CarSearchString extends BaseModel {
+public class CarSearchString extends BCPBaseModel {
 
 	private String text;
 	private int type;

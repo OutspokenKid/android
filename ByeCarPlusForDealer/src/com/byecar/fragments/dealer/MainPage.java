@@ -159,7 +159,7 @@ public class MainPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(visibleItemCount < totalItemCount && firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}
@@ -181,7 +181,7 @@ public class MainPage extends BCPFragment {
 					}
 					
 					Bundle bundle = new Bundle();
-					bundle.putInt("id", ((Car) models.get(position)).getId());
+					bundle.putSerializable("car", (Car) models.get(position));
 					bundle.putInt("type", type);
 					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {

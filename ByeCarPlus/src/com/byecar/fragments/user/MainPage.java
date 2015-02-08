@@ -559,7 +559,7 @@ public class MainPage extends BCPFragment {
 	public void onDestroyView() {
 		
 		imagePagerAdapter.setOnPagerItemClickedListener(null);
-		
+		scrollView.setOnScrollChangedListener(null);
 		super.onDestroyView();
 	}
 	

@@ -135,6 +135,7 @@
     <string name="requireCertifyDealerInfo">판매자 정보를 인증해야 차량을\n등록할 수 있습니다.</string>
 	<string name="requireCertifyPhoneNumber">휴대폰번호를 인증해야\n회원가입을 할 수 있습니다.</string>
 	
+	<string name="salesPrice">판매가</string>
 	<string name="searchCondition">검색조건</string>
 	<string name="selectCarFirst">차량을 먼저 선택해주세요</string>
 	<string name="sellingPrice">판매금액</string>
@@ -193,7 +194,6 @@
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
     <string name="popup_choice_dealer">딜러 선택이 완료되었습니다!</string>
     
-    <string name="salesPrice">판매가</string>
     <string name="selectOrder">정렬 선택</string>
     <string name="sellingArea">판매지역</string>
     <string name="sideMenuTitle1">거래</string>

@@ -30,7 +30,6 @@ import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
-import com.outspoken_kid.classes.ViewUnbindHelper;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -622,21 +621,15 @@ public class CarDetailPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if(car != null) {
-			
-			if(type == 0) {
-				type = car.getType();
-			}
-			
-			setMainCarInfo();
-			setDetailCarInfo();
-			setOptionViews();
-			setCarDescription();
-		} else {
-			downloadCarInfo();
-		}
-		
+		downloadCarInfo();
 		checkPageScrollOffset();
+	}
+	
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		
+		scrollView.setOnScrollChangedListener(null);
 	}
 	
 	@Override
@@ -877,7 +870,11 @@ public class CarDetailPage extends BCPFragment {
 			return;
 		}
 		
-		url += "?onsalecar_id=" + id;
+		if(car == null) {
+			url += "?onsalecar_id=" + id;
+		} else if(car != null) {
+			url += "?onsalecar_id=" + car.getId();
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -885,14 +882,7 @@ public class CarDetailPage extends BCPFragment {
 			public void onError(String url) {
 
 				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
-				
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-						downloadCarInfo();
-					}
-				}, 1000);
+				closePage();
 			}
 
 			@Override
@@ -902,11 +892,8 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					car = new Car(objJSON.getJSONObject("onsalecar"));
-					
-					if(car != null && type == 0) {
-						type = car.getType();
-					}
+					Car newCar = new Car(objJSON.getJSONObject("onsalecar"));
+					car.copyValuesFromNewItem(newCar);
 					
 					setMainCarInfo();
 					setDetailCarInfo();
@@ -934,7 +921,7 @@ public class CarDetailPage extends BCPFragment {
 		
 		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 				+ getString(R.string.won));
-		tvBidCount.setText("입찰중 " + car.getBids_cnt() + "명");
+		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 
 		if(car.getIs_liked() == 0) {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
