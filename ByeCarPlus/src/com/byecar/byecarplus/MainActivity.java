@@ -1,9 +1,9 @@
 package com.byecar.byecarplus;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
+import io.socket.IOAcknowledge;
+import io.socket.IOCallback;
+import io.socket.SocketIO;
+import io.socket.SocketIOException;
 
 import org.json.JSONObject;
 
@@ -64,6 +64,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
@@ -101,17 +102,12 @@ public class MainActivity extends BCPFragmentActivity {
 	private TextView tvPopupText;
 	private Button btnHome;
 	
-	private Handler mHandler;
-	private Socket socket;
-    private BufferedReader networkReader;
-	private Thread checkSocket;
-	private Runnable showUpdate;
-	private String socketString;
-	
 	private boolean animating;
+	private long last_connected_at;
+	private SocketIO socketIO;
 	
 	@Override
-	public void bindViews() {
+ 	public void bindViews() {
 
 		gestureSlidingLayout = (GestureSlidingLayout) findViewById(R.id.mainForUserActivity_gestureSlidingLayout);
 		leftView = (RelativeLayout) findViewById(R.id.mainForUserActivity_leftView);
@@ -149,32 +145,6 @@ public class MainActivity extends BCPFragmentActivity {
 		});
 		
 		GestureSlidingLayout.setScrollLock(true);
-	
-//		setSocket(BCPConstants.SOCKET_IP, BCPConstants.SOCKET_PORT);
-		
-		mHandler = new Handler();
-		checkSocket = new Thread() {
-			 
-	        public void run() {
-	            try {
-	                LogUtils.log("###MainForUserActivity.run.  StartThread.");
-	                
-	                while (true) {
-	                    LogUtils.log("###MainForUserActivity.run.  thread is running.");
-	                    socketString = networkReader.readLine();
-	                    mHandler.post(showUpdate);
-	                }
-	            } catch (Exception e) {
-	 
-	            }
-	        }
-	    };
-	    showUpdate = new Runnable() {
-	    	 
-	        public void run() {
-	        	ToastUtils.showToast("Coming word : " + socketString);
-	        }
-	    };
 	}
 
 	@Override
@@ -496,33 +466,26 @@ public class MainActivity extends BCPFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+	
+		TimerUtils.startTimer(100, 100);
 		checkSession();
 	}
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
+	protected void onPause() {
+		super.onPause();
 		
-//		try {
-//			socket.close();
-//		} catch (IOException e) {
-//			LogUtils.trace(e);
-//		}
+		TimerUtils.cancel();
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		TimerUtils.clear();
 	}
 	
 //////////////////// Custom methods.
-
-	public void setSocket(String ip, int port) {
-		 
-        try {
-            socket = new Socket(ip, port);
-            networkReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            System.out.println(e);
-            e.printStackTrace();
-        }
-    }
 	
 	public void launchSignActivity() {
 		
@@ -871,6 +834,11 @@ public class MainActivity extends BCPFragmentActivity {
 								+ "\nresult : " + objJSON);
 						
 						user = new User(objJSON.getJSONObject("user"));
+						
+//						if(socketIO == null || !socketIO.isConnected()) {
+//							setSocket();
+//						}
+						
 						setLeftViewUserInfo();
 						checkGCM();
 					} else {
@@ -885,6 +853,84 @@ public class MainActivity extends BCPFragmentActivity {
 			}
 		});
 	}
+	
+	public void setSocket() {
+		
+		try {
+			socketIO = new SocketIO(BCPAPIs.BASE_API_URL + ":" + BCPConstants.SOCKET_PORT);
+			socketIO.connect(new IOCallback() {
+				
+				@Override
+				public void onMessage(JSONObject json, IOAcknowledge ack) {
+
+					LogUtils.log("###MainActivity.socketIO.onMessage.  json : " + json);
+				}
+				
+				@Override
+				public void onMessage(String data, IOAcknowledge ack) {
+
+					LogUtils.log("###MainActivity.socketIO.onMessage.  data : " + data);
+				}
+				
+				@Override
+				public void onError(SocketIOException socketIOException) {
+
+					LogUtils.trace(socketIOException);
+				}
+				
+				@Override
+				public void onDisconnect() {
+					
+					LogUtils.log("###MainActivity.socketIO.onDisconnect.  ");
+				}
+				
+				@Override
+				public void onConnect() {
+
+					LogUtils.log("###MainActivity.socketIO.onConnect.  ");
+					
+					try {
+						JSONObject objMessage = new JSONObject();
+						objMessage.put("user_id", user.getId());
+						objMessage.put("last_connected_at", last_connected_at);
+						
+						socketIO.emit("join_as_user", null, objMessage);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+				
+				@Override
+				public void on(String event, IOAcknowledge ack, Object... args) {
+
+					/*
+					02-09 06:30:12.628: I/notice(2751):  event : joined_as_user
+					02-09 06:30:12.628: I/notice(2751):  ack : null
+					 */
+					LogUtils.log("###MainActivity.socketIO.on.  "
+							+ "\n event : " + event
+							+ "\n ack : " + ack);
+
+					/*
+					02-09 06:30:12.628: I/notice(2751): ###MainActivity.socketIO.on.  args[0] : {"message_at":1423463412}
+					*/
+					for(int i=0; i<args.length; i++) {
+						LogUtils.log("###MainActivity.socketIO.on.  args[" + i + "] : " + args[0].toString());
+					}
+					
+					if("joined_as_user".equals(event)) {
+						
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+    }
 	
 	public void setLeftViewUserInfo() {
 

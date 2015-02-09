@@ -4,7 +4,7 @@
     android:id="@+id/mainForUserPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/page_bg2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/mainForUserPage_scrollView"

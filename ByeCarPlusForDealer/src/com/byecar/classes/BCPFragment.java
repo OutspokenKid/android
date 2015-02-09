@@ -40,7 +40,7 @@ public abstract class BCPFragment extends BaseFragment {
 	protected BCPAdapter adapter;
 	protected String url;
 	protected String lastUrl;
-
+	
 	public abstract int getBackButtonResId();
 	public abstract int getBackButtonWidth();
 	public abstract int getBackButtonHeight();
@@ -107,7 +107,7 @@ public abstract class BCPFragment extends BaseFragment {
 		super.onResume();
 		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
 	}
-
+	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();

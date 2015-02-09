@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <item name="carDetailPage_detailInfoText1" type="id" />
+    <item name="carDetailPage_detailInfoText2" type="id" />
+    <item name="carDetailPage_detailInfoText3" type="id" />
+    <item name="carDetailPage_detailInfoText4" type="id" />
+    <item name="carDetailPage_detailInfoText5" type="id" />
+    <item name="carDetailPage_detailInfoText6" type="id" />
+    <item name="carDetailPage_detailInfoText7" type="id" />
+    <item name="carDetailPage_detailInfoText8" type="id" />
+    <item name="carDetailPage_detailInfoText9" type="id" />
+    <item name="carDetailPage_detailInfoText10" type="id" />
+    <item name="carDetailPage_detailInfoText11" type="id" />
+    <item name="carDetailPage_detailInfoText12" type="id" />
+    
+    <item name="carDetailPage_detailInfo1" type="id" />
+    <item name="carDetailPage_detailInfo2" type="id" />
+    <item name="carDetailPage_detailInfo3" type="id" />
+    <item name="carDetailPage_detailInfo4" type="id" />
+    <item name="carDetailPage_detailInfo5" type="id" />
+    <item name="carDetailPage_detailInfo6" type="id" />
+    <item name="carDetailPage_detailInfo7" type="id" />
+    <item name="carDetailPage_detailInfo8" type="id" />
+    <item name="carDetailPage_detailInfo9" type="id" />
+    <item name="carDetailPage_detailInfo10" type="id" />
+    <item name="carDetailPage_detailInfo11" type="id" />
+    <item name="carDetailPage_detailInfo12" type="id" />
+    
     <item name="carDetailPage_optionTextView1" type="id" />
     <item name="carDetailPage_optionTextView2" type="id" />
     <item name="carDetailPage_optionView1" type="id" />

@@ -48,6 +48,8 @@ public class DirectMarketPage extends BCPFragment {
 	private TextView tvCarInfo2;
 	private TextView tvCurrentPrice;
 	private TextView tvCurrentPriceText;
+	private Button btnLike;
+	private TextView tvLikeText;
 	private Button btnCertified;
 	private Button btnRequestCertification;
 	private LinearLayout normalLinear;
@@ -75,6 +77,8 @@ public class DirectMarketPage extends BCPFragment {
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCarInfo2);
 		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCurrentPrice);
 		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCurrentPriceText);
+		btnLike = (Button) mThisView.findViewById(R.id.directMarketPage_btnLike);
+		tvLikeText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvLikeText);
 		btnCertified = (Button) mThisView.findViewById(R.id.directMarketPage_btnCertified);
 		btnRequestCertification = (Button) mThisView.findViewById(R.id.directMarketPage_btnRequestCertification);
 		normalLinear = (LinearLayout) mThisView.findViewById(R.id.directMarketPage_normalLinear);
@@ -236,12 +240,28 @@ public class DirectMarketPage extends BCPFragment {
 		rp.rightMargin = ResizeUtils.getSpecificLength(4);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
-		//btnAuction.
+		//btnLike.
+		rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(90);
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = -ResizeUtils.getSpecificLength(8);
+		rp.rightMargin = ResizeUtils.getSpecificLength(20);
+		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
+		
+		//tvLikeText.
+		rp = (RelativeLayout.LayoutParams) tvLikeText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = -ResizeUtils.getSpecificLength(2);
+		rp.rightMargin = ResizeUtils.getSpecificLength(2);
+		tvLikeText.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
+		
+		//btnCertified.
 		rp = (RelativeLayout.LayoutParams) btnCertified.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(320);
 		rp.height = ResizeUtils.getSpecificLength(68);
 		
-		//btnRegistration.
+		//btnRequestCertification.
 		rp = (RelativeLayout.LayoutParams) btnRequestCertification.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
 		
@@ -271,6 +291,8 @@ public class DirectMarketPage extends BCPFragment {
 		FontUtils.setFontSize(tvCurrentPrice, 32);
 		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCurrentPriceText, 20);
+		FontUtils.setFontSize(btnLike, 18);
+		FontUtils.setFontSize(tvLikeText, 20);
 	}
 
 	@Override
@@ -493,6 +515,30 @@ public class DirectMarketPage extends BCPFragment {
 		} else {
 			pageNavigator.setVisibility(View.INVISIBLE);
 		}
+		
+		if(certified.get(index).getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+		}
+		
+		final int INDEX = index;
+		btnLike.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setLike(certified.get(INDEX));
+			}
+		});
+
+		int likesCount = certified.get(index).getLikes_cnt();
+		
+		if(likesCount > 9999) {
+			likesCount = 9999;
+		}
+		
+		btnLike.setText("" + likesCount);
 	}
 
 	public void checkPageScrollOffset() {
@@ -516,5 +562,54 @@ public class DirectMarketPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void setLike(Car car) {
+		
+		String url = null;
+
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+			
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIKE_URL;
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+
+			url = BCPAPIs.CAR_DIRECT_CERTIFIED_UNLIKE_URL;
+		}
+		
+		btnLike.setText("" + car.getLikes_cnt());
+		
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("CarDetailPage.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("CarDetailPage.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

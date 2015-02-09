@@ -717,13 +717,21 @@ public class CarRegistrationPage extends BCPFragment {
 	@Override
 	public int getBackButtonResId() {
 		
-		return R.drawable.registration_back_btn;
+		if(type == TYPE_EDIT) {
+			return R.drawable.modification_back_btn;
+		} else {
+			return R.drawable.registration_back_btn;
+		}
 	}
 
 	@Override
 	public int getBackButtonWidth() {
-		
-		return 220;
+
+		if(type == TYPE_EDIT) {
+			return 235;
+		} else {
+			return 220;
+		}
 	}
 
 	@Override
@@ -1112,7 +1120,9 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 
-		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())
+				&& !StringUtils.isEmpty(MainActivity.user.getName())
+				&& !StringUtils.isEmpty(MainActivity.user.getAddress())) {
 			tvDealerInfo.setTextColor(getResources().getColor(R.color.color_green));
 			tvDealerInfo.setText(MainActivity.user.getName()
 					+ "\n" + MainActivity.user.getPhone_number()

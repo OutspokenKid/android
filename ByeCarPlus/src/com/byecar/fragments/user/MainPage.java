@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
@@ -40,6 +40,8 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.TimerUtils;
+import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -76,14 +78,11 @@ public class MainPage extends BCPFragment {
 	private ImagePagerAdapter imagePagerAdapter;
 	private OpenablePost notice;
 	
-	private Handler mHandler;
-	private Thread checkTime;
-	private Runnable updateTime;
-	public boolean needRunThread;
-	
 	private int scrollOffset; 
 	private int standardLength;
 	private float diff;
+	
+	private OnTimeChangedListener onTimeChangedListener;
 	
 	@Override
 	public void bindViews() {
@@ -117,58 +116,7 @@ public class MainPage extends BCPFragment {
 	@Override
 	public void setVariables() {
 
-		mHandler = new Handler();
-	    updateTime = new Runnable() {
-
-	    	//지난 시간.
-	    	private long passTime;
-	    	
-	    	//남은 시간.
-	    	private long remainTime;
-	    	
-	        public void run() {
-	        	
-	        	if(bids.size() > 0) {
-	        		
-	        		/* 24시간 기준. 24h = 86400s.
-		        	 * remainTime = bid_until_at - (현재 시간 / 1000) = (남은 시간) [초]
-		        	 * 24시간 - (남은 시간) = (지난 시간).
-		        	 * 
-		        	 * 11시간 11분 11초
-		        	 * 시간 : 60초 * 60분
-		        	 * 분 : 60초
-		        	 * 초 : 1초
-		        	 * 
-		        	 * 11 * 60초 * 60분 = 11시간 = 11 * 3600 = 39600
-		        	 * 11 * 60초 = 11분 = 11 * 60 = 660
-		        	 * 11초 = 11초 = 11
-		        	 * 
-		        	 * 합계 = 40271
-		        	 * 
-		        	 * 40271 / 3600 = 11
-		        	 * 40271 % 3600 / 60 = 11
-		        	 * 40271 % 3600 % 60 = 11
-		        	 * 
-		        	 * s 단위임.
-		        	 */
-		        	Car currentCar = bids.get(viewPager.getCurrentItem());
-		        	remainTime = currentCar.getBid_until_at()
-		        			- (System.currentTimeMillis() / 1000);
-		        	passTime = 86400 - remainTime;
-		        	
-		        	if(remainTime <= 0) {
-		        		currentCar.setStatus(Car.STATUS_BID_COMPLETE);
-		        		return;
-		        	}
-		        	
-		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime * 1000);
-		        	tvRemainTime.setText(formattedRemainTime);
-		        	
-		        	int percentage = (int)((double)passTime / 86400d * 10000);
-		        	progressBar.setProgress(percentage);
-	        	}
-	        }
-	    };
+		setOnTimerListener();
 	}
 
 	@Override
@@ -540,19 +488,16 @@ public class MainPage extends BCPFragment {
 		checkNotification();
 		
 		((MainActivity) mActivity).setLeftViewUserInfo();
+		
+		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
 	}
 	
 	@Override
 	public void onPause() {
 		super.onPause();
-		
-		needRunThread = false;
-		
-		if(checkTime != null) {
-			checkTime.interrupt();
-		}
-
 		((MainActivity) mActivity).clearLeftViewUserInfo();
+		
+		TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 	}
 	
 	@Override
@@ -627,11 +572,11 @@ public class MainPage extends BCPFragment {
 						for(int i=0; i<size; i++) {
 							dealers.add(new Car(arJSON.getJSONObject(i)));
 						}
-						
-						setUsedCarViews();
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					}
+					
+					setUsedCarViews();
 					
 					try {
 						certifieds.clear();
@@ -646,12 +591,11 @@ public class MainPage extends BCPFragment {
 					
 					try {
 						notice = new OpenablePost(objJSON.getJSONObject("notice"));
-						setNotice();
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					}
-
-					runThread();
+					
+					setNotice();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -668,7 +612,7 @@ public class MainPage extends BCPFragment {
 			final int INDEX = i;
 			
 			try {
-				usedCarViews[i] = new UsedCarView(mContext, i);
+				usedCarViews[i] = new UsedCarView(mContext);
 				usedCarViews[i].setTexts(dealers.get(i).getModel_name(), 
 						dealers.get(i).getPrice());
 				usedCarViews[i].setOnClickListener(new OnClickListener() {
@@ -696,6 +640,17 @@ public class MainPage extends BCPFragment {
 	
 	public void setNotice() {
 
+		if(notice == null) {
+			noticeTitle.setVisibility(View.GONE);
+			ivNotice.setVisibility(View.GONE);
+			btnNotice.setVisibility(View.GONE);
+			return;
+		} else {
+			noticeTitle.setVisibility(View.VISIBLE);
+			ivNotice.setVisibility(View.VISIBLE);
+			btnNotice.setVisibility(View.VISIBLE);
+		}
+		
 		ivNotice.setImageDrawable(null);
 		
 		String url = notice.getRep_img_url();
@@ -744,13 +699,15 @@ public class MainPage extends BCPFragment {
 	
 	public void setPagerInfo(int index) {
 		
-		tvCarInfo1.setText(bids.get(index).getCar_full_name());
-		tvCarInfo2.setText(bids.get(index).getYear() + "년 / "
-				+ StringUtils.getFormattedNumber(bids.get(index).getMileage()) + "km / "
-				+ bids.get(index).getArea());
+		Car car = bids.get(index);
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(bids.get(index).getPrice()) + getString(R.string.won));
-		tvBidCount.setText("입찰자 " + bids.get(index).getBids_cnt() + "명");
+		tvCarInfo1.setText(car.getCar_full_name());
+		tvCarInfo2.setText(car.getYear() + "년 / "
+				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
+				+ car.getArea());
+		
+		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) + getString(R.string.won));
+		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
 		if(bids.size() > 1) {
 			pageNavigator.setVisibility(View.VISIBLE);
@@ -759,44 +716,30 @@ public class MainPage extends BCPFragment {
 			pageNavigator.setVisibility(View.INVISIBLE);
 		}
 
-		auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+		} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+		} else {
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+		}
 		
-		if(bids.get(index).getIs_liked() == 0) {
+		if(car.getIs_liked() == 0) {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
 		}
 
-		int likesCount = bids.get(index).getLikes_cnt();
+		int likesCount = car.getLikes_cnt();
 		
 		if(likesCount > 9999) {
 			likesCount = 9999;
 		}
 		
 		btnLike.setText("" + likesCount);
-	}
-
-	public void runThread() {
-		
-		needRunThread = true;
-		
-		if(checkTime != null) {
-			checkTime.interrupt();
-		}
-		
-		checkTime = new Thread() {
-			
-	        public void run() {
-	            try {
-	                while(needRunThread) {
-	                	Thread.sleep(1000);
-	                    mHandler.post(updateTime);
-	                }
-	            } catch (Exception e) {
-	            }
-	        }
-	    };
-	    checkTime.start();
 	}
 
 	public void checkPageScrollOffset() {
@@ -872,5 +815,77 @@ public class MainPage extends BCPFragment {
 						}
 					}
 				});
+	}
+
+	public void setOnTimerListener() {
+		
+		if(onTimeChangedListener == null) {
+			onTimeChangedListener = new OnTimeChangedListener() {
+				
+				@Override
+				public void onTimeChanged() {
+
+					if(bids.size() > 0) {
+		        		
+						if(bids.get(viewPager.getCurrentItem()).getStatus() > Car.STATUS_BID_COMPLETE) {
+							progressBar.setProgress(10000);
+							tvRemainTime.setText("-- : -- : --");
+							return;
+						}
+						
+		        		/* 24시간 기준. 24h = 86400s.
+			        	 * remainTime = bid_until_at - (현재 시간 / 1000) = (남은 시간) [초]
+			        	 * 24시간 - (남은 시간) = (지난 시간).
+			        	 * 
+			        	 * 11시간 11분 11초
+			        	 * 시간 : 60초 * 60분
+			        	 * 분 : 60초
+			        	 * 초 : 1초
+			        	 * 
+			        	 * 11 * 60초 * 60분 = 11시간 = 11 * 3600 = 39600
+			        	 * 11 * 60초 = 11분 = 11 * 60 = 660
+			        	 * 11초 = 11초 = 11
+			        	 * 
+			        	 * 합계 = 40271
+			        	 * 
+			        	 * 40271 / 3600 = 11
+			        	 * 40271 % 3600 / 60 = 11
+			        	 * 40271 % 3600 % 60 = 11
+			        	 * 
+			        	 * s 단위임.
+			        	 */
+			        	Car car = bids.get(viewPager.getCurrentItem());
+			        	long remainTime = (car.getStatus() < Car.STATUS_BID_COMPLETE? car.getBid_until_at() : car.getEnd_at())
+			        			- (System.currentTimeMillis() / 1000);
+			        	long passTime = 86400 - remainTime;
+			        	
+			        	if(remainTime <= 0) {
+//			        		car.setStatus(Car.STATUS_BID_COMPLETE);
+//			        		return;
+			        	}
+			        	
+			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime * 1000);
+			        	tvRemainTime.setText(formattedRemainTime);
+			        	
+			        	int percentage = (int)((double)passTime / 86400d * 10000 
+			        			/ (car.getStatus() == Car.STATUS_BID_COMPLETE? 2 : 1));
+			        	
+			        	progressBar.setProgress(percentage);
+		        	}
+				}
+				
+				@Override
+				public String getName() {
+					
+					return "mainPageViewPager";
+				}
+				
+				@Override
+				public Activity getActivity() {
+
+					return mActivity;
+				}
+			};
+		}
 	}
 }

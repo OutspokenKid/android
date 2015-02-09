@@ -107,7 +107,7 @@ public abstract class BCPFragment extends BaseFragment {
 		super.onResume();
 		SoftKeyboardUtils.hideKeyboard(mContext, mThisView);
 	}
-
+	
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();

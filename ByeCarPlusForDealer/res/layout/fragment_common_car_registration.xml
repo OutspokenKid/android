@@ -167,7 +167,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto2"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto2"
-		        android:background="@drawable/registration_photo2_btn" />
+		        android:background="@drawable/registration_photo3_btn" />
             
             <ImageView
                 android:id="@+id/carRegistrationPage_ivCarPhoto3"
@@ -183,7 +183,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto3"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto3"
-		        android:background="@drawable/registration_photo2_btn" />
+		        android:background="@drawable/registration_photo4_btn" />
             
             <ImageView
                 android:id="@+id/carRegistrationPage_ivCarPhoto4"

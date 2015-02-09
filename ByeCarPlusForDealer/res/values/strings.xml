@@ -7,6 +7,8 @@
     <string name="app_name">ByeCarPlus For Dealer</string>
     <string name="auctionedPrice">낙찰금액</string>
 
+    <string name="bidPriceMustOverCurrentPrice">입찰 금액은 현재 금액보다 커야합니다.</string>
+    
     <string name="callByeCar">01098138005</string>
     <string name="cancel">취소</string>
     <string name="carDescriptionFromDealer">판매자 차량설명</string>
@@ -35,7 +37,9 @@
     <string name="checkToCertifyPhoneNumber">휴대폰번호를 인증해주세요.</string>
     <string name="commonInfo">일반정보</string>
     <string name="complete_auth">수정되었습니다.</string>
+    <string name="complete_bid">입찰신청이 완료되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
+    <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
@@ -50,6 +54,7 @@
     <string name="dealerLevel2">일반딜러</string>
     <string name="dealerLevel3">우수딜러</string>
     <string name="dealerLevel4">파워딜러</string>
+    <string name="delete">삭제</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>
     <string name="detailCarInfoString2">모델</string>
@@ -70,6 +75,7 @@
     
     <string name="edit">수정</string>
 
+    <string name="failToDeleteCar">삭제하지 못했습니다.</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
@@ -152,6 +158,7 @@
 
     <string name="uploadingImage">이미지 업로드 중..</string>
     
+    <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">탈퇴하시겠습니까?</string>
     <string name="withdraw">회원탈퇴</string>

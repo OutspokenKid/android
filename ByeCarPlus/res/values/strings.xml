@@ -37,6 +37,7 @@
     <string name="commonInfo">일반정보</string>
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
+    <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
@@ -49,6 +50,7 @@
     <string name="dealer">딜러</string>
     <string name="dealerInfo">판매자 정보</string>
     <string name="dealerInfoCertified">판매자 정보가 인증되었습니다.</string>
+    <string name="delete">삭제</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>
     <string name="detailCarInfoString2">모델</string>
@@ -74,6 +76,7 @@
     <string name="evaluateDealer">딜러님을 평가해주세요.</string>
 	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
     
+	<string name="failToDeleteCar">삭제하지 못했습니다.</string>
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
@@ -156,7 +159,8 @@
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
 
     <string name="uploadingImage">이미지 업로드 중..</string>
-    
+
+    <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">탈퇴하시겠습니까?</string>

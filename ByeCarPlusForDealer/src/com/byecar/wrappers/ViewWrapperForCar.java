@@ -2,6 +2,7 @@ package com.byecar.wrappers;
 
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -22,11 +23,15 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.TimerUtils;
+import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForCar extends ViewWrapper {
 	
 	private Car car;
+	
+	private Activity activity;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
@@ -45,6 +50,8 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private TextView tvCurrentPriceText;
 	private TextView tvBidCount;
 	private Button btnLike;
+	
+	private OnTimeChangedListener onTimeChangedListener;
 	
 	public ViewWrapperForCar(View row, int itemCode) {
 		super(row, itemCode);
@@ -217,8 +224,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 			if(baseModel instanceof Car) {
 				car = (Car) baseModel;
 				
-				tvRemainTime.setText("15 : 40 : 21");
-				
 				tvCarInfo1.setText(car.getCar_full_name());
 				tvCarInfo2.setText(car.getYear() + "년 / "
 						+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
@@ -236,19 +241,26 @@ public class ViewWrapperForCar extends ViewWrapper {
 				
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID
 					|| car.getItemCode() == BCPConstants.ITEM_CAR_BID_MY) {
+					tvRemainTime.setText("-- : -- : --");
+					
 					auctionIcon.setVisibility(View.VISIBLE);
 					timeRelative.setVisibility(View.VISIBLE);
 					tvBidCount.setVisibility(View.VISIBLE);
 					
-					if(car.getStatus() == 10) {
+					if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
-					} else if(car.getStatus() == 20) {
+						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
+					} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
+						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_green));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
 					} else {
+						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_gray));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
 					}
 					
 					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
+					
+					setOnTimeListener();
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
 					timeRelative.setVisibility(View.GONE);
@@ -392,5 +404,84 @@ public class ViewWrapperForCar extends ViewWrapper {
 						}
 					}
 				});
+	}
+
+	public void setOnTimeListener() {
+
+		if(onTimeChangedListener == null) {
+			onTimeChangedListener = new OnTimeChangedListener() {
+				
+				@Override
+				public void onTimeChanged() {
+
+					if(car == null) {
+						return;
+					}
+					
+					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
+						progressBar.setProgress(10000);
+						tvRemainTime.setText("-- : -- : --");
+						return;
+					}
+					
+					/* 24시간 기준. 24h = 86400s.
+		        	 * remainTime = bid_until_at - (현재 시간 / 1000) = (남은 시간) [초]
+		        	 * 24시간 - (남은 시간) = (지난 시간).
+		        	 * 
+		        	 * 11시간 11분 11초
+		        	 * 시간 : 60초 * 60분
+		        	 * 분 : 60초
+		        	 * 초 : 1초
+		        	 * 
+		        	 * 11 * 60초 * 60분 = 11시간 = 11 * 3600 = 39600
+		        	 * 11 * 60초 = 11분 = 11 * 60 = 660
+		        	 * 11초 = 11초 = 11
+		        	 * 
+		        	 * 합계 = 40271
+		        	 * 
+		        	 * 40271 / 3600 = 11
+		        	 * 40271 % 3600 / 60 = 11
+		        	 * 40271 % 3600 % 60 = 11
+		        	 * 
+		        	 * s 단위임.
+		        	 */
+		        	long remainTime = (car.getStatus() < Car.STATUS_BID_COMPLETE? car.getBid_until_at() : car.getEnd_at())
+		        			- (System.currentTimeMillis() / 1000);
+		        	long passTime = 86400 - remainTime;
+		        	
+		        	if(remainTime <= 0) {
+//		        		car.setStatus(Car.STATUS_BID_COMPLETE);
+//		        		return;
+		        	}
+		        	
+		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime * 1000);
+		        	tvRemainTime.setText(formattedRemainTime);
+		        	
+		        	int percentage = (int)((double)passTime / 86400d * 10000 
+		        			/ (car.getStatus() == Car.STATUS_BID_COMPLETE? 2 : 1));
+		        	
+		        	progressBar.setProgress(percentage);
+				}
+				
+				@Override
+				public String getName() {
+
+					return "ViewWrapperForCar";
+				}
+				
+				@Override
+				public Activity getActivity() {
+
+					return activity;
+				}
+			}; 
+		}
+		
+		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
+	}
+	
+	public void setActivity(Activity activity) {
+
+		this.activity = activity;
 	}
 }

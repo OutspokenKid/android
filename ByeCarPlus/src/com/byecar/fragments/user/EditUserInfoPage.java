@@ -658,7 +658,7 @@ public class EditUserInfoPage extends BCPFragment {
 		
 		if(StringUtils.checkTextLength(etAddress.getEditText(), ADDRESS_MIN, ADDRESS_MAX)
 				!= StringUtils.PASS
-				|| StringUtils.checkForbidContains(etAddress.getEditText(), false, false, false, true, true, false)) {
+				|| StringUtils.checkForbidContains(etAddress.getEditText(), false, false, false, false, true, false)) {
 			tvCheckAddress.setText(R.string.checkAddress);
 			tvCheckAddress.setVisibility(View.VISIBLE);
 			passAddress = false;

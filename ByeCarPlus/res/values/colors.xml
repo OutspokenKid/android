@@ -10,9 +10,13 @@
 	<color name="titlebar_bg_orange">#febc2a</color>
 	<color name="titlebar_bg_brown">#381800</color>
 	
-    <color name="page_bg">#dcdcdc</color>
+    <color name="page_bg">#f5f5f5</color>
+    <color name="page_bg2">#dcdcdc</color>
+    
     <color name="progress_bg">#b2604633</color>
     <color name="progress_guage_orange">#febc2a</color>
+    <color name="progress_guage_green">#0c902a</color>
+    <color name="progress_guage_gray">#6f6f6f</color>
     <color name="progress_guage_red">#ff4747</color>
     
 </resources>

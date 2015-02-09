@@ -24,7 +24,7 @@
 		        android:layout_alignParentTop="true"
 		        android:layout_centerHorizontal="true"
 		        android:scaleType="centerCrop"
-		        android:background="@drawable/menu_default" />
+		        android:background="@drawable/dealer_default" />
             		
             <View 
                 android:id="@+id/dealerPage_bg"

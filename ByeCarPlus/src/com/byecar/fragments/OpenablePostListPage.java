@@ -108,7 +108,7 @@ public class OpenablePostListPage extends BCPFragment {
 	public void downloadInfo() {
 
 		if(type == TYPE_NOTICE) {
-			url = BCPAPIs.NOTICE_URL;
+			url = BCPAPIs.NOTICE_URL + "?type=11";
 		} else {
 			url = BCPAPIs.FAQ_URL;
 		}

@@ -113,8 +113,19 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 
 				switch(car.getStatus()) {
 				
+				//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
+//				public static final int STATUS_STAND_BY_APPROVAL = 0;
+//				public static final int STATUS_STAND_BY_BIDING = 5;
+				
+//				public static final int STATUS_BIDDING = 10;
+//				public static final int STATUS_BID_COMPLETE = 15;
+				
+//				public static final int STATUS_BID_SUCCESS = 20;
+//				public static final int STATUS_BID_FAIL = 21;
+//				public static final int STATUS_TRADE_COMPLETE = 30;
+				
 				case Car.STATUS_STAND_BY_APPROVAL:
-				case Car.STATUS_STAND_BY_BID:
+				case Car.STATUS_STAND_BY_BIDING:
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
 					break;
 					
@@ -123,6 +134,8 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
 					break;
 					
+				case Car.STATUS_BID_SUCCESS:
+				case Car.STATUS_BID_FAIL:
 				case Car.STATUS_TRADE_COMPLETE:
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
 					break;

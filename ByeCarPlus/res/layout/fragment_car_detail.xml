@@ -4,7 +4,7 @@
     android:id="@+id/carDetailPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/page_bg2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/carDetailPage_scrollView"
@@ -232,25 +232,7 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carDetailPage_headerForInfo"
 		        android:visibility="gone"
-		        android:background="@drawable/detail_body2" >
-		        
-		        <TextView 
-		            android:id="@+id/carDetailPage_tvDetailInfo1"
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:layout_alignParentLeft="true"
-		        	android:textColor="#737373"
-		        	android:gravity="left" />
-		        
-		        <TextView 
-		            android:id="@+id/carDetailPage_tvDetailInfo2"
-		        	android:layout_width="wrap_content"
-		        	android:layout_height="wrap_content"
-		        	android:layout_alignParentRight="true"
-		        	android:textColor="@color/holo_text"
-		        	android:gravity="right" />
-		        
-			</RelativeLayout>
+		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
 		        android:id="@+id/carDetailPage_footerForInfo"
@@ -364,5 +346,21 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/auction_guide_btn" />
+    
+    <Button
+        android:id="@+id/carDetailPage_btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/modification_delete_btn" />
+    
+    <Button
+        android:id="@+id/carDetailPage_btnEdit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/carDetailPage_btnDelete"
+        android:background="@drawable/modification_modify_btn" />
     
 </RelativeLayout>

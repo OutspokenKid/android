@@ -788,6 +788,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 		if(type == TYPE_REQUEST_CERTIFICATION) {
 			return R.drawable.demand_back_btn;
+		} else if(type == TYPE_EDIT) {
+			return R.drawable.modification_back_btn;
 		} else {
 			return R.drawable.registration_back_btn;
 		}
@@ -798,6 +800,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 		if(type == TYPE_REQUEST_CERTIFICATION) {
 			return 208;
+		} else if(type == TYPE_EDIT) {
+			return 235;
 		} else {
 			return 220;
 		}
@@ -1210,7 +1214,9 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 
-		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+		if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())
+				&& !StringUtils.isEmpty(MainActivity.user.getName())
+				&& !StringUtils.isEmpty(MainActivity.user.getAddress())) {
 			tvDealerInfo.setTextColor(getResources().getColor(R.color.color_green));
 			tvDealerInfo.setText(MainActivity.user.getName()
 					+ "\n" + MainActivity.user.getPhone_number()
@@ -1644,4 +1650,3 @@ public class CarRegistrationPage extends BCPFragment {
 		}, 1000);
 	}
 }
-

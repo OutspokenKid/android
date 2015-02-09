@@ -18,7 +18,6 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
@@ -29,9 +28,12 @@ import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.fragments.CarRegistrationPage;
-import com.byecar.fragments.OpenablePostListPage;
+import com.byecar.models.Banner;
 import com.byecar.models.Car;
+import com.byecar.models.OpenablePost;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
@@ -44,7 +46,6 @@ public class MainPage extends BCPFragment {
 	private Button btnMyBids;
 	private Button btnUsed;
 	private Button btnOnSale;
-	private ImageView ivBanner;
 	
 	private ListView listView;
 	
@@ -59,6 +60,7 @@ public class MainPage extends BCPFragment {
 	
 	private int menuIndex;
 	private String orderString;
+	private Banner banner;
 	
 	@Override
 	public void bindViews() {
@@ -70,7 +72,6 @@ public class MainPage extends BCPFragment {
 		btnMyBids = (Button) mThisView.findViewById(R.id.mainPage_btnMyBids);
 		btnUsed = (Button) mThisView.findViewById(R.id.mainPage_btnUsed);
 		btnOnSale = (Button) mThisView.findViewById(R.id.mainPage_btnOnSale);
-		ivBanner = (ImageView) mThisView.findViewById(R.id.mainPage_ivBanner);
 		
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.mainPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.mainPage_listView);
@@ -106,10 +107,6 @@ public class MainPage extends BCPFragment {
         		getResources().getColor(R.color.titlebar_bg_orange));
         
         swipeRefreshLayout.setEnabled(true);
-		
-		ivBanner.setImageResource(R.drawable.main_banner_sample);
-		ivBanner.setVisibility(View.VISIBLE);
-		
 		setMenu(0);
 	}
 
@@ -135,17 +132,6 @@ public class MainPage extends BCPFragment {
 			public void onClick(View view) {
 
 				mActivity.showPage(BCPConstants.PAGE_NOTIFICATION, null);
-			}
-		});
-		
-		ivBanner.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-				mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 			}
 		});
 		
@@ -311,7 +297,6 @@ public class MainPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(160, 88, btnMyBids, null, null, null);
 		ResizeUtils.viewResizeForRelative(160, 88, btnUsed, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnOnSale, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, ivBanner, null, null, null);
 		
 		ResizeUtils.viewResizeForRelative(453, 249, icon, null, null, new int[]{0, 100, 0, 80});
 		ResizeUtils.viewResizeForRelative(544, 72, btnRegistration2, null, null, null);
@@ -384,6 +369,10 @@ public class MainPage extends BCPFragment {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 
+		if(models.size() == 0 && banner != null) {
+			models.add(banner);
+		}
+		
 		int size = 0;
 		int itemCode = 0;
 		
@@ -451,7 +440,12 @@ public class MainPage extends BCPFragment {
 		checkNotification();
 		
 		if(models.size() == 0) {
-			downloadInfo();
+			
+			if(menuIndex == 0 && banner == null) {
+				checkCover();
+			} else {
+				downloadInfo();
+			}
 		}
 	}
 	
@@ -600,5 +594,41 @@ public class MainPage extends BCPFragment {
 	public void checkNotification() {
 		
 		titleBar.setNoticeCount(5);
+	}
+
+	public void checkCover() {
+
+		String url = BCPAPIs.MAIN_COVER_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.has("notice")) {
+						OpenablePost openablePost = new OpenablePost(objJSON.getJSONObject("notice"));
+						banner = new Banner();
+						banner.setItemCode(BCPConstants.ITEM_BANNER);
+						banner.setImageUrl(openablePost.getRep_img_url());
+					}
+					
+					downloadInfo();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

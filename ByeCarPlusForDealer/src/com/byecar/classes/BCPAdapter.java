@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.wrappers.ViewWrapperForBanner;
 import com.byecar.wrappers.ViewWrapperForBrand;
 import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForMyCar;
@@ -63,6 +64,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_MY_AUCTION:
 		case BCPConstants.ITEM_CAR_MY_DEALER:
 			return R.layout.list_my_car;
+			
+		case BCPConstants.ITEM_BANNER:
+			return R.layout.list_banner;
 		}
 
 		return 0;
@@ -90,7 +94,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BID_MY:
 		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DEALER_IN_PROGRESS:
-			return new ViewWrapperForCar(convertView, itemCode);
+			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
+			vwfc.setActivity(activity);
+			return vwfc;
 			
 		case BCPConstants.ITEM_CAR_BRAND:
 			ViewWrapperForBrand vwfb = new ViewWrapperForBrand(convertView, itemCode);
@@ -105,6 +111,11 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_MY_AUCTION:
 		case BCPConstants.ITEM_CAR_MY_DEALER:
 			return new ViewWrapperForMyCar(convertView, itemCode);
+			
+		case BCPConstants.ITEM_BANNER:
+			ViewWrapperForBanner vwfba = new ViewWrapperForBanner(convertView, itemCode);
+			vwfba.setActivity(activity);
+			return vwfba;
 		}
 		
 		return null;
@@ -114,7 +125,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 	public void setRow(int itemCode, int position, View convertView) {
 
 		switch (itemCode) {
-
+		
 		case BCPConstants.ITEM_NOTIFICATION:
 			
 			if(position == 0) {

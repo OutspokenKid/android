@@ -4,7 +4,7 @@
     android:id="@+id/directMarketPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/page_bg2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/directMarketPage_scrollView"
@@ -95,6 +95,26 @@
     			android:textColor="@color/color_orange2" />
             
             <Button 
+                android:id="@+id/directMarketPage_btnLike"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignParentRight="true"
+    			android:layout_alignTop="@id/directMarketPage_tvCarInfo2"
+    			android:gravity="center"
+    			android:textColor="#fff"
+    			android:background="@drawable/main_like_btn_a" />
+            
+            <TextView
+                android:id="@+id/directMarketPage_tvLikeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="0dp"
+    			android:layout_toLeftOf="@id/directMarketPage_btnLike"
+    			android:layout_alignTop="@id/directMarketPage_btnLike"
+    			android:gravity="center_vertical"
+    			android:text="@string/like"
+    			android:textColor="@color/holo_text" />
+            
+            <Button 
                 android:id="@+id/directMarketPage_btnCertified"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
@@ -132,7 +152,7 @@
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
     			android:layout_below="@id/directMarketPage_normalLinear"
-    			android:background="@drawable/directmarket_market_btn" />
+    			android:background="@drawable/directmarket_verification_btn" />
             
             <View 
                 android:id="@+id/directMarketPage_bottomBlank"

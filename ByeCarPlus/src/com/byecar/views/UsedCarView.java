@@ -21,22 +21,20 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class UsedCarView extends FrameLayout {
 
-	private int index;
 	private ImageView ivImage;
 	private TextView tvCar;
 	private TextView tvPrice;
 	
 	private String imageUrl;
 	
-	public UsedCarView(Context context, int index) {
+	public UsedCarView(Context context) {
 		super(context);
-		this.index = index;
 		init();
 	}
 	
 	public void init() {
 	
-		ResizeUtils.viewResize(184, 214, this, 1, 0, new int[]{index==0?20:16, 0, 0, 0});
+		ResizeUtils.viewResize(176, 214, this, 1, 0, new int[]{20, 0, 0, 0});
 		
 		//ivImage.
 		ivImage = new ImageView(getContext());

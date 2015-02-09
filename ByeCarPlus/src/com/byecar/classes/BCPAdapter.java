@@ -90,7 +90,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BID:
 		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
-			return new ViewWrapperForCar(convertView, itemCode);
+			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
+			vwfc.setActivity(activity);
+			return vwfc;
 			
 		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
 			return new ViewWrapperForDirectNormal(convertView, itemCode);

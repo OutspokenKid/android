@@ -27,6 +27,8 @@ public class BCPConstants {
 	public static final int ITEM_CAR_MY_AUCTION = 17;
 	public static final int ITEM_CAR_MY_DEALER = 18;
 	
+	public static final int ITEM_BANNER = 30;
+	
 	//Pages for sign.
 	public static final int PAGE_SIGN = 1;
 	public static final int PAGE_SIGN_UP_FOR_COMMON = 2;

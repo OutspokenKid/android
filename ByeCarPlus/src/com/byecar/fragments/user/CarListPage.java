@@ -519,6 +519,20 @@ public class CarListPage extends BCPFragment {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+
+		try {
+			
+			
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	@Override
 	public void onDestroyView() {
 		
 		listView.setOnScrollListener(null);
