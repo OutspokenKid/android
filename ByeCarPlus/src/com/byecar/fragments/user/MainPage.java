@@ -62,7 +62,6 @@ public class MainPage extends BCPFragment {
 	private TextView tvBidCount;
 	private Button btnLike;
 	private Button btnAuction;
-	private Button btnRegistration;
 	private View noticeTitle;
 	private ImageView ivNotice;
 	private Button btnNotice;
@@ -103,7 +102,6 @@ public class MainPage extends BCPFragment {
 		tvBidCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvBidCount);
 		btnLike = (Button) mThisView.findViewById(R.id.mainForUserPage_btnLike);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainForUserPage_btnAuction);
-		btnRegistration = (Button) mThisView.findViewById(R.id.mainForUserPage_btnRegistration);
 		noticeTitle = mThisView.findViewById(R.id.mainForUserPage_noticeTitle);
 		ivNotice = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivNotice);
 		btnNotice = (Button) mThisView.findViewById(R.id.mainForUserPage_btnNotice);
@@ -219,18 +217,6 @@ public class MainPage extends BCPFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", Car.TYPE_BID);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-			}
-		});
-	
-		btnRegistration.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
-				bundle.putInt("carType", Car.TYPE_BID);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
 	
@@ -364,11 +350,6 @@ public class MainPage extends BCPFragment {
 		
 		//btnAuction.
 		rp = (RelativeLayout.LayoutParams) btnAuction.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(320);
-		rp.height = ResizeUtils.getSpecificLength(68);
-		
-		//btnRegistration.
-		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
 
 		//noticeTitle.

@@ -161,19 +161,11 @@
             
             <Button 
                 android:id="@+id/mainForUserPage_btnAuction"
-        		android:layout_width="0dp"
+        		android:layout_width="match_parent"
     			android:layout_height="0dp"
     			android:layout_alignParentLeft="true"
     			android:layout_below="@id/mainForUserPage_remainBg"
     			android:background="@drawable/main_auction_list_btn" />
-            
-            <Button 
-                android:id="@+id/mainForUserPage_btnRegistration"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_alignTop="@id/mainForUserPage_btnAuction"
-    			android:layout_toRightOf="@id/mainForUserPage_btnAuction"
-    			android:background="@drawable/main_my_car_btn" />
             
             <View 
                 android:id="@+id/mainForUserPage_noticeTitle"
