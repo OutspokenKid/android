@@ -99,7 +99,6 @@ public class MainPage extends BCPFragment {
 		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
-		listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
 		
 		swipeRefreshLayout.setColorSchemeColors(
         		getResources().getColor(R.color.titlebar_bg_brown),
@@ -460,6 +459,12 @@ public class MainPage extends BCPFragment {
 	
 	public void setMenu(int index) {
 
+		if(index == 0) {
+			listView.setDividerHeight(0);
+		} else {
+			listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
+		}
+		
 		setMenuButtons(index);
 		setIconAndButtons(index);
 		setButtonRelative(index);

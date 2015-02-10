@@ -126,6 +126,17 @@ public class BCPAdapter extends OutSpokenAdapter {
 
 		switch (itemCode) {
 		
+		case BCPConstants.ITEM_CAR_BID:
+			if(position < 2) {
+				convertView.setPadding(0, 0, 0, 0);
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(38));
+			} else {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(16), 0, 0);
+			}
+			
+			break;
+		
 		case BCPConstants.ITEM_NOTIFICATION:
 			
 			if(position == 0) {
