@@ -24,7 +24,6 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public abstract class BCPFragment extends BaseFragment {
 	
@@ -184,7 +183,7 @@ public abstract class BCPFragment extends BaseFragment {
 								+ "\n last_priority : " + last_priority);
 						
 						if(isLastList && last_priority != 0) {
-							ToastUtils.showToast(R.string.lastList);
+//							ToastUtils.showToast(R.string.lastList);
 						}
 						
 						setPage(true);
