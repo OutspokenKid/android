@@ -52,7 +52,7 @@ public class SignPage extends BCPFragment {
 	private static final int DELAY = 2000;
 	
 	private static final float MOVE_DIST = 0.8f;
-	private static final int NUMBER_OF_PAGE = 5;
+	private static final int NUMBER_OF_PAGE = 6;
 	private static final int NUMBER_OF_SPLASH = 3;
 	
 	private ImageView[] floatingImageViews;
@@ -362,9 +362,10 @@ public class SignPage extends BCPFragment {
 		guideImageViews = new ImageView[size];
 		
 		int[] resIds = new int[]{
-				R.drawable.a1,
-				R.drawable.a2,
-				R.drawable.a3,
+				R.drawable.splash2_1,
+				R.drawable.splash2_2,
+				R.drawable.splash2_3,
+				R.drawable.splash2_4,
 		};
 		
 		for(int i=0; i<size; i++) {
@@ -776,28 +777,20 @@ public class SignPage extends BCPFragment {
 		@Override
 		public Object instantiateItem(ViewGroup container, final int position) {
 			
-			switch(position) {
-			
-			case 0:
-				//Transparent.
-				break;
+			if(position == 0) {
 				
-			case 1:
-			case 2:
-			case 3:
+			} else if(position < NUMBER_OF_PAGE - 1) {
 				if(guideImageViews[position-1].getParent() == null) {
 					container.addView(guideImageViews[position-1]);
 				}
 				
 				return guideImageViews[position-1];
-				
-			case 4:
+			} else {
 				if(signRelative.getParent() == null) {
 					container.addView(signRelative);
 				}
 				
 				return signRelative;
-				
 			}
 			
 			return null;
