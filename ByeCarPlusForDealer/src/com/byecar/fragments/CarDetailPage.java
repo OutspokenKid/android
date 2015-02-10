@@ -280,15 +280,6 @@ public class CarDetailPage extends BCPFragment {
 			}
 		});
 		
-		btnLike.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setLike(car);
-			}
-		});
-		
 		headerForType.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1686,73 +1677,6 @@ public class CarDetailPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
-	}
-
-	public void setLike(Car car) {
-		
-		String url = null;
-
-		if(car.getIs_liked() == 0) {
-			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
-			car.setLikes_cnt(car.getLikes_cnt() + 1);
-			car.setIs_liked(1);
-			
-			switch(car.getType()) {
-			
-			case Car.TYPE_BID:
-				url = BCPAPIs.CAR_BID_LIKE_URL;
-				break;
-				
-			case Car.TYPE_DEALER:
-				url = BCPAPIs.CAR_DEALER_LIKE_URL;
-				break;
-			}
-		} else {
-			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
-			car.setLikes_cnt(car.getLikes_cnt() - 1);
-			car.setIs_liked(0);
-			
-			switch(car.getType()) {
-			
-			case Car.TYPE_BID:
-				url = BCPAPIs.CAR_BID_UNLIKE_URL;
-				break;
-				
-			case Car.TYPE_DEALER:
-				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
-				break;
-			}
-		}
-		
-		btnLike.setText("" + car.getLikes_cnt());
-		
-		url += "?onsalecar_id=" + car.getId();
-		
-		DownloadUtils.downloadJSONString(url,
-				new OnJSONDownloadListener() {
-
-					@Override
-					public void onError(String url) {
-
-						LogUtils.log("CarDetailPage.onError." + "\nurl : "
-								+ url);
-					}
-
-					@Override
-					public void onCompleted(String url,
-							JSONObject objJSON) {
-
-						try {
-							LogUtils.log("CarDetailPage.onCompleted."
-									+ "\nurl : " + url
-									+ "\nresult : " + objJSON);
-						} catch (Exception e) {
-							LogUtils.trace(e);
-						} catch (OutOfMemoryError oom) {
-							LogUtils.trace(oom);
-						}
-					}
-				});
 	}
 
 	public void setBiddingPrice(long biddingPrice) {

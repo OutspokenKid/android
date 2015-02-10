@@ -1,13 +1,11 @@
 package com.byecar.wrappers;
 
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Banner;
 import com.outspoken_kid.classes.ViewWrapper;

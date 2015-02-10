@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Review;
 import com.outspoken_kid.classes.ViewWrapper;

@@ -32,15 +32,11 @@ public class BCPAPIs {
 	
 	public static String CAR_BID_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 	public static String CAR_BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
-	public static String CAR_BID_LIKE_URL = BASE_API_URL + "/onsalecars/bids/like.json";
-	public static String CAR_BID_UNLIKE_URL = BASE_API_URL + "/onsalecars/bids/unlike.json";
 	public static String CAR_BID_URL = BASE_API_URL + "/onsalecars/bids/bid.json";
 	
 	public static String CAR_DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
 	public static String CAR_DEALER_SHOW_URL = BASE_API_URL + "/onsalecars/dealer/show.json";
 	public static String CAR_DEALER_SAVE_URL = BASE_API_URL + "/onsalecars/dealer/save.json";
-	public static String CAR_DEALER_LIKE_URL = BASE_API_URL + "/onsalecars/dealer/like.json";
-	public static String CAR_DEALER_UNLIKE_URL = BASE_API_URL + "/onsalecars/dealer/unlike.json";
 	public static String CAR_DEALER_DELETE_URL = BASE_API_URL + "/onsalecars/dealer/delete.json";
 
 	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
