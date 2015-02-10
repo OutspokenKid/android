@@ -24,7 +24,6 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.models.Car;
 import com.byecar.views.NormalCarView;
 import com.byecar.views.TitleBar;
@@ -51,7 +50,6 @@ public class DirectMarketPage extends BCPFragment {
 	private Button btnLike;
 	private TextView tvLikeText;
 	private Button btnCertified;
-	private Button btnRequestCertification;
 	private LinearLayout normalLinear;
 	private Button btnNormal;
 	
@@ -80,7 +78,6 @@ public class DirectMarketPage extends BCPFragment {
 		btnLike = (Button) mThisView.findViewById(R.id.directMarketPage_btnLike);
 		tvLikeText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvLikeText);
 		btnCertified = (Button) mThisView.findViewById(R.id.directMarketPage_btnCertified);
-		btnRequestCertification = (Button) mThisView.findViewById(R.id.directMarketPage_btnRequestCertification);
 		normalLinear = (LinearLayout) mThisView.findViewById(R.id.directMarketPage_normalLinear);
 		btnNormal = (Button) mThisView.findViewById(R.id.directMarketPage_btnNormal);
 	}
@@ -158,18 +155,6 @@ public class DirectMarketPage extends BCPFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", Car.TYPE_DIRECT_CERTIFIED);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-			}
-		});
-		
-		btnRequestCertification.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
-				bundle.putInt("carType", Car.TYPE_DIRECT_NORMAL);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
 		
@@ -258,11 +243,6 @@ public class DirectMarketPage extends BCPFragment {
 		
 		//btnCertified.
 		rp = (RelativeLayout.LayoutParams) btnCertified.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(320);
-		rp.height = ResizeUtils.getSpecificLength(68);
-		
-		//btnRequestCertification.
-		rp = (RelativeLayout.LayoutParams) btnRequestCertification.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
 		
 		//directTitle.

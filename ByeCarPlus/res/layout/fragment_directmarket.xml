@@ -116,19 +116,11 @@
             
             <Button 
                 android:id="@+id/directMarketPage_btnCertified"
-        		android:layout_width="0dp"
+        		android:layout_width="match_parent"
     			android:layout_height="0dp"
     			android:layout_alignParentLeft="true"
     			android:layout_below="@id/directMarketPage_remainBg"
     			android:background="@drawable/directmarket_verification1_btn" />
-            
-            <Button 
-                android:id="@+id/directMarketPage_btnRequestCertification"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_alignTop="@id/directMarketPage_btnCertified"
-    			android:layout_toRightOf="@id/directMarketPage_btnCertified"
-    			android:background="@drawable/directmarket_verification2_btn" />
             
             <View 
                 android:id="@+id/directMarketPage_directTitle"
