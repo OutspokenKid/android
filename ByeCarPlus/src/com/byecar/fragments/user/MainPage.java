@@ -27,7 +27,6 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Car;
 import com.byecar.models.OpenablePost;
