@@ -130,6 +130,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			} else {
 				convertView.setPadding(0, 0, 0, 0);
 			}
+			break;
 			
 		case BCPConstants.ITEM_NOTICE:
 		case BCPConstants.ITEM_FAQ:	
