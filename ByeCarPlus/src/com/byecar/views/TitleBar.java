@@ -163,10 +163,12 @@ public class TitleBar extends RelativeLayout {
 		
 		if(count > 100) {
 			tvNoticeCount.setText("+99");
+			tvNoticeCount.setVisibility(View.VISIBLE);
 		} else if(count <= 0){
 			tvNoticeCount.setVisibility(View.INVISIBLE);
 		} else {
 			tvNoticeCount.setText("" + count);
+			tvNoticeCount.setVisibility(View.VISIBLE);
 		}
 	}
 

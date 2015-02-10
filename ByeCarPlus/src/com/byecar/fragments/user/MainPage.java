@@ -767,7 +767,35 @@ public class MainPage extends BCPFragment {
 
 	public void checkNotification() {
 		
-		titleBar.setNoticeCount(5);
+		titleBar.setNoticeCount(0);
+		
+		String url = BCPAPIs.NOTIFICATION_URL + "?num=1";
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainPage.checkNotification.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainPage.checkNotification.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						titleBar.setNoticeCount(objJSON.getInt("unreadCount"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 
 	public void setLike(Car car) {
