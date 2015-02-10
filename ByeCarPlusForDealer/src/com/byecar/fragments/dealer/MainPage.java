@@ -28,6 +28,7 @@ import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.fragments.CarRegistrationPage;
+import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Banner;
 import com.byecar.models.Car;
 import com.byecar.models.OpenablePost;
@@ -36,6 +37,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class MainPage extends BCPFragment {
 
@@ -157,6 +159,12 @@ public class MainPage extends BCPFragment {
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
 
+				if(menuIndex == 0 && position == 0) {
+					Bundle bundle = new Bundle();
+					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+					mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+				}
+				
 				try {
 					int type = 0;
 
@@ -369,7 +377,7 @@ public class MainPage extends BCPFragment {
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 
-		if(models.size() == 0 && banner != null) {
+		if(models.size() == 0 && menuIndex == 0 && banner != null) {
 			models.add(banner);
 		}
 		

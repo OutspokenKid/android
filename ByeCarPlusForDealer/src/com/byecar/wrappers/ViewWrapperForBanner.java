@@ -66,24 +66,6 @@ public class ViewWrapperForBanner extends ViewWrapper {
 	@Override
 	public void setListeners() {
 		
-		try {
-			if(banner != null) {
-				row.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View arg0) {
-						
-						if(mActivity != null) {
-							mActivity.showPage(BCPConstants.PAGE_TYPE_SEARCH_CAR, null);
-						}
-					}
-				});
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
 	}
 	
 	@Override

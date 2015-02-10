@@ -39,36 +39,4 @@
     	android:layout_below="@id/myPage_btnCompletedList"
     	android:background="@drawable/mypage_cell4_btn" />
     
-    <View 
-        android:id="@+id/myPage_newIcon1"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/myPage_btnGrade"
-    	android:layout_alignRight="@id/myPage_btnGrade"
-    	android:background="@drawable/mypage_badge" />
-    
-    <View 
-        android:id="@+id/myPage_newIcon2"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/myPage_btnTicket"
-    	android:layout_alignRight="@id/myPage_btnTicket"
-    	android:background="@drawable/mypage_badge" />
-    
-    <View 
-        android:id="@+id/myPage_newIcon3"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/myPage_btnCompletedList"
-    	android:layout_alignRight="@id/myPage_btnCompletedList"
-    	android:background="@drawable/mypage_badge" />
-    
-    <View 
-        android:id="@+id/myPage_newIcon4"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/myPage_btnReview"
-    	android:layout_alignRight="@id/myPage_btnReview"
-    	android:background="@drawable/mypage_badge" />
-    
 </RelativeLayout>

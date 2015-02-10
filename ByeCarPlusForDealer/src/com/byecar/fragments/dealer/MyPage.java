@@ -20,8 +20,6 @@ public class MyPage extends BCPFragment {
 	private Button btnCompletedList;
 	private Button btnReview;
 	
-	private View[] newIcons = new View[4];
-	
 	@Override
 	public void bindViews() {
 
@@ -31,11 +29,6 @@ public class MyPage extends BCPFragment {
 		btnTicket = (Button) mThisView.findViewById(R.id.myPage_btnTicket);
 		btnCompletedList = (Button) mThisView.findViewById(R.id.myPage_btnCompletedList);
 		btnReview = (Button) mThisView.findViewById(R.id.myPage_btnReview);
-		
-		newIcons[0] = mThisView.findViewById(R.id.myPage_newIcon1);
-		newIcons[1] = mThisView.findViewById(R.id.myPage_newIcon2);
-		newIcons[2] = mThisView.findViewById(R.id.myPage_newIcon3);
-		newIcons[3] = mThisView.findViewById(R.id.myPage_newIcon4);
 	}
 
 	@Override
@@ -97,10 +90,6 @@ public class MyPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnTicket, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnCompletedList, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnReview, null, null, null);
-		
-		for(int i=0; i<4; i++) {
-			ResizeUtils.viewResizeForRelative(37, 37, newIcons[i], null, null, new int[]{0, 26, 19, 0});
-		}
 	}
 
 	@Override

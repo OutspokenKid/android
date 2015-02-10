@@ -833,44 +833,31 @@ public class MainPage extends BCPFragment {
 							return;
 						}
 						
-		        		/* 24시간 기준. 24h = 86400s.
-			        	 * remainTime = bid_until_at - (현재 시간 / 1000) = (남은 시간) [초]
-			        	 * 24시간 - (남은 시간) = (지난 시간).
-			        	 * 
-			        	 * 11시간 11분 11초
-			        	 * 시간 : 60초 * 60분
-			        	 * 분 : 60초
-			        	 * 초 : 1초
-			        	 * 
-			        	 * 11 * 60초 * 60분 = 11시간 = 11 * 3600 = 39600
-			        	 * 11 * 60초 = 11분 = 11 * 60 = 660
-			        	 * 11초 = 11초 = 11
-			        	 * 
-			        	 * 합계 = 40271
-			        	 * 
-			        	 * 40271 / 3600 = 11
-			        	 * 40271 % 3600 / 60 = 11
-			        	 * 40271 % 3600 % 60 = 11
-			        	 * 
-			        	 * s 단위임.
-			        	 */
-			        	Car car = bids.get(viewPager.getCurrentItem());
-			        	long remainTime = (car.getStatus() < Car.STATUS_BID_COMPLETE? car.getBid_until_at() : car.getEnd_at())
-			        			- (System.currentTimeMillis() / 1000);
-			        	long passTime = 86400 - remainTime;
+						Car car = bids.get(viewPager.getCurrentItem());
+						
+						/*
+						 * ms 단위.
+						 * progress : 0 ~ 1000
+						 * progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? (bid_until_at - bid_begin_at) * 1000 : 86400000);
+						 * (endTime = (bid_until_at * 1000) + (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000))
+						 * remainTime = endTime - currentTime
+						 * 		=  (bid_until_at * 1000) + (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000)) - currentTime
+						 * (passedTime = progressTime - remainTime)
+						 * progressValue = (passedTime / progressTime) * 1000
+						 * 		= (progressTime - remainTime) / progressTime * 1000
+						 * 		= 1000 - (remainTime * 1000 / progressTime)
+						 */
+
+						long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+								(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+						long remainTime = car.getBid_until_at() * 1000 
+								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+								- System.currentTimeMillis();
+			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
 			        	
-			        	if(remainTime <= 0) {
-//			        		car.setStatus(Car.STATUS_BID_COMPLETE);
-//			        		return;
-			        	}
-			        	
-			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime * 1000);
+			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
 			        	tvRemainTime.setText(formattedRemainTime);
-			        	
-			        	int percentage = (int)((double)passTime / 86400d * 10000 
-			        			/ (car.getStatus() == Car.STATUS_BID_COMPLETE? 2 : 1));
-			        	
-			        	progressBar.setProgress(percentage);
+			        	progressBar.setProgress((int)progressValue);
 		        	}
 				}
 				

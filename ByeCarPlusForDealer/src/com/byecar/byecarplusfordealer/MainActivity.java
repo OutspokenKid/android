@@ -588,7 +588,7 @@ public class MainActivity extends BCPFragmentActivity {
 			
 			//선 추가.
 			
-			if(i != size -1 && i != 3) {
+			if(i != size -1) {
 				View line = new View(this);
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1);
 				lp.leftMargin = ResizeUtils.getSpecificLength(10);
