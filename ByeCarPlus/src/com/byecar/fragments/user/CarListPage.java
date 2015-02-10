@@ -103,7 +103,6 @@ public class CarListPage extends BCPFragment {
 		
 		case Car.TYPE_BID:
 			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_a);
-			btnSearch.setVisibility(View.INVISIBLE);
 			btnRegistration.setVisibility(View.VISIBLE);
 			break;
 			
