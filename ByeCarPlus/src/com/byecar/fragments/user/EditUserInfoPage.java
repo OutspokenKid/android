@@ -820,13 +820,16 @@ public class EditUserInfoPage extends BCPFragment {
 	
 	public void closePage() {
 		
+		ToastUtils.showToast(R.string.failToLoadUserInfo);
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 
-				ToastUtils.showToast(R.string.failToLoadUserInfo);
-				mActivity.closeTopPage();
+				if(mActivity != null) {
+					mActivity.closeTopPage();
+				}
 			}
 		}, 1000);
 	}

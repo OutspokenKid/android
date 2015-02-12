@@ -1,11 +1,15 @@
 package com.byecar.models;
 
+import java.io.Serializable;
+
 import org.json.JSONObject;
 
 import com.outspoken_kid.utils.LogUtils;
 
-public class Bid extends BCPBaseModel {
+public class Bid extends BCPBaseModel implements Serializable {
 
+	private static final long serialVersionUID = 286683113292619669L;
+	
 //	"id": "3",
 //	"onsalecar_id": "13",
 //	"dealer_id": "4",

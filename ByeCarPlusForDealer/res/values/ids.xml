@@ -59,6 +59,7 @@
     <item name="carDetailPage_optionView28" type="id" />
     <item name="carDetailPage_optionView29" type="id" />
     <item name="carDetailPage_optionView30" type="id" />
+    <item name="carDetailPage_optionView31" type="id" />
 
     <item name="carDetailPage_used_ivImage" type="id" />
     <item name="carDetailPage_used_tvInfo1" type="id" />
@@ -111,6 +112,7 @@
     <item name="carRegistrationPage_optionView28" type="id" />
     <item name="carRegistrationPage_optionView29" type="id" />
     <item name="carRegistrationPage_optionView30" type="id" />
+    <item name="carRegistrationPage_optionView31" type="id" />
     
     <item name="normalCarView_ivImage" type="id" />
     <item name="normalCarView_tvPrice" type="id" />

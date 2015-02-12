@@ -365,13 +365,16 @@ public class SelectBidPage extends BCPFragment {
 	
 	public void closePage() {
 		
+		ToastUtils.showToast(R.string.failToLoadCarInfo);
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 
-				ToastUtils.showToast(R.string.failToLoadCarInfo);
-				mActivity.closeTopPage();
+				if(mActivity != null) {
+					mActivity.closeTopPage();
+				}
 			}
 		}, 1000);
 	}

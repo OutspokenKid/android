@@ -108,7 +108,7 @@
 		    android:layout_width="0dp"
 		    android:layout_height="0dp"
 		    android:layout_toRightOf="@id/mainPage_btnOrderSmall"
-		    android:layout_alignTop="@id/mainPage_btnOrderSmall"
+		    android:layout_alignParentBottom="true"
 		    android:background="@drawable/car_search_btn" />
 		
 		<Button
@@ -123,7 +123,7 @@
 		    android:id="@+id/mainPage_btnOrderBig"
 		    android:layout_width="0dp"
 		    android:layout_height="0dp"
-		    android:layout_alignParentLeft="true"
+		    android:layout_alignParentRight="true"
 		    android:layout_alignParentBottom="true"
 		    android:visibility="invisible"
 		    android:background="@drawable/used_sort1_btn" />

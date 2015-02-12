@@ -156,26 +156,27 @@ public class MainPage extends BCPFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-
-				if(menuIndex == 0 && position == 0) {
-					Bundle bundle = new Bundle();
-					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-					mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
-				}
 				
 				try {
-					int type = 0;
-
-					if(menuIndex < 2) {
-						type = Car.TYPE_BID;
+					if(models.get(position) instanceof Banner) {
+						Bundle bundle = new Bundle();
+						bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+						mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+						
 					} else {
-						type = Car.TYPE_DEALER;
+						int type = 0;
+
+						if(menuIndex < 2) {
+							type = Car.TYPE_BID;
+						} else {
+							type = Car.TYPE_DEALER;
+						}
+						
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("car", (Car) models.get(position));
+						bundle.putInt("type", type);
+						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 					}
-					
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", (Car) models.get(position));
-					bundle.putInt("type", type);
-					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {
@@ -311,7 +312,7 @@ public class MainPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(72, 72, btnOrderSmall, null, null, new int[]{8, 0, 0, 8});
 		ResizeUtils.viewResizeForRelative(72, 72, btnSearch, null, null, new int[]{8, 0, 0, 8});
 		ResizeUtils.viewResizeForRelative(464, 72, btnRegistration, null, null, new int[]{8, 0, 0, 8});
-		ResizeUtils.viewResizeForRelative(624, 72, btnOrderBig, null, null, new int[]{8, 0, 0, 8});
+		ResizeUtils.viewResizeForRelative(544, 72, btnOrderBig, null, null, new int[]{0, 0, 8, 8});
 	}
 
 	@Override
@@ -525,9 +526,8 @@ public class MainPage extends BCPFragment {
 		case 0:
 			buttonRelative.setVisibility(View.VISIBLE);
 			ResizeUtils.setMargin(listView, new int[]{0, 0, 0, 88});
-			btnOrderSmall.setVisibility(View.INVISIBLE);
-			btnSearch.setVisibility(View.INVISIBLE);
-			btnRegistration.setVisibility(View.INVISIBLE);
+			btnOrderSmall.setVisibility(View.GONE);
+			btnRegistration.setVisibility(View.GONE);
 			btnOrderBig.setVisibility(View.VISIBLE);
 			ResizeUtils.setMargin(swipeRefreshLayout, new int[]{0, 0, 0, 88});
 			break;
@@ -536,9 +536,8 @@ public class MainPage extends BCPFragment {
 			buttonRelative.setVisibility(View.VISIBLE);
 			ResizeUtils.setMargin(listView, new int[]{0, 0, 0, 88});
 			btnOrderSmall.setVisibility(View.VISIBLE);
-			btnSearch.setVisibility(View.VISIBLE);
 			btnRegistration.setVisibility(View.VISIBLE);
-			btnOrderBig.setVisibility(View.INVISIBLE);
+			btnOrderBig.setVisibility(View.GONE);
 			ResizeUtils.setMargin(swipeRefreshLayout, new int[]{0, 0, 0, 88});
 			break;
 		

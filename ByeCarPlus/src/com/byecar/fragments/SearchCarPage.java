@@ -733,13 +733,16 @@ public class SearchCarPage extends BCPFragment {
 	
 	public void closePage() {
 
+		ToastUtils.showToast(R.string.failToLoadList);
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-
-				ToastUtils.showToast(R.string.failToLoadList);
-				mActivity.closeTopPage();
+				
+				if(mActivity != null) {
+					mActivity.closeTopPage();
+				}
 			}
 		}, 1000);
 	}

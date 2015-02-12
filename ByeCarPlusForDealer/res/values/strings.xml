@@ -145,6 +145,7 @@
 	<string name="searchCondition">검색조건</string>
 	<string name="selectCarFirst">차량을 먼저 선택해주세요</string>
 	<string name="sellingPrice">판매금액</string>
+	<string name="sellingPriceMustOver10000">판매 가격은 10000원 이상이어야 합니다</string>
 	<string name="searchPrice1">0</string>
     <string name="searchPrice2">2억5천</string>
     <string name="searchPrice3">5억</string>

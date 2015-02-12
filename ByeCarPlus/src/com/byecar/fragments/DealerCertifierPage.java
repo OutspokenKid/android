@@ -466,18 +466,20 @@ public class DealerCertifierPage extends BCPFragment {
 	
 	public void closePage() {
 		
+		if(isCertifier) {
+			ToastUtils.showToast(R.string.failToLoadCertifierInfo);
+		} else {
+			ToastUtils.showToast(R.string.failToLoadDealerInfo);
+		}
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-
-				if(isCertifier) {
-					ToastUtils.showToast(R.string.failToLoadCertifierInfo);
-				} else {
-					ToastUtils.showToast(R.string.failToLoadDealerInfo);
-				}
 				
-				mActivity.closeTopPage();
+				if(mActivity != null) {
+					mActivity.closeTopPage();
+				}
 			}
 		}, 1000);
 	}

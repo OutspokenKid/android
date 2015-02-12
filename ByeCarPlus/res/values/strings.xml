@@ -147,6 +147,7 @@
     <string name="selectCarFirst">차량을 먼저 선택해주세요</string>
     <string name="selectOrder">정렬 선택</string>
     <string name="sellingArea">판매지역</string>
+    <string name="sellingPriceMustOver10000">판매 가격은 10000원 이상이어야 합니다</string>
     <string name="sideMenuTitle1">거래</string>
     <string name="sideMenuTitle2">서비스</string>
     <string name="signOut">로그아웃</string>

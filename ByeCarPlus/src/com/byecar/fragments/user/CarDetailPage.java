@@ -29,6 +29,7 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
+import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.models.Car;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
@@ -48,6 +49,8 @@ import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
 
 public class CarDetailPage extends BCPFragment {
+
+	private static final int OPTION_VIEW_SIZE = 31;
 	
 	private int id;
 	private Car car;
@@ -94,7 +97,7 @@ public class CarDetailPage extends BCPFragment {
 	private TextView tvDescription;
 	private View footerForDescription;
 	
-	private View[] carDetailPage_optionViews;
+	private View[] optionViews;
 	
 	private ImagePagerAdapter imagePagerAdapter;
 	
@@ -343,6 +346,7 @@ public class CarDetailPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
+				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
@@ -697,13 +701,12 @@ public class CarDetailPage extends BCPFragment {
 		
 		relativeForOption.removeAllViews();
 		
-		int size = 30;
-		carDetailPage_optionViews = new View[size];
+		optionViews = new View[OPTION_VIEW_SIZE];
 		
 		RelativeLayout.LayoutParams rp = null;
 		
 
-		for(int i=0; i<size; i++) {
+		for(int i=0; i<OPTION_VIEW_SIZE; i++) {
 
 		//Texts.
 			if(i == 0) {
@@ -727,21 +730,20 @@ public class CarDetailPage extends BCPFragment {
 				relativeForOption.addView(getTextViewForOption(3));
 			}
 			
-			
 		//Views.
-			carDetailPage_optionViews[i] = getViewForOption(i);
-			relativeForOption.addView(carDetailPage_optionViews[i]);
-			
-		//Bottom blank.
-			View blank = new View(mContext);
-			rp = new RelativeLayout.LayoutParams(
-					10, ResizeUtils.getSpecificLength(20));
-			rp.addRule(RelativeLayout.BELOW, 
-					getResources().getIdentifier("carDetailPage_optionView30", 
-							"id", "com.byecar.byecarplus"));
-			blank.setLayoutParams(rp);
-			relativeForOption.addView(blank);
+			optionViews[i] = getViewForOption(i);
+			relativeForOption.addView(optionViews[i]);
 		}
+		
+		//Bottom blank.
+		View blank = new View(mContext);
+		rp = new RelativeLayout.LayoutParams(
+				10, ResizeUtils.getSpecificLength(20));
+		rp.addRule(RelativeLayout.BELOW, 
+				getResources().getIdentifier("carDetailPage_optionView30", 
+						"id", "com.byecar.byecarplus"));
+		blank.setLayoutParams(rp);
+		relativeForOption.addView(blank);
 	}
 	
 	public TextView getTextViewForOption(int index) {
@@ -846,6 +848,15 @@ public class CarDetailPage extends BCPFragment {
 						getResources().getIdentifier("carDetailPage_optionView24",
 								"id", "com.byecar.byecarplus"));
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				rp.topMargin = ResizeUtils.getSpecificLength(24);
+				
+			} else if(index == 30) {
+				rp.addRule(RelativeLayout.ALIGN_TOP, 
+						getResources().getIdentifier("carDetailPage_optionView25",
+								"id", "com.byecar.byecarplus"));
+				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				rp.rightMargin = ResizeUtils.getSpecificLength(35);
+				
 			} else {
 				switch(index % 3) {
 				
@@ -1134,8 +1145,8 @@ public class CarDetailPage extends BCPFragment {
 			return;
 		}
 		
-		for(int i=0; i<30; i++) {
-			carDetailPage_optionViews[i].setBackgroundResource(
+		for(int i=0; i<OPTION_VIEW_SIZE; i++) {
+			optionViews[i].setBackgroundResource(
 					getResources().getIdentifier("detail_optioin" + (i + 1) + "_btn_a", 
 							"drawable", "com.byecar.byecarplus"));
 		}
@@ -1144,7 +1155,7 @@ public class CarDetailPage extends BCPFragment {
 		for(int i=0; i<size; i++) {
 
 			int index = car.getOptions()[i];
-			carDetailPage_optionViews[index - 1].setBackgroundResource(
+			optionViews[index - 1].setBackgroundResource(
 					getResources().getIdentifier("detail_optioin" + index + "_btn_b", 
 							"drawable", "com.byecar.byecarplus"));
 		}
@@ -1157,13 +1168,16 @@ public class CarDetailPage extends BCPFragment {
 
 	public void closePage() {
 		
+		ToastUtils.showToast(R.string.failToLoadCarInfo);
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 
-				ToastUtils.showToast(R.string.failToLoadCarInfo);
-				mActivity.closeTopPage();
+				if(mActivity != null) {
+					mActivity.closeTopPage();
+				}
 			}
 		}, 1000);
 	}
