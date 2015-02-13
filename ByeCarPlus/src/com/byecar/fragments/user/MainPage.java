@@ -29,6 +29,7 @@ import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Car;
+import com.byecar.models.CompanyInfo;
 import com.byecar.models.OpenablePost;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
@@ -519,6 +520,14 @@ public class MainPage extends BCPFragment {
 					int size = 0;
 					
 					try {
+						MainActivity.companyInfo = new CompanyInfo(objJSON.getJSONObject("company_info"));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
 						ArrayList<String> images = new ArrayList<String>();
 						
 						bids.clear();
@@ -570,7 +579,9 @@ public class MainPage extends BCPFragment {
 					}
 					
 					try {
-						notice = new OpenablePost(objJSON.getJSONObject("notice"));
+						if(objJSON.has("notice")) {
+							notice = new OpenablePost(objJSON.getJSONObject("notice"));
+						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					}

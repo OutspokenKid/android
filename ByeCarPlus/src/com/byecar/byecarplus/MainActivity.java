@@ -43,6 +43,7 @@ import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
+import com.byecar.fragments.WebBrowserPage;
 import com.byecar.fragments.user.CarDetailPage;
 import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.CarRegistrationPage;
@@ -373,6 +374,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
+			
+		case BCPConstants.PAGE_WEB_BROWSER:
+			return new WebBrowserPage();
 		}
 		
 		return null;
@@ -686,7 +690,11 @@ public class MainActivity extends BCPFragmentActivity {
 								
 //								R.drawable.menu_homepage_btn,
 							case 9:
-//								showPage(BCPConstants.PAGE_SETTING, null);
+								if(companyInfo != null) {
+									bundle.putString("url", companyInfo.getHomepage());
+								}
+								
+								showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
 								break;
 								
 //								R.drawable.menu_term_btn,
@@ -836,7 +844,6 @@ public class MainActivity extends BCPFragmentActivity {
 								+ "\nresult : " + objJSON);
 						
 						user = new User(objJSON.getJSONObject("user"));
-						companyInfo = new CompanyInfo(objJSON.getJSONObject("company_info"));
 						
 //						if(socketIO == null || !socketIO.isConnected()) {
 //							setSocket();

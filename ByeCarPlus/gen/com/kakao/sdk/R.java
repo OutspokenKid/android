@@ -318,7 +318,7 @@ public final class R {
 		public static final int com_facebook_list_section_header_background = 0x7f0200ab;
 		public static final int com_facebook_loginbutton_silver = 0x7f0200ac;
 		public static final int com_facebook_logo = 0x7f0200ad;
-		public static final int com_facebook_picker_default_separator_color = 0x7f0202e5;
+		public static final int com_facebook_picker_default_separator_color = 0x7f0202f1;
 		public static final int com_facebook_picker_item_background = 0x7f0200ae;
 		public static final int com_facebook_picker_list_focused = 0x7f0200af;
 		public static final int com_facebook_picker_list_longpressed = 0x7f0200b0;
@@ -412,7 +412,7 @@ public final class R {
 		public static final int icon = 0x7f05009b;
 		public static final int ifRoom = 0x7f05000a;
 		public static final int image = 0x7f050098;
-		public static final int kakao_login_activity_progress_bar = 0x7f050245;
+		public static final int kakao_login_activity_progress_bar = 0x7f05024c;
 		public static final int large = 0x7f05001b;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f05009a;
@@ -491,9 +491,9 @@ public final class R {
 		public static final int com_facebook_search_bar_layout = 0x7f030028;
 		public static final int com_facebook_tooltip_bubble = 0x7f030029;
 		public static final int com_facebook_usersettingsfragment = 0x7f03002a;
-		public static final int kakao_internal_login_activity = 0x7f030043;
-		public static final int kakao_login_layout = 0x7f030044;
-		public static final int support_simple_spinner_dropdown_item = 0x7f03004d;
+		public static final int kakao_internal_login_activity = 0x7f030044;
+		public static final int kakao_login_layout = 0x7f030045;
+		public static final int support_simple_spinner_dropdown_item = 0x7f03004e;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0a0001;

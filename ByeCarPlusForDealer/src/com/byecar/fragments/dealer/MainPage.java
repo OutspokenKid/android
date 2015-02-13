@@ -31,6 +31,7 @@ import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Banner;
 import com.byecar.models.Car;
+import com.byecar.models.CompanyInfo;
 import com.byecar.models.OpenablePost;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -654,6 +655,14 @@ public class MainPage extends BCPFragment {
 					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
+					try {
+						MainActivity.companyInfo = new CompanyInfo(objJSON.getJSONObject("company_info"));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+					
 					if(objJSON.has("notice")) {
 						OpenablePost openablePost = new OpenablePost(objJSON.getJSONObject("notice"));
 						banner = new Banner();
