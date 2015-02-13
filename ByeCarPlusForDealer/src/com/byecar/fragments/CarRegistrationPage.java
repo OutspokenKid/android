@@ -1363,7 +1363,7 @@ public class CarRegistrationPage extends BCPFragment {
 
 				StringBuilder sb = new StringBuilder("");
 				
-//				onsalecar[id] : 수정 시에만 기재
+				//onsalecar[id] : 수정 시에만 기재
 				if(car != null) {
 					sb.append("?onsalecar[id]=" + car.getId());
 					sb.append("&");
@@ -1375,7 +1375,7 @@ public class CarRegistrationPage extends BCPFragment {
 				sb.append("onsalecar[price]=").append(etPrice.getText().toString() + "0000");
 				
 				//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
-				sb.append("onsalecar[car_id]=").append(carModelDetailInfo.getId());
+				sb.append("&onsalecar[car_id]=").append(carModelDetailInfo.getId());
 				
 				//onsalecar[year] : 연식
 				sb.append("&onsalecar[year]=").append(carInfoStrings[0]);

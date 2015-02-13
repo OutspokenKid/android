@@ -29,7 +29,6 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.models.Car;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
@@ -347,6 +346,7 @@ public class CarDetailPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
+				bundle.putInt("carType", Car.TYPE_BID);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
@@ -1062,16 +1062,6 @@ public class CarDetailPage extends BCPFragment {
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);
 			
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
-			
-			if(car != null && car.getSeller_id() == MainActivity.user.getId()) {
-				btnEdit.setVisibility(View.VISIBLE);
-				btnDelete.setVisibility(View.VISIBLE);
-				btnGuide.setVisibility(View.INVISIBLE);
-			} else {
-				btnGuide.setVisibility(View.VISIBLE);
-				btnEdit.setVisibility(View.INVISIBLE);
-				btnDelete.setVisibility(View.INVISIBLE);
-			}
 		} else {
 			auctionIcon.setVisibility(View.INVISIBLE);
 			timeRelative.setVisibility(View.GONE);
@@ -1082,6 +1072,30 @@ public class CarDetailPage extends BCPFragment {
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.VISIBLE);
 			
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
+		}
+		
+		if(car != null && car.getSeller_id() == MainActivity.user.getId()		//내 매물인 경우.
+				) {
+			btnBuy.setVisibility(View.INVISIBLE);
+			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);
+			
+			RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
+			rp.bottomMargin = ResizeUtils.getSpecificLength(0);
+			
+			if((car.getType() == Car.TYPE_BID && car.getStatus() < 15)
+					|| (car.getType() == Car.TYPE_DIRECT_NORMAL && car.getStatus() < 30)) {
+				btnEdit.setVisibility(View.VISIBLE);
+				btnDelete.setVisibility(View.VISIBLE);
+				btnGuide.setVisibility(View.INVISIBLE);
+			} else {
+				btnGuide.setVisibility(View.VISIBLE);
+				btnEdit.setVisibility(View.INVISIBLE);
+				btnDelete.setVisibility(View.INVISIBLE);
+			}
+		} else {
+			btnGuide.setVisibility(View.VISIBLE);
+			btnEdit.setVisibility(View.INVISIBLE);
+			btnDelete.setVisibility(View.INVISIBLE);
 		}
 
 		//제조사.

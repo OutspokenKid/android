@@ -25,7 +25,6 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
@@ -153,7 +152,7 @@ public class CarListPage extends BCPFragment {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position,
 					long id) {
-
+				
 				try {
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("car", (Car) models.get(position));

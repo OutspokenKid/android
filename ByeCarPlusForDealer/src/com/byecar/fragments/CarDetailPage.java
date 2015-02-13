@@ -402,6 +402,7 @@ public class CarDetailPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
+				bundle.putInt("carType", Car.TYPE_DEALER);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
@@ -1177,6 +1178,7 @@ public class CarDetailPage extends BCPFragment {
 			tvBidCount.setVisibility(View.VISIBLE);
 			
 			btnGuide.setVisibility(View.VISIBLE);
+			
 			(mThisView.findViewById(R.id.carDetailPage_buttonBg)).setVisibility(View.VISIBLE);
 			btnBuy.setVisibility(View.VISIBLE);
 			
@@ -1190,8 +1192,11 @@ public class CarDetailPage extends BCPFragment {
 			btnBuy.setVisibility(View.GONE);
 			
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
+		}
+		
+		if(car != null && car.getSeller_id() == MainActivity.user.getId()) {
 			
-			if(car != null && car.getSeller_id() == MainActivity.user.getId()) {
+			if(car.getType() == Car.TYPE_DEALER && car.getStatus() < 30) {
 				btnEdit.setVisibility(View.VISIBLE);
 				btnDelete.setVisibility(View.VISIBLE);
 				btnGuide.setVisibility(View.INVISIBLE);
@@ -1200,6 +1205,10 @@ public class CarDetailPage extends BCPFragment {
 				btnEdit.setVisibility(View.INVISIBLE);
 				btnDelete.setVisibility(View.INVISIBLE);
 			}
+		} else {
+			btnGuide.setVisibility(View.VISIBLE);
+			btnEdit.setVisibility(View.INVISIBLE);
+			btnDelete.setVisibility(View.INVISIBLE);
 		}
 
 		//제조사.
@@ -1694,6 +1703,11 @@ public class CarDetailPage extends BCPFragment {
 	}
 
 	public void setBiddingPrice(long biddingPrice) {
+		
+		if(biddingPrice >= 500000000) {
+			ToastUtils.showToast(R.string.bidPriceMustLessThan500m);
+			return;
+		}
 		
 		currentBiddingPrice = biddingPrice;
 		tvBiddingPrice.setText(StringUtils.getFormattedNumber(biddingPrice) 

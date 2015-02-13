@@ -95,7 +95,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfc;
 			
 		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
-			return new ViewWrapperForDirectNormal(convertView, itemCode);
+			ViewWrapperForDirectNormal vwfd = new ViewWrapperForDirectNormal(convertView, itemCode);
+			vwfd.setActivity(activity);
+			return vwfd;
 			
 		case BCPConstants.ITEM_CAR_BRAND:
 			ViewWrapperForBrand vwfb = new ViewWrapperForBrand(convertView, itemCode);

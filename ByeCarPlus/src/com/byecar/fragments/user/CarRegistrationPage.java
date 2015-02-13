@@ -1,4 +1,4 @@
-package com.byecar.fragments;
+package com.byecar.fragments.user;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -30,7 +30,7 @@ import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
-import com.byecar.fragments.user.EditUserInfoPage;
+import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.models.Car;
 import com.byecar.models.CarModelDetailInfo;
 import com.byecar.views.TitleBar;
@@ -272,24 +272,31 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			btnRequest.setVisibility(View.VISIBLE);
 			btnComplete.setVisibility(View.INVISIBLE);
+			
+			tvPriceText.setVisibility(View.GONE);
+			etPrice.setVisibility(View.GONE);
+			btnClearPrice.setVisibility(View.GONE);
+			lineAfterPrice.setVisibility(View.GONE);
+
 		} else {
 			tvWriteAllContents.setText(R.string.writeAllContentForRegistration);
 			btnRequest.setVisibility(View.INVISIBLE);
 			btnComplete.setVisibility(View.VISIBLE);
-		}
-		
-		if(type == TYPE_REGISTRATION) {
 			
 			switch(carType) {
 			
 			case Car.TYPE_BID:
 				tvPriceText.setText(R.string.priceForBid);
 				etPrice.setHint(R.string.hintForPriceBid);
+				immediatlySale.setVisibility(View.VISIBLE);
+				btnImmediatlySale.setVisibility(View.VISIBLE);
 				break;
 				
 			case Car.TYPE_DIRECT_NORMAL:
 				tvPriceText.setText(R.string.priceForNormal);
 				etPrice.setHint(R.string.hintForPriceNormal);
+				immediatlySale.setVisibility(View.GONE);
+				btnImmediatlySale.setVisibility(View.GONE);
 				break;
 			}
 			
@@ -297,11 +304,6 @@ public class CarRegistrationPage extends BCPFragment {
 			etPrice.setVisibility(View.VISIBLE);
 			btnClearPrice.setVisibility(View.VISIBLE);
 			lineAfterPrice.setVisibility(View.VISIBLE);
-		} else {
-			tvPriceText.setVisibility(View.GONE);
-			etPrice.setVisibility(View.GONE);
-			btnClearPrice.setVisibility(View.GONE);
-			lineAfterPrice.setVisibility(View.GONE);
 		}
 	}
 
@@ -786,7 +788,7 @@ public class CarRegistrationPage extends BCPFragment {
 	@Override
 	public int getContentViewId() {
 
-		return R.layout.fragment_common_car_registration;
+		return R.layout.fragment_car_registration;
 	}
 
 	@Override
@@ -1481,7 +1483,7 @@ public class CarRegistrationPage extends BCPFragment {
 
 				StringBuilder sb = new StringBuilder("");
 				
-//				onsalecar[id] : 수정 시에만 기재
+				//onsalecar[id] : 수정 시에만 기재
 				if(car != null) {
 					sb.append("?onsalecar[id]=" + car.getId());
 					sb.append("&");
@@ -1493,7 +1495,7 @@ public class CarRegistrationPage extends BCPFragment {
 				sb.append("onsalecar[price]=").append(etPrice.getText().toString() + "0000");
 				
 				//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
-				sb.append("onsalecar[car_id]=").append(carModelDetailInfo.getId());
+				sb.append("&onsalecar[car_id]=").append(carModelDetailInfo.getId());
 				
 				//onsalecar[year] : 연식
 				sb.append("&onsalecar[year]=").append(carInfoStrings[0]);
@@ -1683,7 +1685,7 @@ public class CarRegistrationPage extends BCPFragment {
 	}
 
 	public void uploadImages() {
-		
+
 		int size = selectedImageSdCardPaths.length;
 		
 		for(int i=0; i<size; i++) {
