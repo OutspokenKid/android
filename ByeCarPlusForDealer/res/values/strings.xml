@@ -122,6 +122,8 @@
     <string name="minPriceMustOverZero">최저 가격은 0원 이상이어야 합니다</string>
     <string name="myBiddingPrice">나의 입찰가</string>
     
+    <string name="kakaoTalkNotInstalled">카카오톡이 설치 되어 있지 않습니다.</string>
+    
     <string name="lastList">마지막 리스트입니다.</string>
     <string name="like">좋아요</string>
     

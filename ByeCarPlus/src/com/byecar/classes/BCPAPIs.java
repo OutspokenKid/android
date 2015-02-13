@@ -84,4 +84,5 @@ public class BCPAPIs {
 	public static String PHONE_UPDATE_URL = BASE_API_URL + "/users/update/phone_number.json";
 	
 	public static String SOCKET_URL = BASE_API_URL + ":23004/";
+	public static String GOTO_KAKAO_URL = "http://goto.kakao.com/fgv62tld";
 }

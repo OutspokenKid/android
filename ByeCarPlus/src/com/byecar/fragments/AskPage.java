@@ -2,14 +2,23 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
+import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.IntentUtils;
+import com.outspoken_kid.utils.PackageUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class AskPage extends BCPFragment {
 
@@ -43,8 +52,45 @@ public class AskPage extends BCPFragment {
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		btnKakao.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(PackageUtils.checkApplicationInstalled(mContext, "com.kakao.talk")) {
+					IntentUtils.showDeviceBrowser(mActivity, BCPAPIs.GOTO_KAKAO_URL);
+				} else {
+					ToastUtils.showToast(R.string.kakaoTalkNotInstalled);
+				}
+			}
+		});
+		
+		btnFacebook.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				
+				if(MainActivity.companyInfo != null) {
+					bundle.putString("url", MainActivity.companyInfo.getFacebook_url());
+				}
+				
+				mActivity.showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
+			}
+		});
+		
+		btnEmail.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(MainActivity.companyInfo != null) {
+					IntentUtils.sendEmail(mContext, MainActivity.companyInfo.getEmail());
+				}
+			}
+		});
 	}
 
 	@Override

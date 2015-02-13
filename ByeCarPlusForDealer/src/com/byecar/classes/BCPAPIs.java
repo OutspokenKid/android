@@ -51,4 +51,7 @@ public class BCPAPIs {
 	public static String SEARCH_CAR_MODEL = BASE_API_URL + "/cars/models.json";
 	public static String SEARCH_CAR_TRIM = BASE_API_URL + "/cars/trims.json";
 	public static String SEARCH_CAR_DETAIL_INFO = BASE_API_URL + "/cars/show.json";
+
+	public static String SOCKET_URL = BASE_API_URL + ":23004/";
+	public static String GOTO_KAKAO_URL = "http://goto.kakao.com/fgv62tld";
 }
