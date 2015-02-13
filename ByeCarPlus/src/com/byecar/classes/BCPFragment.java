@@ -151,7 +151,7 @@ public abstract class BCPFragment extends BaseFragment {
 				 url += last_priority;
 			}
 			
-			if(!url.contains("num=")) {
+			if(!url.contains("&num=")) {
 				url += "&num=" + NUMBER_OF_LISTITEMS;
 			}
 			
