@@ -53,6 +53,7 @@ import com.byecar.fragments.user.MyPage;
 import com.byecar.fragments.user.SelectBidPage;
 import com.byecar.fragments.user.WriteReviewPage;
 import com.byecar.models.Car;
+import com.byecar.models.CompanyInfo;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -79,6 +80,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public static final int POPUP_CHOICE_DEALER = 3;
 
 	public static User user;
+	public static CompanyInfo companyInfo;
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
@@ -834,6 +836,7 @@ public class MainActivity extends BCPFragmentActivity {
 								+ "\nresult : " + objJSON);
 						
 						user = new User(objJSON.getJSONObject("user"));
+						companyInfo = new CompanyInfo(objJSON.getJSONObject("company_info"));
 						
 //						if(socketIO == null || !socketIO.isConnected()) {
 //							setSocket();

@@ -49,6 +49,7 @@ import com.byecar.fragments.dealer.MyGradePage;
 import com.byecar.fragments.dealer.MyPage;
 import com.byecar.fragments.dealer.MyReviewPage;
 import com.byecar.fragments.dealer.MyTicketPage;
+import com.byecar.models.CompanyInfo;
 import com.byecar.models.Dealer;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
@@ -75,6 +76,7 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public static User user;
 	public static Dealer dealer;
+	public static CompanyInfo companyInfo;
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
@@ -800,6 +802,7 @@ public class MainActivity extends BCPFragmentActivity {
 								+ "\nresult : " + objJSON);
 						
 						user = new User(objJSON.getJSONObject("user"));
+						companyInfo = new CompanyInfo(objJSON.getJSONObject("company_info"));
 						
 //						if(socketIO == null || !socketIO.isConnected()) {
 //							setSocket();
