@@ -23,6 +23,7 @@ import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class SearchResultPage extends BCPFragment {
 
@@ -77,10 +78,16 @@ public class SearchResultPage extends BCPFragment {
 					long id) {
 
 				try {
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", (Car) models.get(position));
-					bundle.putInt("type", Car.TYPE_DEALER);
-					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					Car car = (Car) models.get(position);
+					
+					if(car.getStatus() == -1) {
+						ToastUtils.showToast(R.string.holdOffByAdmin);
+					} else {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("car", car);
+						bundle.putInt("type", car.getType());
+						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

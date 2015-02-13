@@ -26,6 +26,7 @@ import com.byecar.models.Review;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class MyPage extends BCPFragment {
 
@@ -104,10 +105,16 @@ public class MyPage extends BCPFragment {
 			public void onItemClick(AdapterView<?> arg0, View row, int position,
 					long arg3) {
 				
-				Bundle bundle = new Bundle();
-				bundle.putInt("id", ((Car)models.get(position)).getId());
-				bundle.putInt("type", ((Car)models.get(position)).getType());
-				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				Car car = (Car) models.get(position);
+				
+				if(car.getStatus() == -1) {
+					ToastUtils.showToast(R.string.holdOffByAdmin);
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("car", car);
+					bundle.putInt("type", car.getType());
+					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				}
 			}
 		});
 	}

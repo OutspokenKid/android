@@ -154,10 +154,16 @@ public class CarListPage extends BCPFragment {
 					long id) {
 				
 				try {
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", (Car) models.get(position));
-					bundle.putInt("type", type);
-					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					Car car = (Car) models.get(position);
+					
+					if(car.getStatus() == -1) {
+						ToastUtils.showToast(R.string.holdOffByAdmin);
+					} else {
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("car", car);
+						bundle.putInt("type", car.getType());
+						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

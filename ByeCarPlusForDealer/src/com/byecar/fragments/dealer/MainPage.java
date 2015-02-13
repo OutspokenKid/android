@@ -38,6 +38,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class MainPage extends BCPFragment {
 
@@ -165,18 +166,16 @@ public class MainPage extends BCPFragment {
 						mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 						
 					} else {
-						int type = 0;
-
-						if(menuIndex < 2) {
-							type = Car.TYPE_BID;
-						} else {
-							type = Car.TYPE_DEALER;
-						}
+						Car car = (Car) models.get(position);
 						
-						Bundle bundle = new Bundle();
-						bundle.putSerializable("car", (Car) models.get(position));
-						bundle.putInt("type", type);
-						mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						if(car.getStatus() == -1) {
+							ToastUtils.showToast(R.string.holdOffByAdmin);
+						} else {
+							Bundle bundle = new Bundle();
+							bundle.putSerializable("car", car);
+							bundle.putInt("type", car.getType());
+							mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						}
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
