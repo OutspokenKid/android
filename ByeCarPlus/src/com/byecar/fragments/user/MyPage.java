@@ -178,7 +178,7 @@ public class MyPage extends BCPFragment {
 		if(menuIndex == 0) {
 			url = BCPAPIs.MY_CAR_URL;
 		} else if(menuIndex == 1) {
-			url = BCPAPIs.MY_REVIEW_URL;
+			url = BCPAPIs.MY_PURCHASE_URL;
 		} else {
 			url = BCPAPIs.MY_REVIEW_URL;
 		}
@@ -203,13 +203,13 @@ public class MyPage extends BCPFragment {
 					models.add(car);
 				}
 			} else if(menuIndex == 1) {
-				arJSON = objJSON.getJSONArray("reviews");
+				arJSON = objJSON.getJSONArray("purchases");
 				size = arJSON.length();
 				
 				for(int i=0; i<size; i++) {
-					Review review = new Review(arJSON.getJSONObject(i));
-					review.setItemCode(BCPConstants.ITEM_REVIEW);
-					models.add(review);
+					Car car = new Car(arJSON.getJSONObject(i));
+					car.setItemCode(BCPConstants.ITEM_CAR_MY_PURCHASE);
+					models.add(car);
 				}
 			} else {
 				

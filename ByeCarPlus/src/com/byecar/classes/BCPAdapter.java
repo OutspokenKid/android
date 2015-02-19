@@ -64,6 +64,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return R.layout.list_search_text;
 			
 		case BCPConstants.ITEM_CAR_MY:
+		case BCPConstants.ITEM_CAR_MY_PURCHASE:
 			return R.layout.list_my_car;
 		}
 		
@@ -110,6 +111,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfst;
 			
 		case BCPConstants.ITEM_CAR_MY:
+		case BCPConstants.ITEM_CAR_MY_PURCHASE:
 			return new ViewWrapperForMyCar(convertView, itemCode);
 		}
 		
