@@ -6,7 +6,9 @@ import android.widget.Toast;
 public class ToastUtils {
 	private static Context context;
 	private static Toast toast;
-	
+	private static int gravity;
+	private static int xOffset;
+	private static int yOffset;
 	
 	public static void setContext(Context _context) {
 		if(context == null) {
@@ -19,6 +21,7 @@ public class ToastUtils {
 		try {
 			if(toast == null) {
 				toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+				toast.setGravity(gravity, xOffset, yOffset);
 			}
 			
 			toast.setText(_str);
@@ -33,6 +36,7 @@ public class ToastUtils {
 		try {
 			if(toast == null) {
 				toast = Toast.makeText(context, "", Toast.LENGTH_SHORT);
+				toast.setGravity(gravity, xOffset, yOffset);
 			}
 			
 			toast.setText(resId);
@@ -43,9 +47,9 @@ public class ToastUtils {
 	}
 	
 	public static void setGravity(int gravity, int xOffset, int yOffset) {
-		
-		if(toast != null) {
-			toast.setGravity(gravity, xOffset, yOffset);
-		}
+
+		ToastUtils.gravity = gravity;
+		ToastUtils.xOffset = xOffset;
+		ToastUtils.yOffset = yOffset;
 	}
 }
