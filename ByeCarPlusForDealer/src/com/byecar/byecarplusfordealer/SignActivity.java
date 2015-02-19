@@ -7,6 +7,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.view.Gravity;
 
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
@@ -20,6 +21,7 @@ import com.byecar.fragments.dealer.SignUpForDealerPage;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class SignActivity extends BCPFragmentActivity {
 
@@ -65,6 +67,8 @@ public class SignActivity extends BCPFragmentActivity {
 	public void setPage(boolean successDownload) {
 
 		loadCookies();
+		
+		ToastUtils.setGravity(Gravity.CENTER, 0, 0);
 		
 		if(getFragmentsSize() == 0) {
 			showPage(BCPConstants.PAGE_SIGN, null);
