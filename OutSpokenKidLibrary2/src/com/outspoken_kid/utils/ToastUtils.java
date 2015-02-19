@@ -41,4 +41,11 @@ public class ToastUtils {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void setGravity(int gravity, int xOffset, int yOffset) {
+		
+		if(toast != null) {
+			toast.setGravity(gravity, xOffset, yOffset);
+		}
+	}
 }
