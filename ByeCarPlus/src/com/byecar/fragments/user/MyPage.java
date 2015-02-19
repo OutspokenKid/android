@@ -31,6 +31,7 @@ import com.outspoken_kid.utils.ToastUtils;
 public class MyPage extends BCPFragment {
 
 	private Button btnCar;
+	private Button btnPurchase;
 	private Button btnReview;
 	
 	private ListView listView;
@@ -43,6 +44,7 @@ public class MyPage extends BCPFragment {
 		
 		btnCar = (Button) mThisView.findViewById(R.id.myPage_btnCar);
 		btnReview = (Button) mThisView.findViewById(R.id.myPage_btnReview);
+		btnPurchase = (Button) mThisView.findViewById(R.id.myPage_btnPurchase);
 		listView = (ListView) mThisView.findViewById(R.id.myPage_listView);
 	}
 
@@ -74,12 +76,22 @@ public class MyPage extends BCPFragment {
 			}
 		});
 		
-		btnReview.setOnClickListener(new OnClickListener() {
+		btnPurchase.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 				
 				setMenu(1);
+			}
+		});
+
+		
+		btnReview.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				
+				setMenu(2);
 			}
 		});
 		
@@ -125,7 +137,8 @@ public class MyPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, 
 				mThisView.findViewById(R.id.myPage_bgForButtons), null, null, null);
 		
-		ResizeUtils.viewResizeForRelative(320, 88, btnCar, null, null, null);
+		ResizeUtils.viewResizeForRelative(213, 88, btnCar, null, null, null);
+		ResizeUtils.viewResizeForRelative(214, 88, btnPurchase, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnReview, null, null, null);
 	}
 
@@ -164,6 +177,8 @@ public class MyPage extends BCPFragment {
 
 		if(menuIndex == 0) {
 			url = BCPAPIs.MY_CAR_URL;
+		} else if(menuIndex == 1) {
+			url = BCPAPIs.MY_REVIEW_URL;
 		} else {
 			url = BCPAPIs.MY_REVIEW_URL;
 		}
@@ -186,6 +201,15 @@ public class MyPage extends BCPFragment {
 					Car car = new Car(arJSON.getJSONObject(i));
 					car.setItemCode(BCPConstants.ITEM_CAR_MY);
 					models.add(car);
+				}
+			} else if(menuIndex == 1) {
+				arJSON = objJSON.getJSONArray("reviews");
+				size = arJSON.length();
+				
+				for(int i=0; i<size; i++) {
+					Review review = new Review(arJSON.getJSONObject(i));
+					review.setItemCode(BCPConstants.ITEM_REVIEW);
+					models.add(review);
 				}
 			} else {
 				
@@ -240,10 +264,17 @@ public class MyPage extends BCPFragment {
 		
 		if(menuIndex == 0) {
 			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_a);
-			btnReview.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
+			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
+			btnReview.setBackgroundResource(R.drawable.mypage_tab3_tab_b);
+		} else if(menuIndex == 1) {
+			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
+			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_a);
+			btnReview.setBackgroundResource(R.drawable.mypage_tab3_tab_b);
+			
 		} else {
 			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
-			btnReview.setBackgroundResource(R.drawable.mypage_tab2_tab_a);
+			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
+			btnReview.setBackgroundResource(R.drawable.mypage_tab3_tab_a);
 		}
 		
 		refreshPage();
