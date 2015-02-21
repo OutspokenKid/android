@@ -671,18 +671,12 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public void showPopup(int type) {
 		
-//		private Button btnMore;
-//		private Button btnRecharge;
-//		private Button btnHome;
-//		private Button btnClose;
 		switch(type) {
 		
 		case POPUP_REQUEST_REGISTRATION:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
 			tvPopupText.setText(R.string.popup_registration);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
-//			private Button btnMore;
-//			private Button btnHome;
 			btnMore.setVisibility(View.VISIBLE);
 			btnRecharge.setVisibility(View.INVISIBLE);
 			btnHome.setVisibility(View.VISIBLE);
@@ -694,7 +688,6 @@ public class MainActivity extends BCPFragmentActivity {
 			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
 			tvPopupText.setText(R.string.popup_bid);
 			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-//			private Button btnHome;
 			btnMore.setVisibility(View.INVISIBLE);
 			btnRecharge.setVisibility(View.INVISIBLE);
 			btnHome.setVisibility(View.VISIBLE);
@@ -705,8 +698,6 @@ public class MainActivity extends BCPFragmentActivity {
 			popupImage.setBackgroundResource(R.drawable.empty_cartoon);
 			tvPopupText.setText(R.string.popup_not_enough);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
-//			private Button btnRecharge;
-//			private Button btnClose;
 			btnMore.setVisibility(View.INVISIBLE);
 			btnRecharge.setVisibility(View.VISIBLE);
 			btnHome.setVisibility(View.INVISIBLE);

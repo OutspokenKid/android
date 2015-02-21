@@ -30,6 +30,7 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
+import com.byecar.models.Dealer;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -1546,8 +1547,30 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{R.id.carDetailPage_used_tvInfo2, 0}, 
 					new int[]{0, 5, 0, 0});
 			tvGrade.setId(R.id.carDetailPage_used_tvGrade);
-			tvGrade.setText("우수딜러");
-			tvGrade.setTextColor(getResources().getColor(R.color.color_orange));
+			
+			switch(car.getDealer_level()) {
+			
+			case Dealer.LEVEL_FRESH_MAN:
+				tvGrade.setText(R.string.dealerLevel1);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+				break;
+				
+			case Dealer.LEVEL_NORAML_DEALER:
+				tvGrade.setText(R.string.dealerLevel2);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level2));
+				break;
+				
+			case Dealer.LEVEL_SUPERB_DEALER:
+				tvGrade.setText(R.string.dealerLevel3);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level3));
+				break;
+				
+			case Dealer.LEVEL_POWER_DEALER:
+				tvGrade.setText(R.string.dealerLevel4);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level4));
+				break;
+			}
+			
 			FontUtils.setFontSize(tvGrade, 20);
 			relativeForType.addView(tvGrade);
 			
@@ -1818,16 +1841,23 @@ public class CarDetailPage extends BCPFragment {
 					 * 		= 1000 - (remainTime * 1000 / progressTime)
 					 */
 
-					long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
-							(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
-					long remainTime = car.getBid_until_at() * 1000 
-							+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-							- System.currentTimeMillis();
-		        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
-		        	
-		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
-		        	tvRemainTime.setText(formattedRemainTime);
-		        	progressBar.setProgress((int)progressValue);
+					try {
+						long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+								(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+						long remainTime = car.getBid_until_at() * 1000 
+								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+								- System.currentTimeMillis();
+			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+			        	
+			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+			        	tvRemainTime.setText(formattedRemainTime);
+			        	progressBar.setProgress((int)progressValue);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+						tvRemainTime.setText("-- : -- : --");
+						progressBar.setProgress(10000);
+					}
 				}
 				
 				@Override

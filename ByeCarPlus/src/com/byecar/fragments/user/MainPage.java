@@ -602,28 +602,32 @@ public class MainPage extends BCPFragment {
 			return;
 		}
 		
-		for(int i=0; i<Math.min(3, dealers.size()); i++) {
+		for(int i=0; i<3; i++) {
 
 			final int INDEX = i;
 			
 			try {
 				usedCarViews[i] = new UsedCarView(mContext);
-				usedCarViews[i].setTexts(dealers.get(i).getModel_name(), 
-						dealers.get(i).getPrice());
-				usedCarViews[i].setOnClickListener(new OnClickListener() {
+				
+				if(i < dealers.size()) {
+					usedCarViews[i].setTexts(dealers.get(i).getModel_name(), 
+							dealers.get(i).getPrice());
+					usedCarViews[i].setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
-						
-						if(INDEX < dealers.size()) {
-							Bundle bundle = new Bundle();
-							bundle.putInt("id", dealers.get(INDEX).getId());
-							bundle.putInt("type", Car.TYPE_DEALER);
-							mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						@Override
+						public void onClick(View view) {
+							
+							if(INDEX < dealers.size()) {
+								Bundle bundle = new Bundle();
+								bundle.putInt("id", dealers.get(INDEX).getId());
+								bundle.putInt("type", Car.TYPE_DEALER);
+								mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+							}
 						}
-					}
-				});
-				usedCarViews[i].setImageUrl(dealers.get(i).getRep_img_url());
+					});
+					usedCarViews[i].setImageUrl(dealers.get(i).getRep_img_url());
+				}
+				
 				usedMarketLinear.addView(usedCarViews[i]);
 			} catch (Exception e) {
 				LogUtils.trace(e);
@@ -871,16 +875,23 @@ public class MainPage extends BCPFragment {
 						 * 		= 1000 - (remainTime * 1000 / progressTime)
 						 */
 
-						long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
-								(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
-						long remainTime = car.getBid_until_at() * 1000 
-								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-								- System.currentTimeMillis();
-			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
-			        	
-			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
-			        	tvRemainTime.setText(formattedRemainTime);
-			        	progressBar.setProgress((int)progressValue);
+						try {
+							long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+									(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+							long remainTime = car.getBid_until_at() * 1000 
+									+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+									- System.currentTimeMillis();
+				        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+				        	
+				        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+				        	tvRemainTime.setText(formattedRemainTime);
+				        	progressBar.setProgress((int)progressValue);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+							tvRemainTime.setText("-- : -- : --");
+							progressBar.setProgress(10000);
+						}
 		        	}
 				}
 				

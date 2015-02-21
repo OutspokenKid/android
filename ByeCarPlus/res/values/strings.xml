@@ -51,6 +51,10 @@
     <string name="dealer">딜러</string>
     <string name="dealerInfo">판매자 정보</string>
     <string name="dealerInfoCertified">판매자 정보가 인증되었습니다.</string>
+    <string name="dealerLevel1">새내기</string>
+    <string name="dealerLevel2">일반딜러</string>
+    <string name="dealerLevel3">우수딜러</string>
+    <string name="dealerLevel4">파워딜러</string>
     <string name="delete">삭제</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>
@@ -166,6 +170,7 @@
     <string name="uploadingImage">이미지 업로드 중..</string>
 
     <string name="wannaDelete">삭제하시겠습니까?</string>
+    <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">탈퇴하시겠습니까?</string>

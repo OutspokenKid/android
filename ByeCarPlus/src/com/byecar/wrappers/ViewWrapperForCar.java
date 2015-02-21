@@ -357,6 +357,10 @@ public class ViewWrapperForCar extends ViewWrapper {
 
 	public void setOnTimeListener() {
 
+		if(car.getType() != Car.TYPE_BID) {
+			return;
+		}
+		
 		if(onTimeChangedListener == null) {
 			onTimeChangedListener = new OnTimeChangedListener() {
 				
@@ -399,6 +403,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 			        	progressBar.setProgress((int)progressValue);
 					} catch (Exception e) {
 						LogUtils.trace(e);
+						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 						tvRemainTime.setText("-- : -- : --");
 						progressBar.setProgress(10000);
 					}

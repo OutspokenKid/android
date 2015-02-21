@@ -242,7 +242,7 @@ public class DirectMarketPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(90);
 		rp.height = ResizeUtils.getSpecificLength(40);
 		rp.topMargin = -ResizeUtils.getSpecificLength(8);
-		rp.rightMargin = ResizeUtils.getSpecificLength(20);
+		rp.rightMargin = ResizeUtils.getSpecificLength(12);
 		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
 				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
 		

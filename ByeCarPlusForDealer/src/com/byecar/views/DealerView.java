@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.models.Bid;
+import com.byecar.models.Dealer;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
@@ -113,7 +115,28 @@ public class DealerView extends FrameLayout {
 		FontUtils.addSpan(tvInfo, bid.getDealer_name(), getResources().getColor(R.color.holo_text), 1.6f, true);
 		FontUtils.addSpan(tvInfo, "\n" + bid.getDealer_address(), getResources().getColor(R.color.holo_text_hint), 1);
 		
-		tvGrade.setText("우수딜러");
+		switch(bid.getDealer_level()) {
+		
+		case Dealer.LEVEL_FRESH_MAN:
+			tvGrade.setText(R.string.dealerLevel1);
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+			break;
+			
+		case Dealer.LEVEL_NORAML_DEALER:
+			tvGrade.setText(R.string.dealerLevel2);
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level2));
+			break;
+			
+		case Dealer.LEVEL_SUPERB_DEALER:
+			tvGrade.setText(R.string.dealerLevel3);
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level3));
+			break;
+			
+		case Dealer.LEVEL_POWER_DEALER:
+			tvGrade.setText(R.string.dealerLevel4);
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level4));
+			break;
+		}
 		
 		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()) 
 						+ getContext().getString(R.string.won));

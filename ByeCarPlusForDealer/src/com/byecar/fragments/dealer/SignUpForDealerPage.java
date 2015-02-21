@@ -411,7 +411,6 @@ public class SignUpForDealerPage extends BCPFragment {
 		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[1])) {
 			ToastUtils.showToast(R.string.checkNameCardImage);
 		
-		//한글만 허용.
 		} else if(StringUtils.checkForbidContains(etInfos[0].getEditText(), false, false, false, false, true, true)
 				|| StringUtils.checkTextLength(etInfos[0].getEditText(), NAME_MIN, NAME_MAX) != StringUtils.PASS) {
 			ToastUtils.showToast(R.string.hintForName);

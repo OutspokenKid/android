@@ -384,7 +384,30 @@ public class DealerCertifierPage extends BCPFragment {
 			FontUtils.addSpan(tvInfo1, dealer.getName(), 0, 1.6f, true);
 			FontUtils.addSpan(tvInfo1, "\n" + dealer.getAddress(), 0, 1, false);
 			FontUtils.addSpan(tvInfo1, "\n" + dealer.getCompany(), 0, 1, false);
-			tvInfo2.setText("우수딜러");
+			
+			switch(dealer.getLevel()) {
+			
+			case Dealer.LEVEL_FRESH_MAN:
+				tvInfo2.setText(R.string.dealerLevel1);
+				tvInfo2.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+				break;
+				
+			case Dealer.LEVEL_NORAML_DEALER:
+				tvInfo2.setText(R.string.dealerLevel2);
+				tvInfo2.setTextColor(getResources().getColor(R.color.color_dealer_level2));
+				break;
+				
+			case Dealer.LEVEL_SUPERB_DEALER:
+				tvInfo2.setText(R.string.dealerLevel3);
+				tvInfo2.setTextColor(getResources().getColor(R.color.color_dealer_level3));
+				break;
+				
+			case Dealer.LEVEL_POWER_DEALER:
+				tvInfo2.setText(R.string.dealerLevel4);
+				tvInfo2.setTextColor(getResources().getColor(R.color.color_dealer_level4));
+				break;
+			}
+			
 		} else{
 			FontUtils.addSpan(tvInfo1, certifier.getName(), 0, 1.6f, true);
 			FontUtils.addSpan(tvInfo1, "\n" + getString(R.string.exclusivelyForByeCar), 0, 1, false);

@@ -30,6 +30,7 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
+import com.byecar.models.Dealer;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -60,6 +61,7 @@ public class CarDetailPage extends BCPFragment {
 	private Button btnBuy;
 	private Button btnDelete;
 	private Button btnEdit;
+	private Button btnCall;
 	
 	private ViewPager viewPager;
 	private PageNavigatorView pageNavigator;
@@ -115,6 +117,7 @@ public class CarDetailPage extends BCPFragment {
 		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.carDetailPage_scrollView);
 		
 		btnBuy = (Button) mThisView.findViewById(R.id.carDetailPage_btnBuy);
+		btnCall = (Button) mThisView.findViewById(R.id.carDetailPage_btnCall);
 		btnGuide = (Button) mThisView.findViewById(R.id.carDetailPage_btnGuide);
 		btnDelete = (Button) mThisView.findViewById(R.id.carDetailPage_btnDelete);
 		btnEdit = (Button) mThisView.findViewById(R.id.carDetailPage_btnEdit);
@@ -338,6 +341,24 @@ public class CarDetailPage extends BCPFragment {
 				}
 			}
 		});
+		
+		btnCall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showAlertDialog(R.string.call, R.string.wannaCallToDealer, 
+						R.string.confirm, R.string.cancel, 
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						IntentUtils.call(mContext, car.getDealer_phone_number());
+					}
+				}, null);
+			}
+		});
 	
 		btnEdit.setOnClickListener(new OnClickListener() {
 
@@ -402,6 +423,12 @@ public class CarDetailPage extends BCPFragment {
 		
 		//btnBuy.
 		rp = (RelativeLayout.LayoutParams) btnBuy.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(624);
+		rp.height = ResizeUtils.getSpecificLength(72);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
+		
+		//btnCall.
+		rp = (RelativeLayout.LayoutParams) btnCall.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(624);
 		rp.height = ResizeUtils.getSpecificLength(72);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
@@ -519,6 +546,7 @@ public class CarDetailPage extends BCPFragment {
 		//relativeForType.
 		rp = (RelativeLayout.LayoutParams) relativeForType.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
+		relativeForType.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(16));
 		
 		//lineForType.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
@@ -963,7 +991,7 @@ public class CarDetailPage extends BCPFragment {
 					} else {
 						car.copyValuesFromNewItem(newCar);
 					}
-
+					
 					setMainCarInfo();
 					setDetailCarInfo();
 					setOptionViews();
@@ -981,6 +1009,9 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setMainCarInfo() {
 
+		//딜러에게 전화 걸기를 위해서.
+		MainActivity.dealerPhoneNumber = car.getDealer_phone_number();
+		
 		if(car.getType() == Car.TYPE_BID) {
 			tvRemainTime.setText("-- : -- : --");
 			
@@ -1000,6 +1031,12 @@ public class CarDetailPage extends BCPFragment {
 		tvCarInfo2.setText(car.getYear() + "년 / "
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
+
+		if(car.getType() == Car.TYPE_BID) {
+			tvCurrentPriceText.setText(R.string.currentPrice);
+		} else {
+			tvCurrentPriceText.setText(R.string.salesPrice);
+		}
 		
 		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 				+ getString(R.string.won));
@@ -1058,7 +1095,6 @@ public class CarDetailPage extends BCPFragment {
 			timeRelative.setVisibility(View.VISIBLE);
 			tvBidCount.setVisibility(View.VISIBLE);
 			
-			btnBuy.setVisibility(View.INVISIBLE);
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);
 			
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
@@ -1067,8 +1103,12 @@ public class CarDetailPage extends BCPFragment {
 			timeRelative.setVisibility(View.GONE);
 			tvBidCount.setVisibility(View.INVISIBLE);
 			
-			btnGuide.setVisibility(View.INVISIBLE);
-			btnBuy.setVisibility(View.VISIBLE);
+			if(car.getHas_purchased() == 0) {
+				btnBuy.setVisibility(View.VISIBLE);
+			} else {
+				btnCall.setVisibility(View.VISIBLE);
+			}
+			
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.VISIBLE);
 			
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
@@ -1077,6 +1117,7 @@ public class CarDetailPage extends BCPFragment {
 		if(car != null && car.getSeller_id() == MainActivity.user.getId()		//내 매물인 경우.
 				) {
 			btnBuy.setVisibility(View.INVISIBLE);
+			btnCall.setVisibility(View.INVISIBLE);
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);
 			
 			RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
@@ -1255,7 +1296,7 @@ public class CarDetailPage extends BCPFragment {
 		//이전 상태 모두 지우기.
 		relativeForType.removeAllViews();
 		headerForType.setBackgroundResource(R.drawable.detail_head1);
-
+		
 		DealerView[] dealerViews = new DealerView[3];
 		
 		for(int i=0; i<3; i++) {
@@ -1265,7 +1306,7 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{18 + (i*196), 14, 0, 14});
 			relativeForType.addView(dealerViews[i]);
 		}
-		
+
 		int size = car.getBids().size();
 		
 		if(size == 0) {
@@ -1405,8 +1446,30 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{R.id.carDetailPage_used_tvInfo2, 0}, 
 					new int[]{0, 5, 0, 0});
 			tvGrade.setId(R.id.carDetailPage_used_tvGrade);
-			tvGrade.setText("우수딜러");
-			tvGrade.setTextColor(getResources().getColor(R.color.color_orange));
+			
+			switch(car.getDealer_level()) {
+			
+			case Dealer.LEVEL_FRESH_MAN:
+				tvGrade.setText(R.string.dealerLevel1);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+				break;
+				
+			case Dealer.LEVEL_NORAML_DEALER:
+				tvGrade.setText(R.string.dealerLevel2);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level2));
+				break;
+				
+			case Dealer.LEVEL_SUPERB_DEALER:
+				tvGrade.setText(R.string.dealerLevel3);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level3));
+				break;
+				
+			case Dealer.LEVEL_POWER_DEALER:
+				tvGrade.setText(R.string.dealerLevel4);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level4));
+				break;
+			}
+			
 			FontUtils.setFontSize(tvGrade, 20);
 			relativeForType.addView(tvGrade);
 			
@@ -1487,6 +1550,18 @@ public class CarDetailPage extends BCPFragment {
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
 				}
+			}
+		});
+		
+		ivImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("isCertifier", true);
+				bundle.putInt("certifier_id", car.getManager_id());
+				mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
 			}
 		});
 		
@@ -1680,7 +1755,6 @@ public class CarDetailPage extends BCPFragment {
 		tvArea.setMinHeight(ResizeUtils.getSpecificLength(64));
 		FontUtils.setFontSize(tvArea, 20);
 		relativeForType.addView(tvArea);
-
 	}
 	
 	public void addDetailInfoTextViews() {
@@ -1934,17 +2008,24 @@ public class CarDetailPage extends BCPFragment {
 					 * 		= (progressTime - remainTime) / progressTime * 1000
 					 * 		= 1000 - (remainTime * 1000 / progressTime)
 					 */
-
-					long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
-							(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
-					long remainTime = car.getBid_until_at() * 1000 
-							+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-							- System.currentTimeMillis();
-		        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
 		        	
-		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
-		        	tvRemainTime.setText(formattedRemainTime);
-		        	progressBar.setProgress((int)progressValue);
+		        	try {
+						long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+								(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+						long remainTime = car.getBid_until_at() * 1000 
+								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+								- System.currentTimeMillis();
+			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+			        	
+			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+			        	tvRemainTime.setText(formattedRemainTime);
+			        	progressBar.setProgress((int)progressValue);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+						tvRemainTime.setText("-- : -- : --");
+						progressBar.setProgress(10000);
+					}
 				}
 				
 				@Override
