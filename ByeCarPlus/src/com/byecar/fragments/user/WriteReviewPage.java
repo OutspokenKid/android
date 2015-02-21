@@ -24,6 +24,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OutSpokenRatingBar;
+import com.outspoken_kid.views.OutSpokenRatingBar.OnRatingChangedListener;
 
 public class WriteReviewPage extends BCPFragment {
 
@@ -40,6 +41,8 @@ public class WriteReviewPage extends BCPFragment {
 	private OutSpokenRatingBar ratingBar;
 	private TextView tvTo;
 	private EditText etContent;
+	
+	private float rating = 1;
 	
 	@Override
 	public void bindViews() {
@@ -104,25 +107,41 @@ public class WriteReviewPage extends BCPFragment {
 			
 		//첫 작성.
 		} else if(car != null) {
-//			tvRegdate.setText(StringUtils.getDateString(
-//					"등록일 yyyy년 MM월 dd일", review.getCreated_at() * 1000));
-//			tvCarName.setText(review.getCar_full_name());
-//			
-//			if(c.getCertifier_id() != 0) {
-//				tvRegdate.setText(R.string.evaluateCertifier);
-//				tvTo.setText(review.getCertifier_name() + " 검증사에게");
-//			} else if(car.getDealer_id() != 0) {
-//				tvRegdate.setText(R.string.evaluateDealer);
-//				tvTo.setText(review.getDealer_name() + " 딜러에게");
-//			}
-//			
-//			ratingBar.setRating(3);
+			tvCarName.setText(car.getCar_full_name());
+			
+			switch(car.getType()) {
+
+			//옥션, 구매한 딜러에게.
+			case Car.TYPE_BID:
+				
+			//딜러, 판매한 딜러에게.
+			case Car.TYPE_DEALER:
+				tvRatingText.setText(R.string.evaluateDealer);
+				tvTo.setText(car.getDealer_name() + " 딜러에게");
+				break;
+				
+			//검증직거래, 검증해준 검증사에게.
+			case Car.TYPE_DIRECT_CERTIFIED:
+				tvRatingText.setText(R.string.evaluateCertifier);
+				tvTo.setText(car.getManager_name() + " 검증사에게");
+				break;
+			}
+			
+			ratingBar.setRating(rating);
 		}
 	}
 
 	@Override
 	public void setListeners() {
 
+		ratingBar.setOnRatingChangedListener(new OnRatingChangedListener() {
+			
+			@Override
+			public void onRatingChanged(float rating) {
+				WriteReviewPage.this.rating = rating;
+			}
+		});
+		
 		btnSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -213,7 +232,7 @@ public class WriteReviewPage extends BCPFragment {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 //////////////////// Custom methods.
 	
 	public void submit() {
@@ -232,7 +251,6 @@ public class WriteReviewPage extends BCPFragment {
 		&review[id]=12
 		&review[onsalecar_id]14
 		&review[rating]5
-
 		*/
 
 		String url = null;

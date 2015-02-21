@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
+    android:descendantFocusability="blocksDescendants"
 	android:cacheColorHint="@android:color/transparent" >
 
     <ImageView 
@@ -59,10 +60,11 @@
 
     <TextView
         android:id="@+id/list_my_car_tvYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignTop="@id/list_my_car_tvCarName"
         android:layout_alignRight="@id/list_my_car_cover"
+        android:gravity="right|center_vertical"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/holo_text" />
@@ -73,9 +75,28 @@
         android:layout_height="0dp"
         android:layout_alignBottom="@id/list_my_car_ivImage"
         android:layout_toRightOf="@id/list_my_car_ivImage"
+        android:layout_alignRight="@id/list_my_car_tvYear"
         android:ellipsize="end"
         android:singleLine="true"
         android:gravity="center_vertical"
         android:textColor="@color/holo_text" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnReview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignRight="@id/list_my_car_tvYear"
+        android:background="@drawable/mypage_review_btn"
+        android:visibility="gone" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnComplete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignRight="@id/list_my_car_tvYear"
+        android:background="@drawable/mypage_complete_btn"
+        android:visibility="gone" />
     
 </RelativeLayout>

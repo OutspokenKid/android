@@ -126,7 +126,7 @@ public class NormalCarView extends RelativeLayout {
 				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.ALIGN_PARENT_BOTTOM}, 
 				new int[]{0, 0}, new int[]{0, 0, 10, 0});
 		tvPrice.setId(R.id.normalCarView_tvPrice);
-		FontUtils.setFontSize(tvPrice, 26);
+		FontUtils.setFontSize(tvPrice, 24);
 		FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
 		tvPrice.setTextColor(textColor);
 		tvPrice.setGravity(Gravity.CENTER_VERTICAL);
@@ -135,7 +135,7 @@ public class NormalCarView extends RelativeLayout {
 		TextView tvPriceText = new TextView(getContext());
 		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvPriceText,
 				new int[]{RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_BOTTOM}, 
-				new int[]{R.id.normalCarView_tvPrice, 0}, new int[]{0, 0, 8, 0});
+				new int[]{R.id.normalCarView_tvPrice, 0}, new int[]{0, 0, 4, 0});
 		FontUtils.setFontSize(tvPriceText, 18);
 		tvPriceText.setTextColor(textColor);
 		tvPriceText.setGravity(Gravity.CENTER_VERTICAL);

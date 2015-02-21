@@ -482,7 +482,7 @@ public class SearchCarPage extends BCPFragment {
 		
 		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) sliderView.getLayoutParams();
 		rp.width = LayoutParams.MATCH_PARENT;
-		rp.height = 200;
+		rp.height = sliderView.getNodeHeight();
 		rp.leftMargin = ResizeUtils.getSpecificLength(30);
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		rp.rightMargin = ResizeUtils.getSpecificLength(30);
@@ -497,7 +497,7 @@ public class SearchCarPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(117, 45, etMinPrice, null, null, new int[]{4, 4, 0, 0});
 		ResizeUtils.viewResizeForRelative(117, 45, etMaxPrice, null, null, new int[]{0, 4, 80, 0});
 		ResizeUtils.viewResizeForRelative(40, 40, btnClearMin, null, null, new int[]{0, 2, 0, 0});
-		ResizeUtils.viewResizeForRelative(40, 40, btnClearMax, null, null, new int[]{0, 2, 0, 0});
+		ResizeUtils.viewResizeForRelative(40, 40, btnClearMax, null, null, new int[]{117, 2, 0, 0});
 		
 		ResizeUtils.viewResizeForRelative(586, 82, 
 				btnShowCommonSearchResult, null, null, new int[]{0, 60, 0, 0});

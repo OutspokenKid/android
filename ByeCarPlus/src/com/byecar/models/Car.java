@@ -85,6 +85,8 @@ public class Car extends BCPBaseModel implements Serializable {
 	
 	private int is_liked;
 	private int likes_cnt;
+	private int has_purchased;
+	private int has_review;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -144,6 +146,8 @@ public class Car extends BCPBaseModel implements Serializable {
 		
 		this.is_liked = newCar.is_liked;
 		this.likes_cnt = newCar.likes_cnt;
+		this.has_purchased = newCar.has_purchased;
+		this.has_review = newCar.has_review;
 	}
 	
 	public Car() {
@@ -388,6 +392,14 @@ public class Car extends BCPBaseModel implements Serializable {
 			if(objJSON.has("likes_cnt")) {
 				this.likes_cnt = objJSON.getInt("likes_cnt");
 			}
+			
+			if(objJSON.has("has_purchased")) {
+				this.has_purchased = objJSON.getInt("has_purchased");
+			}
+			
+			if(objJSON.has("has_review")) {
+				this.has_review = objJSON.getInt("has_review");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}
@@ -574,7 +586,6 @@ public class Car extends BCPBaseModel implements Serializable {
 			}
 		}
 	}
-
 	
 	public int getId() {
 		return id;
@@ -975,5 +986,21 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setSeller_profile_img_url(String seller_profile_img_url) {
 		this.seller_profile_img_url = seller_profile_img_url;
+	}
+
+	public int getHas_purchased() {
+		return has_purchased;
+	}
+
+	public void setHas_purchased(int has_purchased) {
+		this.has_purchased = has_purchased;
+	}
+
+	public int getHas_review() {
+		return has_review;
+	}
+
+	public void setHas_review(int has_review) {
+		this.has_review = has_review;
 	}
 }

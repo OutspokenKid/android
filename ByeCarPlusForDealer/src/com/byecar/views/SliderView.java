@@ -273,6 +273,15 @@ public class SliderView extends View {
 		
 		return 0;
 	}
+	
+	public int getNodeHeight() {
+
+		if(nodes[0] != null) {
+			return nodes[0].getBitmap().getHeight();
+		}
+		
+		return 0;
+	}
 
 	public void moveNodes(int start, int end) {
 		

@@ -355,16 +355,22 @@ public class ViewWrapperForCar extends ViewWrapper {
 					 * 		= 1000 - (remainTime * 1000 / progressTime)
 					 */
 
-					long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
-							(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
-					long remainTime = car.getBid_until_at() * 1000 
-							+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-							- System.currentTimeMillis();
-		        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
-		        	
-		        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
-		        	tvRemainTime.setText(formattedRemainTime);
-		        	progressBar.setProgress((int)progressValue);
+					try {
+						long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+								(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+						long remainTime = car.getBid_until_at() * 1000 
+								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+								- System.currentTimeMillis();
+			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+			        	
+			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+			        	tvRemainTime.setText(formattedRemainTime);
+			        	progressBar.setProgress((int)progressValue);	
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						tvRemainTime.setText("-- : -- : --");
+						progressBar.setProgress(10000);
+					}
 				}
 				
 				@Override

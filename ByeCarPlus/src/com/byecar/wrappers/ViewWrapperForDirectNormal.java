@@ -36,9 +36,9 @@ public class ViewWrapperForDirectNormal extends ViewWrapper {
 	public void setSizes() {
 
 		row.setLayoutParams(new AbsListView.LayoutParams(
-				LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(160)));
+				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		
-		ResizeUtils.viewResize(578, 132, normalCarView, 1, Gravity.CENTER_HORIZONTAL, null);
+		ResizeUtils.viewResize(578, 132, normalCarView, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 14, 0, 14});
 	}
 
 	@Override

@@ -137,7 +137,7 @@
 	        android:layout_width="0dp"
 	        android:layout_height="0dp"
 	        android:layout_alignTop="@id/searchCarPage_etMaxPrice"
-	        android:layout_toRightOf="@id/searchCarPage_etMaxPrice"
+	        android:layout_alignLeft="@id/searchCarPage_etMaxPrice"
 	        android:background="@drawable/filter_clear_btn" />
         
         <Button 

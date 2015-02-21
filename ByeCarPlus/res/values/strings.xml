@@ -40,6 +40,7 @@
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_selling">거래 완료 처리되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>

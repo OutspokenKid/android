@@ -84,7 +84,6 @@ public class MyPage extends BCPFragment {
 				setMenu(1);
 			}
 		});
-
 		
 		btnReview.setOnClickListener(new OnClickListener() {
 

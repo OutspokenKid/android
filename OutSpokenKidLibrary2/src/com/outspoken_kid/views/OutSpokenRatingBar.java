@@ -46,6 +46,8 @@ public class OutSpokenRatingBar extends View {
 	private int unitRating = -1;
 	private int X;
 	
+	private OnRatingChangedListener onRatingChangedListener;
+	
 	public OutSpokenRatingBar(Context context) {
 		this(context, null);
 	}
@@ -215,6 +217,10 @@ public class OutSpokenRatingBar extends View {
 
    		 	// Redraw the canvas
         	invalidate();
+        	
+        	if(onRatingChangedListener != null) {
+        		onRatingChangedListener.onRatingChanged(rating);
+        	}
         	break;
         	
         case MotionEvent.ACTION_UP:
@@ -409,5 +415,17 @@ public class OutSpokenRatingBar extends View {
 
 	public void setTouchable(boolean touchable) {
 		this.touchable = touchable;
+	}
+	
+	public void setOnRatingChangedListener(OnRatingChangedListener onRatingChangedListener) {
+		
+		this.onRatingChangedListener = onRatingChangedListener;
+	}
+	
+//////////////////// Interfaces.
+	
+	public interface OnRatingChangedListener {
+		
+		public void onRatingChanged(float rating);
 	}
 }

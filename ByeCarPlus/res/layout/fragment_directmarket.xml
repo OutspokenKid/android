@@ -161,5 +161,13 @@
         android:id="@+id/directMarketPage_titleBar"
         android:layout_width="match_parent"
     	android:layout_height="0dp" />
+    
+    <Button
+        android:id="@+id/directMarketPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/auction_guide_btn" />
         
 </RelativeLayout>

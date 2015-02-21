@@ -112,7 +112,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_CAR_MY:
 		case BCPConstants.ITEM_CAR_MY_PURCHASE:
-			return new ViewWrapperForMyCar(convertView, itemCode);
+			ViewWrapperForMyCar vwfmc = new ViewWrapperForMyCar(convertView, itemCode);
+			vwfmc.setActivity(activity);
+			return vwfmc;
 		}
 		
 		return null;
@@ -152,12 +154,26 @@ public class BCPAdapter extends OutSpokenAdapter {
 		
 		case BCPConstants.ITEM_REVIEW:
 		case BCPConstants.ITEM_CAR_MY:
+		case BCPConstants.ITEM_CAR_MY_PURCHASE:
 
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);
 			
 			} else if(position == models.size() - 1) {
 				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(20));
+				
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
+			break;
+			
+		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(14), 0, 0);
+			
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(14));
 				
 			} else {
 				convertView.setPadding(0, 0, 0, 0);

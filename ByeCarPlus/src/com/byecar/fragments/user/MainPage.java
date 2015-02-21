@@ -376,7 +376,7 @@ public class MainPage extends BCPFragment {
 		
 		//usedMarketLinear.
 		rp = (RelativeLayout.LayoutParams) usedMarketLinear.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.width = ResizeUtils.getSpecificLength(600);
 		rp.topMargin = ResizeUtils.getSpecificLength(88);
 
 		//btnUsedMarket.
@@ -597,6 +597,10 @@ public class MainPage extends BCPFragment {
 	}
 	
 	public void setUsedCarViews() {
+		
+		if(usedMarketLinear.getChildCount() != 0) {
+			return;
+		}
 		
 		for(int i=0; i<Math.min(3, dealers.size()); i++) {
 

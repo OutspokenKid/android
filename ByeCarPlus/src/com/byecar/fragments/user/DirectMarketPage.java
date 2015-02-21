@@ -33,6 +33,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -52,6 +53,7 @@ public class DirectMarketPage extends BCPFragment {
 	private Button btnCertified;
 	private LinearLayout normalLinear;
 	private Button btnNormal;
+	private Button btnGuide;
 	
 	private ArrayList<Car> certified = new ArrayList<Car>();
 	private ArrayList<Car> normal = new ArrayList<Car>();
@@ -80,6 +82,7 @@ public class DirectMarketPage extends BCPFragment {
 		btnCertified = (Button) mThisView.findViewById(R.id.directMarketPage_btnCertified);
 		normalLinear = (LinearLayout) mThisView.findViewById(R.id.directMarketPage_normalLinear);
 		btnNormal = (Button) mThisView.findViewById(R.id.directMarketPage_btnNormal);
+		btnGuide = (Button) mThisView.findViewById(R.id.directMarketPage_btnGuide);
 	}
 
 	@Override
@@ -166,6 +169,15 @@ public class DirectMarketPage extends BCPFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", Car.TYPE_DIRECT_NORMAL);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
+	
+		btnGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("가이드");
 			}
 		});
 	}
@@ -264,6 +276,13 @@ public class DirectMarketPage extends BCPFragment {
 		//directTitle.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.directMarketPage_bottomBlank).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(20);
+		
+		//btnGuide.
+		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
