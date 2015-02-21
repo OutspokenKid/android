@@ -1771,7 +1771,7 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 
 	public void delete() {
@@ -1807,7 +1807,7 @@ public class CarDetailPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToDeleteCar);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 
 	public void setOnTimerListener() {

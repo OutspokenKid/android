@@ -207,7 +207,6 @@ public class NotificationPage extends BCPFragment {
 				try {
 					LogUtils.log("NotificationPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
 					
 				} catch (Exception e) {
 					LogUtils.trace(e);

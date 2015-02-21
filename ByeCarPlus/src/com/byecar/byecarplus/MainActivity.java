@@ -138,6 +138,8 @@ public class MainActivity extends BCPFragmentActivity {
 		tvPopupText = (TextView) findViewById(R.id.mainForUserActivity_tvPopupText);
 		btnHome = (Button) findViewById(R.id.mainForUserActivity_btnHome);
 		btnCall = (Button) findViewById(R.id.mainForUserActivity_btnCall);
+		
+		setLoadingView(findViewById(R.id.mainForUserActivity_loadingView));
 	}
 
 	@Override
@@ -807,7 +809,7 @@ public class MainActivity extends BCPFragmentActivity {
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
 
 			}
 
@@ -839,7 +841,7 @@ public class MainActivity extends BCPFragmentActivity {
 			@Override
 			public void onError(String url) {
 
-				LogUtils.log("WholesaleForSettingPage.onError." + "\nurl : " + url);
+				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
 
 			}
 
@@ -1068,13 +1070,13 @@ public class MainActivity extends BCPFragmentActivity {
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("###ShopActivity.updateInfo.onError.  \nurl : " + url);
+					LogUtils.log("###BCPFragmentActivity.updateInfo.onError.  \nurl : " + url);
 				}
 				
 				@Override
 				public void onCompleted(String url, JSONObject objJSON) {
 
-					LogUtils.log("###ShopActivity.updateInfo.onCompleted.  \nresult : " + objJSON);
+					LogUtils.log("###BCPFragmentActivity.updateInfo.onCompleted.  \nresult : " + objJSON);
 				}
 			});
 		} catch(Exception e) {

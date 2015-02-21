@@ -539,7 +539,7 @@ public class SignUpForDealerPage extends BCPFragment {
 						ToastUtils.showToast(R.string.failToSignUp);
 					}
 				}
-			});
+			}, mActivity.getLoadingView());
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

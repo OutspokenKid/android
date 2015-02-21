@@ -237,7 +237,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToSendSMS);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void requestCertifying() {
@@ -290,7 +290,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToSendAuthRequest);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void updatePhoneNumber(final String phone_auth_key) {
@@ -329,6 +329,6 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToSendAuthRequest);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

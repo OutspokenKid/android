@@ -189,8 +189,13 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY) {
 					//가격.
 					tvInfo.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-					tvInfo.setText("입찰자 " + car.getBids_cnt() + "명" + "   " 
-							+ StringUtils.getFormattedNumber(car.getPrice()) + row.getContext().getString(R.string.won));
+					
+					if(car.getType() == Car.TYPE_BID) {
+						tvInfo.setText("입찰자 " + car.getBids_cnt() + "명" + "   " 
+								+ StringUtils.getFormattedNumber(car.getPrice()) + row.getContext().getString(R.string.won));
+					} else {
+						tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()) + row.getContext().getString(R.string.won));
+					}
 					
 					//리뷰 버튼.
 					//대기 중인 경우.

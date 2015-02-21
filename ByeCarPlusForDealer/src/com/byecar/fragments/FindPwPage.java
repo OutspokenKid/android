@@ -170,6 +170,6 @@ public class FindPwPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

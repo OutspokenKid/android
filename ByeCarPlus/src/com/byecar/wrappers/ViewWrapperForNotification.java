@@ -89,53 +89,6 @@ public class ViewWrapperForNotification extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
-//	
-//		if(product != null) {
-//			row.setOnClickListener(new OnClickListener() {
-//				
-//				@Override
-//				public void onClick(View arg0) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putBoolean("isWholesale", product.getType() == Product.TYPE_WHOLESALE);
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_PRODUCT, bundle);
-//				}
-//			});
-//			
-//			if(product.isDeletable()) {
-//				
-//				row.setOnLongClickListener(new OnLongClickListener() {
-//					
-//					@Override
-//					public boolean onLongClick(View arg0) {
-//						
-//						ShopActivity.getInstance().showAlertDialog("삭제", "해당 물품을 삭제하시겠습니까?",
-//								"확인", "취소", 
-//								new DialogInterface.OnClickListener() {
-//									
-//									@Override
-//									public void onClick(DialogInterface dialog, int which) {
-//										
-//										deleteFavorite(product);
-//									}
-//								}, null);
-//						return false;
-//					}
-//				});
-//			}
-//			
-//			replyIcon.setOnClickListener(new OnClickListener() {
-//
-//				@Override
-//				public void onClick(View view) {
-//
-//					Bundle bundle = new Bundle();
-//					bundle.putSerializable("product", product);
-//					ShopActivity.getInstance().showPage(CphConstants.PAGE_REPLY, bundle);
-//				}
-//			});
-//		}
 	}
 	
 	@Override

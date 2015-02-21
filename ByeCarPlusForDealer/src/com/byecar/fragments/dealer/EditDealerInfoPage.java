@@ -655,6 +655,6 @@ public class EditDealerInfoPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToUpdateUserInfo);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

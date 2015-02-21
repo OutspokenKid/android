@@ -330,7 +330,7 @@ public class SignInPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void signInWithSNS(String sns_key, String sns_user_key, 
@@ -377,6 +377,6 @@ public class SignInPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

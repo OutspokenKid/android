@@ -29,8 +29,8 @@ public class SignActivity extends BCPFragmentActivity {
 	
 	@Override
 	public void bindViews() {
-		// TODO Auto-generated method stub
 
+		setLoadingView(findViewById(R.id.signActivity_loadingView));
 	}
 
 	@Override

@@ -1975,7 +1975,7 @@ public class CarDetailPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToDeleteCar);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void setOnTimerListener() {

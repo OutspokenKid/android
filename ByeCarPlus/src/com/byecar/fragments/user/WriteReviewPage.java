@@ -344,6 +344,6 @@ public class WriteReviewPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToWriteReview);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

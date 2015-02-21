@@ -331,6 +331,6 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToSendAuthRequest);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

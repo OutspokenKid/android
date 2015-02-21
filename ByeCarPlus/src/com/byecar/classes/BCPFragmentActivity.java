@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
 
 import com.byecar.byecarplus.ImageViewer;
 import com.outspoken_kid.R;
@@ -22,6 +23,8 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
 	public abstract BCPFragment getFragmentByPageCode(int pageCode);
 	public abstract void handleUri(Uri uri);
+	
+	private View loadingView;
 	
 	@Override
 	public void onCreate(Bundle arg0) {
@@ -103,7 +106,7 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
 	public void showPage(int pageCode, Bundle bundle) {
 
-		String logString = "###ShopActivity.showPage.  ====================" +
+		String logString = "###BCPFragmentActivity.showPage.  ====================" +
 				"\npageCode : " + pageCode;
 		
 		if(bundle != null) {
@@ -163,6 +166,31 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		
 		intent.putExtra("imageResId", imageResId);
 		startActivity(intent);
+	}
+	
+	public void setLoadingView(View view) {
+		
+		this.loadingView = view;
+	}
+	
+	public View getLoadingView() {
+		
+		return loadingView;
+	}
+	
+	public void showLoadingView() {
+		
+		if(loadingView != null) {
+			loadingView.setVisibility(View.VISIBLE);
+		}
+		
+	}
+	
+	public void hideLoadingView() {
+		
+		if(loadingView != null) {
+			loadingView.setVisibility(View.INVISIBLE);
+		}
 	}
 	
 //////////////////// Interfaces.

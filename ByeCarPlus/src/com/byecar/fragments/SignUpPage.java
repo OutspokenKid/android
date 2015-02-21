@@ -501,6 +501,6 @@ public class SignUpPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 }

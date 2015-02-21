@@ -763,7 +763,7 @@ public class EditUserInfoPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToUpdateUserInfo);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 
 	public void purchase() {
@@ -815,7 +815,7 @@ public class EditUserInfoPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void closePage() {

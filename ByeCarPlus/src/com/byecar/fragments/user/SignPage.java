@@ -718,7 +718,7 @@ public class SignPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 //////////////////// Classes.

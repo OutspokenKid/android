@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.view.View;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -84,9 +85,26 @@ public class DownloadUtils {
 	 * @param onJSONDownloadListener
 	 */
 	public static void downloadJSONString(final String url, final OnJSONDownloadListener onJSONDownloadListener) {
+
+		downloadJSONString(url, onJSONDownloadListener, null);
+	}
+	
+	/**
+	 * JSON string downloader.
+	 * 
+	 * @param url
+	 * @param onJSONDownloadListener
+	 * @param loadingView
+	 */
+	public static void downloadJSONString(final String url, final OnJSONDownloadListener onJSONDownloadListener,
+			final View loadingView) {
 		
 		if(StringUtils.isEmpty(url)) {
 			return;
+		}
+		
+		if(loadingView != null) {
+			loadingView.setVisibility(View.VISIBLE);
 		}
 		
 		try {
@@ -97,6 +115,10 @@ public class DownloadUtils {
 					
 					if(onJSONDownloadListener != null) {
 						onJSONDownloadListener.onCompleted(url, objJSON);
+					}
+					
+					if(loadingView != null) {
+						loadingView.setVisibility(View.INVISIBLE);
 					}
 				}
 			};
@@ -110,6 +132,10 @@ public class DownloadUtils {
 					
 					if(onJSONDownloadListener != null) {
 						onJSONDownloadListener.onError(url);
+					}
+					
+					if(loadingView != null) {
+						loadingView.setVisibility(View.INVISIBLE);
 					}
 				}
 			};
@@ -129,11 +155,19 @@ public class DownloadUtils {
 			if(onJSONDownloadListener != null) {
 				onJSONDownloadListener.onError(url);
 			}
+			
+			if(loadingView != null) {
+				loadingView.setVisibility(View.INVISIBLE);
+			}
 		} catch (Error e) {
 			LogUtils.trace(e);
 			
 			if(onJSONDownloadListener != null) {
 				onJSONDownloadListener.onError(url);
+			}
+			
+			if(loadingView != null) {
+				loadingView.setVisibility(View.INVISIBLE);
 			}
 		}
 	}

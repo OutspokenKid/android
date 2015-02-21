@@ -1477,7 +1477,7 @@ public class CarRegistrationPage extends BCPFragment {
 									LogUtils.trace(oom);
 								}
 							}
-						});
+						}, mActivity.getLoadingView());
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

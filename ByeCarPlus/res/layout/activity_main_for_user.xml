@@ -160,4 +160,19 @@
         
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/mainForUserActivity_loadingView"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:background="#0000"
+	    android:visibility="invisible"
+	    android:clickable="true" >
+        
+        <ProgressBar 
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center" />
+        
+    </FrameLayout>
+
 </com.outspoken_kid.views.GestureSlidingLayout>
