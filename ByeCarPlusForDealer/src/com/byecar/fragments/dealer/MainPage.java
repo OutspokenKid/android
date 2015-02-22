@@ -25,8 +25,8 @@ import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
+import com.byecar.classes.BCPAuctionableListFragment;
 import com.byecar.classes.BCPConstants;
-import com.byecar.classes.BCPFragment;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Banner;
@@ -38,9 +38,8 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
-public class MainPage extends BCPFragment {
+public class MainPage extends BCPAuctionableListFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	
@@ -49,8 +48,6 @@ public class MainPage extends BCPFragment {
 	private Button btnMyBids;
 	private Button btnUsed;
 	private Button btnOnSale;
-	
-	private ListView listView;
 	
 	private View icon;
 	private Button btnRegistration2;
@@ -61,7 +58,7 @@ public class MainPage extends BCPFragment {
 	private Button btnRegistration;
 	private Button btnOrderBig;
 	
-	private int menuIndex;
+	private int menuIndex = -1;
 	private String orderString;
 	private Banner banner;
 	
@@ -98,7 +95,7 @@ public class MainPage extends BCPFragment {
 	@Override
 	public void createPage() {
 		
-		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
+		adapter = new BCPAdapter(mContext, mActivity, this, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
 		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
 		
@@ -147,7 +144,7 @@ public class MainPage extends BCPFragment {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 				
-				if(firstVisibleItem + visibleItemCount == totalItemCount) {
+				if(models.size() != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
 					downloadInfo();
 				}
 			}
@@ -167,15 +164,7 @@ public class MainPage extends BCPFragment {
 						
 					} else {
 						Car car = (Car) models.get(position);
-						
-						if(car.getStatus() == -1) {
-							ToastUtils.showToast(R.string.holdOffByAdmin);
-						} else {
-							Bundle bundle = new Bundle();
-							bundle.putSerializable("car", car);
-							bundle.putInt("type", car.getType());
-							mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
-						}
+						((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -427,6 +416,12 @@ public class MainPage extends BCPFragment {
 			showIconAndButton();
 		}
 		
+		if(banner != null && menuIndex == 0) {
+			startIndex = 1;
+		} else {
+			startIndex = 0;
+		}
+		
 		if(size < NUMBER_OF_LISTITEMS) {
 			return true;
 		} else {
@@ -457,8 +452,10 @@ public class MainPage extends BCPFragment {
 		if(models.size() == 0) {
 			
 			if(menuIndex == 0 && banner == null) {
+				LogUtils.log("###MainPage.onResume.  checkCover");
 				checkCover();
 			} else {
+				LogUtils.log("###MainPage.onResume.  downloadInfo");
 				downloadInfo();
 			}
 		}
@@ -478,8 +475,13 @@ public class MainPage extends BCPFragment {
 		setIconAndButtons(index);
 		setButtonRelative(index);
 		
+		int lastIndex = menuIndex;
 		menuIndex = index;
-		refreshPage();
+		
+		//처음 다운로드가 아니라면,
+		if(lastIndex != -1) {
+			refreshPage();
+		}
 	}
 	
 	public void setMenuButtons(int index) {
@@ -659,7 +661,7 @@ public class MainPage extends BCPFragment {
 			public void onCompleted(String url, JSONObject objJSON) {
 
 				try {
-					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
+					LogUtils.log("MainPage.checkCover.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
 					try {
@@ -685,9 +687,5 @@ public class MainPage extends BCPFragment {
 				}
 			}
 		});
-	}
-	
-	public void bidChanged(String event, Car car) {
-		
 	}
 }

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.classes.BCPAuctionableListFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -27,6 +28,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private Car car;
 	
 	private Activity activity;
+	private BCPAuctionableListFragment fragment;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
@@ -365,11 +367,31 @@ public class ViewWrapperForCar extends ViewWrapper {
 						long remainTime = car.getBid_until_at() * 1000 
 								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
 								- System.currentTimeMillis();
-			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+//			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+						long progressValue = remainTime * 1000 / progressTime;
 			        	
-			        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
-			        	tvRemainTime.setText(formattedRemainTime);
-			        	progressBar.setProgress((int)progressValue);	
+			        	if(remainTime < 0) {
+			        		
+			        		//경매 종료.
+			        		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+			        			car.setStatus(Car.STATUS_BID_COMPLETE);
+			        			progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_green));
+			    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+			    				
+			        		//입찰 종료.
+			        		} else {
+			        			car.setStatus(Car.STATUS_BID_FAIL);
+			        			progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_gray));
+			    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+			        		}
+			        		
+			        		fragment.bidStatusChanged("time_over", car);
+			        		
+			        	} else {
+			        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
+				        	tvRemainTime.setText(formattedRemainTime);
+				        	progressBar.setProgress((int)progressValue);
+			        	}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
@@ -398,5 +420,15 @@ public class ViewWrapperForCar extends ViewWrapper {
 	public void setActivity(Activity activity) {
 
 		this.activity = activity;
+	}
+
+	public void setFragment(BCPAuctionableListFragment fragment) {
+		
+		this.fragment = fragment;
+	}
+	
+	public Car getCar() {
+		
+		return car;
 	}
 }

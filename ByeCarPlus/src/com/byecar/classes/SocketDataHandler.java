@@ -8,8 +8,11 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.byecar.byecarplus.MainActivity;
+import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.user.CarDetailPage;
+import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.MainPage;
+import com.byecar.fragments.user.SelectBidPage;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.utils.LogUtils;
@@ -89,10 +92,19 @@ public class SocketDataHandler {
 						BaseFragment bf = activity.getFragmentAt(i);
 						
 						if(bf instanceof MainPage) {
-							((MainPage) bf).bidChanged(event, car);
+							((MainPage) bf).bidStatusChanged(event, car);
+						
+						} else if(bf instanceof CarListPage) {
+							((CarListPage) bf).bidStatusChanged(event, car);
 							
 						} else if(bf instanceof CarDetailPage) {
-							((CarDetailPage) bf).bidChanged(event, car);
+							((CarDetailPage) bf).bidStatusChanged(event, car);
+						
+						} else if(bf instanceof SelectBidPage) {
+							((SelectBidPage) bf).bidStatusChanged(event, car);
+							
+						} else if(bf instanceof SearchResultPage) {
+							((SearchResultPage) bf).bidStatusChanged(event, car);
 						}
 					}
 				}

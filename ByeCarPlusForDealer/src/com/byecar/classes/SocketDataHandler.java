@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.fragments.CarDetailPage;
+import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.dealer.MainPage;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.BaseFragment;
@@ -89,10 +90,13 @@ public class SocketDataHandler {
 						BaseFragment bf = activity.getFragmentAt(i);
 						
 						if(bf instanceof MainPage) {
-							((MainPage) bf).bidChanged(event, car);
+							((MainPage) bf).bidStatusChanged(event, car);
 							
 						} else if(bf instanceof CarDetailPage) {
-							((CarDetailPage) bf).bidChanged(event, car);
+							((CarDetailPage) bf).bidStatusChanged(event, car);
+							
+						} else if(bf instanceof SearchResultPage) {
+							((SearchResultPage) bf).bidStatusChanged(event, car);
 						}
 					}
 				}

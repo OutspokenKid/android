@@ -1105,6 +1105,10 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setMainCarInfo() {
 		
+		if(car.getStatus() == -1) {
+			closePage(R.string.holdOffByAdmin);
+		}
+		
 		if(car.getType() == Car.TYPE_BID) {
 			tvRemainTime.setText("-- : -- : --");
 			
@@ -1886,11 +1890,16 @@ public class CarDetailPage extends BCPFragment {
 						long remainTime = car.getBid_until_at() * 1000 
 								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
 								- System.currentTimeMillis();
-			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+//			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+						long progressValue = remainTime * 1000 / progressTime;
 			        	
-			        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
-			        	tvRemainTime.setText(formattedRemainTime);
-			        	progressBar.setProgress((int)progressValue);
+			        	if(remainTime < 0) {
+			        		refreshPage();
+			        	} else {
+			        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
+				        	tvRemainTime.setText(formattedRemainTime);
+				        	progressBar.setProgress((int)progressValue);
+			        	}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
@@ -1914,7 +1923,7 @@ public class CarDetailPage extends BCPFragment {
 		}
 	}
 
-	public void bidChanged(String event, Car car) {
+	public void bidStatusChanged(String event, Car car) {
 
 		if(event == null) {
 			return;
@@ -1925,26 +1934,16 @@ public class CarDetailPage extends BCPFragment {
 			this.car.copyValuesFromNewItem(car);
 			updateMainCarInfo();
 			
-			//경매가 시작되는 물건이 있는 경우.
-			if(event.equals("auction_begun")) {
-				//Do nothing.
-		
-			//경매 매물의 가격 변화가 있는 경우.
-			} else if(event.equals("bid_price_updated")) {
-				//Do nothing.
-				
 			//관리자에 의해 보류된 경우.
-			} else if(event.equals("auction_held")) {
-				//메세지 띄워주고 종료.
+			if(event.equals("auction_held")) {
 				closePage(R.string.holdOffByAdmin2);
-			
-			//딜러 선택 시간이 종료된 경우 (유찰).
-			} else if(event.equals("selection_time_ended")) {
-				//Do nothing.
 				
+			//경매가 시작되는 물건이 있는 경우.
+			//경매 매물의 가격 변화가 있는 경우.
+			//딜러 선택 시간이 종료된 경우 (유찰).
 			//유저가 딜러를 선택한 경우 (낙찰).
-			} else if(event.equals("dealer_selected")) {
-				//Do nothing.
+			} else {
+				//Do nothing.				
 			}
 		}
 	}

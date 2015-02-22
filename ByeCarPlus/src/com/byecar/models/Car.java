@@ -90,64 +90,125 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
-		this.id = newCar.id;
-		this.type = newCar.type;
-		this.car_id = newCar.car_id;
-		this.year = newCar.year;
-		this.color = newCar.color;
-		this.car_number = newCar.car_number;
-		this.mileage = newCar.mileage;
-		this.displacement = newCar.displacement;
-		this.fuel_type = newCar.fuel_type;
-		this.transmission_type = newCar.transmission_type;
-		this.had_accident = newCar.had_accident;
-		this.is_oneman_owned = newCar.is_oneman_owned;
-		this.price = newCar.price;
-		this.desc = newCar.desc;
-		this.seller_id = newCar.seller_id;
-		this.rep_img_url = newCar.rep_img_url;
-		this.status = newCar.status;
-		this.bid_begin_at = newCar.bid_begin_at;
-		this.bid_until_at = newCar.bid_until_at;
-		this.bids_cnt = newCar.bids_cnt;
-		this.area = newCar.area;
-		this.to_sell_directly = newCar.to_sell_directly;
-		this.end_at = newCar.end_at;
-		
-		this.dealer_id = newCar.dealer_id;
-		this.dealer_name = newCar.dealer_name;
-		this.dealer_phone_number = newCar.dealer_phone_number;
-		this.dealer_address = newCar.dealer_address;
-		this.dealer_profile_img_url = newCar.dealer_profile_img_url;
-		this.dealer_company = newCar.dealer_company;
-		this.dealer_level = newCar.dealer_level;
+		if(newCar == null) {
+			this.id = 0;
+			this.type = 0;
+			this.car_id = 0;
+			this.year = 0;
+			this.color = null;
+			this.car_number = null;
+			this.mileage = 0;
+			this.displacement = 0;
+			this.fuel_type = null;
+			this.transmission_type = null;
+			this.had_accident = 0;
+			this.is_oneman_owned = 0;
+			this.price = 0;
+			this.desc = null;
+			this.seller_id = 0;
+			this.rep_img_url = null;
+			this.status = 0;
+			this.bid_begin_at = 0;
+			this.bid_until_at = 0;
+			this.bids_cnt = 0;
+			this.area = null;
+			this.to_sell_directly = 0;
+			this.end_at = 0;
+			
+			this.dealer_id = 0;
+			this.dealer_name = null;
+			this.dealer_phone_number = null;
+			this.dealer_address = null;
+			this.dealer_profile_img_url = null;
+			this.dealer_company = null;
+			this.dealer_level = 0;
 
-		this.manager_id = newCar.manager_id;
-		this.manager_name = newCar.manager_name;
-		this.manager_desc = newCar.manager_desc;
-		this.manager_profile_img_url = newCar.manager_profile_img_url;
-		
-		this.created_at = newCar.created_at;
-		this.brand_name = newCar.brand_name;
-		this.model_name = newCar.model_name;
-		this.trim_name = newCar.trim_name;
-		this.car_full_name = newCar.car_full_name;
-		
-		this.seller_name = newCar.seller_name;
-		this.seller_phone_number = newCar.seller_phone_number;
-		this.seller_address = newCar.seller_address;
-		this.seller_profile_img_url = newCar.seller_profile_img_url;
-		
-		this.m_images = newCar.m_images;
-		this.a_images = newCar.a_images;
-		this.options = newCar.options;
-		this.bids = newCar.bids;
-		this.images = newCar.images;
-		
-		this.is_liked = newCar.is_liked;
-		this.likes_cnt = newCar.likes_cnt;
-		this.has_purchased = newCar.has_purchased;
-		this.has_review = newCar.has_review;
+			this.manager_id = 0;
+			this.manager_name = null;
+			this.manager_desc = null;
+			this.manager_profile_img_url = null;
+			
+			this.created_at = 0;
+			this.brand_name = null;
+			this.model_name = null;
+			this.trim_name = null;
+			this.car_full_name = null;
+			
+			this.seller_name = null;
+			this.seller_phone_number = null;
+			this.seller_address = null;
+			this.seller_profile_img_url = null;
+			
+			this.m_images = null;
+			this.a_images = null;
+			this.options = null;
+			this.bids = null;
+			this.images = null;
+			
+			this.is_liked = 0;
+			this.likes_cnt = 0;
+			this.has_purchased = 0;
+			this.has_review = 0;
+		} else {
+			this.id = newCar.id;
+			this.type = newCar.type;
+			this.car_id = newCar.car_id;
+			this.year = newCar.year;
+			this.color = newCar.color;
+			this.car_number = newCar.car_number;
+			this.mileage = newCar.mileage;
+			this.displacement = newCar.displacement;
+			this.fuel_type = newCar.fuel_type;
+			this.transmission_type = newCar.transmission_type;
+			this.had_accident = newCar.had_accident;
+			this.is_oneman_owned = newCar.is_oneman_owned;
+			this.price = newCar.price;
+			this.desc = newCar.desc;
+			this.seller_id = newCar.seller_id;
+			this.rep_img_url = newCar.rep_img_url;
+			this.status = newCar.status;
+			this.bid_begin_at = newCar.bid_begin_at;
+			this.bid_until_at = newCar.bid_until_at;
+			this.bids_cnt = newCar.bids_cnt;
+			this.area = newCar.area;
+			this.to_sell_directly = newCar.to_sell_directly;
+			this.end_at = newCar.end_at;
+			
+			this.dealer_id = newCar.dealer_id;
+			this.dealer_name = newCar.dealer_name;
+			this.dealer_phone_number = newCar.dealer_phone_number;
+			this.dealer_address = newCar.dealer_address;
+			this.dealer_profile_img_url = newCar.dealer_profile_img_url;
+			this.dealer_company = newCar.dealer_company;
+			this.dealer_level = newCar.dealer_level;
+
+			this.manager_id = newCar.manager_id;
+			this.manager_name = newCar.manager_name;
+			this.manager_desc = newCar.manager_desc;
+			this.manager_profile_img_url = newCar.manager_profile_img_url;
+			
+			this.created_at = newCar.created_at;
+			this.brand_name = newCar.brand_name;
+			this.model_name = newCar.model_name;
+			this.trim_name = newCar.trim_name;
+			this.car_full_name = newCar.car_full_name;
+			
+			this.seller_name = newCar.seller_name;
+			this.seller_phone_number = newCar.seller_phone_number;
+			this.seller_address = newCar.seller_address;
+			this.seller_profile_img_url = newCar.seller_profile_img_url;
+			
+			this.m_images = newCar.m_images;
+			this.a_images = newCar.a_images;
+			this.options = newCar.options;
+			this.bids = newCar.bids;
+			this.images = newCar.images;
+			
+			this.is_liked = newCar.is_liked;
+			this.likes_cnt = newCar.likes_cnt;
+			this.has_purchased = newCar.has_purchased;
+			this.has_review = newCar.has_review;
+		}
 	}
 	
 	public Car() {

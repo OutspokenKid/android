@@ -523,6 +523,7 @@ public class CarDetailPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(90);
 		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 		rp.bottomMargin = -ResizeUtils.getSpecificLength(8);
 		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
 				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
@@ -1011,6 +1012,10 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setMainCarInfo() {
 
+		if(car.getStatus() == -1) {
+			closePage(R.string.holdOffByAdmin);
+		}
+		
 		//딜러에게 전화 걸기를 위해서.
 		MainActivity.dealerPhoneNumber = car.getDealer_phone_number();
 		
@@ -1165,8 +1170,8 @@ public class CarDetailPage extends BCPFragment {
 			RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 			rp.bottomMargin = ResizeUtils.getSpecificLength(0);
 			
-			if((car.getType() == Car.TYPE_BID && car.getStatus() < 15)
-					|| (car.getType() == Car.TYPE_DIRECT_NORMAL && car.getStatus() < 30)) {
+			if((car.getType() == Car.TYPE_BID && car.getStatus() < Car.STATUS_BIDDING)
+					|| (car.getType() == Car.TYPE_DIRECT_NORMAL && car.getStatus() < Car.STATUS_TRADE_COMPLETE)) {
 				btnEdit.setVisibility(View.VISIBLE);
 				btnDelete.setVisibility(View.VISIBLE);
 				btnGuide.setVisibility(View.INVISIBLE);
@@ -2032,7 +2037,13 @@ public class CarDetailPage extends BCPFragment {
 						return;
 					}
 					
-					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
+					//내 매물이 입찰 종료된 경우 딜러 선택으로 넘긴다.
+					if(car.getStatus() == Car.STATUS_BID_COMPLETE
+							&& car.getSeller_id() == MainActivity.user.getId()) {
+						mActivity.closeTopPage();
+						((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
+						return;
+					} else if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
 						progressBar.setProgress(10000);
 						tvRemainTime.setText("-- : -- : --");
 						return;
@@ -2057,11 +2068,16 @@ public class CarDetailPage extends BCPFragment {
 						long remainTime = car.getBid_until_at() * 1000 
 								+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
 								- System.currentTimeMillis();
-			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+//			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+						long progressValue = remainTime * 1000 / progressTime;
 			        	
-			        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
-			        	tvRemainTime.setText(formattedRemainTime);
-			        	progressBar.setProgress((int)progressValue);
+			        	if(remainTime < 0) {
+			        		refreshPage();
+			        	} else {
+			        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
+				        	tvRemainTime.setText(formattedRemainTime);
+				        	progressBar.setProgress((int)progressValue);
+			        	}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
@@ -2085,37 +2101,27 @@ public class CarDetailPage extends BCPFragment {
 		}
 	}
 
-	public void bidChanged(String event, Car car) {
+	public void bidStatusChanged(String event, Car car) {
 
 		if(event == null) {
 			return;
 		}
 		
-		if(car.getId() == car.getId()) {
+		if(this.car.getId() == car.getId()) {
 			
 			this.car.copyValuesFromNewItem(car);
 			updateMainCarInfo();
 			
-			//경매가 시작되는 물건이 있는 경우.
-			if(event.equals("auction_begun")) {
-				//Do nothing.
-		
-			//경매 매물의 가격 변화가 있는 경우.
-			} else if(event.equals("bid_price_updated")) {
-				//Do nothing.
-				
 			//관리자에 의해 보류된 경우.
-			} else if(event.equals("auction_held")) {
-				//메세지 띄워주고 종료.
+			if(event.equals("auction_held")) {
 				closePage(R.string.holdOffByAdmin2);
-			
-			//딜러 선택 시간이 종료된 경우 (유찰).
-			} else if(event.equals("selection_time_ended")) {
-				//Do nothing.
 				
+			//경매가 시작되는 물건이 있는 경우.
+			//경매 매물의 가격 변화가 있는 경우.
+			//딜러 선택 시간이 종료된 경우 (유찰).
 			//유저가 딜러를 선택한 경우 (낙찰).
-			} else if(event.equals("dealer_selected")) {
-				//Do nothing.
+			} else {
+				//Do nothing.				
 			}
 		}
 	}

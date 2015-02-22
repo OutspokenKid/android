@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
@@ -143,10 +144,8 @@ public class DirectMarketPage extends BCPFragment {
 			@Override
 			public void onPagerItemClicked(int position) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("id", certified.get(position).getId());
-				bundle.putInt("type", Car.TYPE_DIRECT_CERTIFIED);
-				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				((MainActivity)mActivity).showCarDetailPage(certified.get(position).getId(), 
+						null, Car.TYPE_DIRECT_CERTIFIED);
 			}
 		});
 		
@@ -480,10 +479,7 @@ public class DirectMarketPage extends BCPFragment {
 								@Override
 								public void onClick(View view) {
 
-									Bundle bundle = new Bundle();
-									bundle.putInt("id", ID);
-									bundle.putInt("type", Car.TYPE_DIRECT_NORMAL);
-									mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+									((MainActivity)mActivity).showCarDetailPage(ID, null, Car.TYPE_DIRECT_NORMAL);
 								}
 							});
 						}

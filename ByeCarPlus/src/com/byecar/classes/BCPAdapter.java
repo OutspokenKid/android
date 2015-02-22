@@ -27,11 +27,20 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class BCPAdapter extends OutSpokenAdapter {
 
 	private BCPFragmentActivity activity;
+	private BCPAuctionableListFragment fragment;
 	
 	public BCPAdapter(Context context, BCPFragmentActivity activity, 
 			LayoutInflater inflater, ArrayList<BaseModel> models) {
 		super(context, inflater, models);
 		this.activity = activity;
+	}
+	
+	public BCPAdapter(Context context, BCPFragmentActivity activity, 
+			BCPAuctionableListFragment fragment,
+			LayoutInflater inflater, ArrayList<BaseModel> models) {
+		super(context, inflater, models);
+		this.activity = activity;
+		this.fragment = fragment;
 	}
 
 	@Override
@@ -89,9 +98,14 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfm;
 			
 		case BCPConstants.ITEM_CAR_BID:
+			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
+			vwfc.setFragment(fragment);
+			vwfc.setActivity(activity);
+			return vwfc;
+			
 		case BCPConstants.ITEM_CAR_DEALER:
 		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
-			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
+			vwfc = new ViewWrapperForCar(convertView, itemCode);
 			vwfc.setActivity(activity);
 			return vwfc;
 			

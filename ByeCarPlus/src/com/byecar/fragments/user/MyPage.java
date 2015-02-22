@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
@@ -116,15 +117,13 @@ public class MyPage extends BCPFragment {
 			public void onItemClick(AdapterView<?> arg0, View row, int position,
 					long arg3) {
 				
-				Car car = (Car) models.get(position);
-				
-				if(car.getStatus() == -1) {
-					ToastUtils.showToast(R.string.holdOffByAdmin);
-				} else {
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", car);
-					bundle.putInt("type", car.getType());
-					mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				try {
+					Car car = (Car) models.get(position);
+					((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
 		});

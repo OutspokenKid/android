@@ -1137,4 +1137,47 @@ public class MainActivity extends BCPFragmentActivity {
 			LogUtils.trace(e);
 		}
 	}
+
+	public void showCarDetailPage(int id, Car car, int type) {
+		
+		try {
+			if(id == 0 && car == null) {
+				return;
+			}
+			
+			if(car != null) {
+				
+				if(car.getStatus() == -1) {
+					ToastUtils.showToast(R.string.holdOffByAdmin);
+					return;
+					
+				//옥션 매물, 입찰 중, 내가 올린 매물이라면 입찰 선택 페이지로. 
+				} else if(type == Car.TYPE_BID
+						&& car.getStatus() == Car.STATUS_BID_COMPLETE
+						&& car.getSeller_id() == MainActivity.user.getId()) {
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("car", car);
+					showPage(BCPConstants.PAGE_SELECT_BID, bundle);
+					return;
+				}
+			}
+			
+			Bundle bundle = new Bundle();
+			
+			if(car != null) {
+				bundle.putSerializable("car", car);
+			}
+			
+			if(id != 0) {
+				bundle.putInt("id", id);
+			}
+			
+			bundle.putInt("type", type);
+			showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
 }

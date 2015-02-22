@@ -202,10 +202,7 @@ public class MainPage extends BCPFragment {
 			@Override
 			public void onPagerItemClicked(int position) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("id", bids.get(position).getId());
-				bundle.putInt("type", Car.TYPE_BID);
-				mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+				((MainActivity)mActivity).showCarDetailPage(bids.get(position).getId(), null, Car.TYPE_BID);
 			}
 		});
 		
@@ -617,10 +614,7 @@ public class MainPage extends BCPFragment {
 						public void onClick(View view) {
 							
 							if(INDEX < dealers.size()) {
-								Bundle bundle = new Bundle();
-								bundle.putInt("id", dealers.get(INDEX).getId());
-								bundle.putInt("type", Car.TYPE_DEALER);
-								mActivity.showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+								((MainActivity)mActivity).showCarDetailPage(dealers.get(INDEX).getId(), null, Car.TYPE_DEALER);
 							}
 						}
 					});
@@ -892,11 +886,29 @@ public class MainPage extends BCPFragment {
 							long remainTime = car.getBid_until_at() * 1000 
 									+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
 									- System.currentTimeMillis();
-				        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+//				        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+				        	long progressValue = remainTime * 1000 / progressTime;
 				        	
-				        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
-				        	tvRemainTime.setText(formattedRemainTime);
-				        	progressBar.setProgress((int)progressValue);
+				        	if(remainTime < 0) {
+				        		
+				        		//경매 종료.
+				        		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+				        			car.setStatus(Car.STATUS_BID_COMPLETE);
+				        			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
+				    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				    				
+				        		//입찰 종료.
+				        		} else {
+				        			car.setStatus(Car.STATUS_BID_FAIL);
+				        			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
+				    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				        		}
+				        		
+				        	} else {
+				        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
+					        	tvRemainTime.setText(formattedRemainTime);
+					        	progressBar.setProgress((int)progressValue);
+				        	}
 						} catch (Exception e) {
 							LogUtils.trace(e);
 							TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
@@ -921,22 +933,25 @@ public class MainPage extends BCPFragment {
 		}
 	}
 
-	public void bidChanged(String event, Car car) {
+	public void bidStatusChanged(String event, Car car) {
 
 		if(event == null) {
+			return;
+		}
+		
+		//경매가 시작되는 물건이 있는 경우.
+		if(event.equals("auction_begun")) {
+			//페이져 아이템 새로고침.
+			downloadMainInfos();
 			return;
 		}
 		
 		for(int i=0; i<bids.size(); i++) {
 			
 			if(bids.get(i).getId() == car.getId()) {
-				
-				//경매가 시작되는 물건이 있는 경우.
-				if(event.equals("auction_begun")) {
-					//Do nothing.
 			
 				//경매 매물의 가격 변화가 있는 경우.
-				} else if(event.equals("bid_price_updated")) {
+				if(event.equals("bid_price_updated")) {
 
 					bids.get(i).copyValuesFromNewItem(car);
 					

@@ -123,17 +123,17 @@ public class DealerView extends FrameLayout {
 			
 		case Dealer.LEVEL_NORAML_DEALER:
 			tvGrade.setText(R.string.dealerLevel2);
-			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level2));
 			break;
 			
 		case Dealer.LEVEL_SUPERB_DEALER:
 			tvGrade.setText(R.string.dealerLevel3);
-			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level3));
 			break;
 			
 		case Dealer.LEVEL_POWER_DEALER:
 			tvGrade.setText(R.string.dealerLevel4);
-			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
+			tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level4));
 			break;
 		}
 		

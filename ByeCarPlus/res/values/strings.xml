@@ -40,6 +40,7 @@
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_selectDealer">딜러 선택이 완료되었습니다.</string>
     <string name="complete_selling">거래 완료 처리되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
@@ -88,6 +89,7 @@
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
     <string name="failToLoadUserInfo">사용자 정보를 불러오지 못했습니다.</string>
+    <string name="failToSelectDealer">딜러를 선택하지 못했습니다.</string>
     <string name="failToSendAuthRequest">인증번호를 발송하지 못했습니다.</string>
     <string name="failToSendSMS">SMS를 발송하지 못했습니다.</string>
     <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
@@ -154,6 +156,7 @@
     <string name="searchPrice2">2억5천</string>
     <string name="searchPrice3">5억</string>
     <string name="selectCarFirst">차량을 먼저 선택해주세요</string>
+    <string name="selectDealer">딜러를 선택해주세요</string>
     <string name="selectOrder">정렬 선택</string>
     <string name="sellingArea">판매지역</string>
     <string name="sellingPriceMustOver10000">판매 가격은 10000원 이상이어야 합니다</string>

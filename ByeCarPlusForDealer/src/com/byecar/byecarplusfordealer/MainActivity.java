@@ -56,6 +56,7 @@ import com.byecar.fragments.dealer.MyGradePage;
 import com.byecar.fragments.dealer.MyPage;
 import com.byecar.fragments.dealer.MyReviewPage;
 import com.byecar.fragments.dealer.MyTicketPage;
+import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.Dealer;
 import com.byecar.models.User;
@@ -495,6 +496,7 @@ public class MainActivity extends BCPFragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		
+		socketIO.disconnect();
 		TimerUtils.cancel();
 	}
 	
@@ -519,112 +521,6 @@ public class MainActivity extends BCPFragmentActivity {
 		setOtherViews();
 		addButtons();
 	}
-	
-	public void setSocket() {
-		
-		try {
-			socketIO = new SocketIO(BCPAPIs.BASE_API_URL + ":" + BCPConstants.SOCKET_PORT);
-			socketIO.connect(new IOCallback() {
-				
-				@Override
-				public void onMessage(JSONObject json, IOAcknowledge ack) {
-				}
-				
-				@Override
-				public void onMessage(String data, IOAcknowledge ack) {
-				}
-				
-				@Override
-				public void onError(SocketIOException socketIOException) {
-
-					LogUtils.trace(socketIOException);
-				}
-				
-				@Override
-				public void onDisconnect() {
-				}
-				
-				@Override
-				public void onConnect() {
-
-					try {
-						JSONObject objMessage = new JSONObject();
-						objMessage.put("user_id", user.getId());
-						objMessage.put("last_connected_at", last_connected_at);
-						
-						socketIO.emit("join_as_user", null, objMessage);
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (Error e) {
-						LogUtils.trace(e);
-					}
-				}
-				
-				@Override
-				public void on(String event, IOAcknowledge ack, Object... args) {
-
-					if(args != null 
-							&& args.length > 0) {
-						/*
-						처음 접속, 데이터 없음.
-						{"name":"joined_as_user","args":[{"message_at":1424554954}]}
-						
-						재접속, 데이터 없음.
-						{"name":"join_as_user","args":[{"last_connected_at":1424554954,"user_id":5}]}
-
-						재접속, 데이터 있음.
-						{
-							"name":"last_messages",
-							"args":
-							[
-								arg[0] : 밀린 정보로 이루어진 배열.
-								[
-									arg[0][0] : 첫번째 아이템.
-									{
-										...
-									}
-								]
-							]
-						}
-						
-						접속중, 데이터 있음.
-						{
-							"name":"bid_price_updated",
-							"args":
-							[
-								args[0] : 추가된 정보.
-								{
-									...
-									"message_at":1424555885
-								}
-							]
-						}
-						*/
-						
-						try {
-							//last_messages인 경우 arg[0]은 JSONArray.
-							if("last_messages".equals(event)) {
-								socketDataHandler.onLastData(event, new JSONArray(args[0].toString()));
-								
-							//그 외의 경우 args[0]은 JSONObject.
-							} else {
-								JSONObject objJSON = new JSONObject(args[0].toString());
-								last_connected_at = objJSON.getLong("message_at");
-								socketDataHandler.onData(event, objJSON);
-							}
-						} catch (Exception e) {
-							Log.w("socket", "###MainActivity.socketIO.on.  parseError"
-									+ "\n event : " + event);
-						}
-					}
-				}
-			});
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
-    }
 	
 	public void setImageView() {
 		
@@ -938,6 +834,112 @@ public class MainActivity extends BCPFragmentActivity {
 		});
 	}
 	
+	public void setSocket() {
+		
+		try {
+			socketIO = new SocketIO(BCPAPIs.BASE_API_URL + ":" + BCPConstants.SOCKET_PORT);
+			socketIO.connect(new IOCallback() {
+				
+				@Override
+				public void onMessage(JSONObject json, IOAcknowledge ack) {
+				}
+				
+				@Override
+				public void onMessage(String data, IOAcknowledge ack) {
+				}
+				
+				@Override
+				public void onError(SocketIOException socketIOException) {
+
+					LogUtils.trace(socketIOException);
+				}
+				
+				@Override
+				public void onDisconnect() {
+				}
+				
+				@Override
+				public void onConnect() {
+
+					try {
+						JSONObject objMessage = new JSONObject();
+						objMessage.put("user_id", user.getId());
+						objMessage.put("last_connected_at", last_connected_at);
+						
+						socketIO.emit("join_as_user", null, objMessage);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+				
+				@Override
+				public void on(String event, IOAcknowledge ack, Object... args) {
+
+					if(args != null 
+							&& args.length > 0) {
+						/*
+						처음 접속, 데이터 없음.
+						{"name":"joined_as_user","args":[{"message_at":1424554954}]}
+						
+						재접속, 데이터 없음.
+						{"name":"join_as_user","args":[{"last_connected_at":1424554954,"user_id":5}]}
+
+						재접속, 데이터 있음.
+						{
+							"name":"last_messages",
+							"args":
+							[
+								arg[0] : 밀린 정보로 이루어진 배열.
+								[
+									arg[0][0] : 첫번째 아이템.
+									{
+										...
+									}
+								]
+							]
+						}
+						
+						접속중, 데이터 있음.
+						{
+							"name":"bid_price_updated",
+							"args":
+							[
+								args[0] : 추가된 정보.
+								{
+									...
+									"message_at":1424555885
+								}
+							]
+						}
+						*/
+						
+						try {
+							//last_messages인 경우 arg[0]은 JSONArray.
+							if("last_messages".equals(event)) {
+								socketDataHandler.onLastData(event, new JSONArray(args[0].toString()));
+								
+							//그 외의 경우 args[0]은 JSONObject.
+							} else {
+								JSONObject objJSON = new JSONObject(args[0].toString());
+								last_connected_at = objJSON.getLong("message_at");
+								socketDataHandler.onData(event, objJSON);
+							}
+						} catch (Exception e) {
+							Log.w("socket", "###MainActivity.socketIO.on.  parseError"
+									+ "\n event : " + event);
+						}
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+    }
+	
 	public void downloadDealerInfo() {
 
 		String url = BCPAPIs.DEALER_INFO_URL + "?dealer_id=" + user.getDealer_id();
@@ -1168,4 +1170,36 @@ public class MainActivity extends BCPFragmentActivity {
 			LogUtils.trace(e);
 		}
 	}
+
+	public void showCarDetailPage(int id, Car car, int type) {
+		
+		try {
+			if(id == 0 && car == null) {
+				return;
+			}
+			
+			if(car != null && car.getStatus() == -1) {
+				ToastUtils.showToast(R.string.holdOffByAdmin);
+				return;
+			}
+			
+			Bundle bundle = new Bundle();
+			
+			if(car != null) {
+				bundle.putSerializable("car", car);
+			}
+			
+			if(id != 0) {
+				bundle.putInt("id", id);
+			}
+			
+			bundle.putInt("type", type);
+			showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+
 }
