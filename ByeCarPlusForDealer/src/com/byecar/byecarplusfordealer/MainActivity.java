@@ -1,7 +1,11 @@
 package com.byecar.byecarplusfordealer;
 
+import io.socket.IOAcknowledge;
+import io.socket.IOCallback;
 import io.socket.SocketIO;
+import io.socket.SocketIOException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +35,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
+import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CarDetailPage;
 import com.byecar.fragments.CarRegistrationPage;
@@ -104,6 +110,7 @@ public class MainActivity extends BCPFragmentActivity {
 	private boolean animating;
 	private long last_connected_at;
 	private SocketIO socketIO;
+	private SocketDataHandler socketDataHandler;
 	
 	@Override
 	public void bindViews() {
@@ -148,6 +155,8 @@ public class MainActivity extends BCPFragmentActivity {
 		});
 		
 		GestureSlidingLayout.setScrollLock(true);
+		
+		socketDataHandler = new SocketDataHandler(this);
 	}
 
 	@Override
@@ -511,6 +520,112 @@ public class MainActivity extends BCPFragmentActivity {
 		addButtons();
 	}
 	
+	public void setSocket() {
+		
+		try {
+			socketIO = new SocketIO(BCPAPIs.BASE_API_URL + ":" + BCPConstants.SOCKET_PORT);
+			socketIO.connect(new IOCallback() {
+				
+				@Override
+				public void onMessage(JSONObject json, IOAcknowledge ack) {
+				}
+				
+				@Override
+				public void onMessage(String data, IOAcknowledge ack) {
+				}
+				
+				@Override
+				public void onError(SocketIOException socketIOException) {
+
+					LogUtils.trace(socketIOException);
+				}
+				
+				@Override
+				public void onDisconnect() {
+				}
+				
+				@Override
+				public void onConnect() {
+
+					try {
+						JSONObject objMessage = new JSONObject();
+						objMessage.put("user_id", user.getId());
+						objMessage.put("last_connected_at", last_connected_at);
+						
+						socketIO.emit("join_as_user", null, objMessage);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+				
+				@Override
+				public void on(String event, IOAcknowledge ack, Object... args) {
+
+					if(args != null 
+							&& args.length > 0) {
+						/*
+						처음 접속, 데이터 없음.
+						{"name":"joined_as_user","args":[{"message_at":1424554954}]}
+						
+						재접속, 데이터 없음.
+						{"name":"join_as_user","args":[{"last_connected_at":1424554954,"user_id":5}]}
+
+						재접속, 데이터 있음.
+						{
+							"name":"last_messages",
+							"args":
+							[
+								arg[0] : 밀린 정보로 이루어진 배열.
+								[
+									arg[0][0] : 첫번째 아이템.
+									{
+										...
+									}
+								]
+							]
+						}
+						
+						접속중, 데이터 있음.
+						{
+							"name":"bid_price_updated",
+							"args":
+							[
+								args[0] : 추가된 정보.
+								{
+									...
+									"message_at":1424555885
+								}
+							]
+						}
+						*/
+						
+						try {
+							//last_messages인 경우 arg[0]은 JSONArray.
+							if("last_messages".equals(event)) {
+								socketDataHandler.onLastData(event, new JSONArray(args[0].toString()));
+								
+							//그 외의 경우 args[0]은 JSONObject.
+							} else {
+								JSONObject objJSON = new JSONObject(args[0].toString());
+								last_connected_at = objJSON.getLong("message_at");
+								socketDataHandler.onData(event, objJSON);
+							}
+						} catch (Exception e) {
+							Log.w("socket", "###MainActivity.socketIO.on.  parseError"
+									+ "\n event : " + event);
+						}
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+    }
+	
 	public void setImageView() {
 		
 		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
@@ -804,9 +919,9 @@ public class MainActivity extends BCPFragmentActivity {
 						
 						user = new User(objJSON.getJSONObject("user"));
 						
-//						if(socketIO == null || !socketIO.isConnected()) {
-//							setSocket();
-//						}
+						if(socketIO == null || !socketIO.isConnected()) {
+							setSocket();
+						}
 						
 						downloadDealerInfo();
 						checkGCM();
@@ -822,10 +937,6 @@ public class MainActivity extends BCPFragmentActivity {
 			}
 		});
 	}
-	
-	public void setSocket() {
-		
-    }
 	
 	public void downloadDealerInfo() {
 

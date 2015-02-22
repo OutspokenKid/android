@@ -113,7 +113,7 @@ public class Car extends BCPBaseModel implements Serializable {
 		this.area = newCar.area;
 		this.to_sell_directly = newCar.to_sell_directly;
 		this.end_at = newCar.end_at;
-
+		
 		this.dealer_id = newCar.dealer_id;
 		this.dealer_name = newCar.dealer_name;
 		this.dealer_phone_number = newCar.dealer_phone_number;

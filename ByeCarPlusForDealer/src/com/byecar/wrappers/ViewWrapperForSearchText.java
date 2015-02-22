@@ -105,7 +105,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 								bundle.putInt("modelgroup_id", ((CarModelGroup)model).getId());
 								type = BCPConstants.PAGE_TYPE_SEARCH_CAR;
 								mActivity.showPage(type, bundle);
-							
+								
 							} else if(model instanceof CarModel) {
 								bundle.putInt("type", TypeSearchCarPage.TYPE_TRIM);
 								bundle.putInt("model_id", ((CarModel)model).getId());

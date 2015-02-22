@@ -193,7 +193,7 @@ public class CarDetailPage extends BCPFragment {
 			} else if(getArguments().containsKey("id")) {
 				this.id = getArguments().getInt("id");
 			} else {
-				closePage();
+				closePage(R.string.failToLoadCarInfo);
 			}
 			
 			if(getArguments().containsKey("type")) {
@@ -506,8 +506,8 @@ public class CarDetailPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) timeIcon.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(18);
 		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		rp.rightMargin = ResizeUtils.getSpecificLength(5);
+		rp.leftMargin = -ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(7);
 		
 		//remainBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_remainBg).getLayoutParams();
@@ -1094,10 +1094,10 @@ public class CarDetailPage extends BCPFragment {
 					setCarDescription();
 				} catch (Exception e) {
 					LogUtils.trace(e);
-					closePage();
+					closePage(R.string.failToLoadCarInfo);
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
-					closePage();
+					closePage(R.string.failToLoadCarInfo);
 				}
 			}
 		});
@@ -1168,6 +1168,46 @@ public class CarDetailPage extends BCPFragment {
 			hideBidding();
 			showDesc();
 			break;
+		}
+	}
+	
+	public void updateMainCarInfo() {
+		
+		tvRemainTime.setText("-- : -- : --");
+		
+		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+		} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+		} else {
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
+			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+		}
+		
+		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
+				+ getString(R.string.won));
+		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
+		
+		for(int i=0; i<dealerViews.length; i++) {
+			
+			if(i < car.getBids().size()) {
+				dealerViews[i].setDealerInfo(car.getBids().get(i));
+				
+				final int I = i;
+				dealerViews[i].setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putBoolean("isCertifier", false);
+						bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
+						mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
+					}
+				});
+			}
 		}
 	}
 	
@@ -1294,9 +1334,9 @@ public class CarDetailPage extends BCPFragment {
 		tvDescription.setText(car.getDesc());
 	}
 
-	public void closePage() {
+	public void closePage(int message) {
 		
-		ToastUtils.showToast(R.string.failToLoadCarInfo);
+		ToastUtils.showToast(message);
 		
 		new Handler().postDelayed(new Runnable() {
 
@@ -1395,11 +1435,11 @@ public class CarDetailPage extends BCPFragment {
 		
 		int size = car.getBids().size();
 		
-		for(int i=0; i<3; i++) {
-			dealerViews[i].setVisibility(View.INVISIBLE);
-		}
-		
 		if(size == 0) {
+			
+			for(int i=0; i<3; i++) {
+				dealerViews[i].setVisibility(View.INVISIBLE);
+			}
 			
 			if(noOne == null) {
 				noOne = new View(mContext);
@@ -1415,7 +1455,6 @@ public class CarDetailPage extends BCPFragment {
 		} else {
 			
 			for(int i=0; i<size; i++) {
-				dealerViews[i].setVisibility(View.VISIBLE);
 				dealerViews[i].setDealerInfo(car.getBids().get(i));
 				
 				final int I = i;
@@ -1849,7 +1888,7 @@ public class CarDetailPage extends BCPFragment {
 								- System.currentTimeMillis();
 			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
 			        	
-			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+			        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
 			        	tvRemainTime.setText(formattedRemainTime);
 			        	progressBar.setProgress((int)progressValue);
 					} catch (Exception e) {
@@ -1872,6 +1911,41 @@ public class CarDetailPage extends BCPFragment {
 					return mActivity;
 				}
 			};
+		}
+	}
+
+	public void bidChanged(String event, Car car) {
+
+		if(event == null) {
+			return;
+		}
+		
+		if(this.car.getId() == car.getId()) {
+			
+			this.car.copyValuesFromNewItem(car);
+			updateMainCarInfo();
+			
+			//경매가 시작되는 물건이 있는 경우.
+			if(event.equals("auction_begun")) {
+				//Do nothing.
+		
+			//경매 매물의 가격 변화가 있는 경우.
+			} else if(event.equals("bid_price_updated")) {
+				//Do nothing.
+				
+			//관리자에 의해 보류된 경우.
+			} else if(event.equals("auction_held")) {
+				//메세지 띄워주고 종료.
+				closePage(R.string.holdOffByAdmin2);
+			
+			//딜러 선택 시간이 종료된 경우 (유찰).
+			} else if(event.equals("selection_time_ended")) {
+				//Do nothing.
+				
+			//유저가 딜러를 선택한 경우 (낙찰).
+			} else if(event.equals("dealer_selected")) {
+				//Do nothing.
+			}
 		}
 	}
 }

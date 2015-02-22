@@ -561,6 +561,30 @@ public class StringUtils {
 		return null;
 	}
 
+	/**
+	 * HH:mm:ss 형식으로.
+	 * 
+	 * @param format
+	 * @param timestamp
+	 * @return
+	 */
+	public static String getTimeString(long timestamp) {
+		
+		try {
+			long hour = timestamp / 3600000;
+			long minute = (timestamp - hour * 3600000) / 60000;
+			long second = (timestamp - hour * 3600000 - minute * 60000) / 1000;
+			
+			return (hour < 10 ? "0" : "") + hour 
+					+ " : " + (minute < 10 ? "0" : "") + minute
+					+ " : " + (second < 10 ? "0" : "") + second;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+		
+		return null;
+	}
+	
 	public static String objectToString(Serializable object) {
 	    ByteArrayOutputStream out = new ByteArrayOutputStream();
 	    try {

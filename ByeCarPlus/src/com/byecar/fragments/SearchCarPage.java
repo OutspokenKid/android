@@ -34,8 +34,8 @@ import com.byecar.models.CarModel;
 import com.byecar.models.CarModelGroup;
 import com.byecar.models.CarTrim;
 import com.byecar.views.SliderView;
-import com.byecar.views.TitleBar;
 import com.byecar.views.SliderView.NodeChangedListener;
+import com.byecar.views.TitleBar;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -81,10 +81,14 @@ public class SearchCarPage extends BCPFragment {
 	private Button btnShowDetailSearchResult;
 
 	private int type;
+	private int carType;
 	private int menuIndex;
 	private int minPrice;
 	private int maxPrice;
 	private String conditionString;
+	private int brand_id;
+	private int modelgroup_id;
+	private int model_id;
 	private int trim_id;
 	
 	private ArrayList<BaseModel> modelsForGrid = new ArrayList<BaseModel>();
@@ -128,6 +132,7 @@ public class SearchCarPage extends BCPFragment {
 		if(getArguments() != null) {
 			
 			menuIndex = getArguments().getInt("menuIndex");
+			carType = getArguments().getInt("type");
 
 			if(menuIndex < 0 || menuIndex > 1) {
 				menuIndex = 0;
@@ -391,6 +396,7 @@ public class SearchCarPage extends BCPFragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 				conditionString = ((Brand)modelsForGrid.get(position)).getName();
+				brand_id = ((Brand)modelsForGrid.get(position)).getId();
 				loadModelGroups(((Brand)modelsForGrid.get(position)).getId());
 			}
 		});
@@ -420,17 +426,28 @@ public class SearchCarPage extends BCPFragment {
 				switch(type) {
 				
 				case TYPE_MODELGROUP:
-					conditionString += " / " + ((CarModelGroup)modelsForList.get(position)).getName();
-					loadModels(((CarModelGroup)modelsForList.get(position)).getId());
+					if(((CarModelGroup)modelsForList.get(position)).getId() == 0) {
+						showSelectedCondition();
+					} else {
+						conditionString += " / " + ((CarModelGroup)modelsForList.get(position)).getName();
+						modelgroup_id = ((CarModelGroup)modelsForList.get(position)).getId();
+						loadModels(((CarModelGroup)modelsForList.get(position)).getId());
+					}
 					break;
 					
 				case TYPE_MODEL:
-					conditionString += " / " + ((CarModel)modelsForList.get(position)).getName();
-					loadTrims(((CarModel)modelsForList.get(position)).getId());
+					if(((CarModel)modelsForList.get(position)).getId() == 0) {
+						showSelectedCondition();
+					} else {
+						conditionString += " / " + ((CarModel)modelsForList.get(position)).getName();
+						model_id = ((CarModel)modelsForList.get(position)).getId();
+						loadTrims(((CarModel)modelsForList.get(position)).getId());
+					}
 					break;
 					
 				case TYPE_TRIM:
 					conditionString += " / " + ((CarTrim)modelsForList.get(position)).getName();
+					trim_id = ((CarTrim)modelsForList.get(position)).getId();
 					showSelectedCondition();
 					break;
 				}
@@ -459,6 +476,10 @@ public class SearchCarPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
+				bundle.putInt("type", carType);
+				bundle.putInt("brand_id", brand_id);
+				bundle.putInt("modelgroup_id", modelgroup_id);
+				bundle.putInt("model_id", model_id);
 				bundle.putInt("trim_id", trim_id);
 				bundle.putString("conditionString", conditionString);
 				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
@@ -571,6 +592,13 @@ public class SearchCarPage extends BCPFragment {
 				return true;
 				
 			case TYPE_MODELGROUP:
+				
+				CarModelGroup cg = new CarModelGroup();
+				cg.setName("전체");
+				cg.setItemCode(BCPConstants.ITEM_CAR_TEXT);
+				cg.setNeedClickListener(false);
+				modelsForList.add(cg);
+				
 				arJSON = objJSON.getJSONArray("modelgroups");
 				size = arJSON.length();
 				
@@ -585,6 +613,13 @@ public class SearchCarPage extends BCPFragment {
 				break;
 				
 			case TYPE_MODEL:
+				
+				CarModel cm = new CarModel();
+				cm.setName("전체");
+				cm.setItemCode(BCPConstants.ITEM_CAR_TEXT);
+				cm.setNeedClickListener(false);
+				modelsForList.add(cm);
+				
 				arJSON = objJSON.getJSONArray("models");
 				size = arJSON.length();
 				
@@ -599,6 +634,13 @@ public class SearchCarPage extends BCPFragment {
 				break;
 				
 			case TYPE_TRIM:
+				
+				CarTrim ct = new CarTrim();
+				ct.setName("전체");
+				ct.setItemCode(BCPConstants.ITEM_CAR_TEXT);
+				ct.setNeedClickListener(false);
+				modelsForList.add(ct);
+				
 				arJSON = objJSON.getJSONArray("trims");
 				size = arJSON.length();
 				
@@ -645,6 +687,11 @@ public class SearchCarPage extends BCPFragment {
 
 	public void setMenu(int menuIndex) {
 
+		brand_id = 0;
+		modelgroup_id = 0;
+		model_id = 0;
+		trim_id = 0;
+		
 		gridView.setVisibility(View.INVISIBLE);
 		listView.setVisibility(View.INVISIBLE);
 		relativeForSearchResult.setVisibility(View.INVISIBLE);
@@ -682,7 +729,7 @@ public class SearchCarPage extends BCPFragment {
 	}
 	
 	public void loadModelGroups(int brand_id) {
-
+		
 		gridView.setVisibility(View.INVISIBLE);
 		listView.setVisibility(View.VISIBLE);
 		
@@ -698,7 +745,7 @@ public class SearchCarPage extends BCPFragment {
 	}
 	
 	public void loadModels(int modelgroup_id) {
-
+		
 		type = TYPE_MODEL;
 		isLastList = false;
 		modelsForList.clear();

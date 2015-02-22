@@ -5,6 +5,7 @@ import io.socket.IOCallback;
 import io.socket.SocketIO;
 import io.socket.SocketIOException;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
@@ -17,6 +18,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
+import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerCertifierPage;
@@ -113,6 +116,7 @@ public class MainActivity extends BCPFragmentActivity {
 	private boolean animating;
 	private long last_connected_at;
 	private SocketIO socketIO;
+	private SocketDataHandler socketDataHandler;
 	
 	@Override
  	public void bindViews() {
@@ -156,6 +160,8 @@ public class MainActivity extends BCPFragmentActivity {
 		});
 		
 		GestureSlidingLayout.setScrollLock(true);
+		
+		socketDataHandler = new SocketDataHandler(this);
 	}
 
 	@Override
@@ -509,6 +515,7 @@ public class MainActivity extends BCPFragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		
+		socketIO.disconnect();
 		TimerUtils.cancel();
 	}
 	
@@ -881,9 +888,9 @@ public class MainActivity extends BCPFragmentActivity {
 						
 						user = new User(objJSON.getJSONObject("user"));
 						
-//						if(socketIO == null || !socketIO.isConnected()) {
-//							setSocket();
-//						}
+						if(socketIO == null || !socketIO.isConnected()) {
+							setSocket();
+						}
 						
 						setLeftViewUserInfo();
 						checkGCM();
@@ -908,14 +915,10 @@ public class MainActivity extends BCPFragmentActivity {
 				
 				@Override
 				public void onMessage(JSONObject json, IOAcknowledge ack) {
-
-					LogUtils.log("###MainActivity.socketIO.onMessage.  json : " + json);
 				}
 				
 				@Override
 				public void onMessage(String data, IOAcknowledge ack) {
-
-					LogUtils.log("###MainActivity.socketIO.onMessage.  data : " + data);
 				}
 				
 				@Override
@@ -926,15 +929,11 @@ public class MainActivity extends BCPFragmentActivity {
 				
 				@Override
 				public void onDisconnect() {
-					
-					LogUtils.log("###MainActivity.socketIO.onDisconnect.  ");
 				}
 				
 				@Override
 				public void onConnect() {
 
-					LogUtils.log("###MainActivity.socketIO.onConnect.  ");
-					
 					try {
 						JSONObject objMessage = new JSONObject();
 						objMessage.put("user_id", user.getId());
@@ -951,23 +950,59 @@ public class MainActivity extends BCPFragmentActivity {
 				@Override
 				public void on(String event, IOAcknowledge ack, Object... args) {
 
-					/*
-					02-09 06:30:12.628: I/notice(2751):  event : joined_as_user
-					02-09 06:30:12.628: I/notice(2751):  ack : null
-					 */
-					LogUtils.log("###MainActivity.socketIO.on.  "
-							+ "\n event : " + event
-							+ "\n ack : " + ack);
-
-					/*
-					02-09 06:30:12.628: I/notice(2751): ###MainActivity.socketIO.on.  args[0] : {"message_at":1423463412}
-					*/
-					for(int i=0; i<args.length; i++) {
-						LogUtils.log("###MainActivity.socketIO.on.  args[" + i + "] : " + args[0].toString());
-					}
-					
-					if("joined_as_user".equals(event)) {
+					if(args != null 
+							&& args.length > 0) {
+						/*
+						처음 접속, 데이터 없음.
+						{"name":"joined_as_user","args":[{"message_at":1424554954}]}
 						
+						재접속, 데이터 없음.
+						{"name":"join_as_user","args":[{"last_connected_at":1424554954,"user_id":5}]}
+
+						재접속, 데이터 있음.
+						{
+							"name":"last_messages",
+							"args":
+							[
+								arg[0] : 밀린 정보로 이루어진 배열.
+								[
+									arg[0][0] : 첫번째 아이템.
+									{
+										...
+									}
+								]
+							]
+						}
+						
+						접속중, 데이터 있음.
+						{
+							"name":"bid_price_updated",
+							"args":
+							[
+								args[0] : 추가된 정보.
+								{
+									...
+									"message_at":1424555885
+								}
+							]
+						}
+						*/
+						
+						try {
+							//last_messages인 경우 arg[0]은 JSONArray.
+							if("last_messages".equals(event)) {
+								socketDataHandler.onLastData(event, new JSONArray(args[0].toString()));
+								
+							//그 외의 경우 args[0]은 JSONObject.
+							} else {
+								JSONObject objJSON = new JSONObject(args[0].toString());
+								last_connected_at = objJSON.getLong("message_at");
+								socketDataHandler.onData(event, objJSON);
+							}
+						} catch (Exception e) {
+							Log.w("socket", "###MainActivity.socketIO.on.  parseError"
+									+ "\n event : " + event);
+						}
 					}
 				}
 			});

@@ -31,7 +31,11 @@ public class SearchResultPage extends BCPFragment {
 	private View noResult;
 	private ListView listView;
 
+	private int type;
 	private String conditionString;
+	private int brand_id;
+	private int modelgroup_id;
+	private int model_id;
 	private int trim_id;
 	private int price_min;
 	private int price_max;
@@ -50,7 +54,11 @@ public class SearchResultPage extends BCPFragment {
 	public void setVariables() {
 
 		if(getArguments() != null) {
+			type = getArguments().getInt("type");
 			conditionString = getArguments().getString("conditionString");
+			brand_id = getArguments().getInt("brand_id");
+			modelgroup_id = getArguments().getInt("modelgroup_id");
+			model_id = getArguments().getInt("model_id");
 			trim_id = getArguments().getInt("trim_id");
 			price_min = getArguments().getInt("price_min");
 			price_max = getArguments().getInt("price_max");
@@ -139,11 +147,27 @@ public class SearchResultPage extends BCPFragment {
 
 	@Override
 	public void downloadInfo() {
+
+		switch(type) {
+		
+		case Car.TYPE_BID:
+			url = BCPAPIs.CAR_BID_LIST_URL;
+			break;
+		case Car.TYPE_DEALER:
+			url = BCPAPIs.CAR_DEALER_LIST_URL;
+			break;
+		}
 		
 		url = BCPAPIs.CAR_DEALER_LIST_URL;
 		
 		if(trim_id != 0) {
 			url += "?trim_id=" + trim_id;
+		} else if(model_id != 0) {
+			url += "?model_id=" + model_id;
+		} else if(modelgroup_id != 0) {
+			url += "?modelgroup_id=" + modelgroup_id;
+		} else if(brand_id != 0) {
+			url += "?brand_id=" + brand_id;
 		} else if(price_max != 0) {
 			url += "?price_min=" + price_min + "&price_max=" + price_max;
 		} else {
@@ -169,7 +193,17 @@ public class SearchResultPage extends BCPFragment {
 			size = arJSON.length();
 			for(int i=0; i<size; i++) {
 				Car car = new Car(arJSON.getJSONObject(i));
-				car.setItemCode(BCPConstants.ITEM_CAR_DEALER);
+				
+				switch(type) {
+				
+				case Car.TYPE_BID:
+					car.setItemCode(BCPConstants.ITEM_CAR_BID);
+					break;
+				case Car.TYPE_DEALER:
+					car.setItemCode(BCPConstants.ITEM_CAR_DEALER);
+					break;
+				}
+				
 				models.add(car);
 			}
 			

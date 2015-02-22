@@ -121,6 +121,17 @@ public class ImagePagerAdapter extends PagerAdapter {
 		this.OnPagerItemClickedListener = OnPagerItemClickedListener;
 	}
 	
+	public void removeItem(int index) {
+		
+		images.remove(index);
+	}
+	
+	@Override
+	public int getItemPosition(Object object) {
+		
+		return POSITION_NONE;
+	}
+	
 //////////////////// Interfaces.
 	
 	public interface OnPagerItemClickedListener {

@@ -111,6 +111,7 @@
     <string name="hintForPriceBid">경매 시작가격을 입력해주세요.</string>
 	<string name="hintForPriceNormal">판매 가격을 입력해주세요.</string>
 	<string name="holdOffByAdmin">관리자에 의해 보류 중인 매물입니다.\n(자세한 사항은 바이카에 문의해주세요.)</string>
+	<string name="holdOffByAdmin2">관리자에 의해 보류 되었습니다.</string>
     
     <string name="introduce">자기소개</string>
     

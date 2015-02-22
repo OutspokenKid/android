@@ -22,6 +22,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 	private Context context;
 	private ArrayList<String> images = new ArrayList<String>();
 	private OnPagerItemClickedListener OnPagerItemClickedListener;
+	
 	public ImagePagerAdapter() {
 		
 	}
@@ -119,6 +120,17 @@ public class ImagePagerAdapter extends PagerAdapter {
 	public void setOnPagerItemClickedListener(OnPagerItemClickedListener OnPagerItemClickedListener) {
 		
 		this.OnPagerItemClickedListener = OnPagerItemClickedListener;
+	}
+
+	public void removeItem(int index) {
+		
+		images.remove(index);
+	}
+	
+	@Override
+	public int getItemPosition(Object object) {
+		
+		return POSITION_NONE;
 	}
 	
 //////////////////// Interfaces.

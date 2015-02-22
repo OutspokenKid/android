@@ -292,7 +292,9 @@ public class CarListPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, null);
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", type);
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
 			}
 		});
 	

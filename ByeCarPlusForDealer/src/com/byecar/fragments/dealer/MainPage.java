@@ -244,7 +244,15 @@ public class MainPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, null);
+				Bundle bundle = new Bundle();
+				
+				if(menuIndex == 0) {
+					bundle.putInt("type", Car.TYPE_BID);
+				} else {
+					bundle.putInt("type", Car.TYPE_DEALER);
+				}
+				
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
 			}
 		});
 		
@@ -677,5 +685,9 @@ public class MainPage extends BCPFragment {
 				}
 			}
 		});
+	}
+	
+	public void bidChanged(String event, Car car) {
+		
 	}
 }

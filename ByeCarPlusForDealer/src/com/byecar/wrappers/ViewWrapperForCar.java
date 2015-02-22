@@ -140,8 +140,8 @@ public class ViewWrapperForCar extends ViewWrapper {
 			rp = (RelativeLayout.LayoutParams) timeIcon.getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(18);
 			rp.height = ResizeUtils.getSpecificLength(18);
-			rp.topMargin = ResizeUtils.getSpecificLength(6);
-			rp.rightMargin = ResizeUtils.getSpecificLength(5);
+			rp.leftMargin = -ResizeUtils.getSpecificLength(10);
+			rp.topMargin = ResizeUtils.getSpecificLength(7);
 			
 			//tvCarInfo1.
 			rp = (RelativeLayout.LayoutParams) tvCarInfo1.getLayoutParams();
@@ -367,7 +367,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 								- System.currentTimeMillis();
 			        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
 			        	
-			        	String formattedRemainTime = StringUtils.getDateString("HH : mm : ss", remainTime);
+			        	String formattedRemainTime = StringUtils.getTimeString(remainTime);
 			        	tvRemainTime.setText(formattedRemainTime);
 			        	progressBar.setProgress((int)progressValue);	
 					} catch (Exception e) {
