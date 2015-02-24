@@ -1481,8 +1481,10 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
+			mActivity.hideLoadingView();
 		} catch (Error e) {
 			LogUtils.trace(e);
+			mActivity.hideLoadingView();
 		}
 	}
 	
@@ -1490,7 +1492,16 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		switch(type) {
 		
+		//메인에서 등록버튼, (메인)-(등록페이지)
 		case TYPE_REGISTRATION:
+			try {
+				mActivity.getFragmentAt(mActivity.getFragmentsSize() - 2).refreshPage();
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+			
 			((MainActivity) mActivity).showPopup(MainActivity.POPUP_REQUEST_REGISTRATION);
 			break;
 			
@@ -1508,6 +1519,8 @@ public class CarRegistrationPage extends BCPFragment {
 	}
 
 	public void uploadImages() {
+		
+		mActivity.showLoadingView();
 		
 		int size = selectedImageSdCardPaths.length;
 		
@@ -1540,6 +1553,8 @@ public class CarRegistrationPage extends BCPFragment {
 				return;
 			}
 		}
+		
+		mActivity.hideLoadingView();
 		
 		//모든 이미지 업로드 완료.
 		register();

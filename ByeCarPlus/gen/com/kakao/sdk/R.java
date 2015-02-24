@@ -412,7 +412,7 @@ public final class R {
 		public static final int icon = 0x7f05009b;
 		public static final int ifRoom = 0x7f05000a;
 		public static final int image = 0x7f050098;
-		public static final int kakao_login_activity_progress_bar = 0x7f050256;
+		public static final int kakao_login_activity_progress_bar = 0x7f050241;
 		public static final int large = 0x7f05001b;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f05009a;
@@ -491,9 +491,9 @@ public final class R {
 		public static final int com_facebook_search_bar_layout = 0x7f030028;
 		public static final int com_facebook_tooltip_bubble = 0x7f030029;
 		public static final int com_facebook_usersettingsfragment = 0x7f03002a;
-		public static final int kakao_internal_login_activity = 0x7f030044;
-		public static final int kakao_login_layout = 0x7f030045;
-		public static final int support_simple_spinner_dropdown_item = 0x7f03004e;
+		public static final int kakao_internal_login_activity = 0x7f030043;
+		public static final int kakao_login_layout = 0x7f030044;
+		public static final int support_simple_spinner_dropdown_item = 0x7f03004d;
 	}
 	public static final class string {
 		public static final int abc_action_bar_home_description = 0x7f0a0001;

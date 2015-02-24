@@ -3,9 +3,11 @@ package com.byecar.fragments.dealer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,7 +27,7 @@ import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
-import com.byecar.classes.BCPAuctionableListFragment;
+import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.OpenablePostListPage;
@@ -39,7 +41,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class MainPage extends BCPAuctionableListFragment {
+public class MainPage extends BCPAuctionableFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	
@@ -348,15 +350,15 @@ public class MainPage extends BCPAuctionableListFragment {
 		switch(menuIndex) {
 			
 		case 0:
-			url = BCPAPIs.CAR_BID_LIST_URL;
+			url = BCPAPIs.CAR_BID_LIST_URL + "?status=in_progress";
 			break;
 			
 		case 1:
-			url = BCPAPIs.MY_BIDS_URL + "?status=10";
+			url = BCPAPIs.MY_BIDS_URL + "?status=in_progress";
 			break;
 			
 		case 2:
-			url = BCPAPIs.CAR_DEALER_LIST_URL;
+			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=accepted";
 			break;
 			
 		case 3:
@@ -687,5 +689,53 @@ public class MainPage extends BCPAuctionableListFragment {
 				}
 			}
 		});
+	}
+
+	@Override
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void bidStatusChanged(String event, Car car) {
+
+		if(event == null) {
+			return;
+		}
+		
+		if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
+			return;
+		}
+
+		car.setItemCode(BCPConstants.ITEM_CAR_BID);
+		
+		//경매가 시작되는 물건이 있는 경우.
+		if(event.equals("auction_begun")) {
+			
+			//기존에 같은 매물이 있다면 최신화.
+			//같은 매물이 없고, 새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
+			if(!updateSelectedCar(car)) {
+				reorderList(startIndex, car);
+			}
+			
+		//경매 매물의 가격 변화가 있는 경우.
+		} else if(event.equals("bid_price_updated")) {
+			updateSelectedCar(car);
+
+		//관리자에 의해 보류된 경우.
+		} else if(event.equals("auction_ended")) {
+			
+			//좋아요 순이 아니라면,
+			if(!getString(R.string.order_2).equals(orderString)) {
+				reorderList(startIndex, car);
+			}
+			
+		//관리자에 의해 보류된 경우.
+		} else if(event.equals("auction_held")) {
+			//해당 매물 삭제.
+			deleteSelectedCar(car);
+			
+		//딜러 선택 시간이 종료된 경우 (유찰).
+		//유저가 딜러를 선택한 경우 (낙찰).
+		} else if(event.equals("selection_time_ended")
+				|| event.equals("dealer_selected")) {
+			reorderList(startIndex, car);
+		}
 	}
 }

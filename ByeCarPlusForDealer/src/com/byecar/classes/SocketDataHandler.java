@@ -23,18 +23,20 @@ public class SocketDataHandler {
 		
 		this.activity = activity;
 	}
-
+	
 	/*
 	arJSON : 밀린 정보들.
 	[
 		arJSON[0] : 첫번째 아이템.
 		{
-			(Car + message_at)
+			"type":"auction_begun",
+			"data": (Car + message_at)
 		},
 		
 		arJSON[1] : 두번째 아이템.
 		{
-			(Car + message_at)
+			"type":"auction_begun",
+			"data": (Car + message_at)
 		}
 	]
 	*/
@@ -103,8 +105,9 @@ public class SocketDataHandler {
 			});
 			
 			/*
-			auction_begun : 경매가 시작되는 물건이 있는 경우.
+			auction_begun : 경매가 시작되는 매물이 있는 경우.
 			bid_price_updated : 경매 매물의 가격 변화가 있는 경우.
+			auction_ended : 경매가 종료된 매물이 있는 경우.
 			auction_held : 관리자에 의해 보류된 경우.
 			selection_time_ended : 딜러 선택 시간이 종료된 경우 (유찰).
 			dealer_selected : 유저가 딜러를 선택한 경우 (낙찰).

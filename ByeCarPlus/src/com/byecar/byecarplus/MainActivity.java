@@ -55,7 +55,6 @@ import com.byecar.fragments.user.DirectMarketPage;
 import com.byecar.fragments.user.EditUserInfoPage;
 import com.byecar.fragments.user.MainPage;
 import com.byecar.fragments.user.MyPage;
-import com.byecar.fragments.user.SelectBidPage;
 import com.byecar.fragments.user.WriteReviewPage;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
@@ -390,9 +389,6 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_CAR_REGISTRATION:
 			return new CarRegistrationPage();
-			
-		case BCPConstants.PAGE_SELECT_BID:
-			return new SelectBidPage();
 			
 		case BCPConstants.PAGE_DIRECT_MARKET:
 			return new DirectMarketPage();
@@ -1145,21 +1141,10 @@ public class MainActivity extends BCPFragmentActivity {
 				return;
 			}
 			
-			if(car != null) {
-				
-				if(car.getStatus() == -1) {
-					ToastUtils.showToast(R.string.holdOffByAdmin);
-					return;
-					
-				//옥션 매물, 입찰 중, 내가 올린 매물이라면 입찰 선택 페이지로. 
-				} else if(type == Car.TYPE_BID
-						&& car.getStatus() == Car.STATUS_BID_COMPLETE
-						&& car.getSeller_id() == MainActivity.user.getId()) {
-					Bundle bundle = new Bundle();
-					bundle.putSerializable("car", car);
-					showPage(BCPConstants.PAGE_SELECT_BID, bundle);
-					return;
-				}
+			if(car != null
+					&& car.getStatus() == -1) {
+				ToastUtils.showToast(R.string.holdOffByAdmin);
+				return;
 			}
 			
 			Bundle bundle = new Bundle();

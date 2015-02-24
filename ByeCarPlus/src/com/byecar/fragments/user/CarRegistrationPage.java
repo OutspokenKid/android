@@ -1686,6 +1686,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 	public void uploadImages() {
 
+		mActivity.showLoadingView();
+		
 		int size = selectedImageSdCardPaths.length;
 		
 		for(int i=0; i<size; i++) {
@@ -1717,6 +1719,8 @@ public class CarRegistrationPage extends BCPFragment {
 				return;
 			}
 		}
+		
+		mActivity.hideLoadingView();
 		
 		//모든 이미지 업로드 완료.
 		register();

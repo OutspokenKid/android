@@ -1,6 +1,7 @@
 package com.byecar.views;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
@@ -14,9 +15,12 @@ import android.widget.TextView;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.R.color;
 import com.byecar.models.Review;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.views.OutSpokenRatingBar;
 
 public class ReviewView extends LinearLayout {
@@ -145,10 +149,56 @@ public class ReviewView extends LinearLayout {
 	
 	public void setReview(Review review) {
 		
-		tvNickname.setText(review.getReviewer_name());
-		tvCarName.setText(review.getCar_full_name());
-		ratingBar.setRating(review.getRating());
-		tvContent.setText(review.getContent());
-		tvRegdate.setText(StringUtils.getDateString("yyyy년 MM월 dd일", review.getCreated_at() * 1000));
+		try {
+			downloadImage(review.getReviewer_profile_img_url());
+			tvNickname.setText(review.getReviewer_name());
+			tvCarName.setText(review.getCar_full_name());
+			ratingBar.setRating(review.getRating());
+			tvContent.setText(review.getContent());
+			tvRegdate.setText(StringUtils.getDateString("yyyy년 MM월 dd일", review.getCreated_at() * 1000));
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void downloadImage(String imageUrl) {
+
+		if(imageUrl == null) {
+			ivImage.setImageDrawable(null);
+			return;
+			
+		} else if(ivImage.getTag() != null
+				&& !ivImage.getTag().toString().equals(imageUrl)) {
+			ivImage.setImageDrawable(null);
+		}
+		
+		ivImage.setTag(imageUrl);
+		DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ReviewView.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, Bitmap bitmap) {
+
+				try {
+					LogUtils.log("ReviewView.onCompleted." + "\nurl : " + url);
+
+					if(ivImage != null
+							&& !bitmap.isRecycled()) {
+						ivImage.setImageBitmap(bitmap);
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }

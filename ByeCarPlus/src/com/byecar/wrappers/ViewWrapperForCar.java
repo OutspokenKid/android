@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
-import com.byecar.classes.BCPAuctionableListFragment;
+import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -32,7 +32,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private Car car;
 	
 	private Activity activity;
-	private BCPAuctionableListFragment fragment;
+	private BCPAuctionableFragment fragment;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
@@ -220,12 +220,21 @@ public class ViewWrapperForCar extends ViewWrapper {
 					if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
+						
+						//경매 종료 시간 한시간 이내.
+						if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+							auctionIcon.setVisibility(View.VISIBLE);
+						} else {
+							auctionIcon.setVisibility(View.INVISIBLE);
+						}
 					} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_green));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+						auctionIcon.setVisibility(View.VISIBLE);
 					} else {
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_gray));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+						auctionIcon.setVisibility(View.VISIBLE);
 					}
 					
 					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
@@ -454,7 +463,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 		this.activity = activity;
 	}
 	
-	public void setFragment(BCPAuctionableListFragment fragment) {
+	public void setFragment(BCPAuctionableFragment fragment) {
 		
 		this.fragment = fragment;
 	}

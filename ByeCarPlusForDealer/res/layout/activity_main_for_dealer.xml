@@ -148,6 +148,14 @@
 	    	android:background="@drawable/empty_ticket_btn" />
         
         <Button 
+            android:id="@+id/mainForDealerActivity_btnClose2"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignBottom="@id/mainForDealerActivity_popupBg"
+	    	android:background="@drawable/dealer_sel_close_btn" />
+        
+        <Button 
             android:id="@+id/mainForDealerActivity_btnMore"
 	    	android:layout_width="0dp"
 	    	android:layout_height="0dp"

@@ -1,6 +1,9 @@
 package com.byecar.wrappers;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -9,12 +12,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.classes.BCPAuctionableListFragment;
+import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -28,7 +35,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private Car car;
 	
 	private Activity activity;
-	private BCPAuctionableListFragment fragment;
+	private BCPAuctionableFragment fragment;
 	
 	private ImageView ivImage;
 	private View auctionIcon;
@@ -247,13 +254,23 @@ public class ViewWrapperForCar extends ViewWrapper {
 					if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
+						
+						//경매 종료 시간 한시간 이내.
+						if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+							auctionIcon.setVisibility(View.VISIBLE);
+						} else {
+							auctionIcon.setVisibility(View.INVISIBLE);
+						}
 					} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_green));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+						auctionIcon.setVisibility(View.VISIBLE);
 					} else {
 						progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_gray));
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+						auctionIcon.setVisibility(View.VISIBLE);
 					}
+
 					
 					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
 					
@@ -315,7 +332,18 @@ public class ViewWrapperForCar extends ViewWrapper {
 				@Override
 				public void onClick(View view) {
 
-					ToastUtils.showToast("완료버튼");
+					((MainActivity)activity).showAlertDialog(
+							R.string.complete_selling, R.string.wannaCompleteSelling, 
+							R.string.confirm, R.string.cancel,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									completeSelling();
+								}
+								
+							}, null);
 				}
 			});
 		}
@@ -422,7 +450,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 		this.activity = activity;
 	}
 
-	public void setFragment(BCPAuctionableListFragment fragment) {
+	public void setFragment(BCPAuctionableFragment fragment) {
 		
 		this.fragment = fragment;
 	}
@@ -430,5 +458,49 @@ public class ViewWrapperForCar extends ViewWrapper {
 	public Car getCar() {
 		
 		return car;
+	}
+
+	public void completeSelling() {
+
+		try {
+			//http://byecar.minsangk.com/onsalecars/dealer/set_status.json?onsalecar_id=1&status=30
+			String url = BCPAPIs.CAR_DEALER_STATUS_URL + "?onsalecar_id=" + car.getId()
+					+ "&status=30";
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("ViewWrapperForCar.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToCompleteSelling);
+				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("ViewWrapperForCar.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							((MainActivity)activity).getTopFragment().refreshPage();
+							((MainActivity)activity).showPopup(MainActivity.POPUP_COMPLETE_SELLING);
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToCompleteSelling);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToCompleteSelling);
+					}
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			ToastUtils.showToast(R.string.failToCompleteSelling);
+		}
 	}
 }

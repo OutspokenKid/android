@@ -12,7 +12,6 @@ import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.user.CarDetailPage;
 import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.MainPage;
-import com.byecar.fragments.user.SelectBidPage;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.utils.LogUtils;
@@ -31,12 +30,14 @@ public class SocketDataHandler {
 	[
 		arJSON[0] : 첫번째 아이템.
 		{
-			(Car + message_at)
+			"type":"auction_begun",
+			"data": (Car + message_at)
 		},
 		
 		arJSON[1] : 두번째 아이템.
 		{
-			(Car + message_at)
+			"type":"auction_begun",
+			"data": (Car + message_at)
 		}
 	]
 	*/
@@ -99,9 +100,6 @@ public class SocketDataHandler {
 							
 						} else if(bf instanceof CarDetailPage) {
 							((CarDetailPage) bf).bidStatusChanged(event, car);
-						
-						} else if(bf instanceof SelectBidPage) {
-							((SelectBidPage) bf).bidStatusChanged(event, car);
 							
 						} else if(bf instanceof SearchResultPage) {
 							((SearchResultPage) bf).bidStatusChanged(event, car);
@@ -113,6 +111,7 @@ public class SocketDataHandler {
 			/*
 			auction_begun : 경매가 시작되는 물건이 있는 경우.
 			bid_price_updated : 경매 매물의 가격 변화가 있는 경우.
+			auction_ended : 경매가 종료된 물건이 있는 경우.
 			auction_held : 관리자에 의해 보류된 경우.
 			selection_time_ended : 딜러 선택 시간이 종료된 경우 (유찰).
 			dealer_selected : 유저가 딜러를 선택한 경우 (낙찰).

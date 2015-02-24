@@ -50,7 +50,6 @@ public class BCPConstants {
 	public static final int PAGE_CAR_DETAIL = 31;
 	public static final int PAGE_CAR_LIST = 32;
 	public static final int PAGE_CAR_REGISTRATION = 33;
-	public static final int PAGE_SELECT_BID = 34;
 	public static final int PAGE_DIRECT_MARKET = 35;
 	public static final int PAGE_DIRECT_NORMAL_LIST = 36;
 	public static final int PAGE_SEARCH_CAR = 37;

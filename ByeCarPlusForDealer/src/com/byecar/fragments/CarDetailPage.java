@@ -1115,12 +1115,21 @@ public class CarDetailPage extends BCPFragment {
 			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+				
+				//경매 종료 시간 한시간 이내.
+				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+					auctionIcon.setVisibility(View.VISIBLE);
+				} else {
+					auctionIcon.setVisibility(View.INVISIBLE);
+				}
 			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				auctionIcon.setVisibility(View.VISIBLE);
 			} else {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				auctionIcon.setVisibility(View.VISIBLE);
 			}
 		}
 		
@@ -1182,12 +1191,21 @@ public class CarDetailPage extends BCPFragment {
 		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+			
+			//경매 종료 시간 한시간 이내.
+			if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+				auctionIcon.setVisibility(View.VISIBLE);
+			} else {
+				auctionIcon.setVisibility(View.INVISIBLE);
+			}
 		} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
 			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+			auctionIcon.setVisibility(View.VISIBLE);
 		} else {
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
 			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+			auctionIcon.setVisibility(View.VISIBLE);
 		}
 		
 		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
@@ -1931,9 +1949,6 @@ public class CarDetailPage extends BCPFragment {
 		
 		if(this.car.getId() == car.getId()) {
 			
-			this.car.copyValuesFromNewItem(car);
-			updateMainCarInfo();
-			
 			//관리자에 의해 보류된 경우.
 			if(event.equals("auction_held")) {
 				closePage(R.string.holdOffByAdmin2);
@@ -1943,7 +1958,8 @@ public class CarDetailPage extends BCPFragment {
 			//딜러 선택 시간이 종료된 경우 (유찰).
 			//유저가 딜러를 선택한 경우 (낙찰).
 			} else {
-				//Do nothing.				
+				this.car.copyValuesFromNewItem(car);
+				updateMainCarInfo();
 			}
 		}
 	}

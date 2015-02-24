@@ -209,6 +209,28 @@
 		        android:layout_below="@id/carDetailPage_lineForType"
 		        android:background="@drawable/detail_foot" />
 		    
+			<RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForDealer"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_remainBg"
+		        android:background="@drawable/success_frame" />
+		    
+			<Button 
+		        android:id="@+id/carDetailPage_btnComplete"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForDealer"
+		        android:visibility="invisible"
+		        android:background="@drawable/success_complete_btn" />
+			
+					    <View 
+		        android:layout_width="10dp"
+		        android:layout_height="10dp"
+		        android:layout_below="@id/carDetailPage_btnComplete" />
+		    
 		    <View 
 		        android:id="@+id/carDetailPage_headerForInfo"
 		        android:layout_width="0dp"

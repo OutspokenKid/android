@@ -27,7 +27,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class BCPAdapter extends OutSpokenAdapter {
 
 	private BCPFragmentActivity activity;
-	private BCPAuctionableListFragment fragment;
+	private BCPAuctionableFragment fragment;
 	
 	public BCPAdapter(Context context, BCPFragmentActivity activity, 
 			LayoutInflater inflater, ArrayList<BaseModel> models) {
@@ -36,7 +36,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 	}
 	
 	public BCPAdapter(Context context, BCPFragmentActivity activity, 
-			BCPAuctionableListFragment fragment,
+			BCPAuctionableFragment fragment,
 			LayoutInflater inflater, ArrayList<BaseModel> models) {
 		super(context, inflater, models);
 		this.activity = activity;

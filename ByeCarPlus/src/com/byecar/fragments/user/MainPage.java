@@ -23,8 +23,8 @@ import android.widget.TextView;
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
-import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.fragments.OpenablePostListPage;
@@ -46,7 +46,7 @@ import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
 
-public class MainPage extends BCPFragment {
+public class MainPage extends BCPAuctionableFragment {
 	
 	private OffsetScrollView scrollView;
 	private ViewPager viewPager;
@@ -717,17 +717,24 @@ public class MainPage extends BCPFragment {
 			pageNavigator.setSize(bids.size());
 			pageNavigator.setIndex(index);
 
-			auctionIcon.setVisibility(View.VISIBLE);
-			
 			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+				
+				//경매 종료 시간 한시간 이내.
+				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+					auctionIcon.setVisibility(View.VISIBLE);
+				} else {
+					auctionIcon.setVisibility(View.INVISIBLE);
+				}
 			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				auctionIcon.setVisibility(View.VISIBLE);
 			} else {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				auctionIcon.setVisibility(View.VISIBLE);
 			}
 			
 			if(car.getIs_liked() == 0) {
@@ -933,61 +940,15 @@ public class MainPage extends BCPFragment {
 		}
 	}
 
+	@Override
 	public void bidStatusChanged(String event, Car car) {
 
-		if(event == null) {
-			return;
-		}
-		
-		//경매가 시작되는 물건이 있는 경우.
-		if(event.equals("auction_begun")) {
-			//페이져 아이템 새로고침.
-			downloadMainInfos();
-			return;
-		}
-		
 		for(int i=0; i<bids.size(); i++) {
 			
 			if(bids.get(i).getId() == car.getId()) {
-			
-				//경매 매물의 가격 변화가 있는 경우.
-				if(event.equals("bid_price_updated")) {
-
-					bids.get(i).copyValuesFromNewItem(car);
-					
-					//현재 보여지는 경우에만 가격 갱신.
-					if(viewPager.getCurrentItem() == i) {
-						tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) + getString(R.string.won));
-						tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
-					}
-					
-				//관리자에 의해 보류된 경우.
-				} else if(event.equals("auction_held")) {
-					//뷰페이져에서 제거, 페이지인디케이터, 페이저 갱신, 
-					bids.remove(i);
-					imagePagerAdapter.removeItem(i);
-					viewPager.getAdapter().notifyDataSetChanged();
-					
-					setPagerInfo(0);
 				
-				//딜러 선택 시간이 종료된 경우 (유찰).
-				} else if(event.equals("selection_time_ended")) {
-					
-					//뷰페이져에서 제거, 페이지인디케이터, 페이저 갱신, 
-					bids.remove(i);
-					imagePagerAdapter.removeItem(i);
-					imagePagerAdapter.notifyDataSetChanged();
-					setPagerInfo(0);
-					
-				//유저가 딜러를 선택한 경우 (낙찰).
-				} else if(event.equals("dealer_selected")) {
-					
-					//뷰페이져에서 제거, 페이지인디케이터, 페이저 갱신, 
-					bids.remove(i);
-					imagePagerAdapter.removeItem(i);
-					imagePagerAdapter.notifyDataSetChanged();
-					setPagerInfo(0);
-				}
+				refreshPage();
+				return;
 			}
 		}
 	}

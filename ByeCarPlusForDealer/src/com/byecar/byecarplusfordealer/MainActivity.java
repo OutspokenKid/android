@@ -81,6 +81,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public static final int POPUP_REQUEST_REGISTRATION = 0;
 	public static final int POPUP_REQUEST_BID = 1;
 	public static final int POPUP_NOT_ENOUGH = 2;
+	public static final int POPUP_COMPLETE_SELLING = 3;
 
 	public static User user;
 	public static Dealer dealer;
@@ -107,6 +108,7 @@ public class MainActivity extends BCPFragmentActivity {
 	private Button btnRecharge;
 	private Button btnHome;
 	private Button btnClose;
+	private Button btnClose2;
 	
 	private boolean animating;
 	private long last_connected_at;
@@ -138,6 +140,7 @@ public class MainActivity extends BCPFragmentActivity {
 		btnRecharge = (Button) findViewById(R.id.mainForDealerActivity_btnRecharge);
 		btnHome = (Button) findViewById(R.id.mainForDealerActivity_btnHome);
 		btnClose = (Button) findViewById(R.id.mainForDealerActivity_btnClose);
+		btnClose2 = (Button) findViewById(R.id.mainForDealerActivity_btnClose2);
 		
 		setLoadingView(findViewById(R.id.mainForDealerActivity_loadingView));
 	}
@@ -279,6 +282,28 @@ public class MainActivity extends BCPFragmentActivity {
 				}, 300);
 			}
 		});
+		
+		btnClose2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(animating) {
+					return;
+				}
+				
+				animating = true;
+				
+				hidePopup();
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						animating = false;
+					}
+				}, 300);
+			}
+		});
 	}
 
 	@Override
@@ -299,6 +324,7 @@ public class MainActivity extends BCPFragmentActivity {
 		ResizeUtils.viewResizeForRelative(488, 82, btnRecharge, null, null, new int[]{0, 0, 0, 32});
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
 		ResizeUtils.viewResizeForRelative(488, 82, btnClose, null, null, new int[]{0, 0, 0, 40});
+		ResizeUtils.viewResizeForRelative(488, 82, btnClose2, null, null, new int[]{0, 0, 0, 32});
 		
 		FontUtils.setFontSize(tvPopupText, 30);
 		FontUtils.setFontStyle(tvPopupText, FontUtils.BOLD);
@@ -694,7 +720,7 @@ public class MainActivity extends BCPFragmentActivity {
 			btnRecharge.setVisibility(View.INVISIBLE);
 			btnHome.setVisibility(View.VISIBLE);
 			btnClose.setVisibility(View.INVISIBLE);
-			
+			btnClose2.setVisibility(View.INVISIBLE);
 			break;
 			
 		case POPUP_REQUEST_BID:
@@ -705,6 +731,7 @@ public class MainActivity extends BCPFragmentActivity {
 			btnRecharge.setVisibility(View.INVISIBLE);
 			btnHome.setVisibility(View.VISIBLE);
 			btnClose.setVisibility(View.INVISIBLE);
+			btnClose2.setVisibility(View.INVISIBLE);
 			break;
 			
 		case POPUP_NOT_ENOUGH:
@@ -715,6 +742,18 @@ public class MainActivity extends BCPFragmentActivity {
 			btnRecharge.setVisibility(View.VISIBLE);
 			btnHome.setVisibility(View.INVISIBLE);
 			btnClose.setVisibility(View.VISIBLE);
+			btnClose2.setVisibility(View.INVISIBLE);
+			break;
+			
+		case POPUP_COMPLETE_SELLING:
+			popupImage.setBackgroundResource(R.drawable.dealer_sel_cartoon);
+			tvPopupText.setText(R.string.popup_completeSelling);
+			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
+			btnMore.setVisibility(View.INVISIBLE);
+			btnRecharge.setVisibility(View.INVISIBLE);
+			btnHome.setVisibility(View.INVISIBLE);
+			btnClose.setVisibility(View.INVISIBLE);
+			btnClose2.setVisibility(View.VISIBLE);
 			break;
 			
 			default:

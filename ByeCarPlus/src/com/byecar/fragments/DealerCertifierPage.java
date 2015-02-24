@@ -280,7 +280,10 @@ public class DealerCertifierPage extends BCPFragment {
 		if(dealer != null || certifier != null) {
 			setDealerInfo();
 			setIntro();
-			loadReviews();
+			
+			if(reviews.size() == 0) {
+				loadReviews();
+			}
 		} else {
 			downloadDealerInfo();
 		}
