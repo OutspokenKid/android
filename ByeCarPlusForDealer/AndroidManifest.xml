@@ -60,13 +60,19 @@
 		    android:screenOrientation="portrait"
         	android:windowSoftInputMode="stateHidden|adjustResize"
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
-
+        
         <activity 
             android:name=".ImageViewer"
         	android:screenOrientation="portrait"
         	android:windowSoftInputMode="stateHidden"
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
 
+        <activity 
+            android:name=".GuideActivity"
+        	android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+        
     </application>
 
 </manifest>

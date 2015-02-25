@@ -208,7 +208,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 				
 				tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
 						+ row.getContext().getString(R.string.won));
-				tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 				
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID) {
 					tvRemainTime.setText("-- : -- : --");
@@ -216,6 +215,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 					auctionIcon.setVisibility(View.VISIBLE);
 					timeRelative.setVisibility(View.VISIBLE);
 					tvBidCount.setVisibility(View.VISIBLE);
+					tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 					
 					if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 						auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
@@ -240,6 +240,22 @@ public class ViewWrapperForCar extends ViewWrapper {
 					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
 					
 					setOnTimeListener();
+				} else if(car.getItemCode() == BCPConstants.ITEM_CAR_DIRECT_CERTIFIED) {
+					tvRemainTime.setText("-- : -- : --");
+					
+					auctionIcon.setVisibility(View.VISIBLE);
+					timeRelative.setVisibility(View.VISIBLE);
+					tvBidCount.setVisibility(View.VISIBLE);
+					tvBidCount.setText("판매자 " + car.getBids_cnt() + "명");
+					
+					auctionIcon.setBackgroundResource(R.drawable.directmarket_test_symbol);
+					progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
+					auctionIcon.setVisibility(View.VISIBLE);
+					
+					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
+					
+					setOnTimeListener();
+					
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
 					timeRelative.setVisibility(View.GONE);
@@ -368,7 +384,8 @@ public class ViewWrapperForCar extends ViewWrapper {
 
 	public void setOnTimeListener() {
 
-		if(car.getType() != Car.TYPE_BID) {
+		if(car.getType() != Car.TYPE_BID
+				&& car.getType() != Car.TYPE_DIRECT_CERTIFIED) {
 			return;
 		}
 		
@@ -383,7 +400,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 					}
 					
 					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
-						progressBar.setProgress(10000);
+						progressBar.setProgress(1000);
 						tvRemainTime.setText("-- : -- : --");
 						return;
 					}
@@ -437,7 +454,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 						tvRemainTime.setText("-- : -- : --");
-						progressBar.setProgress(10000);
+						progressBar.setProgress(1000);
 					}
 				}
 				

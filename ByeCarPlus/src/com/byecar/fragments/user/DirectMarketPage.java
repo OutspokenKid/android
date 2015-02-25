@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.GuideActivity;
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
@@ -176,7 +178,9 @@ public class DirectMarketPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("가이드");
+				Intent intent = new Intent(mActivity, GuideActivity.class);
+				intent.putExtra("type", GuideActivity.TYPE_USER_DIRECT);
+				mActivity.startActivity(intent);
 			}
 		});
 	}

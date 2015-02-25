@@ -6,6 +6,7 @@ import android.widget.ListView;
 
 import com.byecar.models.Car;
 import com.outspoken_kid.utils.AppInfoUtils;
+import com.outspoken_kid.utils.LogUtils;
 
 public abstract class BCPAuctionableFragment extends BCPFragment {
 
@@ -21,7 +22,9 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 	 */
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void reorderList(int startIndex, Car car) {
-
+		
+		boolean removedItem = false;
+		boolean addedItem = false;
 		boolean needToScrollUp = false;
 		boolean needToScrollDown = false;
 		
@@ -29,29 +32,52 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 		for(int i=startIndex; i<models.size(); i++) {
 			
 			if(((Car)models.get(i)).getId() == car.getId()) {
-				models.remove(car);
+				models.remove(i);
+				removedItem = true;
 				
-				if(i <= listView.getFirstVisiblePosition()) {
-					needToScrollDown = true;
+				try {
+					//첫번째 뷰가 0이 아님 + 첫번째 뷰 포함 윗쪽 삭제 -> 스크롤 내린다.
+					if(listView.getFirstVisiblePosition() != 0
+							&& i <= listView.getFirstVisiblePosition()) {
+						needToScrollDown = true;
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
 		}
 		
+		//새로운 경매.
 		//경매 -> 경매.
 		//경매 -> 딜러 선택.
 		if(car.getStatus() <= Car.STATUS_BID_COMPLETE) {
 			
 			for(int i=startIndex; i<models.size(); i++) {
 				
-				//이전 상태인 매물이거나 더 빨리 끝나는 매물이 있는 경우.
+				//다음 상태인 매물이거나 같은 상태인데 더 빨리 끝나는 매물이 있는 경우.
 				if(((Car)models.get(i)).getStatus() > car.getStatus()
-						|| ((Car)models.get(i)).getBid_begin_at() < car.getBid_until_at()) {
+						|| (((Car)models.get(i)).getStatus() == car.getStatus()
+								 && ((Car)models.get(i)).getBid_until_at() > car.getBid_until_at())) {
 					models.add(i, car);
-					adapter.notifyDataSetChanged();
+					addedItem = true;
 					
-					if(i <= listView.getFirstVisiblePosition()) {
-						needToScrollUp = true;
+					try {
+						//위에 추가.
+						//아래에 추가 + 보고 있는 화면 + 리스트 최상위가 아님 -> 스크롤 올린다.
+						if(i <= listView.getLastVisiblePosition()
+								|| (i == listView.getLastVisiblePosition() + 1
+										&& !(listView.getFirstVisiblePosition() == 0 
+										&& listView.getChildAt(0).getTop() == 0))) {
+							needToScrollUp = true;
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
 					}
+					
 					break;
 				}
 			}
@@ -62,25 +88,48 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 			//경매 진행, 딜러 선택 중인 매물이거나 더 늦게 끝난 매물이 있는 경우.
 			for(int i=startIndex; i<models.size(); i++) {
 				if(((Car)models.get(i)).getStatus() <= Car.STATUS_BID_COMPLETE
-						|| ((Car)models.get(i)).getEnd_at() > car.getEnd_at()) {
+						|| (((Car)models.get(i)).getStatus() == car.getStatus()
+								&& ((Car)models.get(i)).getEnd_at() < car.getEnd_at())) {
 					models.add(i, car);
-					adapter.notifyDataSetChanged();
+					addedItem = true;
 					
-					if(i <= listView.getFirstVisiblePosition()) {
-						needToScrollUp = true;
+					try {
+						//위에 추가.
+						//아래에 추가 + 보고 있는 화면 + 리스트 최상위가 아님 -> 스크롤 올린다.
+						if(i <= listView.getLastVisiblePosition()
+								|| (i == listView.getLastVisiblePosition() + 1
+										&& !(listView.getFirstVisiblePosition() == 0 
+										&& listView.getChildAt(0).getTop() == 0))) {
+							needToScrollUp = true;
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
 					}
+
 					break;
 				}
 			}
 		}
+
+		if(removedItem && !addedItem
+				&& isLastList) {
+			models.add(car);
+			adapter.notifyDataSetChanged();
+			last_priority = car.getPriority();
+			isLastList = false;
+		} else {
+			adapter.notifyDataSetChanged();
+		}
 		
 		//둘다 참이거나 둘다 거짓이면 상쇄.
 		if(needToScrollDown == needToScrollUp) {
-			return;
+			//Don't scroll.
 		} else if(needToScrollUp) {
-			scrollUp();
+//			scrollUp();
 		} else if(needToScrollDown) {
-			scrollDown();
+//			scrollDown();
 		}
 	}
 	
@@ -120,16 +169,8 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 				models.remove(i);
 				adapter.notifyDataSetChanged();
 				
-				if(i <= listView.getFirstVisiblePosition()
-						&& listView.getFirstVisiblePosition() > 0) {
-					
-					if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
-						listView.smoothScrollToPositionFromTop(listView.getFirstVisiblePosition() - 1, 
-								listView.getChildAt(0).getTop(),
-								0);
-					} else {
-						listView.smoothScrollToPosition(listView.getFirstVisiblePosition() - 1);
-					}
+				if(i <= listView.getFirstVisiblePosition()) {
+//					scrollDown();
 				}
 			}
 		}
@@ -138,34 +179,46 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void scrollUp() {
 		
-		//첫번째로 보이는 아이템 이전 아이템이 없다면,
-		if(listView.getFirstVisiblePosition() < 0) {
-			return;
-		}
-		
-		if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
-			listView.smoothScrollToPositionFromTop(listView.getFirstVisiblePosition() - 1, 
-					listView.getChildAt(0).getTop(), 
-					0);
-		} else {
-			listView.smoothScrollToPosition(listView.getFirstVisiblePosition() - 1);
+		try {
+			//첫번째로 보이는 아이템 이전 아이템이 없다면,
+			if(listView.getFirstVisiblePosition() < 0) {
+				return;
+			}
+			
+			if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
+				listView.smoothScrollToPositionFromTop(listView.getFirstVisiblePosition() - 1, 
+						listView.getChildAt(0).getTop(), 0);
+			} else {
+				listView.smoothScrollToPosition(listView.getFirstVisiblePosition() - 1);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	public void scrollDown() {
 		
-		//첫번째로 보이는 아이템이 마지막 아이템이라면,
-		if(listView.getFirstVisiblePosition() == models.size() - 1) {
-			return;
-		}
-		
-		if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
-			listView.smoothScrollToPositionFromTop(listView.getFirstVisiblePosition() + 1, 
-					listView.getChildAt(0).getTop(), 
-					0);
-		} else {
-			listView.smoothScrollToPosition(listView.getFirstVisiblePosition() + 1);
+		try {
+			//첫번째로 보이는 아이템이 마지막 아이템이라면,
+			if(listView.getFirstVisiblePosition() == models.size() - 1) {
+				return;
+			}
+			
+			if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
+				listView.smoothScrollToPositionFromTop(listView.getFirstVisiblePosition() + 1, 
+						listView.getChildAt(0).getTop(), 
+						0);
+			} else {
+				listView.smoothScrollToPosition(listView.getFirstVisiblePosition() + 1);
+			}
+
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 }

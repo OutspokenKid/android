@@ -588,5 +588,14 @@
         </RelativeLayout>
         
     </com.outspoken_kid.views.OffsetScrollView>
+    
+	<Button
+        android:id="@+id/carRegistrationPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/normal_direct_guide_btn" />
+    
         
 </RelativeLayout>

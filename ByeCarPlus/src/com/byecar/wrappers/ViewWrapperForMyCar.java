@@ -232,6 +232,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 							+ row.getContext().getString(R.string.won), 0, 1, true);
 					
 					//리뷰 버튼.
+					statusIcon.setVisibility(View.GONE);
 					btnReview.setVisibility(View.GONE);
 					btnComplete.setVisibility(View.GONE);
 				}

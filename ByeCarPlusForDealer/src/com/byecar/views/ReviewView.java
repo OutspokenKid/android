@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,7 +35,11 @@ public class ReviewView extends LinearLayout {
 	private TextView tvRegdate;
 	
 	public ReviewView(Context context) {
-		super(context);
+		this(context, null);
+	}
+	
+	public ReviewView(Context context, AttributeSet attrs) {
+		super(context, attrs);
 		init();
 	}
 

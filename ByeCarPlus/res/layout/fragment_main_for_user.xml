@@ -46,7 +46,7 @@
     			style="?android:attr/progressBarStyleHorizontal"
     			android:progressDrawable="@drawable/progressbar_custom_orange"
     			android:max="1000"
-    			android:progress="1000" />
+    			android:progress="0" />
             
             <TextView 
                 android:id="@+id/mainForUserPage_tvRemainTime"

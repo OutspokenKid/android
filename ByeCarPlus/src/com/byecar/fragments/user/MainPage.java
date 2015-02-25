@@ -867,7 +867,7 @@ public class MainPage extends BCPAuctionableFragment {
 					if(bids.size() > 0) {
 
 						if(bids.get(viewPager.getCurrentItem()).getStatus() > Car.STATUS_BID_COMPLETE) {
-							progressBar.setProgress(10000);
+							progressBar.setProgress(1000);
 							tvRemainTime.setText("-- : -- : --");
 							return;
 						}
@@ -920,7 +920,7 @@ public class MainPage extends BCPAuctionableFragment {
 							LogUtils.trace(e);
 							TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 							tvRemainTime.setText("-- : -- : --");
-							progressBar.setProgress(10000);
+							progressBar.setProgress(1000);
 						}
 		        	}
 				}
@@ -947,7 +947,7 @@ public class MainPage extends BCPAuctionableFragment {
 			
 			if(bids.get(i).getId() == car.getId()) {
 				
-				refreshPage();
+				downloadMainInfos();
 				return;
 			}
 		}

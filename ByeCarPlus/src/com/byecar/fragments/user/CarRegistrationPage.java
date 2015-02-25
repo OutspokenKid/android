@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.GuideActivity;
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
@@ -99,6 +101,7 @@ public class CarRegistrationPage extends BCPFragment {
 	private Button btnImmediatlySale;
 	private Button btnComplete;
 	private Button btnRequest;
+	private Button btnGuide;
 	
 	private View[] optionViews;
 	private boolean[] checked;
@@ -204,6 +207,8 @@ public class CarRegistrationPage extends BCPFragment {
 		btnImmediatlySale = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnImmediatlySale);
 		btnComplete = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnComplete);
 		btnRequest = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnRequest);
+		
+		btnGuide = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnGuide);
 	}
 
 	@Override
@@ -277,7 +282,7 @@ public class CarRegistrationPage extends BCPFragment {
 			etPrice.setVisibility(View.GONE);
 			btnClearPrice.setVisibility(View.GONE);
 			lineAfterPrice.setVisibility(View.GONE);
-
+			btnGuide.setVisibility(View.VISIBLE);
 		} else {
 			tvWriteAllContents.setText(R.string.writeAllContentForRegistration);
 			btnRequest.setVisibility(View.INVISIBLE);
@@ -304,6 +309,7 @@ public class CarRegistrationPage extends BCPFragment {
 			etPrice.setVisibility(View.VISIBLE);
 			btnClearPrice.setVisibility(View.VISIBLE);
 			lineAfterPrice.setVisibility(View.VISIBLE);
+			btnGuide.setVisibility(View.INVISIBLE);
 		}
 	}
 
@@ -560,6 +566,17 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			});
 		}
+		
+		btnGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Intent intent = new Intent(mActivity, GuideActivity.class);
+				intent.putExtra("type", GuideActivity.TYPE_USER_UPLOAD);
+				mActivity.startActivity(intent);
+			}
+		});
 	}
 
 	@Override
@@ -755,6 +772,13 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(586);
 		rp.height = ResizeUtils.getSpecificLength(82);
 		rp.topMargin = ResizeUtils.getSpecificLength(25);
+		
+		//btnGuide.
+		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
 		FontUtils.setFontSize(tvPercentage, 24);
 		FontUtils.setFontSize(tvPercentage2, 16);

@@ -260,32 +260,24 @@ public class SearchResultPage extends BCPAuctionableFragment {
 		car.setItemCode(BCPConstants.ITEM_CAR_BID);
 		
 		//경매가 시작되는 물건이 있는 경우.
-		if(event.equals("auction_begun")) {
-			
-			//기존에 같은 매물이 있다면 최신화.
-			//같은 매물이 없고, 새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
-			if(!updateSelectedCar(car)) {
-				reorderList(startIndex, car);
-			}
+		//딜러 선택 시간이 종료된 경우 (유찰).
+		//유저가 딜러를 선택한 경우 (낙찰).
+		//경매가 종료된 물건이 있는 경우.
+		if(event.equals("auction_begun")
+				|| event.equals("selection_time_ended")
+				|| event.equals("dealer_selected")
+				|| event.equals("auction_ended")) {
+			//새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
+			reorderList(startIndex, car);
 			
 		//경매 매물의 가격 변화가 있는 경우.
 		} else if(event.equals("bid_price_updated")) {
 			updateSelectedCar(car);
-
-		//관리자에 의해 보류된 경우.
-		} else if(event.equals("auction_ended")) {
-			reorderList(startIndex, car);
 			
 		//관리자에 의해 보류된 경우.
 		} else if(event.equals("auction_held")) {
 			//해당 매물 삭제.
 			deleteSelectedCar(car);
-			
-		//딜러 선택 시간이 종료된 경우 (유찰).
-		//유저가 딜러를 선택한 경우 (낙찰).
-		} else if(event.equals("selection_time_ended")
-				|| event.equals("dealer_selected")) {
-			reorderList(startIndex, car);
 		}
 	}
 }

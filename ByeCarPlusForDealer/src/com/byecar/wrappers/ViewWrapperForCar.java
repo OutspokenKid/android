@@ -371,7 +371,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 					}
 					
 					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
-						progressBar.setProgress(10000);
+						progressBar.setProgress(1000);
 						tvRemainTime.setText("-- : -- : --");
 						return;
 					}
@@ -424,7 +424,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 						tvRemainTime.setText("-- : -- : --");
-						progressBar.setProgress(10000);
+						progressBar.setProgress(1000);
 					}
 				}
 				

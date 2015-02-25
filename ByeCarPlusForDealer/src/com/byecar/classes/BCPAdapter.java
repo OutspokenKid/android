@@ -94,10 +94,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return new ViewWrapperForNotification(convertView, itemCode);
 
 		case BCPConstants.ITEM_REVIEW:
-			ViewWrapperForMyReview vwfm = new ViewWrapperForMyReview(
-					convertView, itemCode);
-			vwfm.setActivity(activity);
-			return vwfm;
+			return new ViewWrapperForMyReview(convertView, itemCode);
 			
 		case BCPConstants.ITEM_CAR_BID:
 		case BCPConstants.ITEM_CAR_BID_MY:

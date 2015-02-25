@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.byecar.byecarplus.GuideActivity;
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
@@ -277,7 +279,37 @@ public class CarListPage extends BCPAuctionableFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("가이드");
+				/*
+				1. 경매이용안내->옥션리스트
+
+				2. 구매이용안내->중고마켓리스트
+				
+				4. 검증직거래이용안내 -> 검증직거래리스트
+				
+				5. 일반직거래이용안내 -> 일반직거래 리스트
+				*/
+				Intent intent = new Intent(mActivity, GuideActivity.class);
+				
+				switch(type) {
+				
+				case Car.TYPE_BID:
+					intent.putExtra("type", GuideActivity.TYPE_USER_AUCTION);
+					break;
+					
+				case Car.TYPE_DEALER:
+					intent.putExtra("type", GuideActivity.TYPE_USER_BUY);
+					break;
+					
+				case Car.TYPE_DIRECT_CERTIFIED:
+					intent.putExtra("type", GuideActivity.TYPE_USER_CERTIFIED);
+					break;
+					
+				case Car.TYPE_DIRECT_NORMAL:
+					intent.putExtra("type", GuideActivity.TYPE_USER_NORMAL);
+					break;
+				}
+				
+				mActivity.startActivity(intent);
 			}
 		});
 
@@ -595,19 +627,19 @@ public class CarListPage extends BCPAuctionableFragment {
 		car.setItemCode(BCPConstants.ITEM_CAR_BID);
 		
 		//경매가 시작되는 물건이 있는 경우.
-		if(event.equals("auction_begun")) {
-			
-			//기존에 같은 매물이 있다면 최신화.
-			//같은 매물이 없고, 새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
-			if(!updateSelectedCar(car)) {
-				reorderList(startIndex, car);
-			}
+		//딜러 선택 시간이 종료된 경우 (유찰).
+		//유저가 딜러를 선택한 경우 (낙찰).
+		if(event.equals("auction_begun")
+				|| event.equals("selection_time_ended")
+				|| event.equals("dealer_selected")) {
+			//새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
+			reorderList(startIndex, car);
 			
 		//경매 매물의 가격 변화가 있는 경우.
 		} else if(event.equals("bid_price_updated")) {
 			updateSelectedCar(car);
 
-		//관리자에 의해 보류된 경우.
+		//경매가 종료된 물건이 있는 경우.
 		} else if(event.equals("auction_ended")) {
 			
 			//좋아요 순이 아니라면,
@@ -619,12 +651,6 @@ public class CarListPage extends BCPAuctionableFragment {
 		} else if(event.equals("auction_held")) {
 			//해당 매물 삭제.
 			deleteSelectedCar(car);
-			
-		//딜러 선택 시간이 종료된 경우 (유찰).
-		//유저가 딜러를 선택한 경우 (낙찰).
-		} else if(event.equals("selection_time_ended")
-				|| event.equals("dealer_selected")) {
-			reorderList(startIndex, car);
 		}
 	}
 }

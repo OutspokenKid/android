@@ -1294,12 +1294,14 @@ public class CarDetailPage extends BCPFragment {
 				btnDelete.setVisibility(View.VISIBLE);
 				btnGuide.setVisibility(View.INVISIBLE);
 			} else {
-				btnGuide.setVisibility(View.VISIBLE);
+//				btnGuide.setVisibility(View.VISIBLE);
+				btnGuide.setVisibility(View.INVISIBLE);
 				btnEdit.setVisibility(View.INVISIBLE);
 				btnDelete.setVisibility(View.INVISIBLE);
 			}
 		} else {
-			btnGuide.setVisibility(View.VISIBLE);
+//			btnGuide.setVisibility(View.VISIBLE);
+			btnGuide.setVisibility(View.INVISIBLE);
 			btnEdit.setVisibility(View.INVISIBLE);
 			btnDelete.setVisibility(View.INVISIBLE);
 		}
@@ -2297,13 +2299,8 @@ public class CarDetailPage extends BCPFragment {
 						return;
 					}
 					
-					//내 매물이 입찰 종료된 경우 새로고침을 하여 딜러 선택으로 넘긴다.
-					if(car.getStatus() == Car.STATUS_BID_COMPLETE
-							&& car.getSeller_id() == MainActivity.user.getId()) {
-						refreshPage();
-						return;
-					} else if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
-						progressBar.setProgress(10000);
+					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
+						progressBar.setProgress(1000);
 						tvRemainTime.setText("-- : -- : --");
 						return;
 					}
@@ -2331,7 +2328,7 @@ public class CarDetailPage extends BCPFragment {
 						long progressValue = remainTime * 1000 / progressTime;
 			        	
 			        	if(remainTime < 0) {
-			        		refreshPage();
+			        		updateMainCarInfo();
 			        	} else {
 			        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
 				        	tvRemainTime.setText(formattedRemainTime);
@@ -2341,7 +2338,7 @@ public class CarDetailPage extends BCPFragment {
 						LogUtils.trace(e);
 						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 						tvRemainTime.setText("-- : -- : --");
-						progressBar.setProgress(10000);
+						progressBar.setProgress(1000);
 					}
 				}
 				
@@ -2385,7 +2382,7 @@ public class CarDetailPage extends BCPFragment {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_selectDealer);
-						refreshPage();
+						updateMainCarInfo();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
