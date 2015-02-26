@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -32,11 +34,12 @@ import com.byecar.views.NormalCarView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -47,6 +50,9 @@ public class DirectMarketPage extends BCPFragment {
 	private ViewPager viewPager;
 	private View certifiedIcon;
 	private PageNavigatorView pageNavigator;
+	private ProgressBar progressBar;
+	private TextView tvRemainTime;
+	private TextView tvRemainTimeText;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
 	private TextView tvCurrentPrice;
@@ -67,6 +73,8 @@ public class DirectMarketPage extends BCPFragment {
 	private int standardLength;
 	private float diff;
 	
+	private OnTimeChangedListener onTimeChangedListener;
+	
 	@Override
 	public void bindViews() {
 
@@ -76,6 +84,9 @@ public class DirectMarketPage extends BCPFragment {
 		viewPager = (ViewPager) mThisView.findViewById(R.id.directMarketPage_viewPager);
 		certifiedIcon = mThisView.findViewById(R.id.directMarketPage_certifiedIcon);
 		pageNavigator = (PageNavigatorView) mThisView.findViewById(R.id.directMarketPage_pageNavigator);
+		progressBar = (ProgressBar) mThisView.findViewById(R.id.directMarketPage_progressBar);
+		tvRemainTime = (TextView) mThisView.findViewById(R.id.directMarketPage_tvRemainTime);
+		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvRemainTimeText);
 		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCarInfo1);
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCarInfo2);
 		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCurrentPrice);
@@ -90,8 +101,8 @@ public class DirectMarketPage extends BCPFragment {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		setOnTimerListener();
 	}
 
 	@Override
@@ -206,6 +217,28 @@ public class DirectMarketPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(12);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 		
+		//progressBar.
+		rp = (RelativeLayout.LayoutParams) progressBar.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(30);
+		
+		//tvRemainTime.
+		rp = (RelativeLayout.LayoutParams) tvRemainTime.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.topMargin = -ResizeUtils.getSpecificLength(3);
+		tvRemainTime.setPadding(ResizeUtils.getSpecificLength(90), 0, 0, 0);
+		
+		//tvRemainTimeText.
+		rp = (RelativeLayout.LayoutParams) tvRemainTimeText.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(30);
+		tvRemainTimeText.setPadding(ResizeUtils.getSpecificLength(22), 0, 0, 0);
+		
+		//timeIcon.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.directMarketPage_timeIcon).getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(18);
+		rp.height = ResizeUtils.getSpecificLength(18);
+		rp.leftMargin = -ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(7);
+		
 		//remainBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.directMarketPage_remainBg).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(147);
@@ -287,6 +320,9 @@ public class DirectMarketPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 		
+		FontUtils.setFontSize(tvRemainTime, 24);
+		FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
+		FontUtils.setFontSize(tvRemainTimeText, 16);
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCarInfo2, 20);
@@ -347,6 +383,15 @@ public class DirectMarketPage extends BCPFragment {
 		downloadNormalList();
 		
 		checkPageScrollOffset();
+		
+		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+		
+		TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 	}
 	
 	@Override
@@ -501,6 +546,19 @@ public class DirectMarketPage extends BCPFragment {
 	
 	public void setPagerInfo(int index) {
 		
+		if(certified.size() == 0) {
+			tvCarInfo1.setText(null);
+			tvCarInfo2.setText(null);
+			tvCurrentPrice.setText(null);
+			pageNavigator.setVisibility(View.INVISIBLE);
+			certifiedIcon.setVisibility(View.INVISIBLE);
+			progressBar.setProgress(0);
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			btnLike.setText(null);
+		}
+		
+		progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+		
 		tvCarInfo1.setText(certified.get(index).getCar_full_name());
 		tvCarInfo2.setText(certified.get(index).getYear() + "년 / "
 				+ StringUtils.getFormattedNumber(certified.get(index).getMileage()) + "km / "
@@ -540,6 +598,79 @@ public class DirectMarketPage extends BCPFragment {
 		btnLike.setText("" + likesCount);
 	}
 
+	public void setOnTimerListener() {
+		
+		if(onTimeChangedListener == null) {
+			onTimeChangedListener = new OnTimeChangedListener() {
+				
+				@Override
+				public void onTimeChanged() {
+
+					if(certified.size() > 0) {
+
+						if(certified.get(viewPager.getCurrentItem()).getStatus() > Car.STATUS_BID_COMPLETE) {
+							progressBar.setProgress(1000);
+							tvRemainTime.setText("-- : -- : --");
+							return;
+						}
+						
+						Car car = certified.get(viewPager.getCurrentItem());
+
+						/*
+						 * ms 단위.
+						 * progress : 0 ~ 1000
+						 * progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? (bid_until_at - bid_begin_at) * 1000 : 86400000);
+						 * (endTime = (bid_until_at * 1000) + (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000))
+						 * remainTime = endTime - currentTime
+						 * 		=  (bid_until_at * 1000) + (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000)) - currentTime
+						 * (passedTime = progressTime - remainTime)
+						 * progressValue = (passedTime / progressTime) * 1000
+						 * 		= (progressTime - remainTime) / progressTime * 1000
+						 * 		= 1000 - (remainTime * 1000 / progressTime)
+						 */
+						
+						try {
+							long progressTime = (car.getStatus() < Car.STATUS_BID_COMPLETE ? 
+									(car.getBid_until_at() - car.getBid_begin_at()) * 1000 : 86400000);
+							long remainTime = car.getBid_until_at() * 1000 
+									+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+									- System.currentTimeMillis();
+//				        	long progressValue = 1000 - (remainTime * 1000 / progressTime);
+				        	long progressValue = remainTime * 1000 / progressTime;
+				        	
+				        	if(remainTime < 0) {
+				        		TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+								tvRemainTime.setText("-- : -- : --");
+								progressBar.setProgress(0);
+				        	} else {
+				        		String formattedRemainTime = StringUtils.getTimeString(remainTime);
+					        	tvRemainTime.setText(formattedRemainTime);
+					        	progressBar.setProgress((int)progressValue);
+				        	}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+							tvRemainTime.setText("-- : -- : --");
+							progressBar.setProgress(1000);
+						}
+		        	}
+				}
+				
+				@Override
+				public String getName() {
+					
+					return "directMarketPageViewPager";
+				}
+				
+				@Override
+				public Activity getActivity() {
+
+					return mActivity;
+				}
+			};
+		}
+	}
+	
 	public void checkPageScrollOffset() {
 
 		if(standardLength == 0) {

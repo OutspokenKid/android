@@ -34,7 +34,6 @@ import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class CarListPage extends BCPAuctionableFragment {
 

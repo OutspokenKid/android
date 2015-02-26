@@ -329,7 +329,7 @@ public class WriteReviewPage extends BCPFragment {
 								LogUtils.trace(e);
 							}
 						} else if(car != null) {
-							//set Car's rating.
+							car.setHas_review(1);
 						}
 						
 						mActivity.closeTopPage();

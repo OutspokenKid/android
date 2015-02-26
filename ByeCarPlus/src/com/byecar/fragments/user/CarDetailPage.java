@@ -193,7 +193,8 @@ public class CarDetailPage extends BCPFragment {
 			}
 		}
 		
-		if(type == Car.TYPE_BID) {
+		if(type == Car.TYPE_BID
+				|| type == Car.TYPE_DIRECT_CERTIFIED) {
 			setOnTimerListener();
 		}
 	}
@@ -474,7 +475,8 @@ public class CarDetailPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(72);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
-		if(type != Car.TYPE_BID) {
+		if(type != Car.TYPE_BID
+				&& type != Car.TYPE_DIRECT_CERTIFIED) {
 			rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 			rp.bottomMargin = ResizeUtils.getSpecificLength(88);
 		}
@@ -1092,6 +1094,11 @@ public class CarDetailPage extends BCPFragment {
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
 				auctionIcon.setVisibility(View.VISIBLE);
 			}
+		} else if(car.getType() == Car.TYPE_DIRECT_CERTIFIED) {
+			tvRemainTime.setText("-- : -- : --");
+			
+			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+			auctionIcon.setBackgroundResource(R.drawable.directmarket_test_symbol);
 		}
 		
 		tvCarInfo1.setText(car.getCar_full_name());
@@ -1249,7 +1256,8 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setDetailCarInfo() {
 
-		if(type == Car.TYPE_BID) {
+		if(type == Car.TYPE_BID
+				|| type == Car.TYPE_DIRECT_CERTIFIED) {
 			auctionIcon.setVisibility(View.VISIBLE);
 			timeRelative.setVisibility(View.VISIBLE);
 			tvBidCount.setVisibility(View.VISIBLE);
@@ -1273,8 +1281,9 @@ public class CarDetailPage extends BCPFragment {
 			((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-100);
 		}
 		
-		if(car != null && car.getSeller_id() == MainActivity.user.getId()		//내 매물인 경우.
-				) {
+		//내 매물인 경우.
+		if(car != null && car.getSeller_id() == MainActivity.user.getId()) {		
+				
 			btnBuy.setVisibility(View.INVISIBLE);
 			btnCall.setVisibility(View.INVISIBLE);
 			mThisView.findViewById(R.id.carDetailPage_buttonBg).setVisibility(View.INVISIBLE);

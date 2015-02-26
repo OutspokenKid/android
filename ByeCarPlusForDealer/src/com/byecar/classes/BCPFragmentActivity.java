@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.byecar.byecarplusfordealer.ImageViewer;
+import com.byecar.models.PushObject;
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -191,6 +193,78 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		if(loadingView != null) {
 			loadingView.setVisibility(View.INVISIBLE);
 		}
+	}
+	
+	/**
+	 * id : push id. 
+	 * receiver_id : 받는 사람의 id.
+	 * message : 유저에게 보여줄 메세지.
+	 * uri : 연결할 uri.
+	 * created_at : 생성된 시간.
+	 * pushed_at : 보내진 시간.
+	 * read_at : 유저가 읽은 시간.
+	 * 
+	 */
+	public void handlePushObject(final PushObject pushObject) {
+		
+		LogUtils.log("###WholesaleActivity.handleIntent.  ");
+		
+		try {
+			String message = pushObject.message;
+			String uriString = pushObject.uri;
+			
+			LogUtils.log("message : " + message);
+			LogUtils.log("uriString : " + uriString);
+
+			//팝업을 보여준 후 확인을 누르면 처리.
+			showAlertDialog("알림", message, "확인", "닫기", 
+					new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					try {
+						setPushRead(pushObject.id);
+						handleUri(Uri.parse(pushObject.uri));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+			}, null);
+		} catch(Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void setPushRead(int id) {
+		
+		String url = BCPAPIs.NOTIFICATION_READ_URL
+				+ "notification_id=" + id;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("BCPFragmentActivity.setPushRead.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("BCPFragmentActivity.setPushRead.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 //////////////////// Interfaces.

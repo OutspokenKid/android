@@ -197,29 +197,43 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 						tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()) + row.getContext().getString(R.string.won));
 					}
 					
-					//리뷰 버튼.
-					//대기 중인 경우.
-					if(car.getStatus() < Car.STATUS_BIDDING) {
+					switch(car.getStatus()) {
+					
+					case Car.STATUS_STAND_BY_APPROVAL:
+					case Car.STATUS_STAND_BY_BIDING:
+					case Car.STATUS_BIDDING:
+					case Car.STATUS_BID_COMPLETE:
 						btnReview.setVisibility(View.INVISIBLE);
 						btnComplete.setVisibility(View.INVISIBLE);
-					
-					//종료된 경우.
-					} else if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
-						btnComplete.setVisibility(View.INVISIBLE);
+						break;
 						
+					case Car.STATUS_BID_SUCCESS:
+						btnComplete.setVisibility(View.VISIBLE);
+						btnReview.setVisibility(View.INVISIBLE);
+						break;
+						
+					case Car.STATUS_BID_FAIL:
+						btnComplete.setVisibility(View.INVISIBLE);
+						btnReview.setVisibility(View.INVISIBLE);
+						break;
+						
+					case Car.STATUS_TRADE_COMPLETE:
+						btnComplete.setVisibility(View.INVISIBLE);
+
 						//옥션, 검증직거래 매물이고, 후기를 작성하지 않은 경우.
-						if(car.getType() != Car.TYPE_DIRECT_NORMAL && car.getHas_review() != 1) {
+						if(car.getHas_review() != 1
+								&& (car.getType() == Car.TYPE_BID
+									|| car.getType() == Car.TYPE_DIRECT_CERTIFIED)) {
 							btnReview.setVisibility(View.VISIBLE);
-							
-						//중고마켓 매물이거나, 후기를 작성한 경우.
 						} else {
 							btnReview.setVisibility(View.INVISIBLE);
 						}
+						break;
 						
-					//판매 중인 경우.
-					} else {
-						btnReview.setVisibility(View.INVISIBLE);
-						btnComplete.setVisibility(View.VISIBLE);
+						default:
+							btnReview.setVisibility(View.INVISIBLE);
+							btnComplete.setVisibility(View.INVISIBLE);
+							break;
 					}
 					
 				//구매 신청내역인 경우.
@@ -319,6 +333,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 
 							if(objJSON.getInt("result") == 1) {
 								ToastUtils.showToast(R.string.complete_selling);
+								activity.getTopFragment().refreshPage();
 							} else {
 								ToastUtils.showToast(objJSON.getString("message"));
 							}

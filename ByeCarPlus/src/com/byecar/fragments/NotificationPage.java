@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -79,12 +80,15 @@ public class NotificationPage extends BCPFragment {
 				try {
 					Notification notification = (Notification) models.get(position);
 					
-					//Action.
-					
 					if(notification.getRead_at() == 0) {
 						requestReadNotification(notification.getId());
 						notification.setRead_at(System.currentTimeMillis()/1000);
 						adapter.notifyDataSetChanged();
+					}
+					
+					//Action.
+					if(notification.getUri() != null) {
+						mActivity.handleUri(Uri.parse(notification.getUri()));
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);

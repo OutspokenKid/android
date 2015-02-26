@@ -245,14 +245,13 @@ public class ViewWrapperForCar extends ViewWrapper {
 					
 					auctionIcon.setVisibility(View.VISIBLE);
 					timeRelative.setVisibility(View.VISIBLE);
-					tvBidCount.setVisibility(View.VISIBLE);
-					tvBidCount.setText("판매자 " + car.getBids_cnt() + "명");
+					tvBidCount.setVisibility(View.INVISIBLE);
 					
 					auctionIcon.setBackgroundResource(R.drawable.directmarket_test_symbol);
 					progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
 					auctionIcon.setVisibility(View.VISIBLE);
 					
-					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
+					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-6);
 					
 					setOnTimeListener();
 					

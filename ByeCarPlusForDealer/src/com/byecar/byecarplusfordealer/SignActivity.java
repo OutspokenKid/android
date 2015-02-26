@@ -168,8 +168,15 @@ public class SignActivity extends BCPFragmentActivity {
 		
 		Intent intent = new Intent(this, MainActivity.class);
 		
-		if(getIntent() != null && getIntent().getData() != null) {
-			intent.setData(getIntent().getData());
+		if(getIntent() != null) {
+			
+			if(getIntent().getData() != null) {
+				intent.setData(getIntent().getData());
+			}
+			
+			if(getIntent().hasExtra("pushObject")) {
+				intent.putExtra("pushObject", getIntent().getSerializableExtra("pushObject"));
+			}
 		}
 		
 		startActivity(intent);

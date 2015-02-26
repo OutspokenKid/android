@@ -3,6 +3,7 @@ package com.byecar.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.os.Handler;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
@@ -14,6 +15,7 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.OpenablePost;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
 
 public class OpenablePostListPage extends BCPFragment {
@@ -23,6 +25,7 @@ public class OpenablePostListPage extends BCPFragment {
 	
 	private ListView listView;
 	private int type;
+	private int id;
 	
 	@Override
 	public void bindViews() {
@@ -37,6 +40,7 @@ public class OpenablePostListPage extends BCPFragment {
 
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
+			id = getArguments().getInt("id");
 		}
 	}
 
@@ -130,6 +134,38 @@ public class OpenablePostListPage extends BCPFragment {
 				OpenablePost op = new OpenablePost(arJSON.getJSONObject(i));
 				op.setItemCode(itemType);
 				models.add(op);
+				
+				if(last_priority == 0 && id == op.getId()) {
+					op.setOpened(true);
+
+					try {
+						new Handler().postDelayed(new Runnable() {
+
+							@Override
+							public void run() {
+
+								try {
+									for(int i=0; i<models.size(); i++) {
+										
+										if(((OpenablePost)models.get(i)).getId() == id) {
+											
+											if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
+												listView.smoothScrollToPositionFromTop(i, 0);
+											} else {
+												listView.smoothScrollToPosition(i);
+											}
+											break;
+										}
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								}
+							}
+						}, 300);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

@@ -39,11 +39,48 @@
     			android:layout_alignLeft="@id/directMarketPage_viewPager"
     			android:background="@drawable/directmarket_test_symbol" />
             
+            <ProgressBar 
+                android:id="@+id/directMarketPage_progressBar"
+        		android:layout_width="match_parent"
+    			android:layout_height="0dp"
+    			android:layout_below="@id/directMarketPage_viewPager"
+    			style="?android:attr/progressBarStyleHorizontal"
+    			android:progressDrawable="@drawable/progressbar_custom_orange"
+    			android:max="1000"
+    			android:progress="0" />
+            
+            <TextView 
+                android:id="@+id/directMarketPage_tvRemainTime"
+        		android:layout_width="wrap_content"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_alignTop="@id/directMarketPage_progressBar"
+    			android:textColor="#fff"
+    			android:gravity="top" />
+            
+            <TextView 
+                android:id="@+id/directMarketPage_tvRemainTimeText"
+        		android:layout_width="wrap_content"
+    			android:layout_height="0dp"
+    			android:layout_alignLeft="@id/directMarketPage_tvRemainTime"
+    			android:layout_alignTop="@id/directMarketPage_progressBar"
+    			android:text="@string/remainTime"
+    			android:textColor="#fff"
+    			android:gravity="center_vertical" />
+            
+            <View 
+                android:id="@+id/directMarketPage_timeIcon"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignLeft="@id/directMarketPage_tvRemainTime"
+    			android:layout_alignTop="@id/directMarketPage_progressBar"
+    			android:background="@drawable/main_time_icon" />
+            
             <View 
                 android:id="@+id/directMarketPage_remainBg"
         		android:layout_width="match_parent"
     			android:layout_height="0dp"
-    			android:layout_below="@id/directMarketPage_viewPager"
+    			android:layout_below="@id/directMarketPage_progressBar"
     			android:background="#fff" />
             
             <TextView 
@@ -143,7 +180,7 @@
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/directMarketPage_normalLinear"
+    			android:layout_below="@id/directMarketPage_directTitle"
     			android:background="@drawable/directmarket_verification_btn" />
             
             <View 

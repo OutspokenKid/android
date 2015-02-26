@@ -59,6 +59,7 @@ import com.byecar.fragments.dealer.MyTicketPage;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.Dealer;
+import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -78,6 +79,8 @@ import com.outspoken_kid.views.OffsetScrollView;
 
 public class MainActivity extends BCPFragmentActivity {
 
+	public static MainActivity activity;
+	
 	public static final int POPUP_REQUEST_REGISTRATION = 0;
 	public static final int POPUP_REQUEST_BID = 1;
 	public static final int POPUP_NOT_ENOUGH = 2;
@@ -114,6 +117,18 @@ public class MainActivity extends BCPFragmentActivity {
 	private long last_connected_at;
 	private SocketIO socketIO;
 	private SocketDataHandler socketDataHandler;
+	
+	@Override
+	public void onCreate(Bundle arg0) {
+		super.onCreate(arg0);
+		
+		activity = this;
+		
+		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+			PushObject po = (PushObject) getIntent().getSerializableExtra("pushObject");
+			handleUri(Uri.parse(po.uri.toString()));
+		}
+	}
 	
 	@Override
 	public void bindViews() {
@@ -426,8 +441,50 @@ public class MainActivity extends BCPFragmentActivity {
 
 	@Override
 	public void handleUri(Uri uri) {
-		// TODO Auto-generated method stub
-		
+
+		try {
+			//byecar://notices
+			//byecar://notices?post_id=41
+
+			if(uri == null) {
+				return;
+			} else if(uri.getScheme().toString().equals("byecar")){
+
+				String host = uri.getHost().toString();
+				String path = uri.getPath().toString();
+				Bundle bundle = new Bundle();
+				
+				LogUtils.log("MainActivity.actionByUri. ========" +
+						"\n uri : " + uri 
+						+ "\n scheme : "+ uri.getScheme()
+						+ "\n host : " + host 
+						+ "\n path : " + path 
+						+ "\n=========");
+
+				//공지.
+				if(host.equals("notices")) {
+					int post_id = Integer.parseInt(uri.getQueryParameter("post_id"));
+					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+					bundle.putInt("id", post_id);
+					showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+				
+				//차량 관련.
+				} else if(host.equals("onsalecars")) {
+
+					int onsalecar_id = Integer.parseInt(uri.getQueryParameter("onsalecar_id"));
+					
+					if(path.equals("/bids/show")) {
+						bundle.putInt("type", Car.TYPE_BID);
+						bundle.putInt("id", onsalecar_id);
+						showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 
 	@Override
@@ -529,6 +586,8 @@ public class MainActivity extends BCPFragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		
+		activity = null;
 		TimerUtils.clear();
 	}
 	
@@ -1183,7 +1242,9 @@ public class MainActivity extends BCPFragmentActivity {
 				@Override
 				public void onCompleted(String url, JSONObject objJSON) {
 
-					LogUtils.log("###BCPFragmentActivity.updateInfo.onCompleted.  \nresult : " + objJSON);
+					LogUtils.log("###BCPFragmentActivity.updateInfo.onCompleted.  "
+							+ "\n url : " + url
+							+ "\n result : " + objJSON);
 				}
 			});
 		} catch(Exception e) {
