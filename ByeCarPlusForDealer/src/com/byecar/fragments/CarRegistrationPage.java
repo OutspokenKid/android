@@ -51,7 +51,7 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 public class CarRegistrationPage extends BCPFragment {
 
 	private static final int OPTION_VIEW_SIZE = 31;
-	private static final int MIN_DESC_COUNT = 0;
+//	private static final int MIN_DESC_COUNT = 0;
 	private static final int MAX_DESC_COUNT = 200;
 	
 	private static final int MAX_PRICE = 50000;
@@ -420,6 +420,15 @@ public class CarRegistrationPage extends BCPFragment {
 				} else {
 					termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_a);
 				}
+			}
+		});
+		
+		btnTermOfUse.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_TERM_OF_USE, null);
 			}
 		});
 		
@@ -1566,9 +1575,9 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		LogUtils.log("###CarRegistrationPage.checkProgress.  ########################################");
 
-		//판매자 정보 인증 20.
+		//판매자 정보 인증 30.
 		if(tvDealerInfoCertified.getVisibility() == View.VISIBLE) {
-			progress += 20;
+			progress += 30;
 			LogUtils.log("###CarRegistrationPage.checkProgress.  add 20 from certification.");
 		}
 		
@@ -1597,11 +1606,11 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		}
 		
-		//판매자 차량설명 10.
-		if(etCarDescriptionFromDealer.length() > MIN_DESC_COUNT) {
-			progress += 10;
-			LogUtils.log("###CarRegistrationPage.checkProgress.  add 10 from desc.");
-		}
+//		//판매자 차량설명 10.
+//		if(etCarDescriptionFromDealer.length() > MIN_DESC_COUNT) {
+//			progress += 10;
+//			LogUtils.log("###CarRegistrationPage.checkProgress.  add 10 from desc.");
+//		}
 		
 		setProgress(progress);
 	}
