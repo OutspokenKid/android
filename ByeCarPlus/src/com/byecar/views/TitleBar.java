@@ -141,7 +141,8 @@ public class TitleBar extends RelativeLayout {
 			rp.rightMargin = ResizeUtils.getSpecificLength(32);
 			tvNoticeCount = new TextView(getContext());
 			tvNoticeCount.setLayoutParams(rp);
-			tvNoticeCount.setTextColor(Color.rgb(254, 188, 42));
+//			tvNoticeCount.setTextColor(Color.rgb(254, 188, 42));
+			tvNoticeCount.setTextColor(Color.WHITE);
 			tvNoticeCount.setGravity(Gravity.CENTER);
 			
 			int pv = ResizeUtils.getSpecificLength(2);
@@ -151,7 +152,8 @@ public class TitleBar extends RelativeLayout {
 			FontUtils.setFontSize(tvNoticeCount, 20);
 			this.addView(tvNoticeCount);
 			
-			PaintDrawable pd = new PaintDrawable(Color.rgb(61, 32, 10));
+//			PaintDrawable pd = new PaintDrawable(Color.rgb(61, 32, 10));
+			PaintDrawable pd = new PaintDrawable(getResources().getColor(R.color.progress_guage_red));
 	        pd.setCornerRadius(ResizeUtils.getSpecificLength(10));
 	        
 	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
