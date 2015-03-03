@@ -3,6 +3,8 @@ package com.byecar.fragments.dealer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -13,6 +15,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
@@ -59,11 +62,11 @@ public class MyCompletedListPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-		
 		adapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), models);
 		listView.setAdapter(adapter);
-		listView.setDividerHeight(0);
-		listView.setDivider(null);
+		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+		listView.setDividerHeight(ResizeUtils.getSpecificLength(20));
+		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 	}
 
 	@Override
@@ -109,6 +112,14 @@ public class MyCompletedListPage extends BCPFragment {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 					long arg3) {
 
+				try {
+					Car car = (Car) models.get(position);
+					((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
+				}
 			}
 		});
 	}
@@ -151,7 +162,7 @@ public class MyCompletedListPage extends BCPFragment {
 	public void downloadInfo() {
 
 		if(menuIndex == 0) {
-			url = BCPAPIs.MY_CAR_URL + "?status=ended";
+			url = BCPAPIs.MY_BIDS_URL + "?status=ended";
 		} else {
 			url = BCPAPIs.MY_CAR_URL + "?status=ended";
 		}

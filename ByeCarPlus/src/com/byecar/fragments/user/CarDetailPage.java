@@ -1215,28 +1215,9 @@ public class CarDetailPage extends BCPFragment {
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
 		if(relativeForDealer.getVisibility() != View.VISIBLE) {
-			
-			for(int i=0; i<3; i++) {
-				
-				if(i < car.getBids().size()) {
-					dealerViews[i].setDealerInfo(car.getBids().get(i));
-					
-					final int I = i;
-					dealerViews[i].setOnClickListener(new OnClickListener() {
-
-						@Override
-						public void onClick(View view) {
-
-							Bundle bundle = new Bundle();
-							bundle.putBoolean("isCertifier", false);
-							bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
-							mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
-						}
-					});
-				}
-			}
+			setDealerView();
 		}
-
+		
 		//내 매물, 딜러 선택해야할 상황이면,
 		if(car.getStatus() == Car.STATUS_BID_COMPLETE
 				&& car.getSeller_id() == MainActivity.user.getId()) {
@@ -1482,38 +1463,71 @@ public class CarDetailPage extends BCPFragment {
 					new int[]{18 + (i*196), 14, 0, 14});
 			relativeForType.addView(dealerViews[i]);
 		}
-
-		int size = car.getBids().size();
 		
-		if(size == 0) {
+		setDealerView();
+	}
+	
+	public void setDealerView() {
+		
+		try {
+			int size = car.getBids().size();
 			
-			for(int i=0; i<3; i++) {
-				dealerViews[i].setVisibility(View.INVISIBLE);
-			}
-			
-			View noOne = new View(mContext);
-			ResizeUtils.viewResizeForRelative(218, 248, noOne, 
-					new int[]{RelativeLayout.CENTER_IN_PARENT}, new int[]{0}, 
-					null);
-			noOne.setBackgroundResource(R.drawable.detail_no_one);
-			relativeForType.addView(noOne);
-		} else {
-			for(int i=0; i<size; i++) {
-				dealerViews[i].setDealerInfo(car.getBids().get(i));
+			if(size == 0) {
 				
-				final int I = i;
-				dealerViews[i].setOnClickListener(new OnClickListener() {
+				for(int i=0; i<3; i++) {
+					dealerViews[i].setVisibility(View.INVISIBLE);
+				}
+				
+				View noOne = new View(mContext);
+				ResizeUtils.viewResizeForRelative(218, 248, noOne, 
+						new int[]{RelativeLayout.CENTER_IN_PARENT}, new int[]{0}, 
+						null);
+				noOne.setBackgroundResource(R.drawable.detail_no_one);
+				relativeForType.addView(noOne);
+			} else {
+				
+				for(int i=0; i<3; i++) {
+					dealerViews[i].setVisibility(View.VISIBLE);
+					dealerViews[i].initInfos();
+				}
+				
+				for(int i=0; i<size; i++) {
+					dealerViews[i].setDealerInfo(car.getBids().get(i));
+					
+					final int I = i;
+					dealerViews[i].setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
+						@Override
+						public void onClick(View view) {
 
-						Bundle bundle = new Bundle();
-						bundle.putBoolean("isCertifier", false);
-						bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
-						mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+							Bundle bundle = new Bundle();
+							bundle.putBoolean("isCertifier", false);
+							bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
+							mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+						}
+					});
+				}
+				
+				//딜러 선택 완료 또는 거래 완료 상태.
+				if(car.getStatus() == Car.STATUS_BID_SUCCESS
+						|| car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+					
+					for(int i=0; i<3; i++) {
+					
+						//딜러가 들어가 있고, 선택된 딜러 아이디와 같다면 selected.
+						if(car.getBids().size() > i
+								&& car.getBids().get(i).getDealer_id() == car.getDealer_id()) {
+							dealerViews[i].setSelected(true);
+						} else {
+							dealerViews[i].setSelected(false);
+						}
 					}
-				});
+				}
 			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 

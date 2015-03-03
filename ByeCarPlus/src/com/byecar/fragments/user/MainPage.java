@@ -1,6 +1,8 @@
 package com.byecar.fragments.user;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,6 +50,8 @@ import com.outspoken_kid.views.PageNavigatorView;
 
 public class MainPage extends BCPAuctionableFragment {
 	
+	private static final int PAGER_TIME = 5;
+	
 	private OffsetScrollView scrollView;
 	private ViewPager viewPager;
 	private View auctionIcon;
@@ -80,6 +84,10 @@ public class MainPage extends BCPAuctionableFragment {
 	private int scrollOffset; 
 	private int standardLength;
 	private float diff;
+	private int pagerTime;
+	
+	private Timer pagerTimer;
+	private TimerTask pagerTimerTask;
 	
 	private OnTimeChangedListener onTimeChangedListener;
 	
@@ -166,13 +174,14 @@ public class MainPage extends BCPAuctionableFragment {
 			@Override
 			public void onPageSelected(int arg0) {
 
+				pagerTime = 0;
 				setPagerInfo(arg0);
 			}
 			
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
-				// TODO Auto-generated method stub
-				
+
+				pagerTime = 0;
 			}
 			
 			@Override
@@ -467,6 +476,7 @@ public class MainPage extends BCPAuctionableFragment {
 		((MainActivity) mActivity).setLeftViewUserInfo();
 		
 		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
+		setPagerTimer();
 	}
 	
 	@Override
@@ -475,6 +485,7 @@ public class MainPage extends BCPAuctionableFragment {
 		((MainActivity) mActivity).clearLeftViewUserInfo();
 		
 		TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
+		clearPagerTimer();
 	}
 	
 	@Override
@@ -865,7 +876,7 @@ public class MainPage extends BCPAuctionableFragment {
 				public void onTimeChanged() {
 
 					if(bids.size() > 0) {
-
+						
 						if(bids.get(viewPager.getCurrentItem()).getStatus() > Car.STATUS_BID_COMPLETE) {
 							progressBar.setProgress(1000);
 							tvRemainTime.setText("-- : -- : --");
@@ -940,6 +951,48 @@ public class MainPage extends BCPAuctionableFragment {
 		}
 	}
 
+	public void setPagerTimer() {
+		
+		pagerTime = 0;
+		pagerTimerTask = new TimerTask() {
+			
+			@Override
+			public void run() {
+				
+				//하나 이상일 때만.
+				if(viewPager == null || bids.size() <= 1) {
+					return;
+				}
+
+				//지정한 시간이 되면 페이저 넘기고 시간 초기화.
+				if(pagerTime == PAGER_TIME) {
+					mActivity.runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							
+							viewPager.setCurrentItem((viewPager.getCurrentItem() + 1) % bids.size(), true);
+						}
+					});
+				} else {
+					pagerTime++;
+				}
+			}
+		};
+		
+		pagerTimer = new Timer();
+		pagerTimer.schedule(pagerTimerTask, 0, 1000);
+	}
+
+	public void clearPagerTimer() {
+		
+		pagerTimerTask.cancel();
+		pagerTimerTask = null;
+		
+		pagerTimer.purge();
+		pagerTimer = null;
+	}
+	
 	@Override
 	public void bidStatusChanged(String event, Car car) {
 

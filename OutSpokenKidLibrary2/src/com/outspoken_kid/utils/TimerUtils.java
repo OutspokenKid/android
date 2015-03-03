@@ -19,16 +19,12 @@ public class TimerUtils {
 			@Override
 			public void run() {
 
-//				LogUtils.log("###TimeContralClass.run. size : " + listeners.size());
-				
 				for(int i=0; i<listeners.size(); i++) {
 
 					try {
 						final OnTimeChangedListener listener = listeners.get(i);
 						
 						if(listener != null && listener.getActivity() != null) {
-							
-//							LogUtils.log("###TimeContralClass.run. lister is not null. name : " + listener.getName());
 							listener.getActivity().runOnUiThread(new Runnable() {
 								
 								@Override

@@ -22,12 +22,14 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/mypage_frame" />
     
-    <View
-        android:id="@+id/list_my_car_statusIcon"
+    <TextView
+        android:id="@+id/list_my_car_tvStatus"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignLeft="@id/list_my_car_ivImage"
-        android:layout_alignTop="@id/list_my_car_cover" />
+        android:layout_alignTop="@id/list_my_car_cover"
+        android:textColor="#fff"
+        android:gravity="center_vertical|right" />
 
     <TextView
         android:id="@+id/list_my_car_tvRegdate"
@@ -65,10 +67,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignBottom="@id/list_my_car_ivImage"
-        android:layout_toRightOf="@id/list_my_car_ivImage"
+        android:layout_alignLeft="@id/list_my_car_tvCarName"
         android:ellipsize="end"
         android:singleLine="true"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|left"
         android:textColor="@color/holo_text" />
     
     <TextView
@@ -76,10 +78,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignBottom="@id/list_my_car_ivImage"
-        android:layout_alignRight="@id/list_my_car_cover"
+        android:layout_alignRight="@id/list_my_car_tvYear"
         android:ellipsize="end"
         android:singleLine="true"
-        android:gravity="center_vertical"
+        android:gravity="center_vertical|right"
         android:textColor="@color/holo_text" />
     
 </RelativeLayout>

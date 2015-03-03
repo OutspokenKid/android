@@ -149,7 +149,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 			Notification noti = new NotificationCompat.Builder(context)
 						.setContentTitle(getString(R.string.app_name))
 						.setContentText(message)
-						.setSmallIcon(R.drawable.app_icon_noti)
+						.setSmallIcon(R.drawable.app_noti_icon)
 						.setDefaults(pushSetting)
 						.setTicker(push_msg)
 						.setAutoCancel(true)

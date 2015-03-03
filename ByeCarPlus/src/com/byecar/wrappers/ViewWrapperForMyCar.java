@@ -167,11 +167,11 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					
 				case Car.STATUS_BIDDING:
 				case Car.STATUS_BID_COMPLETE:
-					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
-					break;
-					
 				case Car.STATUS_BID_SUCCESS:
 				case Car.STATUS_BID_FAIL:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
+					break;
+				
 				case Car.STATUS_TRADE_COMPLETE:
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
 					break;

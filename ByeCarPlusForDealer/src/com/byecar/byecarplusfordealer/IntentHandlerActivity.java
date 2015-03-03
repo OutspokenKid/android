@@ -40,6 +40,9 @@ public class IntentHandlerActivity extends Activity {
 						+ "\nuriString : " + pushObject.uri);
 				
 				MainActivity.activity.handlePushObject(pushObject);
+				
+			} else if(SignActivity.onSignPage) {
+				//Ignore.
 			} else {
 				LogUtils.log("###IntentHandlerActivity.handlingPushObject.  app is not running.");
 				showSignActivity(pushObject);

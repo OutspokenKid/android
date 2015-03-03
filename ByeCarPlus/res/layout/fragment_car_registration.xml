@@ -19,7 +19,7 @@
         android:layout_height="0dp"
         android:layout_below="@id/carRegistrationPage_titleBar"
         android:max="100"
-        android:progressDrawable="@drawable/progressbar_custom_green" />
+        android:progressDrawable="@drawable/progressbar_custom_red" />
     
     <TextView
         android:id="@+id/carRegistrationPage_tvPercentage"

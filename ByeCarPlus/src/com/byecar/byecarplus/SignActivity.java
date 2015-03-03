@@ -24,6 +24,8 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class SignActivity extends BCPFragmentActivity {
 
+	public static boolean onSignPage;
+	
 	private boolean isMainLaunched;
 	
 	@Override
@@ -34,8 +36,8 @@ public class SignActivity extends BCPFragmentActivity {
 
 	@Override
 	public void setVariables() {
-		// TODO Auto-generated method stub
 
+		onSignPage = true;
 	}
 
 	@Override
@@ -112,6 +114,13 @@ public class SignActivity extends BCPFragmentActivity {
 	public void handleUri(Uri uri) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public void finish() {
+		
+		onSignPage = false;
+		super.finish();
 	}
 	
 //////////////////// Custom methods.

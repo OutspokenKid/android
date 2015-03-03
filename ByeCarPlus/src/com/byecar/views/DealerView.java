@@ -22,6 +22,7 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class DealerView extends FrameLayout {
 
+	private Bid bid;
 	private int index;
 	
 	private ImageView ivImage;
@@ -110,6 +111,13 @@ public class DealerView extends FrameLayout {
 
 	public void setDealerInfo(Bid bid) {
 		
+		if(bid == null) {
+			initInfos();
+			return;
+		} else {
+			this.bid = bid;
+		}
+		
 		tvInfo.setText(null);
 		FontUtils.addSpan(tvInfo, bid.getDealer_name(), getResources().getColor(R.color.holo_text), 1.6f, true);
 		FontUtils.addSpan(tvInfo, "\n" + bid.getDealer_address(), getResources().getColor(R.color.holo_text_hint), 1);
@@ -175,13 +183,19 @@ public class DealerView extends FrameLayout {
 	}
 	
 	public void setSelected(boolean selected) {
+
+		if(bid == null) {
+			return;
+		}
 		
 		this.selected = selected;
 		
 		if(selected) {
 			selectedIcon.setVisibility(View.VISIBLE);
+			rankBadge.setVisibility(View.INVISIBLE);
 		} else {
 			selectedIcon.setVisibility(View.INVISIBLE);
+			rankBadge.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -202,5 +216,6 @@ public class DealerView extends FrameLayout {
 		tvGrade.setText(null);
 		tvPrice.setText("0" + getContext().getString(R.string.won));
 		rankBadge.setVisibility(View.INVISIBLE);
+		selectedIcon.setVisibility(View.INVISIBLE);
 	}
 }

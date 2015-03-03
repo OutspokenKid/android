@@ -18,6 +18,8 @@ public class IntentHandlerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		LogUtils.log("###IntentHandlerActivity.onCreate.  ");
+		
 		getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 		bg = new View(this);
 		bg.setBackgroundResource(android.R.color.transparent);
@@ -36,10 +38,14 @@ public class IntentHandlerActivity extends Activity {
 			if(MainActivity.activity != null
 					&& MainActivity.activity.getFragmentsSize() != 0) {
 				LogUtils.log("###IntentHandlerActivity.handlingPushObject.  On MainActivity"
-						+ "\nmessage : " + pushObject.message
-						+ "\nuriString : " + pushObject.uri);
+						+ "\n size : " + MainActivity.activity.getFragmentsSize()
+						+ "\n message : " + pushObject.message
+						+ "\n uriString : " + pushObject.uri);
 				
 				MainActivity.activity.handlePushObject(pushObject);
+				
+			} else if(SignActivity.onSignPage) {
+				//Ignore.
 			} else {
 				LogUtils.log("###IntentHandlerActivity.handlingPushObject.  app is not running.");
 				showSignActivity(pushObject);

@@ -123,11 +123,6 @@ public class MainActivity extends BCPFragmentActivity {
 		super.onCreate(arg0);
 		
 		activity = this;
-		
-		if(getIntent() != null && getIntent().hasExtra("pushObject")) {
-			PushObject po = (PushObject) getIntent().getSerializableExtra("pushObject");
-			handleUri(Uri.parse(po.uri.toString()));
-		}
 	}
 	
 	@Override
@@ -356,6 +351,19 @@ public class MainActivity extends BCPFragmentActivity {
 
 		if(getFragmentsSize() == 0) {
 			showPage(BCPConstants.PAGE_MAIN, null);
+			
+			if(getIntent() != null && getIntent().hasExtra("pushObject")) {
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						PushObject po = (PushObject) getIntent().getSerializableExtra("pushObject");
+						handleUri(Uri.parse(po.uri.toString()));
+					}
+				}, 500);
+			}
 		}
 	}
 
@@ -463,9 +471,15 @@ public class MainActivity extends BCPFragmentActivity {
 
 				//공지.
 				if(host.equals("notices")) {
-					int post_id = Integer.parseInt(uri.getQueryParameter("post_id"));
 					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-					bundle.putInt("id", post_id);
+					
+					try {
+						int post_id = Integer.parseInt(uri.getQueryParameter("post_id"));
+						bundle.putInt("id", post_id);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
 					showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 				
 				//차량 관련.
@@ -540,6 +554,8 @@ public class MainActivity extends BCPFragmentActivity {
 	public void finish() {
 
 		DownloadUtils.downloadJSONString(BCPAPIs.BASE_API_URL + "/users/logout.json", null);
+		activity = null;
+		TimerUtils.clear();
 		super.finish();
 	}
 
@@ -579,16 +595,14 @@ public class MainActivity extends BCPFragmentActivity {
 	protected void onPause() {
 		super.onPause();
 		
-		socketIO.disconnect();
-		TimerUtils.cancel();
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		
-		activity = null;
-		TimerUtils.clear();
+		try {
+			socketIO.disconnect();
+			TimerUtils.cancel();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 //////////////////// Custom methods.
@@ -852,6 +866,9 @@ public class MainActivity extends BCPFragmentActivity {
 					LogUtils.log("MainForDealerActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
+					MainActivity.user = null;
+					MainActivity.dealer = null;
+					
 					SharedPrefsUtils.clearCookie(getCookieName_D1());
 					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
@@ -1079,6 +1096,8 @@ public class MainActivity extends BCPFragmentActivity {
 				return;
 			}
 			
+			ivProfile.setImageDrawable(null);
+			
 			if(!StringUtils.isEmpty(user.getProfile_img_url())) {
 				
 				ivProfile.setTag(user.getProfile_img_url());
@@ -1301,5 +1320,4 @@ public class MainActivity extends BCPFragmentActivity {
 			LogUtils.trace(e);
 		}
 	}
-
 }

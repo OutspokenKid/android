@@ -1271,7 +1271,7 @@ containing a value of this type.
         public static final int abc_textfield_searchview_right_holo_dark=0x7f020055;
         public static final int abc_textfield_searchview_right_holo_light=0x7f020056;
         public static final int app_icon=0x7f020057;
-        public static final int app_icon_noti=0x7f020058;
+        public static final int app_noti_icon=0x7f020058;
         public static final int ask_ask1_btn=0x7f020059;
         public static final int ask_ask1_btn_a=0x7f02005a;
         public static final int ask_ask1_btn_b=0x7f02005b;

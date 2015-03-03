@@ -87,6 +87,8 @@ public class Car extends BCPBaseModel implements Serializable {
 	private int likes_cnt;
 	private int has_purchased;
 	private int has_review;
+	
+	private int my_bid_ranking;
 
 	public Car() {
 		
@@ -338,6 +340,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			if(objJSON.has("has_review")) {
 				this.has_review = objJSON.getInt("has_review");
 			}
+			
+			if(objJSON.has("my_bid_ranking")) {
+				this.my_bid_ranking = objJSON.getInt("my_bid_ranking");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}
@@ -404,6 +410,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.likes_cnt = 0;
 			this.has_purchased = 0;
 			this.has_review = 0;
+			this.my_bid_ranking = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -463,6 +470,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.likes_cnt = newCar.likes_cnt;
 			this.has_purchased = newCar.has_purchased;
 			this.has_review = newCar.has_review;
+			this.my_bid_ranking = newCar.my_bid_ranking;
 		}
 	}
 	
@@ -1063,5 +1071,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setHas_review(int has_review) {
 		this.has_review = has_review;
+	}
+
+	public int getMy_bid_ranking() {
+		return my_bid_ranking;
+	}
+
+	public void setMy_bid_ranking(int my_bid_ranking) {
+		this.my_bid_ranking = my_bid_ranking;
 	}
 }

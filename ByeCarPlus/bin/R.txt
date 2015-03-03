@@ -311,7 +311,7 @@ int drawable abc_textfield_searchview_holo_light 0x7f020054
 int drawable abc_textfield_searchview_right_holo_dark 0x7f020055
 int drawable abc_textfield_searchview_right_holo_light 0x7f020056
 int drawable app_icon 0x7f020057
-int drawable app_icon_noti 0x7f020058
+int drawable app_noti_icon 0x7f020058
 int drawable ask_ask1_btn 0x7f020059
 int drawable ask_ask1_btn_a 0x7f02005a
 int drawable ask_ask1_btn_b 0x7f02005b
