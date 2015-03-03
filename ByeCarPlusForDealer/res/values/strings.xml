@@ -103,8 +103,8 @@
     <string name="hintForDetailCarInfo5">배기량을 입력해주세요.</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
-    <string name="hintForIntroduce">자기소개 글을 입력해주세요.</string>
-    <string name="hintForName">본명을 입력해주세요. (한글 2~8자)</string>
+    <string name="hintForIntroduce">자기소개를 입력해주세요.\n(소비자가 볼 수 있는 소개입니다. 충실히 입력해주세요.)</string>
+    <string name="hintForName">이름을 입력해주세요. (한글 2~8자)</string>
     <string name="hintForNickname">별명을 입력해주세요.(3~15자)</string>
     <string name="hintForPassword">비밀번호를 입력해주세요.</string>
     <string name="hintForPassword2">비밀번호를 입력해주세요.(8~15자)</string>
