@@ -46,7 +46,7 @@ public class NormalCarView extends RelativeLayout {
 	private ImageView ivImage;
 	private TextView tvCar;
 	private TextView tvCarInfo;
-	private TextView tvPrice;
+	private PriceTextView priceTextView;
 	private TextView tvLikeText;
 	private Button btnLike;
 
@@ -120,27 +120,14 @@ public class NormalCarView extends RelativeLayout {
 		btnLike.setGravity(Gravity.CENTER);
 		this.addView(btnLike);
 
-		//tvPrice.
-		tvPrice = new TextView(getContext());
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvPrice, 
+		//priceTextView.
+		priceTextView = new PriceTextView(getContext());
+		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, priceTextView, 
 				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.ALIGN_PARENT_BOTTOM}, 
-				new int[]{0, 0}, new int[]{0, 0, 10, 0});
-		tvPrice.setId(R.id.normalCarView_tvPrice);
-		FontUtils.setFontSize(tvPrice, 24);
-		FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
-		tvPrice.setTextColor(textColor);
-		tvPrice.setGravity(Gravity.CENTER_VERTICAL);
-		this.addView(tvPrice);
-		
-		TextView tvPriceText = new TextView(getContext());
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvPriceText,
-				new int[]{RelativeLayout.LEFT_OF, RelativeLayout.ALIGN_PARENT_BOTTOM}, 
-				new int[]{R.id.normalCarView_tvPrice, 0}, new int[]{0, 0, 4, 0});
-		FontUtils.setFontSize(tvPriceText, 18);
-		tvPriceText.setTextColor(textColor);
-		tvPriceText.setGravity(Gravity.CENTER_VERTICAL);
-		tvPriceText.setText(getContext().getString(R.string.salesPrice));
-		this.addView(tvPriceText);
+				new int[]{0, 0}, new int[]{0, 0, 10, 16});
+		priceTextView.setId(R.id.normalCarView_tvPrice);
+		priceTextView.setType(PriceTextView.TYPE_NORMAL_CAR);
+		this.addView(priceTextView);
 		
 		setFrameToDefault();
 	}
@@ -155,8 +142,7 @@ public class NormalCarView extends RelativeLayout {
 			tvCar.setText(car.getModel_name());
 			tvCarInfo.setText(car.getYear() + getContext().getString(R.string.year) + " / "
 					+ StringUtils.getFormattedNumber(car.getMileage()) + "km");
-			tvPrice.setText(StringUtils.getFormattedNumber(car.getPrice())
-					+ getContext().getString(R.string.won));
+			priceTextView.setPrice(car.getPrice());
 			
 			if(car.getIs_liked() == 0) {
 				btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
@@ -232,7 +218,7 @@ public class NormalCarView extends RelativeLayout {
 		ivImage.setImageDrawable(null);
 		tvCar.setText(R.string.standingByRegistration);
 		tvCarInfo.setText("--" + getContext().getString(R.string.year) + " / " + "--km");
-		tvPrice.setText("0" + getContext().getString(R.string.won));
+		priceTextView.setPrice(0);
 	}
 	
 	public void setLike(Car car) {

@@ -457,7 +457,7 @@ public class MainActivity extends BCPFragmentActivity {
 			if(uri == null) {
 				return;
 			} else if(uri.getScheme().toString().equals("byecar")){
-
+				
 				String host = uri.getHost().toString();
 				String path = uri.getPath().toString();
 				Bundle bundle = new Bundle();
@@ -492,6 +492,27 @@ public class MainActivity extends BCPFragmentActivity {
 						bundle.putInt("id", onsalecar_id);
 						showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 					}
+					
+				//블럭.
+				} else if(host.equals("users") && path.equals("/disable")) {
+
+					checkSession(new OnAfterCheckSessionListener() {
+						
+						@Override
+						public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
+
+							try {
+								if(!isSuccess) {
+									ToastUtils.showToast(objJSON.getString("message"));
+									launchSignActivity();
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (Error e) {
+								LogUtils.trace(e);
+							}
+						}
+					});
 				}
 			}
 		} catch (Exception e) {

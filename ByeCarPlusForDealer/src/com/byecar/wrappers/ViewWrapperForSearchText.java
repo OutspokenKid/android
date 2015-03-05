@@ -1,5 +1,6 @@
 package com.byecar.wrappers;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,6 +28,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 	private BaseModel model;
 	
 	private TextView tvText;
+	private View line;
 	
 	public ViewWrapperForSearchText(View row, int itemCode) {
 		super(row, itemCode);
@@ -37,6 +39,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 
 		try {
 			tvText = (TextView) row.findViewById(R.id.list_search_text_tvText);
+			line = row.findViewById(R.id.list_search_text_line);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -74,6 +77,20 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 				
 			} else if(model instanceof CarSearchString) {
 				tvText.setText(((CarSearchString)model).getText());
+				
+				if(model.getItemCode() == BCPConstants.ITEM_CAR_TEXT_DESC) {
+					row.setLayoutParams(new AbsListView.LayoutParams(
+							LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(120)));
+					FontUtils.setFontSize(tvText, 20);
+					tvText.setTextColor(Color.RED);
+					line.setVisibility(View.INVISIBLE);
+				} else {
+					row.setLayoutParams(new AbsListView.LayoutParams(
+							LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(80)));
+					FontUtils.setFontSize(tvText, 30);
+					tvText.setTextColor(row.getContext().getResources().getColor(R.color.holo_text_hint));
+					line.setVisibility(View.VISIBLE);
+				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -119,6 +136,11 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 								mActivity.closePages(4);
 							
 							} else if(model instanceof CarSearchString) {
+								
+								if(model.getItemCode() == BCPConstants.ITEM_CAR_TEXT_DESC) {
+									return;
+								}
+								
 								CarSearchString css = (CarSearchString) model;
 								mActivity.bundle = new Bundle();
 								mActivity.bundle.putInt("type", css.getType());

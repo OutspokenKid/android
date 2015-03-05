@@ -33,6 +33,7 @@ import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.OpenablePost;
+import com.byecar.views.PriceTextView;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -61,8 +62,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private TextView tvRemainTimeText;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
-	private TextView tvCurrentPrice;
-	private TextView tvCurrentPriceText;
+	private PriceTextView priceTextView;
 	private TextView tvBidCount;
 	private Button btnLike;
 	private Button btnAuction;
@@ -105,8 +105,7 @@ public class MainPage extends BCPAuctionableFragment {
 		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvRemainTimeText);
 		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCarInfo1);
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCarInfo2);
-		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCurrentPrice);
-		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvCurrentPriceText);
+		priceTextView = (PriceTextView) mThisView.findViewById(R.id.mainForUserPage_priceTextView);
 		tvBidCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvBidCount);
 		btnLike = (Button) mThisView.findViewById(R.id.mainForUserPage_btnLike);
 		btnAuction = (Button) mThisView.findViewById(R.id.mainForUserPage_btnAuction);
@@ -132,6 +131,8 @@ public class MainPage extends BCPAuctionableFragment {
 		titleBar.setBgAlpha(0);
 		
 		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
+		
+		priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
 	}
 
 	@Override
@@ -325,15 +326,10 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		//tvCurrentPrice.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(26);
+		//priceTextView.
+		rp = (RelativeLayout.LayoutParams) priceTextView.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvCurrentPriceText.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(4);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
@@ -411,9 +407,6 @@ public class MainPage extends BCPAuctionableFragment {
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCarInfo2, 20);
-		FontUtils.setFontSize(tvCurrentPrice, 32);
-		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
-		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(tvBidCount, 20);
 		FontUtils.setFontSize(btnLike, 18);
 		FontUtils.setFontSize((TextView)mThisView.findViewById(R.id.mainForUserPage_tvLikeText), 20);
@@ -590,7 +583,7 @@ public class MainPage extends BCPAuctionableFragment {
 							notice = new OpenablePost(objJSON.getJSONObject("notice"));
 						}
 					} catch (Exception e) {
-						LogUtils.trace(e);
+						//notice가 null로 오면 매번 exception 떠서 불편해서 지움.
 					}
 					
 					setNotice();
@@ -705,7 +698,7 @@ public class MainPage extends BCPAuctionableFragment {
 		if(bids.size() == 0) {
 			tvCarInfo1.setText(null);
 			tvCarInfo2.setText(null);
-			tvCurrentPrice.setText(null);
+			priceTextView.setPrice(0);
 			tvBidCount.setText(null);
 			pageNavigator.setVisibility(View.INVISIBLE);
 			auctionIcon.setVisibility(View.INVISIBLE);
@@ -720,8 +713,7 @@ public class MainPage extends BCPAuctionableFragment {
 			tvCarInfo2.setText(car.getYear() + "년 / "
 					+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 					+ car.getArea());
-			
-			tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) + getString(R.string.won));
+			priceTextView.setPrice(car.getPrice());
 			tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 			
 			pageNavigator.setVisibility(View.VISIBLE);

@@ -145,8 +145,7 @@ public class DealerView extends FrameLayout {
 			break;
 		}
 		
-		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()) 
-						+ getContext().getString(R.string.won));
+		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()) + "만원");
 
 		rankBadge.setVisibility(View.VISIBLE);
 		
@@ -214,7 +213,7 @@ public class DealerView extends FrameLayout {
 		FontUtils.addSpan(tvInfo, "\n--", getResources().getColor(R.color.holo_text_hint), 1);
 		
 		tvGrade.setText(null);
-		tvPrice.setText("0" + getContext().getString(R.string.won));
+		tvPrice.setText("0만원");
 		rankBadge.setVisibility(View.INVISIBLE);
 		selectedIcon.setVisibility(View.INVISIBLE);
 	}

@@ -1138,8 +1138,10 @@ public class CarDetailPage extends BCPFragment {
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
-				+ getString(R.string.won));
+		tvCurrentPrice.setText(null);
+		FontUtils.addSpan(tvCurrentPrice, StringUtils.getFormattedNumber(car.getPrice()/10000), 0, 1f);
+		FontUtils.addSpan(tvCurrentPrice, "만원", 0, 0.7f);
+		
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
 		if(car.getIs_liked() == 0) {
@@ -1208,8 +1210,9 @@ public class CarDetailPage extends BCPFragment {
 			auctionIcon.setVisibility(View.VISIBLE);
 		}
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
-				+ getString(R.string.won));
+		tvCurrentPrice.setText(null);
+		FontUtils.addSpan(tvCurrentPrice, StringUtils.getFormattedNumber(car.getPrice()/10000), 0, 1f);
+		FontUtils.addSpan(tvCurrentPrice, "만원", 0, 0.7f);
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 
 		setDealerView();
@@ -1811,8 +1814,10 @@ public class CarDetailPage extends BCPFragment {
 		}
 		
 		currentBiddingPrice = biddingPrice;
-		tvBiddingPrice.setText(StringUtils.getFormattedNumber(biddingPrice) 
-				+ getString(R.string.won));
+		
+		tvBiddingPrice.setText(null);
+		FontUtils.addSpan(tvBiddingPrice, StringUtils.getFormattedNumber(biddingPrice/10000), 0, 1f);
+		FontUtils.addSpan(tvBiddingPrice, "만원", 0, 0.7f);
 	}
 	
 	public void requestBid() {

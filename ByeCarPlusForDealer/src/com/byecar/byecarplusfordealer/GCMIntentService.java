@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import com.byecar.classes.BCPAPIs;
@@ -56,13 +57,29 @@ public class GCMIntentService extends GCMBaseIntentService {
 		try {
 			if(intent != null && intent.getExtras() != null) {
 				
-				PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
+				final PushObject po = new PushObject(new JSONObject(intent.getStringExtra("msg")));
 				
 				LogUtils.log("###GCMIntentService.onMessage.  App is not running, show notification."
 						+ "\nmsg : " + intent.getStringExtra("msg")
 						+ "\nmessage : " + po.message
 						+ "\nuri : " + po.uri);
-				showNotification(context, po);
+				
+				if(po.uri != null && po.uri.contains("byecar://users/disable")) {
+					
+					if(MainActivity.activity != null
+							&& MainActivity.activity.getFragmentsSize() != 0) {
+						MainActivity.activity.runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								
+								MainActivity.activity.handleUri(Uri.parse(po.uri));
+							}
+						});
+					}
+				} else {
+					showNotification(context, po);
+				}
 			}
 		} catch(Exception e) {
 			LogUtils.trace(e);

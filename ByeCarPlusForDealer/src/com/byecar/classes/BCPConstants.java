@@ -23,8 +23,9 @@ public class BCPConstants {
 	public static final int ITEM_CAR_DEALER_IN_PROGRESS = 14;
 	public static final int ITEM_CAR_BRAND = 15;
 	public static final int ITEM_CAR_TEXT = 16;
-	public static final int ITEM_CAR_MY_AUCTION = 17;
-	public static final int ITEM_CAR_MY_DEALER = 18;
+	public static final int ITEM_CAR_TEXT_DESC = 17;
+	public static final int ITEM_CAR_MY_AUCTION = 18;
+	public static final int ITEM_CAR_MY_DEALER = 19;
 	
 	public static final int ITEM_BANNER = 30;
 	

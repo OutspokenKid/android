@@ -67,7 +67,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BRAND: 
 			return R.layout.grid_brand;
 			
-		case BCPConstants.ITEM_CAR_TEXT: 
+		case BCPConstants.ITEM_CAR_TEXT:
+		case BCPConstants.ITEM_CAR_TEXT_DESC:
 			return R.layout.list_search_text;
 			
 		case BCPConstants.ITEM_CAR_MY_AUCTION:
@@ -115,6 +116,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfb;
 			
 		case BCPConstants.ITEM_CAR_TEXT:
+		case BCPConstants.ITEM_CAR_TEXT_DESC:
 			ViewWrapperForSearchText vwfst = new ViewWrapperForSearchText(convertView, itemCode);
 			vwfst.setActivity(activity);
 			return vwfst;

@@ -371,7 +371,7 @@ public class MainPage extends BCPAuctionableFragment {
 			break;
 			
 		case 2:
-			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=accepted";
+			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
 			break;
 			
 		case 3:

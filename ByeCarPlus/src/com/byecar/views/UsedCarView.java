@@ -2,7 +2,6 @@ package com.byecar.views;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.Gravity;
 import android.view.View;
@@ -53,7 +52,7 @@ public class UsedCarView extends FrameLayout {
 		//tvCar.
 		tvCar = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 34, tvCar, 2, 0, new int[]{0, 140, 0, 0});
-		tvCar.setTextColor(Color.rgb(57, 57, 57));
+		tvCar.setTextColor(getContext().getResources().getColor(R.color.holo_text));
 		FontUtils.setFontSize(tvCar, 18);
 		tvCar.setGravity(Gravity.CENTER);
 		this.addView(tvCar);
@@ -61,9 +60,9 @@ public class UsedCarView extends FrameLayout {
 		//tvPrice.
 		tvPrice = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvPrice, 2, 0, new int[]{0, 176, 0, 0});
-		FontUtils.setFontSize(tvPrice, 24);
+		FontUtils.setFontSize(tvPrice, 22);
 		FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
-		tvPrice.setTextColor(Color.rgb(96, 70, 51));
+		tvPrice.setTextColor(getContext().getResources().getColor(R.color.color_brown));
 		tvPrice.setGravity(Gravity.CENTER);
 		this.addView(tvPrice);
 	}
@@ -103,7 +102,7 @@ public class UsedCarView extends FrameLayout {
 	public void setTexts(String modelName, long price) {
 		
 		tvCar.setText(modelName);
-		tvPrice.setText(StringUtils.getFormattedNumber(price) + getContext().getString(R.string.won));
+		tvPrice.setText(StringUtils.getFormattedNumber(price/10000) + "만원");
 	}
 
 	public ImageView getIvImage() {

@@ -31,6 +31,7 @@ import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
 import com.byecar.views.NormalCarView;
+import com.byecar.views.PriceTextView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -55,8 +56,7 @@ public class DirectMarketPage extends BCPFragment {
 	private TextView tvRemainTimeText;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
-	private TextView tvCurrentPrice;
-	private TextView tvCurrentPriceText;
+	private PriceTextView priceTextView;
 	private Button btnLike;
 	private TextView tvLikeText;
 	private Button btnCertified;
@@ -89,8 +89,7 @@ public class DirectMarketPage extends BCPFragment {
 		tvRemainTimeText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvRemainTimeText);
 		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCarInfo1);
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCarInfo2);
-		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCurrentPrice);
-		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvCurrentPriceText);
+		priceTextView = (PriceTextView) mThisView.findViewById(R.id.directMarketPage_priceTextView);
 		btnLike = (Button) mThisView.findViewById(R.id.directMarketPage_btnLike);
 		tvLikeText = (TextView) mThisView.findViewById(R.id.directMarketPage_tvLikeText);
 		btnCertified = (Button) mThisView.findViewById(R.id.directMarketPage_btnCertified);
@@ -116,6 +115,8 @@ public class DirectMarketPage extends BCPFragment {
 		if(normalLinear.getChildCount() == 0) {
 			addNormalCarViews();
 		}
+		
+		priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
 	}
 
 	@Override
@@ -263,15 +264,10 @@ public class DirectMarketPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		//tvCurrentPrice.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(26);
+		//priceTextView.
+		rp = (RelativeLayout.LayoutParams) priceTextView.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(32);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvCurrentPriceText.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(4);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//btnLike.
 		rp = (RelativeLayout.LayoutParams) btnLike.getLayoutParams();
@@ -326,9 +322,6 @@ public class DirectMarketPage extends BCPFragment {
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCarInfo2, 20);
-		FontUtils.setFontSize(tvCurrentPrice, 32);
-		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
-		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(btnLike, 18);
 		FontUtils.setFontSize(tvLikeText, 20);
 	}
@@ -549,7 +542,7 @@ public class DirectMarketPage extends BCPFragment {
 		if(certified.size() == 0) {
 			tvCarInfo1.setText(null);
 			tvCarInfo2.setText(null);
-			tvCurrentPrice.setText(null);
+			priceTextView.setPrice(0);
 			pageNavigator.setVisibility(View.INVISIBLE);
 			certifiedIcon.setVisibility(View.INVISIBLE);
 			progressBar.setProgress(0);
@@ -564,14 +557,14 @@ public class DirectMarketPage extends BCPFragment {
 				+ StringUtils.getFormattedNumber(certified.get(index).getMileage()) + "km / "
 				+ certified.get(index).getArea());
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(certified.get(index).getPrice()) + getString(R.string.won));
-		
 		if(certified.size() > 1) {
 			pageNavigator.setVisibility(View.VISIBLE);
 			pageNavigator.setIndex(index);
 		} else {
 			pageNavigator.setVisibility(View.INVISIBLE);
 		}
+		
+		priceTextView.setPrice(certified.get(index).getPrice());
 		
 		if(certified.get(index).getIs_liked() == 0) {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);

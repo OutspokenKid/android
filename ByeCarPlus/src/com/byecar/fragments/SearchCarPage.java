@@ -459,8 +459,8 @@ public class SearchCarPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				String conditionString = StringUtils.getFormattedNumber(minPrice * 10000) + "원 부터 ~ "
-						+ StringUtils.getFormattedNumber(maxPrice * 10000) + "원 까지";
+				String conditionString = StringUtils.getFormattedNumber(minPrice) + "만원 부터 ~ "
+						+ StringUtils.getFormattedNumber(maxPrice) + "만원 까지";
 				
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", carType);

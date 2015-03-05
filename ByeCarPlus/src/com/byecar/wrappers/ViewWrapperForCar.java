@@ -16,6 +16,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.models.Car;
+import com.byecar.views.PriceTextView;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -44,8 +45,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 	private View timeIcon;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
-	private TextView tvCurrentPrice;
-	private TextView tvCurrentPriceText;
+	private PriceTextView priceTextView;
 	private TextView tvBidCount;
 	private Button btnLike;
 	
@@ -70,8 +70,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 			
 			tvCarInfo1 = (TextView) row.findViewById(R.id.list_car_tvCarInfo1);
 			tvCarInfo2 = (TextView) row.findViewById(R.id.list_car_tvCarInfo2);
-			tvCurrentPrice = (TextView) row.findViewById(R.id.list_car_tvCurrentPrice);
-			tvCurrentPriceText = (TextView) row.findViewById(R.id.list_car_tvCurrentPriceText);
+			priceTextView = (PriceTextView) row.findViewById(R.id.list_car_priceTextView);
 			tvBidCount = (TextView) row.findViewById(R.id.list_car_tvBidCount);
 			btnLike = (Button) row.findViewById(R.id.list_car_btnLike);
 		} catch(Exception e) {
@@ -142,15 +141,10 @@ public class ViewWrapperForCar extends ViewWrapper {
 			rp.leftMargin = ResizeUtils.getSpecificLength(20);
 			rp.topMargin = ResizeUtils.getSpecificLength(24);
 			
-			//tvCurrentPrice.
-			rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-			rp.topMargin = ResizeUtils.getSpecificLength(26);
+			//priceTextView.
+			rp = (RelativeLayout.LayoutParams) priceTextView.getLayoutParams();
+			rp.topMargin = ResizeUtils.getSpecificLength(28);
 			rp.rightMargin = ResizeUtils.getSpecificLength(20);
-			
-			//tvCurrentPriceText.
-			rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 			
 			//tvBidCount.
 			rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
@@ -175,9 +169,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 			FontUtils.setFontSize(tvCarInfo1, 32);
 			FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 			FontUtils.setFontSize(tvCarInfo2, 20);
-			FontUtils.setFontSize(tvCurrentPrice, 32);
-			FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
-			FontUtils.setFontSize(tvCurrentPriceText, 20);
 			FontUtils.setFontSize(tvBidCount, 20);
 			
 			FontUtils.setFontSize(btnLike, 18);
@@ -201,13 +192,12 @@ public class ViewWrapperForCar extends ViewWrapper {
 						+ car.getArea());
 				
 				if(car.getType() == Car.TYPE_BID) {
-					tvCurrentPriceText.setText(R.string.currentPrice);
+					priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
 				} else {
-					tvCurrentPriceText.setText(R.string.salesPrice);
+					priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
 				}
 				
-				tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
-						+ row.getContext().getString(R.string.won));
+				priceTextView.setPrice(car.getPrice());
 				
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID) {
 					tvRemainTime.setText("-- : -- : --");

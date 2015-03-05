@@ -100,31 +100,19 @@
         android:singleLine="true"
         android:textColor="@color/holo_text" />
 
-    <TextView
-        android:id="@+id/list_car_tvCurrentPrice"
+    <com.byecar.views.PriceTextView
+        android:id="@+id/list_car_priceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/list_car_timeRelative"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/color_orange2" />
-
-    <TextView
-        android:id="@+id/list_car_tvCurrentPriceText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/list_car_tvCurrentPrice"
-        android:layout_toLeftOf="@id/list_car_tvCurrentPrice"
-        android:text="@string/currentPrice"
-        android:textColor="@color/color_orange2" />
+        android:layout_below="@id/list_car_timeRelative" />
 
     <TextView
         android:id="@+id/list_car_tvBidCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@id/list_car_tvCurrentPrice"
-        android:layout_below="@id/list_car_tvCurrentPrice"
+        android:layout_alignRight="@id/list_car_priceTextView"
+        android:layout_below="@id/list_car_priceTextView"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/holo_text" />

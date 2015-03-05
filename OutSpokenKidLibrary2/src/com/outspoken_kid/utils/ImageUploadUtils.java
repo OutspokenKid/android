@@ -103,12 +103,12 @@ public class ImageUploadUtils {
 	            resultString = HttpUtils.httpPost(uploadUrl, "userfile", tempFile);
 	        } catch(OutOfMemoryError oom) {
 				oom.printStackTrace();
-				ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);
+//				try {ToastUtils.showToast(R.string.failToLoadBitmap_OutOfMemory);} catch (Exception e) {}
 	        } catch (Error e) {
-	        	ToastUtils.showToast(R.string.failToLoadBitmap);
+//	        	try {ToastUtils.showToast(R.string.failToLoadBitmap);} catch (Exception e2) {}
 	            LogUtils.trace(e);
 	        } catch (Exception e) {
-	        	ToastUtils.showToast(R.string.failToLoadBitmap);
+//	        	try {ToastUtils.showToast(R.string.failToLoadBitmap);} catch (Exception e2) {}
 	            LogUtils.trace(e);
 	        } finally {
 				

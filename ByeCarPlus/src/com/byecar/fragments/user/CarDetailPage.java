@@ -32,6 +32,7 @@ import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
 import com.byecar.models.Dealer;
 import com.byecar.views.DealerView;
+import com.byecar.views.PriceTextView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -74,8 +75,7 @@ public class CarDetailPage extends BCPFragment {
 	private View timeIcon;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
-	private TextView tvCurrentPrice;
-	private TextView tvCurrentPriceText;
+	private PriceTextView priceTextView;
 	private TextView tvBidCount;
 	private Button btnLike;
 	
@@ -145,8 +145,7 @@ public class CarDetailPage extends BCPFragment {
 		
 		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo1);
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo2);
-		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPrice);
-		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPriceText);
+		priceTextView = (PriceTextView) mThisView.findViewById(R.id.carDetailPage_priceTextView);
 		tvBidCount = (TextView) mThisView.findViewById(R.id.carDetailPage_tvBidCount);
 		btnLike = (Button) mThisView.findViewById(R.id.carDetailPage_btnLike);
 		
@@ -546,15 +545,10 @@ public class CarDetailPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		//tvCurrentPrice.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(26);
+		//priceTextView.
+		rp = (RelativeLayout.LayoutParams) priceTextView.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvCurrentPriceText.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(4);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
@@ -690,9 +684,6 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCarInfo2, 20);
-		FontUtils.setFontSize(tvCurrentPrice, 32);
-		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
-		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(tvBidCount, 20);
 		
 		FontUtils.setFontSize(btnLike, 18);
@@ -1107,13 +1098,13 @@ public class CarDetailPage extends BCPFragment {
 				+ car.getArea());
 
 		if(car.getType() == Car.TYPE_BID) {
-			tvCurrentPriceText.setText(R.string.currentPrice);
+			priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
 		} else {
-			tvCurrentPriceText.setText(R.string.salesPrice);
+			priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
 		}
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
-				+ getString(R.string.won));
+		priceTextView.setPrice(car.getPrice());
+		
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 
 		if(car.getIs_liked() == 0) {
@@ -1210,8 +1201,8 @@ public class CarDetailPage extends BCPFragment {
 			auctionIcon.setVisibility(View.VISIBLE);
 		}
 		
-		tvCurrentPrice.setText(StringUtils.getFormattedNumber(car.getPrice()) 
-				+ getString(R.string.won));
+		priceTextView.setPrice(car.getPrice());
+		
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
 		if(relativeForDealer.getVisibility() != View.VISIBLE) {

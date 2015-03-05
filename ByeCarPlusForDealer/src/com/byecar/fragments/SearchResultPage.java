@@ -146,11 +146,9 @@ public class SearchResultPage extends BCPAuctionableFragment {
 			url = BCPAPIs.CAR_BID_LIST_URL + "?status=in_progress";
 			break;
 		case Car.TYPE_DEALER:
-			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=accepted";
+			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
 			break;
 		}
-		
-		url = BCPAPIs.CAR_DEALER_LIST_URL;
 		
 		if(trim_id != 0) {
 			url += "&trim_id=" + trim_id;

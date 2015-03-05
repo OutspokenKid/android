@@ -480,6 +480,29 @@ public class MainActivity extends BCPFragmentActivity {
 						bundle.putInt("id", onsalecar_id);
 						showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
 					}
+					
+					//byecar://users/disable
+
+				//블럭.
+				} else if(host.equals("users") && path.equals("/disable")) {
+
+					checkSession(new OnAfterCheckSessionListener() {
+						
+						@Override
+						public void onAfterCheckSession(boolean isSuccess, JSONObject objJSON) {
+
+							try {
+								if(!isSuccess) {
+									ToastUtils.showToast(objJSON.getString("message"));
+									launchSignActivity();
+								}
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (Error e) {
+								LogUtils.trace(e);
+							}
+						}
+					});
 				}
 			}
 		} catch (Exception e) {

@@ -23,6 +23,7 @@
     <string name="carSearchString_accident3">사고유무 알 수 없음</string>
     <string name="carSearchString_oneManOwned1">1인신조</string>
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
+    <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
     <string name="certifier">검증사</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
@@ -182,7 +183,6 @@
     <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
     <string name="writeAllContentForRequestCertification">*작성률 100%를 달성해야 검증 신청을 완료할 수 있습니다.</string>
     <string name="writePercentage">작성률</string>
-    <string name="won">￦</string>
     
     <string name="year">년</string>
     

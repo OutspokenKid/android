@@ -146,7 +146,7 @@ public class SearchResultPage extends BCPAuctionableFragment {
 			url = BCPAPIs.CAR_BID_LIST_URL;
 			break;
 		case Car.TYPE_DEALER:
-			url = BCPAPIs.CAR_DEALER_LIST_URL;
+			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
 			break;
 		case Car.TYPE_DIRECT_CERTIFIED:
 			url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIST_URL;
@@ -156,16 +156,21 @@ public class SearchResultPage extends BCPAuctionableFragment {
 			break;
 		}
 		
+		if(url != null && url.contains("?")) {
+			
+			url += (url.contains("?")? "&" : "?");
+		}
+		
 		if(trim_id != 0) {
-			url += "?trim_id=" + trim_id;
+			url += "trim_id=" + trim_id;
 		} else if(model_id != 0) {
-			url += "?model_id=" + model_id;
+			url += "model_id=" + model_id;
 		} else if(modelgroup_id != 0) {
-			url += "?modelgroup_id=" + modelgroup_id;
+			url += "modelgroup_id=" + modelgroup_id;
 		} else if(brand_id != 0) {
-			url += "?brand_id=" + brand_id;
+			url += "brand_id=" + brand_id;
 		} else if(price_max != 0) {
-			url += "?price_min=" + price_min + "&price_max=" + price_max;
+			url += "price_min=" + price_min + "&price_max=" + price_max;
 		} else {
 			listView.setVisibility(View.INVISIBLE);
 			noResult.setVisibility(View.VISIBLE);

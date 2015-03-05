@@ -467,7 +467,7 @@ public class CarListPage extends BCPAuctionableFragment {
 			break;
 			
 		case Car.TYPE_DEALER:
-			url = BCPAPIs.CAR_DEALER_LIST_URL;
+			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
 			break;
 			
 		case Car.TYPE_DIRECT_CERTIFIED:
@@ -479,7 +479,11 @@ public class CarListPage extends BCPAuctionableFragment {
 			break;
 		}
 
-		url += "?order=" + orderString;
+		if(url != null) {
+			url += (url.contains("?")? "&" : "?");
+		}
+		
+		url += "order=" + orderString;
 		
 		super.downloadInfo();
 	}

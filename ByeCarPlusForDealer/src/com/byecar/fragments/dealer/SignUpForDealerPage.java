@@ -64,7 +64,7 @@ public class SignUpForDealerPage extends BCPFragment {
 	
 	private String email;
 	private String pw;
-	private String nickname;
+//	private String nickname;
 	private String profile_img_url;
 	
 	@Override
@@ -126,8 +126,12 @@ public class SignUpForDealerPage extends BCPFragment {
 		if(getArguments() != null) {
 			email = getArguments().getString("user[email]");
 			pw = getArguments().getString("user[pw]");
-			nickname = getArguments().getString("user[nickname]");
+//			nickname = getArguments().getString("user[nickname]");
 			profile_img_url = getArguments().getString("user[profile_img_url]");
+		}
+		
+		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+			selectedImageSdCardPaths[i] = null;
 		}
 	}
 
@@ -448,7 +452,7 @@ public class SignUpForDealerPage extends BCPFragment {
 		
 		for(int i=0; i<size; i++) {
 			
-			if(selectedImageSdCardPaths[i] != null
+			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
 				
 				final int INDEX = i;
@@ -493,7 +497,7 @@ public class SignUpForDealerPage extends BCPFragment {
 			StringBuilder sb = new StringBuilder(BCPAPIs.SIGN_UP_URL);
 			sb.append("?user[email]=").append(email)
 					.append("&user[pw]=").append(pw)
-					.append("&user[nickname]=").append(nickname)
+//					.append("&user[nickname]=").append(nickname)
 					.append("&user[name]=").append(StringUtils.getUrlEncodedString(etInfos[0].getEditText()))
 					.append("&user[address]=").append(StringUtils.getUrlEncodedString(etInfos[2].getEditText()))
 					.append("&dealer[birthdate]=").append(StringUtils.getUrlEncodedString(etInfos[1].getEditText()))

@@ -207,6 +207,10 @@ public class CarRegistrationPage extends BCPFragment {
 			id = getArguments().getInt("id");
 			car = (Car) getArguments().getSerializable("car");
 		}
+		
+		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+			selectedImageSdCardPaths[i] = null;
+		}
 	}
 
 	@Override
@@ -1535,7 +1539,7 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		for(int i=0; i<size; i++) {
 			
-			if(selectedImageSdCardPaths[i] != null
+			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
 				
 				final int INDEX = i;

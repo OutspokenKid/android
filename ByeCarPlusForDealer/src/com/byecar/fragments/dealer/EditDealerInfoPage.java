@@ -39,8 +39,8 @@ public class EditDealerInfoPage extends BCPFragment {
 
 	private static final int NAME_MIN = 1;
 	private static final int NAME_MAX = 30;
-	private static final int NICKNAME_MIN = 3;
-	private static final int NICKNAME_MAX = 15;
+//	private static final int NICKNAME_MIN = 3;
+//	private static final int NICKNAME_MAX = 15;
 	private static final int BIRTHDATE_MIN = 8;
 	private static final int BIRTHDATE_MAX = 8;
 	
@@ -131,6 +131,10 @@ public class EditDealerInfoPage extends BCPFragment {
 	public void setVariables() {
 		
 		PHONE_AUTH_KEY = "";
+
+		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+			selectedImageSdCardPaths[i] = null;
+		}
 	}
 
 	@Override
@@ -230,6 +234,11 @@ public class EditDealerInfoPage extends BCPFragment {
 		//etInfos.
 		int size = etInfos.length;
 		for(int i=0; i<size; i++) {
+			
+			if(i == 1) {
+				continue;
+			}
+			
 			rp = (RelativeLayout.LayoutParams) etInfos[i].getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(586);
 			rp.height = ResizeUtils.getSpecificLength(60);
@@ -447,10 +456,10 @@ public class EditDealerInfoPage extends BCPFragment {
 				|| StringUtils.checkTextLength(etInfos[0].getEditText(), NAME_MIN, NAME_MAX) != StringUtils.PASS) {
 			ToastUtils.showToast(R.string.hintForName);
 		
-		//nickname.
-		} else if(StringUtils.checkTextLength(etInfos[1].getEditText(), NICKNAME_MIN, NICKNAME_MAX) != StringUtils.PASS
-				|| StringUtils.checkForbidContains(etInfos[1].getEditText(), false, false, false, true, true, false)) {
-			ToastUtils.showToast(R.string.checkNickname);
+//		//nickname.
+//		} else if(StringUtils.checkTextLength(etInfos[1].getEditText(), NICKNAME_MIN, NICKNAME_MAX) != StringUtils.PASS
+//				|| StringUtils.checkForbidContains(etInfos[1].getEditText(), false, false, false, true, true, false)) {
+//			ToastUtils.showToast(R.string.checkNickname);
 			
 		//birthdate.
 		} else if(StringUtils.checkForbidContains(etInfos[2].getEditText(), true, true, false, true, true, true)
@@ -496,7 +505,7 @@ public class EditDealerInfoPage extends BCPFragment {
 		
 		for(int i=0; i<size; i++) {
 			
-			if(selectedImageSdCardPaths[i] != null
+			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
 				
 				final int INDEX = i;
@@ -518,7 +527,6 @@ public class EditDealerInfoPage extends BCPFragment {
 						uploadImages();
 					}
 				};
-				
 				ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedImageSdCardPaths[i]);
 				return;
 			}
@@ -548,7 +556,7 @@ public class EditDealerInfoPage extends BCPFragment {
 				+ "?user[profile_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[0])
 				+ "&phone_auth_key=" + PHONE_AUTH_KEY
 				+ "&user[name]=" + StringUtils.getUrlEncodedString(etInfos[0].getEditText())
-				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(etInfos[1].getEditText())
+//				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(etInfos[1].getEditText())
 				+ "&dealer[birthdate]=" + StringUtils.getUrlEncodedString(etInfos[2].getEditText())
 				+ "&dealer[employee_card_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[1])
 				+ "&dealer[name_card_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[2])

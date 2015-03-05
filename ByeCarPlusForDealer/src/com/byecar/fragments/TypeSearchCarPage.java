@@ -294,6 +294,10 @@ public class TypeSearchCarPage extends BCPFragment {
 			css2 = new CarSearchString(type, getString(R.string.carSearchString_oneManOwned2));
 			css2.setItemCode(BCPConstants.ITEM_CAR_TEXT);
 			models.add(css2);
+			
+			css3 = new CarSearchString(type, getString(R.string.carSearchString_oneManOwned3));
+			css3.setItemCode(BCPConstants.ITEM_CAR_TEXT_DESC);
+			models.add(css3);
 			break;
 		}
 	}
