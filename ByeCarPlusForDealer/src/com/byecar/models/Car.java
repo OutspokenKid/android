@@ -470,7 +470,9 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.likes_cnt = newCar.likes_cnt;
 			this.has_purchased = newCar.has_purchased;
 			this.has_review = newCar.has_review;
-			this.my_bid_ranking = newCar.my_bid_ranking;
+			
+			//상세에서 아예 안나오므로, 리스트에 영향 없도록 복사 안함.
+//			this.my_bid_ranking = newCar.my_bid_ranking;
 		}
 	}
 	
