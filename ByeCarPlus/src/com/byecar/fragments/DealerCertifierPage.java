@@ -33,6 +33,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
@@ -147,6 +148,22 @@ public class DealerCertifierPage extends BCPFragment {
 			}
 		});
 	
+		ivImage.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(dealer != null && !StringUtils.isEmpty(dealer.getProfile_img_url())) {
+					mActivity.showImageViewer(0, getString(R.string.profileImage), 
+							new String[]{dealer.getProfile_img_url()}, null);
+					
+				} else if(certifier != null && !StringUtils.isEmpty(certifier.getProfile_img_url())) {
+					mActivity.showImageViewer(0, getString(R.string.profileImage), 
+							new String[]{certifier.getProfile_img_url()}, null);
+				}
+			}
+		});
+		
 		btnMore.setOnClickListener(new OnClickListener() {
 
 			@Override

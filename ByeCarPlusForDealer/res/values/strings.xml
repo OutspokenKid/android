@@ -144,6 +144,7 @@
     <string name="priceForBid">시작가격</string>
     <string name="priceForNormal">판매가격</string>
     <string name="priceRange">가격범위</string>
+    <string name="profileImage">프로필 이미지</string>
     
     <string name="regardAgree">가입과 함께 약관에 동의 하신것으로 간주합니다.</string>
     <string name="remainTime">남은시간</string>

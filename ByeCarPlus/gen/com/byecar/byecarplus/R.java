@@ -2779,7 +2779,7 @@ containing a value of this type.
         public static final int support_simple_spinner_dropdown_item=0x7f03004e;
     }
     public static final class string {
-        public static final int SNSSignIn=0x7f0a00df;
+        public static final int SNSSignIn=0x7f0a00e0;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abc_action_bar_home_description=0x7f0a0001;
@@ -2947,7 +2947,7 @@ containing a value of this type.
         public static final int evaluateCertifier=0x7f0a0094;
         public static final int evaluateDealer=0x7f0a0095;
         public static final int exclusivelyForByeCar=0x7f0a0096;
-        public static final int facebook_app_id=0x7f0a00f0;
+        public static final int facebook_app_id=0x7f0a00f1;
         public static final int failToDeleteCar=0x7f0a0097;
         public static final int failToFindPw=0x7f0a0098;
         public static final int failToLoadBitmap=0x7f0a0043;
@@ -2989,7 +2989,7 @@ containing a value of this type.
         public static final int imageSelectLimit1=0x7f0a003e;
         public static final int imageSelectLimit2=0x7f0a003f;
         public static final int kakaoTalkNotInstalled=0x7f0a00b9;
-        public static final int kakao_app_key=0x7f0a00f1;
+        public static final int kakao_app_key=0x7f0a00f2;
         public static final int lastList=0x7f0a00ba;
         public static final int like=0x7f0a00bb;
         public static final int loadingMedias=0x7f0a0040;
@@ -3014,6 +3014,7 @@ containing a value of this type.
         public static final int priceForBid=0x7f0a00cd;
         public static final int priceForNormal=0x7f0a00ce;
         public static final int priceRange=0x7f0a00cf;
+        public static final int profileImage=0x7f0a00d0;
         public static final int pullToLoadNewList=0x7f0a0048;
         public static final int pullToRefresh=0x7f0a0047;
         public static final int pull_to_loading_pull_label=0x7f0a003a;
@@ -3023,37 +3024,37 @@ containing a value of this type.
         public static final int pull_to_refresh_release_label=0x7f0a0038;
         public static final int putToLoadNewList=0x7f0a004a;
         public static final int putToRefresh=0x7f0a0049;
-        public static final int remainTime=0x7f0a00d0;
-        public static final int requireCertifyDealerInfo=0x7f0a00d1;
-        public static final int salesPrice=0x7f0a00d2;
-        public static final int searchCondition=0x7f0a00d3;
-        public static final int searchPrice1=0x7f0a00d4;
-        public static final int searchPrice2=0x7f0a00d5;
-        public static final int searchPrice3=0x7f0a00d6;
-        public static final int selectCarFirst=0x7f0a00d7;
-        public static final int selectDealer=0x7f0a00d8;
-        public static final int selectOrder=0x7f0a00d9;
-        public static final int sellingArea=0x7f0a00da;
-        public static final int sellingPriceMustOver10000=0x7f0a00db;
-        public static final int sideMenuTitle1=0x7f0a00dc;
-        public static final int sideMenuTitle2=0x7f0a00dd;
-        public static final int signOut=0x7f0a00de;
-        public static final int standingByBid=0x7f0a00e0;
-        public static final int standingByRegistration=0x7f0a00e1;
-        public static final int toCertifier=0x7f0a00e2;
-        public static final int toDealer=0x7f0a00e3;
-        public static final int touchCameraIcon=0x7f0a00e4;
-        public static final int uploadingImage=0x7f0a00e5;
-        public static final int wannaCallToDealer=0x7f0a00e7;
-        public static final int wannaCallToSeller=0x7f0a00e8;
-        public static final int wannaDelete=0x7f0a00e6;
-        public static final int wannaSignOut=0x7f0a00e9;
-        public static final int wannaWithdraw=0x7f0a00ea;
-        public static final int withdraw=0x7f0a00eb;
-        public static final int writeAllContentForRegistration=0x7f0a00ec;
-        public static final int writeAllContentForRequestCertification=0x7f0a00ed;
-        public static final int writePercentage=0x7f0a00ee;
-        public static final int year=0x7f0a00ef;
+        public static final int remainTime=0x7f0a00d1;
+        public static final int requireCertifyDealerInfo=0x7f0a00d2;
+        public static final int salesPrice=0x7f0a00d3;
+        public static final int searchCondition=0x7f0a00d4;
+        public static final int searchPrice1=0x7f0a00d5;
+        public static final int searchPrice2=0x7f0a00d6;
+        public static final int searchPrice3=0x7f0a00d7;
+        public static final int selectCarFirst=0x7f0a00d8;
+        public static final int selectDealer=0x7f0a00d9;
+        public static final int selectOrder=0x7f0a00da;
+        public static final int sellingArea=0x7f0a00db;
+        public static final int sellingPriceMustOver10000=0x7f0a00dc;
+        public static final int sideMenuTitle1=0x7f0a00dd;
+        public static final int sideMenuTitle2=0x7f0a00de;
+        public static final int signOut=0x7f0a00df;
+        public static final int standingByBid=0x7f0a00e1;
+        public static final int standingByRegistration=0x7f0a00e2;
+        public static final int toCertifier=0x7f0a00e3;
+        public static final int toDealer=0x7f0a00e4;
+        public static final int touchCameraIcon=0x7f0a00e5;
+        public static final int uploadingImage=0x7f0a00e6;
+        public static final int wannaCallToDealer=0x7f0a00e8;
+        public static final int wannaCallToSeller=0x7f0a00e9;
+        public static final int wannaDelete=0x7f0a00e7;
+        public static final int wannaSignOut=0x7f0a00ea;
+        public static final int wannaWithdraw=0x7f0a00eb;
+        public static final int withdraw=0x7f0a00ec;
+        public static final int writeAllContentForRegistration=0x7f0a00ed;
+        public static final int writeAllContentForRequestCertification=0x7f0a00ee;
+        public static final int writePercentage=0x7f0a00ef;
+        public static final int year=0x7f0a00f0;
     }
     public static final class style {
         /** 

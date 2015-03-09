@@ -147,6 +147,7 @@
     <string name="priceForBid">시작가격</string>
     <string name="priceForNormal">판매가격</string>
     <string name="priceRange">가격범위</string>
+    <string name="profileImage">프로필 이미지</string>
     
     <string name="remainTime">남은시간</string>
     <string name="requireCertifyDealerInfo">판매자 정보를 인증해야 차량을\n등록할 수 있습니다.</string>

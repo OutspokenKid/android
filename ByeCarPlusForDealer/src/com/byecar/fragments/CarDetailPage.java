@@ -1678,13 +1678,6 @@ public class CarDetailPage extends BCPFragment {
 				}
 			});
 			relativeForType.addView(btnMoveToPage);
-			
-			View bottomBlank = new View(mContext);
-			ResizeUtils.viewResizeForRelative(10, 20, bottomBlank, 
-					new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
-					new int[]{R.id.carDetailPage_used_btnMoveToPage, 0}, 
-					new int[]{0, 0, 0, 20});
-			relativeForType.addView(bottomBlank);
 		}
 	}
 

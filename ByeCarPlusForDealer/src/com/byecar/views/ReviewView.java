@@ -1,6 +1,7 @@
 package com.byecar.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplusfordealer.ImageViewer;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.byecarplusfordealer.R.color;
 import com.byecar.models.Review;
@@ -152,9 +154,23 @@ public class ReviewView extends LinearLayout {
 		relative.addView(tvRegdate);
 	}
 	
-	public void setReview(Review review) {
+	public void setReview(final Review review) {
 		
 		try {
+			if(!StringUtils.isEmpty(review.getReviewer_profile_img_url())) {
+				ivImage.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Intent intent = new Intent(getContext(), ImageViewer.class);
+						intent.putExtra("title", getContext().getResources().getString(R.string.profileImage));
+						intent.putExtra("imageUrls", new String[]{review.getReviewer_profile_img_url()});
+						getContext().startActivity(intent);
+					}
+				});
+			}
+			
 			downloadImage(review.getReviewer_profile_img_url());
 			tvNickname.setText(review.getReviewer_name());
 			tvCarName.setText(review.getCar_full_name());

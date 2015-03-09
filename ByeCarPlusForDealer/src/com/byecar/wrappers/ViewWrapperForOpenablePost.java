@@ -149,11 +149,13 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 		openablePost.setOpened(true);
 		
 		tvText.setVisibility(View.VISIBLE);
-		ivImage.setVisibility(View.VISIBLE);
 		arrow.setBackgroundResource(R.drawable.detail_toggle_up);
 		
 		if(!StringUtils.isEmpty(openablePost.getRep_img_url())) {
+			ivImage.setVisibility(View.VISIBLE);
 			setImage(ivImage, openablePost.getRep_img_url());
+		} else {
+			ivImage.setVisibility(View.GONE);
 		}
 	}
 	
@@ -173,13 +175,6 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 		
 		if(ivImage == null || url == null || url.length() == 0) {
 			return;
-		}
-
-		if(ivImage.getTag() != null && url.equals(ivImage.getTag().toString())) {
-			//Do nothing because of same image is already set.
-			return;
-		} else {
-			ivImage.setImageDrawable(null);
 		}
 		
 		ivImage.setTag(url);

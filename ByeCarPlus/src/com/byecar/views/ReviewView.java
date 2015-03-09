@@ -1,6 +1,7 @@
 package com.byecar.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
@@ -12,15 +13,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.ImageViewer;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.R.color;
 import com.byecar.models.Review;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.views.OutSpokenRatingBar;
 
 public class ReviewView extends LinearLayout {
@@ -147,9 +149,23 @@ public class ReviewView extends LinearLayout {
 		relative.addView(tvRegdate);
 	}
 	
-	public void setReview(Review review) {
+	public void setReview(final Review review) {
 		
 		try {
+			if(!StringUtils.isEmpty(review.getReviewer_profile_img_url())) {
+				ivImage.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Intent intent = new Intent(getContext(), ImageViewer.class);
+						intent.putExtra("title", getContext().getResources().getString(R.string.profileImage));
+						intent.putExtra("imageUrls", new String[]{review.getReviewer_profile_img_url()});
+						getContext().startActivity(intent);
+					}
+				});
+			}
+			
 			downloadImage(review.getReviewer_profile_img_url());
 			tvNickname.setText(review.getReviewer_name());
 			tvCarName.setText(review.getCar_full_name());
