@@ -192,9 +192,9 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					
 					if(car.getType() == Car.TYPE_BID) {
 						tvInfo.setText("입찰자 " + car.getBids_cnt() + "명" + "   " 
-								+ StringUtils.getFormattedNumber(car.getPrice()) + "만원");
+								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
 					} else {
-						tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()) + "만원");
+						tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
 					}
 					
 					switch(car.getStatus()) {
@@ -242,7 +242,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					tvInfo.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
 					tvInfo.setText(null);
 					FontUtils.addSpan(tvInfo, "판매금액 ", 0, 1, false);
-					FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()) 
+					FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()/10000) 
 							+ "만원", 0, 1, true);
 					
 					//리뷰 버튼.

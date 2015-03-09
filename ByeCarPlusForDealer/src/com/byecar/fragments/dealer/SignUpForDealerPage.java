@@ -68,8 +68,8 @@ public class SignUpForDealerPage extends BCPFragment {
 	private String profile_img_url;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			

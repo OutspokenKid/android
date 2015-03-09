@@ -3,6 +3,7 @@ package com.byecar.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.TextUtils.TruncateAt;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -78,6 +79,8 @@ public class DealerView extends FrameLayout {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 62, tvInfo, 2, Gravity.TOP, new int[]{0, 150, 0, 0});
 		tvInfo.setGravity(Gravity.CENTER);
 		tvInfo.setPadding(p, 0, p, 0);
+		tvInfo.setSingleLine();
+		tvInfo.setEllipsize(TruncateAt.END);
 		this.addView(tvInfo);
 		
 		tvGrade = new TextView(getContext());
@@ -145,7 +148,7 @@ public class DealerView extends FrameLayout {
 			break;
 		}
 		
-		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()) + "만원");
+		tvPrice.setText(StringUtils.getFormattedNumber(bid.getPrice()/10000) + "만원");
 
 		rankBadge.setVisibility(View.VISIBLE);
 		

@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -62,8 +63,8 @@ public class SignUpPage extends BCPFragment {
 	private String selectedImageUrl;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			

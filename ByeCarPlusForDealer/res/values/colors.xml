@@ -6,7 +6,8 @@
     <color name="color_orange2">#ff9600</color>
 	<color name="color_red">#ff4747</color>
 	<color name="color_ltgray">#d2d2d2</color>
-    
+    <color name="color_brown">#381800</color>
+	
 	<color name="titlebar_bg_orange">#febc2a</color>
 	<color name="titlebar_bg_brown">#381800</color>
 	

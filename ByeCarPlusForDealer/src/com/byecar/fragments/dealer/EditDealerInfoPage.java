@@ -70,8 +70,8 @@ public class EditDealerInfoPage extends BCPFragment {
 	private String[] selectedImageSdCardPaths = new String[3];
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			

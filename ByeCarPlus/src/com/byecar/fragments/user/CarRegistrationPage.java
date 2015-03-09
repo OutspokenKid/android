@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -116,8 +115,8 @@ public class CarRegistrationPage extends BCPFragment {
 	private String[] selectedImageSdCardPaths = new String[8];
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			
@@ -132,7 +131,7 @@ public class CarRegistrationPage extends BCPFragment {
 				checkProgress();
 			}
 		};
-	}
+	};
 	
 	@Override
  	public void bindViews() {

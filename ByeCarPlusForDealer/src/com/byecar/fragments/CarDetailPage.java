@@ -32,6 +32,7 @@ import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Car;
 import com.byecar.models.Dealer;
 import com.byecar.views.DealerView;
+import com.byecar.views.PriceTextView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -72,8 +73,7 @@ public class CarDetailPage extends BCPFragment {
 	private View timeIcon;
 	private TextView tvCarInfo1;
 	private TextView tvCarInfo2;
-	private TextView tvCurrentPrice;
-	private TextView tvCurrentPriceText;
+	private PriceTextView priceTextView;
 	private TextView tvBidCount;
 	private Button btnLike;
 	
@@ -148,8 +148,7 @@ public class CarDetailPage extends BCPFragment {
 		
 		tvCarInfo1 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo1);
 		tvCarInfo2 = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCarInfo2);
-		tvCurrentPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPrice);
-		tvCurrentPriceText = (TextView) mThisView.findViewById(R.id.carDetailPage_tvCurrentPriceText);
+		priceTextView = (PriceTextView) mThisView.findViewById(R.id.carDetailPage_priceTextView);
 		tvBidCount = (TextView) mThisView.findViewById(R.id.carDetailPage_tvBidCount);
 		btnLike = (Button) mThisView.findViewById(R.id.carDetailPage_btnLike);
 		
@@ -533,15 +532,10 @@ public class CarDetailPage extends BCPFragment {
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
-		//tvCurrentPrice.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPrice.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(26);
+		//priceTextView.
+		rp = (RelativeLayout.LayoutParams) priceTextView.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
 		rp.rightMargin = ResizeUtils.getSpecificLength(20);
-		
-		//tvCurrentPriceText.
-		rp = (RelativeLayout.LayoutParams) tvCurrentPriceText.getLayoutParams();
-		rp.rightMargin = ResizeUtils.getSpecificLength(4);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//tvBidCount.
 		rp = (RelativeLayout.LayoutParams) tvBidCount.getLayoutParams();
@@ -576,6 +570,7 @@ public class CarDetailPage extends BCPFragment {
 		//relativeForType.
 		rp = (RelativeLayout.LayoutParams) relativeForType.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
+		relativeForType.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(16));
 		
 		//lineForType.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
@@ -727,9 +722,6 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
 		FontUtils.setFontSize(tvCarInfo2, 20);
-		FontUtils.setFontSize(tvCurrentPrice, 32);
-		FontUtils.setFontStyle(tvCurrentPrice, FontUtils.BOLD);
-		FontUtils.setFontSize(tvCurrentPriceText, 20);
 		FontUtils.setFontSize(tvBidCount, 20);
 		
 		FontUtils.setFontSize(btnLike, 18);
@@ -1138,9 +1130,13 @@ public class CarDetailPage extends BCPFragment {
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
 		
-		tvCurrentPrice.setText(null);
-		FontUtils.addSpan(tvCurrentPrice, StringUtils.getFormattedNumber(car.getPrice()/10000), 0, 1f);
-		FontUtils.addSpan(tvCurrentPrice, "만원", 0, 0.7f);
+		if(car.getType() == Car.TYPE_BID) {
+			priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+		} else {
+			priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
+		}
+		
+		priceTextView.setPrice(car.getPrice());
 		
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 		
@@ -1210,9 +1206,7 @@ public class CarDetailPage extends BCPFragment {
 			auctionIcon.setVisibility(View.VISIBLE);
 		}
 		
-		tvCurrentPrice.setText(null);
-		FontUtils.addSpan(tvCurrentPrice, StringUtils.getFormattedNumber(car.getPrice()/10000), 0, 1f);
-		FontUtils.addSpan(tvCurrentPrice, "만원", 0, 0.7f);
+		priceTextView.setPrice(car.getPrice());
 		tvBidCount.setText("입찰자 " + car.getBids_cnt() + "명");
 
 		setDealerView();
@@ -1429,20 +1423,19 @@ public class CarDetailPage extends BCPFragment {
 	public void addViewsForAuction() {
 		
 		//이전 상태 모두 지우기.
+		relativeForType.removeAllViews();
 		headerForType.setBackgroundResource(R.drawable.detail_head1);
-
-		if(dealerViews == null) {
-			dealerViews = new DealerView[3];
-			
-			for(int i=0; i<3; i++) {
-				dealerViews[i] = new DealerView(mContext, i);
-				ResizeUtils.viewResizeForRelative(178, 290, dealerViews[i], 
-						new int[]{RelativeLayout.ALIGN_PARENT_LEFT}, new int[]{0}, 
-						new int[]{18 + (i*196), 14, 0, 14});
-				relativeForType.addView(dealerViews[i]);
-			}
+		
+		dealerViews = new DealerView[3];
+		
+		for(int i=0; i<3; i++) {
+			dealerViews[i] = new DealerView(mContext, i);
+			ResizeUtils.viewResizeForRelative(178, 290, dealerViews[i], 
+					new int[]{RelativeLayout.ALIGN_PARENT_LEFT}, new int[]{0}, 
+					new int[]{18 + (i*196), 14, 0, 14});
+			relativeForType.addView(dealerViews[i]);
 		}
-
+		
 		setDealerView();
 	}
 

@@ -2,7 +2,6 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -63,18 +62,26 @@ public class SignUpPage extends BCPFragment {
 	private String selectedImageUrl;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
 				
+				LogUtils.log("#######################.onAfterPickImage.  "
+						+ "\n sdCardPath[0] : " + sdCardPaths[0]
+						+ "\n thumbnails[0] : " + (thumbnails == null || thumbnails[0] == null? "null" : "not null"
+						+ "\n selectedSdCardPath :  " + selectedSdCardPath));
+				
 				if(thumbnails != null && thumbnails.length > 0) {
 					ivProfile.setImageBitmap(thumbnails[0]);
 					selectedSdCardPath = sdCardPaths[0];
 				}
+				
+				LogUtils.log("#######################.onAfterPickImage.  "
+						+ "\n selectedSdCardPath after setting : " + selectedSdCardPath);
 			}
 		};
 	}

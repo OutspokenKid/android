@@ -2,7 +2,6 @@ package com.byecar.fragments.user;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -89,8 +88,8 @@ public class EditUserInfoPage extends BCPFragment {
 	private int carType;
 	
 	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			
@@ -107,6 +106,7 @@ public class EditUserInfoPage extends BCPFragment {
 				}
 			}
 		};
+
 	}
 	
 	@Override

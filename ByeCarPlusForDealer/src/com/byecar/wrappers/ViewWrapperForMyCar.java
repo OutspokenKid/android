@@ -136,7 +136,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				tvCarName.setText(car.getCar_full_name());
 				tvYear.setText(car.getYear() + row.getContext().getString(R.string.year));
 				
-				FontUtils.addSpan(tvInfo, " " + StringUtils.getFormattedNumber(car.getPrice()) + 
+				FontUtils.addSpan(tvInfo, " " + StringUtils.getFormattedNumber(car.getPrice()/10000) + 
 						"만원", 0, 1, true);
 				
 				setImage(ivImage, car.getRep_img_url());
