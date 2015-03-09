@@ -198,7 +198,6 @@ public class NormalCarView extends RelativeLayout {
 					if (bitmap != null && !bitmap.isRecycled()) {
 						ivImage.setImageBitmap(bitmap);
 					}
-
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
