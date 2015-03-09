@@ -202,7 +202,14 @@ public class GuideActivity extends Activity {
 		
 			//viewPager.
 			RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) viewPager.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(896);
+
+			//탭 존재.
+			if(imageResIds.length > 1) {
+				rp.topMargin = ResizeUtils.getSpecificLength(113);
+			//탭 없음.
+			} else {
+				rp.topMargin = ResizeUtils.getSpecificLength(42);
+			}
 			
 			//pageNavigator.
 			rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
