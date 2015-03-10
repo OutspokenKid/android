@@ -10,6 +10,8 @@ public class BCPConstants {
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
 	
+	public static final String PREFS_PUSH = "pushSetting";
+	
 	//Items for user.
 	public static final int ITEM_NOTICE = 1;
 	public static final int ITEM_FAQ = 2;

@@ -13,12 +13,14 @@ import android.widget.LinearLayout;
 import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class SettingPage extends BCPFragment {
 
@@ -55,7 +57,13 @@ public class SettingPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-		alarmOn.setVisibility(View.VISIBLE);
+		if(SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noPush")) {
+			alarmOn.setVisibility(View.INVISIBLE);
+			alarmOff.setVisibility(View.VISIBLE);
+		} else {
+			alarmOn.setVisibility(View.VISIBLE);
+			alarmOff.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	@Override
@@ -178,7 +186,7 @@ public class SettingPage extends BCPFragment {
 
 //////////////////// Custom methods.
 	
-	public void setPushSetting(boolean needPush) {
+	public void setPushSetting(final boolean needPush) {
 		
 		String url = BCPAPIs.PUSH_SETTING_URL
 				+ "?to_get_pushed=" + (needPush?"Y":"N");
@@ -198,6 +206,8 @@ public class SettingPage extends BCPFragment {
 				try {
 					LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
+					
+					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_PUSH, "noPush", !needPush);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
