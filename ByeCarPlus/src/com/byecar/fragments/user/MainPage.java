@@ -475,8 +475,7 @@ public class MainPage extends BCPAuctionableFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
-		((MainActivity) mActivity).clearLeftViewUserInfo();
-		
+
 		TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 		clearPagerTimer();
 	}

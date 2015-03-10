@@ -618,6 +618,13 @@ public class MainActivity extends BCPFragmentActivity {
 		}
 	}
 	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		clearLeftViewUserInfo();
+	}
+	
 //////////////////// Custom methods.
 	
 	public void launchSignActivity() {
@@ -1143,6 +1150,15 @@ public class MainActivity extends BCPFragmentActivity {
 							LogUtils.trace(oom);
 							ivProfile.setImageDrawable(null);
 						}
+					}
+				});
+			
+				ivProfile.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						showImageViewer(0, getString(R.string.profileImage), new String[]{user.getProfile_img_url()}, null);
 					}
 				});
 			}
