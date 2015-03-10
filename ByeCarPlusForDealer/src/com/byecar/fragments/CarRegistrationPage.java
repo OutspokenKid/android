@@ -1540,6 +1540,8 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
+			
+				ToastUtils.showToast(R.string.uploadingImage);
 				
 				final int INDEX = i;
 				

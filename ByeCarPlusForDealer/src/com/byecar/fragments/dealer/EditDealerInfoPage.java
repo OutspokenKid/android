@@ -504,6 +504,8 @@ public class EditDealerInfoPage extends BCPFragment {
 		int size = selectedImageSdCardPaths.length;
 		
 		for(int i=0; i<size; i++) {
+
+			ToastUtils.showToast(R.string.uploadingImage);
 			
 			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
