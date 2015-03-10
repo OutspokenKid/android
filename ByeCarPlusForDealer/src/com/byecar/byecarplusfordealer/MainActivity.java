@@ -626,6 +626,13 @@ public class MainActivity extends BCPFragmentActivity {
 		}
 	}
 	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		clearLeftViewUserInfo();
+	}
+	
 //////////////////// Custom methods.
 
 	public void launchSignActivity() {
