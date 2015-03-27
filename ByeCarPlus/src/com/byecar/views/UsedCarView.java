@@ -11,7 +11,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
-import com.outspoken_kid.utils.DownloadUtils;
+import com.byecar.classes.BCPDownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -72,7 +72,7 @@ public class UsedCarView extends FrameLayout {
 		ivImage.setImageDrawable(null);
 		
 		ivImage.setTag(imageUrl);
-		DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -96,7 +96,7 @@ public class UsedCarView extends FrameLayout {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 176);
 	}
 	
 	public void setTexts(String modelName, long price) {

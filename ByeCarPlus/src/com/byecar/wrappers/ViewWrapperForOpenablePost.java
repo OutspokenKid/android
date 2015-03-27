@@ -8,10 +8,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.models.OpenablePost;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
-import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -182,7 +182,7 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 		}
 		
 		ivImage.setTag(url);
-		DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 			
 			@Override
 			public void onError(String url) {
@@ -214,6 +214,6 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 					LogUtils.trace(e);
 				}
 			}
-		});
+		}, 608);
 	}
 }

@@ -13,7 +13,6 @@ import android.widget.ImageView.ScaleType;
 
 import com.byecar.byecarplus.R;
 import com.outspoken_kid.classes.ViewUnbindHelper;
-import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -74,7 +73,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 			
 			String url = images.get(position);
 			ivImage.setTag(url);
-			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+			BCPDownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -97,7 +96,7 @@ public class ImagePagerAdapter extends PagerAdapter {
 						LogUtils.trace(oom);
 					}
 				}
-			});
+			}, 640);
 		}
 
 		if(OnPagerItemClickedListener != null) {

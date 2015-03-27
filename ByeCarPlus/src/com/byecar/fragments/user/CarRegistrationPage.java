@@ -30,6 +30,7 @@ import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.models.Car;
@@ -1272,7 +1273,7 @@ public class CarRegistrationPage extends BCPFragment {
 
 					String url = car.getM_images()[i];
 					target.setTag(url);
-					DownloadUtils.downloadBitmap(url,
+					BCPDownloadUtils.downloadBitmap(url,
 							new OnBitmapDownloadListener() {
 
 								@Override
@@ -1301,7 +1302,7 @@ public class CarRegistrationPage extends BCPFragment {
 										LogUtils.trace(oom);
 									}
 								}
-							});
+							}, 144);
 					selectedImageSdCardPaths[i] = url;
 				}
 			}
@@ -1314,7 +1315,7 @@ public class CarRegistrationPage extends BCPFragment {
 					final ImageView target = ivPhotos[4 + i];
 					String url = car.getA_images()[i];
 					target.setTag(url);
-					DownloadUtils.downloadBitmap(car.getA_images()[i],
+					BCPDownloadUtils.downloadBitmap(car.getA_images()[i],
 							new OnBitmapDownloadListener() {
 
 								@Override
@@ -1343,7 +1344,7 @@ public class CarRegistrationPage extends BCPFragment {
 										LogUtils.trace(oom);
 									}
 								}
-							});
+							}, 144);
 					selectedImageSdCardPaths[4 + i] = url;
 				}
 			}

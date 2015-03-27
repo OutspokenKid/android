@@ -12,9 +12,9 @@ import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.models.Bid;
 import com.byecar.models.Dealer;
-import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -155,7 +155,7 @@ public class DealerView extends FrameLayout {
 		if(!StringUtils.isEmpty(bid.getDealer_profile_img_url())) {
 			
 			ivImage.setTag(bid.getDealer_profile_img_url());
-			DownloadUtils.downloadBitmap(bid.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
+			BCPDownloadUtils.downloadBitmap(bid.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -180,7 +180,7 @@ public class DealerView extends FrameLayout {
 						LogUtils.trace(oom);
 					}
 				}
-			});
+			}, 130);
 		}
 	}
 	

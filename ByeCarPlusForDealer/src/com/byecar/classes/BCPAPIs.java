@@ -55,4 +55,6 @@ public class BCPAPIs {
 
 	public static String SOCKET_URL = BASE_API_URL + ":23004/";
 	public static String GOTO_KAKAO_URL = "http://goto.kakao.com/fgv62tld";
+
+	public static String IMAGE_SERVER_URL = "http://175.126.232.36";
 }

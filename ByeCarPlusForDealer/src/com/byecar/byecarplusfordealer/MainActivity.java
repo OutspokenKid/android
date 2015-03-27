@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
@@ -1129,7 +1130,7 @@ public class MainActivity extends BCPFragmentActivity {
 			if(!StringUtils.isEmpty(user.getProfile_img_url())) {
 				
 				ivProfile.setTag(user.getProfile_img_url());
-				DownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
+				BCPDownloadUtils.downloadBitmap(user.getProfile_img_url(), new OnBitmapDownloadListener() {
 
 					@Override
 					public void onError(String url) {
@@ -1152,7 +1153,7 @@ public class MainActivity extends BCPFragmentActivity {
 							ivProfile.setImageDrawable(null);
 						}
 					}
-				});
+				}, 190);
 			}
 			
 			if(!StringUtils.isEmpty(user.getNickname())) {

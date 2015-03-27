@@ -24,6 +24,7 @@ import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Dealer;
 import com.byecar.models.Review;
@@ -365,7 +366,7 @@ public class DealerCertifierPage extends BCPFragment {
 //			url = BCPAPIs.CERTIFIER_SHOW_URL + "?certifier_id=" + certifier_id;
 //		}
 		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -403,7 +404,7 @@ public class DealerCertifierPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 		
-		DownloadUtils.downloadBitmap(
+		BCPDownloadUtils.downloadBitmap(
 //				!isCertifier ? 
 						dealer.getProfile_img_url()
 //						: certifier.getProfile_img_url()
@@ -430,7 +431,7 @@ public class DealerCertifierPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 218);
 		
 		tvInfo1.setText(null);
 		
@@ -490,7 +491,7 @@ public class DealerCertifierPage extends BCPFragment {
 //					+ "?certifier_id=" + certifier_id;
 //		}
 		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
 			public void onError(String url) {

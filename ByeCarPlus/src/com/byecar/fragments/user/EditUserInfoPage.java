@@ -23,6 +23,7 @@ import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
@@ -544,7 +545,7 @@ public class EditUserInfoPage extends BCPFragment {
 			selectedImageUrl = MainActivity.user.getProfile_img_url();
 			
 			ivProfile.setTag(MainActivity.user.getProfile_img_url());
-			DownloadUtils.downloadBitmap(MainActivity.user.getProfile_img_url(), new OnBitmapDownloadListener() {
+			BCPDownloadUtils.downloadBitmap(MainActivity.user.getProfile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -567,7 +568,7 @@ public class EditUserInfoPage extends BCPFragment {
 						LogUtils.trace(oom);
 					}
 				}
-			});
+			}, 219);
 		} else {
 			LogUtils.log("###EditUserInfoPage.setUserInfo.  selectedSdCardPath : " + selectedSdCardPath);
 		}

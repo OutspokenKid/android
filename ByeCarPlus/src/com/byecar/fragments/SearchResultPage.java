@@ -172,9 +172,7 @@ public class SearchResultPage extends BCPAuctionableFragment {
 		} else if(price_max != 0) {
 			url += "price_min=" + price_min + "&price_max=" + price_max;
 		} else {
-			listView.setVisibility(View.INVISIBLE);
-			noResult.setVisibility(View.VISIBLE);
-			return;
+			//제조사가 0으로 온 경우.
 		}
 
 		listView.setVisibility(View.VISIBLE);

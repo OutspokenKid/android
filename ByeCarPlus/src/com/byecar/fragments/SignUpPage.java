@@ -2,7 +2,6 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;

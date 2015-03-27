@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Certifier;
 import com.byecar.models.Dealer;
@@ -371,7 +372,7 @@ public class DealerCertifierPage extends BCPFragment {
 	
 	public void setDealerInfo() {
 		
-		DownloadUtils.downloadBitmap(
+		BCPDownloadUtils.downloadBitmap(
 				!isCertifier ? dealer.getProfile_img_url() : certifier.getProfile_img_url()
 				, new OnBitmapDownloadListener() {
 
@@ -396,7 +397,7 @@ public class DealerCertifierPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 218);
 		
 		tvInfo1.setText(null);
 		

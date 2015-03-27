@@ -26,6 +26,7 @@ import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
@@ -1550,7 +1551,7 @@ public class CarDetailPage extends BCPFragment {
 			});
 			
 			ivImage.setTag(car.getDealer_profile_img_url());
-			DownloadUtils.downloadBitmap(car.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
+			BCPDownloadUtils.downloadBitmap(car.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -1576,7 +1577,7 @@ public class CarDetailPage extends BCPFragment {
 						LogUtils.trace(oom);
 					}
 				}
-			});
+			}, 130);
 			
 			//cover.
 			View cover = new View(mContext);

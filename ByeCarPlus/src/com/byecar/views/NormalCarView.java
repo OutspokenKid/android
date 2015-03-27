@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.models.Car;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -179,7 +180,7 @@ public class NormalCarView extends RelativeLayout {
 		ivImage.setImageDrawable(null);
 
 		ivImage.setTag(imageUrl);
-		DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -204,7 +205,7 @@ public class NormalCarView extends RelativeLayout {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 186);
 	}
 
 	public ImageView getIvImage() {

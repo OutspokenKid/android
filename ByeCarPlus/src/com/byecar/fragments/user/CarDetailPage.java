@@ -26,6 +26,7 @@ import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
@@ -1164,7 +1165,7 @@ public class CarDetailPage extends BCPFragment {
 			showRelativeForType();
 			showInfo();
 			showOption();
-			hideDesc();
+			showDesc();
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
@@ -1172,7 +1173,7 @@ public class CarDetailPage extends BCPFragment {
 			showRelativeForType();
 			showInfo();
 			showOption();
-			hideDesc();
+			showDesc();
 			break;
 		}
 	}
@@ -1556,7 +1557,7 @@ public class CarDetailPage extends BCPFragment {
 			});
 			
 			ivImage.setTag(car.getDealer_profile_img_url());
-			DownloadUtils.downloadBitmap(car.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
+			BCPDownloadUtils.downloadBitmap(car.getDealer_profile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
@@ -1582,7 +1583,7 @@ public class CarDetailPage extends BCPFragment {
 						LogUtils.trace(oom);
 					}
 				}
-			});
+			}, 130);
 			
 			//cover.
 			View cover = new View(mContext);
@@ -1706,7 +1707,7 @@ public class CarDetailPage extends BCPFragment {
 		relativeForType.addView(ivImage);
 		
 		ivImage.setTag(car.getManager_profile_img_url());
-		DownloadUtils.downloadBitmap(car.getManager_profile_img_url(), new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(car.getManager_profile_img_url(), new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -1732,7 +1733,7 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 130);
 		
 		ivImage.setOnClickListener(new OnClickListener() {
 
@@ -1835,7 +1836,7 @@ public class CarDetailPage extends BCPFragment {
 		relativeForType.addView(ivImage);
 		
 		ivImage.setTag(car.getSeller_profile_img_url());
-		DownloadUtils.downloadBitmap(car.getSeller_profile_img_url(), new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(car.getSeller_profile_img_url(), new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -1861,7 +1862,7 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 130);
 		
 		//cover.
 		View cover = new View(mContext);

@@ -16,8 +16,8 @@ import android.widget.TextView;
 import com.byecar.byecarplus.ImageViewer;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.R.color;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.models.Review;
-import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -191,7 +191,7 @@ public class ReviewView extends LinearLayout {
 		}
 		
 		ivImage.setTag(imageUrl);
-		DownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+		BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
 
 			@Override
 			public void onError(String url) {
@@ -215,6 +215,6 @@ public class ReviewView extends LinearLayout {
 					LogUtils.trace(oom);
 				}
 			}
-		});
+		}, 86);
 	}
 }
