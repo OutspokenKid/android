@@ -123,5 +123,22 @@
 	
 	<item name="priceTextView_textView1" type="id" />
 	<item name="priceTextView_textView2" type="id" />
-	    
+	
+	<item name="bidInfoView_progressBar" type="id" />
+	<item name="bidInfoView_centerView" type="id" />
+	<item name="bidInfoView_tvRemainTime" type="id" />
+	<item name="bidInfoView_infoBg" type="id" />
+	<item name="bidInfoView_tvCarInfo1" type="id" />
+	<item name="bidInfoView_lineForCarInfo" type="id" />
+	<item name="bidInfoView_tvCarInfo2" type="id" />
+	<item name="bidInfoView_priceTextView" type="id" />
+	<item name="bidInfoView_tvBidCount" type="id" />
+	<item name="bidInfoView_relativeForTopDealers" type="id" />
+
+	<item name="usedCarView_ivImage" type="id" />
+	<item name="usedCarView_ivProfile" type="id" />
+	<item name="usedCarView_tvDealerName" type="id" />
+	<item name="usedCarView_btnLike" type="id" />
+	<item name="usedCarView_infoBadg1" type="id" />
+	
 </resources>

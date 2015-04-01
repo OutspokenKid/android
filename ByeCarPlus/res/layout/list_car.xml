@@ -51,7 +51,7 @@
 	        android:layout_alignLeft="@id/list_car_tvRemainTime"
 	        android:layout_alignTop="@id/list_car_progressBar"
 	        android:gravity="center_vertical"
-	        android:text="@string/remainTime"
+	        android:text="@string/remainBiddingTime"
 	        android:textColor="#fff" />
 	
 	    <View
@@ -60,7 +60,7 @@
 	        android:layout_height="0dp"
 	        android:layout_alignLeft="@id/list_car_tvRemainTime"
 	        android:layout_alignTop="@id/list_car_progressBar"
-	        android:background="@drawable/main_time_icon" />
+	        android:background="@drawable/main_time" />
         
     </RelativeLayout>
     

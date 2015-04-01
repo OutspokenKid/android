@@ -2,7 +2,7 @@ package com.byecar.classes;
 
 public class BCPAPIs {
 
-	public static String BASE_API_URL = "http://byecar.minsangk.com";
+	public static String BASE_API_URL = "http://byecar1.minsangk.com";
 	public static String UPLOAD_URL = BASE_API_URL + "/files/upload/image.json";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";

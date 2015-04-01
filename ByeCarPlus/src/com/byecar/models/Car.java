@@ -49,6 +49,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private long bid_begin_at;
 	private long bid_until_at;
 	private int bids_cnt;
+	private int bidders_cnt;
 	private String area;
 	private int to_sell_directly;
 	private long end_at;
@@ -111,6 +112,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.bid_begin_at = 0;
 			this.bid_until_at = 0;
 			this.bids_cnt = 0;
+			this.bidders_cnt = 0;
 			this.area = null;
 			this.to_sell_directly = 0;
 			this.end_at = 0;
@@ -170,6 +172,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.bid_begin_at = newCar.bid_begin_at;
 			this.bid_until_at = newCar.bid_until_at;
 			this.bids_cnt = newCar.bids_cnt;
+			this.bidders_cnt = newCar.bidders_cnt;
 			this.area = newCar.area;
 			this.to_sell_directly = newCar.to_sell_directly;
 			this.end_at = newCar.end_at;
@@ -328,6 +331,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("bids_cnt")) {
 				this.bids_cnt = objJSON.getInt("bids_cnt");
+			}
+			
+			if(objJSON.has("bidders_cnt")) {
+				this.bidders_cnt = objJSON.getInt("bidders_cnt");
 			}
 			
 			if(objJSON.has("seller_id")) {
@@ -1063,5 +1070,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setHas_review(int has_review) {
 		this.has_review = has_review;
+	}
+
+	public int getBidders_cnt() {
+		return bidders_cnt;
+	}
+
+	public void setBidders_cnt(int bidders_cnt) {
+		this.bidders_cnt = bidders_cnt;
 	}
 }

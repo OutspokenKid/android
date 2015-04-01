@@ -1484,7 +1484,7 @@ public class CarDetailPage extends BCPFragment {
 				}
 				
 				for(int i=0; i<size; i++) {
-					dealerViews[i].setDealerInfo(car.getBids().get(i));
+//					dealerViews[i].setDealerInfo(car.getBids().get(i));
 					
 					final int I = i;
 					dealerViews[i].setOnClickListener(new OnClickListener() {
@@ -1959,7 +1959,7 @@ public class CarDetailPage extends BCPFragment {
 			ResizeUtils.viewResizeForRelative(178, 50, selectButtons[i], 
 					new int[]{RelativeLayout.ALIGN_PARENT_LEFT}, new int[]{0}, 
 					new int[]{18 + (i*196), 406, 0, 14});
-			selectButtons[i].setBackgroundResource(R.drawable.success_select_btn_a);
+//			selectButtons[i].setBackgroundResource(R.drawable.success_select_btn_a);
 			relativeForDealer.addView(selectButtons[i]);
 		}
 		
@@ -1980,7 +1980,7 @@ public class CarDetailPage extends BCPFragment {
 			relativeForDealer.addView(noOne);
 		} else {
 			for(int i=0; i<size; i++) {
-				dealerViews2[i].setDealerInfo(car.getBids().get(i));
+//				dealerViews2[i].setDealerInfo(car.getBids().get(i));
 				
 				final int I = i;
 				dealerViews2[i].setOnClickListener(new OnClickListener() {
@@ -2006,17 +2006,17 @@ public class CarDetailPage extends BCPFragment {
 						}
 						
 						if(selecteds[SELECTED_INDEX]) {
-							selectButtons[SELECTED_INDEX].setBackgroundResource(R.drawable.success_select_btn_a);
+//							selectButtons[SELECTED_INDEX].setBackgroundResource(R.drawable.success_select_btn_a);
 							selecteds[SELECTED_INDEX] = false;
 							
 						} else {
 						
 							for(int i=0; i<3; i++) {
-								selectButtons[i].setBackgroundResource(R.drawable.success_select_btn_a);
+//								selectButtons[i].setBackgroundResource(R.drawable.success_select_btn_a);
 								selecteds[i] = false;
 							}
 							
-							selectButtons[SELECTED_INDEX].setBackgroundResource(R.drawable.success_select_btn_b);
+//							selectButtons[SELECTED_INDEX].setBackgroundResource(R.drawable.success_select_btn_b);
 							selecteds[SELECTED_INDEX] = true;
 						}
 					}

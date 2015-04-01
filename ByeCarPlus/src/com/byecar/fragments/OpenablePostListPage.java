@@ -2,12 +2,12 @@ package com.byecar.fragments;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Handler;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
@@ -124,7 +124,7 @@ public class OpenablePostListPage extends BCPFragment {
 	public boolean parseJSON(JSONObject objJSON) {
 
 		int size = 0;
-		String keyword = type == TYPE_NOTICE? "notices": "faqs";
+		String keyword = "posts";
 		int itemType = (type == TYPE_NOTICE? BCPConstants.ITEM_NOTICE : BCPConstants.ITEM_FAQ);
 		try {
 			JSONArray arJSON = objJSON.getJSONArray(keyword);
@@ -141,6 +141,7 @@ public class OpenablePostListPage extends BCPFragment {
 					try {
 						new Handler().postDelayed(new Runnable() {
 
+							@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 							@Override
 							public void run() {
 

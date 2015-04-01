@@ -36,7 +36,7 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
 public class SignUpPage extends BCPFragment {
 
-	private static final int NICKNAME_MIN = 3;
+	private static final int NICKNAME_MIN = 2;
 	private static final int NICKNAME_MAX = 15;
 	private static final int PASSWORD_MIN = 8;
 	private static final int PASSWORD_MAX = 15;

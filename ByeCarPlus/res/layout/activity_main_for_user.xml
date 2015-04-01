@@ -16,8 +16,8 @@
             android:id="@+id/mainForUserActivity_ivProfile"
             android:layout_width="0dp"
 	        android:layout_height="0dp"
+	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
-	        android:layout_centerHorizontal="true"
 	        android:background="@drawable/menu_default"
 	        android:scaleType="centerCrop" />
         
@@ -38,28 +38,11 @@
     		android:ellipsize="end"
 	        android:textColor="#fff" />
         
-        <TextView 
-            android:id="@+id/mainForUserActivity_tvInfo"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_below="@id/mainForUserActivity_tvNickname"
-	        android:layout_centerHorizontal="true"
-	        android:gravity="center_horizontal"
-	        android:textColor="#e9e6e0" />
-        
-        <Button 
-            android:id="@+id/mainForUserActivity_btnEdit"
-            android:layout_width="0dp"
-	        android:layout_height="0dp"
-	        android:layout_alignParentRight="true"
-	        android:layout_below="@id/mainForUserActivity_ivProfile"
-	        android:background="@drawable/menu_profile_setting_btn" />
-        
         <com.outspoken_kid.views.OffsetScrollView
 	        android:id="@+id/mainForUserActivity_scrollView"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:layout_below="@id/mainForUserActivity_btnEdit"
+	        android:layout_below="@id/mainForUserActivity_tvNickname"
 	        android:fillViewport="true" >
 
             <RelativeLayout

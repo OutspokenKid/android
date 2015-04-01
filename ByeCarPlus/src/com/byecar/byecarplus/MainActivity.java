@@ -103,8 +103,6 @@ public class MainActivity extends BCPFragmentActivity {
 	private ImageView ivProfile;
 	private ImageView ivBg;
 	private TextView tvNickname;
-	private TextView tvInfo;
-	private Button btnEdit;
 	private Button[] menuButtons;
 	
 	private RelativeLayout popup;
@@ -137,8 +135,6 @@ public class MainActivity extends BCPFragmentActivity {
 		ivProfile = (ImageView) findViewById(R.id.mainForUserActivity_ivProfile);
 		ivBg = (ImageView) findViewById(R.id.mainForUserActivity_ivBg);
 		tvNickname = (TextView) findViewById(R.id.mainForUserActivity_tvNickname);
-		tvInfo = (TextView) findViewById(R.id.mainForUserActivity_tvInfo);
-		btnEdit = (Button) findViewById(R.id.mainForUserActivity_btnEdit);
 		
 		scrollView = (OffsetScrollView) findViewById(R.id.mainForUserActivity_scrollView);
 		leftViewInner = (LinearLayout) findViewById(R.id.mainForUserActivity_leftViewInner);
@@ -306,7 +302,7 @@ public class MainActivity extends BCPFragmentActivity {
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResize(492, LayoutParams.MATCH_PARENT, leftView, 2, 0, null);
+		ResizeUtils.viewResize(476, LayoutParams.MATCH_PARENT, leftView, 2, 0, null);
 
 		RelativeLayout.LayoutParams rp = null;
 		
@@ -645,16 +641,17 @@ public class MainActivity extends BCPFragmentActivity {
 	public void setImageView() {
 		
 		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(190);
-		rp.height = ResizeUtils.getSpecificLength(190);
-		rp.topMargin = ResizeUtils.getSpecificLength(84);
+		rp.width = ResizeUtils.getSpecificLength(137);
+		rp.height = ResizeUtils.getSpecificLength(137);
+		rp.leftMargin = ResizeUtils.getSpecificLength(64);
+		rp.topMargin = ResizeUtils.getSpecificLength(125);
 		ivProfile.setScaleType(ScaleType.CENTER_CROP);
 
 		ivBg.setScaleType(ScaleType.MATRIX);
 		
 		Matrix matrix = new Matrix();
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.menu_bg);
-		float scale = (float)ResizeUtils.getSpecificLength(492) / (float) bitmap.getWidth();
+		float scale = (float)ResizeUtils.getSpecificLength(476) / (float) bitmap.getWidth();
 		matrix.postScale(scale, scale);
 		ivBg.setImageMatrix(matrix);
 		ivBg.setImageBitmap(bitmap);
@@ -667,57 +664,25 @@ public class MainActivity extends BCPFragmentActivity {
 		rp = (RelativeLayout.LayoutParams) tvNickname.getLayoutParams();
 		rp.topMargin = ResizeUtils.getSpecificLength(18);
 		
-		rp = (RelativeLayout.LayoutParams) tvInfo.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(14);
-		
-		rp = (RelativeLayout.LayoutParams) btnEdit.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(146);
-		rp.rightMargin = ResizeUtils.getSpecificLength(16);
-
-		btnEdit.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				closeMenu();
-				
-				new Handler().postDelayed(new Runnable() {
-
-					@Override
-					public void run() {
-
-						Bundle bundle = new Bundle();
-						bundle.putInt("type", EditUserInfoPage.TYPE_EDIT_PROFILE);
-						showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
-					}
-				}, 500);
-			}
-		});
-		
 		rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		FontUtils.setFontSize(tvNickname, 30);
-		FontUtils.setFontSize(tvInfo, 20);
 	}
 
 	public void addButtons() {
 		
 		int[] bgResIds = new int[] {
-				R.drawable.menu_auction_btn,
-				R.drawable.menu_used_btn,
-				R.drawable.menu_my_car_btn,
-				R.drawable.menu_direct_btn,
-				R.drawable.menu_mypage_btn,
-				R.drawable.menu_notice_btn,
-				R.drawable.menu_faq_btn,
-				R.drawable.menu_service_btn,
-				R.drawable.menu_setting_btn,
-				R.drawable.menu_homepage_btn,
-				R.drawable.menu_term_btn,
+				R.drawable.menu_1_btn,
+				R.drawable.menu_2_btn,
+				R.drawable.menu_3_btn,
+				R.drawable.menu_4_btn,
+				R.drawable.menu_5_btn,
+				R.drawable.menu_6_btn,
+				R.drawable.menu_7_btn,
+				R.drawable.menu_8_btn,
+				R.drawable.menu_9_btn,
 		};
 
 		menuButtons = new Button[bgResIds.length];
@@ -739,8 +704,8 @@ public class MainActivity extends BCPFragmentActivity {
 			
 			//버튼 추가.
 			menuButtons[i] = new Button(this);
-			ResizeUtils.viewResize(460, 70, menuButtons[i], 1, Gravity.LEFT, 
-					new int[]{0, i==0?42:10, 0, 10});
+			ResizeUtils.viewResize(471, 88, menuButtons[i], 1, Gravity.LEFT, 
+					new int[]{0, i==0?32:0, 0, 0});
 			menuButtons[i].setBackgroundResource(bgResIds[i]);
 			leftViewInner.addView(menuButtons[i]);
 			
@@ -748,9 +713,8 @@ public class MainActivity extends BCPFragmentActivity {
 			
 			if(i != size -1 && i != 3) {
 				View line = new View(this);
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 1);
-				lp.leftMargin = ResizeUtils.getSpecificLength(10);
-				lp.rightMargin = ResizeUtils.getSpecificLength(10);
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ResizeUtils.getSpecificLength(430), 1);
+				lp.gravity = Gravity.LEFT;
 				line.setLayoutParams(lp);
 				line.setBackgroundColor(Color.argb(99, 173, 173, 173));
 				leftViewInner.addView(line);
@@ -774,57 +738,35 @@ public class MainActivity extends BCPFragmentActivity {
 							
 							switch(I) {
 							
-//								R.drawable.menu_auction_btn,
+//								마이페이지
 							case 0:
-								bundle.putInt("type", Car.TYPE_BID);
-								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-								break;
-								
-//								R.drawable.menu_used_btn,
-							case 1:
-								bundle.putInt("type", Car.TYPE_DEALER);
-								showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-								break;
-								
-//								R.drawable.menu_my_car_btn,
-							case 2:
-								showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
-								break;
-								
-//								R.drawable.menu_direct_btn,
-							case 3:
-								showPage(BCPConstants.PAGE_DIRECT_MARKET, null);
-								break;
-								
-//								R.drawable.menu_mypage_btn,
-							case 4:
 								showPage(BCPConstants.PAGE_MY, null);
 								break;
 								
-//								R.drawable.menu_notice_btn,
-							case 5:
+//								공지사항
+							case 1:
 								bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
-//								R.drawable.menu_faq_btn,
-							case 6:
+//								자주 묻는 질문
+							case 2:
 								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
-//								R.drawable.menu_service_btn,
-							case 7:
+//								Q&A
+							case 3:
 								showPage(BCPConstants.PAGE_ASK, null);
 								break;
 								
-//								R.drawable.menu_setting_btn,
-							case 8:
+//								설정
+							case 4:
 								showPage(BCPConstants.PAGE_SETTING, null);
 								break;
 								
-//								R.drawable.menu_homepage_btn,
-							case 9:
+//								바이카 홈페이지
+							case 5:
 								if(companyInfo != null) {
 									bundle.putString("url", companyInfo.getHomepage());
 								}
@@ -832,8 +774,17 @@ public class MainActivity extends BCPFragmentActivity {
 								showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
 								break;
 								
-//								R.drawable.menu_term_btn,
-							case 10:
+//								블로그
+							case 6:
+								if(companyInfo != null) {
+									bundle.putString("url", companyInfo.getBlog_url());
+								}
+								
+								showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
+								break;
+								
+//								이용약관
+							case 7:
 								showPage(BCPConstants.PAGE_TERM_OF_USE, null);
 								break;
 							}
@@ -1120,7 +1071,6 @@ public class MainActivity extends BCPFragmentActivity {
 		try {
 			ivProfile.setImageDrawable(null);
 			tvNickname.setText(null);
-			tvInfo.setText(null);
 			
 			if(user == null) {
 				return;
@@ -1166,14 +1116,6 @@ public class MainActivity extends BCPFragmentActivity {
 			
 			if(!StringUtils.isEmpty(user.getNickname())) {
 				tvNickname.setText(user.getNickname());
-			}
-			
-			if(!StringUtils.isEmpty(user.getPhone_number())) {
-				FontUtils.addSpan(tvInfo, user.getPhone_number() + "\n\n", 0, 1);
-			}
-			
-			if(!StringUtils.isEmpty(user.getAddress())) {
-				FontUtils.addSpan(tvInfo, user.getAddress(), 0, 1);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1245,7 +1187,6 @@ public class MainActivity extends BCPFragmentActivity {
 	        }
 			
 			tvNickname.setText(null);
-			tvInfo.setText(null);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

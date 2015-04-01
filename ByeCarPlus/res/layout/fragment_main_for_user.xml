@@ -38,179 +38,152 @@
     			android:layout_alignBottom="@id/mainForUserPage_viewPager"
     			android:layout_alignLeft="@id/mainForUserPage_viewPager" />
             
-            <ProgressBar 
-                android:id="@+id/mainForUserPage_progressBar"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
+            <com.byecar.views.CarInfoView
+                android:id="@+id/mainForUserPage_carInfoView" 
+                android:layout_width="match_parent"
+    			android:layout_height="wrap_content"
     			android:layout_below="@id/mainForUserPage_viewPager"
-    			style="?android:attr/progressBarStyleHorizontal"
-    			android:progressDrawable="@drawable/progressbar_custom_orange"
-    			android:max="1000"
-    			android:progress="0" />
+    			android:layout_alignParentLeft="true" />
             
-            <TextView 
-                android:id="@+id/mainForUserPage_tvRemainTime"
-        		android:layout_width="wrap_content"
+            <RelativeLayout 
+                android:id="@+id/mainForUserPage_relativeForTopDealers"
+                android:layout_width="match_parent"
     			android:layout_height="0dp"
-    			android:layout_centerHorizontal="true"
-    			android:layout_alignTop="@id/mainForUserPage_progressBar"
-    			android:textColor="#fff"
-    			android:gravity="top" />
+    			android:layout_below="@id/mainForUserPage_carInfoView"
+    			android:background="@drawable/main_bid_frame1" >
+                
+                <com.byecar.views.DealerView 
+                    android:id="@+id/mainForUserPage_dealerView1"
+                    android:layout_width="0dp"
+	        		android:layout_height="0dp"
+	        		android:layout_alignParentLeft="true"
+	        		android:layout_alignParentTop="true" />
+                
+                <com.byecar.views.DealerView 
+                    android:id="@+id/mainForUserPage_dealerView2"
+                    android:layout_width="0dp"
+	        		android:layout_height="0dp"
+	        		android:layout_toRightOf="@id/mainForUserPage_dealerView1"
+	        		android:layout_alignParentTop="true" />
+                
+                <com.byecar.views.DealerView 
+                    android:id="@+id/mainForUserPage_dealerView3"
+                    android:layout_width="0dp"
+	        		android:layout_height="0dp"
+	        		android:layout_toRightOf="@id/mainForUserPage_dealerView2"
+	        		android:layout_alignParentTop="true" />
+                
+                <View 
+                    android:id="@+id/mainForUserPage_noDealerView"
+	        		android:layout_width="0dp"
+	        		android:layout_height="0dp"
+	        		android:layout_alignParentTop="true"
+	        		android:layout_centerHorizontal="true"
+	        		android:visibility="invisible"
+	        		android:background="@drawable/detail_no_one" />
+                
+            </RelativeLayout>
             
-            <TextView 
-                android:id="@+id/mainForUserPage_tvRemainTimeText"
-        		android:layout_width="wrap_content"
-    			android:layout_height="0dp"
-    			android:layout_alignLeft="@id/mainForUserPage_tvRemainTime"
-    			android:layout_alignTop="@id/mainForUserPage_progressBar"
-    			android:text="@string/remainTime"
-    			android:textColor="#fff"
-    			android:gravity="center_vertical" />
-            
-            <View 
-                android:id="@+id/mainForUserPage_timeIcon"
-        		android:layout_width="0dp"
-    			android:layout_height="0dp"
-    			android:layout_alignLeft="@id/mainForUserPage_tvRemainTime"
-    			android:layout_alignTop="@id/mainForUserPage_progressBar"
-    			android:background="@drawable/main_time_icon" />
-            
-            <View 
-                android:id="@+id/mainForUserPage_remainBg"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_below="@id/mainForUserPage_progressBar"
-    			android:background="#fff" />
-            
-            <TextView 
-                android:id="@+id/mainForUserPage_tvCarInfo1"
-        		android:layout_width="0dp"
-    			android:layout_height="0dp"
-    			android:layout_alignParentLeft="true"
-    			android:layout_below="@id/mainForUserPage_progressBar"
-    			android:singleLine="true"
-    			android:ellipsize="end"
-    			android:textColor="@color/holo_text"
-    			android:gravity="bottom|left" />
-            
-            <View 
-                android:id="@+id/mainForUserPage_line"
-        		android:layout_width="match_parent"
-    			android:layout_height="1px"
-    			android:layout_below="@id/mainForUserPage_tvCarInfo1"
-    			android:background="@color/color_ltgray" />
-            
-            <TextView 
-                android:id="@+id/mainForUserPage_tvCarInfo2"
-        		android:layout_width="0dp"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentLeft="true"
-    			android:layout_below="@id/mainForUserPage_tvCarInfo1"
-    			android:singleLine="true"
-    			android:ellipsize="end"
-    			android:textColor="@color/holo_text"
-    			android:gravity="top|left" />
-            
-            <com.byecar.views.PriceTextView 
-                android:id="@+id/mainForUserPage_priceTextView"
-        		android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentRight="true"
-    			android:layout_below="@id/mainForUserPage_progressBar" />
-            
-            <TextView
-                android:id="@+id/mainForUserPage_tvBidCount"
-        		android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignRight="@id/mainForUserPage_priceTextView"
-    			android:layout_below="@id/mainForUserPage_priceTextView"
-    			android:singleLine="true"
-    			android:ellipsize="end"
-    			android:textColor="@color/holo_text" />
-            
-            <Button 
-                android:id="@+id/mainForUserPage_btnLike"
-        		android:layout_width="0dp"
-    			android:layout_height="0dp"
-    			android:layout_toLeftOf="@id/mainForUserPage_tvBidCount"
-    			android:layout_alignBottom="@id/mainForUserPage_tvBidCount"
-    			android:gravity="center"
-    			android:textColor="#fff"
-    			android:background="@drawable/main_like_btn_a" />
-            
-            <TextView
-                android:id="@+id/mainForUserPage_tvLikeText"
-        		android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_toLeftOf="@id/mainForUserPage_btnLike"
-    			android:layout_alignTop="@id/mainForUserPage_btnLike"
-    			android:text="@string/like"
-    			android:textColor="@color/holo_text" />
-            
-            <Button 
-                android:id="@+id/mainForUserPage_btnAuction"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_alignParentLeft="true"
-    			android:layout_below="@id/mainForUserPage_remainBg"
-    			android:background="@drawable/main_auction_list_btn" />
-            
-            <View 
-                android:id="@+id/mainForUserPage_noticeTitle"
-        		android:layout_width="0dp"
-    			android:layout_height="0dp"
-    			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_btnAuction"
-    			android:background="@drawable/main_notice_frame" />
-            
-            <ImageView 
-                android:id="@+id/mainForUserPage_ivNotice"
+            <RelativeLayout
+                android:id="@+id/mainForUserPage_relativeForBidding"
                 android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_noticeTitle"
-    			android:scaleType="centerCrop"
-    			android:background="@drawable/direct_notice_default" />
-            
-            <Button 
-                android:id="@+id/mainForUserPage_btnNotice"
-        		android:layout_width="match_parent"
-    			android:layout_height="0dp"
-    			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_ivNotice"
-    			android:background="@drawable/main_notice_btn2" />
+    			android:layout_below="@id/mainForUserPage_relativeForTopDealers"
+    			android:background="@drawable/main_today_frame1" >
+                
+                <TextView 
+                    android:id="@+id/mainForUserPage_tvBiddingCount"
+                	android:layout_width="wrap_content"
+    				android:layout_height="0dp"
+    				android:layout_alignParentLeft="true"
+    				android:layout_alignParentTop="true"
+    				android:textColor="@color/color_red"
+    				android:gravity="center_vertical" />
+                
+                <Button 
+                    android:id="@+id/mainForUserPage_btnBidding"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_alignParentRight="true"
+    				android:background="@drawable/main_more_btn" />
+                
+                <com.byecar.views.BiddingCarView 
+                    android:id="@+id/mainForUserPage_biddingCarView1"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_alignParentLeft="true" />
+                
+                <com.byecar.views.BiddingCarView 
+                    android:id="@+id/mainForUserPage_biddingCarView2"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_toRightOf="@id/mainForUserPage_biddingCarView1" />
+                
+                <com.byecar.views.BiddingCarView 
+                    android:id="@+id/mainForUserPage_biddingCarView3"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_toRightOf="@id/mainForUserPage_biddingCarView2" />
+                
+            </RelativeLayout>
 
             <View 
-                android:id="@+id/mainForUserPage_usedMarketTitle"
+                android:id="@+id/mainForUserPage_usedMarketBg"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_btnNotice"
-    			android:background="@drawable/main_used_car_frame" />
+    			android:layout_below="@id/mainForUserPage_relativeForBidding"
+    			android:background="@drawable/main_used_car_frame1" />
             
-            <LinearLayout
-                android:id="@+id/mainForUserPage_usedMarketLinear"
-        		android:layout_width="0dp"
-    			android:layout_height="wrap_content"
-    			android:layout_alignTop="@id/mainForUserPage_usedMarketTitle"
-    			android:layout_centerHorizontal="true"
-    			android:orientation="horizontal" />
-            
-            <Button 
+            <Button
                 android:id="@+id/mainForUserPage_btnUsedMarket"
-        		android:layout_width="0dp"
-    			android:layout_height="0dp"
-    			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_usedMarketTitle"
-    			android:background="@drawable/main_used_car_btn" />
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignRight="@id/mainForUserPage_usedMarketBg"
+                android:layout_alignTop="@id/mainForUserPage_usedMarketBg"
+                android:background="@drawable/main_more_btn" />
+            
+            <com.byecar.views.UsedCarView 
+                android:id="@+id/mainForUserPage_usedCarView1"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="@id/mainForUserPage_usedMarketBg" />
+            
+            <com.byecar.views.UsedCarView 
+                android:id="@+id/mainForUserPage_usedCarView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/mainForUserPage_usedCarView1" />
+            
+            <com.byecar.views.UsedCarView 
+                android:id="@+id/mainForUserPage_usedCarView3"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/mainForUserPage_usedCarView2" />
             
             <View 
                 android:id="@+id/mainForUserPage_directMarketTitle"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_btnUsedMarket"
+    			android:layout_below="@id/mainForUserPage_usedMarketBg"
     			android:background="@drawable/main_direct_frame" />
+
+            <Button 
+                android:id="@+id/mainForUserPage_btnDirectMarket"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_alignRight="@id/mainForUserPage_directMarketTitle"
+    			android:layout_alignTop="@id/mainForUserPage_directMarketTitle"
+    			android:background="@drawable/main_more_btn" />
             
             <ImageView 
                 android:id="@+id/mainForUserPage_ivDirectMarket"
@@ -220,28 +193,49 @@
     			android:layout_below="@id/mainForUserPage_directMarketTitle"
     			android:background="@drawable/main_direct_sample" />
             
-            <Button 
-                android:id="@+id/mainForUserPage_btnDirectMarket"
-        		android:layout_width="0dp"
+            <View
+                android:id="@+id/mainForUserPage_bottomBlank"
+        		android:layout_width="10dp"
     			android:layout_height="0dp"
-    			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_ivDirectMarket"
-    			android:background="@drawable/main_direct_btn" />
-            
-            <TextView
-                android:id="@+id/mainForUserPage_tvCopyright"
-        		android:layout_width="match_parent"
-    			android:layout_height="wrap_content"
-    			android:layout_below="@id/mainForUserPage_btnDirectMarket"
-    			android:paddingTop="5dp"
-    			android:paddingBottom="5dp"
-    			android:text="@string/copyright"
-    			android:gravity="center"
-    			android:textColor="#928883" />
+    			android:layout_below="@id/mainForUserPage_ivDirectMarket" />
             
         </RelativeLayout>
         
     </com.outspoken_kid.views.OffsetScrollView>
+    
+    <LinearLayout
+        android:id="@+id/mainForUserPage_buttonLinear"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_alignParentBottom="true"
+    	android:orientation="horizontal"
+    	android:background="@drawable/main_tab_bar" >
+        
+        <Button 
+            android:id="@+id/mainForUserPage_btnTab1"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/main_tab_btn1" />
+        
+        <Button 
+            android:id="@+id/mainForUserPage_btnTab2"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/main_tab_btn2" />
+        
+        <Button 
+            android:id="@+id/mainForUserPage_btnTab3"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/main_tab_btn3" />
+        
+        <Button 
+            android:id="@+id/mainForUserPage_btnTab4"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/main_tab_btn4" />
+        
+    </LinearLayout>
     
     <com.byecar.views.TitleBar
         android:id="@+id/mainForUserPage_titleBar"
