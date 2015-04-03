@@ -193,11 +193,60 @@
     			android:layout_below="@id/mainForUserPage_directMarketTitle"
     			android:background="@drawable/main_direct_sample" />
             
+            <RelativeLayout
+                android:id="@+id/mainForUserPage_relativeForVideo"
+                android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_ivDirectMarket" >
+            
+                <ImageView 
+	                android:id="@+id/mainForUserPage_ivVideo"
+	                android:layout_width="match_parent"
+	    			android:layout_height="match_parent"
+	    			android:scaleType="centerCrop"
+	    			android:background="@drawable/main_play_default" />
+            
+                <View
+	                android:id="@+id/mainForUserPage_videoCover"
+	                android:layout_width="match_parent"
+	    			android:layout_height="match_parent"
+	    			android:background="@drawable/main_play_frame" />
+                
+                <Button 
+	                android:id="@+id/mainForUserPage_btnVideo"
+	        		android:layout_width="0dp"
+	    			android:layout_height="0dp"
+	    			android:layout_alignParentRight="true"
+	    			android:layout_alignParentTop="true"
+	    			android:background="@drawable/main_more_btn" />
+            
+           		<Button 
+	                android:id="@+id/mainForUserPage_btnPlay"
+	        		android:layout_width="0dp"
+	    			android:layout_height="0dp"
+	    			android:layout_centerHorizontal="true"
+	    			android:layout_alignTop="@id/mainForUserPage_ivVideo"
+	    			android:background="@drawable/main_play_btn"
+	    			android:visibility="invisible" />
+            
+				<TextView 
+                    android:id="@+id/mainForUserPage_tvVideoTitle"
+                	android:layout_width="wrap_content"
+    				android:layout_height="wrap_content"
+    				android:layout_centerHorizontal="true"
+    				android:layout_below="@id/mainForUserPage_btnPlay"
+    				android:singleLine="true"
+    				android:ellipsize="end"
+    				android:textColor="#fff" />
+                
+            </RelativeLayout>
+            
             <View
                 android:id="@+id/mainForUserPage_bottomBlank"
         		android:layout_width="10dp"
     			android:layout_height="0dp"
-    			android:layout_below="@id/mainForUserPage_ivDirectMarket" />
+    			android:layout_below="@id/mainForUserPage_relativeForVideo" />
             
         </RelativeLayout>
         

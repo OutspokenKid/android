@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -29,14 +30,14 @@ import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Bid;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
-import com.byecar.models.Dealer;
-import com.byecar.models.OpenablePost;
+import com.byecar.models.Post;
 import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -71,6 +72,12 @@ public class MainPage extends BCPAuctionableFragment {
 	private ImageView ivDirectMarket;
 	private Button btnDirectMarket;
 	
+	private RelativeLayout relativeForVideo;
+	private ImageView ivVideo;
+	private Button btnVideo;
+	private Button btnPlay;
+	private TextView tvVideoTitle;
+	
 	private Button[] tabButtons = new Button[4];
 	
 //	private ArrayList<Dealer> topDealers = new ArrayList<Dealer>();
@@ -78,6 +85,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private ArrayList<Car> bids2 = new ArrayList<Car>();
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
+	private Post video;
 	
 	private int scrollOffset; 
 	private int standardLength;
@@ -121,6 +129,12 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
 		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
+		
+		relativeForVideo = (RelativeLayout) mThisView.findViewById(R.id.mainForUserPage_relativeForVideo);
+		ivVideo = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivVideo);
+		btnVideo = (Button) mThisView.findViewById(R.id.mainForUserPage_btnVideo);
+		btnPlay = (Button) mThisView.findViewById(R.id.mainForUserPage_btnPlay);
+		tvVideoTitle = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvVideoTitle);
 		
 		tabButtons[0] = (Button) mThisView.findViewById(R.id.mainForUserPage_btnTab1);
 		tabButtons[1] = (Button) mThisView.findViewById(R.id.mainForUserPage_btnTab2);
@@ -347,6 +361,34 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		rp.rightMargin = ResizeUtils.getSpecificLength(6);
 		
+		//relativeForVideo.
+		rp = (RelativeLayout.LayoutParams) relativeForVideo.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(316);
+		rp.topMargin = ResizeUtils.getSpecificLength(18);
+		
+		//ivVideo.
+		rp = (RelativeLayout.LayoutParams) ivVideo.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(65);
+		
+		//btnVideo.
+		rp = (RelativeLayout.LayoutParams) btnVideo.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		
+		//btnPlay.
+		rp = (RelativeLayout.LayoutParams) btnPlay.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(84);
+		rp.height = ResizeUtils.getSpecificLength(85);
+		rp.topMargin = ResizeUtils.getSpecificLength(60);
+		
+		//tvVideoTitle.
+		rp = (RelativeLayout.LayoutParams) tvVideoTitle.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(36);
+		tvVideoTitle.setMaxWidth(ResizeUtils.getSpecificLength(304));
+		
 		//bottomBlank.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_bottomBlank).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(136);
@@ -363,6 +405,7 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		FontUtils.setFontSize(tvBiddingCount, 30);
 		FontUtils.setFontStyle(tvBiddingCount, FontUtils.BOLD);
+		FontUtils.setFontSize(tvVideoTitle, 22);
 	}
 
 	@Override
@@ -505,6 +548,10 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					try {
+						if(objJSON.has("bids_onsalecars_today_cnt")) {
+							tvBiddingCount.setText(objJSON.getInt("bids_onsalecars_today_cnt") + "대");
+						}
+						
 						bids2.clear();
 						JSONArray arJSON = objJSON.getJSONArray("bids2");
 						size = arJSON.length();
@@ -530,6 +577,14 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					setUsedCarViews();
+					
+					try {
+						video = new Post(objJSON.getJSONObject("video"));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					setVideo();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -541,40 +596,83 @@ public class MainPage extends BCPAuctionableFragment {
 	
 	public void setUsedCarViews() {
 		
-//		if(usedMarketLinear.getChildCount() != 0) {
-//			return;
-//		}
-//		
-//		for(int i=0; i<3; i++) {
-//
-//			final int INDEX = i;
-//			
-//			try {
-//				usedCarViews[i] = new UsedCarView(mContext);
-//				
-//				if(i < dealers.size()) {
-//					usedCarViews[i].setTexts(dealers.get(i).getModel_name(), 
-//							dealers.get(i).getPrice());
-//					usedCarViews[i].setOnClickListener(new OnClickListener() {
-//
-//						@Override
-//						public void onClick(View view) {
-//							
-//							if(INDEX < dealers.size()) {
-//								((MainActivity)mActivity).showCarDetailPage(dealers.get(INDEX).getId(), null, Car.TYPE_DEALER);
-//							}
-//						}
-//					});
-//					usedCarViews[i].setImageUrl(dealers.get(i).getRep_img_url());
-//				}
-//				
-//				usedMarketLinear.addView(usedCarViews[i]);
-//			} catch (Exception e) {
-//				LogUtils.trace(e);
-//			} catch (Error e) {
-//				LogUtils.trace(e);
-//			}
-//		}
+		int size = dealers.size();
+		for(int i=0; i<size; i++) {
+
+			final int INDEX = i;
+			
+			try {
+				usedCarViews[i].setCar(dealers.get(i));
+				usedCarViews[i].setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						
+						if(INDEX < dealers.size()) {
+							((MainActivity)mActivity).showCarDetailPage(dealers.get(INDEX).getId(), null, Car.TYPE_DEALER);
+						}
+					}
+				});
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+
+	public void setVideo() {
+		
+		if(video == null) {
+			ivVideo.setImageDrawable(null);
+			btnPlay.setVisibility(View.INVISIBLE);
+			tvVideoTitle.setText(null);
+		} else {
+			ivVideo.setImageDrawable(null);
+			
+			String url = "http://img.youtube.com/vi/" + video.getYoutube_id() + "/0.jpg";
+			ivVideo.setTag(url);
+			DownloadUtils.downloadBitmap(url, new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("MainPage.onError." + "\nurl : " + url);
+
+					ivVideo.setImageDrawable(null);
+					btnPlay.setVisibility(View.INVISIBLE);
+					tvVideoTitle.setText(null);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("MainPage.onCompleted." + "\nurl : " + url);
+						
+						if(ivVideo != null && bitmap != null && !bitmap.isRecycled()) {
+							ivVideo.setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+			
+			btnPlay.setVisibility(View.VISIBLE);
+			btnPlay.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					mActivity.showVideo(video.getYoutube_id());
+				}
+			});
+			
+			tvVideoTitle.setText(video.getContent());
+		}
 	}
 	
 	public void setPagerInfo(int index) {
@@ -748,23 +846,9 @@ public class MainPage extends BCPAuctionableFragment {
 						int size = bids2.size();
 						for(int i=0; i<size; i++) {
 						
-							if(bids2.get(i).getStatus() > Car.STATUS_BID_COMPLETE) {
-								carInfoView.clearTime();
-								continue;
-							}
-							
-							Car car = bids2.get(i);
-							
 							try {
-								long remainTime = car.getBid_until_at() * 1000 
-										+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-										- System.currentTimeMillis();
-					        	
-					        	if(remainTime < 0) {
-					        		biddingCarViews[i].clearTime();
-					        	} else {
-					        		biddingCarViews[i].setTime(car);
-					        	}
+								Car car = bids2.get(i);
+					        	biddingCarViews[i].setTime(car);
 							} catch (Exception e) {
 								carInfoView.clearTime();
 								LogUtils.trace(e);

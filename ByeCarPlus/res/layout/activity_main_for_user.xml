@@ -30,19 +30,30 @@
         
         <TextView 
             android:id="@+id/mainForUserActivity_tvNickname"
-            android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_below="@id/mainForUserActivity_ivProfile"
-	        android:layout_centerHorizontal="true"
-	        android:singleLine="true"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForUserActivity_ivProfile"
+	        android:layout_toRightOf="@id/mainForUserActivity_ivProfile"
+	        android:gravity="center_vertical"
+	        android:maxLines="2"
     		android:ellipsize="end"
 	        android:textColor="#fff" />
+        
+        <TextView 
+            android:id="@+id/mainForUserActivity_tvMenuTitle"
+            android:layout_width="match_parent"
+	        android:layout_height="0dp"
+	        android:layout_below="@id/mainForUserActivity_ivProfile"
+	        android:gravity="left|center_vertical"
+	        android:background="#66adadad"
+	        android:text="@string/menu"
+	        android:textColor="#bdbfbd" />
         
         <com.outspoken_kid.views.OffsetScrollView
 	        android:id="@+id/mainForUserActivity_scrollView"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:layout_below="@id/mainForUserActivity_tvNickname"
+	        android:layout_below="@id/mainForUserActivity_tvMenuTitle"
 	        android:fillViewport="true" >
 
             <RelativeLayout
@@ -59,27 +70,6 @@
             </RelativeLayout>
 	        
 	    </com.outspoken_kid.views.OffsetScrollView>
-	    
-        <TextView 
-            android:id="@+id/mainForUserActivity_tvTitle1"
-            android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
-	        android:gravity="left|center_vertical"
-	        android:background="#66adadad"
-	        android:text="@string/sideMenuTitle1"
-	        android:textColor="#393939" />
-        
-        <TextView 
-            android:id="@+id/mainForUserActivity_tvTitle2"
-            android:layout_width="match_parent"
-	        android:layout_height="0dp"
-	        android:layout_alignTop="@id/mainForUserActivity_scrollView"
-	        android:gravity="left|center_vertical"
-	        android:background="#66adadad"
-	        android:visibility="invisible"
-	        android:text="@string/sideMenuTitle2"
-	        android:textColor="#393939" />
         
     </RelativeLayout>
 

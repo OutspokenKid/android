@@ -36,7 +36,7 @@ import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Banner;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
-import com.byecar.models.OpenablePost;
+import com.byecar.models.Post;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -688,7 +688,7 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					if(objJSON.has("notice")) {
-						OpenablePost openablePost = new OpenablePost(objJSON.getJSONObject("notice"));
+						Post openablePost = new Post(objJSON.getJSONObject("notice"));
 						banner = new Banner();
 						banner.setItemCode(BCPConstants.ITEM_BANNER);
 						banner.setImageUrl(openablePost.getRep_img_url());

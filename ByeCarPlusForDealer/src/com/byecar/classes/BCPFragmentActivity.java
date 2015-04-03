@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.json.JSONObject;
 
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -265,6 +266,18 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 				}
 			}
 		});
+	}
+	
+	public void showVideo(String youtubeId) {
+		
+		try{
+	         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + youtubeId));
+	         startActivity(intent);                 
+         }catch (ActivityNotFoundException ex){
+             Intent intent=new Intent(Intent.ACTION_VIEW, 
+             Uri.parse("http://www.youtube.com/watch?v="+youtubeId));
+             startActivity(intent);
+         }
 	}
 	
 //////////////////// Interfaces.

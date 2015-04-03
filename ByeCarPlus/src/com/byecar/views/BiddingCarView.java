@@ -77,7 +77,7 @@ public class BiddingCarView extends FrameLayout {
 		tvCarName = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvCarName, 2, Gravity.CENTER_HORIZONTAL, new int[]{10, 135, 10, 0});
 		tvCarName.setTextColor(getContext().getResources().getColor(R.color.holo_text));
-		FontUtils.setFontSize(tvCarName, 30);
+		FontUtils.setFontSize(tvCarName, 24);
 		tvCarName.setGravity(Gravity.CENTER);
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
@@ -167,19 +167,23 @@ public class BiddingCarView extends FrameLayout {
 	public void setTime(Car car) {
 
 		try {
+			if(car.getStatus() != Car.STATUS_BIDDING) {
+				clearTime();
+				return;
+			}
+
 			long remainTime = car.getBid_until_at() * 1000 
-					+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
-					- System.currentTimeMillis();
-			
+					+ 86400000 - System.currentTimeMillis();
+
 			if(remainTime < 0) {
-				tvRemainTime.setText("-- : -- : --");
+				clearTime();
 			} else {
 		    	String formattedRemainTime = StringUtils.getTimeString(remainTime);
 		    	tvRemainTime.setText(formattedRemainTime);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
-			tvRemainTime.setText("-- : -- : --");
+			clearTime();
 		}
 	}
 	

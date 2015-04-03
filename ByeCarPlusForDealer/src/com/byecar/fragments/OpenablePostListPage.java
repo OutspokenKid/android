@@ -13,7 +13,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
-import com.byecar.models.OpenablePost;
+import com.byecar.models.Post;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -131,7 +131,7 @@ public class OpenablePostListPage extends BCPFragment {
 			
 			size = arJSON.length();
 			for(int i=0; i<size; i++) {
-				OpenablePost op = new OpenablePost(arJSON.getJSONObject(i));
+				Post op = new Post(arJSON.getJSONObject(i));
 				op.setItemCode(itemType);
 				models.add(op);
 				
@@ -148,7 +148,7 @@ public class OpenablePostListPage extends BCPFragment {
 								try {
 									for(int i=0; i<models.size(); i++) {
 										
-										if(((OpenablePost)models.get(i)).getId() == id) {
+										if(((Post)models.get(i)).getId() == id) {
 											
 											if(AppInfoUtils.checkMinVersionLimit(android.os.Build.VERSION_CODES.HONEYCOMB)) {
 												listView.smoothScrollToPositionFromTop(i, 0);

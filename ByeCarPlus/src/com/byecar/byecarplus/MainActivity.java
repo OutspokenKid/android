@@ -26,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
@@ -76,8 +75,6 @@ import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.GestureSlidingLayout;
 import com.outspoken_kid.views.GestureSlidingLayout.OnAfterOpenListener;
-import com.outspoken_kid.views.OffsetScrollView;
-import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 
 public class MainActivity extends BCPFragmentActivity {
 	
@@ -93,12 +90,8 @@ public class MainActivity extends BCPFragmentActivity {
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
-	private OffsetScrollView scrollView;
 	private LinearLayout leftViewInner;
-	private TextView tvTitle1;
-	private TextView tvTitle2;
-	private TextView tvTitleIn1;
-	private TextView tvTitleIn2;
+	private TextView tvMenuTitle;
 	
 	private ImageView ivProfile;
 	private ImageView ivBg;
@@ -136,11 +129,9 @@ public class MainActivity extends BCPFragmentActivity {
 		ivBg = (ImageView) findViewById(R.id.mainForUserActivity_ivBg);
 		tvNickname = (TextView) findViewById(R.id.mainForUserActivity_tvNickname);
 		
-		scrollView = (OffsetScrollView) findViewById(R.id.mainForUserActivity_scrollView);
 		leftViewInner = (LinearLayout) findViewById(R.id.mainForUserActivity_leftViewInner);
 		
-		tvTitle1 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle1);
-		tvTitle2 = (TextView) findViewById(R.id.mainForUserActivity_tvTitle2);
+		tvMenuTitle = (TextView) findViewById(R.id.mainForUserActivity_tvMenuTitle);
 		
 		popup = (RelativeLayout) findViewById(R.id.mainForUserActivity_popup);
 		popupBg = findViewById(R.id.mainForUserActivity_popupBg);
@@ -184,76 +175,6 @@ public class MainActivity extends BCPFragmentActivity {
 	@Override
 	public void setListeners() {
 
-		scrollView.setOnScrollChangedListener(new OnScrollChangedListener() {
-
-			int firstOffset = ResizeUtils.getSpecificLength(70) * 4		//buttons.
-							+ ResizeUtils.getSpecificLength(10) * 8		//margins.
-							+ 3;										//lines.
-			int secondOffset = firstOffset + ResizeUtils.getSpecificLength(32);	//title.
-			
-			@Override
-			public void onScrollChanged(int offset) {
-
-				//Show tvTitle1, tvTitleIn2 and hide others.
-				if(offset <= firstOffset) {
-					
-					if(tvTitle1.getVisibility() != View.VISIBLE) {
-						tvTitle1.setVisibility(View.VISIBLE);
-					}
-					
-					if(tvTitle2.getVisibility() == View.VISIBLE) {
-						tvTitle2.setVisibility(View.INVISIBLE);
-					}
-					
-					if(tvTitleIn1.getVisibility() == View.VISIBLE) {
-						tvTitleIn1.setVisibility(View.INVISIBLE);
-					}
-					
-					if(tvTitleIn2.getVisibility() != View.VISIBLE) {
-						tvTitleIn2.setVisibility(View.VISIBLE);
-					}
-					
-				//Show tvTitleIn1, tvTitleIn2 and hide others.
-				} else if(offset <= secondOffset) {
-					
-					if(tvTitle1.getVisibility() == View.VISIBLE) {
-						tvTitle1.setVisibility(View.INVISIBLE);
-					}
-					
-					if(tvTitle2.getVisibility() == View.VISIBLE) {
-						tvTitle2.setVisibility(View.INVISIBLE);
-					}
-
-					if(tvTitleIn1.getVisibility() != View.VISIBLE) {
-						tvTitleIn1.setVisibility(View.VISIBLE);
-					}
-					
-					if(tvTitleIn2.getVisibility() != View.VISIBLE) {
-						tvTitleIn2.setVisibility(View.VISIBLE);
-					}
-					
-				//Show tvTitle2 and hide others.
-				} else {
-					
-					if(tvTitle1.getVisibility() == View.VISIBLE) {
-						tvTitle1.setVisibility(View.INVISIBLE);
-					}
-					
-					if(tvTitle2.getVisibility() != View.VISIBLE) {
-						tvTitle2.setVisibility(View.VISIBLE);
-					}
-					
-					if(tvTitleIn1.getVisibility() == View.VISIBLE) {
-						tvTitleIn1.setVisibility(View.INVISIBLE);
-					}
-					
-					if(tvTitleIn2.getVisibility() == View.VISIBLE) {
-						tvTitleIn2.setVisibility(View.INVISIBLE);
-					}
-				}
-			}
-		});
-	
 		btnHome.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -306,15 +227,22 @@ public class MainActivity extends BCPFragmentActivity {
 
 		RelativeLayout.LayoutParams rp = null;
 		
-		rp = (RelativeLayout.LayoutParams) tvTitle1.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(32);
-		tvTitle1.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
-		FontUtils.setFontSize(tvTitle1, 16);
+		float profileImageScale = (float)ResizeUtils.getScreenHeight() / 1136f;
+		int profileHeight = (int)(profileImageScale * 137f);
 		
-		rp = (RelativeLayout.LayoutParams) tvTitle2.getLayoutParams();
+		rp = (RelativeLayout.LayoutParams) tvNickname.getLayoutParams();
+		rp.height = profileHeight;
+		rp.leftMargin = (int)(profileImageScale * 20f);
+		rp.rightMargin = (int)(profileImageScale * 20f);
+		FontUtils.setFontSize(tvNickname, 28);
+		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
+		
+		rp = (RelativeLayout.LayoutParams) tvMenuTitle.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(32);
-		tvTitle2.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
-		FontUtils.setFontSize(tvTitle2, 16);
+		rp.topMargin = ResizeUtils.getSpecificLength(96);
+		tvMenuTitle.setPadding(ResizeUtils.getSpecificLength(17), 0, 0, 0);
+		FontUtils.setFontSize(tvMenuTitle, 18);
+		FontUtils.setFontStyle(tvMenuTitle, FontUtils.BOLD);
 		
 		ResizeUtils.viewResizeForRelative(304, 314, popupImage, null, null, new int[]{0, 40, 0, 0});
 		ResizeUtils.setMargin(tvPopupText, new int[]{0, 40, 0, 0});
@@ -633,50 +561,40 @@ public class MainActivity extends BCPFragmentActivity {
 	
 	public void setLeftView() {
 
-		setImageView();
-		setOtherViews();
+		setImageViews();
 		addButtons();
 	}
 	
-	public void setImageView() {
-		
-		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(137);
-		rp.height = ResizeUtils.getSpecificLength(137);
-		rp.leftMargin = ResizeUtils.getSpecificLength(64);
-		rp.topMargin = ResizeUtils.getSpecificLength(125);
-		ivProfile.setScaleType(ScaleType.CENTER_CROP);
-
-		ivBg.setScaleType(ScaleType.MATRIX);
+	public void setImageViews() {
 		
 		Matrix matrix = new Matrix();
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.menu_bg);
-		float scale = (float)ResizeUtils.getSpecificLength(476) / (float) bitmap.getWidth();
+		float scale = (float)ResizeUtils.getScreenHeight() / (float) bitmap.getHeight();
 		matrix.postScale(scale, scale);
 		ivBg.setImageMatrix(matrix);
 		ivBg.setImageBitmap(bitmap);
-	}
 
-	public void setOtherViews() {
-	
-		RelativeLayout.LayoutParams rp = null;
-
-		rp = (RelativeLayout.LayoutParams) tvNickname.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(18);
+		float profileImageScale = (float)ResizeUtils.getScreenHeight() / 1136f;
 		
-		rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
+		rp.width = (int)(profileImageScale * 137f);
+		rp.height = (int)(profileImageScale * 137f);
+		rp.leftMargin = (int)(profileImageScale * 113f);
+		rp.topMargin = (int)(profileImageScale * 125f);
 		
-		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
-		FontUtils.setFontSize(tvNickname, 30);
+//		04-03 16:17:12.884: I/notice(7821):  width : 115
+//		04-03 16:17:12.884: I/notice(7821):  height : 115
+//		04-03 16:17:12.884: I/notice(7821):  leftMargin : 95
+//		04-03 16:17:12.884: I/notice(7821):  topMargin : 105
 	}
 
 	public void addButtons() {
 		
 		int[] bgResIds = new int[] {
-				R.drawable.menu_1_btn,
 				R.drawable.menu_2_btn,
 				R.drawable.menu_3_btn,
+				R.drawable.menu_10_btn,
+				R.drawable.menu_11_btn,
 				R.drawable.menu_4_btn,
 				R.drawable.menu_5_btn,
 				R.drawable.menu_6_btn,
@@ -688,30 +606,15 @@ public class MainActivity extends BCPFragmentActivity {
 		menuButtons = new Button[bgResIds.length];
 		int size = bgResIds.length;
 		for(int i=0; i<size; i++) {
-	
-			//타이틀 추가 : adadad 60%, text color 393939 
-			if(i == 4) {
-				tvTitleIn2 = new TextView(this);
-				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 32, tvTitleIn2, 1, 0, null);
-				tvTitleIn2.setBackgroundColor(Color.argb(99, 173, 173, 173));
-				tvTitleIn2.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-				tvTitleIn2.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
-				FontUtils.setFontSize(tvTitleIn2, 16);
-				tvTitleIn2.setTextColor(Color.rgb(57, 57, 57));
-				tvTitleIn2.setText(getString(R.string.sideMenuTitle2));
-				leftViewInner.addView(tvTitleIn2);
-			}
 			
 			//버튼 추가.
 			menuButtons[i] = new Button(this);
-			ResizeUtils.viewResize(471, 88, menuButtons[i], 1, Gravity.LEFT, 
-					new int[]{0, i==0?32:0, 0, 0});
+			ResizeUtils.viewResize(471, 88, menuButtons[i], 1, Gravity.LEFT, new int[]{0, 10, 0, 10});
 			menuButtons[i].setBackgroundResource(bgResIds[i]);
 			leftViewInner.addView(menuButtons[i]);
 			
 			//선 추가.
-			
-			if(i != size -1 && i != 3) {
+			if(i != size -1) {
 				View line = new View(this);
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ResizeUtils.getSpecificLength(430), 1);
 				lp.gravity = Gravity.LEFT;
@@ -719,7 +622,6 @@ public class MainActivity extends BCPFragmentActivity {
 				line.setBackgroundColor(Color.argb(99, 173, 173, 173));
 				leftViewInner.addView(line);
 			}
-			
 			
 			final int I = i;
 			menuButtons[i].setOnClickListener(new OnClickListener() {
@@ -749,24 +651,32 @@ public class MainActivity extends BCPFragmentActivity {
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
-//								자주 묻는 질문
+//								동영상게시판
 							case 2:
+								break;
+								
+//								자유게시판
+							case 3:
+								break;
+								
+//								자주 묻는 질문
+							case 4:
 								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
 //								Q&A
-							case 3:
+							case 5:
 								showPage(BCPConstants.PAGE_ASK, null);
 								break;
 								
 //								설정
-							case 4:
+							case 6:
 								showPage(BCPConstants.PAGE_SETTING, null);
 								break;
 								
 //								바이카 홈페이지
-							case 5:
+							case 7:
 								if(companyInfo != null) {
 									bundle.putString("url", companyInfo.getHomepage());
 								}
@@ -775,7 +685,7 @@ public class MainActivity extends BCPFragmentActivity {
 								break;
 								
 //								블로그
-							case 6:
+							case 8:
 								if(companyInfo != null) {
 									bundle.putString("url", companyInfo.getBlog_url());
 								}
@@ -784,7 +694,7 @@ public class MainActivity extends BCPFragmentActivity {
 								break;
 								
 //								이용약관
-							case 7:
+							case 9:
 								showPage(BCPConstants.PAGE_TERM_OF_USE, null);
 								break;
 							}
@@ -793,23 +703,6 @@ public class MainActivity extends BCPFragmentActivity {
 				}
 			});
 		}
-		
-		tvTitleIn1 = new TextView(this);
-		RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
-				LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(32));
-		rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-		rp.topMargin = ResizeUtils.getSpecificLength(70) * 4		//buttons.
-				+ ResizeUtils.getSpecificLength(10) * 8			//margins.
-				+ 3;											//lines.
-		tvTitleIn1.setLayoutParams(rp);
-		tvTitleIn1.setBackgroundColor(Color.argb(99, 173, 173, 173));
-		tvTitleIn1.setVisibility(View.INVISIBLE);
-		tvTitleIn1.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-		tvTitleIn1.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
-		FontUtils.setFontSize(tvTitleIn1, 16);
-		tvTitleIn1.setTextColor(Color.rgb(57, 57, 57));
-		tvTitleIn1.setText(getString(R.string.sideMenuTitle1));
-		((RelativeLayout)findViewById(R.id.mainForUserActivity_innerRelative)).addView(tvTitleIn1);
 	}
 
 	public void showPopup(int type) {

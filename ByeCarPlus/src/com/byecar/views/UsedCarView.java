@@ -1,9 +1,12 @@
 package com.byecar.views;
 
+import org.json.JSONObject;
+
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -15,8 +18,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPDownloadUtils;
+import com.byecar.models.Car;
+import com.byecar.models.Dealer;
+import com.outspoken_kid.utils.AppInfoUtils;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -33,8 +42,6 @@ public class UsedCarView extends RelativeLayout {
 	private TextView tvInfo;
 	private View[] infoBadges = new View[4];
 	private PriceTextView priceTextView;
-	
-	private String imageUrl;
 	
 	public UsedCarView(Context context) {
 		this(context, null, 0);
@@ -87,6 +94,7 @@ public class UsedCarView extends RelativeLayout {
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(70), ResizeUtils.getSpecificLength(56));
 		rp.addRule(ALIGN_PARENT_BOTTOM);
 		rp.addRule(RIGHT_OF, R.id.usedCarView_ivProfile);
+		rp.leftMargin = ResizeUtils.getSpecificLength(10);
 		tvDealerName.setLayoutParams(rp);
 		tvDealerName.setId(R.id.usedCarView_tvDealerName);
 		tvDealerName.setTextColor(Color.WHITE);
@@ -110,11 +118,13 @@ public class UsedCarView extends RelativeLayout {
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(160), ResizeUtils.getSpecificLength(60));
 		rp.addRule(ALIGN_PARENT_TOP);
 		rp.addRule(RIGHT_OF, R.id.usedCarView_ivImage);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		tvCarName.setLayoutParams(rp);
 		tvCarName.setTextColor(getResources().getColor(R.color.holo_text));
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvCarName, 30);
+		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
 		tvCarName.setGravity(Gravity.CENTER_VERTICAL);
 		this.addView(tvCarName);
 		
@@ -122,11 +132,16 @@ public class UsedCarView extends RelativeLayout {
 		btnLike = new Button(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(90), ResizeUtils.getSpecificLength(40));
 		rp.addRule(ALIGN_PARENT_RIGHT);
-		rp.topMargin = ResizeUtils.getSpecificLength(17);
-		rp.rightMargin = ResizeUtils.getSpecificLength(15);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(9);
 		btnLike.setLayoutParams(rp);
+		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
 		btnLike.setId(R.id.usedCarView_btnLike);
 		btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+		btnLike.setTextColor(Color.WHITE);
+		FontUtils.setFontSize(btnLike, 18);
+		btnLike.setGravity(Gravity.CENTER);
 		this.addView(btnLike);
 		
 		//tvLikeText.
@@ -135,13 +150,14 @@ public class UsedCarView extends RelativeLayout {
 		rp.addRule(ALIGN_TOP, R.id.usedCarView_btnLike);
 		rp.addRule(LEFT_OF, R.id.usedCarView_btnLike);
 		tvLikeText.setLayoutParams(rp);
+		tvLikeText.setText(R.string.like);
 		tvLikeText.setTextColor(getResources().getColor(R.color.holo_text));
 		FontUtils.setFontSize(tvLikeText, 18);
 		tvLikeText.setGravity(Gravity.CENTER_VERTICAL);
 		this.addView(tvLikeText);
 		
 		//tvInfo.
-		TextView tvInfo = new TextView(getContext());
+		tvInfo = new TextView(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(307), ResizeUtils.getSpecificLength(35));
 		rp.addRule(ALIGN_PARENT_TOP);
 		rp.addRule(ALIGN_PARENT_RIGHT);
@@ -149,8 +165,11 @@ public class UsedCarView extends RelativeLayout {
 		rp.rightMargin = ResizeUtils.getSpecificLength(15);
 		tvInfo.setLayoutParams(rp);
 		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
+		tvInfo.setSingleLine();
+		tvInfo.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvInfo, 18);
 		tvInfo.setGravity(Gravity.CENTER);
+		tvInfo.setPadding(ResizeUtils.getSpecificLength(4), 0, ResizeUtils.getSpecificLength(4), 0);
 		this.addView(tvInfo);
 		
 		//infoBadges.
@@ -158,7 +177,7 @@ public class UsedCarView extends RelativeLayout {
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(62), ResizeUtils.getSpecificLength(23));
 		rp.addRule(ALIGN_PARENT_BOTTOM);
 		rp.addRule(RIGHT_OF, R.id.usedCarView_ivImage);
-		rp.rightMargin = ResizeUtils.getSpecificLength(23);
+		rp.leftMargin = ResizeUtils.getSpecificLength(23);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(41);
 		infoBadges[0].setLayoutParams(rp);
 		infoBadges[0].setId(R.id.usedCarView_infoBadg1);
@@ -175,17 +194,17 @@ public class UsedCarView extends RelativeLayout {
 		infoBadges[2] = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(62), ResizeUtils.getSpecificLength(23));
 		rp.addRule(ALIGN_LEFT, R.id.usedCarView_infoBadg1);
-		rp.addRule(BELOW, R.id.usedCarView_infoBadg1);
-		rp.topMargin = ResizeUtils.getSpecificLength(7);
+		rp.addRule(ALIGN_TOP, R.id.usedCarView_infoBadg1);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[2].setLayoutParams(rp);
 		this.addView(infoBadges[2]);
 		
 		infoBadges[3] = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(62), ResizeUtils.getSpecificLength(23));
 		rp.addRule(RIGHT_OF, R.id.usedCarView_infoBadg1);
-		rp.addRule(BELOW, R.id.usedCarView_infoBadg1);
+		rp.addRule(ALIGN_TOP, R.id.usedCarView_infoBadg1);
 		rp.leftMargin = ResizeUtils.getSpecificLength(7);
-		rp.topMargin = ResizeUtils.getSpecificLength(7);
+		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[3].setLayoutParams(rp);
 		this.addView(infoBadges[3]);
 		
@@ -198,9 +217,11 @@ public class UsedCarView extends RelativeLayout {
 		priceTextView.setLayoutParams(rp);
 		priceTextView.setType(PriceTextView.TYPE_USED_CAR);
 		this.addView(priceTextView);
+		
+		clearView();
 	}
 	
-	public void downloadImage(String imageUrl) {
+	public void downloadImage(String imageUrl, final ImageView ivImage) {
 		
 		ivImage.setImageDrawable(null);
 		
@@ -232,48 +253,186 @@ public class UsedCarView extends RelativeLayout {
 		}, 176);
 	}
 	
-	public void setTexts(String modelName, long price) {
+	public void setCar(final Car car) {
+
+		if(car == null) {
+			return;
+		}
+
+		if(!StringUtils.isEmpty(car.getRep_img_url())) {
+			downloadImage(car.getRep_img_url(), ivImage);
+		}
 		
-//		tvCar.setText(modelName);
-//		tvPrice.setText(StringUtils.getFormattedNumber(price/10000) + "만원");
+		if(!StringUtils.isEmpty(car.getDealer_profile_img_url())) {
+			downloadImage(car.getDealer_profile_img_url(), ivProfile);
+		}
+		
+		tvDealerName.setText(car.getDealer_name());
+		
+		switch(car.getDealer_level()) {
+		
+		case Dealer.LEVEL_FRESH_MAN:
+			rankBadge.setBackgroundResource(R.drawable.main_used_grade4);
+			break;
+		case Dealer.LEVEL_NORAML_DEALER:
+			rankBadge.setBackgroundResource(R.drawable.main_used_grade3);
+			break;
+			
+		case Dealer.LEVEL_SUPERB_DEALER:
+			rankBadge.setBackgroundResource(R.drawable.main_used_grade2);
+			break;
+			
+		case Dealer.LEVEL_POWER_DEALER:
+			rankBadge.setBackgroundResource(R.drawable.main_used_grade1);
+			break;
+			
+		}
+		
+		tvCarName.setText(car.getModel_name());
+		
+		btnLike.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setLike(car);
+			}
+		});
+		
+		int likesCount = car.getLikes_cnt();
+		
+		if(likesCount > 9999) {
+			likesCount = 9999;
+		}
+		
+		btnLike.setText("" + likesCount);
+		
+		tvInfo.setText(car.getYear() + "년 / "
+				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
+				+ car.getArea());
+		
+		//무사고.
+		if(car.getHad_accident() == 2) {
+			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_a);
+			
+		//유사고.
+		} else if(car.getHad_accident() == 1) {
+			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_b);
+			
+		//사고여부 모름.
+		} else {
+			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_c);
+		}
+		
+		//1인신조.
+		if(car.getIs_oneman_owned() == 1) {
+			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_a);
+			
+		//1인신조 아님.
+		} else {
+			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_b);
+		}
+		
+		//4륜구동.
+		if(car.getCar_wd().equals("4WD")) {
+			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_a);
+			
+		//2륜구동.
+		} else {
+			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_b);
+		}
+		
+		//수동.
+		if(car.getTransmission_type().equals("manual")) {
+			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_a);
+			
+		//자동
+		} else {
+			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_b);
+		}
+		
+		priceTextView.setPrice(car.getPrice());
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressWarnings("deprecation")
 	public void clearView() {
+
+		ivImage.setImageDrawable(null);
+		ivProfile.setImageDrawable(null);
+		tvDealerName.setText(null);
+		tvCarName.setText(null);
+		btnLike.setText("0");
+		tvInfo.setText("--년 / --km / --");
+
+		if(AppInfoUtils.checkMinVersionLimit(16)) {
+			rankBadge.setBackground(null);
+			infoBadges[0].setBackground(null);
+			infoBadges[1].setBackground(null);
+			infoBadges[2].setBackground(null);
+			infoBadges[3].setBackground(null);
+		} else {
+			rankBadge.setBackgroundDrawable(null);
+			infoBadges[0].setBackgroundDrawable(null);
+			infoBadges[1].setBackgroundDrawable(null);
+			infoBadges[2].setBackgroundDrawable(null);
+			infoBadges[3].setBackgroundDrawable(null);
+		}
 		
+		priceTextView.setPrice(0);
 	}
 	
 	public ImageView getIvImage() {
 		
 		return ivImage;
 	}
-	
-	@Override
-	protected void onWindowVisibilityChanged(int visibility) {
-		super.onWindowVisibilityChanged(visibility);
 
-		if(visibility == View.VISIBLE) {
-			
-			if(!StringUtils.isEmpty(imageUrl)) {
-				downloadImage(imageUrl);
-			}
+	public void setLike(Car car) {
+		
+		String url = null;
+		
+		if(car.getIs_liked() == 0) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+
+			url = BCPAPIs.CAR_DEALER_LIKE_URL;
 		} else {
-			Drawable d = ivImage.getDrawable();
-			ivImage.setImageDrawable(null);
-	        
-	        if (d != null) {
-	            d.setCallback(null);
-	        }
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+
+			url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
 		}
 		
-	}
-
-	public String getImageUrl() {
-		return imageUrl;
-	}
-
-	public void setImageUrl(String imageUrl) {
-		this.imageUrl = imageUrl;
+		btnLike.setText("" + car.getLikes_cnt());
 		
-		downloadImage(imageUrl);
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("ViewWrapperForCar.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("ViewWrapperForCar.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

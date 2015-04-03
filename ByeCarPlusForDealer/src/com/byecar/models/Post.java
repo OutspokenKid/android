@@ -4,7 +4,7 @@ import org.json.JSONObject;
 
 import com.outspoken_kid.utils.LogUtils;
 
-public class OpenablePost extends BCPBaseModel {
+public class Post extends BCPBaseModel {
 	
 	private int id;
 	private int type;
@@ -20,14 +20,17 @@ public class OpenablePost extends BCPBaseModel {
 	private int need_to_push;
 	private long created_at;
 	private String author_nickname;
+	private String youtube_id;
 	
 	private boolean isOpened;
 	
-	public OpenablePost() {
+	public Post() {
 		
 	}
 	
-	public OpenablePost(JSONObject objJSON) {
+	public Post(JSONObject objJSON) {
+
+		super(objJSON);
 		
 		try {
 			if(objJSON.has("id")) {
@@ -83,8 +86,20 @@ public class OpenablePost extends BCPBaseModel {
 				this.created_at = objJSON.getLong("created_at");
 			}
 			
+			if(objJSON.has("priority")) {
+				this.priority = objJSON.getLong("priority");
+			}
+			
 			if(objJSON.has("author_nickname")) {
 				this.author_nickname = objJSON.getString("author_nickname");
+			}
+			
+			if(objJSON.has("author_nickname")) {
+				this.author_nickname = objJSON.getString("author_nickname");
+			}
+			
+			if(objJSON.has("youtube_id")) {
+				this.youtube_id = objJSON.getString("youtube_id");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -211,5 +226,13 @@ public class OpenablePost extends BCPBaseModel {
 
 	public void setOpened(boolean isOpened) {
 		this.isOpened = isOpened;
+	}
+
+	public String getYoutube_id() {
+		return youtube_id;
+	}
+
+	public void setYoutube_id(String youtube_id) {
+		this.youtube_id = youtube_id;
 	}
 }

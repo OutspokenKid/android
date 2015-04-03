@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.models.OpenablePost;
+import com.byecar.models.Post;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -20,7 +20,7 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class ViewWrapperForOpenablePost extends ViewWrapper {
 
-	private OpenablePost openablePost;
+	private Post openablePost;
 
 	private TextView tvHeaderView;
 	private View arrow;
@@ -88,7 +88,7 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 	public void setValues(BaseModel baseModel) {
 
 		try {
-			openablePost = (OpenablePost) baseModel;
+			openablePost = (Post) baseModel;
 			
 			tvHeaderView.setText(openablePost.getTitle());
 			tvText.setText(openablePost.getContent());
