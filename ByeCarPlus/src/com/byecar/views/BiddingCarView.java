@@ -78,6 +78,7 @@ public class BiddingCarView extends FrameLayout {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvCarName, 2, Gravity.CENTER_HORIZONTAL, new int[]{10, 135, 10, 0});
 		tvCarName.setTextColor(getContext().getResources().getColor(R.color.holo_text));
 		FontUtils.setFontSize(tvCarName, 24);
+		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
 		tvCarName.setGravity(Gravity.CENTER);
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
@@ -141,7 +142,7 @@ public class BiddingCarView extends FrameLayout {
 	public void setCar(Car car) {
 		
 		try {
-			tvCarName.setText(car.getCar_full_name());
+			tvCarName.setText(car.getModel_name());
 			tvRemainTime.setText("-- : -- : --");
 			tvBiddingInfo.setText("참여" + Math.min(99, car.getBidders_cnt()) 
 					+ "명/입찰" + Math.min(999, car.getBids_cnt()) + "회");

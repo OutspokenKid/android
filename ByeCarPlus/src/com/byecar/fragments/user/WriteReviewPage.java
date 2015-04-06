@@ -119,12 +119,6 @@ public class WriteReviewPage extends BCPFragment {
 				tvRatingText.setText(R.string.evaluateDealer);
 				tvTo.setText(car.getDealer_name() + " 딜러에게");
 				break;
-				
-			//검증직거래, 검증해준 검증사에게.
-			case Car.TYPE_DIRECT_CERTIFIED:
-				tvRatingText.setText(R.string.evaluateCertifier);
-				tvTo.setText(car.getManager_name() + " 검증사에게");
-				break;
 			}
 			
 			ratingBar.setRating(rating);
@@ -192,23 +186,11 @@ public class WriteReviewPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.reveiw_episode_back_btn;
+		return R.string.pageTitle_writeReview;
 	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 235;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
+	
 	@Override
 	public int getRootViewResId() {
 

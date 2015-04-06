@@ -294,21 +294,9 @@ public class SignUpPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.sign1_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 185;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_signUp;
 	}
 
 	@Override

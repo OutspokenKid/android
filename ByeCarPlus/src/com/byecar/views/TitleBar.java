@@ -19,8 +19,9 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class TitleBar extends RelativeLayout {
 
 	private View bg;
-	private Button btnMenu;
-	private Button btnBack;
+	private Button btnMenu;		//메인에서만.
+	private Button btnBack;		//메인 제외한 모든 페이지.
+	private TextView tvTitle;
 	private View bottomLine;
 	
 	private Button btnNotice;
@@ -70,11 +71,12 @@ public class TitleBar extends RelativeLayout {
 		
 		//btnBack.
 		btnBack = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(0, 0);
+		rp = new RelativeLayout.LayoutParams(161, 60);
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.CENTER_VERTICAL);
 		btnBack.setLayoutParams(rp);
 		btnBack.setVisibility(View.INVISIBLE);
+		btnBack.setBackgroundResource(R.drawable.back_btn);
 		this.addView(btnBack);
 		
 		//Bottom line.
@@ -175,5 +177,24 @@ public class TitleBar extends RelativeLayout {
 	public void hideBottomLine() {
 		
 		bottomLine.setVisibility(View.INVISIBLE);
+	}
+
+	public void setTitle(int titleResId) {
+		
+		if(tvTitle == null) {
+			tvTitle = new TextView(getContext());
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(320), 
+					LayoutParams.MATCH_PARENT);
+			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			tvTitle.setLayoutParams(rp);
+			tvTitle.setTextColor(Color.WHITE);
+			FontUtils.setFontSize(tvTitle, 32);
+			FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
+			tvTitle.setGravity(Gravity.CENTER);
+			this.addView(tvTitle);
+		}
+		
+		tvTitle.setText(titleResId);
 	}
 }

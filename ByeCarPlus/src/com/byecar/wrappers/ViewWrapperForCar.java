@@ -230,20 +230,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(14);
 					
 					setOnTimeListener();
-				} else if(car.getItemCode() == BCPConstants.ITEM_CAR_DIRECT_CERTIFIED) {
-					tvRemainTime.setText("-- : -- : --");
-					
-					auctionIcon.setVisibility(View.VISIBLE);
-					timeRelative.setVisibility(View.VISIBLE);
-					tvBidCount.setVisibility(View.INVISIBLE);
-					
-					auctionIcon.setBackgroundResource(R.drawable.directmarket_test_symbol);
-					progressBar.setProgressDrawable(row.getContext().getResources().getDrawable(R.drawable.progressbar_custom_orange));
-					auctionIcon.setVisibility(View.VISIBLE);
-					
-					((RelativeLayout.LayoutParams) btnLike.getLayoutParams()).rightMargin = ResizeUtils.getSpecificLength(-6);
-					
-					setOnTimeListener();
 					
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
@@ -314,10 +300,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 			case Car.TYPE_DEALER:
 				url = BCPAPIs.CAR_DEALER_LIKE_URL;
 				break;
-				
-			case Car.TYPE_DIRECT_CERTIFIED:
-				url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIKE_URL;
-				break;
 			}
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
@@ -332,10 +314,6 @@ public class ViewWrapperForCar extends ViewWrapper {
 				
 			case Car.TYPE_DEALER:
 				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
-				break;
-				
-			case Car.TYPE_DIRECT_CERTIFIED:
-				url = BCPAPIs.CAR_DIRECT_CERTIFIED_UNLIKE_URL;
 				break;
 			}
 		}
@@ -373,8 +351,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 
 	public void setOnTimeListener() {
 
-		if(car.getType() != Car.TYPE_BID
-				&& car.getType() != Car.TYPE_DIRECT_CERTIFIED) {
+		if(car.getType() != Car.TYPE_BID) {
 			return;
 		}
 		

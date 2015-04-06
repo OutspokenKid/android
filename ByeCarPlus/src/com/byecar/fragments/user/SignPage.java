@@ -56,6 +56,7 @@ public class SignPage extends BCPFragment {
 	private static final int NUMBER_OF_SPLASH = 3;
 	
 	private ImageView[] floatingImageViews;
+	private View catchphrase;
 	private Button btnMember;
 	private ViewPager viewPager;
 	private Button btnNext;
@@ -87,6 +88,7 @@ public class SignPage extends BCPFragment {
 	public void bindViews() {
 		
 		viewPager = (ViewPager) mThisView.findViewById(R.id.signPage_viewPager);
+		catchphrase = mThisView.findViewById(R.id.signPage_catchphrase);
 		btnMember = (Button) mThisView.findViewById(R.id.signPage_btnMember);
 		btnNext = (Button) mThisView.findViewById(R.id.signPage_btnNext);
 		navigator = (PageNavigatorView) mThisView.findViewById(R.id.signPage_navigator);
@@ -136,8 +138,10 @@ public class SignPage extends BCPFragment {
 				navigator.setIndex(position);
 				
 				if(position == 0) {
+					catchphrase.setVisibility(View.VISIBLE);
 					btnMember.setVisibility(View.VISIBLE);
 				} else {
+					catchphrase.setVisibility(View.INVISIBLE);
 					btnMember.setVisibility(View.INVISIBLE);
 				}
 				
@@ -214,9 +218,15 @@ public class SignPage extends BCPFragment {
 			
 		//logo.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signPage_logo).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(299);
-		rp.height = ResizeUtils.getSpecificLength(309);
+		rp.width = ResizeUtils.getSpecificLength(258);
+		rp.height = ResizeUtils.getSpecificLength(316);
 		rp.topMargin = ResizeUtils.getSpecificLength(160);
+		
+		//catchphrase.
+		rp = (RelativeLayout.LayoutParams) catchphrase.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(450);
+		rp.height = ResizeUtils.getSpecificLength(76);
+		rp.topMargin = ResizeUtils.getSpecificLength(170);
 		
 		//btnMember.
 		rp = (RelativeLayout.LayoutParams) btnMember.getLayoutParams();
@@ -262,19 +272,7 @@ public class SignPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getBackButtonWidth() {
-
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
+	public int getPageTitleTextResId() {
 
 		return 0;
 	}

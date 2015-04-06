@@ -39,11 +39,10 @@ import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
-import com.byecar.fragments.DealerCertifierPage;
+import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.fragments.SearchCarPage;
-import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
@@ -51,8 +50,6 @@ import com.byecar.fragments.WebBrowserPage;
 import com.byecar.fragments.user.CarDetailPage;
 import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.CarRegistrationPage;
-import com.byecar.fragments.user.DirectMarketPage;
-import com.byecar.fragments.user.EditUserInfoPage;
 import com.byecar.fragments.user.MainPage;
 import com.byecar.fragments.user.MyPage;
 import com.byecar.fragments.user.WriteReviewPage;
@@ -302,14 +299,11 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_MAIN:
 			return new MainPage();
 			
-		case BCPConstants.PAGE_EDIT_USER_INFO:
-			return new EditUserInfoPage();
-			
 		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
 			return new CertifyPhoneNumberPage();
 			
-		case BCPConstants.PAGE_DEALER_CERTIFIER:
-			return new DealerCertifierPage();
+		case BCPConstants.PAGE_DEALER:
+			return new DealerPage();
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
@@ -338,17 +332,11 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_CAR_REGISTRATION:
 			return new CarRegistrationPage();
 			
-		case BCPConstants.PAGE_DIRECT_MARKET:
-			return new DirectMarketPage();
-			
 		case BCPConstants.PAGE_DIRECT_NORMAL_LIST:
 			return new OpenablePostListPage();
 		
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();
-			
-		case BCPConstants.PAGE_SEARCH_RESULT:
-			return new SearchResultPage();
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();

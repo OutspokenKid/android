@@ -124,20 +124,8 @@ public class WebBrowserPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getPageTitleTextResId() {
 
-	@Override
-	public int getBackButtonWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

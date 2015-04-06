@@ -121,6 +121,7 @@ public class DealerView extends FrameLayout {
 		FontUtils.addSpan(tvPrice, StringUtils.getFormattedNumber(bid.getPrice()/10000), 0, 1);
 		FontUtils.addSpan(tvPrice, " 만원", 0, 0.7f);
 		
+		gradeBadge.setVisibility(View.VISIBLE);
 		
 		switch(bid.getDealer_level()) {
 		
@@ -142,8 +143,6 @@ public class DealerView extends FrameLayout {
 		}
 
 		tvDealerName.setText(bid.getDealer_name());
-		
-		rankBadge.setVisibility(View.VISIBLE);
 		
 		if(!StringUtils.isEmpty(bid.getDealer_profile_img_url())) {
 			
@@ -188,6 +187,7 @@ public class DealerView extends FrameLayout {
 		tvDealerName.setText("--");
 		
 		rankBadge.setVisibility(View.INVISIBLE);
+		gradeBadge.setVisibility(View.INVISIBLE);
 	}
 	
 	public void setIndex(int index) {

@@ -192,11 +192,6 @@ public class CarDetailPage extends BCPFragment {
 				this.type = getArguments().getInt("type");
 			}
 		}
-		
-		if(type == Car.TYPE_BID
-				|| type == Car.TYPE_DIRECT_CERTIFIED) {
-			setOnTimerListener();
-		}
 	}
 
 	@Override
@@ -375,11 +370,11 @@ public class CarDetailPage extends BCPFragment {
 								}, null);
 					}
 				} else {
-					Bundle bundle = new Bundle();
-					bundle.putInt("type", EditUserInfoPage.TYPE_REQUEST_BUYER);
-					bundle.putInt("carId", car.getId());
-					bundle.putInt("carType", car.getType());
-					mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+//					Bundle bundle = new Bundle();
+//					bundle.putInt("type", EditUserInfoPage.TYPE_REQUEST_BUYER);
+//					bundle.putInt("carId", car.getId());
+//					bundle.putInt("carType", car.getType());
+//					mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 				}
 			}
 		});
@@ -475,8 +470,7 @@ public class CarDetailPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(72);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
-		if(type != Car.TYPE_BID
-				&& type != Car.TYPE_DIRECT_CERTIFIED) {
+		if(type != Car.TYPE_BID) {
 			rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 			rp.bottomMargin = ResizeUtils.getSpecificLength(88);
 		}
@@ -706,21 +700,9 @@ public class CarDetailPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.detail_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 212;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_carDetail;
 	}
 
 	@Override
@@ -997,10 +979,6 @@ public class CarDetailPage extends BCPFragment {
 			url = BCPAPIs.CAR_DEALER_SHOW_URL;
 			break;
 			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.CAR_DIRECT_CERTIFIED_SHOW_URL;
-			break;
-			
 		case Car.TYPE_DIRECT_NORMAL:
 			url = BCPAPIs.CAR_DIRECT_NORMAL_SHOW_URL;
 			break;
@@ -1086,11 +1064,6 @@ public class CarDetailPage extends BCPFragment {
 				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
 				auctionIcon.setVisibility(View.VISIBLE);
 			}
-		} else if(car.getType() == Car.TYPE_DIRECT_CERTIFIED) {
-			tvRemainTime.setText("-- : -- : --");
-			
-			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
-			auctionIcon.setBackgroundResource(R.drawable.directmarket_test_symbol);
 		}
 		
 		tvCarInfo1.setText(car.getCar_full_name());
@@ -1160,14 +1133,6 @@ public class CarDetailPage extends BCPFragment {
 			showDesc();
 			break;
 			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			addViewsForDirectCertified();
-			showRelativeForType();
-			showInfo();
-			showOption();
-			showDesc();
-			break;
-			
 		case Car.TYPE_DIRECT_NORMAL:
 			addViewsForDirectNormal();
 			showRelativeForType();
@@ -1229,8 +1194,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setDetailCarInfo() {
 
-		if(type == Car.TYPE_BID
-				|| type == Car.TYPE_DIRECT_CERTIFIED) {
+		if(type == Car.TYPE_BID) {
 			auctionIcon.setVisibility(View.VISIBLE);
 			timeRelative.setVisibility(View.VISIBLE);
 			tvBidCount.setVisibility(View.VISIBLE);
@@ -1484,7 +1448,6 @@ public class CarDetailPage extends BCPFragment {
 				}
 				
 				for(int i=0; i<size; i++) {
-//					dealerViews[i].setDealerInfo(car.getBids().get(i));
 					
 					final int I = i;
 					dealerViews[i].setOnClickListener(new OnClickListener() {
@@ -1495,7 +1458,7 @@ public class CarDetailPage extends BCPFragment {
 							Bundle bundle = new Bundle();
 							bundle.putBoolean("isCertifier", false);
 							bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
-							mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+							mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
 						}
 					});
 				}
@@ -1552,7 +1515,7 @@ public class CarDetailPage extends BCPFragment {
 					Bundle bundle = new Bundle();
 					bundle.putBoolean("isCertifier", false);
 					bundle.putInt("dealer_id", car.getDealer_id());
-					mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+					mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
 				}
 			});
 			
@@ -1680,140 +1643,11 @@ public class CarDetailPage extends BCPFragment {
 					Bundle bundle = new Bundle();
 					bundle.putBoolean("isCertifier", false);
 					bundle.putInt("dealer_id", car.getDealer_id());
-					mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+					mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
 				}
 			});
 			relativeForType.addView(btnMoveToPage);
 		}
-	}
-	
-	public void addViewsForDirectCertified() {
-
-		//이전 상태 모두 지우기.
-		relativeForType.removeAllViews();
-		
-		headerForType.setBackgroundResource(R.drawable.verification_header1);
-		relativeForType.setBackgroundResource(R.drawable.detail_body4);
-
-		//ivImage.
-		final ImageView ivImage = new ImageView(mContext);
-		ResizeUtils.viewResizeForRelative(130, 130, ivImage, 
-				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.CENTER_HORIZONTAL}, 
-				new int[]{0, 0}, 
-				new int[]{0, 20, 0, 0});
-		ivImage.setId(R.id.carDetailPage_certified_ivImage);
-		ivImage.setBackgroundResource(R.drawable.detail_default);
-		ivImage.setScaleType(ScaleType.CENTER_CROP);
-		relativeForType.addView(ivImage);
-		
-		ivImage.setTag(car.getManager_profile_img_url());
-		BCPDownloadUtils.downloadBitmap(car.getManager_profile_img_url(), new OnBitmapDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
-
-				// TODO Auto-generated method stub		
-			}
-
-			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
-
-				try {
-					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
-
-					if(bitmap != null && !bitmap.isRecycled()
-							&& ivImage != null) {
-						ivImage.setImageBitmap(bitmap);
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-		}, 130);
-		
-		ivImage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("isCertifier", true);
-				bundle.putInt("certifier_id", car.getManager_id());
-				mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
-			}
-		});
-		
-		//cover.
-		View cover = new View(mContext);
-		ResizeUtils.viewResizeForRelative(130, 130, cover, 
-				new int[]{RelativeLayout.ALIGN_TOP, RelativeLayout.ALIGN_LEFT}, 
-				new int[]{R.id.carDetailPage_certified_ivImage, R.id.carDetailPage_certified_ivImage}, 
-				null);
-		cover.setBackgroundResource(R.drawable.buy_detail_cover);
-		relativeForType.addView(cover);
-		
-		//tvInfo.
-		TextView tvInfo = new TextView(mContext);
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvInfo, 
-				new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
-				new int[]{R.id.carDetailPage_certified_ivImage, 0}, 
-				new int[]{0, 20, 0, 0});
-		tvInfo.setId(R.id.carDetailPage_certified_tvInfo);
-		tvInfo.setText(null);
-		FontUtils.addSpan(tvInfo, car.getManager_name(), 0, 1, true);
-		FontUtils.addSpan(tvInfo, " " + getString(R.string.certifier), 0, 1);
-		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
-		FontUtils.setFontSize(tvInfo, 30);
-		relativeForType.addView(tvInfo);
-		
-		//tvDesc.
-		TextView tvDesc = new TextView(mContext);
-		ResizeUtils.viewResizeForRelative(568, LayoutParams.WRAP_CONTENT, tvDesc, 
-				new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
-				new int[]{R.id.carDetailPage_certified_tvInfo, 0}, 
-				new int[]{0, 20, 0, 0});
-		tvDesc.setId(R.id.carDetailPage_certified_tvDesc);
-		tvDesc.setText(car.getManager_desc());
-		tvDesc.setTextColor(getResources().getColor(R.color.holo_text));
-		tvDesc.setGravity(Gravity.CENTER);
-		tvDesc.setMinHeight(ResizeUtils.getSpecificLength(64));
-		tvDesc.setBackgroundResource(R.drawable.white_round_box);
-		FontUtils.setFontSize(tvDesc, 20);
-		relativeForType.addView(tvDesc);
-		
-		//line.
-		View line = new View(mContext);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, ResizeUtils.ONE, line, 
-				new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
-				new int[]{R.id.carDetailPage_certified_tvDesc, 0}, 
-				new int[]{25, 20, 25, 20});
-		line.setId(R.id.carDetailPage_certified_line);
-		line.setBackgroundColor(getResources().getColor(R.color.color_ltgray));
-		relativeForType.addView(line);
-		
-		//btnMoveToPage.
-		Button btnMoveToPage = new Button(mContext);
-		ResizeUtils.viewResizeForRelative(178, 24, btnMoveToPage, 
-				new int[]{RelativeLayout.BELOW, RelativeLayout.CENTER_HORIZONTAL}, 
-				new int[]{R.id.carDetailPage_certified_line, 0}, 
-				new int[]{0, 0, 0, 20});
-		btnMoveToPage.setBackgroundResource(R.drawable.verification_home_btn);
-		btnMoveToPage.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("isCertifier", true);
-				bundle.putInt("certifier_id", car.getManager_id());
-				mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
-			}
-		});
-		relativeForType.addView(btnMoveToPage);
 	}
 	
 	public void addViewsForDirectNormal() {
@@ -1989,9 +1823,8 @@ public class CarDetailPage extends BCPFragment {
 					public void onClick(View view) {
 
 						Bundle bundle = new Bundle();
-						bundle.putBoolean("isCertifier", false);
 						bundle.putInt("dealer_id", car.getBids().get(I).getDealer_id());
-						mActivity.showPage(BCPConstants.PAGE_DEALER_CERTIFIER, bundle);
+						mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
 					}
 				});
 				
@@ -2193,10 +2026,6 @@ public class CarDetailPage extends BCPFragment {
 				url = BCPAPIs.CAR_DEALER_LIKE_URL;
 				break;
 				
-			case Car.TYPE_DIRECT_CERTIFIED:
-				url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIKE_URL;
-				break;
-				
 			case Car.TYPE_DIRECT_NORMAL:
 				url = BCPAPIs.CAR_DIRECT_NORMAL_LIKE_URL;
 				break;
@@ -2215,10 +2044,6 @@ public class CarDetailPage extends BCPFragment {
 				
 			case Car.TYPE_DEALER:
 				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
-				break;
-				
-			case Car.TYPE_DIRECT_CERTIFIED:
-				url = BCPAPIs.CAR_DIRECT_CERTIFIED_UNLIKE_URL;
 				break;
 				
 			case Car.TYPE_DIRECT_NORMAL:

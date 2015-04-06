@@ -143,21 +143,9 @@ public class SettingPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.setting_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 161;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_setting;
 	}
 
 	@Override

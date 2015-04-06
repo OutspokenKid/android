@@ -111,21 +111,9 @@ public class NotificationPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.push_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 164;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_notification;
 	}
 
 	@Override

@@ -27,8 +27,8 @@ public class BCPAPIs {
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
 	
-	public static String NOTICE_URL = BASE_API_URL + "/posts/notices.json";
-	public static String FAQ_URL = BASE_API_URL + "/posts/faqs.json";
+	public static String NOTICE_URL = BASE_API_URL + "/posts/notices/dealer.json";
+	public static String FAQ_URL = BASE_API_URL + "/posts/faqs/dealer.json";
 	
 	public static String CAR_BID_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 	public static String CAR_BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";

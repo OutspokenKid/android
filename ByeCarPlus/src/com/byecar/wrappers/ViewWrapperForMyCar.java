@@ -117,10 +117,6 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					typeIcon.setBackgroundResource(R.drawable.mypage_title2);
 					break;
 					
-				case Car.TYPE_DIRECT_CERTIFIED:
-					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
-					break;
-					
 				case Car.TYPE_DIRECT_NORMAL:
 					typeIcon.setBackgroundResource(R.drawable.mypage_title4);
 					break;
@@ -222,8 +218,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 
 						//옥션, 검증직거래 매물이고, 후기를 작성하지 않은 경우.
 						if(car.getHas_review() != 1
-								&& (car.getType() == Car.TYPE_BID
-									|| car.getType() == Car.TYPE_DIRECT_CERTIFIED)) {
+								&& car.getType() == Car.TYPE_BID) {
 							btnReview.setVisibility(View.VISIBLE);
 						} else {
 							btnReview.setVisibility(View.INVISIBLE);

@@ -8,7 +8,6 @@ import org.json.JSONObject;
 import android.util.Log;
 
 import com.byecar.byecarplus.MainActivity;
-import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.user.CarDetailPage;
 import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.MainPage;
@@ -100,9 +99,6 @@ public class SocketDataHandler {
 							
 						} else if(bf instanceof CarDetailPage) {
 							((CarDetailPage) bf).bidStatusChanged(event, car);
-							
-						} else if(bf instanceof SearchResultPage) {
-							((SearchResultPage) bf).bidStatusChanged(event, car);
 						}
 					}
 				}

@@ -325,9 +325,9 @@ public class CarRegistrationPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", EditUserInfoPage.TYPE_DEALER_INFO);
-				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", EditUserInfoPage.TYPE_DEALER_INFO);
+//				mActivity.showPage(BCPConstants.PAGE_EDIT_USER_INFO, bundle);
 			}
 		});
 
@@ -829,33 +829,13 @@ public class CarRegistrationPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		if(type == TYPE_REQUEST_CERTIFICATION) {
-			return R.drawable.demand_back_btn;
-		} else if(type == TYPE_EDIT) {
-			return R.drawable.modification_back_btn;
+		if(type == TYPE_EDIT) {
+			return R.string.pageTitle_carRegistration_edit;
 		} else {
-			return R.drawable.registration_back_btn;
+			return R.string.pageTitle_carRegistration_registration;
 		}
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		if(type == TYPE_REQUEST_CERTIFICATION) {
-			return 208;
-		} else if(type == TYPE_EDIT) {
-			return 235;
-		} else {
-			return 220;
-		}
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
 	}
 
 	@Override
@@ -1154,10 +1134,6 @@ public class CarRegistrationPage extends BCPFragment {
 			
 		case Car.TYPE_DEALER:
 			url = BCPAPIs.CAR_DEALER_SHOW_URL;
-			break;
-			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.CAR_DIRECT_CERTIFIED_SHOW_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:

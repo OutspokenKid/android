@@ -145,21 +145,9 @@ public class MyPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.mypage_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 235;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_my;
 	}
 
 	@Override

@@ -131,71 +131,41 @@ public class TypeSearchCarPage extends BCPFragment {
 		
 		return R.layout.fragment_common_type_search_car;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 		
 		switch(type) {
 		
 		case TYPE_BRAND:
-			return R.drawable.car_search_back_btn;
+			return R.string.pageTitle_typeSearchCar_brand;
 			
 		case TYPE_MODELGROUP:
-			return R.drawable.car_search_back2_btn;
+			return R.string.pageTitle_typeSearchCar_modelGroup;
 			
 		case TYPE_MODEL:
-			return R.drawable.car_search_back3_btn;
+			return R.string.pageTitle_typeSearchCar_model;
 			
 		case TYPE_TRIM:
-			return R.drawable.car_search_back4_btn;
+			return R.string.pageTitle_typeSearchCar_trim;
 			
 		case TYPE_YEAR:
-			return R.drawable.car_search_back5_btn;
+			return R.string.pageTitle_typeSearchCar_year;
 			
 		case TYPE_FUEL:
-			return R.drawable.car_search_back6_btn;
+			return R.string.pageTitle_typeSearchCar_fuel;
 			
 		case TYPE_TRANSMISSION:
-			return R.drawable.car_search_back7_btn;
+			return R.string.pageTitle_typeSearchCar_transmission;
 			
 		case TYPE_ACCIDENT:
-			return R.drawable.car_search_back8_btn;
+			return R.string.pageTitle_typeSearchCar_accident;
 			
 		case TYPE_ONEMANOWNED:
-			return R.drawable.car_search_back9_btn;
+			return R.string.pageTitle_typeSearchCar_oneman;
 		}
 
 		return 0;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		switch(type) {
-		
-		case TYPE_BRAND:
-		case TYPE_MODELGROUP:
-		case TYPE_TRIM:
-			return 238;
-			
-		case TYPE_MODEL:
-			return 262;
-			
-		case TYPE_YEAR:
-		case TYPE_FUEL:
-		case TYPE_TRANSMISSION:
-		case TYPE_ACCIDENT:
-		case TYPE_ONEMANOWNED:
-			return 245;
-		}
-		
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
 	}
 
 	@Override

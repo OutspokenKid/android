@@ -2,12 +2,14 @@ package com.byecar.fragments;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Handler;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
+
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
@@ -86,26 +88,13 @@ public class OpenablePostListPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
 		if(type == TYPE_NOTICE) {
-			return R.drawable.noticeboard_back_btn;
+			return R.string.pageTitle_openablePostList_notice;
 		} else {
-			
-			return R.drawable.faq_back_btn;
+			return R.string.pageTitle_openablePostList_faq;
 		}
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-		
-		return 235;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
 	}
 
 	@Override

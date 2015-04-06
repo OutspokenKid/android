@@ -21,6 +21,8 @@ public class Post extends BCPBaseModel {
 	private long created_at;
 	private String author_nickname;
 	private String youtube_id;
+	private int replies_cnt;
+	private String board_title; 
 	
 	private boolean isOpened;
 	
@@ -100,6 +102,14 @@ public class Post extends BCPBaseModel {
 			
 			if(objJSON.has("youtube_id")) {
 				this.youtube_id = objJSON.getString("youtube_id");
+			}
+			
+			if(objJSON.has("replies_cnt")) {
+				this.replies_cnt = objJSON.getInt("replies_cnt");
+			}
+			
+			if(objJSON.has("board_title")) {
+				this.board_title = objJSON.getString("board_title");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -234,5 +244,21 @@ public class Post extends BCPBaseModel {
 
 	public void setYoutube_id(String youtube_id) {
 		this.youtube_id = youtube_id;
+	}
+
+	public int getReplies_cnt() {
+		return replies_cnt;
+	}
+
+	public void setReplies_cnt(int replies_cnt) {
+		this.replies_cnt = replies_cnt;
+	}
+
+	public String getBoard_title() {
+		return board_title;
+	}
+
+	public void setBoard_title(String board_title) {
+		this.board_title = board_title;
 	}
 }

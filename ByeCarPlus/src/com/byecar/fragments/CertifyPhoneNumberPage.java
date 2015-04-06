@@ -13,7 +13,6 @@ import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPFragment;
-import com.byecar.fragments.user.EditUserInfoPage;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -135,23 +134,11 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.phone_reg_btn;
+		return R.string.pageTitle_certifyPhoneNumber;
 	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 305;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
+	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
@@ -273,8 +260,6 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 //							mActivity.closeTopPage();
 							
 						} else if(getArguments() != null && getArguments().getBoolean("forEditUserInfo")) {
-							EditUserInfoPage.PHONE_AUTH_KEY = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
-							EditUserInfoPage.tempPhoneNumber = requestedPhoneNumber;
 							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
 							mActivity.closeTopPage();
 						} else {

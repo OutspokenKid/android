@@ -34,6 +34,7 @@ import com.byecar.models.Post;
 import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
+import com.byecar.views.ForumView;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -43,6 +44,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.TimerUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
@@ -78,6 +80,10 @@ public class MainPage extends BCPAuctionableFragment {
 	private Button btnPlay;
 	private TextView tvVideoTitle;
 	
+	private View forumBg;
+	private Button btnForum;
+	private ForumView[] forumViews = new ForumView[3];
+	
 	private Button[] tabButtons = new Button[4];
 	
 //	private ArrayList<Dealer> topDealers = new ArrayList<Dealer>();
@@ -86,6 +92,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
 	private Post video;
+	private ArrayList<Post> forums = new ArrayList<Post>();
 	
 	private int scrollOffset; 
 	private int standardLength;
@@ -136,6 +143,12 @@ public class MainPage extends BCPAuctionableFragment {
 		btnPlay = (Button) mThisView.findViewById(R.id.mainForUserPage_btnPlay);
 		tvVideoTitle = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvVideoTitle);
 		
+		forumBg = mThisView.findViewById(R.id.mainForUserPage_forumBg);
+		btnForum = (Button) mThisView.findViewById(R.id.mainForUserPage_btnForum);
+		forumViews[0] = (ForumView) mThisView.findViewById(R.id.mainForUserPage_forumView1);
+		forumViews[1] = (ForumView) mThisView.findViewById(R.id.mainForUserPage_forumView2);
+		forumViews[2] = (ForumView) mThisView.findViewById(R.id.mainForUserPage_forumView3);
+		
 		tabButtons[0] = (Button) mThisView.findViewById(R.id.mainForUserPage_btnTab1);
 		tabButtons[1] = (Button) mThisView.findViewById(R.id.mainForUserPage_btnTab2);
 		tabButtons[2] = (Button) mThisView.findViewById(R.id.mainForUserPage_btnTab3);
@@ -145,6 +158,8 @@ public class MainPage extends BCPAuctionableFragment {
 	@Override
 	public void setVariables() {
 
+		isMain = true;
+		
 		setOnTimerListener();
 	}
 
@@ -389,6 +404,28 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(36);
 		tvVideoTitle.setMaxWidth(ResizeUtils.getSpecificLength(304));
 		
+		//forumBg.
+		rp = (RelativeLayout.LayoutParams) forumBg.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(536);
+		rp.topMargin = ResizeUtils.getSpecificLength(18);
+		
+		//btnForum.
+		rp = (RelativeLayout.LayoutParams) btnForum.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		
+		//forumViews.
+		size = forumViews.length;
+		for(int i=0; i<size; i++) {
+			rp = (RelativeLayout.LayoutParams) forumViews[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(578);
+			rp.height = ResizeUtils.getSpecificLength(135);
+			rp.topMargin = ResizeUtils.getSpecificLength(i==0?84:18);
+		}
+		
 		//bottomBlank.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_bottomBlank).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(136);
@@ -415,20 +452,8 @@ public class MainPage extends BCPAuctionableFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public int getPageTitleTextResId() {
 
-	@Override
-	public int getBackButtonWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
@@ -585,6 +610,19 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					setVideo();
+					
+					try {
+						forums.clear();
+						JSONArray arJSON = objJSON.getJSONArray("forum_best");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							forums.add(new Post(arJSON.getJSONObject(i)));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					setForums();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -672,6 +710,25 @@ public class MainPage extends BCPAuctionableFragment {
 			});
 			
 			tvVideoTitle.setText(video.getContent());
+		}
+	}
+	
+	public void setForums() {
+		
+		int size = forums.size();
+		for(int i=0; i<size; i++) {
+			
+			final int INDEX = i;
+			
+			forumViews[i].setForum(forums.get(i), i);
+			forumViews[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					ToastUtils.showToast(INDEX + "번째 클릭");
+				}
+			});
 		}
 	}
 	

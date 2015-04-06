@@ -205,40 +205,8 @@ public class GuideActivity extends Activity {
 
 		findViewById(R.id.guideActivity_titleBg).getLayoutParams().height = ResizeUtils.getSpecificLength(88);
 
-		int width = 0;
-		
-		switch(type) {
-		
-		case TYPE_USER_AUCTION:
-			btnBack.setBackgroundResource(R.drawable.infomation_auction_back_btn);
-			width = 271;
-			break;
-			
-		case TYPE_USER_BUY:
-			btnBack.setBackgroundResource(R.drawable.information_buy_back_btn);
-			width = 268;
-			break;
-			
-		case TYPE_USER_DIRECT:
-			btnBack.setBackgroundResource(R.drawable.directmarket_information_back_btn);
-			width = 344;
-			break;
-
-		case TYPE_USER_CERTIFIED:
-			btnBack.setBackgroundResource(R.drawable.verification_information_back_btn);
-			width = 348;
-			break;
-			
-		case TYPE_USER_NORMAL:
-			btnBack.setBackgroundResource(R.drawable.normaldirect_information_back_btn);
-			width = 371;
-			break;
-			
-		case TYPE_USER_UPLOAD:
-			btnBack.setBackgroundResource(R.drawable.directmarket_reg_information_back_btn);
-			width = 402;
-			break;
-		}
+		btnBack.setBackgroundResource(R.drawable.back_btn);
+		int width = 161;
 		
 		RelativeLayout.LayoutParams rp = ((RelativeLayout.LayoutParams)btnBack.getLayoutParams());
 		rp.width = ResizeUtils.getSpecificLength(width);

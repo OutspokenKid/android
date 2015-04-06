@@ -107,25 +107,13 @@ public class AskPage extends BCPFragment {
 
 		return R.layout.fragment_common_ask;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.ask_back_btn;
+		return R.string.pageTitle_qnA;
 	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 235;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
+	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
@@ -149,4 +137,5 @@ public class AskPage extends BCPFragment {
 
 		return R.id.askPage_mainLayout;
 	}
+
 }

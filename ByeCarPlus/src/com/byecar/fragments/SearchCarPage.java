@@ -462,12 +462,12 @@ public class SearchCarPage extends BCPFragment {
 				String conditionString = StringUtils.getFormattedNumber(minPrice) + "만원 부터 ~ "
 						+ StringUtils.getFormattedNumber(maxPrice) + "만원 까지";
 				
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", carType);
-				bundle.putInt("price_min", minPrice * 10000);
-				bundle.putInt("price_max", maxPrice * 10000);
-				bundle.putString("conditionString", conditionString);
-				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", carType);
+//				bundle.putInt("price_min", minPrice * 10000);
+//				bundle.putInt("price_max", maxPrice * 10000);
+//				bundle.putString("conditionString", conditionString);
+//				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
 			}
 		});
 		
@@ -476,14 +476,14 @@ public class SearchCarPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", carType);
-				bundle.putInt("brand_id", brand_id);
-				bundle.putInt("modelgroup_id", modelgroup_id);
-				bundle.putInt("model_id", model_id);
-				bundle.putInt("trim_id", trim_id);
-				bundle.putString("conditionString", conditionString);
-				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", carType);
+//				bundle.putInt("brand_id", brand_id);
+//				bundle.putInt("modelgroup_id", modelgroup_id);
+//				bundle.putInt("model_id", model_id);
+//				bundle.putInt("trim_id", trim_id);
+//				bundle.putString("conditionString", conditionString);
+//				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
 			}
 		});
 	}
@@ -550,23 +550,11 @@ public class SearchCarPage extends BCPFragment {
 		
 		return R.layout.fragment_common_search_car;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
-		
-		return R.drawable.filter_back_btn;
-	}
+	public int getPageTitleTextResId() {
 
-	@Override
-	public int getBackButtonWidth() {
-
-		return 214;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_searchCar;
 	}
 	
 	@Override

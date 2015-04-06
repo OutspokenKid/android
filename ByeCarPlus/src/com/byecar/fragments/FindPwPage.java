@@ -111,21 +111,9 @@ public class FindPwPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.pass_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 244;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_findPw;
 	}
 
 	@Override

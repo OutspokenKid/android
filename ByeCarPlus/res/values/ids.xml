@@ -118,8 +118,10 @@
     <item name="normalCarView_tvLikeText" type="id" />
     
 	<item name="reviewView_ivImage" type="id" />
+	<item name="reviewView_tvNickname" type="id" />
 	<item name="reviewView_tvCarName" type="id" />
 	<item name="reviewView_tvContent" type="id" />
+	<item name="reviewView_gradeBadge" type="id" />
 	
 	<item name="priceTextView_textView1" type="id" />
 	<item name="priceTextView_textView2" type="id" />

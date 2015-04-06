@@ -76,21 +76,9 @@ public class TermOfUsePage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.term_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 187;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_termOfUse;
 	}
 
 	@Override

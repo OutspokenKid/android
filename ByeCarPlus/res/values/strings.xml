@@ -49,6 +49,7 @@
     <string name="confirm">확인</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
     <string name="currentPrice">현재가</string>
+    <string name="customerSatisfactionDegree">고객 만족도</string>
     
     <string name="dealer">딜러</string>
     <string name="dealerInfo">판매자 정보</string>
@@ -79,6 +80,7 @@
     
     <string name="edit">수정</string>
     <string name="emailSignIn">Email 로그인</string>
+    <string name="emptyDealerDesc">딜러 소개가 없습니다.</string>
     <string name="evaluateCertifier">검증사님을 평가해주세요.</string>
     <string name="evaluateDealer">딜러님을 평가해주세요.</string>
 	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
@@ -139,7 +141,39 @@
     <string name="order_1">마감순</string>
     <string name="order_2">좋아요순</string>
     <string name="order_3">등록순</string>
-    
+
+    <string name="pageTitle_certifyPhoneNumber">휴대폰 번호 인증</string>
+    <string name="pageTitle_dealer">딜러정보</string>
+    <string name="pageTitle_findPw">비밀번호 찾기</string>
+    <string name="pageTitle_notification">알림</string>
+    <string name="pageTitle_openablePostList_faq">자주 묻는 질문</string>
+    <string name="pageTitle_openablePostList_notice">공지사항</string>
+    <string name="pageTitle_searchCar">검색</string>
+    <string name="pageTitle_setting">설정</string>
+    <string name="pageTitle_signUp">회원가입</string>
+    <string name="pageTitle_termOfUse">약관</string>
+    <string name="pageTitle_typeSearchCar_brand">회사검색</string>
+    <string name="pageTitle_typeSearchCar_modelGroup">차종검색</string>
+    <string name="pageTitle_typeSearchCar_model">모델검색</string>
+    <string name="pageTitle_typeSearchCar_trim">트림검색</string>
+    <string name="pageTitle_typeSearchCar_year">연식</string>
+    <string name="pageTitle_typeSearchCar_accident">사고유무</string>
+    <string name="pageTitle_typeSearchCar_fuel">연료</string>
+    <string name="pageTitle_typeSearchCar_transmission">변속기</string>
+    <string name="pageTitle_typeSearchCar_oneman">1인신조</string>
+    <string name="pageTitle_typeSearchCar_wd">2/4륜구동</string>
+    <string name="pageTitle_typeSearchCar_area">판매지역</string>
+    <string name="pageTitle_carDetail">상세보기</string>
+    <string name="pageTitle_carList_auction">경매 리스트</string>
+    <string name="pageTitle_carList_dealer">중고차마켓 리스트</string>
+    <string name="pageTitle_carList_direct">직거래 리스트</string>
+    <string name="pageTitle_carRegistration_edit">차량 수정</string>
+    <string name="pageTitle_carRegistration_registration">차량 등록</string>
+    <string name="pageTitle_directMarket">직거래</string>
+    <string name="pageTitle_my">마이페이지</string>
+    <string name="pageTitle_signIn">로그인</string>
+    <string name="pageTitle_writeReview">리뷰 작성</string>
+    <string name="pageTitle_qnA">Q&amp;A</string>
     <string name="phone">연락처</string>
     <string name="popup_request_certification">검증 신청이 완료되었습니다!</string>
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
@@ -171,7 +205,8 @@
     <string name="toCertifier">검증사님께</string>
     <string name="toDealer">딜러님께</string>
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
-
+	<string name="tradeSuccessCount">차량 성사수</string>
+    
     <string name="uploadingImage">이미지 업로드 중..</string>
 
     <string name="wannaDelete">삭제하시겠습니까?</string>

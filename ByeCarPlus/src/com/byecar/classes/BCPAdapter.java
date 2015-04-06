@@ -9,7 +9,6 @@ import android.view.View;
 import com.byecar.byecarplus.R;
 import com.byecar.wrappers.ViewWrapperForBrand;
 import com.byecar.wrappers.ViewWrapperForCar;
-import com.byecar.wrappers.ViewWrapperForDirectNormal;
 import com.byecar.wrappers.ViewWrapperForMyCar;
 import com.byecar.wrappers.ViewWrapperForMyReview;
 import com.byecar.wrappers.ViewWrapperForNotification;
@@ -60,10 +59,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_CAR_BID:
 		case BCPConstants.ITEM_CAR_DEALER:
-		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
 			return R.layout.list_car;
 			
-		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
+		case BCPConstants.ITEM_CAR_DIRECT:
 			return R.layout.list_direct_normal;
 			
 		case BCPConstants.ITEM_CAR_BRAND: 
@@ -105,15 +103,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfc;
 			
 		case BCPConstants.ITEM_CAR_DEALER:
-		case BCPConstants.ITEM_CAR_DIRECT_CERTIFIED:
 			vwfc = new ViewWrapperForCar(convertView, itemCode);
 			vwfc.setActivity(activity);
 			return vwfc;
-			
-		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
-			ViewWrapperForDirectNormal vwfd = new ViewWrapperForDirectNormal(convertView, itemCode);
-			vwfd.setActivity(activity);
-			return vwfd;
 			
 		case BCPConstants.ITEM_CAR_BRAND:
 			ViewWrapperForBrand vwfb = new ViewWrapperForBrand(convertView, itemCode);
@@ -177,19 +169,6 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 			} else if(position == models.size() - 1) {
 				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(20));
-				
-			} else {
-				convertView.setPadding(0, 0, 0, 0);
-			}
-			break;
-			
-		case BCPConstants.ITEM_CAR_DIRECT_NORMAL:
-			
-			if(position == 0) {
-				convertView.setPadding(0, ResizeUtils.getSpecificLength(14), 0, 0);
-			
-			} else if(position == models.size() - 1) {
-				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(14));
 				
 			} else {
 				convertView.setPadding(0, 0, 0, 0);

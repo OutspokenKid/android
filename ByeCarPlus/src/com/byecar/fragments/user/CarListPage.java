@@ -112,11 +112,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
 			break;
 			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_c);
-			btnRequestCertification.setVisibility(View.VISIBLE);
-			break;
-			
 		case Car.TYPE_DIRECT_NORMAL:
 			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_c);
 			btnRegistration.setVisibility(View.VISIBLE);
@@ -218,7 +213,6 @@ public class CarListPage extends BCPAuctionableFragment {
 								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
 								break;
 								
-							case Car.TYPE_DIRECT_CERTIFIED:
 							case Car.TYPE_DIRECT_NORMAL:
 								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle3);
 								break;
@@ -236,7 +230,6 @@ public class CarListPage extends BCPAuctionableFragment {
 								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort2_btn);
 								break;
 								
-							case Car.TYPE_DIRECT_CERTIFIED:
 							case Car.TYPE_DIRECT_NORMAL:
 								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle2);
 								break;
@@ -257,18 +250,6 @@ public class CarListPage extends BCPAuctionableFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
 				bundle.putInt("carType", type);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
-			}
-		});
-		
-		btnRequestCertification.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_REQUEST_CERTIFICATION);
-				bundle.putInt("carType", Car.TYPE_DIRECT_CERTIFIED);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});
@@ -299,10 +280,6 @@ public class CarListPage extends BCPAuctionableFragment {
 					intent.putExtra("type", GuideActivity.TYPE_USER_BUY);
 					break;
 					
-				case Car.TYPE_DIRECT_CERTIFIED:
-					intent.putExtra("type", GuideActivity.TYPE_USER_CERTIFIED);
-					break;
-					
 				case Car.TYPE_DIRECT_NORMAL:
 					intent.putExtra("type", GuideActivity.TYPE_USER_NORMAL);
 					break;
@@ -320,17 +297,6 @@ public class CarListPage extends BCPAuctionableFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", type);
 				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
-			}
-		});
-	
-		btnBanner.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", Car.TYPE_DIRECT_CERTIFIED);
-				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
 	}
@@ -410,51 +376,24 @@ public class CarListPage extends BCPAuctionableFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
 		switch(type) {
 		
 		case Car.TYPE_BID:
-			return R.drawable.auction_back_btn;
+			return R.string.pageTitle_carList_auction;
 			
 		case Car.TYPE_DEALER:
-			return R.drawable.usedmarket_search_back_btn;
+			return R.string.pageTitle_carList_dealer;
 			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			return R.drawable.directmarket_verification_back_btn;
-			
-		case Car.TYPE_DIRECT_NORMAL:
-			return R.drawable.normal_direct_back_btn;
-		}
-		
-		return R.drawable.auction_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		switch(type) {
-		
-		case Car.TYPE_BID:
-			return 251;
-			
-		case Car.TYPE_DEALER:
-			return 216;
-			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			return 322;
+//		case Car.TYPE_DIRECT_CERTIFIED:
+//			return R.drawable.directmarket_verification_back_btn;
 			
 		case Car.TYPE_DIRECT_NORMAL:
-			return 235;
+			return R.string.pageTitle_carList_direct;
 		}
 		
-		return 251;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return 0;
 	}
 
 	@Override
@@ -468,10 +407,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			
 		case Car.TYPE_DEALER:
 			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
-			break;
-			
-		case Car.TYPE_DIRECT_CERTIFIED:
-			url = BCPAPIs.CAR_DIRECT_CERTIFIED_LIST_URL;
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
@@ -501,11 +436,8 @@ public class CarListPage extends BCPAuctionableFragment {
 		case Car.TYPE_DEALER:
 			itemCode = BCPConstants.ITEM_CAR_DEALER;
 			break;
-		case Car.TYPE_DIRECT_CERTIFIED:
-			itemCode = BCPConstants.ITEM_CAR_DIRECT_CERTIFIED;
-			break;
 		case Car.TYPE_DIRECT_NORMAL:
-			itemCode = BCPConstants.ITEM_CAR_DIRECT_NORMAL;
+			itemCode = BCPConstants.ITEM_CAR_DIRECT;
 		}
 		
 		try {

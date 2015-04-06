@@ -186,24 +186,24 @@ public class ResizeUtils {
 		int scaledWidth;
 		int scaledHeight;
 		
-		if(_width != LayoutParams.MATCH_PARENT && _width != LayoutParams.WRAP_CONTENT) {
+		if(_width == LayoutParams.MATCH_PARENT || _width == LayoutParams.WRAP_CONTENT) {
 			scaledWidth = getSpecificLength(_width);
-		
+			scaledWidth = _width;
 		} else if(_width == ONE) {
 			scaledWidth = 1;
 			
 		} else {
-			scaledWidth = _width;
+			scaledWidth = getSpecificLength(_width);
 		}
 		
-		if(_height != LayoutParams.MATCH_PARENT && _height != LayoutParams.WRAP_CONTENT) {
-			scaledHeight = getSpecificLength(_height);
+		if(_height == LayoutParams.MATCH_PARENT || _height == LayoutParams.WRAP_CONTENT) {
+			scaledHeight = _height;
 			
 		} else if(_height == ONE) {
 			scaledHeight = 1;
 			
 		} else {
-			scaledHeight = _height;
+			scaledHeight = getSpecificLength(_height);
 		}
 		
 		int[] newMargin = new int[4];
