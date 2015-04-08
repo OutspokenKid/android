@@ -133,11 +133,48 @@
             </RelativeLayout>
 
             <View 
-                android:id="@+id/mainForUserPage_usedMarketBg"
+                android:id="@+id/mainForUserPage_reviewBg"
         		android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
     			android:layout_below="@id/mainForUserPage_relativeForBidding"
+    			android:background="@drawable/main_complete_frame" />
+            
+            <Button
+                android:id="@+id/mainForUserPage_btnReview"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignRight="@id/mainForUserPage_reviewBg"
+                android:layout_alignTop="@id/mainForUserPage_reviewBg"
+                android:background="@drawable/main_more_btn" />
+            
+            <com.byecar.views.ReviewViewSmall
+                android:id="@+id/mainForUserPage_reviewView1" 
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignTop="@id/mainForUserPage_reviewBg" />
+            
+            <com.byecar.views.ReviewViewSmall
+                android:id="@+id/mainForUserPage_reviewView2" 
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/mainForUserPage_reviewView1" />
+            
+            <com.byecar.views.ReviewViewSmall
+                android:id="@+id/mainForUserPage_reviewView3" 
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/mainForUserPage_reviewView2" />
+            
+            <View 
+                android:id="@+id/mainForUserPage_usedMarketBg"
+        		android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_reviewBg"
     			android:background="@drawable/main_used_car_frame1" />
             
             <Button

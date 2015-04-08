@@ -16,9 +16,10 @@ public class PriceTextView extends LinearLayout {
 
 	public static final int TYPE_DETAIL_AUCTION = 0;
 	public static final int TYPE_MAIN_BIDDING = 1;
-	public static final int TYPE_DETAIL_OTHERS = 2;
-	public static final int TYPE_NORMAL_CAR = 3;
-	public static final int TYPE_USED_CAR = 4;
+	public static final int TYPE_MAIN_REVIEW = 2;
+	public static final int TYPE_DETAIL_OTHERS = 3;
+	public static final int TYPE_NORMAL_CAR = 4;
+	public static final int TYPE_USED_CAR = 5;
 
 	/**
 	 * 0 : 만원
@@ -78,7 +79,6 @@ public class PriceTextView extends LinearLayout {
 		case TYPE_MAIN_BIDDING:
 			setTextColor(getContext().getResources().getColor(R.color.color_orange2));
 			textViews[0].setText(R.string.currentPrice);
-			
 			FontUtils.setFontSize(textViews[0], 16);
 			
 			FontUtils.setFontSize(textViews[1], 24);
@@ -86,6 +86,19 @@ public class PriceTextView extends LinearLayout {
 			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
 			
 			FontUtils.setFontSize(textViews[2], 16);
+			break;
+			
+		case TYPE_MAIN_REVIEW:
+			setTextColor(getContext().getResources().getColor(R.color.color_orange2));
+			textViews[0].setText(R.string.biddingPrice);
+			
+			FontUtils.setFontSize(textViews[0], 18);
+			
+			FontUtils.setFontSize(textViews[1], 26);
+			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
+			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
+			
+			FontUtils.setFontSize(textViews[2], 18);
 			break;
 			
 		case TYPE_NORMAL_CAR:

@@ -66,7 +66,7 @@ public class ForumView extends FrameLayout {
 		this.addView(cover);
 		
 		badge = new View(getContext());
-		ResizeUtils.viewResize(37, 58, badge, 2, Gravity.LEFT|Gravity.TOP, new int[]{6, 0, 0, 0});
+		ResizeUtils.viewResize(33, 38, badge, 2, Gravity.LEFT|Gravity.TOP, new int[]{6, 0, 0, 0});
 		badge.setBackgroundColor(Color.argb(100, 255, 0, 0));
 		this.addView(badge);
 		
@@ -178,15 +178,15 @@ public class ForumView extends FrameLayout {
 		switch(index) {
 		
 		case 0:
-			badge.setBackgroundResource(R.drawable.main_forum_rank1);
+			badge.setBackgroundResource(R.drawable.main_rank1);
 			break;
 			
 		case 1:
-			badge.setBackgroundResource(R.drawable.main_forum_rank2);
+			badge.setBackgroundResource(R.drawable.main_rank2);
 			break;
 			
 		case 2:
-			badge.setBackgroundResource(R.drawable.main_forum_rank3);
+			badge.setBackgroundResource(R.drawable.main_rank3);
 			break;
 			
 		default:

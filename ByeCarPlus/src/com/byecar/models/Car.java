@@ -88,6 +88,8 @@ public class Car extends BCPBaseModel implements Serializable {
 	private int has_purchased;
 	private int has_review;
 	private String car_wd;
+	
+	private Review review;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -152,6 +154,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.has_purchased = 0;
 			this.has_review = 0;
 			this.car_wd = null;
+			
+			this.review = null;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -213,6 +217,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.has_purchased = newCar.has_purchased;
 			this.has_review = newCar.has_review;
 			this.car_wd = newCar.car_wd;
+			
+			this.review = newCar.review;
 		}
 	}
 	
@@ -473,6 +479,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("car_wd")) {
 				this.car_wd = objJSON.getString("car_wd");
+			}
+			
+			if(objJSON.has("review")) {
+				this.review = new Review(objJSON.getJSONObject("review"));
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1092,5 +1102,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setCar_wd(String car_wd) {
 		this.car_wd = car_wd;
+	}
+
+	public Review getReview() {
+		return review;
+	}
+
+	public void setReview(Review review) {
+		this.review = review;
 	}
 }

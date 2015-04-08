@@ -64,7 +64,7 @@ public class DealerView extends FrameLayout {
 		this.addView(cover);
 		
 		rankBadge = new View(getContext());
-		ResizeUtils.viewResize(40, 35, rankBadge, 2, Gravity.LEFT|Gravity.TOP, new int[]{4, 4, 0, 0});
+		ResizeUtils.viewResize(33, 38, rankBadge, 2, Gravity.LEFT|Gravity.TOP, new int[]{4, 4, 0, 0});
 		this.addView(rankBadge);
 		
 		tvPrice = new TextView(getContext());

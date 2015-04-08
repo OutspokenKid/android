@@ -35,6 +35,8 @@ import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
 import com.byecar.views.ForumView;
+import com.byecar.views.ReviewView;
+import com.byecar.views.ReviewViewSmall;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -68,6 +70,10 @@ public class MainPage extends BCPAuctionableFragment {
 	private Button btnBidding;
 	private BiddingCarView[] biddingCarViews = new BiddingCarView[3];
 	
+	private View reviewBg;
+	private Button btnReview;
+	private ReviewViewSmall[] reviewViewSmalls = new ReviewViewSmall[3];
+	
 	private View usedMarketBg;
 	private UsedCarView[] usedCarViews = new UsedCarView[3];
 	private Button btnUsedMarket;
@@ -88,6 +94,7 @@ public class MainPage extends BCPAuctionableFragment {
 	
 //	private ArrayList<Dealer> topDealers = new ArrayList<Dealer>();
 	private ArrayList<Car> bids1 = new ArrayList<Car>();
+	private ArrayList<Car> reviews = new ArrayList<Car>();
 	private ArrayList<Car> bids2 = new ArrayList<Car>();
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
@@ -127,6 +134,12 @@ public class MainPage extends BCPAuctionableFragment {
 		biddingCarViews[0] = (BiddingCarView) mThisView.findViewById(R.id.mainForUserPage_biddingCarView1);
 		biddingCarViews[1] = (BiddingCarView) mThisView.findViewById(R.id.mainForUserPage_biddingCarView2);
 		biddingCarViews[2] = (BiddingCarView) mThisView.findViewById(R.id.mainForUserPage_biddingCarView3);
+		
+		reviewBg = mThisView.findViewById(R.id.mainForUserPage_reviewBg);
+		btnReview = (Button) mThisView.findViewById(R.id.mainForUserPage_btnReview);
+		reviewViewSmalls[0] = (ReviewViewSmall) mThisView.findViewById(R.id.mainForUserPage_reviewView1);
+		reviewViewSmalls[1] = (ReviewViewSmall) mThisView.findViewById(R.id.mainForUserPage_reviewView2);
+		reviewViewSmalls[2] = (ReviewViewSmall) mThisView.findViewById(R.id.mainForUserPage_reviewView3);
 		
 		usedMarketBg = mThisView.findViewById(R.id.mainForUserPage_usedMarketBg);
 		btnUsedMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnUsedMarket);
@@ -333,6 +346,29 @@ public class MainPage extends BCPAuctionableFragment {
 		size = biddingCarViews.length;
 		for(int i=0; i<3; i++) {
 			ResizeUtils.viewResizeForRelative(174, 255, biddingCarViews[i], null, null, new int[]{i==0?24:18, 90, 0, 0});
+		}
+		
+		//reviewBg.
+		rp = (RelativeLayout.LayoutParams) reviewBg.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(660);
+		rp.topMargin = ResizeUtils.getSpecificLength(18);
+
+		//btnReview.
+		rp = (RelativeLayout.LayoutParams) btnReview.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		
+		//reviewViews.		
+		size = reviewViewSmalls.length;
+		for(int i=0; i<size; i++) {
+			rp = (RelativeLayout.LayoutParams) reviewViewSmalls[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(578);
+			rp.height = ResizeUtils.getSpecificLength(175);
+			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			rp.topMargin = ResizeUtils.getSpecificLength(i==0?84:18);
 		}
 		
 		//usedMarketBg.
@@ -591,6 +627,22 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					try {
+						reviews.clear();
+						JSONArray arJSON = objJSON.getJSONArray("reviews");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							Car car = new Car(arJSON.getJSONObject(i));
+							reviews.add(car);
+						}
+
+						setReviewInfo();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
 						dealers.clear();
 						JSONArray arJSON = objJSON.getJSONArray("dealer");
 						size = arJSON.length();
@@ -794,6 +846,19 @@ public class MainPage extends BCPAuctionableFragment {
 		size = bids2.size();
 		for(int i=0; i<size; i++) {
 			biddingCarViews[i].setCar(bids2.get(i));
+		}
+	}
+	
+	public void setReviewInfo() {
+		
+		int size = reviewViewSmalls.length;
+		for(int i=0; i<size; i++) {
+			reviewViewSmalls[i].clearView();
+		}
+		
+		size = reviews.size();
+		for(int i=0; i<size; i++) {
+			reviewViewSmalls[i].setReview(reviews.get(i));
 		}
 	}
 	

@@ -327,7 +327,7 @@ public final class R {
 		public static final int com_facebook_list_section_header_background = 0x7f0200ac;
 		public static final int com_facebook_loginbutton_silver = 0x7f0200ad;
 		public static final int com_facebook_logo = 0x7f0200ae;
-		public static final int com_facebook_picker_default_separator_color = 0x7f02030c;
+		public static final int com_facebook_picker_default_separator_color = 0x7f02030e;
 		public static final int com_facebook_picker_item_background = 0x7f0200af;
 		public static final int com_facebook_picker_list_focused = 0x7f0200b0;
 		public static final int com_facebook_picker_list_longpressed = 0x7f0200b1;
@@ -372,8 +372,8 @@ public final class R {
 		public static final int kakaoaccount_icon = 0x7f020195;
 		public static final int kakaostory_icon = 0x7f020196;
 		public static final int kakaotalk_icon = 0x7f020197;
-		public static final int wheel_bg = 0x7f020308;
-		public static final int wheel_val = 0x7f020309;
+		public static final int wheel_bg = 0x7f02030a;
+		public static final int wheel_val = 0x7f02030b;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f0500a0;
@@ -438,7 +438,7 @@ public final class R {
 		public static final int imageviewerActivity_thumbnailLinear = 0x7f0500d0;
 		public static final int imageviewerActivity_thumbnailLinearBg = 0x7f0500cf;
 		public static final int imageviewerActivity_title = 0x7f0500cd;
-		public static final int kakao_login_activity_progress_bar = 0x7f05023b;
+		public static final int kakao_login_activity_progress_bar = 0x7f050240;
 		public static final int large = 0x7f05001b;
 		public static final int listMode = 0x7f050001;
 		public static final int list_item = 0x7f0500ad;
