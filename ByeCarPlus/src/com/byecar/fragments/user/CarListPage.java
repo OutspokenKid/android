@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -38,10 +37,8 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class CarListPage extends BCPAuctionableFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
+	private View buttonBg;
 	private Button btnRegistration;
-	private Button btnRequestCertification;
-	private Button btnCurrentOrder;
-	private Button btnBanner;
 	private Button btnGuide;
 	private Button btnSearch;
 	
@@ -49,7 +46,6 @@ public class CarListPage extends BCPAuctionableFragment {
 	private int standardLength;
 	private float diff;
 	private int type;
-	private String orderString;
 	
 	@Override
 	public void bindViews() {
@@ -58,10 +54,8 @@ public class CarListPage extends BCPAuctionableFragment {
 		
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.carListPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.carListPage_listView);
+		buttonBg = mThisView.findViewById(R.id.carListPage_buttonBg);
 		btnRegistration = (Button) mThisView.findViewById(R.id.carListPage_btnRegistration);
-		btnRequestCertification = (Button) mThisView.findViewById(R.id.carListPage_btnRequestCertification);
-		btnCurrentOrder = (Button) mThisView.findViewById(R.id.carListPage_btnCurrentOrder);
-		btnBanner = (Button) mThisView.findViewById(R.id.carListPage_btnBanner);
 		btnGuide = (Button) mThisView.findViewById(R.id.carListPage_btnGuide);
 		btnSearch = (Button) mThisView.findViewById(R.id.carListPage_btnSearch);
 	}
@@ -72,8 +66,6 @@ public class CarListPage extends BCPAuctionableFragment {
 		if(getArguments() != null) {
 			type = getArguments().getInt("type");
 		}
-		
-		orderString = "date";
 	}
 
 	@Override
@@ -87,37 +79,53 @@ public class CarListPage extends BCPAuctionableFragment {
         		getResources().getColor(R.color.titlebar_bg_brown), 
         		getResources().getColor(R.color.titlebar_bg_orange), 
         		getResources().getColor(R.color.titlebar_bg_brown));
-        
         swipeRefreshLayout.setEnabled(true);
 
-		if(type != Car.TYPE_DIRECT_NORMAL) {
-			titleBar.setBgColor(Color.WHITE);
-			titleBar.setBgAlpha(0);
-			
-			listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
-    		listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
-		} else {
-			listView.setDivider(null);
-    		listView.setDividerHeight(0);
-		}
-		
-		switch(type) {
+        //타이틀바 설정.
+        switch(type) {
 		
 		case Car.TYPE_BID:
-			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_a);
-			btnRegistration.setVisibility(View.VISIBLE);
+			titleBar.setBgAlpha(0);
 			break;
 			
 		case Car.TYPE_DEALER:
-			btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
+		case Car.TYPE_DIRECT_NORMAL:
+			break;
+        }
+        
+        //여백 설정.
+        listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+		
+        switch(type) {
+		
+        case Car.TYPE_BID:
+        	listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
+			break;
+			
+		case Car.TYPE_DEALER:
+		case Car.TYPE_DIRECT_NORMAL:
+			listView.setDividerHeight(ResizeUtils.getSpecificLength(30));
+			break;
+        }
+		
+		//버튼 설정.
+		switch(type) {
+		
+		case Car.TYPE_BID:
+			btnRegistration.setBackgroundResource(R.drawable.auction_request_btn);
+			btnRegistration.setVisibility(View.VISIBLE);
+			buttonBg.setVisibility(View.VISIBLE);
+			break;
+			
+		case Car.TYPE_DEALER:
+			btnRegistration.setVisibility(View.INVISIBLE);
+			buttonBg.setVisibility(View.INVISIBLE);
 			break;
 			
 		case Car.TYPE_DIRECT_NORMAL:
-			btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle_c);
+			btnRegistration.setBackgroundResource(R.drawable.direct_request_btn);
 			btnRegistration.setVisibility(View.VISIBLE);
-			mThisView.findViewById(R.id.carListPage_btnGuide).setBackgroundResource(R.drawable.normal_direct_guide_btn);
-			mThisView.findViewById(R.id.carListPage_btnSearch).setBackgroundResource(R.drawable.normal_direct_search_btn);
-			btnBanner.setVisibility(View.VISIBLE);
+			buttonBg.setVisibility(View.VISIBLE);
 			break;
 		}
 	}
@@ -176,69 +184,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			        	refreshPage();
 			        }
 			    }, 2000);
-			}
-		});
-
-		btnCurrentOrder.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				String[] strings = new String[] {
-						null,
-						getString(R.string.order_2)
-				};
-				
-				if(type == Car.TYPE_BID) {
-					strings[0] = getString(R.string.order_1);
-				} else {
-					strings[0] = getString(R.string.order_3);
-				}
-				
-				mActivity.showSelectDialog(title, strings, new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						
-						if(which == 0) {
-							orderString = "date";
-							
-							switch(type) {
-							
-							case Car.TYPE_BID:
-								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle1);
-								break;
-								
-							case Car.TYPE_DEALER:
-								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort1_btn);
-								break;
-								
-							case Car.TYPE_DIRECT_NORMAL:
-								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle3);
-								break;
-							}
-						} else {
-							orderString = "like";
-							
-							switch(type) {
-							
-							case Car.TYPE_BID:
-								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle2);
-								break;
-								
-							case Car.TYPE_DEALER:
-								btnCurrentOrder.setBackgroundResource(R.drawable.used_sort2_btn);
-								break;
-								
-							case Car.TYPE_DIRECT_NORMAL:
-								btnCurrentOrder.setBackgroundResource(R.drawable.sort_toggle2);
-								break;
-							}
-						}
-						
-						refreshPage();
-					}
-				});
 			}
 		});
 		
@@ -309,10 +254,16 @@ public class CarListPage extends BCPAuctionableFragment {
 		//swipe_container.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.carListPage_swipe_container).getLayoutParams();
-		rp.bottomMargin = ResizeUtils.getSpecificLength(89);
 		
-		if(type == Car.TYPE_DIRECT_NORMAL) {
-			rp.topMargin = ResizeUtils.getSpecificLength(176);
+		
+		//Set topMargin.
+		if(type != Car.TYPE_BID) {
+			rp.topMargin = ResizeUtils.getSpecificLength(88);
+		}
+		
+		//Set bottomMargink.
+		if(type != Car.TYPE_DEALER) {
+			rp.bottomMargin = ResizeUtils.getSpecificLength(89);
 		}
 		
 		//buttonBg.
@@ -320,53 +271,25 @@ public class CarListPage extends BCPAuctionableFragment {
 				R.id.carListPage_buttonBg).getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(100);
 		
-		int p = ResizeUtils.getSpecificLength(8);
-		
-		//btnCurrentOrder.
-		rp = (RelativeLayout.LayoutParams) btnCurrentOrder.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(72);
-		
-		if(type == Car.TYPE_DEALER) {
-			rp.width = ResizeUtils.getSpecificLength(624);
-			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-		} else {
-			rp.width = ResizeUtils.getSpecificLength(72);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			rp.leftMargin = p;
-		}
-
-		rp.bottomMargin = p;
-		
 		//btnRegistration.
 		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(544);
 		rp.height = ResizeUtils.getSpecificLength(72);
-		rp.rightMargin = p;
-		rp.bottomMargin = p;
-		
-		//btnRequestCertification.
-		rp = (RelativeLayout.LayoutParams) btnRequestCertification.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(544);
-		rp.height = ResizeUtils.getSpecificLength(72);
-		rp.rightMargin = p;
-		rp.bottomMargin = p;
-
-		//btnBanner.
-		rp = (RelativeLayout.LayoutParams) btnBanner.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(96);
+		rp.rightMargin = ResizeUtils.getSpecificLength(8);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
 		
 		//btnGuide.
 		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(60);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(14);
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 		
 		//btnSearch.
 		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(60);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(8);
 	}
 
 	@Override
@@ -413,12 +336,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			url = BCPAPIs.CAR_DIRECT_NORMAL_LIST_URL;
 			break;
 		}
-
-		if(url != null) {
-			url += (url.contains("?")? "&" : "?");
-		}
-		
-		url += "order=" + orderString;
 		
 		super.downloadInfo();
 	}
@@ -516,7 +433,7 @@ public class CarListPage extends BCPAuctionableFragment {
 	
 	public void checkPageScrollOffset() {
 
-		if(type != Car.TYPE_DIRECT_NORMAL) {
+		if(type == Car.TYPE_BID) {
 			
 			if(standardLength == 0) {
 				standardLength = ResizeUtils.getSpecificLength(500);
@@ -576,11 +493,7 @@ public class CarListPage extends BCPAuctionableFragment {
 
 		//경매가 종료된 물건이 있는 경우.
 		} else if(event.equals("auction_ended")) {
-			
-			//좋아요 순이 아니라면,
-			if(!getString(R.string.order_2).equals(orderString)) {
-				reorderList(startIndex, car);
-			}
+			reorderList(startIndex, car);
 			
 		//관리자에 의해 보류된 경우.
 		} else if(event.equals("auction_held")) {

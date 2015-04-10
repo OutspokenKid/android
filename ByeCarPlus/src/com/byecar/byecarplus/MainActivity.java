@@ -331,9 +331,6 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_CAR_REGISTRATION:
 			return new CarRegistrationPage();
-			
-		case BCPConstants.PAGE_DIRECT_NORMAL_LIST:
-			return new OpenablePostListPage();
 		
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();

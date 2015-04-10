@@ -35,7 +35,6 @@ import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
 import com.byecar.views.ForumView;
-import com.byecar.views.ReviewView;
 import com.byecar.views.ReviewViewSmall;
 import com.byecar.views.TitleBar;
 import com.byecar.views.UsedCarView;
@@ -46,8 +45,8 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.TimerUtils;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -256,16 +255,16 @@ public class MainPage extends BCPAuctionableFragment {
 			}
 		});
 		
-//		btnAuction.setOnClickListener(new OnClickListener() {
-//
-//			@Override
-//			public void onClick(View view) {
-//
-//				Bundle bundle = new Bundle();
-//				bundle.putInt("type", Car.TYPE_BID);
-//				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-//			}
-//		});
+		btnBidding.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", Car.TYPE_BID);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
 	
 		btnUsedMarket.setOnClickListener(new OnClickListener() {
 
@@ -283,7 +282,9 @@ public class MainPage extends BCPAuctionableFragment {
 			@Override
 			public void onClick(View view) {
 
-				mActivity.showPage(BCPConstants.PAGE_DIRECT_MARKET, null);				
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", Car.TYPE_DIRECT_NORMAL);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
 	}
