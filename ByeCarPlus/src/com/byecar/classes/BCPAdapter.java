@@ -7,12 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.byecar.byecarplus.R;
+import com.byecar.wrappers.ViewWrapperForAuctionCar;
 import com.byecar.wrappers.ViewWrapperForBrand;
-import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForMyCar;
 import com.byecar.wrappers.ViewWrapperForMyReview;
 import com.byecar.wrappers.ViewWrapperForNotification;
 import com.byecar.wrappers.ViewWrapperForOpenablePost;
+import com.byecar.wrappers.ViewWrapperForOtherCar;
 import com.byecar.wrappers.ViewWrapperForSearchText;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -26,20 +27,11 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class BCPAdapter extends OutSpokenAdapter {
 
 	private BCPFragmentActivity activity;
-	private BCPAuctionableFragment fragment;
 	
 	public BCPAdapter(Context context, BCPFragmentActivity activity, 
 			LayoutInflater inflater, ArrayList<BaseModel> models) {
 		super(context, inflater, models);
 		this.activity = activity;
-	}
-	
-	public BCPAdapter(Context context, BCPFragmentActivity activity, 
-			BCPAuctionableFragment fragment,
-			LayoutInflater inflater, ArrayList<BaseModel> models) {
-		super(context, inflater, models);
-		this.activity = activity;
-		this.fragment = fragment;
 	}
 
 	@Override
@@ -58,11 +50,11 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return R.layout.list_my_review;
 			
 		case BCPConstants.ITEM_CAR_BID:
+			return R.layout.list_biddingcar;
+
 		case BCPConstants.ITEM_CAR_DEALER:
-			return R.layout.list_car;
-			
 		case BCPConstants.ITEM_CAR_DIRECT:
-			return R.layout.list_direct_normal;
+			return R.layout.list_othercar;
 			
 		case BCPConstants.ITEM_CAR_BRAND: 
 			return R.layout.grid_brand;
@@ -97,15 +89,15 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfm;
 			
 		case BCPConstants.ITEM_CAR_BID:
-			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
-			vwfc.setFragment(fragment);
+			ViewWrapperForAuctionCar vwfc = new ViewWrapperForAuctionCar(convertView, itemCode);
 			vwfc.setActivity(activity);
 			return vwfc;
 			
 		case BCPConstants.ITEM_CAR_DEALER:
-			vwfc = new ViewWrapperForCar(convertView, itemCode);
-			vwfc.setActivity(activity);
-			return vwfc;
+		case BCPConstants.ITEM_CAR_DIRECT:
+			ViewWrapperForOtherCar vwfoc = new ViewWrapperForOtherCar(convertView, itemCode);
+			vwfoc.setActivity(activity);
+			return vwfoc;
 			
 		case BCPConstants.ITEM_CAR_BRAND:
 			ViewWrapperForBrand vwfb = new ViewWrapperForBrand(convertView, itemCode);
@@ -144,6 +136,21 @@ public class BCPAdapter extends OutSpokenAdapter {
 			} else {
 				convertView.setPadding(0, 0, 0, 0);
 			}
+			break;
+		
+		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DIRECT:
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(30), 0, 0);
+				
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(30));
+				
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
+			
 			break;
 			
 		case BCPConstants.ITEM_NOTICE:

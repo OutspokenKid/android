@@ -165,9 +165,9 @@
     <string name="pageTitle_typeSearchCar_wd">2/4륜구동</string>
     <string name="pageTitle_typeSearchCar_area">판매지역</string>
     <string name="pageTitle_carDetail">상세보기</string>
-    <string name="pageTitle_carList_auction">경매 리스트</string>
-    <string name="pageTitle_carList_dealer">중고차마켓 리스트</string>
-    <string name="pageTitle_carList_direct">직거래 리스트</string>
+    <string name="pageTitle_carList_auction">입찰 진행중</string>
+    <string name="pageTitle_carList_dealer">중고차마켓</string>
+    <string name="pageTitle_carList_direct">직거래</string>
     <string name="pageTitle_carRegistration_edit">차량 수정</string>
     <string name="pageTitle_carRegistration_registration">차량 등록</string>
     <string name="pageTitle_directMarket">직거래</string>

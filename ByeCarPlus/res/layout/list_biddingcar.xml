@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView 
+        android:id="@+id/list_biddingcar_ivImage"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/main_auction_default" />
+    
+    <View
+        android:id="@+id/list_biddingcar_auctionIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_biddingcar_ivImage"
+        android:layout_alignLeft="@id/list_biddingcar_ivImage" />
+
+    <com.byecar.views.CarInfoView 
+        android:id="@+id/list_biddingcar_carInfoView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_biddingcar_ivImage" />
+    
+</RelativeLayout>

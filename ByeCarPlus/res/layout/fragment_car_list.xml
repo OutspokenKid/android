@@ -35,7 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignTop="@id/carListPage_buttonBg"
+        android:layout_alignBottom="@id/carListPage_buttonBg"
         android:visibility="invisible" />
     
     <com.byecar.views.TitleBar

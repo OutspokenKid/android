@@ -1045,8 +1045,10 @@ public class CarDetailPage extends BCPFragment {
 		if(car.getType() == Car.TYPE_BID) {
 			tvRemainTime.setText("-- : -- : --");
 			
+			auctionIcon.setVisibility(View.INVISIBLE);
+			
 			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon2);
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
 				
 				//경매 종료 시간 한시간 이내.
@@ -1057,11 +1059,11 @@ public class CarDetailPage extends BCPFragment {
 				}
 			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
 				auctionIcon.setVisibility(View.VISIBLE);
 			} else {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
 				auctionIcon.setVisibility(View.VISIBLE);
 			}
 		}
@@ -1147,8 +1149,10 @@ public class CarDetailPage extends BCPFragment {
 		
 		tvRemainTime.setText("-- : -- : --");
 		
+		auctionIcon.setVisibility(View.INVISIBLE);
+		
 		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+			auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon2);
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
 			
 			//경매 종료 시간 한시간 이내.
@@ -1159,11 +1163,11 @@ public class CarDetailPage extends BCPFragment {
 			}
 		} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
-			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+			auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
 			auctionIcon.setVisibility(View.VISIBLE);
 		} else {
 			progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
-			auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+			auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
 			auctionIcon.setVisibility(View.VISIBLE);
 		}
 		

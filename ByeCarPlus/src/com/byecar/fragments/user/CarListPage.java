@@ -71,7 +71,7 @@ public class CarListPage extends BCPAuctionableFragment {
 	@Override
 	public void createPage() {
 
-		adapter = new BCPAdapter(mContext, mActivity, this, mActivity.getLayoutInflater(), models);
+		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
 		listView.setAdapter(adapter);
     	
         swipeRefreshLayout.setColorSchemeColors(
@@ -263,20 +263,19 @@ public class CarListPage extends BCPAuctionableFragment {
 		
 		//Set bottomMargink.
 		if(type != Car.TYPE_DEALER) {
-			rp.bottomMargin = ResizeUtils.getSpecificLength(89);
+			rp.bottomMargin = ResizeUtils.getSpecificLength(115);
 		}
 		
 		//buttonBg.
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.carListPage_buttonBg).getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(100);
+		rp.height = ResizeUtils.getSpecificLength(123);
 		
 		//btnRegistration.
 		rp = (RelativeLayout.LayoutParams) btnRegistration.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(544);
-		rp.height = ResizeUtils.getSpecificLength(72);
-		rp.rightMargin = ResizeUtils.getSpecificLength(8);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(8);
+		rp.width = ResizeUtils.getSpecificLength(611);
+		rp.height = ResizeUtils.getSpecificLength(84);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(15);
 		
 		//btnGuide.
 		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
@@ -308,9 +307,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			
 		case Car.TYPE_DEALER:
 			return R.string.pageTitle_carList_dealer;
-			
-//		case Car.TYPE_DIRECT_CERTIFIED:
-//			return R.drawable.directmarket_verification_back_btn;
 			
 		case Car.TYPE_DIRECT_NORMAL:
 			return R.string.pageTitle_carList_direct;

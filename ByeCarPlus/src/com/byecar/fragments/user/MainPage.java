@@ -37,7 +37,7 @@ import com.byecar.views.DealerView;
 import com.byecar.views.ForumView;
 import com.byecar.views.ReviewViewSmall;
 import com.byecar.views.TitleBar;
-import com.byecar.views.UsedCarView;
+import com.byecar.views.OtherCarView;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -74,7 +74,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private ReviewViewSmall[] reviewViewSmalls = new ReviewViewSmall[3];
 	
 	private View usedMarketBg;
-	private UsedCarView[] usedCarViews = new UsedCarView[3];
+	private OtherCarView[] usedCarViews = new OtherCarView[3];
 	private Button btnUsedMarket;
 	private ImageView ivDirectMarket;
 	private Button btnDirectMarket;
@@ -142,9 +142,9 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		usedMarketBg = mThisView.findViewById(R.id.mainForUserPage_usedMarketBg);
 		btnUsedMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnUsedMarket);
-		usedCarViews[0] = (UsedCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView1);
-		usedCarViews[1] = (UsedCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView2);
-		usedCarViews[2] = (UsedCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView3);
+		usedCarViews[0] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView1);
+		usedCarViews[1] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView2);
+		usedCarViews[2] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView3);
 		
 		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
 		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
@@ -305,8 +305,8 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		//auctionIcon.
 		rp = (RelativeLayout.LayoutParams) auctionIcon.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(95);
-		rp.height = ResizeUtils.getSpecificLength(95);
+		rp.width = ResizeUtils.getSpecificLength(161);
+		rp.height = ResizeUtils.getSpecificLength(51);
 		rp.leftMargin = ResizeUtils.getSpecificLength(12);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(18);
 
@@ -802,8 +802,10 @@ public class MainPage extends BCPAuctionableFragment {
 			pageNavigator.setSize(bids1.size());
 			pageNavigator.setIndex(index);
 
+			auctionIcon.setVisibility(View.INVISIBLE);
+			
 			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon2);
 				
 				//경매 종료 시간 한시간 이내.
 				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
@@ -812,10 +814,10 @@ public class MainPage extends BCPAuctionableFragment {
 					auctionIcon.setVisibility(View.INVISIBLE);
 				}
 			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
 				auctionIcon.setVisibility(View.VISIBLE);
 			} else {
-				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
 				auctionIcon.setVisibility(View.VISIBLE);
 			}
 		}
@@ -946,12 +948,12 @@ public class MainPage extends BCPAuctionableFragment {
 				        		//경매 종료.
 				        		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 				        			car.setStatus(Car.STATUS_BID_COMPLETE);
-				    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark2);
+				    				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
 				    				
 				        		//입찰 종료.
 				        		} else {
 				        			car.setStatus(Car.STATUS_BID_FAIL);
-				    				auctionIcon.setBackgroundResource(R.drawable.main_hotdeal_mark3);
+				    				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
 				        		}
 				        		
 				        		carInfoView.statusChanged(car);

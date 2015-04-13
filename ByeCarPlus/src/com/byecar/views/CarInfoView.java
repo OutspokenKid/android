@@ -20,6 +20,7 @@ import com.outspoken_kid.utils.StringUtils;
 public class CarInfoView extends RelativeLayout {
 
 	public static final int TYPE_MAIN_AUCTION = 0;
+	public static final int TYPE_LIST_AUCTION = 0;
 	
 	private ProgressBar progressBar;
 	private View centerView;
@@ -249,14 +250,14 @@ public class CarInfoView extends RelativeLayout {
 			}
 			
 			tvCarInfo1.setText(car.getCar_full_name());
-			tvCarInfo2.setText(car.getYear() + "년 / "
-					+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
+			tvCarInfo2.setText(car.getYear() + "년/"
+					+ StringUtils.getFormattedNumber(car.getMileage()) + "km/"
 					+ car.getArea());
 			priceTextView.setPrice(car.getPrice());
 			
 			if(type == TYPE_MAIN_AUCTION) {
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
-						+ "명 / 입찰자 " + car.getBids_cnt() + "명");
+						+ "명/입찰횟수 " + car.getBids_cnt() + "명");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

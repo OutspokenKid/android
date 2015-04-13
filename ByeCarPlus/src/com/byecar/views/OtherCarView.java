@@ -31,7 +31,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
-public class UsedCarView extends RelativeLayout {
+public class OtherCarView extends RelativeLayout {
 
 	private ImageView ivImage;
 	private ImageView ivProfile;
@@ -43,15 +43,15 @@ public class UsedCarView extends RelativeLayout {
 	private View[] infoBadges = new View[4];
 	private PriceTextView priceTextView;
 	
-	public UsedCarView(Context context) {
+	public OtherCarView(Context context) {
 		this(context, null, 0);
 	}
 	
-	public UsedCarView(Context context, AttributeSet attrs) {
+	public OtherCarView(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
 	}
 	
-	public UsedCarView(Context context, AttributeSet attrs, int defStyleAttr) {
+	public OtherCarView(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		init();
 	}
@@ -223,7 +223,18 @@ public class UsedCarView extends RelativeLayout {
 	
 	public void downloadImage(String imageUrl, final ImageView ivImage) {
 		
-		ivImage.setImageDrawable(null);
+		if(ivImage == null) {
+			return;
+		} else if(imageUrl == null || imageUrl.length() == 0) {
+			ivImage.setImageDrawable(null);
+			ivImage.setTag(null);
+			return;
+		} else if(ivImage.getTag() != null && imageUrl.equals(ivImage.getTag().toString())) {
+			//Do nothing because of same image is already set.
+			return;
+		} else {
+			ivImage.setImageDrawable(null);
+		}
 		
 		ivImage.setTag(imageUrl);
 		BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
@@ -263,29 +274,33 @@ public class UsedCarView extends RelativeLayout {
 			downloadImage(car.getRep_img_url(), ivImage);
 		}
 		
-		if(!StringUtils.isEmpty(car.getDealer_profile_img_url())) {
+		if(car.getType() == Car.TYPE_DEALER) {
 			downloadImage(car.getDealer_profile_img_url(), ivProfile);
-		}
-		
-		tvDealerName.setText(car.getDealer_name());
-		
-		switch(car.getDealer_level()) {
-		
-		case Dealer.LEVEL_FRESH_MAN:
-			rankBadge.setBackgroundResource(R.drawable.main_used_grade4);
-			break;
-		case Dealer.LEVEL_NORAML_DEALER:
-			rankBadge.setBackgroundResource(R.drawable.main_used_grade3);
-			break;
+			tvDealerName.setText(car.getDealer_name());
 			
-		case Dealer.LEVEL_SUPERB_DEALER:
-			rankBadge.setBackgroundResource(R.drawable.main_used_grade2);
-			break;
+			rankBadge.setVisibility(View.VISIBLE);
+			switch(car.getDealer_level()) {
 			
-		case Dealer.LEVEL_POWER_DEALER:
-			rankBadge.setBackgroundResource(R.drawable.main_used_grade1);
-			break;
-			
+			case Dealer.LEVEL_FRESH_MAN:
+				rankBadge.setBackgroundResource(R.drawable.main_used_grade4);
+				break;
+			case Dealer.LEVEL_NORAML_DEALER:
+				rankBadge.setBackgroundResource(R.drawable.main_used_grade3);
+				break;
+				
+			case Dealer.LEVEL_SUPERB_DEALER:
+				rankBadge.setBackgroundResource(R.drawable.main_used_grade2);
+				break;
+				
+			case Dealer.LEVEL_POWER_DEALER:
+				rankBadge.setBackgroundResource(R.drawable.main_used_grade1);
+				break;
+				
+			}
+		} else {
+			downloadImage(car.getSeller_profile_img_url(), ivProfile);
+			tvDealerName.setText(car.getSeller_name());
+			rankBadge.setVisibility(View.INVISIBLE);
 		}
 		
 		tvCarName.setText(car.getModel_name());

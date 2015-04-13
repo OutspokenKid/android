@@ -11,25 +11,25 @@ import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Car;
-import com.byecar.views.NormalCarView;
+import com.byecar.views.OtherCarView;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.ResizeUtils;
 
-public class ViewWrapperForDirectNormal extends ViewWrapper {
+public class ViewWrapperForOtherCar extends ViewWrapper {
 
 	private Car car;
-	private NormalCarView normalCarView;
+	private OtherCarView otherCarView;
 	private BCPFragmentActivity mActivity; 
 	
-	public ViewWrapperForDirectNormal(View row, int itemCode) {
+	public ViewWrapperForOtherCar(View row, int itemCode) {
 		super(row, itemCode);
 	}
 
 	@Override
 	public void bindViews() {
 
-		normalCarView = (NormalCarView) row.findViewById(R.id.list_direct_normal_normalCarView);
+		otherCarView = (OtherCarView) row.findViewById(R.id.list_othercar_otherCarView);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ViewWrapperForDirectNormal extends ViewWrapper {
 		row.setLayoutParams(new AbsListView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		
-		ResizeUtils.viewResize(578, 132, normalCarView, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 14, 0, 14});
+		ResizeUtils.viewResize(578, 175, otherCarView, 1, Gravity.CENTER_HORIZONTAL, null);
 	}
 
 	@Override
@@ -47,14 +47,14 @@ public class ViewWrapperForDirectNormal extends ViewWrapper {
 		if(baseModel instanceof Car) {
 			
 			this.car = (Car) baseModel;
-			normalCarView.setCar(car);
+			otherCarView.setCar(car);
 		}
 	}
 
 	@Override
 	public void setListeners() {
 		
-		normalCarView.setOnClickListener(new OnClickListener() {
+		otherCarView.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
