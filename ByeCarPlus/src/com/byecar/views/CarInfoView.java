@@ -1,26 +1,32 @@
 package com.byecar.views;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
+import com.byecar.classes.BCPAPIs;
 import com.byecar.models.Car;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class CarInfoView extends RelativeLayout {
 
-	public static final int TYPE_MAIN_AUCTION = 0;
-	public static final int TYPE_LIST_AUCTION = 0;
+	public static final int TYPE_AUCTION = 0;
+	public static final int TYPE_OTHERS = 1;
 	
 	private ProgressBar progressBar;
 	private View centerView;
@@ -32,8 +38,8 @@ public class CarInfoView extends RelativeLayout {
 	private View lineForCarInfo;
 	private TextView tvCarInfo2;
 	private TextView tvBidCount;
-	
-	private int type;
+	private Button btnLike;
+	private TextView tvLike;
 	
 	public CarInfoView(Context context) {
 		this(context, null, 0);
@@ -79,11 +85,6 @@ public class CarInfoView extends RelativeLayout {
 		this.addView(tvRemainTime);
 		
 		timeIcon = new View(getContext());
-		ResizeUtils.viewResizeForRelative(163, 22, timeIcon, 
-				new int[]{ALIGN_TOP, LEFT_OF}, 
-				new int[]{R.id.bidInfoView_progressBar, R.id.bidInfoView_centerView},
-				new int[]{0, 10, 0, 0});
-		timeIcon.setBackgroundResource(R.drawable.main_time);
 		this.addView(timeIcon);
 		
 		infoBg = new View(getContext());
@@ -127,7 +128,7 @@ public class CarInfoView extends RelativeLayout {
 		
 		tvCarInfo2 = new TextView(getContext());
 		tvCarInfo2.setId(R.id.bidInfoView_tvCarInfo2);
-		ResizeUtils.viewResizeForRelative(340, 63, tvCarInfo2, 
+		ResizeUtils.viewResizeForRelative(330, 63, tvCarInfo2, 
 				new int[]{RelativeLayout.ALIGN_PARENT_LEFT, BELOW}, 
 				new int[]{0, R.id.bidInfoView_lineForCarInfo}, 
 				new int[]{20, 0, 0, 0});
@@ -149,16 +150,40 @@ public class CarInfoView extends RelativeLayout {
 		tvBidCount.setTextColor(getResources().getColor(R.color.holo_text));
 		tvBidCount.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
 		FontUtils.setFontSize(tvBidCount, 22);
+		tvBidCount.setVisibility(View.INVISIBLE);
 		this.addView(tvBidCount);
 		
-		//Initialize.
-		if(type == TYPE_MAIN_AUCTION) {
-			tvRemainTime.setText("-- : -- : --");
-			tvCarInfo1.setText("--");
-			tvCarInfo2.setText("-- / -- / --");
-			tvBidCount.setText("참여딜러 --명 / 입찰자 --명");
-			priceTextView.setPrice(0);
-		}
+		btnLike = new Button(getContext());
+		btnLike.setId(R.id.bidInfoView_btnLike);
+		ResizeUtils.viewResizeForRelative(90, 40, btnLike, 
+				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, BELOW}, 
+				new int[]{0, R.id.bidInfoView_lineForCarInfo},
+				new int[]{0, 0, 14, 0});
+		btnLike.setSingleLine();
+		btnLike.setEllipsize(TruncateAt.END);
+		btnLike.setTextColor(getResources().getColor(R.color.holo_text));
+		btnLike.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
+		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
+				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
+		FontUtils.setFontSize(btnLike, 18);
+		btnLike.setVisibility(View.INVISIBLE);
+		this.addView(btnLike);
+		
+		tvLike = new TextView(getContext());
+		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 40, tvLike, 
+				new int[]{RelativeLayout.ALIGN_TOP, LEFT_OF}, 
+				new int[]{R.id.bidInfoView_btnLike, R.id.bidInfoView_btnLike},
+				new int[]{0, 0, 2, 0});
+		FontUtils.setFontSize(tvLike, 20);
+		tvLike.setVisibility(View.INVISIBLE);
+		this.addView(tvLike);
+		
+		tvRemainTime.setText("-- : -- : --");
+		tvCarInfo1.setText("--");
+		tvCarInfo2.setText("-- / -- / --");
+		priceTextView.setPrice(0);
+		tvBidCount.setText("참여딜러 --명 / 입찰자 --명");
+		btnLike.setText("" + 0);
 	}
 
 	public void clearView() {
@@ -226,10 +251,25 @@ public class CarInfoView extends RelativeLayout {
 		try {
 			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
+				timeIcon.setBackgroundResource(R.drawable.main_time);
+				ResizeUtils.viewResizeForRelative(163, 22, timeIcon, 
+						new int[]{ALIGN_TOP, LEFT_OF}, 
+						new int[]{R.id.bidInfoView_progressBar, R.id.bidInfoView_centerView},
+						new int[]{0, 10, 0, 0});
 			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
+				timeIcon.setBackgroundResource(R.drawable.auction_time_text2);
+				ResizeUtils.viewResizeForRelative(115, 22, timeIcon, 
+						new int[]{ALIGN_TOP, LEFT_OF}, 
+						new int[]{R.id.bidInfoView_progressBar, R.id.bidInfoView_centerView},
+						new int[]{0, 10, 0, 0});
 			} else {
 				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
+				timeIcon.setBackgroundResource(R.drawable.auction_time_text2);
+				ResizeUtils.viewResizeForRelative(115, 22, timeIcon, 
+						new int[]{ALIGN_TOP, LEFT_OF}, 
+						new int[]{R.id.bidInfoView_progressBar, R.id.bidInfoView_centerView},
+						new int[]{0, 10, 0, 0});
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -238,16 +278,10 @@ public class CarInfoView extends RelativeLayout {
 		}
 	}
 	
-	public void setCarInfo(Car car) {
+	public void setCarInfo(final Car car) {
 		
 		try {
-			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_orange));
-			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
-				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_green));
-			} else {
-				progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.progressbar_custom_gray));
-			}
+			statusChanged(car);
 			
 			tvCarInfo1.setText(car.getCar_full_name());
 			tvCarInfo2.setText(car.getYear() + "년/"
@@ -255,9 +289,37 @@ public class CarInfoView extends RelativeLayout {
 					+ car.getArea());
 			priceTextView.setPrice(car.getPrice());
 			
-			if(type == TYPE_MAIN_AUCTION) {
+			if(car.getType() == Car.TYPE_BID) {
+				tvBidCount.setVisibility(View.VISIBLE);
+				btnLike.setVisibility(View.INVISIBLE);
+				tvLike.setVisibility(View.INVISIBLE);
+				
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
 						+ "명/입찰횟수 " + car.getBids_cnt() + "명");
+				
+				priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+			} else {
+				tvBidCount.setVisibility(View.INVISIBLE);
+				btnLike.setVisibility(View.VISIBLE);
+				tvLike.setVisibility(View.VISIBLE);
+				
+				if(car.getIs_liked() == 1) {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+				} else {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+				}
+				
+				btnLike.setText("" + car.getLikes_cnt());
+				btnLike.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						setLike(car, car.getIs_liked() == 0);
+					}
+				});
+			
+				priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -266,15 +328,78 @@ public class CarInfoView extends RelativeLayout {
 		}
 	}
 
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
+	public void setLike(Car car, boolean isLike) {
 		
-		if(type == TYPE_MAIN_AUCTION) {
-			priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+		String url = null;
+		
+		if(isLike) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			car.setLikes_cnt(car.getLikes_cnt() + 1);
+			car.setIs_liked(1);
+			
+			switch(car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_LIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT:
+				url = BCPAPIs.CAR_DIRECT_NORMAL_LIKE_URL;
+				break;
+			}
+			
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			car.setLikes_cnt(car.getLikes_cnt() - 1);
+			car.setIs_liked(0);
+			
+			switch(car.getType()) {
+			
+			case Car.TYPE_BID:
+				url = BCPAPIs.CAR_BID_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DEALER:
+				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
+				break;
+				
+			case Car.TYPE_DIRECT:
+				url = BCPAPIs.CAR_DIRECT_NORMAL_UNLIKE_URL;
+				break;
+			}
 		}
+		
+		btnLike.setText("" + car.getLikes_cnt());
+		
+		url += "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("CarInfoView.onError." + "\nurl : " + url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("CarInfoView.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

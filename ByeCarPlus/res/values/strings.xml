@@ -135,6 +135,7 @@
     <string name="min">최소</string>
     <string name="minPriceCantOverMaxPrice">최저 가격은 최대가보다 클 수 없습니다</string>
     <string name="minPriceMustOverZero">최저 가격은 0원 이상이어야 합니다</string>
+    <string name="month">월</string>
 
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>

@@ -181,7 +181,6 @@ public class MainPage extends BCPAuctionableFragment {
 		titleBar.setBgAlpha(0);
 		
 		viewPager.setAdapter(imagePagerAdapter = new ImagePagerAdapter(mContext));
-		carInfoView.setType(CarInfoView.TYPE_MAIN_AUCTION);
 		
 		int size = dealerViews.length;
 		for(int i=0; i<size; i++) {
@@ -283,7 +282,7 @@ public class MainPage extends BCPAuctionableFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", Car.TYPE_DIRECT_NORMAL);
+				bundle.putInt("type", Car.TYPE_DIRECT);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
@@ -802,24 +801,7 @@ public class MainPage extends BCPAuctionableFragment {
 			pageNavigator.setSize(bids1.size());
 			pageNavigator.setIndex(index);
 
-			auctionIcon.setVisibility(View.INVISIBLE);
-			
-			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon2);
-				
-				//경매 종료 시간 한시간 이내.
-				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
-					auctionIcon.setVisibility(View.VISIBLE);
-				} else {
-					auctionIcon.setVisibility(View.INVISIBLE);
-				}
-			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
-				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
-				auctionIcon.setVisibility(View.VISIBLE);
-			} else {
-				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
-				auctionIcon.setVisibility(View.VISIBLE);
-			}
+			setAuctionButton(car);
 		}
 	}
 	
@@ -942,23 +924,12 @@ public class MainPage extends BCPAuctionableFragment {
 							long remainTime = car.getBid_until_at() * 1000 
 									+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
 									- System.currentTimeMillis();
-				        	
+
 				        	if(remainTime < 0) {
-				        		
-				        		//경매 종료.
-				        		if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
-				        			car.setStatus(Car.STATUS_BID_COMPLETE);
-				    				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
-				    				
-				        		//입찰 종료.
-				        		} else {
-				        			car.setStatus(Car.STATUS_BID_FAIL);
-				    				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
-				        		}
-				        		
 				        		carInfoView.statusChanged(car);
 				        	} else {
-					        	carInfoView.setTime(car);
+				        		setAuctionButton(car);
+				        		carInfoView.setTime(car);
 				        	}
 						} catch (Exception e) {
 							LogUtils.trace(e);
@@ -1057,6 +1028,52 @@ public class MainPage extends BCPAuctionableFragment {
 				
 				downloadMainInfos();
 				return;
+			}
+		}
+	}
+
+	public void setAuctionButton(Car car) {
+
+		if(car.getType() != Car.TYPE_BID) {
+			auctionIcon.setVisibility(View.INVISIBLE);
+			return;
+		}
+		
+		long remainTime = car.getBid_until_at() * 1000 
+				+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+				- System.currentTimeMillis();
+		
+		auctionIcon.setVisibility(View.VISIBLE);
+		
+		if(remainTime < 0) {
+			//경매 종료.
+			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+				car.setStatus(Car.STATUS_BID_COMPLETE);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
+				
+			//입찰 종료.
+			} else {
+				car.setStatus(Car.STATUS_BID_FAIL);
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
+			}
+
+		} else {
+
+			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon2);
+				
+				//경매 종료 시간 한시간 이내.
+				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+					auctionIcon.setVisibility(View.VISIBLE);
+				} else {
+					auctionIcon.setVisibility(View.INVISIBLE);
+				}
+			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
+				auctionIcon.setVisibility(View.VISIBLE);
+			} else {
+				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
+				auctionIcon.setVisibility(View.VISIBLE);
 			}
 		}
 	}

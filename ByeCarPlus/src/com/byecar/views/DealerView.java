@@ -64,7 +64,7 @@ public class DealerView extends FrameLayout {
 		this.addView(cover);
 		
 		rankBadge = new View(getContext());
-		ResizeUtils.viewResize(33, 38, rankBadge, 2, Gravity.LEFT|Gravity.TOP, new int[]{4, 4, 0, 0});
+		ResizeUtils.viewResize(33, 38, rankBadge, 2, Gravity.LEFT|Gravity.TOP, new int[]{4, 0, 0, 0});
 		this.addView(rankBadge);
 		
 		tvPrice = new TextView(getContext());
@@ -81,7 +81,7 @@ public class DealerView extends FrameLayout {
 		this.addView(tvDealerName);
 		
 		gradeBadge = new View(getContext());
-		ResizeUtils.viewResize(96, 25, gradeBadge, 2, 
+		ResizeUtils.viewResize(135, 25, gradeBadge, 2, 
 				Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 14});
 		this.addView(gradeBadge);
 
@@ -126,19 +126,19 @@ public class DealerView extends FrameLayout {
 		switch(bid.getDealer_level()) {
 		
 		case Dealer.LEVEL_FRESH_MAN:
-			gradeBadge.setBackgroundResource(R.drawable.main_used_grade4);
+			gradeBadge.setBackgroundResource(R.drawable.main_grade4);
 			break;
 			
 		case Dealer.LEVEL_NORAML_DEALER:
-			gradeBadge.setBackgroundResource(R.drawable.main_used_grade3);
+			gradeBadge.setBackgroundResource(R.drawable.main_grade3);
 			break;
 			
 		case Dealer.LEVEL_SUPERB_DEALER:
-			gradeBadge.setBackgroundResource(R.drawable.main_used_grade2);
+			gradeBadge.setBackgroundResource(R.drawable.main_grade2);
 			break;
 			
 		case Dealer.LEVEL_POWER_DEALER:
-			gradeBadge.setBackgroundResource(R.drawable.main_used_grade1);
+			gradeBadge.setBackgroundResource(R.drawable.main_grade1);
 			break;
 		}
 

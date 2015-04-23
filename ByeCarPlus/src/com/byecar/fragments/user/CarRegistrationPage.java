@@ -301,7 +301,7 @@ public class CarRegistrationPage extends BCPFragment {
 				btnImmediatlySale.setVisibility(View.VISIBLE);
 				break;
 				
-			case Car.TYPE_DIRECT_NORMAL:
+			case Car.TYPE_DIRECT:
 				tvPriceText.setText(R.string.priceForNormal);
 				etPrice.setHint(R.string.hintForPriceNormal);
 				immediatlySale.setVisibility(View.GONE);
@@ -936,11 +936,11 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					if(checked[INDEX]) {
 						optionViews[INDEX].setBackgroundResource(
-								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_b", 
+								getResources().getIdentifier("detail_option" + (INDEX + 1) + "_btn_b", 
 										"drawable", "com.byecar.byecarplus"));
 					} else {
 						optionViews[INDEX].setBackgroundResource(
-								getResources().getIdentifier("detail_optioin" + (INDEX + 1) + "_btn_a", 
+								getResources().getIdentifier("detail_option" + (INDEX + 1) + "_btn_a", 
 										"drawable", "com.byecar.byecarplus"));
 					}
 				}
@@ -1108,7 +1108,7 @@ public class CarRegistrationPage extends BCPFragment {
 			view.setId(getResources().getIdentifier("carRegistrationPage_optionView" + (index + 1), 
 							"id", "com.byecar.byecarplus"));
 			view.setBackgroundResource(
-					getResources().getIdentifier("detail_optioin" + (index + 1) + "_btn_a", 
+					getResources().getIdentifier("detail_option" + (index + 1) + "_btn_a", 
 							"drawable", "com.byecar.byecarplus"));
 			
 			return view;
@@ -1136,7 +1136,7 @@ public class CarRegistrationPage extends BCPFragment {
 			url = BCPAPIs.CAR_DEALER_SHOW_URL;
 			break;
 			
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			url = BCPAPIs.CAR_DIRECT_NORMAL_SHOW_URL;
 			break;
 		}
@@ -1352,7 +1352,7 @@ public class CarRegistrationPage extends BCPFragment {
 				for(int i=0; i<size; i++) {
 					checked[car.getOptions()[i] - 1] = true;
 					optionViews[car.getOptions()[i] - 1].setBackgroundResource(
-							getResources().getIdentifier("detail_optioin" + car.getOptions()[i] + "_btn_b", 
+							getResources().getIdentifier("detail_option" + car.getOptions()[i] + "_btn_b", 
 									"drawable", "com.byecar.byecarplus"));
 				}
 			}
@@ -1487,7 +1487,7 @@ public class CarRegistrationPage extends BCPFragment {
 				url = BCPAPIs.CAR_DEALER_SAVE_URL;
 				break;
 				
-			case Car.TYPE_DIRECT_NORMAL:
+			case Car.TYPE_DIRECT:
 				url = BCPAPIs.CAR_DIRECT_NORMAL_SAVE_URL;
 				break;
 			}

@@ -17,7 +17,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	
 	public static final int TYPE_BID = 1;
 	public static final int TYPE_DEALER = 2;
-	public static final int TYPE_DIRECT_NORMAL = 3;
+	public static final int TYPE_DIRECT = 3;
 	
 	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
 	public static final int STATUS_STAND_BY_APPROVAL = 0;
@@ -32,6 +32,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private int type;
 	private int car_id;
 	private int year;
+	private int month;
 	private String color;
 	private String car_number;
 	private int mileage;
@@ -98,6 +99,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.type = 0;
 			this.car_id = 0;
 			this.year = 0;
+			this.month = 0;
 			this.color = null;
 			this.car_number = null;
 			this.mileage = 0;
@@ -161,6 +163,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.type = newCar.type;
 			this.car_id = newCar.car_id;
 			this.year = newCar.year;
+			this.month = newCar.month;
 			this.color = newCar.color;
 			this.car_number = newCar.car_number;
 			this.mileage = newCar.mileage;
@@ -246,6 +249,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("year")) {
 				this.year = objJSON.getInt("year");
+			}
+			
+			if(objJSON.has("month")) {
+				this.month = objJSON.getInt("month");
 			}
 			
 			if(objJSON.has("car_number")) {
@@ -1110,5 +1117,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setReview(Review review) {
 		this.review = review;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
 	}
 }

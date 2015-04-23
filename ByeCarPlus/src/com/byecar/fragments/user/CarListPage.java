@@ -89,7 +89,7 @@ public class CarListPage extends BCPAuctionableFragment {
 			break;
 			
 		case Car.TYPE_DEALER:
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			break;
         }
         
@@ -103,7 +103,7 @@ public class CarListPage extends BCPAuctionableFragment {
 			break;
 			
 		case Car.TYPE_DEALER:
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			listView.setDividerHeight(ResizeUtils.getSpecificLength(30));
 			break;
         }
@@ -122,7 +122,7 @@ public class CarListPage extends BCPAuctionableFragment {
 			buttonBg.setVisibility(View.INVISIBLE);
 			break;
 			
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			btnRegistration.setBackgroundResource(R.drawable.direct_request_btn);
 			btnRegistration.setVisibility(View.VISIBLE);
 			buttonBg.setVisibility(View.VISIBLE);
@@ -225,7 +225,7 @@ public class CarListPage extends BCPAuctionableFragment {
 					intent.putExtra("type", GuideActivity.TYPE_USER_BUY);
 					break;
 					
-				case Car.TYPE_DIRECT_NORMAL:
+				case Car.TYPE_DIRECT:
 					intent.putExtra("type", GuideActivity.TYPE_USER_NORMAL);
 					break;
 				}
@@ -308,7 +308,7 @@ public class CarListPage extends BCPAuctionableFragment {
 		case Car.TYPE_DEALER:
 			return R.string.pageTitle_carList_dealer;
 			
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			return R.string.pageTitle_carList_direct;
 		}
 		
@@ -328,7 +328,7 @@ public class CarListPage extends BCPAuctionableFragment {
 			url = BCPAPIs.CAR_DEALER_LIST_URL + "?status=10";
 			break;
 			
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			url = BCPAPIs.CAR_DIRECT_NORMAL_LIST_URL;
 			break;
 		}
@@ -349,7 +349,7 @@ public class CarListPage extends BCPAuctionableFragment {
 		case Car.TYPE_DEALER:
 			itemCode = BCPConstants.ITEM_CAR_DEALER;
 			break;
-		case Car.TYPE_DIRECT_NORMAL:
+		case Car.TYPE_DIRECT:
 			itemCode = BCPConstants.ITEM_CAR_DIRECT;
 		}
 		
