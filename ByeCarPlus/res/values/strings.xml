@@ -5,6 +5,7 @@
 	<string name="addedPhoto">추가사진</string>
 	<string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
 
+	<string name="best3">베스트3</string>
 	<string name="biddingPrice">입찰가</string>
 	<string name="buyerInfo">구매자정보</string>
 
@@ -25,6 +26,7 @@
     <string name="carSearchString_oneManOwned1">1인신조</string>
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
     <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
+    <string name="category">카테고리</string>
     <string name="certifier">검증사</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
@@ -36,16 +38,18 @@
     <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkPhoneNumber">올바른 휴대폰 번호를 입력해주세요.</string>
-    <string name="commonInfo">일반정보</string>
+    <string name="commonInfo">기본 정보</string>
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_report">신고가 완료되었습니다.</string>
     <string name="complete_selectDealer">딜러 선택이 완료되었습니다.</string>
     <string name="complete_selling">거래 완료 처리되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
+    <string name="complete_writeForum">글 작성 완료</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>
     <string name="confirm">확인</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
@@ -86,23 +90,29 @@
     <string name="evaluateDealer">딜러님을 평가해주세요.</string>
 	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
     
-	<string name="failToDeleteCar">삭제하지 못했습니다.</string>
+	<string name="failToDelete">삭제하지 못했습니다.</string>
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
+    <string name="failToLoadPostInfo">글 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadUserInfo">사용자 정보를 불러오지 못했습니다.</string>
+    <string name="failToReportCar">해당 매물을 신고하지 못했습니다.</string>
+    <string name="failToReportPost">해당 글을 신고하지 못했습니다.</string>
     <string name="failToSelectDealer">딜러를 선택하지 못했습니다.</string>
     <string name="failToSendAuthRequest">인증번호를 발송하지 못했습니다.</string>
     <string name="failToSendSMS">SMS를 발송하지 못했습니다.</string>
     <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
+    <string name="failToWriteForum">글을 작성하지 못했습니다.</string>
     <string name="failToWriteReview">리뷰를 작성하지 못했습니다.</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원가입 실패</string>
     
+    <string name="hadAccident">사고보험 이력이 존재합니다. 버튼을 눌러 확인해주세요.</string>
     <string name="hintForAddress">주소를 입력해주세요.</string>
     <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
+    <string name="hintForCategory">카테고리를 선택해주세요</string>
     <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
     <string name="hintForDetailCarInfo1">차량 번호를 입력해주세요.</string>
     <string name="hintForDetailCarInfo2">차량 색상을 입력해주세요.</string>
@@ -119,6 +129,8 @@
     <string name="hintForPhoneNumber">휴대폰번호를 입력해주세요.</string>
 	<string name="hintForPriceBid">경매 시작가격을 입력해주세요.</string>
 	<string name="hintForPriceNormal">판매 가격을 입력해주세요.</string>
+	<string name="hintForForumContent">내용을 입력해주세요.</string>
+	<string name="hintForForumTitle">제목을 입력해주세요.</string>
 	<string name="holdOffByAdmin">관리자에 의해 보류 중인 매물입니다.\n(자세한 사항은 바이카에 문의해주세요.)</string>
 	<string name="holdOffByAdmin2">관리자에 의해 보류 중인 매물입니다.</string>
 	
@@ -139,6 +151,7 @@
 
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
+    <string name="notificationSetting">알림설정</string>
     
     <string name="order_1">마감순</string>
     <string name="order_2">좋아요순</string>
@@ -170,22 +183,27 @@
     <string name="pageTitle_carList_dealer">중고차마켓</string>
     <string name="pageTitle_carList_direct">직거래</string>
     <string name="pageTitle_carRegistration_edit">차량 수정</string>
-    <string name="pageTitle_carRegistration_registration">차량 등록</string>
+    <string name="pageTitle_carRegistration_registration">내 차 입찰 요청</string>
     <string name="pageTitle_directMarket">직거래</string>
     <string name="pageTitle_my">마이페이지</string>
     <string name="pageTitle_signIn">로그인</string>
+    <string name="pageTitle_writeForum">새글쓰기</string>
     <string name="pageTitle_writeReview">리뷰 작성</string>
     <string name="pageTitle_qnA">Q&amp;A</string>
+    <string name="pageTitle_forum">자유게시판</string>
     <string name="phone">연락처</string>
     <string name="popup_request_certification">검증 신청이 완료되었습니다!</string>
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
     <string name="popup_registration">차량 등록 요청이 완료되었습니다!</string>
     <string name="popup_choice_dealer">딜러 선택이 완료되었습니다!</string>
+    <string name="post">게시글</string>
     <string name="priceForBid">시작가격</string>
     <string name="priceForNormal">판매가격</string>
     <string name="priceRange">가격범위</string>
-    <string name="profileImage">프로필 이미지</string>
+    <string name="profileImage">프로필 사진</string>
     
+    <string name="reply">댓글</string>
+    <string name="report">신고</string>
     <string name="remainBiddingTime">남은 입찰시간123</string>
     <string name="requireCertifyDealerInfo">판매자 정보를 인증해야 차량을\n등록할 수 있습니다.</string>
     
@@ -206,17 +224,21 @@
 
     <string name="toCertifier">검증사님께</string>
     <string name="toDealer">딜러님께</string>
+    <string name="toggle_notification">전체 알림 ON / OFF</string>
+    <string name="toggle_bidding">입찰 알림창 ON / OFF</string>
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
 	<string name="tradeSuccessCount">차량 성사수</string>
     
     <string name="uploadingImage">이미지 업로드 중..</string>
+    <string name="uploadingImageCountError">이미지는 최대 4장까지 첨부 가능합니다.</string>
 
     <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
+    <string name="wannaReport">신고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
-    <string name="wannaWithdraw">탈퇴하시겠습니까?</string>
-    <string name="withdraw">회원탈퇴</string>
+    <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>
+    <string name="withdraw">탈퇴하기</string>
     <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
     <string name="writeAllContentForRequestCertification">*작성률 100%를 달성해야 검증 신청을 완료할 수 있습니다.</string>
     <string name="writePercentage">작성률</string>

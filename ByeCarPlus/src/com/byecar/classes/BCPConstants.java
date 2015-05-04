@@ -17,6 +17,8 @@ public class BCPConstants {
 	public static final int ITEM_FAQ = 2;
 	public static final int ITEM_NOTIFICATION = 3;
 	public static final int ITEM_REVIEW = 4;
+	public static final int ITEM_FORUM = 5;
+	public static final int ITEM_FORUM_BEST = 6;
 	
 	//Items for car.
 	public static final int ITEM_CAR_BID = 11;
@@ -27,6 +29,7 @@ public class BCPConstants {
 	public static final int ITEM_CAR_TEXT_DESC = 17;
 	public static final int ITEM_CAR_MY = 18;
 	public static final int ITEM_CAR_MY_PURCHASE = 19;
+	public static final int ITEM_CAR_MY_LIKE = 20;
 	
 	//Pages for sign.
 	public static final int PAGE_SIGN = 1;
@@ -54,5 +57,10 @@ public class BCPConstants {
 	public static final int PAGE_SEARCH_CAR = 37;
 	public static final int PAGE_TYPE_SEARCH_CAR = 39;
 	
-	public static final int PAGE_WEB_BROWSER = 40;
+	//Pages for community.
+	public static final int PAGE_FORUM_LIST = 41;
+	public static final int PAGE_WRITE_FORUM = 42;
+	public static final int PAGE_FORUM_DETAIL = 43;
+	
+	public static final int PAGE_WEB_BROWSER = 50;
 }

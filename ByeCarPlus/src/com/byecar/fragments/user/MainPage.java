@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.Gravity;
@@ -27,6 +28,7 @@ import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
+import com.byecar.models.Area;
 import com.byecar.models.Bid;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
@@ -35,9 +37,9 @@ import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
 import com.byecar.views.ForumView;
+import com.byecar.views.OtherCarView;
 import com.byecar.views.ReviewViewSmall;
 import com.byecar.views.TitleBar;
-import com.byecar.views.OtherCarView;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -54,6 +56,8 @@ import com.outspoken_kid.views.PageNavigatorView;
 public class MainPage extends BCPAuctionableFragment {
 	
 	private static final int PAGER_TIME = 5;
+	
+	public static ArrayList<Post> forums = new ArrayList<Post>();
 	
 	private OffsetScrollView scrollView;
 	private ViewPager viewPager;
@@ -98,7 +102,6 @@ public class MainPage extends BCPAuctionableFragment {
 	private ArrayList<Car> dealers = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
 	private Post video;
-	private ArrayList<Post> forums = new ArrayList<Post>();
 	
 	private int scrollOffset; 
 	private int standardLength;
@@ -321,7 +324,8 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		int size = dealerViews.length;
 		for(int i=0; i<3; i++) {
-			ResizeUtils.viewResizeForRelative(184, 251, dealerViews[i], null, null, new int[]{24, 72, 0, 0});
+			ResizeUtils.viewResizeForRelative(184, 251, dealerViews[i], null, null, 
+					new int[]{i==0?24:0, 72, i==2?24:0, 0});
 		}
 		
 		//relativeForBidding
@@ -518,6 +522,10 @@ public class MainPage extends BCPAuctionableFragment {
 		titleBar.getMenuButton().setVisibility(View.VISIBLE);
 		downloadMainInfos();
 		
+		if(MainActivity.area == null) {
+			downloadAreaInfo();
+		}
+		
 		checkPageScrollOffset();
 		checkNotification();
 		
@@ -525,6 +533,15 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
 		setPagerTimer();
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				mActivity.showPage(BCPConstants.PAGE_MY, null);
+			}
+		}, 1000);
 	}
 	
 	@Override
@@ -675,6 +692,35 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					setForums();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void downloadAreaInfo() {
+		
+		String url = BCPAPIs.AREA_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					MainActivity.area = new Area(objJSON.getJSONObject("areas"));
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

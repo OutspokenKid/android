@@ -24,9 +24,6 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class CarInfoView extends RelativeLayout {
-
-	public static final int TYPE_AUCTION = 0;
-	public static final int TYPE_OTHERS = 1;
 	
 	private ProgressBar progressBar;
 	private View centerView;
@@ -158,11 +155,11 @@ public class CarInfoView extends RelativeLayout {
 		ResizeUtils.viewResizeForRelative(90, 40, btnLike, 
 				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, BELOW}, 
 				new int[]{0, R.id.bidInfoView_lineForCarInfo},
-				new int[]{0, 0, 14, 0});
+				new int[]{0, 12, 14, 0});
 		btnLike.setSingleLine();
 		btnLike.setEllipsize(TruncateAt.END);
-		btnLike.setTextColor(getResources().getColor(R.color.holo_text));
-		btnLike.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
+		btnLike.setTextColor(Color.WHITE);
+		btnLike.setGravity(Gravity.CENTER);
 		btnLike.setPadding(ResizeUtils.getSpecificLength(32), 0, 
 				ResizeUtils.getSpecificLength(10), ResizeUtils.getSpecificLength(2));
 		FontUtils.setFontSize(btnLike, 18);
@@ -175,6 +172,8 @@ public class CarInfoView extends RelativeLayout {
 				new int[]{R.id.bidInfoView_btnLike, R.id.bidInfoView_btnLike},
 				new int[]{0, 0, 2, 0});
 		FontUtils.setFontSize(tvLike, 20);
+		tvLike.setText(R.string.like);
+		tvLike.setGravity(Gravity.CENTER_VERTICAL);
 		tvLike.setVisibility(View.INVISIBLE);
 		this.addView(tvLike);
 		
@@ -326,6 +325,18 @@ public class CarInfoView extends RelativeLayout {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+	
+	public void setDetail() {
+
+		FontUtils.setFontSize(tvCarInfo1, 24);
+		tvCarInfo1.setSingleLine(false);
+		tvCarInfo1.setMaxLines(2);
+		tvCarInfo1.setEllipsize(TruncateAt.END);
+		
+		tvCarInfo2.setSingleLine(false);
+		tvCarInfo2.setMaxLines(2);
+		tvCarInfo2.setEllipsize(TruncateAt.END);
 	}
 
 	public void setLike(Car car, boolean isLike) {

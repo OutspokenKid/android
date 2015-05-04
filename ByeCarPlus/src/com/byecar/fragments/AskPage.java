@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.FrameLayout;
 
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
@@ -22,20 +21,20 @@ import com.outspoken_kid.utils.ToastUtils;
 
 public class AskPage extends BCPFragment {
 
-	private FrameLayout askFrame;
 	private Button btnKakao;
 	private Button btnFacebook;
 	private Button btnEmail;
+	private Button btnCall;
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.askPage_titleBar);
 
-		askFrame = (FrameLayout) mThisView.findViewById(R.id.askPage_askFrame);
 		btnKakao = (Button) mThisView.findViewById(R.id.askPage_btnKakao);
 		btnFacebook = (Button) mThisView.findViewById(R.id.askPage_btnFacebook);
 		btnEmail = (Button) mThisView.findViewById(R.id.askPage_btnEmail);
+		btnCall = (Button) mThisView.findViewById(R.id.askPage_btnCall);
 	}
 
 	@Override
@@ -91,15 +90,26 @@ public class AskPage extends BCPFragment {
 				}
 			}
 		});
+		
+		btnCall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(MainActivity.companyInfo != null) {
+					IntentUtils.call(mContext, MainActivity.companyInfo.getPhone_number());
+				}
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
-
-		ResizeUtils.viewResizeForRelative(608, 407, askFrame, null, null, new int[]{0, 30, 0, 0});
-		ResizeUtils.viewResize(488, 82, btnKakao, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 90, 0, 0});
-		ResizeUtils.viewResize(488, 82, btnFacebook, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 196, 0, 0});
-		ResizeUtils.viewResize(488, 82, btnEmail, 2, Gravity.CENTER_HORIZONTAL|Gravity.TOP, new int[]{0, 302, 0, 0});
+		
+		ResizeUtils.viewResize(588, 82, btnKakao, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 35, 0, 0});
+		ResizeUtils.viewResize(588, 82, btnFacebook, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 35, 0, 0});
+		ResizeUtils.viewResize(588, 82, btnEmail, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 35, 0, 0});
+		ResizeUtils.viewResize(588, 82, btnCall, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 35, 0, 0});
 	}
 
 	@Override

@@ -242,12 +242,113 @@
 		        android:layout_below="@id/carDetailPage_relativeForInfo"
 		        android:background="@drawable/detail_foot" />
 		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForCheck"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_footerForInfo" >
+		    
+		        <View 
+			        android:id="@+id/carDetailPage_headerForCheck"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_alignParentTop="true"
+			        android:background="@drawable/buy_header1" />
+			    
+			    <View
+			        android:id="@+id/carDetailPage_arrowForCheck"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_headerForCheck"
+			        android:layout_alignRight="@id/carDetailPage_headerForCheck"
+			        android:background="@drawable/detail_toggle_up" />
+			    
+			    <ImageView
+			        android:id="@+id/carDetailPage_ivCheck"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_headerForCheck"
+			        android:background="@drawable/detail_body2"
+			        android:scaleType="fitCenter" />
+			    
+			    <View 
+			        android:id="@+id/carDetailPage_footerForCheck"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_ivCheck"
+			        android:background="@drawable/detail_foot" />
+		        
+		    </RelativeLayout>
+		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForAccident"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForCheck" >
+		    
+		        <View 
+			        android:id="@+id/carDetailPage_headerForAccident"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_alignParentTop="true"
+			        android:background="@drawable/detail_head5" />
+		        
+			    <View
+			        android:id="@+id/carDetailPage_arrowForAccident"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_headerForAccident"
+			        android:layout_alignRight="@id/carDetailPage_headerForAccident"
+			        android:background="@drawable/detail_toggle_up" />
+
+			    <View 
+			        android:id="@+id/carDetailPage_bgForAccident"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_headerForAccident"
+			        android:background="@drawable/detail_body2" />
+			    			    
+			    <TextView
+			        android:id="@+id/carDetailPage_tvAccident"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_headerForAccident"
+			        android:gravity="center"
+			        android:text="@string/hadAccident"
+		        	android:textColor="@color/holo_text" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnAccident"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_tvAccident"
+		        	android:background="@drawable/detail_accident_btn" />
+			    
+			    <View 
+			        android:id="@+id/carDetailPage_footerForAccident"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_bgForAccident"
+			        android:background="@drawable/detail_foot" />
+		        
+		    </RelativeLayout>
+		    
 		    <View 
 		        android:id="@+id/carDetailPage_headerForOption"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/carDetailPage_footerForInfo"
+		        android:layout_below="@id/carDetailPage_relativeForAccident"
 		        android:background="@drawable/detail_head3" />
 		    
 		    <View
@@ -264,7 +365,6 @@
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carDetailPage_headerForOption"
-		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" >
 		    
 		        <View 
@@ -318,49 +418,6 @@
 		        android:layout_below="@id/carDetailPage_relativeForOption"
 		        android:background="@drawable/detail_foot" />
 		    
-		    <RelativeLayout
-		        android:id="@+id/carDetailPage_relativeForCheck"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/carDetailPage_relativeForType"
-		        android:background="@drawable/detail_body1" >
-		    
-		        <View 
-			        android:id="@+id/carDetailPage_headerForCheck"
-			        android:layout_width="match_parent"
-			        android:layout_height="0dp"
-			        android:layout_centerHorizontal="true"
-			        android:layout_alignParentTop="true"
-			        android:background="@drawable/detail_head4" />
-			    
-			    <View
-			        android:id="@+id/carDetailPage_arrowForCheck"
-			        android:layout_width="match_parent"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_headerForCheck"
-			        android:layout_alignRight="@id/carDetailPage_headerForCheck"
-			        android:background="@drawable/detail_toggle_up" />
-			    
-			    <ImageView
-			        android:id="@+id/carDetailPage_ivCheck"
-			        android:layout_width="match_parent"
-			        android:layout_height="0dp"
-			        android:layout_centerHorizontal="true"
-			        android:layout_below="@id/carDetailPage_headerForCheck"
-			        android:scaleType="centerInside"
-			        android:visibility="gone" />
-			    
-			    <View 
-			        android:id="@+id/carDetailPage_footerForCheck"
-			        android:layout_width="match_parent"
-			        android:layout_height="0dp"
-			        android:layout_centerHorizontal="true"
-			        android:layout_below="@id/carDetailPage_ivCheck"
-			        android:background="@drawable/detail_foot" />
-		        
-		    </RelativeLayout>
-		    
 		    <View 
 		        android:id="@+id/carDetailPage_headerForDescription"
 		        android:layout_width="0dp"
@@ -383,7 +440,6 @@
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carDetailPage_headerForDescription"
-		        android:visibility="gone"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
@@ -413,7 +469,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
         android:background="@drawable/button_bg" />
     
     <Button
@@ -422,7 +477,6 @@
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:visibility="invisible"
         android:background="@drawable/buy_call_btn" />
     
     <Button
@@ -431,7 +485,7 @@
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/modification_delete_btn" />
+        android:background="@drawable/faulty_btn" />
     
     <Button
         android:id="@+id/carDetailPage_btnDelete"
@@ -445,7 +499,7 @@
         android:id="@+id/carDetailPage_btnEdit"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@id/carDetailPage_btnDelete"
         android:layout_toLeftOf="@id/carDetailPage_btnDelete"
         android:background="@drawable/modification_modify_btn" />
     

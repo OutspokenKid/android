@@ -41,6 +41,7 @@ public class SignUpPage extends BCPFragment {
 	private static final int PASSWORD_MIN = 8;
 	private static final int PASSWORD_MAX = 15;
 	
+	private TextView tvProfileTitle;
 	private Button btnProfile;
 	private ImageView ivProfile;
 	private TextView tvProfile;
@@ -83,6 +84,7 @@ public class SignUpPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForCommonPage_titleBar);
 		
+		tvProfileTitle = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvProfileTitle);
 		btnProfile = (Button) mThisView.findViewById(R.id.signUpForCommonPage_btnProfile);
 		ivProfile = (ImageView) mThisView.findViewById(R.id.signUpForCommonPage_ivProfile);
 		tvProfile = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvProfile);
@@ -105,6 +107,9 @@ public class SignUpPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
+		tvProfileTitle.setText("1. " + getString(R.string.profileImage));
+		tvCommonInfo.setText("2. " + getString(R.string.commonInfo));
+		
 		etEmail.setHint(R.string.hintForEmailSignIn);
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		
@@ -214,6 +219,11 @@ public class SignUpPage extends BCPFragment {
 		int textViewHeight = ResizeUtils.getSpecificLength(60);
 		int buttonHeight = ResizeUtils.getSpecificLength(82);
 
+		//tvProfileTitle.
+		rp = (RelativeLayout.LayoutParams) tvProfileTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvProfileTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
 		//profileFrame
 		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(R.id.signUpForCommonPage_profileFrame)).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(219);
@@ -223,9 +233,10 @@ public class SignUpPage extends BCPFragment {
 
 		//tvCommonInfo.
 		rp = (RelativeLayout.LayoutParams) tvCommonInfo.getLayoutParams();
-		rp.leftMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(41);
 		rp.topMargin = ResizeUtils.getSpecificLength(60);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
+		tvCommonInfo.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//etEmail.
 		rp = (RelativeLayout.LayoutParams) etEmail.getLayoutParams();
@@ -254,11 +265,14 @@ public class SignUpPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) btnSignUp.getLayoutParams();
 		rp.width = width;
 		rp.height = buttonHeight;
-		rp.topMargin = ResizeUtils.getSpecificLength(800);
+		rp.topMargin = ResizeUtils.getSpecificLength(850);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
+		FontUtils.setFontSize(tvProfileTitle, 24);
+		FontUtils.setFontStyle(tvProfileTitle, FontUtils.BOLD);
 		FontUtils.setFontSize(tvProfile, 20);
-		FontUtils.setFontSize(tvCommonInfo, 34);
+		FontUtils.setFontSize(tvCommonInfo, 24);
+		FontUtils.setFontStyle(tvCommonInfo, FontUtils.BOLD);
 		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 20);
 		FontUtils.setFontAndHintSize(etNickname.getEditText(), 30, 20);
 		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 20);

@@ -541,24 +541,6 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			}
 		});
-		
-		btnRequest.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				if(!isTermOfUseClicked) {
-					ToastUtils.showToast(R.string.agreeTermOfUse);
-					return;
-				} else if(progressBar.getProgress() != 100){
-					String text = getString(R.string.writeAllContentForRegistration);
-					ToastUtils.showToast(text.replace("*", ""));
-				} else {
-					SoftKeyboardUtils.hideKeyboard(mContext, etCarDescriptionFromDealer);
-					requestCertification();
-				}
-			}
-		});
 	
 		for(int i=0; i<5; i++) {
 			
@@ -1619,59 +1601,6 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 	}
 
-	public void requestCertification() {
-		
-		try {
-			StringBuilder sb = new StringBuilder(BCPAPIs.CAR_DIRECT_CERTIFIED_SAVE_URL);
-			
-			//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
-			sb.append("?onsalecar[car_id]=").append(carModelDetailInfo.getId());
-			
-			//onsalecar[year] : 연식
-			sb.append("&onsalecar[year]=").append(carInfoStrings[0]);
-			
-			//onsalecar[car_number] : 차량넘버
-			sb.append("&onsalecar[car_number]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[0].getEditText()));
-			
-			//onsalecar[area] : 판매지역
-			sb.append("&onsalecar[area]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[2].getEditText()));
-			
-			String url = sb.toString();
-			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-				@Override
-				public void onError(String url) {
-
-					LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
-
-				}
-
-				@Override
-				public void onCompleted(String url, JSONObject objJSON) {
-
-					try {
-						LogUtils.log("CarRegistrationPage.onCompleted." + "\nurl : " + url
-								+ "\nresult : " + objJSON);
-
-						if(objJSON.getInt("result") == 1) {
-							pageRequestCompleted();
-						} else {
-							ToastUtils.showToast(objJSON.getString("message"));
-						}
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
-					}
-				}
-			}, mActivity.getLoadingView());
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
-	}
-	
 	public void pageRequestCompleted() {
 		
 		switch(type) {

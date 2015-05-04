@@ -3,12 +3,11 @@ package com.byecar.fragments;
 import org.json.JSONObject;
 
 import android.content.DialogInterface;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
@@ -18,33 +17,42 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class SettingPage extends BCPFragment {
 
-	private View bg1;
-	private LinearLayout alarmLinear;
-	private View alarmOn;
-	private View alarmOff;
-	private View bg2;
+	private TextView tvNotificationTitle;
+	private TextView tvWithdrawTitle;
+	private TextView tvSignOutTitle;
+	private TextView tvNotification;
+	private TextView tvBidding;
+	private TextView tvWithdraw;
+	private TextView tvSignOut;
+	private Button btnNotification;
+	private Button btnBidding;
 	private Button btnWithdraw;
-	private View bg3;
 	private Button btnSignOut;
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.settingPage_titleBar);
-
-		bg1 = mThisView.findViewById(R.id.settingPage_bg1);
-		alarmLinear = (LinearLayout) mThisView.findViewById(R.id.settingPage_alarmLinear);
-		alarmOn = mThisView.findViewById(R.id.settingPage_alarmOn);
-		alarmOff = mThisView.findViewById(R.id.settingPage_alarmOff);
-		bg2 = mThisView.findViewById(R.id.settingPage_bg2);
+		
+		tvNotificationTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvNotificationTitle);
+		tvWithdrawTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvWithdrawTitle);
+		tvSignOutTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvSignOutTitle);
+		
+		tvNotification = (TextView) mThisView.findViewById(R.id.settingPage_tvNotification);
+		tvBidding = (TextView) mThisView.findViewById(R.id.settingPage_tvBidding);
+		tvWithdraw = (TextView) mThisView.findViewById(R.id.settingPage_tvWithdraw);
+		tvSignOut = (TextView) mThisView.findViewById(R.id.settingPage_tvSignOut);
+		
+		btnNotification = (Button) mThisView.findViewById(R.id.settingPage_btnNotification);
+		btnBidding = (Button) mThisView.findViewById(R.id.settingPage_btnBidding);
 		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
-		bg3 = mThisView.findViewById(R.id.settingPage_bg3);
 		btnSignOut = (Button) mThisView.findViewById(R.id.settingPage_btnSignOut);
 	}
 
@@ -58,34 +66,39 @@ public class SettingPage extends BCPFragment {
 	public void createPage() {
 
 		if(SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noPush")) {
-			alarmOn.setVisibility(View.INVISIBLE);
-			alarmOff.setVisibility(View.VISIBLE);
+			btnNotification.setBackgroundResource(R.drawable.setting_toggle_off);
 		} else {
-			alarmOn.setVisibility(View.VISIBLE);
-			alarmOff.setVisibility(View.INVISIBLE);
+			btnNotification.setBackgroundResource(R.drawable.setting_toggle_on);
+		}
+		
+		if(SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noBiddingPush")) {
+			btnBidding.setBackgroundResource(R.drawable.setting_toggle_off);
+		} else {
+			btnBidding.setBackgroundResource(R.drawable.setting_toggle_on);
 		}
 	}
 
 	@Override
 	public void setListeners() {
 
-		alarmLinear.setOnClickListener(new OnClickListener() {
+		btnNotification.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				if(alarmOn.getVisibility() == View.VISIBLE) {
-					alarmOn.setVisibility(View.INVISIBLE);
-					alarmOff.setVisibility(View.VISIBLE);
-					setPushSetting(false);
-				} else {
-					alarmOn.setVisibility(View.VISIBLE);
-					alarmOff.setVisibility(View.INVISIBLE);
-					setPushSetting(true);
-				}
+				setPushSetting(false, !SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noPush"));
 			}
 		});
+		
+		btnBidding.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View view) {
+
+				setPushSetting(true, !SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noBiddingPush"));
+			}
+		});
+		
 		btnSignOut.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -126,14 +139,81 @@ public class SettingPage extends BCPFragment {
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResizeForRelative(608, 177, bg1, null, null, new int[]{0, 24, 0, 0});
-		ResizeUtils.viewResizeForRelative(154, 43, alarmLinear, null, null, new int[]{0, 0, 20, 34});
-		ResizeUtils.viewResize(72, LayoutParams.MATCH_PARENT, alarmOff, 1, Gravity.CENTER_VERTICAL, null);
-		ResizeUtils.viewResize(72, LayoutParams.MATCH_PARENT, alarmOn, 1, Gravity.CENTER_VERTICAL, null);
-		ResizeUtils.viewResizeForRelative(608, 177, bg2, null, null, new int[]{0, 14, 0, 0});
-		ResizeUtils.viewResizeForRelative(154, 43, btnWithdraw, null, null, new int[]{0, 0, 20, 34});
-		ResizeUtils.viewResizeForRelative(608, 177, bg3, null, null, new int[]{0, 14, 0, 0});
-		ResizeUtils.viewResizeForRelative(154, 43, btnSignOut, null, null, new int[]{0, 0, 20, 34});
+		RelativeLayout.LayoutParams rp = null;
+		
+		//tvNotificationTitle.
+		rp = (RelativeLayout.LayoutParams) tvNotificationTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvNotificationTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvWithdrawTitle.
+		rp = (RelativeLayout.LayoutParams) tvWithdrawTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvWithdrawTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvSignOutTitle.
+		rp = (RelativeLayout.LayoutParams) tvSignOutTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvSignOutTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+				
+		//tvNotification.
+		rp = (RelativeLayout.LayoutParams) tvNotification.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(110);
+		tvNotification.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvBidding.
+		rp = (RelativeLayout.LayoutParams) tvBidding.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(110);
+		tvBidding.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvWithdraw.
+		rp = (RelativeLayout.LayoutParams) tvWithdraw.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(110);
+		tvWithdraw.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvSignOut.
+		rp = (RelativeLayout.LayoutParams) tvSignOut.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(110);
+		tvSignOut.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+				
+		//btnNotification.
+		rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(228);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+		
+		//btnBidding.
+		rp = (RelativeLayout.LayoutParams) btnBidding.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(228);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+
+		//btnWithdraw.
+		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(227);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+
+		//btnSignOut.
+		rp = (RelativeLayout.LayoutParams) btnSignOut.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(227);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+		
+		FontUtils.setFontSize(tvNotificationTitle, 24);
+		FontUtils.setFontStyle(tvNotificationTitle, FontUtils.BOLD);
+		FontUtils.setFontSize(tvWithdrawTitle, 24);
+		FontUtils.setFontStyle(tvWithdrawTitle, FontUtils.BOLD);
+		FontUtils.setFontSize(tvSignOutTitle, 24);
+		FontUtils.setFontStyle(tvSignOutTitle, FontUtils.BOLD);
+		FontUtils.setFontSize(tvNotification, 24);
+		FontUtils.setFontSize(tvBidding, 24);
+		FontUtils.setFontSize(tvWithdraw, 24);
+		FontUtils.setFontSize(tvSignOut, 24);
 	}
 
 	@Override
@@ -174,34 +254,53 @@ public class SettingPage extends BCPFragment {
 
 //////////////////// Custom methods.
 	
-	public void setPushSetting(final boolean needPush) {
+	public void setPushSetting(final boolean isBiddingPush, final boolean isOnNow) {
+
 		
-		String url = BCPAPIs.PUSH_SETTING_URL
-				+ "?to_get_pushed=" + (needPush?"Y":"N");
-		
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+		if(!isBiddingPush) {
+			String url = BCPAPIs.PUSH_SETTING_URL
+					+ "?to_get_pushed=" + (isOnNow?"N":"Y");
+			
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-			@Override
-			public void onError(String url) {
+				@Override
+				public void onError(String url) {
 
-				LogUtils.log("SettingPage.onError." + "\nurl : " + url);
+					LogUtils.log("SettingPage.onError." + "\nurl : " + url);
 
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_PUSH, "noPush", !needPush);
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
 				}
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("SettingPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+						
+						//반대로 들어감. 원래 on(true)이었다면, noPush가 true, off가 된다.
+						SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_PUSH, "noPush", isOnNow);
+						
+						if(isOnNow) {
+							btnNotification.setBackgroundResource(R.drawable.setting_toggle_off);
+						} else {
+							btnNotification.setBackgroundResource(R.drawable.setting_toggle_on);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			});
+		} else {
+			SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_PUSH, "noBiddingPush", isOnNow);
+			
+			if(isOnNow) {
+				btnBidding.setBackgroundResource(R.drawable.setting_toggle_off);
+			} else {
+				btnBidding.setBackgroundResource(R.drawable.setting_toggle_on);
 			}
-		});
+		}
+		
 	}
 }

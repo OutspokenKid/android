@@ -211,4 +211,9 @@ public class DealerView extends FrameLayout {
 	public Bid getBid() {
 		return bid;
 	}
+
+	public void setSelectedDealer() {
+		
+		cover.setBackgroundResource(R.drawable.select_bid_frame2);
+	}
 }

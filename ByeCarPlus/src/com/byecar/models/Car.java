@@ -17,7 +17,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	
 	public static final int TYPE_BID = 1;
 	public static final int TYPE_DEALER = 2;
-	public static final int TYPE_DIRECT = 3;
+	public static final int TYPE_DIRECT = 4;
 	
 	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
 	public static final int STATUS_STAND_BY_APPROVAL = 0;
@@ -91,6 +91,9 @@ public class Car extends BCPBaseModel implements Serializable {
 	private String car_wd;
 	
 	private Review review;
+	
+	private String inspection_note_url;
+	private long liked_at;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -158,6 +161,9 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.car_wd = null;
 			
 			this.review = null;
+			
+			this.inspection_note_url = null;
+			this.liked_at = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -222,6 +228,9 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.car_wd = newCar.car_wd;
 			
 			this.review = newCar.review;
+			
+			this.inspection_note_url = newCar.inspection_note_url;
+			this.liked_at = newCar.liked_at;
 		}
 	}
 	
@@ -464,7 +473,10 @@ public class Car extends BCPBaseModel implements Serializable {
 				
 				int size = arJSON.length();
 				for(int i=0; i<size; i++) {
-					bids.add(new Bid(arJSON.getJSONObject(i)));
+					try {
+						bids.add(new Bid(arJSON.getJSONObject(i)));
+					} catch (Exception e) {
+					}
 				}
 			}
 			
@@ -488,8 +500,19 @@ public class Car extends BCPBaseModel implements Serializable {
 				this.car_wd = objJSON.getString("car_wd");
 			}
 			
-			if(objJSON.has("review")) {
-				this.review = new Review(objJSON.getJSONObject("review"));
+			try {
+				if(objJSON.has("review")) {
+					this.review = new Review(objJSON.getJSONObject("review"));
+				}
+			} catch (Exception e) {
+			}
+			
+			if(objJSON.has("inspection_note_url")) {
+				this.inspection_note_url = objJSON.getString("inspection_note_url");
+			}
+			
+			if(objJSON.has("liked_at")) {
+				this.liked_at = objJSON.getLong("liked_at");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1125,5 +1148,21 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setMonth(int month) {
 		this.month = month;
+	}
+
+	public String getInspection_note_url() {
+		return inspection_note_url;
+	}
+
+	public void setInspection_note_url(String inspection_note_url) {
+		this.inspection_note_url = inspection_note_url;
+	}
+
+	public long getLiked_at() {
+		return liked_at;
+	}
+
+	public void setLiked_at(long liked_at) {
+		this.liked_at = liked_at;
 	}
 }

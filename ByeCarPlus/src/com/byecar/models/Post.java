@@ -1,10 +1,15 @@
 package com.byecar.models;
 
+import java.io.Serializable;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.outspoken_kid.utils.LogUtils;
 
-public class Post extends BCPBaseModel {
+public class Post extends BCPBaseModel implements Serializable {
+	
+	private static final long serialVersionUID = 1513094279636219158L;
 	
 	private int id;
 	private int type;
@@ -20,9 +25,13 @@ public class Post extends BCPBaseModel {
 	private int need_to_push;
 	private long created_at;
 	private String author_nickname;
+	private String author_profile_img_url;
 	private String youtube_id;
 	private int replies_cnt;
 	private String board_title; 
+	private String[] images;
+	private Review[] replies;
+	private int is_liked;
 	
 	private boolean isOpened;
 	
@@ -96,8 +105,8 @@ public class Post extends BCPBaseModel {
 				this.author_nickname = objJSON.getString("author_nickname");
 			}
 			
-			if(objJSON.has("author_nickname")) {
-				this.author_nickname = objJSON.getString("author_nickname");
+			if(objJSON.has("author_profile_img_url")) {
+				this.setAuthor_profile_img_url(objJSON.getString("author_profile_img_url"));
 			}
 			
 			if(objJSON.has("youtube_id")) {
@@ -111,6 +120,37 @@ public class Post extends BCPBaseModel {
 			if(objJSON.has("board_title")) {
 				this.board_title = objJSON.getString("board_title");
 			}
+			
+			try {
+				if(objJSON.has("images")) {
+					JSONArray arJSON = objJSON.getJSONArray("images");
+					
+					int size = arJSON.length();
+					images = new String[size];
+					for(int i=0; i<size; i++) {
+						images[i] = arJSON.getString(i);
+					}
+				}
+			} catch (Exception e) {
+			}
+			
+			
+			try {
+				if(objJSON.has("replies")) {
+					JSONArray arJSON = objJSON.getJSONArray("replies");
+					
+					int size = arJSON.length();
+					replies = new Review[size];
+					for(int i=0; i<size; i++) {
+						replies[i] = new Review(arJSON.getJSONObject(i));
+					}
+				}
+			} catch (Exception e) {
+			}
+			
+			if(objJSON.has("is_liked")) {
+				this.is_liked = objJSON.getInt("is_liked");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -118,6 +158,55 @@ public class Post extends BCPBaseModel {
 		}
 	}
 
+	public void copyValuesFromNewItem(Post newPost) {
+		
+		if(newPost == null) {
+			this.id = 0;
+			this.type = 0;
+			this.board_id = 0;
+			this.author_id = 0;
+			this.title = null;
+			this.content = null;
+			this.rep_img_url = null;
+			this.parent_id = 0;
+			this.likes_cnt = 0;
+			this.hits_cnt = 0;
+			this.to_show_cover = 0;
+			this.need_to_push = 0;
+			this.created_at = 0;
+			this.author_nickname = null;
+			this.author_profile_img_url = null;
+			this.youtube_id = null;
+			this.replies_cnt = 0;
+			this.board_title = null;
+			this.images = null;
+			this.replies = null;
+			this.is_liked = 0;
+		} else {
+			this.id = newPost.getId();
+			this.type = newPost.getType();
+			this.board_id = newPost.getBoard_id();
+			this.author_id = newPost.getAuthor_id();
+			this.title = newPost.getTitle();
+			this.content = newPost.getContent();
+			this.rep_img_url = newPost.getRep_img_url();
+			this.parent_id = newPost.getParent_id();
+			this.likes_cnt = newPost.getLikes_cnt();
+			this.hits_cnt = newPost.getHits_cnt();
+			this.to_show_cover = newPost.getTo_show_cover();
+			this.need_to_push = newPost.getNeed_to_push();
+			this.created_at = newPost.getCreated_at();
+			this.author_nickname = newPost.getAuthor_nickname();
+			this.author_profile_img_url = newPost.getAuthor_profile_img_url();
+			this.youtube_id = newPost.getYoutube_id();
+			this.replies_cnt = newPost.getReplies_cnt();
+			this.board_title = newPost.getBoard_title();
+			this.images = newPost.getImages();
+			this.replies = newPost.getReplies();
+			this.is_liked = newPost.getIs_liked();
+		}
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -260,5 +349,37 @@ public class Post extends BCPBaseModel {
 
 	public void setBoard_title(String board_title) {
 		this.board_title = board_title;
+	}
+
+	public String[] getImages() {
+		return images;
+	}
+
+	public void setImages(String[] images) {
+		this.images = images;
+	}
+
+	public String getAuthor_profile_img_url() {
+		return author_profile_img_url;
+	}
+
+	public void setAuthor_profile_img_url(String author_profile_img_url) {
+		this.author_profile_img_url = author_profile_img_url;
+	}
+
+	public Review[] getReplies() {
+		return replies;
+	}
+
+	public void setReplies(Review[] replies) {
+		this.replies = replies;
+	}
+
+	public int getIs_liked() {
+		return is_liked;
+	}
+
+	public void setIs_liked(int is_liked) {
+		this.is_liked = is_liked;
 	}
 }

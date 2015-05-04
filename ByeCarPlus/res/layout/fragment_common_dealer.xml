@@ -165,6 +165,23 @@
         
     </com.outspoken_kid.views.OffsetScrollView>
     
+    <View 
+        android:id="@+id/dealerPage_bgForButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button_bg"
+        android:visibility="gone" />
+
+    <Button 
+        android:id="@+id/dealerPage_btnSelect"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/select_sell_btn"
+        android:visibility="gone" />
+    
     <com.byecar.views.TitleBar
         android:id="@+id/dealerPage_titleBar"
         android:layout_width="match_parent"

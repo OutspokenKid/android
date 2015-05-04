@@ -3,12 +3,7 @@ package com.byecar.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils.TruncateAt;
-import android.text.style.DynamicDrawableSpan;
-import android.text.style.ImageSpan;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -16,7 +11,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.TextView;
-import android.widget.TextView.BufferType;
 
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPDownloadUtils;
@@ -118,7 +112,7 @@ public class ForumView extends FrameLayout {
 		tvLikeCount.setEllipsize(TruncateAt.END);
 		this.addView(tvLikeCount);
 		
-		FontUtils.setFontSize(tvName, 18);
+		FontUtils.setFontSize(tvName, 16);
 		FontUtils.setFontStyle(tvName, FontUtils.BOLD);
 		FontUtils.setFontSize(tvContent, 22);
 		FontUtils.setFontSize(tvRegdate, 20);
@@ -143,15 +137,15 @@ public class ForumView extends FrameLayout {
 	
 	public void setForum(Post post, int index) {
 		
-		if(!StringUtils.isEmpty(post.getRep_img_url())) {
+		if(!StringUtils.isEmpty(post.getAuthor_profile_img_url())) {
 			
-			ivProfile.setTag(post.getRep_img_url());
-			BCPDownloadUtils.downloadBitmap(post.getRep_img_url(), new OnBitmapDownloadListener() {
+			ivProfile.setTag(post.getAuthor_profile_img_url());
+			BCPDownloadUtils.downloadBitmap(post.getAuthor_profile_img_url(), new OnBitmapDownloadListener() {
 
 				@Override
 				public void onError(String url) {
 
-					LogUtils.log("DealerView.onError." + "\nurl : " + url);
+					LogUtils.log("ForumView.onError." + "\nurl : " + url);
 
 					// TODO Auto-generated method stub		
 				}
@@ -160,7 +154,7 @@ public class ForumView extends FrameLayout {
 				public void onCompleted(String url, Bitmap bitmap) {
 
 					try {
-						LogUtils.log("DealerView.onCompleted." + "\nurl : " + url);
+						LogUtils.log("ForumView.onCompleted." + "\nurl : " + url);
 
 						if(bitmap != null && !bitmap.isRecycled()) {
 							ivProfile.setImageBitmap(bitmap);
@@ -195,16 +189,16 @@ public class ForumView extends FrameLayout {
 		
 		tvName.setText(post.getAuthor_nickname());
 
-		if(System.currentTimeMillis()/1000 - post.getCreated_at() < 86400 * 10) {
-			SpannableStringBuilder ssb = new SpannableStringBuilder(post.getContent() + "  ");
-			Drawable newIconDrawable = getResources().getDrawable(R.drawable.new_icon);
-			newIconDrawable.setBounds(0, 0, ResizeUtils.getSpecificLength(28), ResizeUtils.getSpecificLength(28));
-			ssb.setSpan(new ImageSpan(newIconDrawable, DynamicDrawableSpan.ALIGN_BOTTOM), 
-					ssb.length() - 1, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-			tvContent.setText(ssb, BufferType.SPANNABLE);
-		} else {
-			tvContent.setText(post.getContent());
-		}
+//		if(System.currentTimeMillis()/1000 - post.getCreated_at() < 86400 * 10) {
+//			SpannableStringBuilder ssb = new SpannableStringBuilder(post.getContent() + "  ");
+//			Drawable newIconDrawable = getResources().getDrawable(R.drawable.new_icon);
+//			newIconDrawable.setBounds(0, 0, ResizeUtils.getSpecificLength(28), ResizeUtils.getSpecificLength(28));
+//			ssb.setSpan(new ImageSpan(newIconDrawable, DynamicDrawableSpan.ALIGN_BOTTOM), 
+//					ssb.length() - 1, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+//			tvContent.setText(ssb, BufferType.SPANNABLE);
+//		} else {
+			tvContent.setText(post.getTitle());
+//		}
 		
 		tvRegdate.setText(StringUtils.getDateString("yyyy, MM, dd", post.getCreated_at()*1000));
 		tvHitCount.setText(post.getHits_cnt() + "회");

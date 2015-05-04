@@ -154,7 +154,7 @@ public class WriteReviewPage extends BCPFragment {
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResizeForRelative(60, 60, btnSubmit, null, null, new int[]{0, 14, 14, 0});
+		ResizeUtils.viewResizeForRelative(132, 60, btnSubmit, null, null, new int[]{0, 14, 14, 0});
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, tvCarName, null, null, null, 
 				new int[]{20, 0, 200, 0});
 		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 88, tvRegdate, null, null, null, 
@@ -173,10 +173,10 @@ public class WriteReviewPage extends BCPFragment {
 		FontUtils.setFontSize(tvRegdate, 16);
 		FontUtils.setFontSize(tvCarName, 30);
 		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
-		FontUtils.setFontSize(tvRatingText, 20);
+		FontUtils.setFontSize(tvRatingText, 24);
 		FontUtils.setFontStyle(tvRatingText, FontUtils.BOLD);
-		FontUtils.setFontSize(tvTo, 20);
-		FontUtils.setFontSize(etContent, 20);
+		FontUtils.setFontSize(tvTo, 24);
+		FontUtils.setFontSize(etContent, 24);
 	}
 
 	@Override

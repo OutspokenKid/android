@@ -7,6 +7,7 @@ public class BCPAPIs {
 	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/policies";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
+	public static String AREA_URL = BASE_API_URL + "zipcodes/areas.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
 	public static String NICKNAME_CHECK_URL = BASE_API_URL + "/users/check/nickname.json";
@@ -38,13 +39,7 @@ public class BCPAPIs {
 	public static String CAR_DEALER_LIKE_URL = BASE_API_URL + "/onsalecars/dealer/like.json";
 	public static String CAR_DEALER_UNLIKE_URL = BASE_API_URL + "/onsalecars/dealer/unlike.json";
 	public static String CAR_DEALER_PURCHASES_URL = BASE_API_URL + "/onsalecars/dealer/purchase.json";
-	
-	public static String CAR_DIRECT_CERTIFIED_LIST_URL = BASE_API_URL + "/onsalecars/certified/list.json";
-	public static String CAR_DIRECT_CERTIFIED_SHOW_URL = BASE_API_URL + "/onsalecars/certified/show.json";
-	public static String CAR_DIRECT_CERTIFIED_SAVE_URL = BASE_API_URL + "/onsalecars/certified/save.json";
-	public static String CAR_DIRECT_CERTIFIED_LIKE_URL = BASE_API_URL + "/onsalecars/certified/like.json";
-	public static String CAR_DIRECT_CERTIFIED_UNLIKE_URL = BASE_API_URL + "/onsalecars/certified/unlike.json";
-	public static String CAR_DIRECT_CERTIFIED_PURCHASES_URL = BASE_API_URL + "/onsalecars/certified/purchase.json";
+	public static String CAR_DEALER_REPORT_URL = BASE_API_URL + "/onsalecars/dealer/report.json";
 	
 	public static String CAR_DIRECT_NORMAL_LIST_URL = BASE_API_URL + "/onsalecars/normal/list.json";
 	public static String CAR_DIRECT_NORMAL_SHOW_URL = BASE_API_URL + "/onsalecars/normal/show.json";
@@ -53,6 +48,7 @@ public class BCPAPIs {
 	public static String CAR_DIRECT_NORMAL_UNLIKE_URL = BASE_API_URL + "/onsalecars/normal/unlike.json";
 	public static String CAR_DIRECT_NORMAL_PURCHASES_URL = BASE_API_URL + "/onsalecars/normal/purchase.json";
 	public static String CAR_DIRECT_NORMAL_DELETE_URL = BASE_API_URL + "/onsalecars/normal/delete.json";
+	public static String CAR_DIRECT_NORMAL_REPORT_URL = BASE_API_URL + "/onsalecars/normal/report.json";
 
 	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
 	public static String REVIEW_DEALER_URL = BASE_API_URL + "/dealers/reviews.json";
@@ -77,9 +73,18 @@ public class BCPAPIs {
 	
 	public static String MY_CAR_URL = BASE_API_URL + "/users/mine/onsalecars.json";
 	public static String MY_PURCHASE_URL = BASE_API_URL + "/users/mine/purchases.json";
+	public static String MY_LIKE_URL = BASE_API_URL + "/users/mine/likes.json";
 	public static String MY_REVIEW_URL = BASE_API_URL + "/users/mine/reviews.json";
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
+	
+	public static String FORUM_LIST_URL = BASE_API_URL + "/posts/forum.json";
+	public static String FORUM_DETAIL_URL = BASE_API_URL + "/posts/show.json";
+	public static String FORUM_WRITE_URL = BASE_API_URL + "/posts/forum/save.json";
+	public static String FORUM_DELETE_URL = BASE_API_URL + "/posts/forum/delete.json";
+	public static String FORUM_LIKE_URL = BASE_API_URL + "/posts/like.json";
+	public static String FORUM_UNLIKE_URL = BASE_API_URL + "/posts/unlike.json";
+	public static String FORUM_REPORT_URL = BASE_API_URL + "/posts/report.json";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";

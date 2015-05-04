@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants" >
+    
+    <TextView 
+        android:id="@+id/list_forum_best_title1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/best3"
+        android:textColor="#fff"
+        android:gravity="center_vertical"
+        android:background="@color/title_gray" />
+    
+    <com.byecar.views.ForumView
+        android:id="@+id/list_forum_best_forumView1"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <com.byecar.views.ForumView
+        android:id="@+id/list_forum_best_forumView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <com.byecar.views.ForumView
+        android:id="@+id/list_forum_best_forumView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+    
+    <TextView 
+        android:id="@+id/list_forum_best_title2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:text="@string/post"
+        android:textColor="#fff"
+        android:gravity="center_vertical"
+        android:background="@color/title_gray" />
+    
+    <View
+        android:id="@+id/list_forum_best_bottomBlank"
+        android:layout_width="10dp"
+        android:layout_height="0dp" />
+    
+</LinearLayout>

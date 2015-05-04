@@ -50,9 +50,13 @@ import com.byecar.fragments.WebBrowserPage;
 import com.byecar.fragments.user.CarDetailPage;
 import com.byecar.fragments.user.CarListPage;
 import com.byecar.fragments.user.CarRegistrationPage;
+import com.byecar.fragments.user.ForumDetailPage;
+import com.byecar.fragments.user.ForumListPage;
 import com.byecar.fragments.user.MainPage;
 import com.byecar.fragments.user.MyPage;
+import com.byecar.fragments.user.WriteForumPage;
 import com.byecar.fragments.user.WriteReviewPage;
+import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.PushObject;
@@ -84,6 +88,7 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public static User user;
 	public static CompanyInfo companyInfo;
+	public static Area area;
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
@@ -337,6 +342,15 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
+		
+		case BCPConstants.PAGE_FORUM_LIST:
+			return new ForumListPage();
+			
+		case BCPConstants.PAGE_WRITE_FORUM:
+			return new WriteForumPage();
+			
+		case BCPConstants.PAGE_FORUM_DETAIL:
+			return new ForumDetailPage();
 			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();

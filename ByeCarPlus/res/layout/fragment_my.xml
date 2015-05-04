@@ -41,12 +41,22 @@
     	android:background="@drawable/mypage_tab2_tab_b" />
     
     <Button 
-        android:id="@+id/myPage_btnReview"
+        android:id="@+id/myPage_btnLike"
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_alignTop="@id/myPage_btnPurchase"
     	android:layout_toRightOf="@id/myPage_btnPurchase"
+    	android:textColor="#fff"
+    	android:gravity="center"
     	android:background="@drawable/mypage_tab3_tab_b" />
+    
+    <Button 
+        android:id="@+id/myPage_btnReview"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignTop="@id/myPage_btnLike"
+    	android:layout_toRightOf="@id/myPage_btnLike"
+    	android:background="@drawable/mypage_tab4_tab_b" />
     
     <ListView
         android:id="@+id/myPage_listView"

@@ -20,13 +20,21 @@
         <RelativeLayout
             android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
+    		
+            <TextView 
+		        android:id="@+id/signUpForCommonPage_tvProfileTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
 
             <FrameLayout
                 android:id="@+id/signUpForCommonPage_profileFrame"
                 android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_alignParentTop="true" >
+		        android:layout_below="@id/signUpForCommonPage_tvProfileTitle"
+		        android:layout_centerHorizontal="true" >
                 
                 <Button
                     android:id="@+id/signUpForCommonPage_btnProfile"
@@ -56,14 +64,14 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForCommonPage_profileFrame" />
             
-            <TextView
+            <TextView 
 		        android:id="@+id/signUpForCommonPage_tvCommonInfo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/commonInfo"
-		        android:textColor="#000"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/signUpForCommonPage_tvProfile" />
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForCommonPage_tvProfile"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
 		    
 		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
 		        android:id="@+id/signUpForCommonPage_etEmail"
@@ -138,7 +146,7 @@
 		        android:textColor="#ff4b4b"
 		        android:layout_alignRight="@id/signUpForCommonPage_etPwConfirm"
 		        android:layout_above="@id/signUpForCommonPage_etPwConfirm" />
-		    		    
+		    		
 		    <Button 
 		        android:id="@+id/signUpForCommonPage_btnSignUp"
 		        android:layout_width="0dp"

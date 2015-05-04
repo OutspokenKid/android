@@ -9,6 +9,8 @@ import android.view.View;
 import com.byecar.byecarplus.R;
 import com.byecar.wrappers.ViewWrapperForAuctionCar;
 import com.byecar.wrappers.ViewWrapperForBrand;
+import com.byecar.wrappers.ViewWrapperForForum;
+import com.byecar.wrappers.ViewWrapperForForumBest;
 import com.byecar.wrappers.ViewWrapperForMyCar;
 import com.byecar.wrappers.ViewWrapperForMyReview;
 import com.byecar.wrappers.ViewWrapperForNotification;
@@ -65,7 +67,14 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_CAR_MY:
 		case BCPConstants.ITEM_CAR_MY_PURCHASE:
+		case BCPConstants.ITEM_CAR_MY_LIKE:
 			return R.layout.list_my_car;
+			
+		case BCPConstants.ITEM_FORUM:
+			return R.layout.list_forum;
+			
+		case BCPConstants.ITEM_FORUM_BEST:
+			return R.layout.list_forum_best;
 		}
 		
 		return 0;
@@ -112,9 +121,20 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_CAR_MY:
 		case BCPConstants.ITEM_CAR_MY_PURCHASE:
+		case BCPConstants.ITEM_CAR_MY_LIKE:
 			ViewWrapperForMyCar vwfmc = new ViewWrapperForMyCar(convertView, itemCode);
 			vwfmc.setActivity(activity);
 			return vwfmc;
+			
+		case BCPConstants.ITEM_FORUM:
+			ViewWrapperForForum vwff = new ViewWrapperForForum(convertView, itemCode);
+			vwff.setActivity(activity);
+			return vwff;
+			
+		case BCPConstants.ITEM_FORUM_BEST:
+			ViewWrapperForForumBest vwffb = new ViewWrapperForForumBest(convertView, itemCode);
+			vwffb.setActivity(activity);
+			return vwffb;
 		}
 		
 		return null;

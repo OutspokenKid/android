@@ -29,7 +29,7 @@
         android:layout_height="0dp"
         android:layout_alignTop="@id/list_my_review_bgTop"
         android:layout_alignRight="@id/list_my_review_bgTop"
-        android:background="@drawable/mypage_review_modify_btn" />
+        android:background="@drawable/mypage_select_btn" />
 	
 	<TextView
         android:id="@+id/list_my_review_tvRegdate"

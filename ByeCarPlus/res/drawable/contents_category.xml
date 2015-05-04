@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     
   <item android:state_pressed="true"
-   android:drawable="@drawable/mypage_review_btn_b" /> <!-- pressed -->
+   android:drawable="@drawable/contents_category_b" /> <!-- pressed -->
    
-  <item android:drawable="@drawable/mypage_review_btn_a" /> <!-- default -->
+  <item android:drawable="@drawable/contents_category_a" /> <!-- default -->
   
 </selector>

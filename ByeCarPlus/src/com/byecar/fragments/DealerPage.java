@@ -50,6 +50,8 @@ public class DealerPage extends BCPFragment {
 	
 	private OffsetScrollView scrollView;
 
+	private RelativeLayout innerRelative;
+	
 	private View bg;
 	private ImageView ivImage;
 	
@@ -68,11 +70,17 @@ public class DealerPage extends BCPFragment {
 	private LinearLayout linearForReview;
 	private Button btnMore;
 	
+	private View bgForButton;
+	private Button btnSelect;
+	
 	ArrayList<Review> reviews = new ArrayList<Review>();
 
 	private int scrollOffset;
 	private int standardLength;
 	private float diff;
+	
+	private boolean needSelect;
+	private int onsalecar_id; 
 	
 	@Override
 	public void bindViews() {
@@ -80,6 +88,7 @@ public class DealerPage extends BCPFragment {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.dealerPage_titleBar);
 		
 		scrollView = (OffsetScrollView) mThisView.findViewById(R.id.dealerPage_scrollView);
+		innerRelative = (RelativeLayout) mThisView.findViewById(R.id.dealerPage_innerRelative);
 		bg = mThisView.findViewById(R.id.dealerPage_bg);
 		ivImage = (ImageView) mThisView.findViewById(R.id.dealerPage_ivImage);
 		
@@ -98,17 +107,25 @@ public class DealerPage extends BCPFragment {
 		headerForReview = mThisView.findViewById(R.id.dealerPage_headerForReview);
 		linearForReview = (LinearLayout) mThisView.findViewById(R.id.dealerPage_linearForReview);
 		btnMore = (Button) mThisView.findViewById(R.id.dealerPage_btnMore);
+		
+		bgForButton = mThisView.findViewById(R.id.dealerPage_bgForButton);
+		btnSelect = (Button) mThisView.findViewById(R.id.dealerPage_btnSelect);
 	}
 
 	@Override
 	public void setVariables() {
 
-		if(getArguments().containsKey("dealer")) {
-			this.dealer = (Dealer) getArguments().getSerializable("dealer");
-		} else if(getArguments().containsKey("dealer_id")) {
-			this.dealer_id = getArguments().getInt("dealer_id");
-		} else {
-			closePage();
+		if(getArguments() != null) {
+			if(getArguments().containsKey("dealer")) {
+				this.dealer = (Dealer) getArguments().getSerializable("dealer");
+			} else if(getArguments().containsKey("dealer_id")) {
+				this.dealer_id = getArguments().getInt("dealer_id");
+			} else {
+				closePage();
+			}
+			
+			needSelect = getArguments().getBoolean("needSelect");
+			onsalecar_id = getArguments().getInt("onsalecar_id");
 		}
 	}
 
@@ -119,6 +136,14 @@ public class DealerPage extends BCPFragment {
 		
 		headerForIntro.setBackgroundResource(R.drawable.dealer_header1);
 		headerForReview.setBackgroundResource(R.drawable.dealer_header2);
+		
+		if(needSelect) {
+
+			innerRelative.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(127));
+			
+			bgForButton.setVisibility(View.VISIBLE);
+			btnSelect.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -153,6 +178,15 @@ public class DealerPage extends BCPFragment {
 			public void onClick(View view) {
 
 				loadReviews();
+			}
+		});
+		
+		btnSelect.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectDealer();
 			}
 		});
 	}
@@ -252,6 +286,17 @@ public class DealerPage extends BCPFragment {
 				R.id.dealerPage_footerForReview).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
 		rp.height = ResizeUtils.getSpecificLength(20);
+		
+		//bgForButton.
+		rp = (RelativeLayout.LayoutParams) bgForButton.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(640);
+		rp.height = ResizeUtils.getSpecificLength(123);
+		
+		//btnSelect.
+		rp = (RelativeLayout.LayoutParams) btnSelect.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(612);
+		rp.height = ResizeUtils.getSpecificLength(84);
+		rp.bottomMargin = ResizeUtils.getSpecificLength(16);
 		
 		FontUtils.setFontSize(tvRating, 36);
 		FontUtils.setFontStyle(tvRating, FontUtils.BOLD);
@@ -512,7 +557,7 @@ public class DealerPage extends BCPFragment {
 					addReviewViews(newReviews);
 					reviews.addAll(newReviews);
 					
-					if(reviews.size() == 0) {
+					if(linearForReview.getChildCount() == 1 && reviews.size() == 0) {
 						View noReview = new View(mContext);
 						ResizeUtils.viewResize(223, 226, noReview, 1, Gravity.CENTER, new int[]{0, 16, 0, 16});
 						noReview.setBackgroundResource(R.drawable.dealer_no_comment);
@@ -593,5 +638,45 @@ public class DealerPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void selectDealer() {
+		
+		//http://byecar.minsangk.com/onsalecars/bids/select.json?onsalecar_id=1&dealer_id=1
+		String url = BCPAPIs.CAR_BID_SELECT_URL
+				+ "?onsalecar_id=" + onsalecar_id
+				+ "&dealer_id=" + dealer.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("DealerPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSelectDealer);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("DealerPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_selectDealer);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSelectDealer);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSelectDealer);
+				}
+			}
+		});
 	}
 }

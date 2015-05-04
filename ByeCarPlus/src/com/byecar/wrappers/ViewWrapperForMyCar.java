@@ -6,7 +6,6 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -41,10 +40,12 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 	private View statusIcon;
 	private TextView tvRegdate;
 	private TextView tvCarName;
-	private TextView tvYear;
 	private TextView tvInfo;
 	private Button btnReview;
 	private Button btnComplete;
+	private Button btnSelectDealer;
+	private Button btnLike;
+	private TextView tvLikeText;
 	
 	public ViewWrapperForMyCar(View row, int itemCode) {
 		super(row, itemCode);
@@ -60,10 +61,12 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 			statusIcon = row.findViewById(R.id.list_my_car_statusIcon);
 			tvRegdate = (TextView) row.findViewById(R.id.list_my_car_tvRegdate);
 			tvCarName = (TextView) row.findViewById(R.id.list_my_car_tvCarName);
-			tvYear = (TextView) row.findViewById(R.id.list_my_car_tvYear);
 			tvInfo = (TextView) row.findViewById(R.id.list_my_car_tvInfo);
 			btnReview = (Button) row.findViewById(R.id.list_my_car_btnReview);
 			btnComplete = (Button) row.findViewById(R.id.list_my_car_btnComplete);
+			btnSelectDealer = (Button) row.findViewById(R.id.list_my_car_btnSelectDealer);
+			btnLike = (Button) row.findViewById(R.id.list_my_car_btnLike);
+			tvLikeText = (TextView) row.findViewById(R.id.list_my_car_tvLikeText);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -76,20 +79,23 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		try {
 			ResizeUtils.viewResizeForRelative(186, 132, ivImage, null, null, new int[]{31, 84, 0, 0});
 			ResizeUtils.viewResizeForRelative(608, 232, cover, null, null, new int[]{0, 0, 0, 0});
-			ResizeUtils.viewResizeForRelative(135, 30, typeIcon, null, null, new int[]{18, 20, 0, 0});
-			ResizeUtils.viewResizeForRelative(92, 39, statusIcon, null, null, new int[]{15, 15, 0, 0});
+			ResizeUtils.viewResizeForRelative(174, 30, typeIcon, null, null, new int[]{18, 20, 0, 0});
+			ResizeUtils.viewResizeForRelative(94, 41, statusIcon, null, null, new int[]{15, 15, 0, 0});
 			ResizeUtils.setMargin(tvRegdate, new int[]{0, 26, 18, 0});
 			ResizeUtils.viewResizeForRelative(290, 64, tvCarName, null, null, new int[]{16, 4, 0, 0});
-			ResizeUtils.viewResizeForRelative(70, 64, tvYear, null, null, new int[]{0, 0, 30, 0});
-			ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 64, tvInfo, null, null, new int[]{16, 0, 0, 0});
-			ResizeUtils.viewResizeForRelative(88, 34, btnReview, null, null, new int[]{0, 0, 0, 13});
-			ResizeUtils.viewResizeForRelative(88, 34, btnComplete, null, null, new int[]{0, 0, 0, 13});
+			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvInfo, null, null, new int[]{16, 0, 0, 0});
+			ResizeUtils.viewResizeForRelative(157, 46, btnReview, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(157, 46, btnComplete, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(157, 46, btnSelectDealer, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(90, 40, btnLike, null, null, new int[]{0, 0, 42, 11}, new int[]{32, 0, 9, 2});
+			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvLikeText, null, null, new int[]{0, 0, 2, 0});
 			
 			FontUtils.setFontSize(tvRegdate, 16);
 			FontUtils.setFontSize(tvCarName, 26);
 			FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
-			FontUtils.setFontSize(tvYear, 20);
 			FontUtils.setFontSize(tvInfo, 20);
+			FontUtils.setFontSize(btnLike, 18);
+			FontUtils.setFontSize(tvLikeText, 20);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -106,7 +112,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				
 				car = (Car) baseModel;
 				
-				//타입.
+				//type(입찰진행중, 직거래, 중고차마켓)에 따른 아이콘 설정.
 				switch(car.getType()) {
 				
 				case Car.TYPE_BID:
@@ -118,7 +124,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					break;
 					
 				case Car.TYPE_DIRECT:
-					typeIcon.setBackgroundResource(R.drawable.mypage_title4);
+					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
 					break;
 					
 				default:
@@ -129,20 +135,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					}
 				}
 				
-				//등록일.
-				tvRegdate.setText(StringUtils.getDateString(
-						"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
-				
-				//이미지.
-				setImage(ivImage, car.getRep_img_url());
-				
-				//차 이름.
-				tvCarName.setText(car.getCar_full_name());
-				
-				//연식.
-				tvYear.setText(car.getYear() + row.getContext().getString(R.string.year));
-
-				//판매 상태.
+				//status에 따른 아이콘(검수중, 진행중, 거래완료)
 				switch(car.getStatus()) {
 				
 				//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
@@ -179,71 +172,82 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 						statusIcon.setBackgroundDrawable(null);
 					}
 				}
-
-				//itemCode 확인.
-				//내 매물인 경우.
-				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY) {
-					//가격.
-					tvInfo.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
-					
-					if(car.getType() == Car.TYPE_BID) {
-						tvInfo.setText("입찰자 " + car.getBids_cnt() + "명" + "   " 
-								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+				
+				//나의 차량, 구매 신청내역에서는 등록일, 좋아요에서는 찜한 날, 직거래의 경우 마감일도 있음.
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY_LIKE) {
+					//찜한날.
+					tvRegdate.setText(StringUtils.getDateString(
+							"찜한 날 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
+				} else {
+					//직거래는 등록일과 마감일, 나의 차량과 구매 신청내역에서는 등록일.
+					if(car.getType() == Car.TYPE_DIRECT) {
+						tvRegdate.setText(StringUtils.getDateString(
+								"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000)
+								+ StringUtils.getDateString(
+								"\n마감일 yyyy년 MM월 dd일", car.getBid_until_at() * 1000));
 					} else {
-						tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+						tvRegdate.setText(StringUtils.getDateString(
+								"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
 					}
+				}
+				
+				//이미지.
+				setImage(ivImage, car.getRep_img_url());
+				
+				//차 이름.
+				tvCarName.setText(car.getCar_full_name());
+				
+				//나의 차량일 때 완료하기, 후기작성, 딜러선택하기 버튼 노출.
+				boolean showButton = false;
+				btnReview.setVisibility(View.INVISIBLE);
+				btnComplete.setVisibility(View.INVISIBLE);
+				btnSelectDealer.setVisibility(View.INVISIBLE);
+				
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY
+						&& car.getType() == Car.TYPE_BID) {
 					
 					switch(car.getStatus()) {
 					
-					case Car.STATUS_STAND_BY_APPROVAL:
-					case Car.STATUS_STAND_BY_BIDING:
-					case Car.STATUS_BIDDING:
 					case Car.STATUS_BID_COMPLETE:
-						btnReview.setVisibility(View.INVISIBLE);
-						btnComplete.setVisibility(View.INVISIBLE);
+						btnSelectDealer.setVisibility(View.VISIBLE);
+						showButton = true;
 						break;
-						
+					
 					case Car.STATUS_BID_SUCCESS:
 						btnComplete.setVisibility(View.VISIBLE);
-						btnReview.setVisibility(View.INVISIBLE);
-						break;
-						
-					case Car.STATUS_BID_FAIL:
-						btnComplete.setVisibility(View.INVISIBLE);
-						btnReview.setVisibility(View.INVISIBLE);
+						showButton = true;
 						break;
 						
 					case Car.STATUS_TRADE_COMPLETE:
-						btnComplete.setVisibility(View.INVISIBLE);
-
-						//옥션, 검증직거래 매물이고, 후기를 작성하지 않은 경우.
-						if(car.getHas_review() != 1
-								&& car.getType() == Car.TYPE_BID) {
+						if(car.getHas_review() != 1) {
 							btnReview.setVisibility(View.VISIBLE);
-						} else {
-							btnReview.setVisibility(View.INVISIBLE);
+							showButton = true;
 						}
 						break;
-						
-						default:
-							btnReview.setVisibility(View.INVISIBLE);
-							btnComplete.setVisibility(View.INVISIBLE);
-							break;
 					}
-					
-				//구매 신청내역인 경우.
+				}
+				
+				//입찰진행중 상태일 때는 "참여딜러 x명, xx만원”, 그 외에는 “판매가 xx만원”
+				if(car.getType() == Car.TYPE_BID) {
+					if(showButton) {
+						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "\n" 
+								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+					} else {
+						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "  " 
+								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+					}
 				} else {
-					//가격.
-					tvInfo.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-					tvInfo.setText(null);
-					FontUtils.addSpan(tvInfo, "판매금액 ", 0, 1, false);
-					FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()/10000) 
-							+ "만원", 0, 1, true);
-					
-					//리뷰 버튼.
-					statusIcon.setVisibility(View.GONE);
-					btnReview.setVisibility(View.GONE);
-					btnComplete.setVisibility(View.GONE);
+					tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+				}
+				
+				//좋아요 버튼.
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY_LIKE) {
+					btnLike.setVisibility(View.VISIBLE);
+					tvLikeText.setVisibility(View.VISIBLE);
+					btnLike.setText("" + Math.min(9999, car.getLikes_cnt()));
+				} else {
+					btnLike.setVisibility(View.INVISIBLE);
+					tvLikeText.setVisibility(View.INVISIBLE);
 				}
 			}
 		} catch (Exception e) {

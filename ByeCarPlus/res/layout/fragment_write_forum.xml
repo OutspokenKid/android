@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/writeForumPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/writeForumPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <View 
+        android:id="@+id/writeForumPage_buttonBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/writeForumPage_titleBar"
+        android:background="@drawable/forum_tab_bar_bg" />
+    
+    <Button
+        android:id="@+id/writeForumPage_btnCategory"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/writeForumPage_buttonBg"
+		android:text="@string/hintForCategory"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:background="@drawable/contents_category" />
+    
+    <EditText 
+        android:id="@+id/writeForumPage_etTitle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/writeForumPage_btnCategory"
+        android:background="@drawable/new_contents_text_box"
+        android:gravity="center"
+        android:hint="@string/hintForForumTitle"
+        android:textColor="@color/holo_text"
+        android:textColorHint="@color/holo_text" />
+    
+    <Button 
+        android:id="@+id/writeForumPage_btnClear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignRight="@id/writeForumPage_etTitle"
+        android:layout_alignTop="@id/writeForumPage_etTitle"
+        android:background="@drawable/filter_clear_btn" />
+    
+    <Button
+        android:id="@+id/writeForumPage_btnComplete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/reveiw_episode_complete_btn" />
+    
+    <View
+        android:id="@+id/writeForumPage_pictureBg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/new_contents_pic_bg" />
+    
+	<Button
+        android:id="@+id/writeForumPage_btnAdd"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/new_contents_pic_btn" />
+	
+	<LinearLayout
+        android:id="@+id/writeForumPage_pictureLinear"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_toRightOf="@id/writeForumPage_btnAdd"
+        android:layout_alignParentBottom="true"  />
+	
+	<EditText 
+        android:id="@+id/writeForumPage_etContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/writeForumPage_pictureBg"
+        android:layout_below="@id/writeForumPage_buttonBg"
+        android:background="#fff"
+        android:gravity="top|left"
+        android:hint="@string/hintForForumContent"
+        android:textColor="@color/holo_text"
+        android:textColorHint="@color/holo_text" />
+        
+</RelativeLayout>

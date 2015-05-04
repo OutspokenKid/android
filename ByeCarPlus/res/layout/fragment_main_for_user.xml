@@ -63,14 +63,14 @@
                     android:id="@+id/mainForUserPage_dealerView2"
                     android:layout_width="0dp"
 	        		android:layout_height="0dp"
-	        		android:layout_toRightOf="@id/mainForUserPage_dealerView1"
+	        		android:layout_centerHorizontal="true"
 	        		android:layout_alignParentTop="true" />
                 
                 <com.byecar.views.DealerView 
                     android:id="@+id/mainForUserPage_dealerView3"
                     android:layout_width="0dp"
 	        		android:layout_height="0dp"
-	        		android:layout_toRightOf="@id/mainForUserPage_dealerView2"
+	        		android:layout_alignParentRight="true"
 	        		android:layout_alignParentTop="true" />
                 
                 <View 
