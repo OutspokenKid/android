@@ -582,7 +582,7 @@ public class DealerPage extends BCPFragment {
 		for(int i=0; i<size; i ++) {
 			ReviewView rv = new ReviewView(mContext);
 			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, rv, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-			rv.setReview(reviews.get(i));
+			rv.setReview(reviews.get(i), mActivity);
 			linearForReview.addView(rv, linearForReview.getChildCount() - 1);
 			
 			if(reviews.get(i).getReply() != null) {

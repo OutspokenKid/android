@@ -19,6 +19,7 @@ public class BCPConstants {
 	public static final int ITEM_REVIEW = 4;
 	public static final int ITEM_FORUM = 5;
 	public static final int ITEM_FORUM_BEST = 6;
+	public static final int ITEM_VIDEO = 7;
 	
 	//Items for car.
 	public static final int ITEM_CAR_BID = 11;
@@ -61,6 +62,8 @@ public class BCPConstants {
 	public static final int PAGE_FORUM_LIST = 41;
 	public static final int PAGE_WRITE_FORUM = 42;
 	public static final int PAGE_FORUM_DETAIL = 43;
+	public static final int PAGE_FORUM_WRITE_REPLY = 44;
+	public static final int PAGE_VIDEO_LIST = 45;
 	
 	public static final int PAGE_WEB_BROWSER = 50;
 }

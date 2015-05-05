@@ -48,7 +48,6 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -287,6 +286,24 @@ public class MainPage extends BCPAuctionableFragment {
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", Car.TYPE_DIRECT);
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
+	
+		btnVideo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_VIDEO_LIST, null);
+			}
+		});
+		
+		btnForum.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_FORUM_LIST, null);
 			}
 		});
 	}
@@ -540,8 +557,8 @@ public class MainPage extends BCPAuctionableFragment {
 			public void run() {
 
 //				Bundle bundle = new Bundle();
-//				bundle.putInt("type", Car.TYPE_DIRECT);
-//				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
+//				bundle.putInt("post_id", 75);
+//				mActivity.showPage(BCPConstants.PAGE_FORUM_DETAIL, bundle);
 			}
 		}, 1000);
 	}
@@ -826,7 +843,9 @@ public class MainPage extends BCPAuctionableFragment {
 				@Override
 				public void onClick(View view) {
 
-					ToastUtils.showToast(INDEX + "번째 클릭");
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("post", forums.get(INDEX));
+					mActivity.showPage(BCPConstants.PAGE_FORUM_DETAIL, bundle);
 				}
 			});
 		}
@@ -853,7 +872,7 @@ public class MainPage extends BCPAuctionableFragment {
 		}
 	}
 	
-	public void setTopDealerViews(ArrayList<Bid> topDealers) {
+	public void setTopDealerViews(final ArrayList<Bid> topDealers) {
 		
 		int size = dealerViews.length;
 		for(int i=0; i<size; i++) {
@@ -864,7 +883,18 @@ public class MainPage extends BCPAuctionableFragment {
 			
 			size = topDealers.size();
 			for(int i=0; i<size; i++) {
+				final int INDEX = i;
 				dealerViews[i].setDealerInfo(topDealers.get(i), i);
+				dealerViews[i].setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("dealer_id", topDealers.get(INDEX).getDealer_id());
+						mActivity.showPage(BCPConstants.PAGE_DEALER, bundle);
+					}
+				});
 			}
 		}
 	}
@@ -878,7 +908,15 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		size = bids2.size();
 		for(int i=0; i<size; i++) {
+			final int INDEX = i;
 			biddingCarViews[i].setCar(bids2.get(i));
+			biddingCarViews[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					((MainActivity)mActivity).showCarDetailPage(bids2.get(INDEX).getId(), null, Car.TYPE_BID);
+				}
+			});
 		}
 	}
 	
@@ -891,7 +929,17 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		size = reviews.size();
 		for(int i=0; i<size; i++) {
+			final Car CAR = (Car) reviews.get(i);
 			reviewViewSmalls[i].setReview(reviews.get(i));
+			reviewViewSmalls[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					((MainActivity)mActivity).showCarDetailPage(0, CAR, CAR.getType());
+				}
+			});
+			
 		}
 	}
 	

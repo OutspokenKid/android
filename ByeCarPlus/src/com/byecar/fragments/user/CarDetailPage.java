@@ -82,7 +82,6 @@ public class CarDetailPage extends BCPFragment {
 	private View headerForCheck;
 	private View arrowForCheck;
 	private ImageView ivCheck;
-	private View footerForCheck;
 	
 	private RelativeLayout relativeForAccident;
 	private View headerForAccident;
@@ -158,7 +157,6 @@ public class CarDetailPage extends BCPFragment {
 		headerForCheck = mThisView.findViewById(R.id.carDetailPage_headerForCheck);
 		arrowForCheck = mThisView.findViewById(R.id.carDetailPage_arrowForCheck);
 		ivCheck = (ImageView) mThisView.findViewById(R.id.carDetailPage_ivCheck);
-		footerForCheck = mThisView.findViewById(R.id.carDetailPage_footerForCheck);
 		
 		relativeForAccident = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForAccident);
 		headerForAccident = mThisView.findViewById(R.id.carDetailPage_headerForAccident);
@@ -202,6 +200,10 @@ public class CarDetailPage extends BCPFragment {
 			
 			if(getArguments().containsKey("type")) {
 				this.type = getArguments().getInt("type");
+			}
+			
+			if(type != Car.TYPE_BID && type != Car.TYPE_DEALER && type != Car.TYPE_DIRECT) {
+				closePage(R.string.failToLoadCarInfo);
 			}
 		}
 	}
@@ -1345,11 +1347,11 @@ public class CarDetailPage extends BCPFragment {
 					0, ResizeUtils.getSpecificLength(18));
 			
 			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, review, 1, Gravity.CENTER_HORIZONTAL, null);
-			review.setReview(car.getReview());
+			review.setReview(car.getReview(), mActivity);
 			
 			if(car.getReview().getReply() != null) {
 				ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-				reply.setReview(car.getReview().getReply());
+				reply.setReply(car.getReview().getReply());
 			}
 
 			rp = (RelativeLayout.LayoutParams) footerForReview.getLayoutParams();

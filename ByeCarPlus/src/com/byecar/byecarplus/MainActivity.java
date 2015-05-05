@@ -54,7 +54,9 @@ import com.byecar.fragments.user.ForumDetailPage;
 import com.byecar.fragments.user.ForumListPage;
 import com.byecar.fragments.user.MainPage;
 import com.byecar.fragments.user.MyPage;
+import com.byecar.fragments.user.VideoListPage;
 import com.byecar.fragments.user.WriteForumPage;
+import com.byecar.fragments.user.WriteReplyPage;
 import com.byecar.fragments.user.WriteReviewPage;
 import com.byecar.models.Area;
 import com.byecar.models.Car;
@@ -352,6 +354,12 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_FORUM_DETAIL:
 			return new ForumDetailPage();
 			
+		case BCPConstants.PAGE_FORUM_WRITE_REPLY:
+			return new WriteReplyPage();
+			
+		case BCPConstants.PAGE_VIDEO_LIST:
+			return new VideoListPage();
+			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();
 		}
@@ -400,9 +408,7 @@ public class MainActivity extends BCPFragmentActivity {
 					int onsalecar_id = Integer.parseInt(uri.getQueryParameter("onsalecar_id"));
 					
 					if(path.equals("/bids/show")) {
-						bundle.putInt("type", Car.TYPE_BID);
-						bundle.putInt("id", onsalecar_id);
-						showPage(BCPConstants.PAGE_CAR_DETAIL, bundle);
+						showCarDetailPage(onsalecar_id, null, Car.TYPE_BID);
 					}
 					
 					//byecar://users/disable

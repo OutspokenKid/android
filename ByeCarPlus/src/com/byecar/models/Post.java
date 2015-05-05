@@ -30,8 +30,10 @@ public class Post extends BCPBaseModel implements Serializable {
 	private int replies_cnt;
 	private String board_title; 
 	private String[] images;
-	private Review[] replies;
+	private Post[] replies;
 	private int is_liked;
+	private int post_id;
+	private int has_children;
 	
 	private boolean isOpened;
 	
@@ -140,9 +142,9 @@ public class Post extends BCPBaseModel implements Serializable {
 					JSONArray arJSON = objJSON.getJSONArray("replies");
 					
 					int size = arJSON.length();
-					replies = new Review[size];
+					replies = new Post[size];
 					for(int i=0; i<size; i++) {
-						replies[i] = new Review(arJSON.getJSONObject(i));
+						replies[i] = new Post(arJSON.getJSONObject(i));
 					}
 				}
 			} catch (Exception e) {
@@ -150,6 +152,14 @@ public class Post extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("is_liked")) {
 				this.is_liked = objJSON.getInt("is_liked");
+			}
+			
+			if(objJSON.has("post_id")) {
+				this.post_id = objJSON.getInt("post_id");
+			}
+			
+			if(objJSON.has("has_children")) {
+				this.has_children = objJSON.getInt("has_children");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -182,6 +192,8 @@ public class Post extends BCPBaseModel implements Serializable {
 			this.images = null;
 			this.replies = null;
 			this.is_liked = 0;
+			this.post_id = 0;
+			this.has_children = 0;
 		} else {
 			this.id = newPost.getId();
 			this.type = newPost.getType();
@@ -204,6 +216,8 @@ public class Post extends BCPBaseModel implements Serializable {
 			this.images = newPost.getImages();
 			this.replies = newPost.getReplies();
 			this.is_liked = newPost.getIs_liked();
+			this.post_id = newPost.getPost_id();
+			this.has_children = newPost.getHas_children();
 		}
 	}
 	
@@ -367,11 +381,11 @@ public class Post extends BCPBaseModel implements Serializable {
 		this.author_profile_img_url = author_profile_img_url;
 	}
 
-	public Review[] getReplies() {
+	public Post[] getReplies() {
 		return replies;
 	}
 
-	public void setReplies(Review[] replies) {
+	public void setReplies(Post[] replies) {
 		this.replies = replies;
 	}
 
@@ -381,5 +395,21 @@ public class Post extends BCPBaseModel implements Serializable {
 
 	public void setIs_liked(int is_liked) {
 		this.is_liked = is_liked;
+	}
+
+	public int getPost_id() {
+		return post_id;
+	}
+
+	public void setPost_id(int post_id) {
+		this.post_id = post_id;
+	}
+
+	public int getHas_children() {
+		return has_children;
+	}
+
+	public void setHas_children(int has_children) {
+		this.has_children = has_children;
 	}
 }

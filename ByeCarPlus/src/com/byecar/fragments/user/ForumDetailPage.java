@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
@@ -30,6 +31,7 @@ import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Post;
 import com.byecar.models.Review;
+import com.byecar.views.ForumReplyView;
 import com.byecar.views.ForumView;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -38,6 +40,8 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class ForumDetailPage extends BCPFragment {
@@ -45,6 +49,7 @@ public class ForumDetailPage extends BCPFragment {
 	private Post post;
 	private int post_id;
 	
+	private ScrollView scrollView;
 	private Button btnLike;
 	private Button btnAlert;
 	private Button btnDelete;
@@ -56,6 +61,8 @@ public class ForumDetailPage extends BCPFragment {
 	private EditText etReply;
 	private Button btnReply;
 	
+	private boolean needToScrollDown;
+	
 	ArrayList<Review> reviews = new ArrayList<Review>();
 	
 	@Override
@@ -63,6 +70,7 @@ public class ForumDetailPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.forumDetailPage_titleBar);
 		
+		scrollView = (ScrollView) mThisView.findViewById(R.id.forumDetailPage_scrollView);
 		btnLike = (Button) mThisView.findViewById(R.id.forumDetailPage_btnLike);
 		btnAlert = (Button) mThisView.findViewById(R.id.forumDetailPage_btnAlert);
 		btnDelete = (Button) mThisView.findViewById(R.id.forumDetailPage_btnDelete);
@@ -265,6 +273,15 @@ public class ForumDetailPage extends BCPFragment {
 						});
 			}
 		});
+
+		btnReply.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				writeReply();
+			}
+		});
 	}
 
 	@Override
@@ -350,7 +367,7 @@ public class ForumDetailPage extends BCPFragment {
 		
 		return R.id.forumDetailPage_mainLayout;
 	}
-
+	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
@@ -374,6 +391,12 @@ public class ForumDetailPage extends BCPFragment {
 		super.onResume();
 		
 		setPost();
+	}
+	
+	@Override
+	public void refreshPage() {
+		
+		downloadPost();
 	}
 	
 //////////////////// Custom methods.
@@ -474,8 +497,19 @@ public class ForumDetailPage extends BCPFragment {
 		addTextView();
 		
 		//Review.
-		replyLinear.removeAllViews();
 		setReviews();
+		
+		if(needToScrollDown) {
+			needToScrollDown = false;
+			mThisView.postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+				}
+			}, 500);
+		}
 	}
 	
 	public void addImageView(final String imageUrl) {
@@ -537,7 +571,10 @@ public class ForumDetailPage extends BCPFragment {
 	}
 	
 	public void setReviews() {
+
+		replyLinear.removeAllViews();
 		
+		//댓글이 없을 때.
 		if(post.getReplies() == null || post.getReplies().length == 0) {
 			View noReview = new View(mContext);
 			ResizeUtils.viewResize(223, 226, noReview, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 16});
@@ -545,6 +582,14 @@ public class ForumDetailPage extends BCPFragment {
 			replyLinear.addView(noReview);
 			
 			return;
+		}
+		
+		int size = post.getReplies().length;
+		for(int i=0; i<size; i++) {
+			ForumReplyView frv = new ForumReplyView(mContext);
+			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, frv, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 16});
+			frv.setPost(post.getReplies()[i], mActivity, post.getAuthor_nickname(), post.getId());
+			replyLinear.addView(frv);
 		}
 	}
 
@@ -583,6 +628,52 @@ public class ForumDetailPage extends BCPFragment {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+
+	public void writeReply() {
+		
+		if(etReply.length() == 0) {
+			ToastUtils.showToast(R.string.checkReplyContent);
+			return;
+		}
+		
+		//http://byecar1.minsangk.com/posts/reply/save.json?reply[post_id]=1&reply[content]=%EB%8C%93%EA%B8%80%EB%82%B4%EC%9A%A9
+		String url = BCPAPIs.FORUM_REPLY_WRITE_URL 
+				+ "?reply[post_id]=" + post.getId()
+				+ "&reply[content]=" + StringUtils.getUrlEncodedString(etReply);
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToWriteReply);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ForumDetailPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_writeReply);
+
+						etReply.setText(null);
+						
+						SoftKeyboardUtils.hideKeyboard(mContext, etReply);
+						needToScrollDown = true;
+						downloadPost();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToWriteReply);
 				}
 			}
 		});

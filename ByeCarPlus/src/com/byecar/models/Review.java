@@ -146,8 +146,12 @@ public class Review extends BCPBaseModel implements Serializable {
 				this.reply = new Review(objJSON.getJSONObject("reply"));
 			}
 			
-			if(objJSON.has("dealer_level")) {
-				this.dealer_level = objJSON.getInt("dealer_level");
+			try {
+				if(objJSON.has("dealer_level")) {
+					this.dealer_level = objJSON.getInt("dealer_level");
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

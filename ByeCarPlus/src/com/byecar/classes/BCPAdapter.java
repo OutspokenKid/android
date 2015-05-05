@@ -17,6 +17,7 @@ import com.byecar.wrappers.ViewWrapperForNotification;
 import com.byecar.wrappers.ViewWrapperForOpenablePost;
 import com.byecar.wrappers.ViewWrapperForOtherCar;
 import com.byecar.wrappers.ViewWrapperForSearchText;
+import com.byecar.wrappers.ViewWrapperForVideo;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -75,6 +76,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_FORUM_BEST:
 			return R.layout.list_forum_best;
+			
+		case BCPConstants.ITEM_VIDEO:
+			return R.layout.list_video;
 		}
 		
 		return 0;
@@ -135,6 +139,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 			ViewWrapperForForumBest vwffb = new ViewWrapperForForumBest(convertView, itemCode);
 			vwffb.setActivity(activity);
 			return vwffb;
+			
+		case BCPConstants.ITEM_VIDEO:
+			return new ViewWrapperForVideo(convertView, itemCode);
 		}
 		
 		return null;
@@ -196,6 +203,19 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 			} else if(position == models.size() - 1) {
 				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(20));
+				
+			} else {
+				convertView.setPadding(0, 0, 0, 0);
+			}
+			break;
+			
+		case BCPConstants.ITEM_VIDEO:
+
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(26), 0, 0);
+			
+			} else if(position == models.size() - 1) {
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(26));
 				
 			} else {
 				convertView.setPadding(0, 0, 0, 0);

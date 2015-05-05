@@ -4,20 +4,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.ImageViewer;
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.R.color;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPDownloadUtils;
+import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Dealer;
 import com.byecar.models.Review;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -27,22 +31,22 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.views.OutSpokenRatingBar;
 
-public class ReviewView extends LinearLayout {
+public class ReviewView extends RelativeLayout {
 
 	private View bgTop;
-	private RelativeLayout relative;
-	private View bgBottom;
+	private TextView tvContent;
+	private TextView tvRegdate;
 	
 	private ImageView ivImage;
 	private View cover;
 	private TextView tvNickname;
 	private View gradeBadge;
 	private TextView tvGrade;
+	
 	private View replyBadge;
 	private TextView tvCarName;
 	private OutSpokenRatingBar ratingBar;
-	private TextView tvContent;
-	private TextView tvRegdate;
+	private Button btnEdit;
 	
 	public ReviewView(Context context) {
 		this(context, null);
@@ -55,36 +59,42 @@ public class ReviewView extends LinearLayout {
 
 	public void init() {
 		
-		this.setOrientation(LinearLayout.VERTICAL);
-		
 		//bg_top.
 		bgTop = new View(getContext());
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 34, bgTop, 1, 0, null);
-		bgTop.setBackgroundResource(R.drawable.dealer_post_frame_head);
+		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 30, bgTop, null, null, null);
 		this.addView(bgTop);
 
-		//relative.
-		relative = new RelativeLayout(getContext());
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, relative, 1, 0, null);
-		relative.setBackgroundResource(R.drawable.dealer_post_frame_body);
-		this.addView(relative);
+		//tvContent.
+		tvContent = new TextView(getContext());
+		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 
+				tvContent, null, null, new int[]{0, 30, 0, 0}, null);
+		tvContent.setMinHeight(ResizeUtils.getSpecificLength(113));
+		tvContent.setId(R.id.reviewView_tvContent);
+		tvContent.setTextColor(color.holo_text);
+		FontUtils.setFontSize(tvContent, 22);
+		this.addView(tvContent);
 		
-		//bg_bottom.
-		bgBottom = new View(getContext());
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 34, bgBottom, 1, 0, null);
-		bgBottom.setBackgroundResource(R.drawable.dealer_post_frame_foot);
-		this.addView(bgBottom);
-		
+		//tvRegdate.
+		tvRegdate = new TextView(getContext());
+		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 68, tvRegdate, 
+				new int[]{RelativeLayout.BELOW}, new int[]{R.id.reviewView_tvContent}, 
+				null, new int[]{156, 4, 0, 0});
+		tvRegdate.setId(R.id.reviewView_tvRegdate);
+		tvRegdate.setTextColor(color.holo_text_hint);
+		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
+		FontUtils.setFontSize(tvRegdate, 16);
+		this.addView(tvRegdate);
+
 		//ivImage.
 		ivImage = new ImageView(getContext());
 		ResizeUtils.viewResizeForRelative(100, 100, ivImage, 
 				new int[]{RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.ALIGN_PARENT_TOP}, 
 				new int[]{0, 0}, 
-				new int[]{28, 4, 0, 0});
+				new int[]{28, 37, 0, 0});
 		ivImage.setId(R.id.reviewView_ivImage);
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		ivImage.setBackgroundResource(R.drawable.menu_default);
-		relative.addView(ivImage);
+		this.addView(ivImage);
 		
 		//cover.
 		cover = new View(getContext());
@@ -93,8 +103,8 @@ public class ReviewView extends LinearLayout {
 				new int[]{R.id.reviewView_ivImage, R.id.reviewView_ivImage}, 
 				null);
 		cover.setBackgroundResource(R.drawable.dealer_frame);
-		relative.addView(cover);
-		
+		this.addView(cover);
+
 		//tvNickname.
 		tvNickname = new TextView(getContext());
 		ResizeUtils.viewResizeForRelative(135, LayoutParams.WRAP_CONTENT, tvNickname, 
@@ -105,10 +115,10 @@ public class ReviewView extends LinearLayout {
 		tvNickname.setEllipsize(TruncateAt.END);
 		tvNickname.setTextColor(color.holo_text);
 		tvNickname.setGravity(Gravity.CENTER);
-		FontUtils.setFontSize(tvNickname, 26);
+		FontUtils.setFontSize(tvNickname, 22);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
-		relative.addView(tvNickname);
-		
+		this.addView(tvNickname);
+
 		//gradeBadge.
 		gradeBadge = new View(getContext());
 		ResizeUtils.viewResizeForRelative(25, 25, gradeBadge, 
@@ -117,7 +127,7 @@ public class ReviewView extends LinearLayout {
 				new int[]{30, 4, 0, 0});
 		gradeBadge.setId(R.id.reviewView_gradeBadge);
 		gradeBadge.setVisibility(View.INVISIBLE);
-		relative.addView(gradeBadge);
+		this.addView(gradeBadge);
 		
 		//tvGrade.
 		tvGrade = new TextView(getContext());
@@ -131,24 +141,24 @@ public class ReviewView extends LinearLayout {
 		FontUtils.setFontSize(tvGrade, 14);
 		FontUtils.setFontStyle(tvGrade, FontUtils.BOLD);
 		tvGrade.setVisibility(View.INVISIBLE);
-		relative.addView(tvGrade);
-		
+		this.addView(tvGrade);
+
 		//replyBadge.
 		replyBadge = new View(getContext());
 		ResizeUtils.viewResizeForRelative(17, 16, replyBadge, 
-				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.RIGHT_OF}, 
-				new int[]{0, R.id.reviewView_ivImage}, 
-				new int[]{42, 6, 0, 0});
+				new int[]{RelativeLayout.ALIGN_TOP}, new int[]{R.id.reviewView_tvContent}, 
+				new int[]{175, 15, 0, 0});
+		replyBadge.setId(R.id.reviewView_replyBadge);
 		replyBadge.setBackgroundResource(R.drawable.dealer_post_reply);
 		replyBadge.setVisibility(View.INVISIBLE);
-		relative.addView(replyBadge);
+		this.addView(replyBadge);
 		
 		//tvCarName.
 		tvCarName = new TextView(getContext());
 		ResizeUtils.viewResizeForRelative(280, LayoutParams.WRAP_CONTENT, tvCarName, 
-				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.RIGHT_OF}, 
-				new int[]{0, R.id.reviewView_ivImage}, 
-				new int[]{42, 0, 20, 0});
+				new int[]{RelativeLayout.ALIGN_LEFT, RelativeLayout.ALIGN_TOP}, 
+				new int[]{R.id.reviewView_replyBadge, R.id.reviewView_tvContent}, 
+				null);
 		tvCarName.setId(R.id.reviewView_tvCarName);
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
@@ -156,14 +166,14 @@ public class ReviewView extends LinearLayout {
 		tvCarName.setTextColor(color.holo_text);
 		FontUtils.setFontSize(tvCarName, 26);
 		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
-		relative.addView(tvCarName);
-		
+		this.addView(tvCarName);
+
 		//ratingBar.
 		ratingBar = new OutSpokenRatingBar(getContext());
 		ResizeUtils.viewResizeForRelative(74, 12, ratingBar, 
-				new int[]{RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.ALIGN_PARENT_RIGHT}, 
-				new int[]{0, 0},
-				new int[]{0, 12, 31, 0});
+				new int[]{RelativeLayout.ALIGN_TOP, RelativeLayout.RIGHT_OF}, 
+				new int[]{R.id.reviewView_tvCarName, R.id.reviewView_tvCarName},
+				new int[]{12, 12, 0, 0});
 		ratingBar.setLengths(ResizeUtils.getSpecificLength(12),
 				ResizeUtils.getSpecificLength(3));
 		ratingBar.setMinRating(1);
@@ -172,35 +182,44 @@ public class ReviewView extends LinearLayout {
 		ratingBar.setFilledStarColor(Color.rgb(254, 188, 42));
 		ratingBar.setUnitRating(OutSpokenRatingBar.UNIT_ONE);
 		ratingBar.setTouchable(false);
-		relative.addView(ratingBar);
+		this.addView(ratingBar);
 		
-		//tvContent.
-		tvContent = new TextView(getContext());
-		ResizeUtils.viewResizeForRelative(370, LayoutParams.WRAP_CONTENT, tvContent, 
-				new int[]{RelativeLayout.ALIGN_LEFT, RelativeLayout.BELOW}, 
-				new int[]{R.id.reviewView_tvCarName, R.id.reviewView_tvCarName}, 
-				new int[]{0, 20, 0, 0});
-		tvContent.setMinHeight(ResizeUtils.getSpecificLength(84));
-		tvContent.setId(R.id.reviewView_tvContent);
-		tvContent.setTextColor(color.holo_text);
-		FontUtils.setFontSize(tvContent, 22);
-		relative.addView(tvContent);
-		
-		//tvRegdate.
-		tvRegdate = new TextView(getContext());
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, tvRegdate, 
-				new int[]{RelativeLayout.ALIGN_RIGHT, RelativeLayout.BELOW},
-				new int[]{R.id.reviewView_tvContent, R.id.reviewView_tvContent},
-				new int[]{0, 4, 0, 0});
-		tvRegdate.setTextColor(color.holo_text_hint);
-		tvRegdate.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-		FontUtils.setFontSize(tvRegdate, 16);
-		relative.addView(tvRegdate);
+		//btnEdit.
+		btnEdit = new Button(getContext());
+		ResizeUtils.viewResizeForRelative(83, 32, btnEdit, 
+				new int[]{RelativeLayout.ALIGN_RIGHT, RelativeLayout.ALIGN_BOTTOM}, 
+				new int[]{R.id.reviewView_tvRegdate, R.id.reviewView_tvRegdate},
+				new int[]{0, 0, 18, 16});
+		btnEdit.setBackgroundResource(R.drawable.mypage_review_modify_btn);
+		btnEdit.setVisibility(View.INVISIBLE);
+		this.addView(btnEdit);
 	}
 	
-	public void setReview(final Review review) {
+	public void setReview(final Review review, final BCPFragmentActivity activity) {
 		
 		try {
+			bgTop.setBackgroundResource(R.drawable.dealer_post_frame_head);
+			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body);
+			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot);
+			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
+			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 0, 0);
+			
+			//내가 쓴 리뷰이고 아직 리플이 안달린 경우 수정 버튼 노출.
+			if(review.getReviewer_id() == MainActivity.user.getId()
+					&& review.getReply() == null) {
+				btnEdit.setVisibility(View.VISIBLE);
+				btnEdit.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("review", review);
+						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+					}
+				});
+			}
+			
 			if(!StringUtils.isEmpty(review.getReviewer_profile_img_url())) {
 				ivImage.setOnClickListener(new OnClickListener() {
 
@@ -235,12 +254,12 @@ public class ReviewView extends LinearLayout {
 			tvGrade.setVisibility(View.VISIBLE);
 			replyBadge.setVisibility(View.VISIBLE);
 			ratingBar.setVisibility(View.INVISIBLE);
-			tvCarName.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
-			
-			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame2);
 			bgTop.setBackgroundResource(R.drawable.dealer_post_frame_head2);
-			relative.setBackgroundResource(R.drawable.dealer_post_frame_body2);
-			bgBottom.setBackgroundResource(R.drawable.dealer_post_frame_foot2);
+			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body2);
+			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot2);
+			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame2);
+			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 0, 0);
+			tvCarName.setPadding(ResizeUtils.getSpecificLength(21), ResizeUtils.getSpecificLength(10), 0, 0);
 			
 			if(!StringUtils.isEmpty(reply.getReviewer_profile_img_url())) {
 				ivImage.setOnClickListener(new OnClickListener() {

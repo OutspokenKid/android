@@ -85,6 +85,10 @@ public class BCPAPIs {
 	public static String FORUM_LIKE_URL = BASE_API_URL + "/posts/like.json";
 	public static String FORUM_UNLIKE_URL = BASE_API_URL + "/posts/unlike.json";
 	public static String FORUM_REPORT_URL = BASE_API_URL + "/posts/report.json";
+	public static String FORUM_REPLY_WRITE_URL = BASE_API_URL + "/posts/reply/save.json";
+	public static String FORUM_REPLY_DELETE_URL = BASE_API_URL + "/posts/reply/delete.json";
+	
+	public static String VIDEO_LIST_URL = BASE_API_URL + "/posts/videos.json";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";

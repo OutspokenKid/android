@@ -31,13 +31,14 @@
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="checkAddress">50자 내의 주소를 입력해주세요.</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
-    <string name="checkReviewContent">후기를 입력해주세요.</string>
     <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
     <string name="checkName">2~16자 내의 이름을 입력해주세요.</string>
     <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
     <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkPhoneNumber">올바른 휴대폰 번호를 입력해주세요.</string>
+    <string name="checkReplyContent">내용을 입력해주세요.</string>
+    <string name="checkReviewContent">후기를 입력해주세요.</string>
     <string name="commonInfo">기본 정보</string>
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
@@ -50,6 +51,7 @@
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
     <string name="complete_writeForum">글 작성 완료</string>
+    <string name="complete_writeReply">댓글 작성 완료</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>
     <string name="confirm">확인</string>
     <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
@@ -105,6 +107,7 @@
     <string name="failToSendSMS">SMS를 발송하지 못했습니다.</string>
     <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
     <string name="failToWriteForum">글을 작성하지 못했습니다.</string>
+    <string name="failToWriteReply">댓글을 작성하지 못했습니다.</string>
     <string name="failToWriteReview">리뷰를 작성하지 못했습니다.</string>
     <string name="failToSignIn">로그인 실패</string>
     <string name="failToSignUp">회원가입 실패</string>
@@ -192,9 +195,12 @@
     <string name="pageTitle_my">마이페이지</string>
     <string name="pageTitle_signIn">로그인</string>
     <string name="pageTitle_writeForum">새글쓰기</string>
+    <string name="pageTitle_writeReply">댓글 달기</string>
     <string name="pageTitle_writeReview">리뷰 작성</string>
     <string name="pageTitle_qnA">Q&amp;A</string>
     <string name="pageTitle_forum">자유게시판</string>
+    <string name="pageTitle_reviewList">입찰완료/후기</string>
+    <string name="pageTitle_videoList">동영상게시판</string>
     <string name="phone">연락처</string>
     <string name="popup_request_certification">검증 신청이 완료되었습니다!</string>
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
