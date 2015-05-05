@@ -7,7 +7,7 @@ public class BCPAPIs {
 	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/policies";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
-	public static String AREA_URL = BASE_API_URL + "zipcodes/areas.json";
+	public static String AREA_URL = BASE_API_URL + "/zipcodes/areas.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
 	public static String NICKNAME_CHECK_URL = BASE_API_URL + "/users/check/nickname.json";

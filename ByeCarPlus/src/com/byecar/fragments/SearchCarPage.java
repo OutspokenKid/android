@@ -5,38 +5,35 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.os.Bundle;
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
-import com.byecar.models.Brand;
-import com.byecar.models.CarModel;
-import com.byecar.models.CarModelGroup;
-import com.byecar.models.CarTrim;
-import com.byecar.views.SliderView;
-import com.byecar.views.SliderView.NodeChangedListener;
+import com.byecar.models.Area;
+import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
-import com.outspoken_kid.model.BaseModel;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -44,360 +41,256 @@ import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class SearchCarPage extends BCPFragment {
-
-	private static final int MIN_PRICE = 0;
-	private static final int MAX_PRICE = 50000;
 	
-	public static final int TYPE_BRAND = 1;
-	public static final int TYPE_MODELGROUP = 2;
-	public static final int TYPE_MODEL = 3;
-	public static final int TYPE_TRIM = 4;
+	public final String[] DISPLACEMENT_TEXTS = new String[]{
+			"0cc", "1000cc", "1300cc", "1600cc", "2000cc", "3000cc", "4000cc" , "4000cc 초과"};
 	
-	private Button btnCommon;
-	private Button btnDetail;
-
-	private RelativeLayout relativeForCommonSearch;
-	private TextView tvPriceRangeText;
-	private SliderView sliderView;
-	private TextView tvMinPriceText;
-	private TextView tvMiddlePriceText;
-	private TextView tvMaxPriceText;
-	private View editTextBg;
-	private EditText etMinPrice;
-	private EditText etMaxPrice;
-	private Button btnClearMin;
-	private Button btnClearMax;
-	private Button btnShowCommonSearchResult;
+	public final int[] DISPLACEMENTS = new int[]{
+			0, 1000, 1300, 1600, 2000, 3000, 4000, -1};
 	
-	private GridView gridView;
-	private BCPAdapter gridAdapter;
-	
+	private SwipeRefreshLayout swipeRefreshLayout;
+	private Button btnFilter;
+	private RelativeLayout relativeForFilter;
+	private Button btnNation;
+	private Button btnMinPrice;
+	private Button btnMaxPrice;
+	private Button btnMinDisplacement;
+	private Button btnMaxDisplacement;
+	private Button btnArea1;
+	private Button btnArea2;
+	private EditText etCarName;
+	private Button btnSearch;
 	private ListView listView;
-	private BCPAdapter listAdapter;
-	
-	private RelativeLayout relativeForSearchResult;
-	private TextView tvSearchConditionText;
-	private TextView tvSearchCondition;
-	private Button btnShowDetailSearchResult;
+	private View noResultView;
 
 	private int type;
-	private int carType;
-	private int menuIndex;
-	private int minPrice;
-	private int maxPrice;
-	private String conditionString;
-	private int brand_id;
-	private int modelgroup_id;
-	private int model_id;
-	private int trim_id;
+	private boolean isAnimating;
 	
-	private ArrayList<BaseModel> modelsForGrid = new ArrayList<BaseModel>();
-	private ArrayList<BaseModel> modelsForList = new ArrayList<BaseModel>();
+	private boolean isDomestic = true;
+	private int minPriceIndex = -1;
+	private int maxPriceIndex = -1;
+	private int minDisplacementIndex = -1;
+	private int maxDisplacementIndex = -1;
+	private int area1Index = -1;
+	private int area2Index = -1;
+	
+	private Animation aIn, aOut;
+	private ArrayList<PriceText> priceTexts;
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.searchCarPage_titleBar);
 		
-		btnCommon = (Button) mThisView.findViewById(R.id.searchCarPage_btnCommon);
-		btnDetail = (Button) mThisView.findViewById(R.id.searchCarPage_btnDetail);
-		
-		relativeForCommonSearch = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForCommonSearch);
-		tvPriceRangeText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvPriceRangeText);
-		sliderView = (SliderView) mThisView.findViewById(R.id.searchCarPage_sliderView);
-		tvMinPriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMinPriceText);
-		tvMiddlePriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMiddlePriceText);
-		tvMaxPriceText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvMaxPriceText);
-		
-		editTextBg = mThisView.findViewById(R.id.searchCarPage_editTextBg);
-		etMinPrice = (EditText) mThisView.findViewById(R.id.searchCarPage_etMinPrice);
-		etMaxPrice = (EditText) mThisView.findViewById(R.id.searchCarPage_etMaxPrice);
-		btnClearMin = (Button) mThisView.findViewById(R.id.searchCarPage_btnClearMin);
-		btnClearMax = (Button) mThisView.findViewById(R.id.searchCarPage_btnClearMax);
-		
-		btnShowCommonSearchResult = (Button) mThisView.findViewById(R.id.searchCarPage_btnShowCommonSearchResult);
-		
+		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.searchCarPage_swipe_container);
+		btnFilter = (Button) mThisView.findViewById(R.id.searchCarPage_btnFilter);
+		relativeForFilter = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForFilter);
+		btnNation = (Button) mThisView.findViewById(R.id.searchCarPage_btnNation);
+		btnMinPrice = (Button) mThisView.findViewById(R.id.searchCarPage_btnMinPrice);
+		btnMaxPrice = (Button) mThisView.findViewById(R.id.searchCarPage_btnMaxPrice);
+		btnMinDisplacement = (Button) mThisView.findViewById(R.id.searchCarPage_btnMinDisplacement);
+		btnMaxDisplacement = (Button) mThisView.findViewById(R.id.searchCarPage_btnMaxDisplacement);
+		btnArea1 = (Button) mThisView.findViewById(R.id.searchCarPage_btnArea1);
+		btnArea2 = (Button) mThisView.findViewById(R.id.searchCarPage_btnArea2);
+		etCarName = (EditText) mThisView.findViewById(R.id.searchCarPage_etCarName);
+		btnSearch = (Button) mThisView.findViewById(R.id.searchCarPage_btnSearch);
 		listView = (ListView) mThisView.findViewById(R.id.searchCarPage_listView);
-		gridView = (GridView) mThisView.findViewById(R.id.searchCarPage_gridView);
-		
-		relativeForSearchResult = (RelativeLayout) mThisView.findViewById(R.id.searchCarPage_relativeForSearchResult);
-		tvSearchConditionText = (TextView) mThisView.findViewById(R.id.searchCarPage_tvSearchConditionText);
-		tvSearchCondition = (TextView) mThisView.findViewById(R.id.searchCarPage_tvSearchCondition);
-		btnShowDetailSearchResult = (Button) mThisView.findViewById(R.id.searchCarPage_btnShowDetailSearchResult);
+		noResultView = mThisView.findViewById(R.id.searchCarPage_noResultView);
 	}
 
 	@Override
 	public void setVariables() {
 
 		if(getArguments() != null) {
-			
-			menuIndex = getArguments().getInt("menuIndex");
-			carType = getArguments().getInt("type");
-
-			if(menuIndex < 0 || menuIndex > 1) {
-				menuIndex = 0;
-			}
+			type = getArguments().getInt("type");
 		}
-		
-		minPrice = MIN_PRICE;
-		maxPrice = MAX_PRICE;
 	}
 
 	@Override
 	public void createPage() {
 
-		sliderView.setValues(0, 50000);
-		setPriceEditTexts();
+		swipeRefreshLayout.setColorSchemeColors(
+        		getResources().getColor(R.color.titlebar_bg_orange),
+        		getResources().getColor(R.color.titlebar_bg_brown), 
+        		getResources().getColor(R.color.titlebar_bg_orange), 
+        		getResources().getColor(R.color.titlebar_bg_brown));
+        swipeRefreshLayout.setEnabled(true);
 		
-		gridAdapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), modelsForGrid);
-		gridView.setAdapter(gridAdapter);
+		adapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), models);
+		listView.setAdapter(adapter);
+		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
+		listView.setDividerHeight(ResizeUtils.getSpecificLength(30));
 		
-		listAdapter = new BCPAdapter(mContext, mActivity, getActivity().getLayoutInflater(), modelsForList);
-		listView.setAdapter(listAdapter);
-		listView.setDividerHeight(0);
-		listView.setDivider(null);
+		AnimationListener al = new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				
+				isAnimating = true;
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+
+				isAnimating = false;
+			}
+		};
 		
-		tvMinPriceText.setText(R.string.searchPrice1);
-		tvMiddlePriceText.setText(R.string.searchPrice2);
-		tvMaxPriceText.setText(R.string.searchPrice3);
+		aOut = AnimationUtils.loadAnimation(mContext, R.anim.slide_out_to_top);
+		aOut.setAnimationListener(al);
+		
+		aIn = AnimationUtils.loadAnimation(mContext, R.anim.slide_in_from_top);
+		aIn.setAnimationListener(al);
+		
+		//가격 구간 설정.
+		priceTexts = new ArrayList<PriceText>();
+		int price = 0;
+		
+		while(price <= 100000000) {
+			
+			priceTexts.add(new PriceText(price));
+			
+			//천만원 이하일 땐 100만원씩 추가.
+			if(price < 10000000) {
+				price += 1000000;
+				
+			//천만원 이상일 땐 500만원씩 추가.
+			} else {
+				price += 5000000;
+			}
+		}
+		
+		//무제한 추가.
+		priceTexts.add(new PriceText(-1));
+		
+		btnMinPrice.setText("최저가");
+		btnMaxPrice.setText("최고가");
+		btnMinDisplacement.setText("최저 배기량");
+		btnMaxDisplacement.setText("최고 배기량");
+		btnArea1.setText("시도");
+		btnArea2.setText("시군구");
 	}
 
 	@Override
 	public void setListeners() {
 
-		btnCommon.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				setMenu(0);
-			}
-		});
-		
-		btnDetail.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				setMenu(1);
-			}
-		});
-		
-		sliderView.setOnNodeChangedListener(new NodeChangedListener() {
-
-			@Override
-			public void onChanged(boolean nodeStartChanged,
-					boolean nodeEndChanged, int nodeStart, int nodeEnd) {
-
-				
-				if(nodeStartChanged) {
-					minPrice = nodeStart;
-				} else if(nodeEndChanged) {
-					maxPrice = nodeEnd;
-				}
-				
-				setPriceEditTexts();
-			}
-		});
-		
-		etMinPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
+		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			
 			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
+			public void onRefresh() {
 
-				if(!hasFocus) {
-					
-					if(StringUtils.isEmpty(etMinPrice.getText())) {
-						minPrice = 0;
-					}
-					
-					etMinPrice.setText(StringUtils.getFormattedNumber(minPrice));
-					sliderView.moveNodes(minPrice, maxPrice);
+				swipeRefreshLayout.setRefreshing(true);
+				
+				new Handler().postDelayed(new Runnable() {
+			        @Override 
+			        public void run() {
+			        	
+			        	refreshPage();
+			        }
+			    }, 2000);
+			}
+		});
+		
+		btnFilter.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(isAnimating) {
+					return;
+				}
+				if(relativeForFilter.getVisibility() == View.VISIBLE) {
+					hideFilter();
 				} else {
-					
-					try {
-						etMinPrice.setText(etMinPrice.getText().toString().replace(",", ""));
-					} catch (Exception e) {
-					}
+					showFilter();
 				}
 			}
 		});
-		
-		etMinPrice.addTextChangedListener(new TextWatcher() {
-			
-			private String lastText = null;
-			private int lastCursorIndex;
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				
-				if(s != null) {
-					lastText = s.toString();
-					lastCursorIndex = etMinPrice.getSelectionStart() - 1;
-				}
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				
-				try {
-					if(s == null || s.length() == 0) {
-						return;
-					}
-					
-					int tempPrice = Integer.parseInt(s.toString());
-		
-					if(tempPrice == Integer.parseInt(lastText)) {
-						return;
-					}
-					
-					if(tempPrice < 0) {
-						ToastUtils.showToast(R.string.minPriceMustOverZero);
-						etMinPrice.setText(lastText);
-						etMinPrice.setSelection(lastCursorIndex);
-						return;
-					} else if(tempPrice > maxPrice) {
-						ToastUtils.showToast(R.string.minPriceCantOverMaxPrice);
-						etMinPrice.setText(lastText);
-						etMinPrice.setSelection(lastCursorIndex);
-						return;
-					} else {
-						minPrice = tempPrice;
-						sliderView.moveNodes(minPrice, maxPrice);
-						sliderView.invalidate();
-					}
-				} catch (Exception e) {
-				}
-			}
-		});
-		
-		etMaxPrice.setOnFocusChangeListener(new OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
 
-				if(!hasFocus) {
-					
-					if(StringUtils.isEmpty(etMaxPrice.getText())) {
-						maxPrice = 0;
-					}
-					
-					etMaxPrice.setText(StringUtils.getFormattedNumber(maxPrice));
-					sliderView.moveNodes(minPrice, maxPrice);
+		btnNation.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				ToastUtils.showToast("current : " + isDomestic);
+				
+				isDomestic = !isDomestic;
+				
+				if(isDomestic) {
+					btnNation.setBackgroundResource(R.drawable.filter_car_btn_a);
 				} else {
-				
-					try {
-						etMaxPrice.setText(etMaxPrice.getText().toString().replace(",", ""));
-					} catch (Exception e) {
-					}
+					btnNation.setBackgroundResource(R.drawable.filter_car_btn_b);
 				}
 			}
 		});
-		
-		etMaxPrice.addTextChangedListener(new TextWatcher() {
-			
-			private String lastText = null;
-			private int lastCursorIndex;
-			
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-			
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				
-				if(s != null) {
-					lastText = s.toString();
-					lastCursorIndex = etMaxPrice.getSelectionStart() - 1;
-				}
-			}
-			
-			@Override
-			public void afterTextChanged(Editable s) {
-				
-				try {
-					if(s == null || s.length() == 0) {
-						return;
-					}
-					
-					String text = s.toString();
-					if(text.equals(lastText)) {
-						return;
-					}
-					
-					if(text.contains(".") 
-							|| (text.length() > 1 && text.charAt(0) == '0')) {
-						etMaxPrice.setText(lastText);
-						etMaxPrice.setSelection(lastCursorIndex);
-					}
-					
-					int tempPrice = Integer.parseInt(text);
-					
-					if(tempPrice < minPrice) {
-						ToastUtils.showToast(R.string.maxPriceCantOverMinPrice);						
-					} else if(tempPrice > MAX_PRICE) {
-						ToastUtils.showToast(R.string.maxPriceMustLessThanLimit);
-						etMaxPrice.setText(lastText);
-						etMaxPrice.setSelection(lastCursorIndex);
-						return;
-					} else {
-						maxPrice = tempPrice;
-						sliderView.moveNodes(minPrice, maxPrice);
-						sliderView.invalidate();
-					}
-				} catch (Exception e) {
-				}
-			}
-		});
-		
-		btnClearMin.setOnClickListener(new OnClickListener() {
+
+		btnMinPrice.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				etMinPrice.setText(null);
-				etMinPrice.requestFocus();
+				selectPrice(true);
 			}
 		});
-		
-		btnClearMax.setOnClickListener(new OnClickListener() {
+
+		btnMaxPrice.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
-				etMaxPrice.setText(null);
-				etMaxPrice.requestFocus();
+				selectPrice(false);
 			}
 		});
 		
-		gridView.setOnScrollListener(new OnScrollListener() {
-			
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-			}
-			
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-				
-				if(firstVisibleItem + visibleItemCount == totalItemCount) {
-					downloadInfo();
-				}
-			}
-		});
-		
-		gridView.setOnItemClickListener(new OnItemClickListener() {
+		btnMinDisplacement.setOnClickListener(new OnClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int position,
-					long arg3) {
-				conditionString = ((Brand)modelsForGrid.get(position)).getName();
-				brand_id = ((Brand)modelsForGrid.get(position)).getId();
-				loadModelGroups(((Brand)modelsForGrid.get(position)).getId());
+			public void onClick(View view) {
+
+				selectDisplacement(true);
+			}
+		});
+		
+		btnMaxDisplacement.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectDisplacement(false);
+			}
+		});
+		
+		btnArea1.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectArea1();
+			}
+		});
+		
+		btnArea2.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectArea2();
+			}
+		});
+		
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hideFilter();
+				search();
 			}
 		});
 		
@@ -425,65 +318,11 @@ public class SearchCarPage extends BCPFragment {
 
 				switch(type) {
 				
-				case TYPE_MODELGROUP:
-					if(((CarModelGroup)modelsForList.get(position)).getId() == 0) {
-						showSelectedCondition();
-					} else {
-						conditionString += " / " + ((CarModelGroup)modelsForList.get(position)).getName();
-						modelgroup_id = ((CarModelGroup)modelsForList.get(position)).getId();
-						loadModels(((CarModelGroup)modelsForList.get(position)).getId());
-					}
+				case Car.TYPE_DEALER:
 					break;
-					
-				case TYPE_MODEL:
-					if(((CarModel)modelsForList.get(position)).getId() == 0) {
-						showSelectedCondition();
-					} else {
-						conditionString += " / " + ((CarModel)modelsForList.get(position)).getName();
-						model_id = ((CarModel)modelsForList.get(position)).getId();
-						loadTrims(((CarModel)modelsForList.get(position)).getId());
-					}
-					break;
-					
-				case TYPE_TRIM:
-					conditionString += " / " + ((CarTrim)modelsForList.get(position)).getName();
-					trim_id = ((CarTrim)modelsForList.get(position)).getId();
-					showSelectedCondition();
+				case Car.TYPE_DIRECT:
 					break;
 				}
-			}
-		});
-	
-		btnShowCommonSearchResult.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				String conditionString = StringUtils.getFormattedNumber(minPrice) + "만원 부터 ~ "
-						+ StringUtils.getFormattedNumber(maxPrice) + "만원 까지";
-				
-//				Bundle bundle = new Bundle();
-//				bundle.putInt("type", carType);
-//				bundle.putInt("price_min", minPrice * 10000);
-//				bundle.putInt("price_max", maxPrice * 10000);
-//				bundle.putString("conditionString", conditionString);
-//				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
-			}
-		});
-		
-		btnShowDetailSearchResult.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-//				Bundle bundle = new Bundle();
-//				bundle.putInt("type", carType);
-//				bundle.putInt("brand_id", brand_id);
-//				bundle.putInt("modelgroup_id", modelgroup_id);
-//				bundle.putInt("model_id", model_id);
-//				bundle.putInt("trim_id", trim_id);
-//				bundle.putString("conditionString", conditionString);
-//				mActivity.showPage(BCPConstants.PAGE_SEARCH_RESULT, bundle);
 			}
 		});
 	}
@@ -491,58 +330,94 @@ public class SearchCarPage extends BCPFragment {
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, 
-				mThisView.findViewById(R.id.searchCarPage_bgForButtons), null, null, null);
-		
-		ResizeUtils.viewResizeForRelative(320, 88, btnCommon, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnDetail, null, null, null);
-		
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
-				tvPriceRangeText, null, null, new int[]{30, 30, 0, 0});
-		
-		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) sliderView.getLayoutParams();
-		rp.width = LayoutParams.MATCH_PARENT;
-		rp.height = sliderView.getNodeHeight();
-		rp.leftMargin = ResizeUtils.getSpecificLength(30);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
-		rp.rightMargin = ResizeUtils.getSpecificLength(30);
+		RelativeLayout.LayoutParams rp = null;
 
-		rp = (RelativeLayout.LayoutParams) tvMinPriceText.getLayoutParams();
-		rp.width = sliderView.getNodeWidth();
+		//listView.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
+				R.id.searchCarPage_swipe_container).getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(88);
 		
-		rp = (RelativeLayout.LayoutParams) tvMaxPriceText.getLayoutParams();
-		rp.width = sliderView.getNodeWidth();
+		//btnFilter.
+		rp = (RelativeLayout.LayoutParams) btnFilter.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 		
-		ResizeUtils.viewResizeForRelative(494, 52, editTextBg, null, null, new int[]{0, 70, 0, 0});
-		ResizeUtils.viewResizeForRelative(117, 45, etMinPrice, null, null, new int[]{4, 4, 0, 0});
-		ResizeUtils.viewResizeForRelative(117, 45, etMaxPrice, null, null, new int[]{0, 4, 80, 0});
-		ResizeUtils.viewResizeForRelative(40, 40, btnClearMin, null, null, new int[]{0, 2, 0, 0});
-		ResizeUtils.viewResizeForRelative(40, 40, btnClearMax, null, null, new int[]{117, 2, 0, 0});
+		//relativeForFilter.
+		rp = (RelativeLayout.LayoutParams) relativeForFilter.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(424);
 		
-		ResizeUtils.viewResizeForRelative(586, 82, 
-				btnShowCommonSearchResult, null, null, new int[]{0, 60, 0, 0});
+		//btnNation.
+		rp = (RelativeLayout.LayoutParams) btnNation.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(12);
 		
-		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
-				tvSearchConditionText, null, null, new int[]{30, 30, 0, 0});
-		ResizeUtils.viewResizeForRelative(586, 160, 
-				tvSearchCondition, null, null, new int[]{0, 30, 0, 0});
-		ResizeUtils.viewResizeForRelative(586, 82, 
-				btnShowDetailSearchResult, null, null, new int[]{0, 0, 0, 30});
+		//btnMinPrice.
+		rp = (RelativeLayout.LayoutParams) btnMinPrice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
 		
-		FontUtils.setFontSize(tvPriceRangeText, 30);
-		FontUtils.setFontSize(tvMinPriceText, 16);
-		FontUtils.setFontSize(tvMiddlePriceText, 16);
-		FontUtils.setFontSize(tvMaxPriceText, 16);
+		//btnMaxPrice.
+		rp = (RelativeLayout.LayoutParams) btnMaxPrice.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
 		
-		FontUtils.setFontSize(etMinPrice, 22);
-		FontUtils.setFontSize(etMaxPrice, 22);
+		//btnMinDisplacement.
+		rp = (RelativeLayout.LayoutParams) btnMinDisplacement.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
 		
-		int p = ResizeUtils.getSpecificLength(10);
-		etMinPrice.setPadding(p, 0, p, 0);
-		etMaxPrice.setPadding(p, 0, p, 0);
+		//btnMaxDisplacement.
+		rp = (RelativeLayout.LayoutParams) btnMaxDisplacement.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
 		
-		FontUtils.setFontSize(tvSearchConditionText, 30);
-		FontUtils.setFontSize(tvSearchCondition, 30);
+		//btnArea1.
+		rp = (RelativeLayout.LayoutParams) btnArea1.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		
+		//btnArea2.
+		rp = (RelativeLayout.LayoutParams) btnArea2.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(294);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		
+		//etCarName.
+		rp = (RelativeLayout.LayoutParams) etCarName.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		
+		//btnSearch.
+		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		
+		//noResultView.
+		rp = (RelativeLayout.LayoutParams) noResultView.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(218);
+		rp.height = ResizeUtils.getSpecificLength(248);
+		rp.topMargin = ResizeUtils.getSpecificLength(88);
+		
+		FontUtils.setFontSize(btnMinPrice, 24);
+		FontUtils.setFontSize(btnMaxPrice, 24);
+		FontUtils.setFontSize(btnMinDisplacement, 24);
+		FontUtils.setFontSize(btnMaxDisplacement, 24);
+		FontUtils.setFontSize(btnArea1, 24);
+		FontUtils.setFontSize(btnArea2, 24);
+		FontUtils.setFontSize(etCarName, 24);
+		
+		int p = ResizeUtils.getSpecificLength(60);
+		etCarName.setPadding(p, 0, p, 0);
 	}
 
 	@Override
@@ -561,94 +436,35 @@ public class SearchCarPage extends BCPFragment {
 	public boolean parseJSON(JSONObject objJSON) {
 		
 		try {
-			JSONArray arJSON = null;
 			int size = 0;
+			JSONArray arJSON = objJSON.getJSONArray("onsalecars");
+			size = arJSON.length();
 			
-			switch(type) {
-			
-			case TYPE_BRAND:
-				arJSON = objJSON.getJSONArray("brands");
-				size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Car car = new Car(arJSON.getJSONObject(i));
 				
-				for(int i=0; i<size; i++) {
-					Brand brand = new Brand(arJSON.getJSONObject(i));
-					brand.setItemCode(BCPConstants.ITEM_CAR_BRAND);
-					brand.setNeedClickListener(false);
-					modelsForGrid.add(brand);
+				if(type == Car.TYPE_DEALER) {
+					car.setItemCode(BCPConstants.ITEM_CAR_DEALER);
+				} else {
+					car.setItemCode(BCPConstants.ITEM_CAR_DIRECT);
 				}
 				
-				gridAdapter.notifyDataSetChanged();
-				return true;
-				
-			case TYPE_MODELGROUP:
-				
-				CarModelGroup cg = new CarModelGroup();
-				cg.setName("전체");
-				cg.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-				cg.setNeedClickListener(false);
-				modelsForList.add(cg);
-				
-				arJSON = objJSON.getJSONArray("modelgroups");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					CarModelGroup group = new CarModelGroup(arJSON.getJSONObject(i));
-					group.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-					group.setNeedClickListener(false);
-					modelsForList.add(group);
-				}
-				
-				listAdapter.notifyDataSetChanged();
-				break;
-				
-			case TYPE_MODEL:
-				
-				CarModel cm = new CarModel();
-				cm.setName("전체");
-				cm.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-				cm.setNeedClickListener(false);
-				modelsForList.add(cm);
-				
-				arJSON = objJSON.getJSONArray("models");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					CarModel model = new CarModel(arJSON.getJSONObject(i));
-					model.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-					model.setNeedClickListener(false);
-					modelsForList.add(model);
-				}
-				
-				listAdapter.notifyDataSetChanged();
-				break;
-				
-			case TYPE_TRIM:
-				
-				CarTrim ct = new CarTrim();
-				ct.setName("전체");
-				ct.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-				ct.setNeedClickListener(false);
-				modelsForList.add(ct);
-				
-				arJSON = objJSON.getJSONArray("trims");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					CarTrim transmission = new CarTrim(arJSON.getJSONObject(i));
-					transmission.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-					transmission.setNeedClickListener(false);
-					modelsForList.add(transmission);
-				}
-				
-				listAdapter.notifyDataSetChanged();
-				break;
+				models.add(car);
 			}
+			
+			adapter.notifyDataSetChanged();
 
-			return true;
+			if(size < NUMBER_OF_LISTITEMS) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
+		} finally {
+			swipeRefreshLayout.setRefreshing(false);
 		}
 		
 		return false;
@@ -662,7 +478,6 @@ public class SearchCarPage extends BCPFragment {
 
 	@Override
 	public boolean onBackPressed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -673,127 +488,236 @@ public class SearchCarPage extends BCPFragment {
 	}
 	
 //////////////////// Custom methods.
+	
+	public void showFilter() {
 
-	public void setMenu(int menuIndex) {
+		relativeForFilter.setVisibility(View.VISIBLE);
+		relativeForFilter.startAnimation(aIn);
+		
+		btnFilter.setBackgroundResource(R.drawable.filter_arrow_up);
+	}
+	
+	public void hideFilter() {
+		
+		relativeForFilter.setVisibility(View.INVISIBLE);
+		relativeForFilter.startAnimation(aOut);
+		
+		btnFilter.setBackgroundResource(R.drawable.filter_arrow_down);
+	}
 
-		brand_id = 0;
-		modelgroup_id = 0;
-		model_id = 0;
-		trim_id = 0;
+	public void selectPrice(final boolean isMinPrice) {
+
+		int size = priceTexts.size();
+		final String[] PRICE_TEXTS = new String[size];
 		
-		gridView.setVisibility(View.INVISIBLE);
-		listView.setVisibility(View.INVISIBLE);
-		relativeForSearchResult.setVisibility(View.INVISIBLE);
-		
-		if(menuIndex == 0) {
-			btnCommon.setBackgroundResource(R.drawable.filter_detail_tab_a);
-			btnDetail.setBackgroundResource(R.drawable.filter_normal_tab_b);
-			
-			relativeForCommonSearch.setVisibility(View.VISIBLE);
-			
-		} else {
-			btnCommon.setBackgroundResource(R.drawable.filter_detail_tab_b);
-			btnDetail.setBackgroundResource(R.drawable.filter_normal_tab_a);
-			
-			relativeForCommonSearch.setVisibility(View.INVISIBLE);
-			loadBrands();
+		for(int i=0; i<size; i++) {
+			PRICE_TEXTS[i] = priceTexts.get(i).getPriceText();
 		}
 		
-		this.menuIndex = menuIndex;
-	}
-
-	public void loadBrands() {
-
-		gridView.setVisibility(View.VISIBLE);
-
-		conditionString = "";
-		type = TYPE_BRAND;
-		isLastList = false;
-		modelsForGrid.clear();
-		gridAdapter.notifyDataSetChanged();
-		
-		url = BCPAPIs.SEARCH_CAR_BRAND
-				+ "?num=0";
-		super.downloadInfo();
-	}
-	
-	public void loadModelGroups(int brand_id) {
-		
-		gridView.setVisibility(View.INVISIBLE);
-		listView.setVisibility(View.VISIBLE);
-		
-		type = TYPE_MODELGROUP;
-		isLastList = false;
-		modelsForList.clear();
-		listAdapter.notifyDataSetChanged();
-		
-		url = BCPAPIs.SEARCH_CAR_MODELGROUP
-				+ "?num=0"
-				+ "&brand_id=" + brand_id;
-		super.downloadInfo();
-	}
-	
-	public void loadModels(int modelgroup_id) {
-		
-		type = TYPE_MODEL;
-		isLastList = false;
-		modelsForList.clear();
-		listAdapter.notifyDataSetChanged();
-		
-		url = BCPAPIs.SEARCH_CAR_MODEL
-				+ "?num=0"
-				+ "&modelgroup_id=" + modelgroup_id;
-		super.downloadInfo();
-	}
-	
-	public void loadTrims(int model_id) {
-		
-		type = TYPE_TRIM;
-		isLastList = false;
-		modelsForList.clear();
-		listAdapter.notifyDataSetChanged();
-		
-		url = BCPAPIs.SEARCH_CAR_TRIM
-				+ "?num=0"
-				+ "&model_id=" + model_id;
-		super.downloadInfo();
-	}
-	
-	public void showSelectedCondition() {
-		
-		listView.setVisibility(View.INVISIBLE);
-		relativeForSearchResult.setVisibility(View.VISIBLE);
-		
-		tvSearchCondition.setText(conditionString);
-	}
-	
-	public void closePage() {
-
-		ToastUtils.showToast(R.string.failToLoadList);
-		
-		new Handler().postDelayed(new Runnable() {
-
+		mActivity.showSelectDialog("가격을 선택해주세요.", PRICE_TEXTS, new DialogInterface.OnClickListener() {
+			
 			@Override
-			public void run() {
+			public void onClick(DialogInterface dialog, int which) {
 				
-				if(mActivity != null) {
-					mActivity.closeTopPage();
+				if(isMinPrice) {
+
+					//선택된 값이 최고가보다 높은 경우 경고 메세지 출력.
+					if(maxPriceIndex != -1 && maxPriceIndex < which) {
+						ToastUtils.showToast(R.string.minPriceCannotOverMaxPrice);
+					} else {
+						minPriceIndex = which;
+						btnMinPrice.setText(PRICE_TEXTS[which]);
+					}
+				} else {
+					
+					//선택된 값이 최저가보다 낮은 경우 경고 메세지 출력.
+					if(minPriceIndex != -1 && minPriceIndex > which) {
+						ToastUtils.showToast(R.string.maxPriceCannotUnderMinPrice);
+					} else {
+						maxPriceIndex = which;
+						btnMaxPrice.setText(PRICE_TEXTS[which]);
+					}
 				}
 			}
-		}, 1000);
+		});
+	}
+	
+	public void selectDisplacement(final boolean isMinDisplacement) {
+		
+		mActivity.showSelectDialog("가격을 선택해주세요.", DISPLACEMENT_TEXTS, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				if(isMinDisplacement) {
+
+					//선택된 값이 최고 배기량보다 높은 경우 경고 메세지 출력.
+					if(maxDisplacementIndex != -1 && maxDisplacementIndex < which) {
+						ToastUtils.showToast(R.string.minDisplacementCannotOverMaxDisplacement);
+					} else {
+						minDisplacementIndex = which;
+						btnMinDisplacement.setText(DISPLACEMENT_TEXTS[which]);
+					}
+				} else {
+					
+					//선택된 값이 최저 배기량보다 낮은 경우 경고 메세지 출력.
+					if(minDisplacementIndex != -1 && minDisplacementIndex > which) {
+						ToastUtils.showToast(R.string.maxDisplacementCannotUnderMinDisplacement);
+					} else {
+						maxDisplacementIndex = which;
+						btnMaxDisplacement.setText(DISPLACEMENT_TEXTS[which]);
+					}
+				}
+			}
+		});
 	}
 
-	public void setPriceEditTexts() {
+	public void selectArea1() {
 		
-		etMinPrice.setText(StringUtils.getFormattedNumber(minPrice));
-		etMaxPrice.setText(StringUtils.getFormattedNumber(maxPrice));
+		try {
+			int size = MainActivity.area.getAreaSet().size();
+			final String[] texts = new String[size];
+			for(int i=0; i<size; i++) {
+				texts[i] = MainActivity.area.getAreaSet().get(i).getName();
+			}
+			
+			mActivity.showSelectDialog("지역을 선택해주세요.", texts, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					area1Index = which;
+					area2Index = -1;
+					btnArea1.setText(texts[which]);
+					btnArea2.setText("시군구");
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void selectArea2() {
 		
-		if(etMinPrice.hasFocus()) {
-			etMinPrice.setSelection(etMinPrice.length());
+		try {
+			if(area1Index == -1) {
+				ToastUtils.showToast(R.string.selectArea1First);
+				return;
+			}
+			
+			ArrayList<Area> areaSet = MainActivity.area.getAreaSet().get(area1Index).getAreaSet();
+			int size = areaSet.size();
+			final String[] texts = new String[size];
+			
+			for(int i=0; i<size; i++) {
+				texts[i] = areaSet.get(i).getName();
+			}
+			
+			mActivity.showSelectDialog("지역을 선택해주세요.", texts, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+
+					area2Index = which;
+					btnArea2.setText(texts[which]);
+				}
+			});
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+
+	public void search() {
+
+		try {
+			if(type == Car.TYPE_DEALER) {
+				url = BCPAPIs.CAR_DEALER_LIST_URL;
+			} else {
+				url = BCPAPIs.CAR_DIRECT_NORMAL_LIST_URL;
+			}
+			
+			//국산/수입.
+			url += "?brand_from=" + StringUtils.getUrlEncodedString(isDomestic?"한국":"수입");
+
+			int size = priceTexts.size();
+			final long[] PRICES = new long[size];
+			
+			for(int i=0; i<size; i++) {
+				PRICES[i] = priceTexts.get(i).getPrice();
+			}
+			
+			//최저가.
+			if(minPriceIndex != -1 && PRICES[minPriceIndex] != -1) {
+				
+				url += "&price_min=" + PRICES[minPriceIndex];
+			}
+			
+			//최고가.
+			if(maxPriceIndex != -1 && PRICES[maxPriceIndex] != -1) {
+				url += "&price_max=" + PRICES[maxPriceIndex];
+			}
+			
+			//최저 배기량.
+			if(minDisplacementIndex != -1 && DISPLACEMENTS[minDisplacementIndex] != -1) {
+				url += "&displacement_min=" + DISPLACEMENTS[minDisplacementIndex];
+			}
+			
+			//최고 배기량.
+			if(maxDisplacementIndex != -1 && DISPLACEMENTS[maxDisplacementIndex] != -1) {
+				url += "&displacement_max=" + DISPLACEMENTS[maxDisplacementIndex];
+			}
+			
+			//시도.
+			if(area1Index != -1) {
+				url += "&sido=" + StringUtils.getUrlEncodedString(btnArea1.getText().toString());
+			}
+			
+			//시군구.
+			if(area2Index != -1) {
+				url += "&gugun=" + StringUtils.getUrlEncodedString(btnArea2.getText().toString());
+			}
+			
+			//차량명.
+			if(etCarName.length() != 0) {
+				url += "&keyword=" + StringUtils.getUrlEncodedString(etCarName);
+			}
+
+			refreshPage();
+			
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		}
+	}
+
+//////////////////// Classes.
+	
+	public class PriceText {
+		
+		private long price;
+		private String priceText;
+		
+		public PriceText(long price) {
+			this.price = price;
+			
+			if(price == -1) {
+				priceText = "무제한";
+			} else if(price == 0) {
+				priceText = "0원";
+			} else if(price > 100000000) {
+				priceText = (price / 100000000) + "억원";
+			} else {
+				priceText = (price / 10000) + "만원";
+			}
 		}
 		
-		if(etMaxPrice.hasFocus()) {
-			etMaxPrice.setSelection(etMaxPrice.length());
+		public long getPrice() {
+			
+			return price;
+		}
+		
+		public String getPriceText() {
+			
+			return priceText;
 		}
 	}
 }

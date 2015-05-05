@@ -71,9 +71,6 @@ public class CarListPage extends BCPAuctionableFragment {
 	@Override
 	public void createPage() {
 
-		adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
-		listView.setAdapter(adapter);
-    	
         swipeRefreshLayout.setColorSchemeColors(
         		getResources().getColor(R.color.titlebar_bg_orange),
         		getResources().getColor(R.color.titlebar_bg_brown), 
@@ -81,17 +78,8 @@ public class CarListPage extends BCPAuctionableFragment {
         		getResources().getColor(R.color.titlebar_bg_brown));
         swipeRefreshLayout.setEnabled(true);
 
-        //타이틀바 설정.
-        switch(type) {
-		
-		case Car.TYPE_BID:
-			titleBar.setBgAlpha(0);
-			break;
-			
-		case Car.TYPE_DEALER:
-		case Car.TYPE_DIRECT:
-			break;
-        }
+        adapter = new BCPAdapter(mContext, mActivity, mActivity.getLayoutInflater(), models);
+		listView.setAdapter(adapter);
         
         //여백 설정.
         listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
@@ -108,7 +96,32 @@ public class CarListPage extends BCPAuctionableFragment {
 			break;
         }
 		
-		//버튼 설정.
+        //타이틀바 설정.
+        switch(type) {
+		
+		case Car.TYPE_BID:
+			titleBar.setBgAlpha(0);
+			break;
+			
+		case Car.TYPE_DEALER:
+		case Car.TYPE_DIRECT:
+			break;
+        }
+		
+        //상단 버튼 설정.
+        switch(type) {
+		
+		case Car.TYPE_BID:
+			btnSearch.setVisibility(View.INVISIBLE);
+			break;
+			
+		case Car.TYPE_DEALER:
+		case Car.TYPE_DIRECT:
+			btnSearch.setVisibility(View.VISIBLE);
+			break;
+		}
+        
+		//하단 버튼 설정.
 		switch(type) {
 		
 		case Car.TYPE_BID:

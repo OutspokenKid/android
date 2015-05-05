@@ -539,7 +539,9 @@ public class MainPage extends BCPAuctionableFragment {
 			@Override
 			public void run() {
 
-				mActivity.showPage(BCPConstants.PAGE_MY, null);
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", Car.TYPE_DIRECT);
+//				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
 			}
 		}, 1000);
 	}
