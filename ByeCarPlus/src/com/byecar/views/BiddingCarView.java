@@ -172,16 +172,14 @@ public class BiddingCarView extends FrameLayout {
 				clearTime();
 				return;
 			}
-
+			
 			long remainTime = car.getBid_until_at() * 1000 
-					+ 86400000 - System.currentTimeMillis();
-
-			if(remainTime < 0) {
-				clearTime();
-			} else {
-		    	String formattedRemainTime = StringUtils.getTimeString(remainTime);
-		    	tvRemainTime.setText(formattedRemainTime);
-			}
+					+ (car.getStatus() < Car.STATUS_BID_COMPLETE ? 0 : 86400000) 
+					- System.currentTimeMillis();
+	    	
+	    	String formattedRemainTime = StringUtils.getTimeString(remainTime);
+	    	tvRemainTime.setText(formattedRemainTime);
+			
 		} catch (Exception e) {
 			LogUtils.trace(e);
 			clearTime();

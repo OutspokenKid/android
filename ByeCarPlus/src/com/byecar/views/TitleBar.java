@@ -71,7 +71,7 @@ public class TitleBar extends RelativeLayout {
 		
 		//btnBack.
 		btnBack = new Button(getContext());
-		rp = new RelativeLayout.LayoutParams(161, 60);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(161), ResizeUtils.getSpecificLength(60));
 		rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		rp.addRule(RelativeLayout.CENTER_VERTICAL);
 		btnBack.setLayoutParams(rp);

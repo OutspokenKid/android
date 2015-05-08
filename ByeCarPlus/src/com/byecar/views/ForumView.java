@@ -60,7 +60,7 @@ public class ForumView extends FrameLayout {
 		this.addView(cover);
 		
 		badge = new View(getContext());
-		ResizeUtils.viewResize(33, 38, badge, 2, Gravity.LEFT|Gravity.TOP, new int[]{6, 0, 0, 0});
+		ResizeUtils.viewResize(40, 25, badge, 2, Gravity.LEFT|Gravity.TOP, new int[]{6, 6, 0, 0});
 		badge.setBackgroundColor(Color.argb(100, 255, 0, 0));
 		this.addView(badge);
 		

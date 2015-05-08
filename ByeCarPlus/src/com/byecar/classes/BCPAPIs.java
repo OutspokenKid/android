@@ -2,12 +2,13 @@ package com.byecar.classes;
 
 public class BCPAPIs {
 
-	public static String BASE_API_URL = "http://byecar1.minsangk.com";
+	public static String BASE_API_URL = "http://dev.bye-car.com";
 	public static String UPLOAD_URL = BASE_API_URL + "/files/upload/image.json";
 	public static String TERM_OF_USE_URL = BASE_API_URL + "/appinfo/policies";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
 	public static String AREA_URL = BASE_API_URL + "/zipcodes/areas.json";
+	public static String DEALER_COUNT_URL = BASE_API_URL + "/users/count/dealer.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
 	public static String NICKNAME_CHECK_URL = BASE_API_URL + "/users/check/nickname.json";
@@ -87,6 +88,8 @@ public class BCPAPIs {
 	public static String FORUM_REPORT_URL = BASE_API_URL + "/posts/report.json";
 	public static String FORUM_REPLY_WRITE_URL = BASE_API_URL + "/posts/reply/save.json";
 	public static String FORUM_REPLY_DELETE_URL = BASE_API_URL + "/posts/reply/delete.json";
+	public static String FORUM_READ_URL = BASE_API_URL + "/posts/read.json";
+	public static String FORUM_BOARDS_URL = BASE_API_URL + "/boards.json";
 	
 	public static String VIDEO_LIST_URL = BASE_API_URL + "/posts/videos.json";
 	

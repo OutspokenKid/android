@@ -1,8 +1,11 @@
 package com.byecar.fragments.user;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -24,9 +27,12 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
+import com.byecar.models.Board;
 import com.byecar.models.ForumBest;
 import com.byecar.models.Post;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -40,6 +46,8 @@ public class ForumListPage extends BCPFragment {
 	private Button btnMyPost;
 	
 	private ForumBest forumBest;
+	private int board_id;
+	private ArrayList<Board> boards = new ArrayList<Board>();
 	
 	@Override
 	public void bindViews() {
@@ -201,6 +209,11 @@ public class ForumListPage extends BCPFragment {
 	public void downloadInfo() {
 		
 		url = BCPAPIs.FORUM_LIST_URL;
+		
+		if(board_id != 0) {
+			url += "?board_id=" + board_id;
+		}
+		
 		super.downloadInfo();
 	}
 	
@@ -251,5 +264,79 @@ public class ForumListPage extends BCPFragment {
 	public boolean onBackPressed() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		
+		if(boards.size() == 0) {
+			downloadCategories();
+		}
+	}
+	
+//////////////////// Custom methods.
+	
+	public void downloadCategories() {
+		
+		String url = BCPAPIs.FORUM_BOARDS_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ForumListPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ForumListPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					JSONArray arJSON = objJSON.getJSONArray("boards");
+					
+					int size = arJSON.length();
+					for(int i=0; i<size; i++) {
+						boards.add(new Board(arJSON.getJSONObject(i)));
+					}
+					
+					setCategories();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
+	}
+	
+	public void setCategories() {
+		
+		btnCategory.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				int size = boards.size();
+				final String[] strings = new String[size];
+				for(int i=0; i<size; i++) {
+					strings[i] = boards.get(i).getName();
+				}
+				
+				mActivity.showSelectDialog(null, strings, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						board_id = boards.get(which).getId();
+						btnCategory.setText(boards.get(which).getName());
+						refreshPage();
+					}
+				});
+			}
+		});
 	}
 }

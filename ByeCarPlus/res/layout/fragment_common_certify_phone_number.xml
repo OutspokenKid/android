@@ -20,23 +20,12 @@
         <RelativeLayout
             android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
-            
-            <TextView
-		        android:id="@+id/certifyPhoneNumberPage_tvCertifyPhoneNumber"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_alignParentTop="true"
-		        android:gravity="center_vertical"
-		        android:text="@string/certifyPhoneNumber"
-		        android:textColor="@color/holo_text" />
 		    
 		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
 		        android:id="@+id/certifyPhoneNumberPage_etPhoneNumber"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/certifyPhoneNumberPage_tvCertifyPhoneNumber" />
+		        android:layout_centerHorizontal="true" />
 		    
 		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
 		        android:id="@+id/certifyPhoneNumberPage_etCertificationNumber"

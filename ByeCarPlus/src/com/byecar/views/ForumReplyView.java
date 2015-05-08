@@ -190,6 +190,10 @@ public class ForumReplyView extends RelativeLayout {
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(0), 0, 0);
 
+			btnEdit.setVisibility(View.INVISIBLE);
+			btnDelete.setVisibility(View.INVISIBLE);
+			btnReply.setVisibility(View.INVISIBLE);
+			
 			//내가 쓴 글이면 수정 버튼.
 			if(post.getAuthor_id() == MainActivity.user.getId()) {
 				btnEdit.setVisibility(View.VISIBLE);
@@ -206,6 +210,7 @@ public class ForumReplyView extends RelativeLayout {
 					}
 				});
 				
+				//대댓글이 아직 안달린 경우에만 삭제 버튼 노출.
 				if(post.getHas_children() == 0) {
 					ResizeUtils.setMargin(btnEdit, new int[]{0, 0, 111, 16});
 					btnDelete.setVisibility(View.VISIBLE);
@@ -219,8 +224,8 @@ public class ForumReplyView extends RelativeLayout {
 					});
 				}
 				
-			//남이 쓴 글이고 댓글이 없으면 댓글 버튼.
-			} else {
+			//남이 쓴 댓글이고 대댓글이 없으면 댓글 버튼.
+			} else if(post.getHas_children() == 0){
 				btnReply.setVisibility(View.VISIBLE);
 				btnReply.setOnClickListener(new OnClickListener() {
 
@@ -261,7 +266,8 @@ public class ForumReplyView extends RelativeLayout {
 		}
 	}
 
-	public void setReply(final Post post, final BCPFragmentActivity activity) {
+	public void setReply(final Post post, final BCPFragmentActivity activity,
+			final String to, final int origin_post_id) {
 		
 		try {
 			replyBadge.setVisibility(View.VISIBLE);
@@ -274,10 +280,32 @@ public class ForumReplyView extends RelativeLayout {
 			
 			//내가 쓴 대댓글인 경우 수정, 삭제 가능.
 			if(post.getAuthor_id() == MainActivity.user.getId()) {
+				ResizeUtils.setMargin(btnEdit, new int[]{0, 0, 111, 16});
+				
 				btnEdit.setVisibility(View.VISIBLE);
 				btnDelete.setVisibility(View.VISIBLE);
 				
-				ResizeUtils.setMargin(btnEdit, new int[]{0, 0, 111, 16});
+				btnEdit.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						Bundle bundle = new Bundle();
+						bundle.putSerializable("post", post);			//수정인 경우.
+						bundle.putString("to", to);						//원 댓글 작성자.
+						bundle.putInt("post_id", origin_post_id);		//자유게시판 글 id.
+						activity.showPage(BCPConstants.PAGE_FORUM_WRITE_REPLY, bundle);
+					}
+				});
+				
+				btnDelete.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						deleteReply(post.getId(), activity);
+					}
+				});
 			}
 			
 			if(!StringUtils.isEmpty(post.getAuthor_profile_img_url())) {
@@ -296,7 +324,7 @@ public class ForumReplyView extends RelativeLayout {
 			
 			downloadImage(post.getAuthor_profile_img_url());
 			tvNickname.setText(post.getAuthor_nickname());
-			tvReplyText.setText("RE : " + "원글 작성자 이름 필요함");
+			tvReplyText.setText("RE : " + to);
 			tvContent.setText(post.getContent());
 			tvRegdate.setText(StringUtils.getDateString("등록일 yyyy년 MM월 dd일", post.getCreated_at() * 1000));
 		} catch (Exception e) {

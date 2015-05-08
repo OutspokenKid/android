@@ -20,6 +20,11 @@
         android:layout_below="@id/signPage_logo"
         android:background="@drawable/splash_catchphrase" />
     
+    <android.support.v4.view.ViewPager
+        android:id="@+id/signPage_viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    
     <Button 
         android:id="@+id/signPage_btnMember"
         android:layout_width="0dp"
@@ -28,11 +33,6 @@
         android:layout_alignParentBottom="true"
         android:visibility="invisible"
         android:background="@drawable/splash_login_btn" />
-    
-    <android.support.v4.view.ViewPager
-        android:id="@+id/signPage_viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
     
     <Button 
         android:id="@+id/signPage_btnNext"

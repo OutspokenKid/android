@@ -42,6 +42,7 @@ public class BCPConstants {
 	
 	//Pages for user.
 	public static final int PAGE_MAIN = 11;
+	public static final int PAGE_PHONE_INFO = 12;
 	public static final int PAGE_CERTIFY_PHONE_NUMBER = 13;
 	public static final int PAGE_DEALER = 14;
 	public static final int PAGE_MY = 15;

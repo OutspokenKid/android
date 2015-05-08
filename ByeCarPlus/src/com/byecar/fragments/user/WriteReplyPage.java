@@ -163,6 +163,10 @@ public class WriteReplyPage extends BCPFragment {
 		*/
 		String url = BCPAPIs.FORUM_REPLY_WRITE_URL
 				+ "?reply[content]=" + StringUtils.getUrlEncodedString(etContent);
+
+		if(post != null) {
+			url += "&reply[id]=" + post.getId();
+		}
 		
 		//reply[post_id] : 댓글을 달 포스트 id
 		if(post_id != 0) {

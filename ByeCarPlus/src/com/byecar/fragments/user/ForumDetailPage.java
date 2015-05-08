@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -61,6 +60,7 @@ public class ForumDetailPage extends BCPFragment {
 	private EditText etReply;
 	private Button btnReply;
 	
+	private boolean setRead;
 	private boolean needToScrollDown;
 	
 	ArrayList<Review> reviews = new ArrayList<Review>();
@@ -239,7 +239,7 @@ public class ForumDetailPage extends BCPFragment {
 				}
 				
 				String url = BCPAPIs.FORUM_REPORT_URL
-						+ post.getId();
+						+ "+?post_id=" + post.getId();
 				DownloadUtils.downloadJSONString(url,
 						new OnJSONDownloadListener() {
 
@@ -510,13 +510,15 @@ public class ForumDetailPage extends BCPFragment {
 				}
 			}, 500);
 		}
+		
+		sendReadThisPost();
 	}
 	
 	public void addImageView(final String imageUrl) {
 		
 		final ImageView imageView = new ImageView(mContext);
 		ResizeUtils.viewResize(548, 548, imageView, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 16});
-		imageView.setBackgroundColor(Color.argb(100, 255, 0, 0));
+		imageView.setBackgroundColor(getResources().getColor(R.color.color_ltgray));
 		imageView.setScaleType(ScaleType.CENTER_CROP);
 		contentsLinear.addView(imageView);
 
@@ -576,20 +578,42 @@ public class ForumDetailPage extends BCPFragment {
 		
 		//댓글이 없을 때.
 		if(post.getReplies() == null || post.getReplies().length == 0) {
-			View noReview = new View(mContext);
-			ResizeUtils.viewResize(223, 226, noReview, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 16});
-			noReview.setBackgroundResource(R.drawable.dealer_no_comment);
-			replyLinear.addView(noReview);
-			
+			replyLinear.setVisibility(View.GONE);
+			tvReplyTitle.setVisibility(View.GONE);
 			return;
+		} else {
+			replyLinear.setVisibility(View.VISIBLE);
+			tvReplyTitle.setVisibility(View.VISIBLE);
 		}
 		
 		int size = post.getReplies().length;
 		for(int i=0; i<size; i++) {
+			
+			Post reply = post.getReplies()[i];
+			
 			ForumReplyView frv = new ForumReplyView(mContext);
 			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, frv, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 16});
-			frv.setPost(post.getReplies()[i], mActivity, post.getAuthor_nickname(), post.getId());
+			frv.setPost(reply, mActivity, post.getAuthor_nickname(), post.getId());
 			replyLinear.addView(frv);
+			
+			if(reply.getReplies() != null) {
+				
+				int size2 = reply.getReplies().length;
+				for(int j=0; j<size2; j++) {
+					ForumReplyView frv2 = new ForumReplyView(mContext);
+					ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, frv2, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 16});
+					frv2.setReply(reply.getReplies()[j], mActivity, reply.getAuthor_nickname(), post.getId());
+					replyLinear.addView(frv2);
+				}
+			}
+			
+			//Add line.
+			if(i != post.getReplies().length - 1) {
+				View line = new View(mContext);
+				ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, ResizeUtils.ONE, line, 1, 0, new int[]{0, 0, 0, 16});
+				line.setBackgroundColor(getResources().getColor(R.color.color_ltgray));
+				replyLinear.addView(line);
+			}
 		}
 	}
 
@@ -674,6 +698,41 @@ public class ForumDetailPage extends BCPFragment {
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToWriteReply);
+				}
+			}
+		});
+	}
+
+	public void sendReadThisPost() {
+
+		if(setRead) {
+			return;
+		}
+
+		setRead = true;
+		
+		String url = BCPAPIs.FORUM_READ_URL
+				+ "post_id=" + post.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("ForumDetailPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 				}
 			}
 		});

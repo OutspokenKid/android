@@ -2,27 +2,38 @@ package com.byecar.fragments.user;
 
 import org.json.JSONObject;
 
+import android.animation.TypeEvaluator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.Interpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
 import com.byecar.byecarplus.SignActivity;
@@ -37,8 +48,10 @@ import com.outspoken_kid.fragment.sns.KakaoFragment;
 import com.outspoken_kid.fragment.sns.KakaoFragment.KakaoUserInfo;
 import com.outspoken_kid.fragment.sns.SNSFragment.OnAfterSignInListener;
 import com.outspoken_kid.model.SNSUserInfo;
+import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
@@ -64,6 +77,8 @@ public class SignPage extends BCPFragment {
 	
 	private PagerAdapterForGuide pagerAdapter;
 	private ImageView[] guideImageViews;
+	private FrameLayout guideFrame;
+	private TextView tvUserCount;
 	
 	//Sign relative and contents.
 	private RelativeLayout signRelative;
@@ -82,7 +97,10 @@ public class SignPage extends BCPFragment {
 	private AsyncAnimTask currentTask;
 	private Matrix[] matrices;
 	
-	private View cover; 
+	private View cover;
+
+	private int dealerCount;
+	private boolean needStop;
 	
 	@Override
 	public void bindViews() {
@@ -117,6 +135,8 @@ public class SignPage extends BCPFragment {
 		initGuideImageViews();
 		initSignRelative();
 		
+		downloadDealerCount();
+		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
@@ -143,6 +163,14 @@ public class SignPage extends BCPFragment {
 				} else {
 					catchphrase.setVisibility(View.INVISIBLE);
 					btnMember.setVisibility(View.INVISIBLE);
+				}
+				
+				if(position == 1) {
+					showUserCount(dealerCount);
+				} else {
+					tvUserCount.setText(null);
+					FontUtils.addSpan(tvUserCount, "0", 0, 1, true);
+					FontUtils.addSpan(tvUserCount, " 명", 0, 0.5f, false);
 				}
 				
 				if(position == NUMBER_OF_PAGE - 1) {
@@ -285,6 +313,7 @@ public class SignPage extends BCPFragment {
 		playingIndex = 0;
 		playingCount++;
 		needPlay = true;
+		needStop = false;
 		play();
 	}
 	
@@ -293,6 +322,7 @@ public class SignPage extends BCPFragment {
 		super.onPause();
 		
 		needPlay = false;
+		needStop = true;
 		
 		if(currentTask != null) {
 			currentTask.cancel(true);
@@ -719,6 +749,57 @@ public class SignPage extends BCPFragment {
 		}, mActivity.getLoadingView());
 	}
 	
+	public void downloadDealerCount() {
+		
+		String url = BCPAPIs.DEALER_COUNT_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("SignPage.onError." + "\nurl : " + url);
+				downloadAgain();
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("SignPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						dealerCount = objJSON.getJSONObject("count").getInt("dealer");
+					} else {
+						downloadAgain();
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					downloadAgain();
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					downloadAgain();
+				}
+			}
+			
+			public void downloadAgain() {
+				
+				if(needStop) {
+					return;
+				}
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						
+						downloadDealerCount();
+					}
+				}, 500);
+			}
+		});
+	}
+	
 //////////////////// Classes.
 	
 	public class AsyncAnimTask extends AsyncTask<Void, Void, Void> {
@@ -777,6 +858,43 @@ public class SignPage extends BCPFragment {
 			
 			if(position == 0) {
 				
+			} else if(position == 1) {
+				
+				if(guideFrame == null) {
+					guideFrame = new FrameLayout(mContext);
+					guideFrame.addView(guideImageViews[0]);
+					
+					if(tvUserCount == null) {
+						 int topMargin = (int)(ResizeUtils.getScreenHeight()/2) + ResizeUtils.getSpecificLength(156);
+						
+						tvUserCount = new TextView(mContext);
+						FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(
+								LayoutParams.WRAP_CONTENT, ResizeUtils.getSpecificLength(80),
+								Gravity.CENTER_HORIZONTAL|Gravity.TOP);
+						fp.topMargin = topMargin;
+						tvUserCount.setLayoutParams(fp);
+						tvUserCount.setGravity(Gravity.CENTER);
+						tvUserCount.setTextColor(Color.WHITE);
+						FontUtils.setFontSize(tvUserCount, 50);
+						FontUtils.setShadow(tvUserCount, 
+								new float[]{
+									ResizeUtils.getSpecificLength(2),		//radius.
+									ResizeUtils.getSpecificLength(2),		//dx.
+									ResizeUtils.getSpecificLength(2),		//dy.
+									255, 235, 155, 35						//a, r, g, b.
+								});
+						FontUtils.setFontStyle(tvUserCount, FontUtils.BOLD);
+						guideFrame.addView(tvUserCount);
+						
+						tvUserCount.setText(null);
+						FontUtils.addSpan(tvUserCount, "0", 0, 1, true);
+						FontUtils.addSpan(tvUserCount, " 명", 0, 0.5f, false);
+					}
+				}
+				
+				container.addView(guideFrame);
+				return guideFrame;
+				
 			} else if(position < NUMBER_OF_PAGE - 1) {
 				if(guideImageViews[position-1].getParent() == null) {
 					container.addView(guideImageViews[position-1]);
@@ -803,5 +921,80 @@ public class SignPage extends BCPFragment {
 
 			return arg0 == arg1;
 		}
+	}
+	
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public void showUserCount(final int count) {
+
+		if(AppInfoUtils.checkMinVersionLimit(Build.VERSION_CODES.HONEYCOMB)) {
+			ValueAnimator animator = new ValueAnimator();
+	        animator.setObjectValues(0, count);
+	        animator.addUpdateListener(new AnimatorUpdateListener() {
+	        	
+	            public void onAnimationUpdate(ValueAnimator animation) {
+	            	
+	            	int animatedCount = Integer.parseInt(animation.getAnimatedValue().toString());
+	            	
+	        		tvUserCount.setText(null);
+	        		FontUtils.addSpan(tvUserCount, StringUtils.getFormattedNumber(
+	        				animatedCount), 0, 1, true);
+	        		FontUtils.addSpan(tvUserCount, " 명", 0, 0.5f, false);
+	        		
+	        		if(animatedCount == count) {
+	        			animateTextViewSize();
+	        		}
+	            }
+	        });
+	        animator.setEvaluator(new TypeEvaluator<Integer>() {
+	            public Integer evaluate(float fraction, Integer startValue, Integer endValue) {
+	                return Math.round((endValue - startValue) * fraction);
+	            }
+	        });
+	        animator.setDuration(1000);
+	        animator.start();
+		} else {
+			tvUserCount.setText(null);
+    		FontUtils.addSpan(tvUserCount, StringUtils.getFormattedNumber(count), 0, 1, true);
+    		FontUtils.addSpan(tvUserCount, " 명", 0, 0.5f, false);
+		}
+	}
+	
+	public void animateTextViewSize() {
+		
+		ScaleAnimation saUp = new ScaleAnimation(
+				1, 1.1f, 
+				1, 1.1f, 
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f, 
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+		saUp.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
+		saUp.setDuration(150);
+		saUp.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				
+				ScaleAnimation saDown = new ScaleAnimation(
+						1.1f, 1, 
+						1.1f, 1, 
+						ScaleAnimation.RELATIVE_TO_SELF, 0.5f, 
+						ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+				saDown.setInterpolator(mContext, android.R.anim.accelerate_interpolator);
+				saDown.setDuration(200);
+				tvUserCount.startAnimation(saDown);
+			}
+		});
+		tvUserCount.startAnimation(saUp);
 	}
 }

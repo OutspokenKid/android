@@ -306,6 +306,44 @@ public class MainPage extends BCPAuctionableFragment {
 				mActivity.showPage(BCPConstants.PAGE_FORUM_LIST, null);
 			}
 		});
+
+		int size = tabButtons.length;
+		for(int i=0; i<size; i++) {
+			
+			final int INDEX = i;
+			tabButtons[i].setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					int pageCode = 0;
+					Bundle bundle = new Bundle();
+					
+					switch(INDEX) {
+					
+					case 0:
+						pageCode = BCPConstants.PAGE_CAR_REGISTRATION;
+						break;
+						
+					case 1:
+//						pageCode = BCPConstants.PAGE_;
+						break;
+						
+					case 2:
+						pageCode = BCPConstants.PAGE_CAR_LIST;
+						bundle.putInt("type", Car.TYPE_DEALER);
+						break;
+						
+					case 3:
+						pageCode = BCPConstants.PAGE_CAR_LIST;
+						bundle.putInt("type", Car.TYPE_DIRECT);
+						break;
+					}
+					
+					mActivity.showPage(pageCode, bundle);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -557,8 +595,7 @@ public class MainPage extends BCPAuctionableFragment {
 			public void run() {
 
 //				Bundle bundle = new Bundle();
-//				bundle.putInt("post_id", 75);
-//				mActivity.showPage(BCPConstants.PAGE_FORUM_DETAIL, bundle);
+//				mActivity.showPage(BCPConstants.PAGE_, bundle);
 			}
 		}, 1000);
 	}

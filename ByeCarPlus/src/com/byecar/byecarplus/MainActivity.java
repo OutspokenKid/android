@@ -42,6 +42,7 @@ import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
+import com.byecar.fragments.PhoneInfoPage;
 import com.byecar.fragments.SearchCarPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
@@ -305,6 +306,9 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_MAIN:
 			return new MainPage();
+		
+		case BCPConstants.PAGE_PHONE_INFO:
+			return new PhoneInfoPage();
 			
 		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
 			return new CertifyPhoneNumberPage();
@@ -373,6 +377,9 @@ public class MainActivity extends BCPFragmentActivity {
 		try {
 			//byecar://notices
 			//byecar://notices?post_id=41
+			
+			//byecar://posts/forum?post_id=73&reply_id=29
+
 
 			if(uri == null) {
 				return;
@@ -433,7 +440,19 @@ public class MainActivity extends BCPFragmentActivity {
 							}
 						}
 					});
+				
+					//byecar://posts/forum?post_id=73&reply_id=29
+					
+				//자유게시판.
+				} else if(host.equals("posts") && path.equals("/forum")) {
+					
+					int post_id = Integer.parseInt(uri.getQueryParameter("post_id"));
+
+					bundle = new Bundle();
+					bundle.putInt("post_id", post_id);
+					showPage(BCPConstants.PAGE_FORUM_DETAIL, bundle);
 				}
+				
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -658,10 +677,12 @@ public class MainActivity extends BCPFragmentActivity {
 								
 //								동영상게시판
 							case 2:
+								showPage(BCPConstants.PAGE_VIDEO_LIST, null);
 								break;
 								
 //								자유게시판
 							case 3:
+								showPage(BCPConstants.PAGE_FORUM_LIST, null);
 								break;
 								
 //								자주 묻는 질문

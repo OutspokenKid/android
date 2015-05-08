@@ -161,10 +161,6 @@ public class VideoListPage extends BCPFragment {
 				Post post = new Post(arJSON.getJSONObject(i));
 				post.setItemCode(BCPConstants.ITEM_VIDEO);
 				models.add(post);
-				models.add(post);
-				models.add(post);
-				models.add(post);
-				models.add(post);
 			}
 			
 			if(size < NUMBER_OF_LISTITEMS) {

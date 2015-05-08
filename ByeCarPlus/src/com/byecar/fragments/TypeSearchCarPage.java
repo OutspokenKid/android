@@ -35,6 +35,8 @@ public class TypeSearchCarPage extends BCPFragment {
 	public static final int TYPE_TRANSMISSION = 7;
 	public static final int TYPE_ACCIDENT = 8;
 	public static final int TYPE_ONEMANOWNED = 9;
+	public static final int TYPE_WD = 10;
+	public static final int TYPE_AREA = 11;
 	
 	private ListView listView;
 	private GridView gridView;

@@ -15,6 +15,17 @@
 	<string name="carInfo">차량정보</string>
 	<string name="carOption">차량 옵션 및 튜닝</string>
     <string name="carPhoto">차량사진</string>
+    <string name="carRegistrationPhoto1">앞면 / 측면</string>
+    <string name="carRegistrationPhoto2">뒷면 / 측면</string>
+    <string name="carRegistrationPhoto3">실내</string>
+    <string name="carRegistrationPhoto4">주행거리</string>
+    <string name="carRegistrationTitle1">1. 차량정보</string>
+    <string name="carRegistrationTitle2">2. 세부차량정보</string>
+    <string name="carRegistrationTitle3">3. 필수사진</string>
+    <string name="carRegistrationTitle4">4. 추가사진</string>
+    <string name="carRegistrationTitle5">5. 옵션 및 튜닝</string>
+    <string name="carRegistrationTitle6">6. 판매자 차량설명</string>
+    <string name="carRegistrationTitle7">7. 바이카 공지사항 및 이용 약관 동의</string>
     <string name="carSearchString_fuel1">휘발유</string>
     <string name="carSearchString_fuel2">경유</string>
     <string name="carSearchString_fuel3">LPG</string>
@@ -114,14 +125,15 @@
     
     <string name="hadAccident">사고보험 이력이 존재합니다. 버튼을 눌러 확인해주세요.</string>
     <string name="hintForAddress">주소를 입력해주세요.</string>
-    <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
+    <string name="hintForCarDescriptionFromDealer">차량에 대한 추가 설명을 입력해주세요. 정성껏 작성해야 높은 금액으로 입찰될 수 있습니다.</string>
     <string name="hintForCategory">카테고리를 선택해주세요</string>
     <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo1">차량 번호를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo2">차량 색상을 입력해주세요.</string>
-    <string name="hintForDetailCarInfo3">거래 가능 지역을 입력해주세요.</string>
-    <string name="hintForDetailCarInfo4">주행거리를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo5">배기량을 입력해주세요.</string>
+    <string name="hintForDetailCarInfo11">차량 번호를 입력해주세요.</string>
+    <string name="hintForDetailCarInfo12">예) 02가 1234</string>
+    <string name="hintForDetailCarInfo21">주행거리를 입력해주세요.</string>
+    <string name="hintForDetailCarInfo22">예) 103,555</string>
+    <string name="hintForDetailCarInfo31">배기량을 입력해주세요.</string>
+    <string name="hintForDetailCarInfo32">예) 2500</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
     <string name="hintForForumContent">내용을 입력해주세요.</string>
@@ -144,7 +156,7 @@
     <string name="lastList">마지막 리스트입니다.</string>
     <string name="like">좋아요</string>
     
-    <string name="mainImage">대표이미지</string>
+    <string name="mainImage">* 차량 번호판과 주행거리수가 정확히 보여지는 사진을 등록해주세요.</string>
     <string name="max">최대</string>
     <string name="maxDisplacementCannotUnderMinDisplacement">최고 배기량은 최저 배기량보다 작을 수 없습니다</string>
     <string name="maxPriceCannotUnderMinPrice">최고가는 최저가보다 작을 수 없습니다</string>
@@ -156,6 +168,7 @@
     <string name="minPriceMustOverZero">최저 가격은 0원 이상이어야 합니다</string>
     <string name="month">월</string>
 
+    <string name="needCertifyPhoneNumber">휴대폰 번호가 인증 되지 않았습니다.\n휴대폰번호를 인증해주세요.</string>
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
     <string name="notificationSetting">알림설정</string>
@@ -201,6 +214,7 @@
     <string name="pageTitle_forum">자유게시판</string>
     <string name="pageTitle_reviewList">입찰완료/후기</string>
     <string name="pageTitle_videoList">동영상게시판</string>
+    <string name="pageTitle_phoneInfo">휴대폰 정보</string>
     <string name="phone">연락처</string>
     <string name="popup_request_certification">검증 신청이 완료되었습니다!</string>
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
@@ -250,8 +264,7 @@
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>
     <string name="withdraw">탈퇴하기</string>
-    <string name="writeAllContentForRegistration">*작성률 100%를 달성해야 차량 등록을 완료할 수 있습니다.</string>
-    <string name="writeAllContentForRequestCertification">*작성률 100%를 달성해야 검증 신청을 완료할 수 있습니다.</string>
+    <string name="writeAllContentForRegistration">* 1번부터 6번은 모두 입력해야 입찰요청이 가능한 필수항목입니다.</string>
     <string name="writePercentage">작성률</string>
     
     <string name="year">년</string>
