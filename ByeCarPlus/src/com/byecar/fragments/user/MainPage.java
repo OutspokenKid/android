@@ -46,6 +46,8 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.views.OffsetScrollView;
@@ -106,6 +108,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private int standardLength;
 	private float diff;
 	private int pagerTime;
+	private boolean needNoticePopup = true;
 	
 	private Timer pagerTimer;
 	private TimerTask pagerTimerTask;
@@ -267,6 +270,15 @@ public class MainPage extends BCPAuctionableFragment {
 			}
 		});
 	
+		btnReview.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_BID_REVIEW_LIST, null);
+			}
+		});
+		
 		btnUsedMarket.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -323,10 +335,11 @@ public class MainPage extends BCPAuctionableFragment {
 					
 					case 0:
 						pageCode = BCPConstants.PAGE_CAR_REGISTRATION;
+						bundle.putInt("carType", Car.TYPE_BID);
 						break;
 						
 					case 1:
-//						pageCode = BCPConstants.PAGE_;
+						pageCode = BCPConstants.PAGE_BID_REVIEW_LIST;
 						break;
 						
 					case 2:
@@ -595,7 +608,7 @@ public class MainPage extends BCPAuctionableFragment {
 			public void run() {
 
 //				Bundle bundle = new Bundle();
-//				mActivity.showPage(BCPConstants.PAGE_, bundle);
+//				mActivity.showPage(BCPConstants.PAGE_SEARCH_AREA, bundle);
 			}
 		}, 1000);
 	}
@@ -748,6 +761,34 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					setForums();
+					
+					try {
+						if(needNoticePopup) {
+							needNoticePopup = false;
+							
+							final Post notice = new Post(objJSON.getJSONObject("notice"));
+							
+							long lastTime = SharedPrefsUtils.getLongFromPrefs(BCPConstants.PREFS_NOTICE, "time");
+							long timeDiff = System.currentTimeMillis() - lastTime; 
+							
+							if(!StringUtils.isEmpty(notice.getRep_img_url())
+									&& timeDiff > 604800000) {
+								
+								new Handler().postDelayed(new Runnable() {
+
+									@Override
+									public void run() {
+
+										((MainActivity)mActivity).showNoticePopup(notice.getRep_img_url());
+									}
+								}, 1000);
+							}
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

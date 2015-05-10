@@ -94,6 +94,8 @@ public class Car extends BCPBaseModel implements Serializable {
 	
 	private String inspection_note_url;
 	private long liked_at;
+	private int dong_id;
+	private String accident_desc;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -164,6 +166,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			this.inspection_note_url = null;
 			this.liked_at = 0;
+			this.dong_id = 0;
+			this.accident_desc = null;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -231,6 +235,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			this.inspection_note_url = newCar.inspection_note_url;
 			this.liked_at = newCar.liked_at;
+			this.dong_id = newCar.dong_id;
+			this.accident_desc = newCar.accident_desc;
 		}
 	}
 	
@@ -513,6 +519,14 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("liked_at")) {
 				this.liked_at = objJSON.getLong("liked_at");
+			}
+			
+			if(objJSON.has("dong_id")) {
+				this.dong_id = objJSON.getInt("dong_id");
+			}
+			
+			if(objJSON.has("accident_desc")) {
+				this.accident_desc = objJSON.getString("accident_desc");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1164,5 +1178,19 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setLiked_at(long liked_at) {
 		this.liked_at = liked_at;
+	}
+	public int getDong_id() {
+		return dong_id;
+	}
+	public void setDong_id(int dong_id) {
+		this.dong_id = dong_id;
+	}
+
+	public String getAccident_desc() {
+		return accident_desc;
+	}
+
+	public void setAccident_desc(String accident_desc) {
+		this.accident_desc = accident_desc;
 	}
 }

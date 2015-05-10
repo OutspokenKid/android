@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.models.Post;
@@ -189,14 +190,18 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 			}
 			
 			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
+			public void onCompleted(final String url, Bitmap bitmap) {
 
 				try {
-					String tag = ivImage.getTag().toString();
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
+					
+					LogUtils.log("###where.onCompleted.  "
+							+ "\n url : " + url
+							+ "\n tag : " + tag);
 					
 					//태그가 다른 경우 아무 것도 하지 않음.
 					if(!StringUtils.isEmpty(tag)
-							&& tag.equals(url)) {
+							&& url.contains(tag)) {
 						
 						if(ivImage != null) {
 							ivImage.setImageBitmap(bitmap);
@@ -206,6 +211,15 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 							rp.height = (int)(rp.width * ((float)bitmap.getHeight() / (float)bitmap.getWidth()));
 							
 							ivImage.setVisibility(View.VISIBLE);
+							
+							ivImage.setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View view) {
+
+									MainActivity.activity.showImageViewer(0, null, new String[]{url}, null);
+								}
+							});
 						}
 					}
 				} catch (Exception e) {

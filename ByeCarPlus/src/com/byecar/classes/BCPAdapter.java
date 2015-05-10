@@ -7,10 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.byecar.byecarplus.R;
+import com.byecar.wrappers.ViewWrapperForArea;
 import com.byecar.wrappers.ViewWrapperForAuctionCar;
 import com.byecar.wrappers.ViewWrapperForBrand;
 import com.byecar.wrappers.ViewWrapperForForum;
 import com.byecar.wrappers.ViewWrapperForForumBest;
+import com.byecar.wrappers.ViewWrapperForMyBidsReview;
 import com.byecar.wrappers.ViewWrapperForMyCar;
 import com.byecar.wrappers.ViewWrapperForMyReview;
 import com.byecar.wrappers.ViewWrapperForNotification;
@@ -79,6 +81,12 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_VIDEO:
 			return R.layout.list_video;
+		
+		case BCPConstants.ITEM_AREA_FOR_SEARCH:
+			return R.layout.list_area;
+			
+		case BCPConstants.ITEM_MY_BIDS_REVIEW:
+			return R.layout.list_my_bids_review;
 		}
 		
 		return 0;
@@ -142,6 +150,12 @@ public class BCPAdapter extends OutSpokenAdapter {
 			
 		case BCPConstants.ITEM_VIDEO:
 			return new ViewWrapperForVideo(convertView, itemCode);
+			
+		case BCPConstants.ITEM_AREA_FOR_SEARCH:
+			return new ViewWrapperForArea(convertView, itemCode);
+			
+		case BCPConstants.ITEM_MY_BIDS_REVIEW:
+			return new ViewWrapperForMyBidsReview(convertView, itemCode);
 		}
 		
 		return null;
@@ -197,6 +211,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_REVIEW:
 		case BCPConstants.ITEM_CAR_MY:
 		case BCPConstants.ITEM_CAR_MY_PURCHASE:
+		case BCPConstants.ITEM_MY_BIDS_REVIEW:
 
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);

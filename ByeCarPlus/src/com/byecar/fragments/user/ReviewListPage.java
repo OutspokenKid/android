@@ -1,5 +1,6 @@
 package com.byecar.fragments.user;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.graphics.Color;
@@ -16,7 +17,9 @@ import android.widget.ListView;
 
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
+import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Car;
 import com.byecar.models.Review;
@@ -141,13 +144,37 @@ public class ReviewListPage extends BCPFragment {
 	@Override
 	public void downloadInfo() {
 		
+		url = BCPAPIs.CAR_BID_REVIEW_URL;
 		super.downloadInfo();
 	}
 	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		int size = 0;
+		
+		try {
+			JSONArray arJSON = objJSON.getJSONArray("onsalecars");
+			
+			size = arJSON.length();
+			for(int i=0; i<size; i++) {
+				Car car = new Car(arJSON.getJSONObject(i));
+				car.setItemCode(BCPConstants.ITEM_MY_BIDS_REVIEW);
+				models.add(car);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		} finally {
+			swipeRefreshLayout.setRefreshing(false);
+		}
+		
+		if(size < NUMBER_OF_LISTITEMS) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

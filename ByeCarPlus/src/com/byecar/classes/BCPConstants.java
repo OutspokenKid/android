@@ -9,8 +9,11 @@ public class BCPConstants {
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
+	public static final int REQUEST_SEARCH_AREA = 3;
+	public static final int REQUEST_SEARCH_MONTH = 4;
 	
 	public static final String PREFS_PUSH = "pushSetting";
+	public static final String PREFS_NOTICE = "noticePopup";
 	
 	//Items for user.
 	public static final int ITEM_NOTICE = 1;
@@ -20,6 +23,8 @@ public class BCPConstants {
 	public static final int ITEM_FORUM = 5;
 	public static final int ITEM_FORUM_BEST = 6;
 	public static final int ITEM_VIDEO = 7;
+	public static final int ITEM_AREA_FOR_SEARCH = 8;
+	public static final int ITEM_MY_BIDS_REVIEW = 9;
 	
 	//Items for car.
 	public static final int ITEM_CAR_BID = 11;
@@ -51,6 +56,7 @@ public class BCPConstants {
 	public static final int PAGE_ASK = 18;
 	public static final int PAGE_NOTIFICATION = 19;
 	public static final int PAGE_SETTING = 20;
+	public static final int PAGE_PROFILE = 21;
 	
 	//Pages for car.
 	public static final int PAGE_CAR_DETAIL = 31;
@@ -65,6 +71,8 @@ public class BCPConstants {
 	public static final int PAGE_FORUM_DETAIL = 43;
 	public static final int PAGE_FORUM_WRITE_REPLY = 44;
 	public static final int PAGE_VIDEO_LIST = 45;
-	
+	public static final int PAGE_BID_REVIEW_LIST = 46;
+
 	public static final int PAGE_WEB_BROWSER = 50;
+	public static final int PAGE_SEARCH_AREA = 51;
 }

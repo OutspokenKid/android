@@ -20,13 +20,20 @@
         android:layout_below="@id/carRegistrationPage_titleBar"
         android:max="100"
         android:progressDrawable="@drawable/progressbar_custom_red" />
+
+    <View 
+        android:id="@+id/carRegistrationPage_centerPoint"
+        android:layout_width="4dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/carRegistrationPage_progressBar" />
     
     <TextView
         android:id="@+id/carRegistrationPage_tvPercentage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_alignTop="@id/carRegistrationPage_progressBar"
-        android:layout_centerHorizontal="true"
+        android:layout_toRightOf="@id/carRegistrationPage_centerPoint"
         android:gravity="right|bottom"
         android:textColor="#fff" />
     
@@ -35,7 +42,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_alignTop="@id/carRegistrationPage_progressBar"
-        android:layout_alignLeft="@id/carRegistrationPage_tvPercentage"
+        android:layout_toLeftOf="@id/carRegistrationPage_centerPoint"
         android:gravity="center"
         android:text="@string/writePercentage"
         android:textColor="#fff" />
@@ -150,21 +157,11 @@
 		        android:gravity="center"
 		        android:background="@drawable/registration_car_info7_btn" />
             
-            <Button 
-                android:id="@+id/carRegistrationPage_btnCarInfo8"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/carRegistrationPage_btnCarInfo7"
-		        android:layout_centerHorizontal="true"
-		        android:textColor="@color/color_orange"
-		        android:gravity="center"
-		        android:background="@drawable/registration_car_info8_btn" />
-            
             <TextView
 		        android:id="@+id/carRegistrationPage_tvDetailCarInfoTitle"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/carRegistrationPage_btnCarInfo8"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo7"
 		        android:gravity="center_vertical"
 		        android:text="@string/carRegistrationTitle2"
 		        android:textColor="#fff"
@@ -379,7 +376,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto1"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto1"
-		        android:background="@drawable/registration_photo_add_btn" />
+		        android:background="@drawable/registration_photo6_btn" />
             
             <ImageView
                 android:id="@+id/carRegistrationPage_ivAddedPhoto2"
@@ -395,7 +392,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto2"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto2"
-		        android:background="@drawable/registration_photo_add_btn" />
+		        android:background="@drawable/registration_photo7_btn" />
             
             <ImageView
                 android:id="@+id/carRegistrationPage_ivAddedPhoto3"
@@ -411,7 +408,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto3"
 		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto3"
-		        android:background="@drawable/registration_photo_add_btn" />
+		        android:background="@drawable/registration_photo8_btn" />
             
             <ImageView
                 android:id="@+id/carRegistrationPage_ivAddedPhoto4"
@@ -552,4 +549,50 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/normal_direct_guide_btn" />
         
+	    <View 
+        android:id="@+id/carRegistrationPage_cover"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="#a000"
+    	android:visibility="invisible" /> 
+    
+    <FrameLayout
+        android:id="@+id/carRegistrationPage_popup"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerInParent="true"
+    	android:clickable="true"
+    	android:visibility="invisible"
+    	android:background="@drawable/accident_pop_bg" >
+        
+        <TextView 
+        	android:id="@+id/carRegistrationPage_tvTitle"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:text="@string/whatIsSellingDirectly"
+    		android:textColor="#fff"
+    		android:gravity="center" />
+        
+        <Button 
+            android:id="@+id/carRegistrationPage_btnClose"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/accident_close_btn" />
+
+        <View
+            android:id="@+id/carRegistrationPage_clock"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/accident_img" />
+
+        <TextView 
+        	android:id="@+id/carRegistrationPage_tvDesc"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:text="@string/whatIsSellingDirectlyDesc"
+    		android:textColor="@color/holo_text"
+    		android:gravity="center" />
+        
+    </FrameLayout>
+	
 </RelativeLayout>

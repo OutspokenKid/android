@@ -39,6 +39,8 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class ForumListPage extends BCPFragment {
 
+	public static ArrayList<Board> boards = new ArrayList<Board>();
+	
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private Button btnCategory;
 	private ListView listView;
@@ -47,7 +49,6 @@ public class ForumListPage extends BCPFragment {
 	
 	private ForumBest forumBest;
 	private int board_id;
-	private ArrayList<Board> boards = new ArrayList<Board>();
 	
 	@Override
 	public void bindViews() {
@@ -208,11 +209,8 @@ public class ForumListPage extends BCPFragment {
 	@Override
 	public void downloadInfo() {
 		
-		url = BCPAPIs.FORUM_LIST_URL;
-		
-		if(board_id != 0) {
-			url += "?board_id=" + board_id;
-		}
+		url = BCPAPIs.FORUM_LIST_URL
+				+ "?board_id=" + board_id;
 		
 		super.downloadInfo();
 	}
@@ -295,7 +293,6 @@ public class ForumListPage extends BCPFragment {
 				try {
 					LogUtils.log("ForumListPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
 					JSONArray arJSON = objJSON.getJSONArray("boards");
 					
 					int size = arJSON.length();
@@ -319,11 +316,18 @@ public class ForumListPage extends BCPFragment {
 
 			@Override
 			public void onClick(View view) {
-
-				int size = boards.size();
+				
+				int size = boards.size() + 1;
 				final String[] strings = new String[size];
+				
 				for(int i=0; i<size; i++) {
-					strings[i] = boards.get(i).getName();
+					
+					if(i == 0) {
+						strings[i] = "전체";
+					} else {
+						strings[i] = boards.get(i-1).getName();
+					}
+					
 				}
 				
 				mActivity.showSelectDialog(null, strings, new DialogInterface.OnClickListener() {
@@ -331,8 +335,13 @@ public class ForumListPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						board_id = boards.get(which).getId();
-						btnCategory.setText(boards.get(which).getName());
+						if(which == 0) {
+							board_id = 0;
+						} else {
+							board_id = boards.get(which - 1).getId();
+						}
+
+						btnCategory.setText(strings[which]);
 						refreshPage();
 					}
 				});

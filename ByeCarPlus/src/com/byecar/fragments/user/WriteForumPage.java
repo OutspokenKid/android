@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -52,6 +53,8 @@ public class WriteForumPage extends BCPFragment {
 	private Button btnComplete;
 	private Button btnAdd;
 	private LinearLayout pictureLinear;
+	
+	private int board_id = -1;
 	
 	private ArrayList<AttatchedPictureInfo> pictureInfos = new ArrayList<AttatchedPictureInfo>();
 	
@@ -110,6 +113,30 @@ public class WriteForumPage extends BCPFragment {
 	@Override
 	public void setListeners() {
 
+		btnCategory.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				int size = ForumListPage.boards.size();
+				final String[] strings = new String[size];
+				for(int i=0; i<size; i++) {
+					strings[i] = ForumListPage.boards.get(i).getName();
+				}
+				
+				mActivity.showSelectDialog(null, strings, new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						board_id = ForumListPage.boards.get(which).getId();
+						btnCategory.setText(ForumListPage.boards.get(which).getName());
+						refreshPage();
+					}
+				});
+			}
+		});
+		
 		btnClear.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -406,6 +433,17 @@ public class WriteForumPage extends BCPFragment {
 	
 	public void writeForum() {
 
+		if(board_id == -1) {
+			ToastUtils.showToast(R.string.selectCategory);
+			return;
+		} else if(etTitle.length() == 0) {
+			ToastUtils.showToast(R.string.inputTitle);
+			return;
+		} else if(etContent.length() == 0) {
+			ToastUtils.showToast(R.string.inputContent);
+			return;
+		}
+		
 		/**
 		 * http://byecar1.minsangk.com/posts/forum/save.json
 		 * ?post[board_id]=1
@@ -415,7 +453,7 @@ public class WriteForumPage extends BCPFragment {
 		 * &post[images][1]=http://175.126.232.36/src/20150401/3c337d7402adbf575cd11a569c9c9671.png
 		 */
 		String url = BCPAPIs.FORUM_WRITE_URL 
-				+ "?post[board_id]=1"
+				+ "?post[board_id]=" + board_id
 				+ "&post[title]=" + StringUtils.getUrlEncodedString(etTitle)
 				+ "&post[content]=" + StringUtils.getUrlEncodedString(etContent);
 		

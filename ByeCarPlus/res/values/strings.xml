@@ -27,13 +27,15 @@
     <string name="carRegistrationTitle6">6. 판매자 차량설명</string>
     <string name="carRegistrationTitle7">7. 바이카 공지사항 및 이용 약관 동의</string>
     <string name="carSearchString_fuel1">휘발유</string>
-    <string name="carSearchString_fuel2">경유</string>
-    <string name="carSearchString_fuel3">LPG</string>
+    <string name="carSearchString_fuel2">디젤</string>
+    <string name="carSearchString_fuel3">LPG 일반</string>
+    <string name="carSearchString_fuel4">LPG 장애</string>
     <string name="carSearchString_transmission1">자동</string>
     <string name="carSearchString_transmission2">수동</string>
     <string name="carSearchString_accident1">무사고</string>
     <string name="carSearchString_accident2">유사고</string>
     <string name="carSearchString_accident3">사고유무 알 수 없음</string>
+    <string name="carSearchString_accidentHistory">부품 교환 이력</string>
     <string name="carSearchString_oneManOwned1">1인신조</string>
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
     <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
@@ -55,7 +57,7 @@
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
-    <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_editProfile">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_report">신고가 완료되었습니다.</string>
     <string name="complete_selectDealer">딜러 선택이 완료되었습니다.</string>
     <string name="complete_selling">거래 완료 처리되었습니다.</string>
@@ -90,13 +92,10 @@
     <string name="detailCarInfoString10">연료</string>
     <string name="detailCarInfoString11">사고유무</string>
     <string name="detailCarInfoString12">1인신조</string>
-    <string name="detailOptionText1">내/외장 옵션</string>
-    <string name="detailOptionText2">편의장치</string>
-    <string name="detailOptionText3">안전장치</string>
-    <string name="detailOptionText4">오디오/AV/네비게이션</string>
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
     
     <string name="edit">수정</string>
+    <string name="editProfile">프로필 수정</string>
     <string name="emailSignIn">Email 로그인</string>
     <string name="emptyDealerDesc">딜러 소개가 없습니다.</string>
     <string name="evaluateCertifier">검증사님을 평가해주세요.</string>
@@ -104,6 +103,7 @@
 	<string name="exclusivelyForByeCar">바이카 플러스 전속</string>
     
 	<string name="failToDelete">삭제하지 못했습니다.</string>
+	<string name="failToEditProfile">프로필 정보 수정 완료</string>
     <string name="failToFindPw">비번 찾기 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadCertifierInfo">검증사 정보를 불러오지 못했습니다.</string>
@@ -131,9 +131,10 @@
     <string name="hintForDetailCarInfo11">차량 번호를 입력해주세요.</string>
     <string name="hintForDetailCarInfo12">예) 02가 1234</string>
     <string name="hintForDetailCarInfo21">주행거리를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo22">예) 103,555</string>
+    <string name="hintForDetailCarInfo22">예) 103555</string>
     <string name="hintForDetailCarInfo31">배기량을 입력해주세요.</string>
     <string name="hintForDetailCarInfo32">예) 2500</string>
+    <string name="hintForDetailCarHistory">차량의 부품 교환 이력을 작성해주세요.</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
     <string name="hintForForumContent">내용을 입력해주세요.</string>
@@ -150,6 +151,10 @@
 	<string name="hintForForumTitle">제목을 입력해주세요.</string>
 	<string name="holdOffByAdmin">관리자에 의해 보류 중인 매물입니다.\n(자세한 사항은 바이카에 문의해주세요.)</string>
 	<string name="holdOffByAdmin2">관리자에 의해 보류 중인 매물입니다.</string>
+	
+	<string name="inputContent">내용을 입력해주세요.</string>
+	<string name="inputNewNickname">닉네임을 수정하시려면 기존에 입력된 닉네임을 지우고 새로 입력해주세요.</string>
+	<string name="inputTitle">제목을 입력해주세요.</string>
 	
 	<string name="kakaoTalkNotInstalled">카카오톡이 설치 되어 있지 않습니다.</string>
 	
@@ -169,6 +174,7 @@
     <string name="month">월</string>
 
     <string name="needCertifyPhoneNumber">휴대폰 번호가 인증 되지 않았습니다.\n휴대폰번호를 인증해주세요.</string>
+    <string name="nickname">닉네임</string>
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
     <string name="notificationSetting">알림설정</string>
@@ -196,14 +202,15 @@
     <string name="pageTitle_typeSearchCar_fuel">연료</string>
     <string name="pageTitle_typeSearchCar_transmission">변속기</string>
     <string name="pageTitle_typeSearchCar_oneman">1인신조</string>
-    <string name="pageTitle_typeSearchCar_wd">2/4륜구동</string>
-    <string name="pageTitle_typeSearchCar_area">판매지역</string>
+    <string name="pageTitle_typeSearchCar_month">연식</string>
+    <string name="pageTitle_searchArea">판매지역</string>
     <string name="pageTitle_carDetail">상세보기</string>
     <string name="pageTitle_carList_auction">입찰 진행중</string>
     <string name="pageTitle_carList_dealer">중고차마켓</string>
     <string name="pageTitle_carList_direct">직거래</string>
     <string name="pageTitle_carRegistration_edit">차량 수정</string>
-    <string name="pageTitle_carRegistration_registration">내 차 입찰 요청</string>
+    <string name="pageTitle_carRegistration_registration_bid">내 차 입찰 요청</string>
+    <string name="pageTitle_carRegistration_registration_direct">내 차 직거래등록</string>
     <string name="pageTitle_directMarket">직거래</string>
     <string name="pageTitle_my">마이페이지</string>
     <string name="pageTitle_signIn">로그인</string>
@@ -232,16 +239,19 @@
     <string name="requireCertifyDealerInfo">판매자 정보를 인증해야 차량을\n등록할 수 있습니다.</string>
     
     <string name="salesPrice">판매가</string>
+    <string name="searchArea">지역검색</string>
     <string name="searchCondition">검색조건</string>
     <string name="searchPrice1">0</string>
     <string name="searchPrice2">2억5천</string>
     <string name="searchPrice3">5억</string>
-    <string name="selectArea1First">시도를 먼저 선택해주세요</string>
-    <string name="selectCarFirst">차량을 먼저 선택해주세요</string>
+    <string name="selectArea1First">시도를 먼저 선택해주세요.</string>
+    <string name="selectCarFirst">차량을 먼저 선택해주세요.</string>
+    <string name="selectCategory">카테고리를 선택해주세요.</string>
     <string name="selectDealer">딜러를 선택해주세요</string>
     <string name="selectOrder">정렬 선택</string>
     <string name="sellingArea">판매지역</string>
     <string name="sellingPriceMustOver10000">판매 가격은 10000원 이상이어야 합니다</string>
+    <string name="showProfile">프로필 사진 보기</string>
     <string name="signOut">로그아웃</string>
     <string name="SNSSignIn">SNS 로그인</string>
     <string name="standingByBid">입찰대기중</string>
@@ -264,6 +274,8 @@
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>
     <string name="withdraw">탈퇴하기</string>
+    <string name="whatIsSellingDirectly">즉시판매란 무엇인가요?</string>
+    <string name="whatIsSellingDirectlyDesc">즉시판매란 차량 판매가 24시간 이내로 될 수 있도록 차량을 설정하는 기능입니다. 바이카 관리자가 고객님의 차량을 검수한 후에 빠르게 판매할 수 있도록 차량을 등록합니다.</string>
     <string name="writeAllContentForRegistration">* 1번부터 6번은 모두 입력해야 입찰요청이 가능한 필수항목입니다.</string>
     <string name="writePercentage">작성률</string>
     

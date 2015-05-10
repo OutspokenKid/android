@@ -407,6 +407,14 @@
 			        android:layout_height="0dp"
 			        android:layout_centerHorizontal="true"
 			        android:background="@drawable/detail_head3_tilte2" />
+		        
+		        <RelativeLayout
+			        android:id="@+id/carDetailPage_relativeForOption2"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_optionTitle2" />
+				    
 		        	
 		    </RelativeLayout>
 		    

@@ -18,8 +18,8 @@
     <item name="carDetailPage_addedOptionView3" type="id" />
     <item name="carDetailPage_addedOptionView4" type="id" />
     
-    <item name="carRegistrationPage_optionTextView1" type="id" />
-    <item name="carRegistrationPage_optionTextView2" type="id" />
+    <item name="carRegistrationPage_optionTitleView1" type="id" />
+    <item name="carRegistrationPage_optionTitleView2" type="id" />
     <item name="carRegistrationPage_optionView1" type="id" />
     <item name="carRegistrationPage_optionView2" type="id" />
     <item name="carRegistrationPage_optionView3" type="id" />

@@ -94,6 +94,7 @@ public class CarDetailPage extends BCPFragment {
 	private View arrowForOption;
 	private RelativeLayout relativeForOption;
 	private LinearLayout[] linearForOptions = new LinearLayout[3];
+	private RelativeLayout relativeForOption2;
 	
 	private View headerForDescription;
 	private View arrowForDescription;
@@ -171,6 +172,7 @@ public class CarDetailPage extends BCPFragment {
 		linearForOptions[0] = (LinearLayout) mThisView.findViewById(R.id.carDetailPage_linearForOption1);
 		linearForOptions[1] = (LinearLayout) mThisView.findViewById(R.id.carDetailPage_linearForOption2);
 		linearForOptions[2] = (LinearLayout) mThisView.findViewById(R.id.carDetailPage_linearForOption3);
+		relativeForOption2 = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForOption2);
 		
 		headerForDescription = mThisView.findViewById(R.id.carDetailPage_headerForDescription);
 		arrowForDescription = mThisView.findViewById(R.id.carDetailPage_arrowForDescription);
@@ -474,7 +476,7 @@ public class CarDetailPage extends BCPFragment {
 		//detailInfoViews.
 		for(int i=0; i<detailInfoViews.length; i++) {
 			rp = (RelativeLayout.LayoutParams) detailInfoViews[i].getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(118);
+			rp.width = ResizeUtils.getSpecificLength(i==6?LayoutParams.WRAP_CONTENT:118);
 			rp.height = ResizeUtils.getSpecificLength(44);
 			rp.leftMargin = ResizeUtils.getSpecificLength(i==0?26:30);
 			rp.topMargin = ResizeUtils.getSpecificLength(24);
@@ -1419,8 +1421,14 @@ public class CarDetailPage extends BCPFragment {
 		
 		//detailInfoTextViews.
 		for(int i=0; i<detailInfoTextViews.length; i++) {
+			
+			//경매나 직거래라면 색상영역을 숨긴다.
+			if(type != Car.TYPE_DEALER && i == 5) {
+				continue;
+			}
+			
 			rp = (RelativeLayout.LayoutParams) detailInfoTextViews[i].getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(i==detailInfoTextViews.length-1|i==3?LayoutParams.MATCH_PARENT:152);
+			rp.width = ResizeUtils.getSpecificLength(i==detailInfoTextViews.length-1|i==3?304:152);
 			rp.height = ResizeUtils.getSpecificLength(88);
 			
 			if(i == 0) {
@@ -1446,9 +1454,12 @@ public class CarDetailPage extends BCPFragment {
 		
 		//번호.
 		detailInfoTextViews[4].setText(car.getCar_number());
+
+		//색상.
+		detailInfoTextViews[5].setText(car.getColor());
 		
 		//주소.
-		detailInfoTextViews[5].setText(car.getSeller_address());
+		detailInfoTextViews[6].setText(car.getSeller_address());
 	}
 
 	public void setCheck() {
@@ -1516,8 +1527,10 @@ public class CarDetailPage extends BCPFragment {
 		int addedAtRelativeCount = 0;
 		RelativeLayout.LayoutParams rp = null;
 		
-		//Test.
-		car.setOptions(new int[]{1, 2, 3, 20, 22, 23, 25, 26, 27, 28, 29, 30, 31});
+		linearForOptions[0].removeAllViews();
+		linearForOptions[1].removeAllViews();
+		linearForOptions[2].removeAllViews();
+		relativeForOption2.removeAllViews();
 		
 		//서버에서 보내주는 것도 이미지처럼 1~31 인 듯?
 		int size = car.getOptions().length;
@@ -1574,7 +1587,7 @@ public class CarDetailPage extends BCPFragment {
 				}
 				
 				optionView.setLayoutParams(getRelativeLayoutParamsForOptionView(addedAtRelativeCount));
-				relativeForOption.addView(optionView);
+				relativeForOption2.addView(optionView);
 				addedAtRelativeCount++;
 			}
 		}

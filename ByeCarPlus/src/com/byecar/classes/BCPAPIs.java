@@ -8,6 +8,7 @@ public class BCPAPIs {
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
 	public static String AREA_URL = BASE_API_URL + "/zipcodes/areas.json";
+	public static String AREA_SEARCH_URL = BASE_API_URL + "/dongs/search.json";
 	public static String DEALER_COUNT_URL = BASE_API_URL + "/users/count/dealer.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
@@ -31,6 +32,7 @@ public class BCPAPIs {
 	public static String CAR_BID_UNLIKE_URL = BASE_API_URL + "/onsalecars/bids/unlike.json";
 	public static String CAR_BID_DELETE_URL = BASE_API_URL + "/onsalecars/bids/delete.json";
 	public static String CAR_BID_COMPLETE_URL = BASE_API_URL + "/onsalecars/bids/set_status.json";
+	public static String CAR_BID_REVIEW_URL = BASE_API_URL + "/onsalecars/bids/reviews.json";
 	
 	public static String CAR_DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
 	public static String CAR_DEALER_SHOW_URL = BASE_API_URL + "/onsalecars/dealer/show.json";

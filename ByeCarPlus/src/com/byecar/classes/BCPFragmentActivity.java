@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.byecar.byecarplus.ImageViewer;
 import com.byecar.models.PushObject;
@@ -174,6 +175,17 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	public void setLoadingView(View view) {
 		
 		this.loadingView = view;
+		
+		if(view != null) {
+			view.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					
+				}
+			});
+		}
 	}
 	
 	public View getLoadingView() {

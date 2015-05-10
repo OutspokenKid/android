@@ -43,6 +43,8 @@ import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.fragments.PhoneInfoPage;
+import com.byecar.fragments.ProfilePage;
+import com.byecar.fragments.SearchAreaPage;
 import com.byecar.fragments.SearchCarPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
@@ -55,6 +57,7 @@ import com.byecar.fragments.user.ForumDetailPage;
 import com.byecar.fragments.user.ForumListPage;
 import com.byecar.fragments.user.MainPage;
 import com.byecar.fragments.user.MyPage;
+import com.byecar.fragments.user.ReviewListPage;
 import com.byecar.fragments.user.VideoListPage;
 import com.byecar.fragments.user.WriteForumPage;
 import com.byecar.fragments.user.WriteReplyPage;
@@ -110,8 +113,17 @@ public class MainActivity extends BCPFragmentActivity {
 	private Button btnHome;
 	private Button btnCall;
 
+	private View cover;
+	
+	private RelativeLayout noticePopup;
+	private ImageView ivNotice;
+	private View buttonBg;
+	private Button btnDoNotSeeAgain;
+	private Button btnClose;
+
 	public static String dealerPhoneNumber;
 	
+	private boolean doNotSeeAgain;
 	private boolean animating;
 	private long last_connected_at;
 	private SocketIO socketIO;
@@ -146,6 +158,14 @@ public class MainActivity extends BCPFragmentActivity {
 		btnCall = (Button) findViewById(R.id.mainForUserActivity_btnCall);
 		
 		setLoadingView(findViewById(R.id.mainForUserActivity_loadingView));
+		
+		cover = findViewById(R.id.mainForUserActivity_cover);
+		
+		noticePopup = (RelativeLayout) findViewById(R.id.mainForUserActivity_noticePopup);
+		ivNotice = (ImageView) findViewById(R.id.mainForUserActivity_ivNotice);
+		buttonBg = findViewById(R.id.mainForUserActivity_buttonBg);
+		btnDoNotSeeAgain = (Button) findViewById(R.id.mainForUserActivity_btnDoNotSeeAgain);
+		btnClose = (Button) findViewById(R.id.mainForUserActivity_btnClose);
 	}
 
 	@Override
@@ -223,6 +243,41 @@ public class MainActivity extends BCPFragmentActivity {
 						}, null);
 			}
 		});
+	
+		ivNotice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+				showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
+			}
+		});
+		
+		btnDoNotSeeAgain.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				doNotSeeAgain = !doNotSeeAgain;
+				
+				if(doNotSeeAgain) {
+					btnDoNotSeeAgain.setBackgroundResource(R.drawable.notice_deny_b);
+				} else {
+					btnDoNotSeeAgain.setBackgroundResource(R.drawable.notice_deny_a);
+				}
+			}
+		});
+		
+		btnClose.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hideNoticePopup();
+			}
+		});
 	}
 
 	@Override
@@ -253,6 +308,12 @@ public class MainActivity extends BCPFragmentActivity {
 		ResizeUtils.setMargin(tvPopupText, new int[]{0, 40, 0, 0});
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
 		ResizeUtils.viewResizeForRelative(488, 82, btnCall, null, null, new int[]{0, 0, 0, 32});
+
+		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
+		ResizeUtils.viewResizeForRelative(578, 778, ivNotice, null, null, new int[]{0, 0, 0, 0});
+		ResizeUtils.viewResizeForRelative(558, 73, buttonBg, null, null, new int[]{0, 0, 0, 14});
+		ResizeUtils.viewResizeForRelative(210, 73, btnDoNotSeeAgain, null, null, new int[]{21, 0, 0, 0});
+		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 0});
 		
 		FontUtils.setFontSize(tvPopupText, 30);
 		FontUtils.setFontStyle(tvPopupText, FontUtils.BOLD);
@@ -366,6 +427,15 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();
+			
+		case BCPConstants.PAGE_SEARCH_AREA:
+			return new SearchAreaPage();
+			
+		case BCPConstants.PAGE_BID_REVIEW_LIST:
+			return new ReviewListPage();
+		
+		case BCPConstants.PAGE_PROFILE:
+			return new ProfilePage();
 		}
 		
 		return null;
@@ -488,6 +558,8 @@ public class MainActivity extends BCPFragmentActivity {
 				try {
 					if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
+					} else if(noticePopup.getVisibility() == View.VISIBLE) {
+						hideNoticePopup();
 					} else if(popup.getVisibility() == View.VISIBLE) {
 						//Do nothing.
 					} else if(getTopFragment() != null && getTopFragment().onBackPressed()) {
@@ -1028,13 +1100,56 @@ public class MainActivity extends BCPFragmentActivity {
 					@Override
 					public void onClick(View view) {
 
-						showImageViewer(0, getString(R.string.profileImage), new String[]{user.getProfile_img_url()}, null);
+						showSelectDialog(getString(R.string.profileImage), 
+								new String[]{
+									getString(R.string.editProfile),
+									getString(R.string.showProfile)
+								}, 
+								new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+
+								if(which == 0) {
+									closeMenu();
+									
+									new Handler().postDelayed(new Runnable() {
+
+										@Override
+										public void run() {
+
+											showPage(BCPConstants.PAGE_PROFILE, null);
+										}
+									}, 500);
+								} else {
+									showImageViewer(0, getString(R.string.profileImage), new String[]{user.getProfile_img_url()}, null);
+								}
+							}
+						});
 					}
 				});
 			}
 			
 			if(!StringUtils.isEmpty(user.getNickname())) {
 				tvNickname.setText(user.getNickname());
+				
+				tvNickname.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						closeMenu();
+						
+						new Handler().postDelayed(new Runnable() {
+
+							@Override
+							public void run() {
+
+								showPage(BCPConstants.PAGE_PROFILE, null);
+							}
+						}, 500);
+					}
+				});
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1142,6 +1257,54 @@ public class MainActivity extends BCPFragmentActivity {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
+		}
+	}
+
+	public void showNoticePopup(final String imageUrl) {
+		
+		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		noticePopup.setVisibility(View.VISIBLE);
+		noticePopup.startAnimation(aaIn);
+		cover.setVisibility(View.VISIBLE);
+		cover.startAnimation(aaIn);
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+
+				BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+					
+					@Override
+					public void onError(String url) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onCompleted(String url, Bitmap bitmap) {
+
+						if(ivNotice != null && !bitmap.isRecycled()) {
+							ivNotice.setImageBitmap(bitmap);
+						}
+					}
+				}, 578);
+			}
+		}, 500);
+	}
+	
+	public void hideNoticePopup() {
+		
+		AlphaAnimation aaOut = new AlphaAnimation(1, 0);
+		aaOut.setDuration(300);
+		noticePopup.setVisibility(View.INVISIBLE);
+		noticePopup.startAnimation(aaOut);
+		cover.setVisibility(View.INVISIBLE);
+		cover.startAnimation(aaOut);
+		
+		if(doNotSeeAgain) {
+			SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_NOTICE, "time", System.currentTimeMillis());
 		}
 	}
 }

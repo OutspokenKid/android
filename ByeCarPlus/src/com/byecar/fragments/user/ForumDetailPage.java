@@ -516,6 +516,10 @@ public class ForumDetailPage extends BCPFragment {
 	
 	public void addImageView(final String imageUrl) {
 		
+		if(StringUtils.isEmpty(imageUrl) || "null".equals(imageUrl)) {
+			return;
+		}
+		
 		final ImageView imageView = new ImageView(mContext);
 		ResizeUtils.viewResize(548, 548, imageView, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 0, 0, 16});
 		imageView.setBackgroundColor(getResources().getColor(R.color.color_ltgray));

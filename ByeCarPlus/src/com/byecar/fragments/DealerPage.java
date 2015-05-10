@@ -144,6 +144,8 @@ public class DealerPage extends BCPFragment {
 			bgForButton.setVisibility(View.VISIBLE);
 			btnSelect.setVisibility(View.VISIBLE);
 		}
+		
+		tvRating.setText("0%");
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
@@ -453,7 +455,7 @@ public class DealerPage extends BCPFragment {
 		}, 218);
 
 		if(AppInfoUtils.checkMinVersionLimit(Build.VERSION_CODES.HONEYCOMB)) {
-			ValueAnimator animator = new ValueAnimator();
+			final ValueAnimator animator = new ValueAnimator();
 	        animator.setObjectValues(0, dealer.getAvg_rating());
 	        animator.addUpdateListener(new AnimatorUpdateListener() {
 	        	
@@ -470,7 +472,15 @@ public class DealerPage extends BCPFragment {
 	            }
 	        });
 	        animator.setDuration(600);
-	        animator.start();
+	        
+	        new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					animator.start();
+				}
+			}, 1000);
 		} else {
 			tvRating.setText(null);
     		FontUtils.addSpan(tvRating, "" + dealer.getAvg_rating(), 0, 1);

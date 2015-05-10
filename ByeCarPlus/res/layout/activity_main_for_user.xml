@@ -147,5 +147,55 @@
             android:layout_gravity="center" />
         
     </FrameLayout>
+   
+    <View 
+        android:id="@+id/mainForUserActivity_cover"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:visibility="invisible"
+	    android:background="#a000" />
+    
+    <RelativeLayout
+        android:id="@+id/mainForUserActivity_noticePopup"
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_gravity="center"
+	    android:visibility="invisible"
+	    android:background="@drawable/notice_bg" >
+        
+        <ImageView
+            android:id="@+id/mainForUserActivity_ivNotice"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:scaleType="centerCrop"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignParentTop="true"
+	    	android:background="@drawable/notice_default" />
+        
+        <View
+            android:id="@+id/mainForUserActivity_buttonBg"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_alignParentBottom="true"
+	    	android:background="@drawable/notice_btn_bg" />
+        
+        <Button 
+            android:id="@+id/mainForUserActivity_btnDoNotSeeAgain"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentLeft="@id/mainForUserActivity_buttonBg"
+	    	android:layout_alignTop="@id/mainForUserActivity_buttonBg"
+	    	android:background="@drawable/notice_deny_a" />
+        
+        <Button 
+            android:id="@+id/mainForUserActivity_btnClose"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignRight="@id/mainForUserActivity_buttonBg"
+	    	android:layout_alignTop="@id/mainForUserActivity_buttonBg"
+	    	android:background="@drawable/notice_close_btn" />
+        
+    </RelativeLayout>
 
 </com.outspoken_kid.views.GestureSlidingLayout>

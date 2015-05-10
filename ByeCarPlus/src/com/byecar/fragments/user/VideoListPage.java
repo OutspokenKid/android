@@ -8,11 +8,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.byecar.byecarplus.R;
@@ -80,23 +77,23 @@ public class VideoListPage extends BCPFragment {
 			}
 		});
 
-		listView.setOnItemClickListener(new OnItemClickListener() {
-
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position,
-					long id) {
-				
-				try {
-					
-					Post post = (Post) models.get(position);
-					mActivity.showVideo(post.getYoutube_id());
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (Error e) {
-					LogUtils.trace(e);
-				}
-			}
-		});
+//		listView.setOnItemClickListener(new OnItemClickListener() {
+//
+//			@Override
+//			public void onItemClick(AdapterView<?> parent, View view, int position,
+//					long id) {
+//				
+//				try {
+//					
+//					Post post = (Post) models.get(position);
+//					mActivity.showVideo(post.getYoutube_id());
+//				} catch (Exception e) {
+//					LogUtils.trace(e);
+//				} catch (Error e) {
+//					LogUtils.trace(e);
+//				}
+//			}
+//		});
 		
 		swipeRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
 			

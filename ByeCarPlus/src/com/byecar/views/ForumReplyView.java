@@ -188,7 +188,8 @@ public class ForumReplyView extends RelativeLayout {
 			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body);
 			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot);
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
-			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(0), 0, 0);
+			tvContent.setPadding(ResizeUtils.getSpecificLength(175), 0, 
+					ResizeUtils.getSpecificLength(34), 0);
 
 			btnEdit.setVisibility(View.INVISIBLE);
 			btnDelete.setVisibility(View.INVISIBLE);

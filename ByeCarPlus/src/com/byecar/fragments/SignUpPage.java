@@ -273,10 +273,10 @@ public class SignUpPage extends BCPFragment {
 		FontUtils.setFontSize(tvProfile, 20);
 		FontUtils.setFontSize(tvCommonInfo, 24);
 		FontUtils.setFontStyle(tvCommonInfo, FontUtils.BOLD);
-		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etNickname.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 30, 20);
+		FontUtils.setFontAndHintSize(etEmail.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etNickname.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etPw.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 24, 20);
 		FontUtils.setFontSize(tvCheckEmail, 20);
 		FontUtils.setFontSize(tvCheckNickname, 20);
 		FontUtils.setFontSize(tvCheckPw, 20);

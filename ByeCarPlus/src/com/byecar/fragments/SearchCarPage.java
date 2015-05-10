@@ -478,6 +478,12 @@ public class SearchCarPage extends BCPFragment {
 
 	@Override
 	public boolean onBackPressed() {
+		
+		if(relativeForFilter.getVisibility() == View.VISIBLE) {
+			hideFilter();
+			return true;
+		}
+		
 		return false;
 	}
 

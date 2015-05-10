@@ -2,6 +2,7 @@ package com.byecar.wrappers;
 
 import android.graphics.Bitmap;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.models.Post;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -17,6 +19,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class ViewWrapperForVideo extends ViewWrapper {
 
@@ -116,6 +119,20 @@ public class ViewWrapperForVideo extends ViewWrapper {
 	@Override
 	public void setListeners() {
 
+		if(!StringUtils.isEmpty(post.getYoutube_id())) {
+			btnPlay.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					try {
+						MainActivity.activity.showVideo(post.getYoutube_id());
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+				}
+			});
+		}
 	}
 
 	@Override
