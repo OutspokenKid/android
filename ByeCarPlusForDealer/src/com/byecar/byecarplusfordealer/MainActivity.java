@@ -8,13 +8,16 @@ import io.socket.SocketIOException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,7 +28,6 @@ import android.view.View.OnClickListener;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
@@ -38,18 +40,17 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
-import com.byecar.fragments.CarDetailPage;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
-import com.byecar.fragments.DealerCertifierPage;
+import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.fragments.SearchCarPage;
-import com.byecar.fragments.SearchResultPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.fragments.WebBrowserPage;
+import com.byecar.fragments.dealer.CarDetailPage;
 import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.MainPage;
 import com.byecar.fragments.dealer.MyCompletedListPage;
@@ -57,6 +58,7 @@ import com.byecar.fragments.dealer.MyGradePage;
 import com.byecar.fragments.dealer.MyPage;
 import com.byecar.fragments.dealer.MyReviewPage;
 import com.byecar.fragments.dealer.MyTicketPage;
+import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.Dealer;
@@ -90,6 +92,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public static User user;
 	public static Dealer dealer;
 	public static CompanyInfo companyInfo;
+	public static Area area;
 
 	private GestureSlidingLayout gestureSlidingLayout;
 	private RelativeLayout leftView;
@@ -101,6 +104,10 @@ public class MainActivity extends BCPFragmentActivity {
 	private ImageView ivBg;
 	private TextView tvNickname;
 	private TextView tvInfo;
+	private View grade;
+	private TextView tvGrade;
+	private Button btnNotification;
+	private TextView tvNotification;
 	private Button btnEdit;
 	private Button[] menuButtons;
 	
@@ -136,6 +143,10 @@ public class MainActivity extends BCPFragmentActivity {
 		ivBg = (ImageView) findViewById(R.id.mainForDealerActivity_ivBg);
 		tvNickname = (TextView) findViewById(R.id.mainForDealerActivity_tvNickname);
 		tvInfo = (TextView) findViewById(R.id.mainForDealerActivity_tvInfo);
+		grade = findViewById(R.id.mainForDealerActivity_grade);
+		tvGrade = (TextView) findViewById(R.id.mainForDealerActivity_tvGrade);
+		btnNotification = (Button) findViewById(R.id.mainForDealerActivity_btnNotification);
+		tvNotification = (TextView) findViewById(R.id.mainForDealerActivity_tvNotification);
 		btnEdit = (Button) findViewById(R.id.mainForDealerActivity_btnEdit);
 		
 		scrollView = (OffsetScrollView) findViewById(R.id.mainForDealerActivity_scrollView);
@@ -326,7 +337,7 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		rp = (RelativeLayout.LayoutParams) tvTitle.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(32);
-		tvTitle.setPadding(ResizeUtils.getSpecificLength(4), 0, 0, 0);
+		tvTitle.setPadding(ResizeUtils.getSpecificLength(16), 0, 0, 0);
 		FontUtils.setFontSize(tvTitle, 16);
 		
 		ResizeUtils.viewResizeForRelative(304, 314, popupImage, null, null, new int[]{0, 40, 0, 0});
@@ -400,7 +411,7 @@ public class MainActivity extends BCPFragmentActivity {
 			return new EditDealerInfoPage();
 			
 		case BCPConstants.PAGE_DEALER:
-			return new DealerCertifierPage();
+			return new DealerPage();
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
@@ -434,9 +445,6 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_SEARCH_CAR:
 			return new SearchCarPage();
-			
-		case BCPConstants.PAGE_SEARCH_RESULT:
-			return new SearchResultPage();
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
@@ -652,36 +660,71 @@ public class MainActivity extends BCPFragmentActivity {
 	
 	public void setImageView() {
 		
-		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(190);
-		rp.height = ResizeUtils.getSpecificLength(190);
-		rp.topMargin = ResizeUtils.getSpecificLength(84);
-		ivProfile.setScaleType(ScaleType.CENTER_CROP);
-
-		ivBg.setScaleType(ScaleType.MATRIX);
-		
 		Matrix matrix = new Matrix();
 		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.menu_bg);
-		float scale = (float)ResizeUtils.getSpecificLength(492) / (float) bitmap.getWidth();
+		float scale = (float)ResizeUtils.getScreenHeight() / (float) bitmap.getHeight();
 		matrix.postScale(scale, scale);
 		ivBg.setImageMatrix(matrix);
 		ivBg.setImageBitmap(bitmap);
+
+		float profileImageScale = (float)ResizeUtils.getScreenHeight() / 1136f;
+		
+		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) ivProfile.getLayoutParams();
+		rp.width = (int)(profileImageScale * 120f);
+		rp.height = (int)(profileImageScale * 120f);
+		rp.leftMargin = (int)(profileImageScale * 34f);
+		rp.topMargin = (int)(profileImageScale * 111f);
 	}
 
+	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	@SuppressWarnings("deprecation")
 	public void setOtherViews() {
 	
 		RelativeLayout.LayoutParams rp = null;
 
 		rp = (RelativeLayout.LayoutParams) tvNickname.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(188);
 		rp.topMargin = ResizeUtils.getSpecificLength(18);
 		
 		rp = (RelativeLayout.LayoutParams) tvInfo.getLayoutParams();
-		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.width = ResizeUtils.getSpecificLength(188);
+		rp.topMargin = ResizeUtils.getSpecificLength(8);
+		
+		rp = (RelativeLayout.LayoutParams) grade.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(120);
+		rp.leftMargin = ResizeUtils.getSpecificLength(45);
+		
+		rp = (RelativeLayout.LayoutParams) tvGrade.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(120);
+		
+		rp = (RelativeLayout.LayoutParams) btnNotification.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(64);
+		rp.height = ResizeUtils.getSpecificLength(64);
+		rp.leftMargin = ResizeUtils.getSpecificLength(50);
+		rp.topMargin = ResizeUtils.getSpecificLength(29);
+		
+		rp = (RelativeLayout.LayoutParams) tvNotification.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(8);
+		
+		int pv = ResizeUtils.getSpecificLength(2);
+		int ph = ResizeUtils.getSpecificLength(6);
+		tvNotification.setPadding(ph, pv, ph, pv);
+		
+		PaintDrawable pd = new PaintDrawable(getResources().getColor(R.color.progress_guage_red));
+        pd.setCornerRadius(ResizeUtils.getSpecificLength(10));
+        
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        	tvNotification.setBackground(pd);
+		} else {
+			tvNotification.setBackgroundDrawable(pd);
+		}
+		
 		
 		rp = (RelativeLayout.LayoutParams) btnEdit.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(250);
+		rp.width = ResizeUtils.getSpecificLength(211);
+		rp.height = ResizeUtils.getSpecificLength(44);
+		rp.topMargin = ResizeUtils.getSpecificLength(44);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 
 		btnEdit.setOnClickListener(new OnClickListener() {
@@ -708,18 +751,21 @@ public class MainActivity extends BCPFragmentActivity {
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
 		FontUtils.setFontSize(tvNickname, 30);
 		FontUtils.setFontSize(tvInfo, 20);
+		FontUtils.setFontSize(tvGrade, 24);
+		FontUtils.setFontSize(tvNotification, 20);
 	}
 
 	public void addButtons() {
 		
 		int[] bgResIds = new int[] {
-				R.drawable.menu_mypage_btn,
-				R.drawable.menu_notice_btn,
-				R.drawable.menu_faq_btn,
-				R.drawable.menu_service_btn,
-				R.drawable.menu_setting_btn,
-				R.drawable.menu_homepage_btn,
-				R.drawable.menu_term_btn,
+				R.drawable.menu_2_btn,
+				R.drawable.menu_3_btn,
+				R.drawable.menu_4_btn,
+				R.drawable.menu_5_btn,
+				R.drawable.menu_6_btn,
+				R.drawable.menu_7_btn,
+				R.drawable.menu_8_btn,
+				R.drawable.menu_9_btn,
 		};
 
 		menuButtons = new Button[bgResIds.length];
@@ -728,7 +774,7 @@ public class MainActivity extends BCPFragmentActivity {
 	
 			//버튼 추가.
 			menuButtons[i] = new Button(this);
-			ResizeUtils.viewResize(460, 70, menuButtons[i], 1, Gravity.LEFT, 
+			ResizeUtils.viewResize(471, 88, menuButtons[i], 1, Gravity.LEFT, 
 					new int[]{0, i==0?42:10, 0, 10});
 			menuButtons[i].setBackgroundResource(bgResIds[i]);
 			leftViewInner.addView(menuButtons[i]);
@@ -767,29 +813,24 @@ public class MainActivity extends BCPFragmentActivity {
 								showPage(BCPConstants.PAGE_MY, null);
 								break;
 								
-//								R.drawable.menu_notice_btn,
 							case 1:
 								bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
-//								R.drawable.menu_faq_btn,
 							case 2:
 								bundle.putInt("type", OpenablePostListPage.TYPE_FAQ);
 								showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 								break;
 								
-//								R.drawable.menu_service_btn,
 							case 3:
 								showPage(BCPConstants.PAGE_ASK, null);
 								break;
 								
-//								R.drawable.menu_setting_btn,
 							case 4:
 								showPage(BCPConstants.PAGE_SETTING, null);
 								break;
 								
-//								R.drawable.menu_homepage_btn,
 							case 5:
 								if(companyInfo != null) {
 									bundle.putString("url", companyInfo.getHomepage());
@@ -798,8 +839,15 @@ public class MainActivity extends BCPFragmentActivity {
 								showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
 								break;
 								
-//								R.drawable.menu_term_btn,
 							case 6:
+								if(companyInfo != null) {
+									bundle.putString("url", companyInfo.getBlog_url());
+								}
+								
+								showPage(BCPConstants.PAGE_WEB_BROWSER, bundle);
+								break;
+								
+							case 7:
 								showPage(BCPConstants.PAGE_TERM_OF_USE, null);
 								break;
 							}
@@ -1117,15 +1165,11 @@ public class MainActivity extends BCPFragmentActivity {
 	public void setLeftViewUserInfo() {
 
 		try {
-			ivProfile.setImageDrawable(null);
-			tvNickname.setText(null);
-			tvInfo.setText(null);
+			clearLeftViewUserInfo();
 			
 			if(user == null) {
 				return;
 			}
-			
-			ivProfile.setImageDrawable(null);
 			
 			if(!StringUtils.isEmpty(user.getProfile_img_url())) {
 				
@@ -1160,73 +1204,61 @@ public class MainActivity extends BCPFragmentActivity {
 				tvNickname.setText(user.getNickname());
 			}
 			
-			tvInfo.setLineSpacing(0, 0.8f);
+			grade.setVisibility(View.VISIBLE);
 			
 			//딜러 레벨
 			switch(dealer.getLevel()) {
 
 			case Dealer.LEVEL_FRESH_MAN:
-				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel1) + "\n\n", 
-						getResources().getColor(R.color.color_dealer_level1), 1.3f, true);
+				grade.setBackgroundResource(R.drawable.grade_icon4);
+				tvGrade.setText(R.string.dealerLevel1);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level1));
 				break;
 
 			case Dealer.LEVEL_NORAML_DEALER:
-				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel2) + "\n\n", 
-						getResources().getColor(R.color.color_dealer_level2), 1.3f, true);
+				grade.setBackgroundResource(R.drawable.grade_icon3);
+				tvGrade.setText(R.string.dealerLevel2);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level2));
 				break;
 				
 			case Dealer.LEVEL_SUPERB_DEALER:
-				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel3) + "\n\n", 
-						getResources().getColor(R.color.color_dealer_level3), 1.3f, true);
+				grade.setBackgroundResource(R.drawable.grade_icon2);
+				tvGrade.setText(R.string.dealerLevel3);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level3));
 				break;
 				
 			case Dealer.LEVEL_POWER_DEALER:
-				FontUtils.addSpan(tvInfo, getString(R.string.dealerLevel4) + "\n\n", 
-						getResources().getColor(R.color.color_dealer_level4), 1.3f, true);
+				grade.setBackgroundResource(R.drawable.grade_icon1);
+				tvGrade.setText(R.string.dealerLevel4);
+				tvGrade.setTextColor(getResources().getColor(R.color.color_dealer_level4));
 				break;
+
+				default:
+					grade.setVisibility(View.INVISIBLE);
+			}
+			
+			if(!StringUtils.isEmpty(dealer.getCompany())) {
+				FontUtils.addSpan(tvInfo, dealer.getCompany(), 0, 1);
 			}
 			
 			if(!StringUtils.isEmpty(user.getPhone_number())) {
-				FontUtils.addSpan(tvInfo, user.getPhone_number() + "\n\n", 0, 1);
-			}
-			
-			//딜러 회사
-			
-			if(!StringUtils.isEmpty(dealer.getCompany())) {
-				FontUtils.addSpan(tvInfo, dealer.getCompany() + "\n\n", 0, 1);
-			}
-			
-			if(!StringUtils.isEmpty(user.getAddress())) {
-				FontUtils.addSpan(tvInfo, user.getAddress() + "\n", 0, 1);
+				FontUtils.addSpan(tvInfo, "\n" + user.getPhone_number(), 0, 1);
 			}
 
-			ivProfile.setOnClickListener(new OnClickListener() {
+			OnClickListener ocl = new OnClickListener() {
 
 				@Override
 				public void onClick(View view) {
 
 					showMyDealerPage();
 				}
-			});
+			};
 			
-			tvNickname.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					showMyDealerPage();
-				}
-			});
-			
-			tvInfo.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-					
-					showMyDealerPage();
-				}
-			});
-			
+			ivProfile.setOnClickListener(ocl);
+			tvNickname.setOnClickListener(ocl);
+			tvInfo.setOnClickListener(ocl);
+			grade.setOnClickListener(ocl);
+			tvGrade.setOnClickListener(ocl);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -1312,6 +1344,8 @@ public class MainActivity extends BCPFragmentActivity {
 			
 			tvNickname.setText(null);
 			tvInfo.setText(null);
+			tvGrade.setText(null);
+			grade.setVisibility(View.INVISIBLE);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -1347,6 +1381,19 @@ public class MainActivity extends BCPFragmentActivity {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
+		}
+	}
+
+	public void setNotificationCount(int count) {
+
+		if(count > 100) {
+			tvNotification.setText("+99");
+			tvNotification.setVisibility(View.VISIBLE);
+		} else if(count <= 0){
+			tvNotification.setVisibility(View.INVISIBLE);
+		} else {
+			tvNotification.setText("" + count);
+			tvNotification.setVisibility(View.VISIBLE);
 		}
 	}
 }

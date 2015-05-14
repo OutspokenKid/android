@@ -25,6 +25,7 @@ public class FindPwPage extends BCPFragment {
 
 	private HoloStyleEditText etEmail;
 	private Button btnFindPw;
+	private Button btnCallToByeCar;
 	
 	@Override
 	public void bindViews() {
@@ -33,6 +34,7 @@ public class FindPwPage extends BCPFragment {
 		
 		etEmail = (HoloStyleEditText) mThisView.findViewById(R.id.findPwPage_etEmail);
 		btnFindPw = (Button) mThisView.findViewById(R.id.findPwPage_btnConfirm);
+		btnCallToByeCar = (Button) mThisView.findViewById(R.id.findPwPage_btnCallToByeCar);
 	}
 
 	@Override
@@ -81,7 +83,12 @@ public class FindPwPage extends BCPFragment {
 		rp.width = width;
 		rp.height = buttonHeight;
 		rp.topMargin = ResizeUtils.getSpecificLength(20);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(40);
+		
+		//btnCallToByeCar.
+		rp = (RelativeLayout.LayoutParams) btnCallToByeCar.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(426);
+		rp.height = ResizeUtils.getSpecificLength(89);
+		rp.topMargin = ResizeUtils.getSpecificLength(70);
 		
 		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 24);
 	}
@@ -111,27 +118,15 @@ public class FindPwPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-
-		return R.drawable.pass_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 270;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
-	@Override
 	public int getRootViewResId() {
 
 		return R.id.findPwPage_mainLayout;
+	}
+
+	@Override
+	public int getPageTitleTextResId() {
+
+		return R.string.pageTitle_findPw;
 	}
 	
 //////////////////// Custom methods.

@@ -9,6 +9,8 @@ public class BCPConstants {
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
+	public static final int REQUEST_SEARCH_AREA = 3;
+	public static final int REQUEST_SEARCH_MONTH = 4;
 	
 	public static final String PREFS_PUSH = "pushSetting";
 	
@@ -17,12 +19,13 @@ public class BCPConstants {
 	public static final int ITEM_FAQ = 2;
 	public static final int ITEM_NOTIFICATION = 3;
 	public static final int ITEM_REVIEW = 4;
+	public static final int ITEM_AREA_FOR_SEARCH = 8;
 	
 	//Items for car.
-	public static final int ITEM_CAR_BID = 11;
+	public static final int ITEM_CAR_BID_IN_PROGRESS = 14;
 	public static final int ITEM_CAR_BID_MY = 12;
+	public static final int ITEM_CAR_BID_SUCCESS = 11;
 	public static final int ITEM_CAR_DEALER = 13;
-	public static final int ITEM_CAR_DEALER_IN_PROGRESS = 14;
 	public static final int ITEM_CAR_BRAND = 15;
 	public static final int ITEM_CAR_TEXT = 16;
 	public static final int ITEM_CAR_TEXT_DESC = 17;
@@ -52,13 +55,14 @@ public class BCPConstants {
 	public static final int PAGE_ASK = 18;
 	public static final int PAGE_SETTING = 19;
 	public static final int PAGE_DEALER = 20;
+	public static final int PAGE_WRITE_REVIEW = 21;
 	
 	//Pages for car.
 	public static final int PAGE_CAR_DETAIL = 31;
 	public static final int PAGE_CAR_REGISTRATION = 32;
 	public static final int PAGE_SEARCH_CAR = 37;
-	public static final int PAGE_SEARCH_RESULT = 38;
 	public static final int PAGE_TYPE_SEARCH_CAR = 39;
 	
 	public static final int PAGE_WEB_BROWSER = 40;
+	public static final int PAGE_SEARCH_AREA = 51;
 }

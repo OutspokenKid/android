@@ -9,11 +9,10 @@ import android.view.View;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.wrappers.ViewWrapperForBanner;
 import com.byecar.wrappers.ViewWrapperForBrand;
-import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForMyCar;
-import com.byecar.wrappers.ViewWrapperForMyReview;
 import com.byecar.wrappers.ViewWrapperForNotification;
 import com.byecar.wrappers.ViewWrapperForOpenablePost;
+import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForSearchText;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -27,20 +26,11 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class BCPAdapter extends OutSpokenAdapter {
 
 	private BCPFragmentActivity activity;
-	private BCPAuctionableFragment fragment;
 	
 	public BCPAdapter(Context context, BCPFragmentActivity activity, 
 			LayoutInflater inflater, ArrayList<BaseModel> models) {
 		super(context, inflater, models);
 		this.activity = activity;
-	}
-	
-	public BCPAdapter(Context context, BCPFragmentActivity activity, 
-			BCPAuctionableFragment fragment,
-			LayoutInflater inflater, ArrayList<BaseModel> models) {
-		super(context, inflater, models);
-		this.activity = activity;
-		this.fragment = fragment;
 	}
 
 	@Override
@@ -55,13 +45,13 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_NOTIFICATION:
 			return R.layout.list_notification;
 			
-		case BCPConstants.ITEM_REVIEW:
-			return R.layout.list_my_review;
+//		case BCPConstants.ITEM_REVIEW:
+//			return R.layout.list_my_review;
 			
-		case BCPConstants.ITEM_CAR_BID:
+		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
 		case BCPConstants.ITEM_CAR_BID_MY:
+		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 		case BCPConstants.ITEM_CAR_DEALER:
-		case BCPConstants.ITEM_CAR_DEALER_IN_PROGRESS:
 			return R.layout.list_car;
 			
 		case BCPConstants.ITEM_CAR_BRAND: 
@@ -94,19 +84,14 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_NOTIFICATION:
 			return new ViewWrapperForNotification(convertView, itemCode);
 
-		case BCPConstants.ITEM_REVIEW:
-			return new ViewWrapperForMyReview(convertView, itemCode);
+//		case BCPConstants.ITEM_REVIEW:
+//			return new ViewWrapperForMyReview(convertView, itemCode);
 			
-		case BCPConstants.ITEM_CAR_BID:
+		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
 		case BCPConstants.ITEM_CAR_BID_MY:
-			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
-			vwfc.setFragment(fragment);
-			vwfc.setActivity(activity);
-			return vwfc;
-			
+		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 		case BCPConstants.ITEM_CAR_DEALER:
-		case BCPConstants.ITEM_CAR_DEALER_IN_PROGRESS:
-			vwfc = new ViewWrapperForCar(convertView, itemCode);
+			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
 			vwfc.setActivity(activity);
 			return vwfc;
 			
@@ -126,9 +111,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return new ViewWrapperForMyCar(convertView, itemCode);
 			
 		case BCPConstants.ITEM_BANNER:
-			ViewWrapperForBanner vwfba = new ViewWrapperForBanner(convertView, itemCode);
-			vwfba.setActivity(activity);
-			return vwfba;
+			return new ViewWrapperForBanner(convertView, itemCode);
 		}
 		
 		return null;
@@ -139,13 +122,19 @@ public class BCPAdapter extends OutSpokenAdapter {
 
 		switch (itemCode) {
 		
-		case BCPConstants.ITEM_CAR_BID:
-			if(position < 2) {
-				convertView.setPadding(0, 0, 0, 0);
+		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
+		case BCPConstants.ITEM_CAR_BID_MY:
+		case BCPConstants.ITEM_CAR_BID_SUCCESS:
+		case BCPConstants.ITEM_CAR_DEALER:
+			
+			if(position == 0) {
+				convertView.setPadding(0, ResizeUtils.getSpecificLength(30), 0, 0);
+				
 			} else if(position == models.size() - 1) {
-				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(38));
+				convertView.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(30));
+				
 			} else {
-				convertView.setPadding(0, ResizeUtils.getSpecificLength(16), 0, 0);
+				convertView.setPadding(0, 0, 0, 0);
 			}
 			
 			break;

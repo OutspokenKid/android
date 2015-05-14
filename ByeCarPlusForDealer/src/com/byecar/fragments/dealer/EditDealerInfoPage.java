@@ -140,13 +140,13 @@ public class EditDealerInfoPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-		etInfos[0].getEditText().setHint(R.string.hintForName);
-		etInfos[1].getEditText().setHint(R.string.hintForNickname);
-		etInfos[2].getEditText().setHint(R.string.hintForBirthDate);
-		etInfos[3].getEditText().setHint(R.string.hintForAddress);
-		etInfos[4].getEditText().setHint(R.string.hintForAssociation);
-		etInfos[5].getEditText().setHint(R.string.hintForComplex);
-		etInfos[6].getEditText().setHint(R.string.hintForCompany);
+//		etInfos[0].getEditText().setHint(R.string.hintForName);
+//		etInfos[1].getEditText().setHint(R.string.hintForNickname);
+//		etInfos[2].getEditText().setHint(R.string.hintForBirthDate);
+//		etInfos[3].getEditText().setHint(R.string.hintForAddress);
+//		etInfos[4].getEditText().setHint(R.string.hintForAssociation);
+//		etInfos[5].getEditText().setHint(R.string.hintForComplex);
+//		etInfos[6].getEditText().setHint(R.string.hintForCompany);
 		
 		setInfos();
 		downloadImages();
@@ -309,23 +309,11 @@ public class EditDealerInfoPage extends BCPFragment {
 
 		return R.layout.fragment_edit_dealer_info;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.profile_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 236;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return 0;
 	}
 
 	@Override
@@ -464,7 +452,7 @@ public class EditDealerInfoPage extends BCPFragment {
 		//birthdate.
 		} else if(StringUtils.checkForbidContains(etInfos[2].getEditText(), true, true, false, true, true, true)
 				|| StringUtils.checkTextLength(etInfos[2].getEditText(), BIRTHDATE_MIN, BIRTHDATE_MAX) != StringUtils.PASS) {
-			ToastUtils.showToast(R.string.hintForBirthDate);
+//			ToastUtils.showToast(R.string.hintForBirthDate);
 			
 		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[1])) {
 			ToastUtils.showToast(R.string.checkEmployeeCardImage);
@@ -478,7 +466,7 @@ public class EditDealerInfoPage extends BCPFragment {
 		
 		//association.
 		} else if(StringUtils.isEmpty(etInfos[3].getEditText())) {
-			ToastUtils.showToast(R.string.hintForAssociation);
+//			ToastUtils.showToast(R.string.hintForAssociation);
 		
 		//complex.
 		} else if(StringUtils.isEmpty(etInfos[4].getEditText())) {
@@ -486,7 +474,7 @@ public class EditDealerInfoPage extends BCPFragment {
 		
 		//company.
 		} else if(StringUtils.isEmpty(etInfos[5].getEditText())) {
-			ToastUtils.showToast(R.string.hintForCompany);
+//			ToastUtils.showToast(R.string.hintForCompany);
 		
 		//introduce.
 		} else if(StringUtils.isEmpty(etIntroduce)) {

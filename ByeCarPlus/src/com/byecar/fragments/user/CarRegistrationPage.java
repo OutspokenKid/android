@@ -254,8 +254,6 @@ public class CarRegistrationPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-		titleBar.hideBottomLine();
-		
 		int size = etDetailCarInfos.length;
 		for(int i=0; i<size; i++) {
 			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.color_orange));

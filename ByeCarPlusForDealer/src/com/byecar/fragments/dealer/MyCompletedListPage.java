@@ -139,23 +139,11 @@ public class MyCompletedListPage extends BCPFragment {
 		
 		return R.layout.fragment_my_completed_list;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
-		
-		return R.drawable.deal_complete_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 261;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+	public int getPageTitleTextResId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	@Override

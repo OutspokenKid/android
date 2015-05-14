@@ -32,7 +32,7 @@
                     android:id="@+id/editDealerInfoPage_btnProfile"
                     android:layout_width="match_parent"
 		        	android:layout_height="match_parent"
-		        	android:background="@drawable/sign1_picture_btn" />
+		        	android:background="@drawable/sign2_picture_btn" />
                 
                 <ImageView
                     android:id="@+id/editDealerInfoPage_ivProfile"

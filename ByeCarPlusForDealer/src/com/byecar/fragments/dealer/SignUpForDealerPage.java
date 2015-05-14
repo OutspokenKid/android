@@ -36,22 +36,22 @@ public class SignUpForDealerPage extends BCPFragment {
 
 	private static final int NAME_MIN = 1;
 	private static final int NAME_MAX = 30;
-	private static final int BIRTHDATE_MIN = 8;
-	private static final int BIRTHDATE_MAX = 8;
 	
 	public static String phone_auth_key;
 	public static String phone_number;
 	
-	private TextView tvCertifyPhoneNumberText;
+	private TextView tvTitleText1;
 	private TextView tvCertified;
+	private View checked;
 	private Button btnCertifyPhoneNumber;
 	
-	private TextView tvInfoText;
+	private TextView tvTitleText2;
 	private Button[] btnImages;
 	private ImageView[] ivImages;
 	private TextView tvUploadText;
 	private HoloStyleEditText[] etInfos;
 	
+	private TextView tvTitleText3;
 	private TextView tvIntroduceText;
 	private EditText etIntroduce;
 	private TextView tvTermOfUse;
@@ -63,7 +63,6 @@ public class SignUpForDealerPage extends BCPFragment {
 	
 	private String email;
 	private String pw;
-//	private String nickname;
 	private String profile_img_url;
 	
 	@Override
@@ -88,11 +87,12 @@ public class SignUpForDealerPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForDealerPage_titleBar);
 		
-		tvCertifyPhoneNumberText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvCertifyPhoneNumberText);
+		tvTitleText1 = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvTitleText1);
 		tvCertified = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvCertified);
+		checked = mThisView.findViewById(R.id.signUpForDealerPage_checked);
 		btnCertifyPhoneNumber = (Button) mThisView.findViewById(R.id.signUpForDealerPage_btnCertifyPhoneNumber);
 		
-		tvInfoText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvInfoText);
+		tvTitleText2 = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvTitleText2);
 		
 		btnImages = new Button[2];
 		btnImages[0] = (Button) mThisView.findViewById(R.id.signUpForDealerPage_btnImage1);
@@ -104,14 +104,12 @@ public class SignUpForDealerPage extends BCPFragment {
 		
 		tvUploadText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvUploadText);
 		
-		etInfos = new HoloStyleEditText[6];
+		etInfos = new HoloStyleEditText[3];
 		etInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo1);
 		etInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo2);
 		etInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo3);
-		etInfos[3] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo4);
-		etInfos[4] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo5);
-		etInfos[5] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo6);
 		
+		tvTitleText3 = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvTitleText3);
 		tvIntroduceText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvIntroduce);
 		etIntroduce = (EditText) mThisView.findViewById(R.id.signUpForDealerPage_etIntroduce);
 		btnTermOfUse = (Button) mThisView.findViewById(R.id.signUpForDealerPage_btnTermOfUse);
@@ -123,10 +121,9 @@ public class SignUpForDealerPage extends BCPFragment {
 	public void setVariables() {
 		
 		if(getArguments() != null) {
-			email = getArguments().getString("user[email]");
-			pw = getArguments().getString("user[pw]");
-//			nickname = getArguments().getString("user[nickname]");
-			profile_img_url = getArguments().getString("user[profile_img_url]");
+			email = getArguments().getString("email");
+			pw = getArguments().getString("pw");
+			profile_img_url = getArguments().getString("profile_img_url");
 		}
 		
 		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
@@ -137,13 +134,14 @@ public class SignUpForDealerPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
+		tvTitleText1.setText("3. " + getString(R.string.certifyPhoneNumber));
+		tvTitleText2.setText("4. " + getString(R.string.addedInfo));
+		tvTitleText3.setText("5. " + getString(R.string.introduce));
+		
 		int[] hintTextResIds = new int[] {
 			R.string.hintForName,
-			R.string.hintForBirthDate,
-			R.string.hintForAddress,
-			R.string.hintForAssociation,
 			R.string.hintForComplex,
-			R.string.hintForCompany,
+			R.string.hintForAddress,
 		};
 		
 		int size = etInfos.length;
@@ -152,12 +150,7 @@ public class SignUpForDealerPage extends BCPFragment {
 			etInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
 			etInfos[i].setHint(hintTextResIds[i]);
 			etInfos[i].getEditText().setSingleLine();
-			
-			if(i == 1) {
-				etInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_NUMBER);
-			} else {
-				etInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_TEXT);
-			}
+			etInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_TEXT);
 		}
 	}
 
@@ -214,23 +207,32 @@ public class SignUpForDealerPage extends BCPFragment {
 
 		RelativeLayout.LayoutParams rp = null;
 		
-		//tvCertifyPhoneNumberText.
-		rp = (RelativeLayout.LayoutParams) tvCertifyPhoneNumberText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
-		rp.topMargin = ResizeUtils.getSpecificLength(25);
+		//tvTitleText1.
+		rp = (RelativeLayout.LayoutParams) tvTitleText1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvTitleText1.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//tvCertified.
 		rp = (RelativeLayout.LayoutParams) tvCertified.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(592);
-		rp.height = ResizeUtils.getSpecificLength(225);
+		rp.height = ResizeUtils.getSpecificLength(176);
+		
+		//checked.
+		rp = (RelativeLayout.LayoutParams) checked.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(24);
+		rp.height = ResizeUtils.getSpecificLength(18);
+		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.rightMargin = ResizeUtils.getSpecificLength(8);
 		
 		//btnCertifyPhoneNumber.
 		rp = (RelativeLayout.LayoutParams) btnCertifyPhoneNumber.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(18);
-		rp.rightMargin = ResizeUtils.getSpecificLength(25);
+		rp.width = ResizeUtils.getSpecificLength(588);
+		rp.height = ResizeUtils.getSpecificLength(83);
+		
+		//tvTitleText2.
+		rp = (RelativeLayout.LayoutParams) tvTitleText2.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		rp.topMargin = ResizeUtils.getSpecificLength(57);
+		tvTitleText2.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		for(int i=0; i<2; i++) {
 
@@ -241,7 +243,7 @@ public class SignUpForDealerPage extends BCPFragment {
 			
 			if(i == 0) {
 				rp.leftMargin = ResizeUtils.getSpecificLength(52);
-				rp.topMargin = ResizeUtils.getSpecificLength(13);
+				rp.topMargin = ResizeUtils.getSpecificLength(54);
 			} else {
 				rp.leftMargin = ResizeUtils.getSpecificLength(24);
 			}
@@ -270,15 +272,17 @@ public class SignUpForDealerPage extends BCPFragment {
 			FontUtils.setFontAndHintSize(etInfos[i], 26, 20);
 		}
 		
-		//tvIntroduceText.
-		rp = (RelativeLayout.LayoutParams) tvIntroduceText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		//tvTitleText3.
+		rp = (RelativeLayout.LayoutParams) tvTitleText3.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		rp.topMargin = ResizeUtils.getSpecificLength(72);
+		tvTitleText3.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//etIntroduce.
 		rp = (RelativeLayout.LayoutParams) etIntroduce.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(160);
+		rp.width = ResizeUtils.getSpecificLength(594);
+		rp.height = ResizeUtils.getSpecificLength(226);
+		rp.topMargin = ResizeUtils.getSpecificLength(38);
 		
 		//tvTermOfUse.
 		rp = (RelativeLayout.LayoutParams) tvTermOfUse.getLayoutParams();
@@ -297,13 +301,17 @@ public class SignUpForDealerPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(586);
 		rp.height = ResizeUtils.getSpecificLength(82);
 		rp.topMargin = ResizeUtils.getSpecificLength(36);
-		
-		FontUtils.setFontSize(tvCertifyPhoneNumberText, 30);
-		FontUtils.setFontSize(tvCertified, 30);
-		
-		FontUtils.setFontSize(tvInfoText, 30);
+
+		FontUtils.setFontSize(tvTitleText1, 24);
+		FontUtils.setFontStyle(tvTitleText1, FontUtils.BOLD);
+		FontUtils.setFontSize(tvCertified, 34);
+
+		FontUtils.setFontSize(tvTitleText2, 24);
+		FontUtils.setFontStyle(tvTitleText2, FontUtils.BOLD);
 		FontUtils.setFontSize(tvUploadText, 20);
 		
+		FontUtils.setFontSize(tvTitleText3, 24);
+		FontUtils.setFontStyle(tvTitleText3, FontUtils.BOLD);
 		FontUtils.setFontSize(tvIntroduceText, 30);
 		FontUtils.setFontAndHintSize(etIntroduce, 26, 20);
 		FontUtils.setFontSize(tvTermOfUse, 20);
@@ -316,21 +324,9 @@ public class SignUpForDealerPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.d_signin_back2_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 214;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_signUp;
 	}
 
 	@Override
@@ -363,15 +359,12 @@ public class SignUpForDealerPage extends BCPFragment {
 		
 		if(StringUtils.isEmpty(phone_auth_key)) {
 			tvCertified.setTextColor(getResources().getColor(R.color.color_red));
-			tvCertified.setText(R.string.requireCertifyPhoneNumber);
-			tvCertified.setBackgroundResource(R.drawable.registration_box1);
-			btnCertifyPhoneNumber.setVisibility(View.VISIBLE);
+			tvCertified.setText(R.string.phoneNumberisNotCertified);
+			checked.setVisibility(View.INVISIBLE);
 		} else {
 			tvCertified.setTextColor(getResources().getColor(R.color.color_green));
-			tvCertified.setText(phone_number + "\n"
-					+ getString(R.string.phoneNumberCertified));
-			tvCertified.setBackgroundResource(R.drawable.registration_box2);
-			btnCertifyPhoneNumber.setVisibility(View.INVISIBLE);
+			tvCertified.setText(phone_number);
+			checked.setVisibility(View.VISIBLE);
 		}
 	}
 	
@@ -405,7 +398,7 @@ public class SignUpForDealerPage extends BCPFragment {
 	
 	public boolean checkInformation() {
 
-		if(btnCertifyPhoneNumber.getVisibility() == View.VISIBLE) {
+		if(StringUtils.isEmpty(phone_auth_key)) {
 			ToastUtils.showToast(R.string.checkToCertifyPhoneNumber);
 
 		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[0])) {
@@ -418,22 +411,11 @@ public class SignUpForDealerPage extends BCPFragment {
 				|| StringUtils.checkTextLength(etInfos[0].getEditText(), NAME_MIN, NAME_MAX) != StringUtils.PASS) {
 			ToastUtils.showToast(R.string.hintForName);
 		
-		//숫자만 허용.
-		} else if(StringUtils.checkForbidContains(etInfos[1].getEditText(), true, true, false, true, true, true)
-				|| StringUtils.checkTextLength(etInfos[1].getEditText(), BIRTHDATE_MIN, BIRTHDATE_MAX) != StringUtils.PASS) {
-			ToastUtils.showToast(R.string.hintForBirthDate);
-		
+		} else if(StringUtils.isEmpty(etInfos[1].getEditText())) {
+			ToastUtils.showToast(R.string.hintForComplex);
+			
 		} else if(StringUtils.isEmpty(etInfos[2].getEditText())) {
 			ToastUtils.showToast(R.string.hintForAddress);
-		
-		} else if(StringUtils.isEmpty(etInfos[3].getEditText())) {
-			ToastUtils.showToast(R.string.hintForAssociation);
-		
-		} else if(StringUtils.isEmpty(etInfos[4].getEditText())) {
-			ToastUtils.showToast(R.string.hintForComplex);
-		
-		} else if(StringUtils.isEmpty(etInfos[5].getEditText())) {
-			ToastUtils.showToast(R.string.hintForCompany);
 		
 		} else if(StringUtils.isEmpty(etIntroduce)) {
 			ToastUtils.showToast(R.string.hintForIntroduce);
@@ -498,13 +480,9 @@ public class SignUpForDealerPage extends BCPFragment {
 			StringBuilder sb = new StringBuilder(BCPAPIs.SIGN_UP_URL);
 			sb.append("?user[email]=").append(email)
 					.append("&user[pw]=").append(pw)
-//					.append("&user[nickname]=").append(nickname)
 					.append("&user[name]=").append(StringUtils.getUrlEncodedString(etInfos[0].getEditText()))
+					.append("&dealer[company]=").append(StringUtils.getUrlEncodedString(etInfos[1].getEditText()))
 					.append("&user[address]=").append(StringUtils.getUrlEncodedString(etInfos[2].getEditText()))
-					.append("&dealer[birthdate]=").append(StringUtils.getUrlEncodedString(etInfos[1].getEditText()))
-					.append("&dealer[association]=").append(StringUtils.getUrlEncodedString(etInfos[3].getEditText()))
-					.append("&dealer[complex]=").append(StringUtils.getUrlEncodedString(etInfos[4].getEditText()))
-					.append("&dealer[company]=").append(StringUtils.getUrlEncodedString(etInfos[5].getEditText()))
 					.append("&user[desc]=").append(StringUtils.getUrlEncodedString(etIntroduce))
 					.append("&phone_auth_key=").append(phone_auth_key)
 					.append("&dealer[employee_card_img_url]=").append(StringUtils.getUrlEncodedString(selectedImageSdCardPaths[0]))

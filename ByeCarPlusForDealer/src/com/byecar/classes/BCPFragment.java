@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.models.BCPBaseModel;
@@ -39,10 +38,9 @@ public abstract class BCPFragment extends BaseFragment {
 	protected BCPAdapter adapter;
 	protected String url;
 	protected String lastUrl;
+	protected boolean isMain = false;
 	
-	public abstract int getBackButtonResId();
-	public abstract int getBackButtonWidth();
-	public abstract int getBackButtonHeight();
+	public abstract int getPageTitleTextResId();
 	public abstract int getRootViewResId();
 	
 	/**
@@ -73,21 +71,20 @@ public abstract class BCPFragment extends BaseFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		
+
 		if(titleBar != null) {
+			
+			if(!isMain) {
+				titleBar.getBackButton().setVisibility(View.VISIBLE);
+			}
 			
 			if(titleBar.getLayoutParams() != null) {
 				titleBar.getLayoutParams().height = ResizeUtils.getSpecificLength(88);
 			}
 			
-			if(getBackButtonResId() != 0) {
-				titleBar.getBackButton().setBackgroundResource(getBackButtonResId());
-				titleBar.getBackButton().getLayoutParams().width = ResizeUtils.getSpecificLength(getBackButtonWidth());
-				titleBar.getBackButton().getLayoutParams().height = ResizeUtils.getSpecificLength(getBackButtonHeight());
-				((RelativeLayout.LayoutParams)titleBar.getBackButton().getLayoutParams()).
-						leftMargin = ResizeUtils.getSpecificLength(8);
+			if(getPageTitleTextResId() != 0) {
+				titleBar.setTitle(getPageTitleTextResId());
 				titleBar.getBackButton().setVisibility(View.VISIBLE);
-				
 				titleBar.getBackButton().setOnClickListener(new OnClickListener() {
 					
 					@Override

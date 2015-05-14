@@ -17,8 +17,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	
 	public static final int TYPE_BID = 1;
 	public static final int TYPE_DEALER = 2;
-	public static final int TYPE_DIRECT_CERTIFIED = 3;
-	public static final int TYPE_DIRECT_NORMAL = 4;
+	public static final int TYPE_DIRECT = 4;
 	
 	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
 	public static final int STATUS_STAND_BY_APPROVAL = 0;
@@ -33,6 +32,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private int type;
 	private int car_id;
 	private int year;
+	private int month;
 	private String color;
 	private String car_number;
 	private int mileage;
@@ -49,6 +49,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private long bid_begin_at;
 	private long bid_until_at;
 	private int bids_cnt;
+	private int bidders_cnt;
 	private String area;
 	private int to_sell_directly;
 	private long end_at;
@@ -87,9 +88,158 @@ public class Car extends BCPBaseModel implements Serializable {
 	private int likes_cnt;
 	private int has_purchased;
 	private int has_review;
+	private String car_wd;
 	
-	private int my_bid_ranking;
+	private Review review;
+	
+	private String inspection_note_url;
+	private long liked_at;
+	private int dong_id;
+	private String accident_desc;
 
+	public void copyValuesFromNewItem(Car newCar) {
+		
+		if(newCar == null) {
+			this.id = 0;
+			this.type = 0;
+			this.car_id = 0;
+			this.year = 0;
+			this.month = 0;
+			this.color = null;
+			this.car_number = null;
+			this.mileage = 0;
+			this.displacement = 0;
+			this.fuel_type = null;
+			this.transmission_type = null;
+			this.had_accident = 0;
+			this.is_oneman_owned = 0;
+			this.price = 0;
+			this.desc = null;
+			this.seller_id = 0;
+			this.rep_img_url = null;
+			this.status = 0;
+			this.bid_begin_at = 0;
+			this.bid_until_at = 0;
+			this.bids_cnt = 0;
+			this.bidders_cnt = 0;
+			this.area = null;
+			this.to_sell_directly = 0;
+			this.end_at = 0;
+			
+			this.dealer_id = 0;
+			this.dealer_name = null;
+			this.dealer_phone_number = null;
+			this.dealer_address = null;
+			this.dealer_profile_img_url = null;
+			this.dealer_company = null;
+			this.dealer_level = 0;
+
+			this.manager_id = 0;
+			this.manager_name = null;
+			this.manager_desc = null;
+			this.manager_profile_img_url = null;
+			
+			this.created_at = 0;
+			this.brand_name = null;
+			this.model_name = null;
+			this.trim_name = null;
+			this.car_full_name = null;
+			
+			this.seller_name = null;
+			this.seller_phone_number = null;
+			this.seller_address = null;
+			this.seller_profile_img_url = null;
+			
+			this.m_images = null;
+			this.a_images = null;
+			this.options = null;
+			this.bids = null;
+			this.images = null;
+			
+			this.is_liked = 0;
+			this.likes_cnt = 0;
+			this.has_purchased = 0;
+			this.has_review = 0;
+			this.car_wd = null;
+			
+			this.review = null;
+			
+			this.inspection_note_url = null;
+			this.liked_at = 0;
+			this.dong_id = 0;
+			this.accident_desc = null;
+		} else {
+			this.id = newCar.id;
+			this.type = newCar.type;
+			this.car_id = newCar.car_id;
+			this.year = newCar.year;
+			this.month = newCar.month;
+			this.color = newCar.color;
+			this.car_number = newCar.car_number;
+			this.mileage = newCar.mileage;
+			this.displacement = newCar.displacement;
+			this.fuel_type = newCar.fuel_type;
+			this.transmission_type = newCar.transmission_type;
+			this.had_accident = newCar.had_accident;
+			this.is_oneman_owned = newCar.is_oneman_owned;
+			this.price = newCar.price;
+			this.desc = newCar.desc;
+			this.seller_id = newCar.seller_id;
+			this.rep_img_url = newCar.rep_img_url;
+			this.status = newCar.status;
+			this.bid_begin_at = newCar.bid_begin_at;
+			this.bid_until_at = newCar.bid_until_at;
+			this.bids_cnt = newCar.bids_cnt;
+			this.bidders_cnt = newCar.bidders_cnt;
+			this.area = newCar.area;
+			this.to_sell_directly = newCar.to_sell_directly;
+			this.end_at = newCar.end_at;
+			
+			this.dealer_id = newCar.dealer_id;
+			this.dealer_name = newCar.dealer_name;
+			this.dealer_phone_number = newCar.dealer_phone_number;
+			this.dealer_address = newCar.dealer_address;
+			this.dealer_profile_img_url = newCar.dealer_profile_img_url;
+			this.dealer_company = newCar.dealer_company;
+			this.dealer_level = newCar.dealer_level;
+
+			this.manager_id = newCar.manager_id;
+			this.manager_name = newCar.manager_name;
+			this.manager_desc = newCar.manager_desc;
+			this.manager_profile_img_url = newCar.manager_profile_img_url;
+			
+			this.created_at = newCar.created_at;
+			this.brand_name = newCar.brand_name;
+			this.model_name = newCar.model_name;
+			this.trim_name = newCar.trim_name;
+			this.car_full_name = newCar.car_full_name;
+			
+			this.seller_name = newCar.seller_name;
+			this.seller_phone_number = newCar.seller_phone_number;
+			this.seller_address = newCar.seller_address;
+			this.seller_profile_img_url = newCar.seller_profile_img_url;
+			
+			this.m_images = newCar.m_images;
+			this.a_images = newCar.a_images;
+			this.options = newCar.options;
+			this.bids = newCar.bids;
+			this.images = newCar.images;
+			
+			this.is_liked = newCar.is_liked;
+			this.likes_cnt = newCar.likes_cnt;
+			this.has_purchased = newCar.has_purchased;
+			this.has_review = newCar.has_review;
+			this.car_wd = newCar.car_wd;
+			
+			this.review = newCar.review;
+			
+			this.inspection_note_url = newCar.inspection_note_url;
+			this.liked_at = newCar.liked_at;
+			this.dong_id = newCar.dong_id;
+			this.accident_desc = newCar.accident_desc;
+		}
+	}
+	
 	public Car() {
 		
 	}
@@ -114,6 +264,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("year")) {
 				this.year = objJSON.getInt("year");
+			}
+			
+			if(objJSON.has("month")) {
+				this.month = objJSON.getInt("month");
 			}
 			
 			if(objJSON.has("car_number")) {
@@ -207,6 +361,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("bids_cnt")) {
 				this.bids_cnt = objJSON.getInt("bids_cnt");
+			}
+			
+			if(objJSON.has("bidders_cnt")) {
+				this.bidders_cnt = objJSON.getInt("bidders_cnt");
 			}
 			
 			if(objJSON.has("seller_id")) {
@@ -321,7 +479,10 @@ public class Car extends BCPBaseModel implements Serializable {
 				
 				int size = arJSON.length();
 				for(int i=0; i<size; i++) {
-					bids.add(new Bid(arJSON.getJSONObject(i)));
+					try {
+						bids.add(new Bid(arJSON.getJSONObject(i)));
+					} catch (Exception e) {
+					}
 				}
 			}
 			
@@ -341,138 +502,34 @@ public class Car extends BCPBaseModel implements Serializable {
 				this.has_review = objJSON.getInt("has_review");
 			}
 			
-			if(objJSON.has("my_bid_ranking")) {
-				this.my_bid_ranking = objJSON.getInt("my_bid_ranking");
+			if(objJSON.has("car_wd")) {
+				this.car_wd = objJSON.getString("car_wd");
+			}
+			
+			try {
+				if(objJSON.has("review")) {
+					this.review = new Review(objJSON.getJSONObject("review"));
+				}
+			} catch (Exception e) {
+			}
+			
+			if(objJSON.has("inspection_note_url")) {
+				this.inspection_note_url = objJSON.getString("inspection_note_url");
+			}
+			
+			if(objJSON.has("liked_at")) {
+				this.liked_at = objJSON.getLong("liked_at");
+			}
+			
+			if(objJSON.has("dong_id")) {
+				this.dong_id = objJSON.getInt("dong_id");
+			}
+			
+			if(objJSON.has("accident_desc")) {
+				this.accident_desc = objJSON.getString("accident_desc");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
-		}
-	}
-
-	public void copyValuesFromNewItem(Car newCar) {
-		
-		if(newCar == null) {
-			this.id = 0;
-			this.type = 0;
-			this.car_id = 0;
-			this.year = 0;
-			this.color = null;
-			this.car_number = null;
-			this.mileage = 0;
-			this.displacement = 0;
-			this.fuel_type = null;
-			this.transmission_type = null;
-			this.had_accident = 0;
-			this.is_oneman_owned = 0;
-			this.price = 0;
-			this.desc = null;
-			this.seller_id = 0;
-			this.rep_img_url = null;
-			this.status = 0;
-			this.bid_begin_at = 0;
-			this.bid_until_at = 0;
-			this.bids_cnt = 0;
-			this.area = null;
-			this.to_sell_directly = 0;
-			this.end_at = 0;
-			
-			this.dealer_id = 0;
-			this.dealer_name = null;
-			this.dealer_phone_number = null;
-			this.dealer_address = null;
-			this.dealer_profile_img_url = null;
-			this.dealer_company = null;
-			this.dealer_level = 0;
-
-			this.manager_id = 0;
-			this.manager_name = null;
-			this.manager_desc = null;
-			this.manager_profile_img_url = null;
-			
-			this.created_at = 0;
-			this.brand_name = null;
-			this.model_name = null;
-			this.trim_name = null;
-			this.car_full_name = null;
-			
-			this.seller_name = null;
-			this.seller_phone_number = null;
-			this.seller_address = null;
-			this.seller_profile_img_url = null;
-			
-			this.m_images = null;
-			this.a_images = null;
-			this.options = null;
-			this.bids = null;
-			this.images = null;
-			
-			this.is_liked = 0;
-			this.likes_cnt = 0;
-			this.has_purchased = 0;
-			this.has_review = 0;
-			this.my_bid_ranking = 0;
-		} else {
-			this.id = newCar.id;
-			this.type = newCar.type;
-			this.car_id = newCar.car_id;
-			this.year = newCar.year;
-			this.color = newCar.color;
-			this.car_number = newCar.car_number;
-			this.mileage = newCar.mileage;
-			this.displacement = newCar.displacement;
-			this.fuel_type = newCar.fuel_type;
-			this.transmission_type = newCar.transmission_type;
-			this.had_accident = newCar.had_accident;
-			this.is_oneman_owned = newCar.is_oneman_owned;
-			this.price = newCar.price;
-			this.desc = newCar.desc;
-			this.seller_id = newCar.seller_id;
-			this.rep_img_url = newCar.rep_img_url;
-			this.status = newCar.status;
-			this.bid_begin_at = newCar.bid_begin_at;
-			this.bid_until_at = newCar.bid_until_at;
-			this.bids_cnt = newCar.bids_cnt;
-			this.area = newCar.area;
-			this.to_sell_directly = newCar.to_sell_directly;
-			this.end_at = newCar.end_at;
-			
-			this.dealer_id = newCar.dealer_id;
-			this.dealer_name = newCar.dealer_name;
-			this.dealer_phone_number = newCar.dealer_phone_number;
-			this.dealer_address = newCar.dealer_address;
-			this.dealer_profile_img_url = newCar.dealer_profile_img_url;
-			this.dealer_company = newCar.dealer_company;
-			this.dealer_level = newCar.dealer_level;
-
-			this.manager_id = newCar.manager_id;
-			this.manager_name = newCar.manager_name;
-			this.manager_desc = newCar.manager_desc;
-			this.manager_profile_img_url = newCar.manager_profile_img_url;
-			
-			this.created_at = newCar.created_at;
-			this.brand_name = newCar.brand_name;
-			this.model_name = newCar.model_name;
-			this.trim_name = newCar.trim_name;
-			this.car_full_name = newCar.car_full_name;
-			
-			this.seller_name = newCar.seller_name;
-			this.seller_phone_number = newCar.seller_phone_number;
-			this.seller_address = newCar.seller_address;
-			this.seller_profile_img_url = newCar.seller_profile_img_url;
-			
-			this.m_images = newCar.m_images;
-			this.a_images = newCar.a_images;
-			this.options = newCar.options;
-			this.bids = newCar.bids;
-			this.images = newCar.images;
-			
-			this.is_liked = newCar.is_liked;
-			this.likes_cnt = newCar.likes_cnt;
-			this.has_purchased = newCar.has_purchased;
-			this.has_review = newCar.has_review;
-			
-			//상세에서 아예 안나오므로, 리스트에 영향 없도록 복사 안함.
-//			this.my_bid_ranking = newCar.my_bid_ranking;
 		}
 	}
 	
@@ -798,7 +855,7 @@ public class Car extends BCPBaseModel implements Serializable {
 		return status;
 	}
 
-	//0: 입찰대기, 10: 입찰중, 20: 입찰완료, 30: 거래완료
+	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
 	public void setStatus(int status) {
 		this.status = status;
 	}
@@ -1059,14 +1116,14 @@ public class Car extends BCPBaseModel implements Serializable {
 		this.seller_profile_img_url = seller_profile_img_url;
 	}
 
-	public int isHas_purchased() {
+	public int getHas_purchased() {
 		return has_purchased;
 	}
 
 	public void setHas_purchased(int has_purchased) {
 		this.has_purchased = has_purchased;
 	}
-	
+
 	public int getHas_review() {
 		return has_review;
 	}
@@ -1075,11 +1132,65 @@ public class Car extends BCPBaseModel implements Serializable {
 		this.has_review = has_review;
 	}
 
-	public int getMy_bid_ranking() {
-		return my_bid_ranking;
+	public int getBidders_cnt() {
+		return bidders_cnt;
 	}
 
-	public void setMy_bid_ranking(int my_bid_ranking) {
-		this.my_bid_ranking = my_bid_ranking;
+	public void setBidders_cnt(int bidders_cnt) {
+		this.bidders_cnt = bidders_cnt;
+	}
+
+	public String getCar_wd() {
+		return car_wd;
+	}
+
+	public void setCar_wd(String car_wd) {
+		this.car_wd = car_wd;
+	}
+
+	public Review getReview() {
+		return review;
+	}
+
+	public void setReview(Review review) {
+		this.review = review;
+	}
+
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
+
+	public String getInspection_note_url() {
+		return inspection_note_url;
+	}
+
+	public void setInspection_note_url(String inspection_note_url) {
+		this.inspection_note_url = inspection_note_url;
+	}
+
+	public long getLiked_at() {
+		return liked_at;
+	}
+
+	public void setLiked_at(long liked_at) {
+		this.liked_at = liked_at;
+	}
+	public int getDong_id() {
+		return dong_id;
+	}
+	public void setDong_id(int dong_id) {
+		this.dong_id = dong_id;
+	}
+
+	public String getAccident_desc() {
+		return accident_desc;
+	}
+
+	public void setAccident_desc(String accident_desc) {
+		this.accident_desc = accident_desc;
 	}
 }

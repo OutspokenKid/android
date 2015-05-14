@@ -7,13 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPFragment;
-import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.SignUpForDealerPage;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
@@ -29,7 +26,6 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	private static int MODE_PHONE_NUMBER = 0;
 	private static int MODE_CERTIFICATION_NUMBER = 1;
 	
-	private TextView tvCertifyPhoneNumber;
 	private HoloStyleEditText etPhoneNumber;
 	private HoloStyleEditText etCertificationNumber;
 	private Button btnConfirm;
@@ -42,7 +38,6 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.certifyPhoneNumberPage_titleBar);
 		
-		tvCertifyPhoneNumber = (TextView) mThisView.findViewById(R.id.certifyPhoneNumberPage_tvCertifyPhoneNumber);
 		etPhoneNumber = (HoloStyleEditText) mThisView.findViewById(R.id.certifyPhoneNumberPage_etPhoneNumber);
 		etCertificationNumber = (HoloStyleEditText) mThisView.findViewById(R.id.certifyPhoneNumberPage_etCertificationNumber);
 		btnConfirm = (Button) mThisView.findViewById(R.id.certifyPhoneNumberPage_btnConfirm);
@@ -100,17 +95,11 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		int textViewHeight = ResizeUtils.getSpecificLength(60);
 		int buttonHeight = ResizeUtils.getSpecificLength(82);
 		
-		//tvCertifyPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvCertifyPhoneNumber.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(30);
-		rp.leftMargin = ResizeUtils.getSpecificLength(30);
-		rp.topMargin = ResizeUtils.getSpecificLength(30);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
-		
 		//etPhoneNumber.
 		rp = (RelativeLayout.LayoutParams) etPhoneNumber.getLayoutParams();
 		rp.width = width;
 		rp.height = textViewHeight;
+		rp.topMargin = ResizeUtils.getSpecificLength(60);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 
 		//etCertificationNumber.
@@ -136,23 +125,11 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.phone_back_btn_a;
+		return R.string.pageTitle_certifyPhoneNumber;
 	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 292;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
+	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
@@ -203,9 +180,9 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		
 		final String PHONE_NUMBER = etPhoneNumber.getEditText().getText().toString();
 		String url = BCPAPIs.PHONE_AUTH_REQUEST_URL
-				+ "?no_sms=0"
+				+ "?no_sms=1"
 				+ "&phone_number=" + PHONE_NUMBER
-				+ "&role=100";
+				+ "&role=200";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -239,7 +216,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 					ToastUtils.showToast(R.string.failToSendSMS);
 				}
 			}
-		});
+		}, mActivity.getLoadingView());
 	}
 	
 	public void requestCertifying() {
@@ -267,63 +244,14 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						
-						if(getArguments() != null && getArguments().getBoolean("forDealerSignUp")) {
-							SignUpForDealerPage.phone_number = objJSON.getJSONObject("authResponse").getString("phone_number");
-							SignUpForDealerPage.phone_auth_key = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
-							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
-							mActivity.closeTopPage();
-						} else if(getArguments() != null && getArguments().getBoolean("forEditDealerInfo")) {
-							EditDealerInfoPage.PHONE_AUTH_KEY = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
-							EditDealerInfoPage.tempPhoneNumber = requestedPhoneNumber;
-							ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
-							mActivity.closeTopPage();
-						} else {
-							updatePhoneNumber(objJSON.getJSONObject("authResponse").getString("phone_auth_key"));
-						}
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.failToSendAuthRequest);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					ToastUtils.showToast(R.string.failToSendAuthRequest);
-				}
-			}
-		});
-	}
-	
-	public void updatePhoneNumber(final String phone_auth_key) {
+						ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
 
-		String url = BCPAPIs.PHONE_UPDATE_URL
-				+ "?phone_auth_key=" + phone_auth_key;
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("CertifyPhoneNumberPage.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.failToSendAuthRequest);
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("CertifyPhoneNumberPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-					
-					if(objJSON.getInt("result") == 1) {
-						MainActivity.user.setPhone_number(requestedPhoneNumber);
-						MainActivity.dealer.setPhone_number(requestedPhoneNumber);
-						ToastUtils.showToast(R.string.complete_auth);
+						SignUpForDealerPage.phone_number = requestedPhoneNumber;
+						SignUpForDealerPage.phone_auth_key = objJSON.getJSONObject("authResponse").getString("phone_auth_key");
 						mActivity.closeTopPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}
-					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					ToastUtils.showToast(R.string.failToSendAuthRequest);

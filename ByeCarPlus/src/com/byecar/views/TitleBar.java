@@ -139,7 +139,7 @@ public class TitleBar extends RelativeLayout {
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-			rp.topMargin = ResizeUtils.getSpecificLength(16);
+			rp.topMargin = ResizeUtils.getSpecificLength(10);
 			rp.rightMargin = ResizeUtils.getSpecificLength(28);
 			tvNoticeCount = new TextView(getContext());
 			tvNoticeCount.setLayoutParams(rp);
@@ -172,11 +172,6 @@ public class TitleBar extends RelativeLayout {
 			tvNoticeCount.setText("" + count);
 			tvNoticeCount.setVisibility(View.VISIBLE);
 		}
-	}
-
-	public void hideBottomLine() {
-		
-		bottomLine.setVisibility(View.INVISIBLE);
 	}
 
 	public void setTitle(int titleResId) {

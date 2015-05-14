@@ -10,6 +10,7 @@ public class CompanyInfo {
 	private String email;
 	private String homepage;
 	private String facebook_url;
+	private String blog_url;
 	
 	public CompanyInfo() {
 		
@@ -32,6 +33,10 @@ public class CompanyInfo {
 
 			if (objJSON.has("facebook_url")) {
 				this.facebook_url = objJSON.getString("facebook_url");
+			}
+			
+			if (objJSON.has("blog_url")) {
+				this.blog_url = objJSON.getString("blog_url");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -70,5 +75,13 @@ public class CompanyInfo {
 
 	public void setFacebook_url(String facebook_url) {
 		this.facebook_url = facebook_url;
+	}
+	
+	public String getBlog_url() {
+		return blog_url;
+	}
+
+	public void setBlog_url(String blog_url) {
+		this.blog_url = blog_url;
 	}
 }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-	android:cacheColorHint="@android:color/transparent" >
+    android:descendantFocusability="blocksDescendants" >
 
     <ImageView 
         android:id="@+id/list_my_car_ivImage"
@@ -22,14 +22,19 @@
         android:layout_centerHorizontal="true"
         android:background="@drawable/mypage_frame" />
     
-    <TextView
-        android:id="@+id/list_my_car_tvStatus"
+    <View
+        android:id="@+id/list_my_car_typeIcon"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignLeft="@id/list_my_car_ivImage"
+        android:layout_alignLeft="@id/list_my_car_cover"
+        android:layout_alignTop="@id/list_my_car_cover" />
+    
+    <View
+        android:id="@+id/list_my_car_statusIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_alignTop="@id/list_my_car_cover"
-        android:textColor="#fff"
-        android:gravity="center_vertical|right" />
+        android:layout_toRightOf="@id/list_my_car_typeIcon" />
 
     <TextView
         android:id="@+id/list_my_car_tvRegdate"
@@ -38,7 +43,7 @@
         android:layout_alignRight="@id/list_my_car_cover"
         android:layout_alignTop="@id/list_my_car_cover"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="2"
         android:textColor="@color/holo_text" />
 
     <TextView
@@ -53,35 +58,62 @@
         android:textColor="@color/holo_text" />
 
     <TextView
-        android:id="@+id/list_my_car_tvYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/list_my_car_tvCarName"
-        android:layout_alignRight="@id/list_my_car_cover"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textColor="@color/holo_text" />
-
-    <TextView
-        android:id="@+id/list_my_car_tvBidding"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignBottom="@id/list_my_car_ivImage"
-        android:layout_alignLeft="@id/list_my_car_tvCarName"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:gravity="center_vertical|left"
-        android:textColor="@color/holo_text" />
-    
-    <TextView
         android:id="@+id/list_my_car_tvInfo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignBottom="@id/list_my_car_ivImage"
-        android:layout_alignRight="@id/list_my_car_tvYear"
+        android:layout_toRightOf="@id/list_my_car_ivImage"
         android:ellipsize="end"
-        android:singleLine="true"
-        android:gravity="center_vertical|right"
+        android:maxLines="2"
+        android:gravity="center_vertical"
         android:textColor="@color/holo_text" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnReview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/mypage_comment_btn"
+        android:visibility="invisible" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnComplete"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/mypage_complete_btn"
+        android:visibility="invisible" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnSelectDealer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/mypage_select_btn"
+        android:visibility="invisible" />
+    
+    <Button 
+        android:id="@+id/list_my_car_btnLike"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@id/list_my_car_ivImage"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/main_like_btn_b"
+        android:textColor="#fff"
+        android:visibility="invisible" />
+    
+    <TextView
+        android:id="@+id/list_my_car_tvLikeText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/list_my_car_tvInfo"
+        android:layout_toLeftOf="@id/list_my_car_btnLike"
+        android:gravity="center_vertical"
+        android:text="@string/like"
+        android:textColor="@color/holo_text"
+        android:visibility="invisible" />
     
 </RelativeLayout>

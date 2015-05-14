@@ -112,24 +112,6 @@ public class NotificationPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-
-		return R.drawable.notification_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 164;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
-	}
-
-	@Override
 	public int getRootViewResId() {
 
 		return R.id.notificationPage_mainLayout;
@@ -189,6 +171,12 @@ public class NotificationPage extends BCPFragment {
 		if(models.size() == 0) {
 			downloadInfo();
 		}
+	}
+	
+	@Override
+	public int getPageTitleTextResId() {
+
+		return R.string.pageTitle_notification;
 	}
 	
 //////////////////// Custom methods.

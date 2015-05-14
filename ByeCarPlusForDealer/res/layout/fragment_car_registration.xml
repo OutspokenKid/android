@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/carRegistrationPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.byecar.views.TitleBar
+        android:id="@+id/carRegistrationPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp"
+    	android:layout_alignParentTop="true" />
+    
+    <ProgressBar
+        android:id="@+id/carRegistrationPage_progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/carRegistrationPage_titleBar"
+        android:max="100"
+        android:progressDrawable="@drawable/progressbar_custom_red" />
+
+    <View 
+        android:id="@+id/carRegistrationPage_centerPoint"
+        android:layout_width="4dp"
+        android:layout_height="1dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/carRegistrationPage_progressBar" />
+    
+    <TextView
+        android:id="@+id/carRegistrationPage_tvPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/carRegistrationPage_progressBar"
+        android:layout_toRightOf="@id/carRegistrationPage_centerPoint"
+        android:gravity="right|bottom"
+        android:textColor="#fff" />
+    
+    <TextView
+        android:id="@+id/carRegistrationPage_tvPercentage2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/carRegistrationPage_progressBar"
+        android:layout_toLeftOf="@id/carRegistrationPage_centerPoint"
+        android:gravity="center"
+        android:text="@string/writePercentage"
+        android:textColor="#fff" />
+    
+    <View
+        android:id="@+id/carRegistrationPage_writeIcon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@id/carRegistrationPage_tvPercentage2"
+        android:layout_toLeftOf="@id/carRegistrationPage_tvPercentage2"
+        android:background="@drawable/registration_gauge_icon" />
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/carRegistrationPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/carRegistrationPage_progressBar"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/carRegistrationPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvWriteAllContents"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:padding="10dp"
+		        android:gravity="center"
+		        android:text="@string/writeAllContentForRegistration"
+		        android:textColor="@color/color_red" />
+			
+			<TextView 
+		        android:id="@+id/carRegistrationPage_tvCarInfoTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_tvWriteAllContents"
+		        android:text="@string/carRegistrationTitle1"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_tvCarInfoTitle"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info1_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo1"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info2_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo2"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info3_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo3"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info4_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo5"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo4"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info5_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo6"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo5"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info6_btn" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarInfo7"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo6"
+		        android:layout_centerHorizontal="true"
+		        android:textColor="@color/color_orange"
+		        android:gravity="center"
+		        android:background="@drawable/registration_car_info7_btn" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvDetailCarInfoTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_btnCarInfo7"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle2"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/carRegistrationPage_etDetailCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_tvDetailCarInfoTitle"
+		        android:layout_centerHorizontal="true" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvDetailCarInfo1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo1"
+		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo1"
+		        android:text="@string/hintForDetailCarInfo11"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/carRegistrationPage_etDetailCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo1"
+		        android:layout_centerHorizontal="true" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvDetailCarInfo2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo2"
+		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo2"
+		        android:text="@string/hintForDetailCarInfo21"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/carRegistrationPage_etDetailCarInfo3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo2"
+		        android:layout_centerHorizontal="true" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvDetailCarInfo3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo3"
+		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo3"
+		        android:text="@string/hintForDetailCarInfo31"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvCarPhotoTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo3"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle3"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarPhotoTitle"
+		        android:background="@drawable/registration_photo1_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarPhotoTitle"
+		        android:scaleType="centerCrop" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvCarPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@id/carRegistrationPage_btnCarPhoto1"
+		        android:layout_below="@id/carRegistrationPage_btnCarPhoto1"
+		        android:text="@string/carRegistrationPhoto1"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto1"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto1"
+		        android:background="@drawable/registration_photo2_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto1"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto1"
+		        android:scaleType="centerCrop" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvCarPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@id/carRegistrationPage_btnCarPhoto2"
+		        android:layout_below="@id/carRegistrationPage_btnCarPhoto2"
+		        android:text="@string/carRegistrationPhoto2"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto2"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto2"
+		        android:background="@drawable/registration_photo3_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto2"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto2"
+		        android:scaleType="centerCrop" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvCarPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@id/carRegistrationPage_btnCarPhoto3"
+		        android:layout_below="@id/carRegistrationPage_btnCarPhoto3"
+		        android:text="@string/carRegistrationPhoto3"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnCarPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto3"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto3"
+		        android:background="@drawable/registration_photo4_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivCarPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnCarPhoto3"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnCarPhoto3"
+		        android:scaleType="centerCrop" />
+            
+            <TextView 
+                android:id="@+id/carRegistrationPage_tvCarPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_alignLeft="@id/carRegistrationPage_btnCarPhoto4"
+		        android:layout_below="@id/carRegistrationPage_btnCarPhoto4"
+		        android:text="@string/carRegistrationPhoto4"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvRightPhoto"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarPhotoTitle"
+		        android:gravity="center"
+		        android:text="@string/mainImage"
+		        android:textColor="@color/color_red" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvAddedPhotoTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarPhotoTitle"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle4"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnAddedPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvAddedPhotoTitle"
+		        android:background="@drawable/registration_photo5_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivAddedPhoto1"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_tvAddedPhotoTitle"
+		        android:scaleType="centerCrop" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnAddedPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:background="@drawable/registration_photo6_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivAddedPhoto2"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:scaleType="centerCrop" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnAddedPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto2"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto2"
+		        android:background="@drawable/registration_photo7_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivAddedPhoto3"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto2"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto2"
+		        android:scaleType="centerCrop" />
+            
+            <Button 
+                android:id="@+id/carRegistrationPage_btnAddedPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto3"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto3"
+		        android:background="@drawable/registration_photo8_btn" />
+            
+            <ImageView
+                android:id="@+id/carRegistrationPage_ivAddedPhoto4"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/carRegistrationPage_btnAddedPhoto3"
+		        android:layout_toRightOf="@id/carRegistrationPage_btnAddedPhoto3"
+		        android:scaleType="centerCrop" />
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvOptionTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle5"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+            
+            <RelativeLayout
+		        android:id="@+id/carRegistrationPage_relativeForOption"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_below="@id/carRegistrationPage_tvOptionTitle" >
+                
+            </RelativeLayout>
+            
+            <TextView
+		        android:id="@+id/carRegistrationPage_tvCarDescriptionTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_relativeForOption"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle6"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+            
+			<EditText
+			    android:id="@+id/carRegistrationPage_etCarDescription"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_tvCarDescriptionTitle"
+		        android:textColor="@color/holo_text"
+				android:textColorHint="@color/holo_text_hint"
+				android:hint="@string/hintForCarDescriptionFromDealer"
+				android:gravity="left|top"
+				android:padding="10dp"
+				android:background="@drawable/registration_text_box" />
+			
+			<TextView
+		        android:id="@+id/carRegistrationPage_tvTextCount"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_alignRight="@id/carRegistrationPage_etCarDescription"
+		        android:layout_alignBottom="@id/carRegistrationPage_etCarDescription"
+		        android:paddingRight="10dp"
+		        android:paddingBottom="10dp"
+		        android:textColor="@color/holo_text_hint" />
+			
+			<TextView
+				android:id="@+id/carRegistrationPage_tvTermOfUseTitle"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_etCarDescription"
+		        android:gravity="center_vertical"
+		        android:text="@string/carRegistrationTitle7"
+		        android:textColor="#fff"
+		        android:background="@color/title_gray" />
+			
+			<View 
+			    android:id="@+id/carRegistrationPage_termOfUse"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_tvTermOfUseTitle"
+		        android:background="@drawable/registration_agree_btn_a" />
+			
+			<Button 
+			    android:id="@+id/carRegistrationPage_btnTermOfUse"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_termOfUse"
+		        android:background="@drawable/registration_term_btn" />
+			
+			<Button 
+			    android:id="@+id/carRegistrationPage_btnComplete"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carRegistrationPage_btnTermOfUse"
+		        android:background="@drawable/registration_registry_btn" />
+			
+			<!-- Bottom blank. -->
+			
+			<View 
+			    android:layout_width="10dp"
+		        android:layout_height="20dp"
+		        android:layout_below="@id/carRegistrationPage_btnComplete" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+	<Button
+        android:id="@+id/carRegistrationPage_btnGuide"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/normal_direct_guide_btn" />
+	
+</RelativeLayout>

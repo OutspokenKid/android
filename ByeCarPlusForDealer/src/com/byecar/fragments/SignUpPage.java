@@ -36,27 +36,24 @@ import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
 public class SignUpPage extends BCPFragment {
 
-//	private static final int NICKNAME_MIN = 3;
-//	private static final int NICKNAME_MAX = 15;
 	private static final int PASSWORD_MIN = 8;
 	private static final int PASSWORD_MAX = 15;
 	
+	private TextView tvProfileTitle;
 	private Button btnProfile;
 	private ImageView ivProfile;
 	private TextView tvProfile;
 	private TextView tvCommonInfo;
 	private HoloStyleEditText etEmail;
 	private TextView tvCheckEmail;
-//	private HoloStyleEditText etNickname;
-//	private TextView tvCheckNickname;
 	private HoloStyleEditText etPw;
 	private TextView tvCheckPw;
 	private HoloStyleEditText etPwConfirm;
 	private TextView tvCheckPwConfirm;
 	private Button btnSignUp;
-
-	private boolean focusOnEmail, /*focusOnNickname,*/ focusOnPw;
-	private boolean passEmail, /*passNickname,*/ passPw, passPwConfirm;
+	
+	private boolean focusOnEmail, focusOnPw;
+	private boolean passEmail, passPw, passPwConfirm;
 	
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
@@ -70,18 +67,10 @@ public class SignUpPage extends BCPFragment {
 			@Override
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
 				
-				LogUtils.log("#######################.onAfterPickImage.  "
-						+ "\n sdCardPath[0] : " + sdCardPaths[0]
-						+ "\n thumbnails[0] : " + (thumbnails == null || thumbnails[0] == null? "null" : "not null"
-						+ "\n selectedSdCardPath :  " + selectedSdCardPath));
-				
 				if(thumbnails != null && thumbnails.length > 0) {
 					ivProfile.setImageBitmap(thumbnails[0]);
 					selectedSdCardPath = sdCardPaths[0];
 				}
-				
-				LogUtils.log("#######################.onAfterPickImage.  "
-						+ "\n selectedSdCardPath after setting : " + selectedSdCardPath);
 			}
 		};
 	}
@@ -91,14 +80,13 @@ public class SignUpPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.signUpForCommonPage_titleBar);
 		
+		tvProfileTitle = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvProfileTitle);
 		btnProfile = (Button) mThisView.findViewById(R.id.signUpForCommonPage_btnProfile);
 		ivProfile = (ImageView) mThisView.findViewById(R.id.signUpForCommonPage_ivProfile);
 		tvProfile = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvProfile);
 		tvCommonInfo = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvCommonInfo);
 		etEmail = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForCommonPage_etEmail);
 		tvCheckEmail = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvCheckEmail);
-//		etNickname = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForCommonPage_etNickname);
-//		tvCheckNickname = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvCheckNickname);
 		etPw = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForCommonPage_etPw);
 		tvCheckPw = (TextView) mThisView.findViewById(R.id.signUpForCommonPage_tvCheckPw);
 		etPwConfirm = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForCommonPage_etPwConfirm);
@@ -113,11 +101,11 @@ public class SignUpPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
+		tvProfileTitle.setText("1. " + getString(R.string.profileImage));
+		tvCommonInfo.setText("2. " + getString(R.string.commonInfo));
+		
 		etEmail.setHint(R.string.hintForEmailSignIn);
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
-		
-//		etNickname.setHint(R.string.hintForNickname);
-//		etNickname.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 		
 		etPw.setHint(R.string.hintForPassword2);
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -152,20 +140,6 @@ public class SignUpPage extends BCPFragment {
 				focusOnEmail = hasFocus;
 			}
 		});
-		
-//		etNickname.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
-//			
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//
-//				//포커스를 갖고 있다가 잃은 시점.
-//				if(focusOnNickname && !hasFocus) {
-//					checkNickname();
-//				}
-//				
-//				focusOnNickname = hasFocus;
-//			}
-//		});
 		
 		etPw.getEditText().setOnFocusChangeListener(new OnFocusChangeListener() {
 			
@@ -206,7 +180,7 @@ public class SignUpPage extends BCPFragment {
 					if(!StringUtils.isEmpty(selectedSdCardPath)) {
 						uploadImage();
 					} else {
-						signUp();
+						next();
 					}
 				}
 			}
@@ -222,6 +196,11 @@ public class SignUpPage extends BCPFragment {
 		int textViewHeight = ResizeUtils.getSpecificLength(60);
 		int buttonHeight = ResizeUtils.getSpecificLength(82);
 
+		//tvProfileTitle.
+		rp = (RelativeLayout.LayoutParams) tvProfileTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvProfileTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
 		//profileFrame
 		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(R.id.signUpForCommonPage_profileFrame)).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(219);
@@ -231,21 +210,16 @@ public class SignUpPage extends BCPFragment {
 
 		//tvCommonInfo.
 		rp = (RelativeLayout.LayoutParams) tvCommonInfo.getLayoutParams();
-		rp.leftMargin = ResizeUtils.getSpecificLength(30);
+		rp.height = ResizeUtils.getSpecificLength(41);
 		rp.topMargin = ResizeUtils.getSpecificLength(60);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
+		tvCommonInfo.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//etEmail.
 		rp = (RelativeLayout.LayoutParams) etEmail.getLayoutParams();
 		rp.width = width;
 		rp.height = textViewHeight;
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
-
-//		//etNickname.
-//		rp = (RelativeLayout.LayoutParams) etNickname.getLayoutParams();
-//		rp.width = width;
-//		rp.height = textViewHeight;
-//		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
 		//etPw.
 		rp = (RelativeLayout.LayoutParams) etPw.getLayoutParams();
@@ -262,17 +236,18 @@ public class SignUpPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) btnSignUp.getLayoutParams();
 		rp.width = width;
 		rp.height = buttonHeight;
-		rp.topMargin = ResizeUtils.getSpecificLength(800);
+		rp.topMargin = ResizeUtils.getSpecificLength(850);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 		
+		FontUtils.setFontSize(tvProfileTitle, 24);
+		FontUtils.setFontStyle(tvProfileTitle, FontUtils.BOLD);
 		FontUtils.setFontSize(tvProfile, 20);
-		FontUtils.setFontSize(tvCommonInfo, 34);
-		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 20);
-//		FontUtils.setFontAndHintSize(etNickname.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 30, 20);
+		FontUtils.setFontSize(tvCommonInfo, 24);
+		FontUtils.setFontStyle(tvCommonInfo, FontUtils.BOLD);
+		FontUtils.setFontAndHintSize(etEmail.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etPw.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 24, 20);
 		FontUtils.setFontSize(tvCheckEmail, 20);
-//		FontUtils.setFontSize(tvCheckNickname, 20);
 		FontUtils.setFontSize(tvCheckPw, 20);
 		FontUtils.setFontSize(tvCheckPwConfirm, 20);
 	}
@@ -302,21 +277,9 @@ public class SignUpPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 
-		return R.drawable.d_signin_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 214;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+		return R.string.pageTitle_signUp;
 	}
 
 	@Override
@@ -328,12 +291,9 @@ public class SignUpPage extends BCPFragment {
 //////////////////// Custom methods.
 
 	public boolean checkInfos() {
-		
+
 		if(!checkEmail()) {
 			ToastUtils.showToast(R.string.checkEmail);
-			
-//		} else if(!checkNickname()) {
-//			ToastUtils.showToast(R.string.checkNickname);
 			
 		} else if(!checkPw()) {
 			ToastUtils.showToast(R.string.checkPassword);
@@ -397,22 +357,6 @@ public class SignUpPage extends BCPFragment {
 		});
 	}
 	
-//	public boolean checkNickname() {
-//		
-//		if(StringUtils.checkTextLength(etNickname.getEditText(), NICKNAME_MIN, NICKNAME_MAX)
-//				!= StringUtils.PASS
-//				|| StringUtils.checkForbidContains(etNickname.getEditText(), false, false, false, true, true, false)) {
-//			tvCheckNickname.setText(R.string.checkNickname);
-//			tvCheckNickname.setVisibility(View.VISIBLE);
-//			passNickname = false;
-//		} else{
-//			tvCheckNickname.setVisibility(View.INVISIBLE);
-//			passNickname = true;
-//		}
-//		
-//		return passNickname;
-//	}
-	
 	public boolean checkPw() {
 		
 		if(StringUtils.checkTextLength(etPw.getEditText(), PASSWORD_MIN, PASSWORD_MAX)
@@ -460,22 +404,19 @@ public class SignUpPage extends BCPFragment {
 					LogUtils.trace(e);
 				}
 
-				signUp();
+				next();
 			}
 		};
 		
 		ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedSdCardPath);
 	}
 	
-	public void signUp() {
-
+	public void next() {
+		
 		Bundle bundle = new Bundle();
-		
-		bundle.putString("user[email]", StringUtils.getUrlEncodedString(etEmail.getEditText()));
-		bundle.putString("user[pw]", StringUtils.getUrlEncodedString(etPw.getEditText()));
-//		bundle.putString("user[nickname]", StringUtils.getUrlEncodedString(etNickname.getEditText()));
-		bundle.putString("user[profile_img_url]", StringUtils.getUrlEncodedString(selectedImageUrl));
-		
+		bundle.putString("profile_img_url", selectedImageUrl);
+		bundle.putString("email", etEmail.getEditText().getText().toString());
+		bundle.putString("pw", etPw.getEditText().getText().toString());
 		mActivity.showPage(BCPConstants.PAGE_SIGN_UP_FOR_DEALER, bundle);
 	}
 }

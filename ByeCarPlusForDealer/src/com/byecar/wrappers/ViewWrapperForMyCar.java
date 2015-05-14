@@ -1,35 +1,51 @@
 package com.byecar.wrappers;
 
+import org.json.JSONObject;
+
 import android.annotation.TargetApi;
+import android.content.DialogInterface;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.byecarplusfordealer.R;
+import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Car;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
+import com.outspoken_kid.utils.AppInfoUtils;
+import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class ViewWrapperForMyCar extends ViewWrapper {
-	
+
+	BCPFragmentActivity activity;
 	private Car car;
 	
 	private ImageView ivImage;
 	private View cover;
-	private TextView tvStatus;
+	private View typeIcon;
+	private View statusIcon;
 	private TextView tvRegdate;
 	private TextView tvCarName;
-	private TextView tvYear;
 	private TextView tvInfo;
-	private TextView tvBidding;
+	private Button btnReview;
+	private Button btnComplete;
+	private Button btnSelectDealer;
+	private Button btnLike;
+	private TextView tvLikeText;
 	
 	public ViewWrapperForMyCar(View row, int itemCode) {
 		super(row, itemCode);
@@ -37,16 +53,20 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 
 	@Override
 	public void bindViews() {
-
+		
 		try {
 			ivImage = (ImageView) row.findViewById(R.id.list_my_car_ivImage);
 			cover = row.findViewById(R.id.list_my_car_cover);
-			tvStatus = (TextView) row.findViewById(R.id.list_my_car_tvStatus);
+			typeIcon = row.findViewById(R.id.list_my_car_typeIcon);
+			statusIcon = row.findViewById(R.id.list_my_car_statusIcon);
 			tvRegdate = (TextView) row.findViewById(R.id.list_my_car_tvRegdate);
 			tvCarName = (TextView) row.findViewById(R.id.list_my_car_tvCarName);
-			tvYear = (TextView) row.findViewById(R.id.list_my_car_tvYear);
 			tvInfo = (TextView) row.findViewById(R.id.list_my_car_tvInfo);
-			tvBidding = (TextView) row.findViewById(R.id.list_my_car_tvBidding);
+			btnReview = (Button) row.findViewById(R.id.list_my_car_btnReview);
+			btnComplete = (Button) row.findViewById(R.id.list_my_car_btnComplete);
+			btnSelectDealer = (Button) row.findViewById(R.id.list_my_car_btnSelectDealer);
+			btnLike = (Button) row.findViewById(R.id.list_my_car_btnLike);
+			tvLikeText = (TextView) row.findViewById(R.id.list_my_car_tvLikeText);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
@@ -59,87 +79,176 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		try {
 			ResizeUtils.viewResizeForRelative(186, 132, ivImage, null, null, new int[]{31, 84, 0, 0});
 			ResizeUtils.viewResizeForRelative(608, 232, cover, null, null, new int[]{0, 0, 0, 0});
+			ResizeUtils.viewResizeForRelative(174, 30, typeIcon, null, null, new int[]{18, 20, 0, 0});
+			ResizeUtils.viewResizeForRelative(94, 41, statusIcon, null, null, new int[]{15, 15, 0, 0});
 			ResizeUtils.setMargin(tvRegdate, new int[]{0, 26, 18, 0});
 			ResizeUtils.viewResizeForRelative(290, 64, tvCarName, null, null, new int[]{16, 4, 0, 0});
-			ResizeUtils.setMargin(tvYear, new int[]{0, 20, 30, 0});
-			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvBidding, null, null, null);
-			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvInfo, null, null, null);
+			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvInfo, null, null, new int[]{16, 0, 0, 0});
+			ResizeUtils.viewResizeForRelative(157, 46, btnReview, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(157, 46, btnComplete, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(157, 46, btnSelectDealer, null, null, new int[]{0, 0, 42, 10});
+			ResizeUtils.viewResizeForRelative(90, 40, btnLike, null, null, new int[]{0, 0, 42, 11}, new int[]{32, 0, 9, 2});
+			ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 64, tvLikeText, null, null, new int[]{0, 0, 2, 0});
 			
-			tvStatus.setPadding(0, 0, ResizeUtils.getSpecificLength(16), 0);
-			
-			FontUtils.setFontSize(tvStatus, 18);
-			FontUtils.setFontStyle(tvStatus, FontUtils.BOLD);
 			FontUtils.setFontSize(tvRegdate, 16);
-			FontUtils.setFontSize(tvCarName, 28);
+			FontUtils.setFontSize(tvCarName, 26);
 			FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
-			FontUtils.setFontSize(tvYear, 20);
-			FontUtils.setFontSize(tvBidding, 20);
 			FontUtils.setFontSize(tvInfo, 20);
+			FontUtils.setFontSize(btnLike, 18);
+			FontUtils.setFontSize(tvLikeText, 20);
 		} catch(Exception e) {
 			LogUtils.trace(e);
 			setUnusableView();
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
 	@Override
 	public void setValues(BaseModel baseModel) {
 
 		try {
 			if(baseModel instanceof Car) {
+				
 				car = (Car) baseModel;
 				
-				tvStatus.setText(null);
-				tvBidding.setText(null);
-				tvInfo.setText(null);
+				//type(입찰진행중, 직거래, 중고차마켓)에 따른 아이콘 설정.
+				switch(car.getType()) {
 				
-				//바이카 옥션.
-				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY_AUCTION) {
-
-					FontUtils.addSpan(tvInfo, R.string.auctionedPrice, 0, 1);
-					tvBidding.setText("입찰자 " + car.getBids_cnt() + "명");
+				case Car.TYPE_BID:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title1);
+					break;
 					
-					//낙찰 성공.
-					if(car.getDealer_id() == MainActivity.dealer.getId()) {
-						tvStatus.setBackgroundResource(R.drawable.deal_complete_sale);
-						ResizeUtils.viewResizeForRelative(92, 39, tvStatus, null, null, new int[]{0, 18, 0, 0});
+				case Car.TYPE_DEALER:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title2);
+					break;
 					
-					//낙찰 순위권.
-					} else if(car.getMy_bid_ranking() != 0) {
-						tvStatus.setBackgroundResource(R.drawable.deal_complete_sale2);
-						ResizeUtils.viewResizeForRelative(133, 39, tvStatus, null, null, new int[]{0, 18, 0, 0});
-						tvStatus.setText(car.getMy_bid_ranking() + "위");
-						
-					//낙찰 순위권 외.
+				case Car.TYPE_DIRECT:
+					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
+					break;
+					
+				default:
+					if(AppInfoUtils.checkMinVersionLimit(16)) {
+						typeIcon.setBackground(null);
 					} else {
-						tvStatus.setBackgroundResource(R.drawable.deal_complete_sale3);
-						ResizeUtils.viewResizeForRelative(133, 39, tvStatus, null, null, new int[]{0, 18, 0, 0});
+						typeIcon.setBackgroundDrawable(null);
 					}
-						
-				//중고마켓.
-				} else {
-					
-					FontUtils.addSpan(tvInfo, R.string.salesPrice, 0, 1);
-					
-					if(car.getStatus() == -1) {
-						tvStatus.setBackgroundResource(R.drawable.deal_complete_sale5);
-					} else {
-						tvStatus.setBackgroundResource(R.drawable.deal_complete_sale4);
-						
-					}
-					
-					ResizeUtils.viewResizeForRelative(92, 39, tvStatus, null, null, new int[]{0, 18, 0, 0});
 				}
 				
-				tvRegdate.setText(StringUtils.getDateString(
-						"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
-				tvCarName.setText(car.getCar_full_name());
-				tvYear.setText(car.getYear() + row.getContext().getString(R.string.year));
+				//status에 따른 아이콘(검수중, 진행중, 거래완료)
+				switch(car.getStatus()) {
 				
-				FontUtils.addSpan(tvInfo, " " + StringUtils.getFormattedNumber(car.getPrice()/10000) + 
-						"만원", 0, 1, true);
+				//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
+//				public static final int STATUS_STAND_BY_APPROVAL = 0;
+//				public static final int STATUS_STAND_BY_BIDING = 5;
 				
+//				public static final int STATUS_BIDDING = 10;
+//				public static final int STATUS_BID_COMPLETE = 15;
+				
+//				public static final int STATUS_BID_SUCCESS = 20;
+//				public static final int STATUS_BID_FAIL = 21;
+//				public static final int STATUS_TRADE_COMPLETE = 30;
+				
+				case Car.STATUS_STAND_BY_APPROVAL:
+				case Car.STATUS_STAND_BY_BIDING:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
+					break;
+					
+				case Car.STATUS_BIDDING:
+				case Car.STATUS_BID_COMPLETE:
+				case Car.STATUS_BID_SUCCESS:
+				case Car.STATUS_BID_FAIL:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
+					break;
+				
+				case Car.STATUS_TRADE_COMPLETE:
+					statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
+					break;
+					
+				default:
+					if(AppInfoUtils.checkMinVersionLimit(16)) {
+						statusIcon.setBackground(null);
+					} else {
+						statusIcon.setBackgroundDrawable(null);
+					}
+				}
+//				
+//				//나의 차량, 구매 신청내역에서는 등록일, 좋아요에서는 찜한 날, 직거래의 경우 마감일도 있음.
+//				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY_LIKE) {
+//					//찜한날.
+//					tvRegdate.setText(StringUtils.getDateString(
+//							"찜한 날 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
+//				} else {
+//					//직거래는 등록일과 마감일, 나의 차량과 구매 신청내역에서는 등록일.
+//					if(car.getType() == Car.TYPE_DIRECT) {
+//						tvRegdate.setText(StringUtils.getDateString(
+//								"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000)
+//								+ StringUtils.getDateString(
+//								"\n마감일 yyyy년 MM월 dd일", car.getBid_until_at() * 1000));
+//					} else {
+//						tvRegdate.setText(StringUtils.getDateString(
+//								"등록일 yyyy년 MM월 dd일", car.getCreated_at() * 1000));
+//					}
+//				}
+				
+				//이미지.
 				setImage(ivImage, car.getRep_img_url());
+				
+				//차 이름.
+				tvCarName.setText(car.getCar_full_name());
+				
+				//나의 차량일 때 완료하기, 후기작성, 딜러선택하기 버튼 노출.
+				boolean showButton = false;
+				btnReview.setVisibility(View.INVISIBLE);
+				btnComplete.setVisibility(View.INVISIBLE);
+				btnSelectDealer.setVisibility(View.INVISIBLE);
+//				
+//				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY
+//						&& car.getType() == Car.TYPE_BID) {
+//					
+//					switch(car.getStatus()) {
+//					
+//					case Car.STATUS_BID_COMPLETE:
+//						btnSelectDealer.setVisibility(View.VISIBLE);
+//						showButton = true;
+//						break;
+//					
+//					case Car.STATUS_BID_SUCCESS:
+//						btnComplete.setVisibility(View.VISIBLE);
+//						showButton = true;
+//						break;
+//						
+//					case Car.STATUS_TRADE_COMPLETE:
+//						if(car.getHas_review() != 1) {
+//							btnReview.setVisibility(View.VISIBLE);
+//							showButton = true;
+//						}
+//						break;
+//					}
+//				}
+				
+				//입찰진행중 상태일 때는 "참여딜러 x명, xx만원”, 그 외에는 “판매가 xx만원”
+				if(car.getType() == Car.TYPE_BID) {
+					if(showButton) {
+						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "\n" 
+								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+					} else {
+						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "  " 
+								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+					}
+				} else {
+					tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+				}
+				
+//				//좋아요 버튼.
+//				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY_LIKE) {
+//					btnLike.setVisibility(View.VISIBLE);
+//					tvLikeText.setVisibility(View.VISIBLE);
+//					btnLike.setText("" + Math.min(9999, car.getLikes_cnt()));
+//				} else {
+//					btnLike.setVisibility(View.INVISIBLE);
+//					tvLikeText.setVisibility(View.INVISIBLE);
+//				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -149,10 +258,90 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 
 	@Override
 	public void setListeners() {
+		
+		if(car != null) {
+			
+			btnReview.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+					
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("car", car);
+					bundle.putInt("manager_id", car.getManager_id());
+					bundle.putInt("dealer_id", car.getDealer_id());
+					bundle.putInt("onsalecar_id", car.getId());
+					activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+				}
+			});
+			
+			btnComplete.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					activity.showAlertDialog("거래완료", "거래완료 처리하시겠습니까?",
+							"확인", "취소", 
+							new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									
+									completeSelling();
+								}
+							}, null);
+				}
+			});
+		}
 	}
 	
 	@Override
 	public void setUnusableView() {
 
+	}
+
+	public void setActivity(BCPFragmentActivity activity) {
+		
+		this.activity = activity;
+	}
+	
+	public void completeSelling() {
+		
+		String url = BCPAPIs.CAR_DEALER_COMPLETE_URL 
+				+ "?onsalecar_id=" + car.getId()
+				+ "&status=30";
+		
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("ViewWrapperForMyCar.onError." + "\nurl : "
+								+ url);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("ViewWrapperForMyCar.onCompleted."
+									+ "\nurl : " + url
+									+ "\nresult : " + objJSON);
+
+							if(objJSON.getInt("result") == 1) {
+								ToastUtils.showToast(R.string.complete_selling);
+								activity.getTopFragment().refreshPage();
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

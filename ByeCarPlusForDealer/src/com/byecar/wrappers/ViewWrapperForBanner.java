@@ -6,7 +6,6 @@ import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Banner;
 import com.outspoken_kid.classes.ViewWrapper;
 import com.outspoken_kid.model.BaseModel;
@@ -16,8 +15,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class ViewWrapperForBanner extends ViewWrapper {
 
 	private Banner banner;
-	
-	private BCPFragmentActivity mActivity;
+
 	private ImageView ivImage;
 	
 	public ViewWrapperForBanner(View row, int itemCode) {
@@ -69,12 +67,5 @@ public class ViewWrapperForBanner extends ViewWrapper {
 	@Override
 	public void setUnusableView() {
 
-	}
-	
-////////////////////Custom methods.
-	
-	public void setActivity(BCPFragmentActivity activity) {
-
-		mActivity = activity;
 	}
 }

@@ -35,6 +35,14 @@
 		        android:background="@drawable/pass_done_btn" 
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/findPwPage_etEmail" />
+		    
+		    <Button 
+		        android:id="@+id/findPwPage_btnCallToByeCar"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:background="@drawable/pass_call2" 
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/findPwPage_btnConfirm" />
 
         </RelativeLayout>
         

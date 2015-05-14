@@ -47,12 +47,14 @@ public class Dealer extends BCPBaseModel implements Serializable {
 	private String phone_number;
 	private String desc;
 	
+	private int avg_rating;
+	
 	public Dealer() {
 		
 	}
 	
 	public Dealer(JSONObject objJSON) {
-		
+
 		super(objJSON);
 		
 		try {
@@ -123,6 +125,10 @@ public class Dealer extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("desc")) {
 				this.desc = objJSON.getString("desc");
+			}
+			
+			if(objJSON.has("avg_rating")) {
+				this.avg_rating = objJSON.getInt("avg_rating");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -242,5 +248,13 @@ public class Dealer extends BCPBaseModel implements Serializable {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+
+	public int getAvg_rating() {
+		return avg_rating;
+	}
+
+	public void setAvg_rating(int avg_rating) {
+		this.avg_rating = avg_rating;
 	}
 }

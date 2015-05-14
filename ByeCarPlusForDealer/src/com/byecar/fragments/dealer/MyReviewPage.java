@@ -86,21 +86,9 @@ public class MyReviewPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-		
-		return R.drawable.episode_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 261;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+	public int getPageTitleTextResId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 	@Override

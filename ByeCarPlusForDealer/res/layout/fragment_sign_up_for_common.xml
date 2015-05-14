@@ -20,19 +20,27 @@
         <RelativeLayout
             android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
+    		
+            <TextView 
+		        android:id="@+id/signUpForCommonPage_tvProfileTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
 
             <FrameLayout
                 android:id="@+id/signUpForCommonPage_profileFrame"
                 android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_alignParentTop="true" >
+		        android:layout_below="@id/signUpForCommonPage_tvProfileTitle"
+		        android:layout_centerHorizontal="true" >
                 
                 <Button
                     android:id="@+id/signUpForCommonPage_btnProfile"
                     android:layout_width="match_parent"
 		        	android:layout_height="match_parent"
-		        	android:background="@drawable/sign1_picture_btn" />
+		        	android:background="@drawable/sign2_picture_btn" />
                 
                 <ImageView
                     android:id="@+id/signUpForCommonPage_ivProfile"
@@ -56,14 +64,14 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForCommonPage_profileFrame" />
             
-            <TextView
+            <TextView 
 		        android:id="@+id/signUpForCommonPage_tvCommonInfo"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/commonInfo"
-		        android:textColor="#000"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/signUpForCommonPage_tvProfile" />
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForCommonPage_tvProfile"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
 		    
 		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
 		        android:id="@+id/signUpForCommonPage_etEmail"
@@ -84,29 +92,11 @@
 		        android:layout_above="@id/signUpForCommonPage_etEmail" />
 		    
 		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-		        android:id="@+id/signUpForCommonPage_etNickname"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/signUpForCommonPage_etEmail" />
-		    
-		    <TextView
-		        android:id="@+id/signUpForCommonPage_tvCheckNickname"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginRight="5dp"
-		        android:layout_marginBottom="-5dp"
-		        android:visibility="invisible"
-		        android:textColor="#ff4b4b"
-		        android:layout_alignRight="@id/signUpForCommonPage_etNickname"
-		        android:layout_above="@id/signUpForCommonPage_etNickname" />
-		        
-		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
 		        android:id="@+id/signUpForCommonPage_etPw"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp" 
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/signUpForCommonPage_etNickname" />
+		        android:layout_below="@id/signUpForCommonPage_etEmail" />
 		    
 			<TextView
 		        android:id="@+id/signUpForCommonPage_tvCheckPw"
@@ -138,7 +128,7 @@
 		        android:textColor="#ff4b4b"
 		        android:layout_alignRight="@id/signUpForCommonPage_etPwConfirm"
 		        android:layout_above="@id/signUpForCommonPage_etPwConfirm" />
-		    		    
+		    		
 		    <Button 
 		        android:id="@+id/signUpForCommonPage_btnSignUp"
 		        android:layout_width="0dp"

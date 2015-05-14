@@ -11,7 +11,6 @@ import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Dealer;
 import com.byecar.views.TitleBar;
-import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 
 public class MyGradePage extends BCPFragment {
@@ -48,7 +47,7 @@ public class MyGradePage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				IntentUtils.call(mContext, getString(R.string.callByeCar));
+//				IntentUtils.call(mContext, getString(R.string.callByeCar));
 			}
 		});
 	}
@@ -65,23 +64,11 @@ public class MyGradePage extends BCPFragment {
 
 		return R.layout.fragment_my_grade;
 	}
-
+	
 	@Override
-	public int getBackButtonResId() {
-
-		return R.drawable.grade_back_btn_a;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 235;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+	public int getPageTitleTextResId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override

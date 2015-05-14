@@ -2,10 +2,12 @@ package com.byecar.classes;
 
 public class BCPAPIs {
 
-	public static String BASE_API_URL = "http://byecar1.minsangk.com";
+	public static String BASE_API_URL = "http://dev.bye-car.com";
 	public static String UPLOAD_URL = BASE_API_URL + "/files/upload/image.json";
 	public static String REGISTER_URL = BASE_API_URL + "/devices/register/android.json";
 	public static String PUSH_SETTING_URL = BASE_API_URL + "/users/update/to_get_pushed";
+	public static String AREA_URL = BASE_API_URL + "/zipcodes/areas.json";
+	public static String AREA_SEARCH_URL = BASE_API_URL + "/dongs/search.json";
 	
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
 	public static String SIGN_IN_URL = BASE_API_URL + "/users/login/dealer.json";
@@ -39,7 +41,9 @@ public class BCPAPIs {
 	public static String CAR_DEALER_SAVE_URL = BASE_API_URL + "/onsalecars/dealer/save.json";
 	public static String CAR_DEALER_DELETE_URL = BASE_API_URL + "/onsalecars/dealer/delete.json";
 	public static String CAR_DEALER_STATUS_URL = BASE_API_URL + "/onsalecars/dealer/set_status.json";
-
+	public static String CAR_DEALER_COMPLETE_URL = BASE_API_URL + "/onsalecars/dealer/set_status.json";
+	public static String CAR_DEALER_REPORT_URL = BASE_API_URL + "/onsalecars/dealer/report.json";
+	
 	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
 	public static String REVIEW_DEALER_URL = BASE_API_URL + "/dealers/reviews.json";
 	

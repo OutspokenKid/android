@@ -16,8 +16,8 @@
             android:id="@+id/mainForDealerActivity_ivProfile"
             android:layout_width="0dp"
 	        android:layout_height="0dp"
+	        android:layout_alignParentLeft="true"
 	        android:layout_alignParentTop="true"
-	        android:layout_centerHorizontal="true"
 	        android:background="@drawable/menu_default"
 	        android:scaleType="centerCrop" />
         
@@ -30,30 +30,72 @@
         
         <TextView 
             android:id="@+id/mainForDealerActivity_tvNickname"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
 	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
 	        android:layout_below="@id/mainForDealerActivity_ivProfile"
-	        android:layout_centerHorizontal="true"
+	        android:gravity="center"
 	        android:singleLine="true"
     		android:ellipsize="end"
 	        android:textColor="#fff" />
         
         <TextView 
             android:id="@+id/mainForDealerActivity_tvInfo"
+            android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentLeft="true"
+	        android:layout_below="@id/mainForDealerActivity_tvNickname"
+	        android:gravity="center"
+	        android:maxLines="2"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
+        
+        <View 
+            android:id="@+id/mainForDealerActivity_grade"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_alignTop="@id/mainForDealerActivity_ivProfile"
+	        android:layout_toRightOf="@id/mainForDealerActivity_ivProfile" />
+        
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvGrade"
+            android:layout_width="0dp"
+	        android:layout_height="wrap_content"
+	        android:layout_alignLeft="@id/mainForDealerActivity_grade"
+	        android:layout_alignTop="@id/mainForDealerActivity_tvInfo"
+	        android:gravity="center"
+	        android:singleLine="true"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnNotification"
+            android:layout_width="0dp"
+	        android:layout_height="0dp"
+	        android:layout_toRightOf="@id/mainForDealerActivity_grade"
+	        android:layout_alignTop="@id/mainForDealerActivity_grade"
+	        android:background="@drawable/menu_notification_btn" />
+        
+        <TextView 
+            android:id="@+id/mainForDealerActivity_tvNotification"
             android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_below="@id/mainForDealerActivity_tvNickname"
-	        android:layout_centerHorizontal="true"
-	        android:gravity="center_horizontal"
-	        android:textColor="@color/holo_text_hint" />
+	        android:layout_alignTop="@id/mainForDealerActivity_btnNotification"
+	        android:layout_alignRight="@id/mainForDealerActivity_btnNotification"
+	        android:visibility="invisible"
+	        android:gravity="center"
+	        android:padding="2dp"
+	        android:singleLine="true"
+    		android:ellipsize="end"
+	        android:textColor="#fff" />
         
         <Button 
             android:id="@+id/mainForDealerActivity_btnEdit"
             android:layout_width="0dp"
 	        android:layout_height="0dp"
-	        android:layout_alignParentRight="true"
-	        android:layout_below="@id/mainForDealerActivity_ivProfile"
-	        android:background="@drawable/menu_profile_setting_btn" />
+	        android:layout_centerHorizontal="true"
+	        android:layout_below="@id/mainForDealerActivity_tvInfo"
+	        android:background="@drawable/menu_modify_btn" />
         
         <com.outspoken_kid.views.OffsetScrollView
 	        android:id="@+id/mainForDealerActivity_scrollView"
@@ -85,7 +127,7 @@
 	        android:gravity="left|center_vertical"
 	        android:background="#66adadad"
 	        android:text="@string/sideMenuTitle2"
-	        android:textColor="#393939" />
+	        android:textColor="#fff" />
         
     </RelativeLayout>
 

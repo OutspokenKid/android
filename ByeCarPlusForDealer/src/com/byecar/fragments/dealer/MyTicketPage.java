@@ -50,21 +50,9 @@ public class MyTicketPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-
-		return R.drawable.ticket_back_btn;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-
-		return 282;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
-		return 60;
+	public int getPageTitleTextResId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	@Override

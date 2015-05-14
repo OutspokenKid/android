@@ -48,13 +48,15 @@ public class Review extends BCPBaseModel implements Serializable {
 	private String dealer_name;							//
 	private String certifier_profile_img_url;			//
 	private String certifier_name;						//
+	private Review reply;
+	private int dealer_level;
 	
 	public Review() {
 		
 	}
 	
 	public Review(JSONObject objJSON) {
-	
+
 		super(objJSON);
 		
 		try {
@@ -134,6 +136,22 @@ public class Review extends BCPBaseModel implements Serializable {
 				if(objJSON.has("certifier_name")) {
 					this.certifier_name = objJSON.getString("certifier_name");
 				}
+			}
+			
+			if(objJSON.has("priority")) {
+				this.priority = objJSON.getLong("priority");
+			}
+			
+			if(objJSON.has("reply")) {
+				this.reply = new Review(objJSON.getJSONObject("reply"));
+			}
+			
+			try {
+				if(objJSON.has("dealer_level")) {
+					this.dealer_level = objJSON.getInt("dealer_level");
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -277,5 +295,21 @@ public class Review extends BCPBaseModel implements Serializable {
 
 	public void setCertifier_name(String certifier_name) {
 		this.certifier_name = certifier_name;
+	}
+	
+	public Review getReply() {
+		return reply;
+	}
+	
+	public void setReply(Review reply) {
+		this.reply = reply;
+	}
+	
+	public int getDealer_level() {
+		return dealer_level;
+	}
+	
+	public void setDealer_level(int dealer_level) {
+		this.dealer_level = dealer_level;
 	}
 }

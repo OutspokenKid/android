@@ -29,5 +29,52 @@
     	android:numColumns="4"
     	android:listSelector="@android:color/transparent"
     	android:cacheColorHint="#0000" />
+    
+    <View 
+        android:id="@+id/typeSearchCarPage_cover"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="#a000"
+    	android:visibility="invisible" /> 
+    
+    <FrameLayout
+        android:id="@+id/typeSearchCarPage_popup"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerInParent="true"
+    	android:visibility="invisible"
+    	android:background="@drawable/accident_pop_bg" >
         
+        <TextView 
+        	android:id="@+id/typeSearchCarPage_tvTitle"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:text="@string/carSearchString_accidentHistory"
+    		android:textColor="#fff"
+    		android:gravity="center" />
+        
+        <Button 
+            android:id="@+id/typeSearchCarPage_btnClose"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/accident_close_btn" />
+        
+        <EditText
+            android:id="@+id/typeSearchCarPage_etHistory"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:hint="@string/hintForDetailCarHistory"
+    		android:textColor="@color/holo_text"
+    		android:textColorHint="@color/holo_text_hint"
+    		android:background="@drawable/accident_pop_text_box"
+    		android:gravity="left|top" />
+        
+        <Button 
+            android:id="@+id/typeSearchCarPage_btnComplete"
+        	android:layout_width="0dp"
+    		android:layout_height="0dp"
+    		android:background="@drawable/accident_save_btn" />
+        
+    </FrameLayout>
+    
 </RelativeLayout>

@@ -189,20 +189,8 @@ public class SignPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
+	public int getPageTitleTextResId() {
 		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	@Override
-	public int getBackButtonWidth() {
-
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-
 		return 0;
 	}
 

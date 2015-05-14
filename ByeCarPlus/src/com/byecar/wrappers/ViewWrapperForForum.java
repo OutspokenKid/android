@@ -6,7 +6,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 
 import com.byecar.byecarplus.R;
-import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Post;
 import com.byecar.views.ForumView;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -17,7 +16,6 @@ public class ViewWrapperForForum extends ViewWrapper {
 
 	private Post post;
 	private ForumView forumView;
-	private BCPFragmentActivity mActivity; 
 	
 	public ViewWrapperForForum(View row, int itemCode) {
 		super(row, itemCode);
@@ -56,10 +54,5 @@ public class ViewWrapperForForum extends ViewWrapper {
 	@Override
 	public void setUnusableView() {
 
-	}
-	
-	public void setActivity(BCPFragmentActivity activity) {
-
-		mActivity = activity;
 	}
 }

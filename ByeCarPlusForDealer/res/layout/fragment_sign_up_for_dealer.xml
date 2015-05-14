@@ -22,61 +22,52 @@
     		android:layout_height="wrap_content" >
     
             <TextView
-		        android:id="@+id/signUpForDealerPage_tvCertifyPhoneNumberText"
-		        android:layout_width="wrap_content"
+		        android:id="@+id/signUpForDealerPage_tvTitleText1"
+		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_alignParentTop="true"
+		        android:textColor="#fff"
 		        android:gravity="center_vertical"
-		        android:text="@string/certifyPhoneNumber"
-		        android:textColor="@color/holo_text" />
+		        android:background="@color/title_gray" />
             
             <TextView 
                 android:id="@+id/signUpForDealerPage_tvCertified"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/signUpForDealerPage_tvTitleText1"
+		        android:layout_centerHorizontal="true"
+		        android:gravity="center" />
+            
+            <View 
+                android:id="@+id/signUpForDealerPage_checked"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/signUpForDealerPage_tvCertifyPhoneNumberText"
-		        android:layout_centerHorizontal="true"
-		        android:gravity="center"
-		        android:textColor="@color/color_red"
-		        android:text="@string/requireCertifyPhoneNumber"
-		        android:background="@drawable/registration_box1" />
+		        android:layout_alignTop="@id/signUpForDealerPage_tvCertified"
+		        android:layout_toLeftOf="@id/signUpForDealerPage_tvCertified"
+		        android:background="@drawable/user_check" />
             
             <Button 
                 android:id="@+id/signUpForDealerPage_btnCertifyPhoneNumber"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/signUpForDealerPage_tvCertifyPhoneNumberText"
-				android:layout_alignParentRight="true"		        
-		        android:background="@drawable/registration_phone_info_btn" />
-            
-    		<View
-                android:id="@+id/signUpForDealerPage_lineAfterCertify"
-		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
+		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForDealerPage_tvCertified"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="20dp"
-		        android:background="@color/holo_text_hint" />
-    		
-			<TextView
-		        android:id="@+id/signUpForDealerPage_tvInfoText"
-		        android:layout_width="wrap_content"
+		        android:background="@drawable/sign2_phone_btn" />
+            
+            <TextView
+		        android:id="@+id/signUpForDealerPage_tvTitleText2"
+		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/signUpForDealerPage_lineAfterCertify"
+		        android:layout_below="@id/signUpForDealerPage_btnCertifyPhoneNumber"
+		        android:textColor="#fff"
 		        android:gravity="center_vertical"
-		        android:text="@string/addedInfo"
-		        android:textColor="@color/holo_text" />
+		        android:background="@color/title_gray" />
 			
 			<Button 
                 android:id="@+id/signUpForDealerPage_btnImage1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/signUpForDealerPage_tvInfoText"
+		        android:layout_below="@id/signUpForDealerPage_tvTitleText2"
 		        android:background="@drawable/sign2_picture2_btn" />
             
             <ImageView
@@ -133,45 +124,22 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/signUpForDealerPage_etInfo2"
 		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/signUpForDealerPage_etInfo4"
-		        android:layout_width="0dp"
+
+            <TextView
+		        android:id="@+id/signUpForDealerPage_tvTitleText3"
+		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/signUpForDealerPage_etInfo3"
-		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/signUpForDealerPage_etInfo5"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/signUpForDealerPage_etInfo4"
-		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/signUpForDealerPage_etInfo6"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/signUpForDealerPage_etInfo5"
-		        android:layout_centerHorizontal="true" />
-            
-            <View
-                android:id="@+id/signUpForDealerPage_lineAfterInfo"
-		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/signUpForDealerPage_etInfo6"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="20dp"
-		        android:background="@color/holo_text_hint" />
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
             
             <TextView
 		        android:id="@+id/signUpForDealerPage_tvIntroduce"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/signUpForDealerPage_lineAfterInfo"
+		        android:layout_below="@id/signUpForDealerPage_tvTitleText3"
 		        android:gravity="center_vertical"
 		        android:text="@string/introduce"
 		        android:textColor="@color/holo_text" />
@@ -213,7 +181,7 @@
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForDealerPage_tvTermOfUse"
-		        android:background="@drawable/sign2_signup_btn" />
+		        android:background="@drawable/sign2_complete_btn" />
 
 			<!-- Bottom blank. -->
 			

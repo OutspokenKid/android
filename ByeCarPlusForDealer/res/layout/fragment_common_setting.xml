@@ -21,77 +21,107 @@
             android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
     		
-            <View 
-                android:id="@+id/settingPage_bg1"
+            <TextView 
+		        android:id="@+id/settingPage_tvNotificationTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:text="@string/notificationSetting"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+            
+            <TextView 
+		        android:id="@+id/settingPage_tvNotification"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvNotificationTitle"
+		        android:text="@string/toggle_notification"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical" />
+            
+            <Button 
+                android:id="@+id/settingPage_btnNotification"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignParentTop="true"
-		        android:layout_centerHorizontal="true"
-		        android:background="@drawable/setting_push_frame" />
+		        android:layout_alignTop="@id/settingPage_tvNotification"
+		        android:layout_alignParentRight="true" />
             
-			<LinearLayout
-			    android:id="@+id/settingPage_alarmLinear"
-			    android:layout_width="0dp"
-			    android:layout_height="0dp"
-			    android:layout_alignRight="@id/settingPage_bg1"
-			    android:layout_alignBottom="@id/settingPage_bg1"
-			    android:orientation="horizontal"
-			    android:padding="1dp"
-			    android:background="@drawable/setting_toggle_bg" >
-			    
-                <View
-                    android:id="@+id/settingPage_alarmOff"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/setting_toggle_off" />
-                
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1" />
-                
-                <View
-                    android:id="@+id/settingPage_alarmOn"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:visibility="invisible"
-                    android:background="@drawable/setting_toggle_on" />
-			    
-			</LinearLayout>
+            <TextView 
+		        android:id="@+id/settingPage_tvBidding"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvNotification"
+		        android:text="@string/toggle_bidding"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical" />
             
-            <View 
-                android:id="@+id/settingPage_bg2"
+            <Button 
+                android:id="@+id/settingPage_btnBidding"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/settingPage_bg1"
-		        android:background="@drawable/setting_push_frame2" />
+		        android:layout_alignTop="@id/settingPage_tvBidding"
+		        android:layout_alignParentRight="true" />
             
-            <Button
-			    android:id="@+id/settingPage_btnWithdraw"
-			    android:layout_width="0dp"
-			    android:layout_height="0dp"
-			    android:layout_alignRight="@id/settingPage_bg2"
-			    android:layout_alignBottom="@id/settingPage_bg2"
-			    android:background="@drawable/setting_out_btn" />
+            <View
+		        android:layout_width="match_parent"
+		        android:layout_height="1px"
+		        android:layout_below="@id/settingPage_tvNotification"
+		        android:background="@color/color_ltgray" />
             
-            <View 
-                android:id="@+id/settingPage_bg3"
+            <TextView 
+		        android:id="@+id/settingPage_tvWithdrawTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvBidding"
+		        android:text="@string/withdraw"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+            
+            <TextView 
+		        android:id="@+id/settingPage_tvWithdraw"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvWithdrawTitle"
+		        android:text="@string/wannaWithdraw"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical" />
+            
+            <Button 
+                android:id="@+id/settingPage_btnWithdraw"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/settingPage_bg2"
-		        android:background="@drawable/setting_push_frame3" />
+		        android:layout_alignTop="@id/settingPage_tvWithdraw"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/setting_out_btn" />
             
-            <Button
-			    android:id="@+id/settingPage_btnSignOut"
-			    android:layout_width="0dp"
-			    android:layout_height="0dp"
-			    android:layout_alignRight="@id/settingPage_bg3"
-			    android:layout_alignBottom="@id/settingPage_bg3"
-			    android:background="@drawable/setting_logout_btn" />
+            <TextView 
+		        android:id="@+id/settingPage_tvSignOutTitle"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvWithdraw"
+		        android:text="@string/signOut"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
             
+            <TextView 
+		        android:id="@+id/settingPage_tvSignOut"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/settingPage_tvSignOutTitle"
+		        android:text="@string/wannaSignOut"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical" />
+            
+            <Button 
+                android:id="@+id/settingPage_btnSignOut"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/settingPage_tvSignOut"
+		        android:layout_alignParentRight="true"
+		        android:background="@drawable/setting_logout_btn" />
+                        
         </RelativeLayout>
         
     </ScrollView>

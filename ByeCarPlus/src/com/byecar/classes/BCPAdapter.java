@@ -139,9 +139,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 			return vwfmc;
 			
 		case BCPConstants.ITEM_FORUM:
-			ViewWrapperForForum vwff = new ViewWrapperForForum(convertView, itemCode);
-			vwff.setActivity(activity);
-			return vwff;
+			return new ViewWrapperForForum(convertView, itemCode);
 			
 		case BCPConstants.ITEM_FORUM_BEST:
 			ViewWrapperForForumBest vwffb = new ViewWrapperForForumBest(convertView, itemCode);

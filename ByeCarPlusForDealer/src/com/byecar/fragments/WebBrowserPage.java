@@ -124,24 +124,6 @@ public class WebBrowserPage extends BCPFragment {
 	}
 
 	@Override
-	public int getBackButtonResId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonWidth() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getBackButtonHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public int getRootViewResId() {
 
 		return R.id.webBrowserPage_mainLayout;
@@ -177,5 +159,11 @@ public class WebBrowserPage extends BCPFragment {
 		if(url != null && webView.getUrl() == null) {
 			webView.loadUrl(url);
 		}
+	}
+
+	@Override
+	public int getPageTitleTextResId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
