@@ -268,7 +268,6 @@ public class CarListPage extends BCPAuctionableFragment {
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(
 				R.id.carListPage_swipe_container).getLayoutParams();
 		
-		
 		//Set topMargin.
 		if(type != Car.TYPE_BID) {
 			rp.topMargin = ResizeUtils.getSpecificLength(88);
@@ -408,20 +407,6 @@ public class CarListPage extends BCPAuctionableFragment {
 		
 		if(models.size() == 0) {
 			downloadInfo();
-		}
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-
-		try {
-			
-			
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
 		}
 	}
 	

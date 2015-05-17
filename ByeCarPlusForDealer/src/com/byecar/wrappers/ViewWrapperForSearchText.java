@@ -81,7 +81,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 				if(model.getItemCode() == BCPConstants.ITEM_CAR_TEXT_DESC) {
 					row.setLayoutParams(new AbsListView.LayoutParams(
 							LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(120)));
-					FontUtils.setFontSize(tvText, 20);
+					FontUtils.setFontSize(tvText, 18);
 					tvText.setTextColor(Color.RED);
 					line.setVisibility(View.INVISIBLE);
 				} else {
@@ -137,11 +137,31 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 							
 							} else if(model instanceof CarSearchString) {
 								
+								CarSearchString css = (CarSearchString) model;
+								
 								if(model.getItemCode() == BCPConstants.ITEM_CAR_TEXT_DESC) {
 									return;
 								}
 								
-								CarSearchString css = (CarSearchString) model;
+								if(css.getType() == TypeSearchCarPage.TYPE_ACCIDENT
+										&& row.getContext().getString(R.string.carSearchString_accident2).equals(css.getText())) {
+									((TypeSearchCarPage) mActivity.getTopFragment()).showPopup();
+									return;
+								} else if(css.getType() == TypeSearchCarPage.TYPE_YEAR) {
+									mActivity.bundle = new Bundle();
+									mActivity.bundle.putString("year", css.getText());
+									
+									bundle.putInt("type", TypeSearchCarPage.TYPE_MONTH);
+									type = BCPConstants.PAGE_TYPE_SEARCH_CAR;
+									mActivity.showPage(type, bundle);
+									return;
+								} else if(css.getType() == TypeSearchCarPage.TYPE_MONTH) {
+									mActivity.bundle.putInt("requestCode", BCPConstants.REQUEST_SEARCH_MONTH);
+									mActivity.bundle.putString("month", css.getText());
+									mActivity.closePages(2);
+									return;
+								}
+								
 								mActivity.bundle = new Bundle();
 								mActivity.bundle.putInt("type", css.getType());
 								mActivity.bundle.putString("text", css.getText());

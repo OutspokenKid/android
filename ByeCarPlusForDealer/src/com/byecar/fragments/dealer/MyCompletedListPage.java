@@ -32,6 +32,7 @@ public class MyCompletedListPage extends BCPFragment {
 	private Button btnDealer;
 	
 	private ListView listView;
+	private View noListView;
 	
 	private int menuIndex;
 	
@@ -44,6 +45,7 @@ public class MyCompletedListPage extends BCPFragment {
 		btnDealer = (Button) mThisView.findViewById(R.id.myCompletedListPage_btnDealer);
 		
 		listView = (ListView) mThisView.findViewById(R.id.myCompletedListPage_listView);
+		noListView = mThisView.findViewById(R.id.myCompletedListPage_noListView);
 	}
 
 	@Override
@@ -132,6 +134,8 @@ public class MyCompletedListPage extends BCPFragment {
 		
 		ResizeUtils.viewResizeForRelative(320, 88, btnAuction, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnDealer, null, null, null);
+		
+		ResizeUtils.viewResizeForRelative(244, 225, noListView, null, null, null);
 	}
 
 	@Override
@@ -169,15 +173,25 @@ public class MyCompletedListPage extends BCPFragment {
 				Car car = new Car(arJSON.getJSONObject(i));
 				
 				if(menuIndex == 0) {
-					car.setItemCode(BCPConstants.ITEM_CAR_MY_AUCTION);
+					car.setItemCode(BCPConstants.ITEM_CAR_BID_COMPLETED);
 				} else {
-					car.setItemCode(BCPConstants.ITEM_CAR_MY_DEALER);
+					car.setItemCode(BCPConstants.ITEM_CAR_DEALER_COMPLETED);
 				}
 				
 				models.add(car);
 			}
 			
-			return true;
+			if(models.size() == 0) {
+				noListView.setVisibility(View.VISIBLE);
+			} else {
+				noListView.setVisibility(View.INVISIBLE);
+			}
+
+			if(size < NUMBER_OF_LISTITEMS) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

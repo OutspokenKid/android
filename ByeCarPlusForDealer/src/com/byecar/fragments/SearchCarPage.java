@@ -37,6 +37,7 @@ import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
@@ -437,6 +438,12 @@ public class SearchCarPage extends BCPFragment {
 			
 			adapter.notifyDataSetChanged();
 
+			if(models.size() == 0) {
+				noResultView.setVisibility(View.VISIBLE);
+			} else {
+				noResultView.setVisibility(View.INVISIBLE);
+			}
+			
 			if(size < NUMBER_OF_LISTITEMS) {
 				return true;
 			} else {
@@ -669,6 +676,7 @@ public class SearchCarPage extends BCPFragment {
 
 			refreshPage();
 			
+			SoftKeyboardUtils.hideKeyboard(mContext, etCarName);
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}

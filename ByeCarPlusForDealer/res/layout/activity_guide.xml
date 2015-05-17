@@ -16,7 +16,18 @@
    		android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_alignLeft="@id/guideActivity_titleBg"
-    	android:layout_alignTop="@id/guideActivity_titleBg" />
+    	android:layout_alignTop="@id/guideActivity_titleBg"
+    	android:background="@drawable/back_btn" />
+   	
+   	<TextView 
+   	    android:id="@+id/guideActivity_tvTitle"
+   		android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+    	android:layout_centerHorizontal="true"
+    	android:layout_alignTop="@id/guideActivity_titleBg"
+    	android:text="@string/pageTitle_guide"
+    	android:textColor="#fff"
+    	android:gravity="center_vertical" />
    	
    	<LinearLayout 
    	    android:id="@+id/guideActivity_menuLinear"

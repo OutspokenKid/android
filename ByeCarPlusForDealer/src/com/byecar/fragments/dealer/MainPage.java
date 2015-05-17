@@ -40,7 +40,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class MainPage extends BCPAuctionableFragment {
 
@@ -53,6 +52,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private Button btnGuide;
 	private Button btnSearch;
 	private Button btnMyCar;
+	private View noListView;
 	
 	private int menuIndex = -1;
 	
@@ -77,6 +77,8 @@ public class MainPage extends BCPAuctionableFragment {
 		btnGuide = (Button) mThisView.findViewById(R.id.mainPage_btnGuide);
 		btnSearch = (Button) mThisView.findViewById(R.id.mainPage_btnSearch);
 		btnMyCar = (Button) mThisView.findViewById(R.id.mainPage_btnMyCar);
+		
+		noListView = mThisView.findViewById(R.id.mainPage_noListView);
 	}
 
 	@Override
@@ -255,17 +257,8 @@ public class MainPage extends BCPAuctionableFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("btnMyCar");
-				
-//				Bundle bundle = new Bundle();
-//				
-//				if(menuIndex == 0) {
-//					bundle.putInt("type", Car.TYPE_BID);
-//				} else {
-//					bundle.putInt("type", Car.TYPE_DEALER);
-//				}
-//				
-//				mActivity.showPage(BCPConstants.PAGE_SEARCH_CAR, bundle);
+				Bundle bundle = new Bundle();
+				mActivity.showPage(BCPConstants.PAGE_CAR_MY_DEALER, bundle);
 			}
 		});
 	}
@@ -348,7 +341,7 @@ public class MainPage extends BCPAuctionableFragment {
 			itemCode = BCPConstants.ITEM_CAR_BID_IN_PROGRESS;
 			break;
 		case 1:
-			itemCode = BCPConstants.ITEM_CAR_BID_MY;
+			itemCode = BCPConstants.ITEM_CAR_BID_MINE;
 			break;
 		case 2:
 			itemCode = BCPConstants.ITEM_CAR_BID_SUCCESS;
@@ -373,6 +366,12 @@ public class MainPage extends BCPAuctionableFragment {
 			LogUtils.trace(e);
 		} finally {
 			swipeRefreshLayout.setRefreshing(false);
+		}
+		
+		if(models.size() == 0) {
+			noListView.setVisibility(View.VISIBLE);
+		} else {
+			noListView.setVisibility(View.INVISIBLE);
 		}
 		
 		if(size < NUMBER_OF_LISTITEMS) {
@@ -424,11 +423,40 @@ public class MainPage extends BCPAuctionableFragment {
 			swipeRefreshLayout.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(115));
 			buttonBg.setVisibility(View.VISIBLE);
 			btnRegistration.setVisibility(View.VISIBLE);
+			btnSearch.setVisibility(View.VISIBLE);
+			btnMyCar.setVisibility(View.VISIBLE);
 		} else {
 			swipeRefreshLayout.setPadding(0, 0, 0, 0);
 			buttonBg.setVisibility(View.INVISIBLE);
 			btnRegistration.setVisibility(View.INVISIBLE);
+			btnSearch.setVisibility(View.INVISIBLE);
+			btnMyCar.setVisibility(View.INVISIBLE);
 		}
+		
+		switch(index) {
+		
+		case 0:
+			noListView.setBackgroundResource(R.drawable.no_list);
+			ResizeUtils.viewResizeForRelative(246, 225, noListView, null, null, null);
+			break;
+			
+		case 1:
+			noListView.setBackgroundResource(R.drawable.bid_no_list);
+			ResizeUtils.viewResizeForRelative(202, 225, noListView, null, null, null);
+			break;
+			
+		case 2:
+			noListView.setBackgroundResource(R.drawable.complete_no_list);
+			ResizeUtils.viewResizeForRelative(246, 225, noListView, null, null, null);
+			break;
+			
+		case 3:
+			noListView.setBackgroundResource(R.drawable.no_list);
+			ResizeUtils.viewResizeForRelative(246, 225, noListView, null, null, null);
+			break;
+		}
+		
+		noListView.setVisibility(View.INVISIBLE);
 		
 		//처음 다운로드가 아니라면,
 		if(lastIndex != -1) {
@@ -561,7 +589,7 @@ public class MainPage extends BCPAuctionableFragment {
 			break;
 			
 		case 1:
-			car.setItemCode(BCPConstants.ITEM_CAR_BID_MY);
+			car.setItemCode(BCPConstants.ITEM_CAR_BID_MINE);
 			break;
 			
 		case 2:

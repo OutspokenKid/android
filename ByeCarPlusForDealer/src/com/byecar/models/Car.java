@@ -19,14 +19,15 @@ public class Car extends BCPBaseModel implements Serializable {
 	public static final int TYPE_DEALER = 2;
 	public static final int TYPE_DIRECT = 4;
 	
-	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
+	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 결제 필요, 40 : 거래 완료.
 	public static final int STATUS_STAND_BY_APPROVAL = 0;
 	public static final int STATUS_STAND_BY_BIDING = 5;
 	public static final int STATUS_BIDDING = 10;
 	public static final int STATUS_BID_COMPLETE = 15;
 	public static final int STATUS_BID_SUCCESS = 20;
 	public static final int STATUS_BID_FAIL = 21;
-	public static final int STATUS_TRADE_COMPLETE = 30;
+	public static final int STATUS_NEED_PAYMENT = 30;
+	public static final int STATUS_TRADE_COMPLETE = 40;
 	
 	private int id;
 	private int type;
@@ -96,7 +97,9 @@ public class Car extends BCPBaseModel implements Serializable {
 	private long liked_at;
 	private int dong_id;
 	private String accident_desc;
-
+	private int max_bid_price;
+	private int my_bid_price;
+	
 	public void copyValuesFromNewItem(Car newCar) {
 		
 		if(newCar == null) {
@@ -168,6 +171,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.liked_at = 0;
 			this.dong_id = 0;
 			this.accident_desc = null;
+			this.max_bid_price = 0;
+			this.my_bid_price = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -237,6 +242,8 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.liked_at = newCar.liked_at;
 			this.dong_id = newCar.dong_id;
 			this.accident_desc = newCar.accident_desc;
+			this.max_bid_price = newCar.max_bid_price;
+			this.my_bid_price = newCar.my_bid_price;
 		}
 	}
 	
@@ -527,6 +534,20 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("accident_desc")) {
 				this.accident_desc = objJSON.getString("accident_desc");
+			}
+			
+			try {
+				if(objJSON.has("max_bid_price")) {
+					this.max_bid_price = objJSON.getInt("max_bid_price");
+				}
+			} catch (Exception e) {
+			}
+			
+			try {
+				if(objJSON.has("my_bid_price")) {
+					this.my_bid_price = objJSON.getInt("my_bid_price");
+				}
+			} catch (Exception e) {
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1192,5 +1213,21 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setAccident_desc(String accident_desc) {
 		this.accident_desc = accident_desc;
+	}
+
+	public int getMax_bid_price() {
+		return max_bid_price;
+	}
+
+	public void setMax_bid_price(int max_bid_price) {
+		this.max_bid_price = max_bid_price;
+	}
+
+	public int getMy_bid_price() {
+		return my_bid_price;
+	}
+
+	public void setMy_bid_price(int my_bid_price) {
+		this.my_bid_price = my_bid_price;
 	}
 }

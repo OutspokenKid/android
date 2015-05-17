@@ -549,7 +549,7 @@
         android:layout_alignParentRight="true"
         android:background="@drawable/normal_direct_guide_btn" />
         
-	    <View 
+	<View 
         android:id="@+id/carRegistrationPage_cover"
         android:layout_width="match_parent"
     	android:layout_height="match_parent"

@@ -120,4 +120,11 @@
         android:layout_toLeftOf="@id/mainPage_btnSearch"
         android:background="@drawable/used_market_mycar_btn" />
     
+    <View 
+        android:id="@+id/mainPage_noListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" 
+        android:visibility="invisible" />
+    
 </RelativeLayout>

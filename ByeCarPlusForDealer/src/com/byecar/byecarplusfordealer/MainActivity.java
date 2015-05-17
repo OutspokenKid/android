@@ -45,6 +45,7 @@ import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
+import com.byecar.fragments.SearchAreaPage;
 import com.byecar.fragments.SearchCarPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
@@ -53,6 +54,7 @@ import com.byecar.fragments.WebBrowserPage;
 import com.byecar.fragments.dealer.CarDetailPage;
 import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.MainPage;
+import com.byecar.fragments.dealer.MyCarPage;
 import com.byecar.fragments.dealer.MyCompletedListPage;
 import com.byecar.fragments.dealer.MyGradePage;
 import com.byecar.fragments.dealer.MyPage;
@@ -199,6 +201,24 @@ public class MainActivity extends BCPFragmentActivity {
 	@Override
 	public void setListeners() {
 		
+		btnNotification.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				closeMenu();
+				
+				new Handler().postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+
+						showPage(BCPConstants.PAGE_NOTIFICATION, null);
+					}
+				}, 500);
+			}
+		});
+		
 		btnMore.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -255,7 +275,6 @@ public class MainActivity extends BCPFragmentActivity {
 						animating = false;
 					}
 				}, 300);
-				
 			}
 		});
 		
@@ -413,6 +432,9 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_DEALER:
 			return new DealerPage();
 			
+		case BCPConstants.PAGE_CAR_MY_DEALER:
+			return new MyCarPage();
+			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
 			
@@ -448,6 +470,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_TYPE_SEARCH_CAR:
 			return new TypeSearchCarPage();
+			
+		case BCPConstants.PAGE_SEARCH_AREA:
+			return new SearchAreaPage();
 			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();

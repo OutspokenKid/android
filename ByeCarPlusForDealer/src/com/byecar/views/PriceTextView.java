@@ -13,14 +13,18 @@ import com.outspoken_kid.utils.StringUtils;
 
 public class PriceTextView extends RelativeLayout {
 
-	public static final int TYPE_DETAIL_AUCTION = 0;
-	public static final int TYPE_DETAIL_OTHERS = 1;
-	public static final int TYPE_NORMAL_CAR = 2;
+	public static final int TYPE_CURRENT_BIG = 0;		//현재가(옥션상세).
+	public static final int TYPE_CURRENT_SMALL = 1;		//현재가(입찰중, 내 입찰).
+	public static final int TYPE_HIGHEST = 2;			//최고가(입찰 성공).
+	public static final int TYPE_MY_BIDDING = 3;		//내 입찰가(모든 옥션리스트).
+	public static final int TYPE_SUCCESS = 4;			//낙찰가(마이페이지 - 거래완료내역 - 바이카옥션).
+	public static final int TYPE_SELLING_BIG = 5;		//판매가(중고상세).
+	public static final int TYPE_SELLING_SMALL = 6;		//판매가(중고리스트).
 
 	/**
-	 * 0 : 만원
-	 * 1 : (가격)
-	 * 2 : 판매가/현재가
+	 * textViews[0] : 만원.
+	 * textViews[1] : (가격).
+	 * textViews[2] : 현재가/최고가/내 입찰가/낙찰가/판매가.
 	 */
 	private TextView[] textViews;
 	
@@ -52,24 +56,17 @@ public class PriceTextView extends RelativeLayout {
 			
 			case 0:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				FontUtils.setFontSize(textViews[i], 20);
 				textViews[i].setId(R.id.priceTextView_textView1);
-				textViews[i].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
 				break;
 				
 			case 1:
 				rp.addRule(RelativeLayout.LEFT_OF, R.id.priceTextView_textView1);
-				rp.rightMargin = ResizeUtils.getSpecificLength(6);
-				FontUtils.setFontSize(textViews[i], 32);
 				FontUtils.setFontStyle(textViews[i], FontUtils.BOLD);
 				textViews[i].setId(R.id.priceTextView_textView2);
 				break;
 				
 			case 2:
 				rp.addRule(RelativeLayout.LEFT_OF, R.id.priceTextView_textView2);
-				rp.rightMargin = ResizeUtils.getSpecificLength(4);
-				FontUtils.setFontSize(textViews[i], 20);
-				textViews[i].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
 				break;
 			}
 			
@@ -84,29 +81,53 @@ public class PriceTextView extends RelativeLayout {
 		
 		switch(type) {
 		
-		case TYPE_DETAIL_AUCTION:
-			setTextColor(getContext().getResources().getColor(R.color.color_orange2));
+//		public static final int TYPE_CURRENT_BIG = 0;		//현재가(옥션상세).
+		case TYPE_CURRENT_BIG:
+			setTextSize(true);
 			textViews[2].setText(R.string.currentPrice);
 			break;
 			
-		case TYPE_DETAIL_OTHERS:
-			setTextColor(getContext().getResources().getColor(R.color.color_orange2));
+//		public static final int TYPE_CURRENT_SMALL = 1;		//현재가(입찰중, 내 입찰).
+		case TYPE_CURRENT_SMALL:
+			setTextSize(false);
+			textViews[2].setText(R.string.currentPrice);
+			break;
+			
+//		public static final int TYPE_HIGHEST = 2;			//최고가(입찰 성공).
+		case TYPE_HIGHEST:
+			setTextSize(false);
+			textViews[2].setText(R.string.highestPrice);
+			break;
+			
+//		public static final int TYPE_MY_BIDDING = 3;		//내 입찰가(모든 옥션리스트).
+		case TYPE_MY_BIDDING:
+			setTextSize(false);
+			textViews[2].setText(R.string.myBiddingPrice);
+			break;
+			
+//		public static final int TYPE_SUCCESS = 4;			//낙찰가(마이페이지 - 거래완료내역 - 바이카옥션).
+		case TYPE_SUCCESS:
+			setTextSize(false);
+			textViews[2].setText(R.string.biddingSuccessPrice);
+			break;
+			
+//		public static final int TYPE_SELLING_BIG = 5;		//판매가(중고상세).
+		case TYPE_SELLING_BIG:
+			setTextSize(true);
 			textViews[2].setText(R.string.salesPrice);
 			break;
 			
-		case TYPE_NORMAL_CAR:
-			setTextColor(getContext().getResources().getColor(R.color.color_brown));
+//		public static final int TYPE_SELLING_SMALL = 6;		//판매가(중고리스트).
+		case TYPE_SELLING_SMALL:
+			setTextSize(false);
 			textViews[2].setText(R.string.salesPrice);
-			
-			FontUtils.setFontSize(textViews[0], 18);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
-			
-			FontUtils.setFontSize(textViews[1], 24);
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 18);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
 			break;
+		}
+		
+		if(type == TYPE_MY_BIDDING) {
+			setTextColor(getContext().getResources().getColor(R.color.holo_text));
+		} else {
+			setTextColor(getContext().getResources().getColor(R.color.color_orange));
 		}
 	}
 	
@@ -118,6 +139,39 @@ public class PriceTextView extends RelativeLayout {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
+		}
+	}
+	
+	public void setTextSize(boolean isBig) {
+		
+		RelativeLayout.LayoutParams rp = null;
+		
+		if(isBig) {
+			FontUtils.setFontSize(textViews[0], 20);
+			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
+			
+			FontUtils.setFontSize(textViews[1], 32);
+			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
+			rp.rightMargin = ResizeUtils.getSpecificLength(6);
+			
+			FontUtils.setFontSize(textViews[2], 20);
+			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
+			rp.rightMargin = ResizeUtils.getSpecificLength(4);
+			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
+			
+		//75%
+		} else {
+			FontUtils.setFontSize(textViews[0], 15);
+			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
+			
+			FontUtils.setFontSize(textViews[1], 24);
+			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
+			rp.rightMargin = ResizeUtils.getSpecificLength(4);
+			
+			FontUtils.setFontSize(textViews[2], 15);
+			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
+			rp.rightMargin = ResizeUtils.getSpecificLength(3);
+			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
 		}
 	}
 	

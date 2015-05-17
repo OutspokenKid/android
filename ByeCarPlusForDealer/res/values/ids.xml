@@ -12,87 +12,8 @@
 	<item name="bidInfoView_tvBidCount" type="id" />
 	<item name="bidInfoView_btnLike" type="id" />
     
-    <item name="carDetailPage_detailInfoText1" type="id" />
-    <item name="carDetailPage_detailInfoText2" type="id" />
-    <item name="carDetailPage_detailInfoText3" type="id" />
-    <item name="carDetailPage_detailInfoText4" type="id" />
-    <item name="carDetailPage_detailInfoText5" type="id" />
-    <item name="carDetailPage_detailInfoText6" type="id" />
-    <item name="carDetailPage_detailInfoText7" type="id" />
-    <item name="carDetailPage_detailInfoText8" type="id" />
-    <item name="carDetailPage_detailInfoText9" type="id" />
-    <item name="carDetailPage_detailInfoText10" type="id" />
-    <item name="carDetailPage_detailInfoText11" type="id" />
-    <item name="carDetailPage_detailInfoText12" type="id" />
-    
-    <item name="carDetailPage_detailInfo1" type="id" />
-    <item name="carDetailPage_detailInfo2" type="id" />
-    <item name="carDetailPage_detailInfo3" type="id" />
-    <item name="carDetailPage_detailInfo4" type="id" />
-    <item name="carDetailPage_detailInfo5" type="id" />
-    <item name="carDetailPage_detailInfo6" type="id" />
-    <item name="carDetailPage_detailInfo7" type="id" />
-    <item name="carDetailPage_detailInfo8" type="id" />
-    <item name="carDetailPage_detailInfo9" type="id" />
-    <item name="carDetailPage_detailInfo10" type="id" />
-    <item name="carDetailPage_detailInfo11" type="id" />
-    <item name="carDetailPage_detailInfo12" type="id" />
-    
-    <item name="carDetailPage_optionTextView1" type="id" />
-    <item name="carDetailPage_optionTextView2" type="id" />
-    <item name="carDetailPage_optionView1" type="id" />
-    <item name="carDetailPage_optionView2" type="id" />
-    <item name="carDetailPage_optionView3" type="id" />
-    <item name="carDetailPage_optionView4" type="id" />
-    <item name="carDetailPage_optionView5" type="id" />
-    <item name="carDetailPage_optionView6" type="id" />
-    <item name="carDetailPage_optionView7" type="id" />
-    <item name="carDetailPage_optionView8" type="id" />
-    <item name="carDetailPage_optionView9" type="id" />
-    <item name="carDetailPage_optionView10" type="id" />
-    <item name="carDetailPage_optionView11" type="id" />
-    <item name="carDetailPage_optionView12" type="id" />
-    <item name="carDetailPage_optionView13" type="id" />
-    <item name="carDetailPage_optionView14" type="id" />
-    <item name="carDetailPage_optionView15" type="id" />
-    <item name="carDetailPage_optionView16" type="id" />
-    <item name="carDetailPage_optionView17" type="id" />
-    <item name="carDetailPage_optionView18" type="id" />
-    <item name="carDetailPage_optionView19" type="id" />
-    <item name="carDetailPage_optionView20" type="id" />
-    <item name="carDetailPage_optionView21" type="id" />
-    <item name="carDetailPage_optionView22" type="id" />
-    <item name="carDetailPage_optionView23" type="id" />
-    <item name="carDetailPage_optionView24" type="id" />
-    <item name="carDetailPage_optionView25" type="id" />
-    <item name="carDetailPage_optionView26" type="id" />
-    <item name="carDetailPage_optionView27" type="id" />
-    <item name="carDetailPage_optionView28" type="id" />
-    <item name="carDetailPage_optionView29" type="id" />
-    <item name="carDetailPage_optionView30" type="id" />
-    <item name="carDetailPage_optionView31" type="id" />
-
-    <item name="carDetailPage_used_ivImage" type="id" />
-    <item name="carDetailPage_used_tvInfo1" type="id" />
-    <item name="carDetailPage_used_tvInfo2" type="id" />
-    <item name="carDetailPage_used_tvGrade" type="id" />
-    <item name="carDetailPage_used_line" type="id" />
-    <item name="carDetailPage_used_btnMoveToPage" type="id" />
-    
-    <item name="carDetailPage_certified_ivImage" type="id" />
-    <item name="carDetailPage_certified_tvInfo" type="id" />
-    <item name="carDetailPage_certified_tvDesc" type="id" />
-    <item name="carDetailPage_certified_line" type="id" />
-    
-    <item name="carDetailPage_normal_ivImage" type="id" />
-    <item name="carDetailPage_normal_tvInfo" type="id" />
-    <item name="carDetailPage_normal_line1" type="id" />
-    <item name="carDetailPage_normal_tvPhone" type="id" />
-    <item name="carDetailPage_normal_line2" type="id" />
-    <item name="carDetailPage_normal_tvArea" type="id" />
-    
-    <item name="carRegistrationPage_optionTextView1" type="id" />
-    <item name="carRegistrationPage_optionTextView2" type="id" />
+    <item name="carRegistrationPage_optionTitleView1" type="id" />
+    <item name="carRegistrationPage_optionTitleView2" type="id" />
     <item name="carRegistrationPage_optionView1" type="id" />
     <item name="carRegistrationPage_optionView2" type="id" />
     <item name="carRegistrationPage_optionView3" type="id" />
@@ -139,10 +60,10 @@
 	<item name="priceTextView_textView1" type="id" />
 	<item name="priceTextView_textView2" type="id" />
 	
-	<item name="usedCarView_ivImage" type="id" />
-	<item name="usedCarView_ivProfile" type="id" />
-	<item name="usedCarView_tvDealerName" type="id" />
-	<item name="usedCarView_btnLike" type="id" />
-	<item name="usedCarView_infoBadg1" type="id" />
+	<item name="carView_ivImage" type="id" />
+	<item name="carView_ivProfile" type="id" />
+	<item name="carView_tvDealerName" type="id" />
+	<item name="carView_btnLike" type="id" />
+	<item name="carView_infoBadg1" type="id" />
 		    
 </resources>

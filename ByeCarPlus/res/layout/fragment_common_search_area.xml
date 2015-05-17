@@ -26,7 +26,7 @@
     		android:layout_height="0dp"
     		android:layout_centerHorizontal="true"
     		android:layout_below="@id/searchAreaPage_tvTitle"
-    		android:hint="@string/hintForDetailCarHistory"
+    		android:hint="@string/hintForSearchArea"
     		android:textColor="@color/holo_text"
     		android:textColorHint="@color/holo_text_hint"
     		android:background="@drawable/filter_text_box"

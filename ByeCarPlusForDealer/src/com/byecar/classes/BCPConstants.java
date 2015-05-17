@@ -22,15 +22,16 @@ public class BCPConstants {
 	public static final int ITEM_AREA_FOR_SEARCH = 8;
 	
 	//Items for car.
-	public static final int ITEM_CAR_BID_IN_PROGRESS = 14;
-	public static final int ITEM_CAR_BID_MY = 12;
-	public static final int ITEM_CAR_BID_SUCCESS = 11;
-	public static final int ITEM_CAR_DEALER = 13;
-	public static final int ITEM_CAR_BRAND = 15;
-	public static final int ITEM_CAR_TEXT = 16;
-	public static final int ITEM_CAR_TEXT_DESC = 17;
-	public static final int ITEM_CAR_MY_AUCTION = 18;
-	public static final int ITEM_CAR_MY_DEALER = 19;
+	public static final int ITEM_CAR_BID_IN_PROGRESS = 10;	//입찰중.
+	public static final int ITEM_CAR_BID_MINE = 11;			//내 입찰.
+	public static final int ITEM_CAR_BID_SUCCESS = 12;		//입찰 성공.
+	public static final int ITEM_CAR_BID_COMPLETED = 13;	//마이페이지 - 거래완료내역 - 바이카옥션.
+	public static final int ITEM_CAR_DEALER = 14;			//중고차마켓.
+	public static final int ITEM_CAR_DEALER_MINE = 15;		//중고차마켓 - 내 차 보기.
+	public static final int ITEM_CAR_DEALER_COMPLETED = 16;	//마이페이지 - 거래완료내역 - 중고차마켓.
+	public static final int ITEM_CAR_BRAND = 17;
+	public static final int ITEM_CAR_TEXT = 18;
+	public static final int ITEM_CAR_TEXT_DESC = 19;
 	
 	public static final int ITEM_BANNER = 30;
 	
@@ -60,8 +61,10 @@ public class BCPConstants {
 	//Pages for car.
 	public static final int PAGE_CAR_DETAIL = 31;
 	public static final int PAGE_CAR_REGISTRATION = 32;
-	public static final int PAGE_SEARCH_CAR = 37;
-	public static final int PAGE_TYPE_SEARCH_CAR = 39;
+	public static final int PAGE_CAR_MY = 33;
+	public static final int PAGE_CAR_MY_DEALER = 34;
+	public static final int PAGE_SEARCH_CAR = 35;
+	public static final int PAGE_TYPE_SEARCH_CAR = 36;
 	
 	public static final int PAGE_WEB_BROWSER = 40;
 	public static final int PAGE_SEARCH_AREA = 51;

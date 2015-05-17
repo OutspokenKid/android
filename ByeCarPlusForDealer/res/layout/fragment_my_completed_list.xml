@@ -48,4 +48,11 @@
     	android:listSelector="@android:color/transparent"
     	android:cacheColorHint="#0000" />
     
+    <Button 
+        android:id="@+id/myCompletedListPage_noListView"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerInParent="true"
+    	android:background="@drawable/success_no_list" />
+    
 </RelativeLayout>

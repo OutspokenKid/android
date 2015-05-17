@@ -47,6 +47,7 @@ public class ViewWrapperForCar extends ViewWrapper {
 		if(baseModel instanceof Car) {
 			
 			this.car = (Car) baseModel;
+			carView.setActivity(mActivity);
 			carView.setCar(car);
 		}
 	}

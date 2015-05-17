@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myCarPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/myCarPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/myCarPage_swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/myCarPage_titleBar" >
+
+        <ListView
+            android:id="@+id/myCarPage_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+    		android:cacheColorHint="#0000"
+            android:background="#0000" />
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+    
+    <Button 
+        android:id="@+id/myCarPage_noListView"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_centerInParent="true"
+    	android:background="@drawable/no_list" />
+        
+</RelativeLayout>

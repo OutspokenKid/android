@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        android:background="@drawable/push_notice" />
+        android:background="@drawable/d_push_notice" />
     
     <View
         android:id="@+id/list_notification_cover"

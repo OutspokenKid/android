@@ -291,7 +291,7 @@ public class CarInfoView extends RelativeLayout {
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
 						+ "명/입찰횟수 " + car.getBids_cnt() + "명");
 				
-				priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+				priceTextView.setType(PriceTextView.TYPE_CURRENT_BIG);
 			} else {
 				tvBidCount.setVisibility(View.INVISIBLE);
 				btnLike.setVisibility(View.VISIBLE);
@@ -305,7 +305,7 @@ public class CarInfoView extends RelativeLayout {
 				
 				btnLike.setText("" + car.getLikes_cnt());
 			
-				priceTextView.setType(PriceTextView.TYPE_DETAIL_OTHERS);
+				priceTextView.setType(PriceTextView.TYPE_SELLING_BIG);
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);

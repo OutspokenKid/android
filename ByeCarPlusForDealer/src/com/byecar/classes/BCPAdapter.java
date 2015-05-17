@@ -7,12 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.byecar.byecarplusfordealer.R;
-import com.byecar.wrappers.ViewWrapperForBanner;
+import com.byecar.wrappers.ViewWrapperForArea;
 import com.byecar.wrappers.ViewWrapperForBrand;
-import com.byecar.wrappers.ViewWrapperForMyCar;
+import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForNotification;
 import com.byecar.wrappers.ViewWrapperForOpenablePost;
-import com.byecar.wrappers.ViewWrapperForCar;
 import com.byecar.wrappers.ViewWrapperForSearchText;
 import com.outspoken_kid.classes.OutSpokenAdapter;
 import com.outspoken_kid.classes.ViewWrapper;
@@ -49,9 +48,11 @@ public class BCPAdapter extends OutSpokenAdapter {
 //			return R.layout.list_my_review;
 			
 		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
-		case BCPConstants.ITEM_CAR_BID_MY:
+		case BCPConstants.ITEM_CAR_BID_MINE:
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
+		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			return R.layout.list_car;
 			
 		case BCPConstants.ITEM_CAR_BRAND: 
@@ -60,13 +61,9 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_TEXT:
 		case BCPConstants.ITEM_CAR_TEXT_DESC:
 			return R.layout.list_search_text;
-			
-		case BCPConstants.ITEM_CAR_MY_AUCTION:
-		case BCPConstants.ITEM_CAR_MY_DEALER:
-			return R.layout.list_my_car;
-			
-		case BCPConstants.ITEM_BANNER:
-			return R.layout.list_banner;
+
+		case BCPConstants.ITEM_AREA_FOR_SEARCH:
+			return R.layout.list_area;
 		}
 
 		return 0;
@@ -88,9 +85,11 @@ public class BCPAdapter extends OutSpokenAdapter {
 //			return new ViewWrapperForMyReview(convertView, itemCode);
 			
 		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
-		case BCPConstants.ITEM_CAR_BID_MY:
+		case BCPConstants.ITEM_CAR_BID_MINE:
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
+		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
 			vwfc.setActivity(activity);
 			return vwfc;
@@ -106,12 +105,8 @@ public class BCPAdapter extends OutSpokenAdapter {
 			vwfst.setActivity(activity);
 			return vwfst;
 			
-		case BCPConstants.ITEM_CAR_MY_AUCTION:
-		case BCPConstants.ITEM_CAR_MY_DEALER:
-			return new ViewWrapperForMyCar(convertView, itemCode);
-			
-		case BCPConstants.ITEM_BANNER:
-			return new ViewWrapperForBanner(convertView, itemCode);
+		case BCPConstants.ITEM_AREA_FOR_SEARCH:
+			return new ViewWrapperForArea(convertView, itemCode);
 		}
 		
 		return null;
@@ -123,9 +118,11 @@ public class BCPAdapter extends OutSpokenAdapter {
 		switch (itemCode) {
 		
 		case BCPConstants.ITEM_CAR_BID_IN_PROGRESS:
-		case BCPConstants.ITEM_CAR_BID_MY:
+		case BCPConstants.ITEM_CAR_BID_MINE:
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
+		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(30), 0, 0);
@@ -168,9 +165,6 @@ public class BCPAdapter extends OutSpokenAdapter {
 			break;
 			
 		case BCPConstants.ITEM_REVIEW:
-		case BCPConstants.ITEM_CAR_MY_AUCTION:
-		case BCPConstants.ITEM_CAR_MY_DEALER:
-			
 			if(position == 0) {
 				convertView.setPadding(0, ResizeUtils.getSpecificLength(20), 0, 0);
 				

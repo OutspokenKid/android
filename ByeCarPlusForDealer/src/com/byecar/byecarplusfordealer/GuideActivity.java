@@ -13,8 +13,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.byecar.classes.ImagePagerAdapter;
+import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.views.PageNavigatorView;
 
@@ -27,6 +29,7 @@ public class GuideActivity extends Activity {
 	private int[][] imageResIds;
 	
 	private Button btnBack;
+	private TextView tvTitle;
 	private LinearLayout menuLinear;
 	private View bottomLine;
 	private ArrayList<Button> menuButtons = new ArrayList<Button>();
@@ -52,6 +55,7 @@ public class GuideActivity extends Activity {
 	public void bindViews() {
 		
 		btnBack = (Button) findViewById(R.id.guideActivity_btnBack);
+		tvTitle = (TextView) findViewById(R.id.guideActivity_tvTitle);
 		menuLinear = (LinearLayout) findViewById(R.id.guideActivity_menuLinear);
 		bottomLine = findViewById(R.id.guideActivity_bottomLine);
 		
@@ -83,7 +87,6 @@ public class GuideActivity extends Activity {
 					{
 						R.drawable.information2_img1,
 						R.drawable.information2_img2,
-						R.drawable.information2_img3,
 					},
 			};
 			break;
@@ -103,20 +106,9 @@ public class GuideActivity extends Activity {
 
 		findViewById(R.id.guideActivity_titleBg).getLayoutParams().height = ResizeUtils.getSpecificLength(88);
 
-		int width = 0;
-		
-		switch(type) {
-		
-		case TYPE_DEALER:
-			btnBack.setBackgroundResource(R.drawable.information_back_btn);
-			width = 365;
-			break;
-		}
-		
 		RelativeLayout.LayoutParams rp = ((RelativeLayout.LayoutParams)btnBack.getLayoutParams());
-		rp.width = ResizeUtils.getSpecificLength(width);
+		rp.width = ResizeUtils.getSpecificLength(161);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.leftMargin = ResizeUtils.getSpecificLength(8);
 		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		
 		btnBack.setOnClickListener(new OnClickListener() {
@@ -127,6 +119,11 @@ public class GuideActivity extends Activity {
 				finish();
 			}
 		});
+		
+		rp = ((RelativeLayout.LayoutParams)tvTitle.getLayoutParams());
+		rp.height = ResizeUtils.getSpecificLength(88);
+		FontUtils.setFontSize(tvTitle, 32);
+		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
 	}
 	
 	public void setMenu() {

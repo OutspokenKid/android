@@ -14,14 +14,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -85,6 +82,9 @@ public class CarRegistrationPage extends BCPFragment {
 	private ImageView[] ivPhotos;
 	private TextView[] tvCarPhotos;
 	
+	private TextView tvCheckTitle;
+	private Button btnCheck;
+	
 	private TextView tvOptionTitle;
 	private RelativeLayout relativeForOption;
 	private View[] optionViews;
@@ -93,18 +93,10 @@ public class CarRegistrationPage extends BCPFragment {
 	private EditText etCarDescription;
 	private TextView tvTextCount;
 	
-	private TextView tvTermOfUseTitle;
 	private View termOfUse;
 	private Button btnTermOfUse;
 	private Button btnComplete;
 	private Button btnGuide;
-	
-	private View cover;
-	private FrameLayout popup;
-	private TextView tvTitle;
-	private Button btnClose;
-	private View clock;
-	private TextView tvDesc;
 	
 	private String[] carInfoStrings = new String[6];
 	private boolean[] checked;
@@ -117,7 +109,7 @@ public class CarRegistrationPage extends BCPFragment {
 	private int trim_id;
 	
 	private int selectedImageIndex;
-	private String[] selectedImageSdCardPaths = new String[8];
+	private String[] selectedImageSdCardPaths = new String[9];	//필수4 추가4 성능점검1.
 	
 	private boolean isLoaded;
 	private boolean isSetInfo;
@@ -164,14 +156,16 @@ public class CarRegistrationPage extends BCPFragment {
 		btnCarInfos[6] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarInfo7);
 		
 		tvDetailCarInfoTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfoTitle);
-		etDetailCarInfos = new HoloStyleEditText[3];
+		etDetailCarInfos = new HoloStyleEditText[4];
 		etDetailCarInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo1);
 		etDetailCarInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo2);
 		etDetailCarInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo3);
-		tvDetailCarInfos = new TextView[3];
+		etDetailCarInfos[3] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo4);
+		tvDetailCarInfos = new TextView[4];
 		tvDetailCarInfos[0] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo1);
 		tvDetailCarInfos[1] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo2);
 		tvDetailCarInfos[2] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo3);
+		tvDetailCarInfos[3] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo4);
 		
 		tvCarPhotoTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhotoTitle);
 		tvRightPhoto = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvRightPhoto);
@@ -187,7 +181,7 @@ public class CarRegistrationPage extends BCPFragment {
 		btnPhotos[6] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto3);
 		btnPhotos[7] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto4);
 
-		ivPhotos = new ImageView[8];
+		ivPhotos = new ImageView[9];
 		ivPhotos[0] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto1);
 		ivPhotos[1] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto2);
 		ivPhotos[2] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto3);
@@ -203,14 +197,16 @@ public class CarRegistrationPage extends BCPFragment {
 		tvCarPhotos[2] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto3);
 		tvCarPhotos[3] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto4);
 		
+		tvCheckTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCheckTitle);
+		ivPhotos[8] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCheck);
+		btnCheck = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCheck);
+		
 		tvOptionTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvOptionTitle);
 		relativeForOption = (RelativeLayout) mThisView.findViewById(R.id.carRegistrationPage_relativeForOption);
 		
 		tvCarDescriptionTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarDescriptionTitle);
 		etCarDescription = (EditText) mThisView.findViewById(R.id.carRegistrationPage_etCarDescription);
 		tvTextCount = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvTextCount);
-		
-		tvTermOfUseTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvTermOfUseTitle);
 		
 		termOfUse = mThisView.findViewById(R.id.carRegistrationPage_termOfUse);
 		btnTermOfUse = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnTermOfUse);
@@ -247,6 +243,7 @@ public class CarRegistrationPage extends BCPFragment {
 		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo12);
 		etDetailCarInfos[1].setHint(R.string.hintForDetailCarInfo22);
 		etDetailCarInfos[2].setHint(R.string.hintForDetailCarInfo32);
+		etDetailCarInfos[3].setHint(R.string.hintForDetailCarInfo42);
 		
 		etCarDescription.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_DESC_COUNT)});
 		tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
@@ -425,24 +422,6 @@ public class CarRegistrationPage extends BCPFragment {
 				mActivity.startActivity(intent);
 			}
 		});
-	
-		cover.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				hidePopup();
-			}
-		});
-		
-		btnClose.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				hidePopup();
-			}
-		});
 	}
 
 	@Override
@@ -546,8 +525,8 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		}
 		
-		//ivPhotos.
-		for(int i=0; i<ivPhotos.length; i++) {
+		//ivPhotos.	성능점검기록부 제외.
+		for(int i=0; i<ivPhotos.length - 1; i++) {
 			rp = (RelativeLayout.LayoutParams) ivPhotos[i].getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(144);
 			rp.height = ResizeUtils.getSpecificLength(110);
@@ -566,12 +545,31 @@ public class CarRegistrationPage extends BCPFragment {
 			rp.width = ResizeUtils.getSpecificLength(144);
 			rp.topMargin = ResizeUtils.getSpecificLength(10);
 		}
+
+		//tvCheckTitle.
+		rp = (RelativeLayout.LayoutParams) tvCheckTitle.getLayoutParams();
+		rp.width = LayoutParams.MATCH_PARENT;
+		rp.height = ResizeUtils.getSpecificLength(40);
+		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		tvCheckTitle.setPadding(titlePadding, 0, 0, 0);
+		
+		//ivPhotos[ivPhotos.length-1].
+		rp = (RelativeLayout.LayoutParams) ivPhotos[ivPhotos.length-1].getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(546);
+		rp.height = ResizeUtils.getSpecificLength(404);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
+		
+		//btnCheck.
+		rp = (RelativeLayout.LayoutParams) btnCheck.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(589);
+		rp.height = ResizeUtils.getSpecificLength(85);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		
 		//tvOptionTitle.
 		rp = (RelativeLayout.LayoutParams) tvOptionTitle.getLayoutParams();
 		rp.width = LayoutParams.MATCH_PARENT;
 		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.topMargin = ResizeUtils.getSpecificLength(24);
 		tvOptionTitle.setPadding(titlePadding, 0, 0, 0);
 		
 		//tvCarDescriptionTitle.
@@ -586,13 +584,6 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(586);
 		rp.height = ResizeUtils.getSpecificLength(160);
 		rp.topMargin = ResizeUtils.getSpecificLength(33);
-		
-		//tvTermOfUseTitle.
-		rp = (RelativeLayout.LayoutParams) tvTermOfUseTitle.getLayoutParams();
-		rp.width = LayoutParams.MATCH_PARENT;
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(80);
-		tvTermOfUseTitle.setPadding(titlePadding, 0, 0, 0);
 		
 		//termOfUse.
 		rp = (RelativeLayout.LayoutParams) termOfUse.getLayoutParams();
@@ -618,19 +609,6 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		rp.rightMargin = ResizeUtils.getSpecificLength(10);
-
-		//popup.
-		rp = (RelativeLayout.LayoutParams) popup.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(562);
-		rp.height = ResizeUtils.getSpecificLength(657);
-		
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 88, tvTitle, 2, 0, new int[]{0, 4, 0, 0});
-		ResizeUtils.viewResize(60, 60, btnClose, 2, Gravity.RIGHT, new int[]{0, 20, 11, 0});
-		ResizeUtils.viewResize(171, 216, clock, 2, Gravity.CENTER_HORIZONTAL, 
-				new int[]{0, 150, 0, 0});
-		ResizeUtils.viewResize(470, 260, tvDesc, 2, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 
-				new int[]{0, 20, 0, 0});
-		tvDesc.setLineSpacing(0, 1.5f);
 		
 		FontUtils.setFontSize(tvPercentage, 24);
 		FontUtils.setFontSize(tvPercentage2, 16);
@@ -675,12 +653,6 @@ public class CarRegistrationPage extends BCPFragment {
 		FontUtils.setFontStyle(tvCarDescriptionTitle, FontUtils.BOLD);
 		FontUtils.setFontAndHintSize(etCarDescription, 20, 20);
 		FontUtils.setFontSize(tvTextCount, 20);
-		
-		FontUtils.setFontSize(tvTermOfUseTitle, 24);
-		FontUtils.setFontStyle(tvTermOfUseTitle, FontUtils.BOLD);
-		
-		FontUtils.setFontSize(tvTitle, 30);
-		FontUtils.setFontSize(tvDesc, 24);
 	}
 
 	@Override
@@ -713,11 +685,6 @@ public class CarRegistrationPage extends BCPFragment {
 
 	@Override
 	public boolean onBackPressed() {
-
-		if(popup.getVisibility() == View.VISIBLE) {
-			hidePopup();
-			return true;
-		}
 		
 		return false;
 	}
@@ -765,6 +732,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 		for(int i=0; i<OPTION_VIEW_SIZE; i++) {
 
+			LogUtils.log("###where.addOptionViews.  i : " + i);
+			
 		//Texts.
 			if(i == 0) {
 				relativeForOption.addView(getTitleViewForOption(0));
@@ -786,11 +755,11 @@ public class CarRegistrationPage extends BCPFragment {
 					if(checked[INDEX]) {
 						optionViews[INDEX].setBackgroundResource(
 								getResources().getIdentifier("detail_option" + (INDEX + 1) + "_btn_b", 
-										"drawable", "com.byecar.byecarplus"));
+										"drawable", "com.byecar.byecarplusfordealer"));
 					} else {
 						optionViews[INDEX].setBackgroundResource(
 								getResources().getIdentifier("detail_option" + (INDEX + 1) + "_btn_a", 
-										"drawable", "com.byecar.byecarplus"));
+										"drawable", "com.byecar.byecarplusfordealer"));
 					}
 				}
 			});
@@ -804,7 +773,7 @@ public class CarRegistrationPage extends BCPFragment {
 				10, ResizeUtils.getSpecificLength(20));
 		rp.addRule(RelativeLayout.BELOW, 
 				getResources().getIdentifier("carRegistrationPage_optionView30", 
-						"id", "com.byecar.byecarplus"));
+						"id", "com.byecar.byecarplusfordealer"));
 		blank.setLayoutParams(rp);
 		relativeForOption.addView(blank);
 	}
@@ -822,16 +791,16 @@ public class CarRegistrationPage extends BCPFragment {
 			case 0:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				titleView.setId(getResources().getIdentifier(
-						"carRegistrationPage_optionTitleView1", "id", "com.byecar.byecarplus"));
+						"carRegistrationPage_optionTitleView1", "id", "com.byecar.byecarplusfordealer"));
 				titleView.setBackgroundResource(R.drawable.registration_option_category1);
 				break;
 				
 			case 1:
 				rp.addRule(RelativeLayout.BELOW, 
 						getResources().getIdentifier("carRegistrationPage_optionView26", 
-								"id", "com.byecar.byecarplus"));
+								"id", "com.byecar.byecarplusfordealer"));
 				titleView.setId(getResources().getIdentifier(
-						"carRegistrationPage_optionTitleView2", "id", "com.byecar.byecarplus"));
+						"carRegistrationPage_optionTitleView2", "id", "com.byecar.byecarplusfordealer"));
 				titleView.setBackgroundResource(R.drawable.registration_option_category4);
 				break;
 			}
@@ -866,13 +835,17 @@ public class CarRegistrationPage extends BCPFragment {
 					rp.leftMargin = ResizeUtils.getSpecificLength(35);
 					
 					if(index == 0) {
+						//Test.
+						LogUtils.log("###CarRegistrationPage.getViewForOption.  id : " 
+								+ getResources().getIdentifier("carRegistrationPage_optionTitleView1", 
+								"id", "com.byecar.byecarplusfordealer"));
 						rp.addRule(RelativeLayout.BELOW, 
 								getResources().getIdentifier("carRegistrationPage_optionTitleView1", 
-										"id", "com.byecar.byecarplus"));
+										"id", "com.byecar.byecarplusfordealer"));
 					} else {
 						rp.addRule(RelativeLayout.BELOW, 
 								getResources().getIdentifier("carRegistrationPage_optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
-										"id", "com.byecar.byecarplus"));
+										"id", "com.byecar.byecarplusfordealer"));
 						rp.topMargin = ResizeUtils.getSpecificLength(24);
 					}
 					
@@ -880,13 +853,13 @@ public class CarRegistrationPage extends BCPFragment {
 				case 1:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
 							getResources().getIdentifier("carRegistrationPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
-									"id", "com.byecar.byecarplus"));
+									"id", "com.byecar.byecarplusfordealer"));
 					rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 					break;
 				case 2:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
 							getResources().getIdentifier("carRegistrationPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
-									"id", "com.byecar.byecarplus"));
+									"id", "com.byecar.byecarplusfordealer"));
 					rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 					rp.rightMargin = ResizeUtils.getSpecificLength(35);
 					break;
@@ -894,14 +867,14 @@ public class CarRegistrationPage extends BCPFragment {
 			} else if(index == 24) {
 				rp.addRule(RelativeLayout.BELOW, 
 						getResources().getIdentifier("carRegistrationPage_optionView24",
-								"id", "com.byecar.byecarplus"));
+								"id", "com.byecar.byecarplusfordealer"));
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				rp.topMargin = ResizeUtils.getSpecificLength(24);
 				
 			} else if(index == 25) {
 				rp.addRule(RelativeLayout.ALIGN_TOP, 
 						getResources().getIdentifier("carRegistrationPage_optionView25",
-								"id", "com.byecar.byecarplus"));
+								"id", "com.byecar.byecarplusfordealer"));
 				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				rp.rightMargin = ResizeUtils.getSpecificLength(35);
 				
@@ -915,24 +888,24 @@ public class CarRegistrationPage extends BCPFragment {
 					if(index == 26) {
 						rp.addRule(RelativeLayout.BELOW, 
 								getResources().getIdentifier("carRegistrationPage_optionTitleView2", 
-										"id", "com.byecar.byecarplus"));
+										"id", "com.byecar.byecarplusfordealer"));
 					} else {
 						rp.addRule(RelativeLayout.BELOW, 
 								getResources().getIdentifier("carRegistrationPage_optionView" + (index - 2),	//i - 3 + 1, 윗줄 아이콘. 
-										"id", "com.byecar.byecarplus"));
+										"id", "com.byecar.byecarplusfordealer"));
 						rp.topMargin = ResizeUtils.getSpecificLength(24);
 					}
 					break;
 				case 0:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
 							getResources().getIdentifier("carRegistrationPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
-									"id", "com.byecar.byecarplus"));
+									"id", "com.byecar.byecarplusfordealer"));
 					rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 					break;
 				case 1:
 					rp.addRule(RelativeLayout.ALIGN_TOP, 
 							getResources().getIdentifier("carRegistrationPage_optionView" + index,				//i - 1 + 1. 왼쪽 아이콘.
-									"id", "com.byecar.byecarplus"));
+									"id", "com.byecar.byecarplusfordealer"));
 					rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 					rp.rightMargin = ResizeUtils.getSpecificLength(35);
 					break;
@@ -941,10 +914,10 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			view.setLayoutParams(rp);
 			view.setId(getResources().getIdentifier("carRegistrationPage_optionView" + (index + 1), 
-							"id", "com.byecar.byecarplus"));
+							"id", "com.byecar.byecarplusfordealer"));
 			view.setBackgroundResource(
 					getResources().getIdentifier("detail_option" + (index + 1) + "_btn_a", 
-							"drawable", "com.byecar.byecarplus"));
+							"drawable", "com.byecar.byecarplusfordealer"));
 			
 			return view;
 		} catch (Exception e) {
@@ -1182,6 +1155,41 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			}
 			
+			//성능점검 기록부.
+			if(!StringUtils.isEmpty(car.getInspection_note_url())) {
+				selectedImageSdCardPaths[selectedImageSdCardPaths.length - 1] = car.getInspection_note_url();
+				BCPDownloadUtils.downloadBitmap(car.getInspection_note_url(),
+						new OnBitmapDownloadListener() {
+
+							@Override
+							public void onError(String url) {
+
+								LogUtils.log("CarRegistrationPage.onError." + "\nurl : "
+										+ url);
+
+								// TODO Auto-generated method stub		
+							}
+
+							@Override
+							public void onCompleted(String url,
+									Bitmap bitmap) {
+
+								try {
+									LogUtils.log("CarRegistrationPage.onCompleted."
+											+ "\nurl : " + url);
+
+									if(bitmap != null && !bitmap.isRecycled()) {
+										ivPhotos[ivPhotos.length-1].setImageBitmap(bitmap);
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						}, 546);
+			}
+			
 			downloadCarDetailModelInfo();
 			
 			//차량번호.
@@ -1201,7 +1209,7 @@ public class CarRegistrationPage extends BCPFragment {
 					checked[car.getOptions()[i] - 1] = true;
 					optionViews[car.getOptions()[i] - 1].setBackgroundResource(
 							getResources().getIdentifier("detail_option" + car.getOptions()[i] + "_btn_b", 
-									"drawable", "com.byecar.byecarplus"));
+									"drawable", "com.byecar.byecarplusfordealer"));
 				}
 			}
 			
@@ -1293,7 +1301,7 @@ public class CarRegistrationPage extends BCPFragment {
 					btnCarInfos[i+1].setText(carInfoStrings[i]);
 					btnCarInfos[i+1].setBackgroundResource(R.drawable.registration_car_info_box);
 				} else {
-					int resId = getResources().getIdentifier("registration_car_info" + (i + 2) + "_btn", "drawable", "com.byecar.byecarplus");
+					int resId = getResources().getIdentifier("registration_car_info" + (i + 2) + "_btn", "drawable", "com.byecar.byecarplusfordealer");
 					btnCarInfos[i+1].setBackgroundResource(resId);
 					btnCarInfos[i+1].setText(null);
 				}
@@ -1307,7 +1315,7 @@ public class CarRegistrationPage extends BCPFragment {
 			btnCarInfos[6].setText(carInfoStrings[5]);
 			btnCarInfos[6].setBackgroundResource(R.drawable.registration_car_info_box);
 		} else {
-			int resId = getResources().getIdentifier("registration_car_info7_btn", "drawable", "com.byecar.byecarplus");
+			int resId = getResources().getIdentifier("registration_car_info7_btn", "drawable", "com.byecar.byecarplusfordealer");
 			btnCarInfos[6].setBackgroundResource(resId);
 			btnCarInfos[6].setText(null);
 		}
@@ -1331,6 +1339,16 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			});
 		}
+		
+		btnCheck.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				
+				selectedImageIndex = ivPhotos.length - 1;
+				mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
+			}
+		});
 	}
 
 	public void register() {
@@ -1384,6 +1402,12 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				//onsalecar[displacement] : 배기량
 				sb.append("&onsalecar[displacement]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[2].getEditText()));
+				
+				//onsalecar[color] : 색상
+				sb.append("&onsalecar[color]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[3].getEditText()));
+				
+				//onsalecar[inspection_note_url] : 성능점검기록부 이미지 URL
+				sb.append("&onsalecar[inspection_note_url]=").append(selectedImageSdCardPaths[selectedImageSdCardPaths.length - 1]);
 				
 				//onsalecar[options][option_id] : 옵션 아이디를 키로 하는 객체
 				//&onsalecar[options][1]=1
@@ -1588,28 +1612,5 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			}
 		}, 1000);
-	}
-
-	public void showPopup() {
-		
-		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
-		aaIn.setDuration(300);
-
-		cover.setVisibility(View.VISIBLE);
-		cover.startAnimation(aaIn);
-		popup.setVisibility(View.VISIBLE);
-		popup.startAnimation(aaIn);
-		
-	}
-	
-	public void hidePopup() {
-		
-		AlphaAnimation aaOut = new AlphaAnimation(1, 0);
-		aaOut.setDuration(300);
-		
-		cover.startAnimation(aaOut);
-		cover.setVisibility(View.INVISIBLE);
-		popup.startAnimation(aaOut);
-		popup.setVisibility(View.INVISIBLE);
 	}
 }
