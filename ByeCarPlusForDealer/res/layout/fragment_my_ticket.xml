@@ -16,6 +16,33 @@
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_centerHorizontal="true"
-    	android:layout_below="@id/myTicketPage_titleBar" />
+    	android:layout_below="@id/myTicketPage_titleBar"
+    	android:background="@drawable/ticket2_icon" />
+    
+    <View 
+        android:id="@+id/myTicketPage_bg"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+    	android:layout_below="@id/myTicketPage_ticketView"
+    	android:background="@drawable/ticket1_info_bg" />
+    
+    <TextView 
+        android:id="@+id/myTicketPage_tvRemainTicket"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@id/myTicketPage_bg"
+        android:textColor="@color/holo_text"
+        android:gravity="center" />
+    
+    <TextView 
+        android:id="@+id/myTicketPage_tvExpiration"
+        android:layout_width="wrap_content"
+    	android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignBottom="@id/myTicketPage_bg"
+        android:textColor="@color/holo_text"
+        android:gravity="center" />
     
 </RelativeLayout>

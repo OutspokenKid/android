@@ -56,9 +56,9 @@ import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.MainPage;
 import com.byecar.fragments.dealer.MyCarPage;
 import com.byecar.fragments.dealer.MyCompletedListPage;
-import com.byecar.fragments.dealer.MyGradePage;
+import com.byecar.fragments.dealer.MyInfoReviewPage;
 import com.byecar.fragments.dealer.MyPage;
-import com.byecar.fragments.dealer.MyReviewPage;
+import com.byecar.fragments.dealer.MyPointPage;
 import com.byecar.fragments.dealer.MyTicketPage;
 import com.byecar.models.Area;
 import com.byecar.models.Car;
@@ -437,9 +437,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_MY:
 			return new MyPage();
-			
-		case BCPConstants.PAGE_MY_GRADE:
-			return new MyGradePage();
+		
+		case BCPConstants.PAGE_MY_INFO_REVIEW:
+			return new MyInfoReviewPage();
 			
 		case BCPConstants.PAGE_MY_TICKET:
 			return new MyTicketPage();
@@ -447,8 +447,8 @@ public class MainActivity extends BCPFragmentActivity {
 		case BCPConstants.PAGE_MY_COMPLETED_LIST:
 			return new MyCompletedListPage();
 			
-		case BCPConstants.PAGE_MY_REVIEW:
-			return new MyReviewPage();
+		case BCPConstants.PAGE_MY_POINT:
+			return new MyPointPage();
 			
 		case BCPConstants.PAGE_OPENABLE_POST_LIST:
 			return new OpenablePostListPage();

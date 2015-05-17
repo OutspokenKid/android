@@ -1143,7 +1143,7 @@ public class CarDetailPage extends BCPFragment {
 		
 		//ivImage.
 		final ImageView ivImage = new ImageView(mContext);
-		ResizeUtils.viewResizeForRelative(100, 100, ivImage, null, null, new int[]{50, 115, 0, 0});
+		ResizeUtils.viewResizeForRelative(129, 129, ivImage, null, null, new int[]{50, 100, 0, 0});
 		ivImage.setScaleType(ScaleType.CENTER_CROP);
 		ivImage.setBackgroundResource(R.drawable.detail_default);
 		relativeForType.addView(ivImage);
@@ -1174,23 +1174,24 @@ public class CarDetailPage extends BCPFragment {
 		
 		//cover.
 		View cover = new View(mContext);
-		ResizeUtils.viewResizeForRelative(100, 100, cover, null, null, new int[]{50, 115, 0, 0});
+		ResizeUtils.viewResizeForRelative(129, 129, cover, null, null, new int[]{50, 100, 0, 0});
 		cover.setBackgroundResource(R.drawable.buy_detail_cover);
 		relativeForType.addView(cover);
 		
 		//tvDealerName.
 		TextView tvDealerName = new TextView(mContext);
-		ResizeUtils.viewResizeForRelative(126, 100, tvDealerName, null, null, new int[]{170, 115, 0, 0});
-		tvDealerName.setGravity(Gravity.CENTER_VERTICAL);
+		ResizeUtils.viewResizeForRelative(150, 100, tvDealerName, null, null, new int[]{190, 115, 0, 0});
+		tvDealerName.setGravity(Gravity.CENTER);
 		tvDealerName.setTextColor(getResources().getColor(R.color.holo_text));
-		FontUtils.setFontSize(tvDealerName, 30);
+		FontUtils.setFontSize(tvDealerName, 32);
+		FontUtils.setFontStyle(tvDealerName, FontUtils.BOLD);
 		relativeForType.addView(tvDealerName);
 		
 		tvDealerName.setText(car.getDealer_name());
 		
 		//gradeBadge.
 		View gradeBadge = new View(mContext);
-		ResizeUtils.viewResizeForRelative(229, 53, gradeBadge, null, null, new int[]{316, 138, 0, 0});
+		ResizeUtils.viewResizeForRelative(229, 53, gradeBadge, null, null, new int[]{345, 138, 0, 0});
 		relativeForType.addView(gradeBadge);
 		
 		switch(car.getDealer_level()) {
@@ -1628,6 +1629,7 @@ public class CarDetailPage extends BCPFragment {
 			
 			case 0:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+				rp.leftMargin = ResizeUtils.getSpecificLength(15);
 				break;
 				
 			case 1:
@@ -1636,6 +1638,7 @@ public class CarDetailPage extends BCPFragment {
 				
 			case 2:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				rp.rightMargin = ResizeUtils.getSpecificLength(15);
 				break;
 			}
 			
@@ -2045,8 +2048,8 @@ public class CarDetailPage extends BCPFragment {
 	}
 	
 	public void requestDealing() {
-		
-		ToastUtils.showToast("거래 요청 처리하기");
+
+		IntentUtils.sendSMS(mContext, "거래요청", car.getDealer_phone_number());
 	}
 	
 	public void setStatusToComplete() {

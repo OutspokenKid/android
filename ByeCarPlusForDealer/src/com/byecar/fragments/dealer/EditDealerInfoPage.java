@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
-import com.byecar.models.Dealer;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
@@ -39,35 +39,30 @@ public class EditDealerInfoPage extends BCPFragment {
 
 	private static final int NAME_MIN = 1;
 	private static final int NAME_MAX = 30;
-//	private static final int NICKNAME_MIN = 3;
-//	private static final int NICKNAME_MAX = 15;
-	private static final int BIRTHDATE_MIN = 8;
-	private static final int BIRTHDATE_MAX = 8;
 	
-	public static String PHONE_AUTH_KEY;
-	public static String tempPhoneNumber;
+	public static String phone_auth_key;
+	public static String phone_number;
 	
+	private TextView tvTitleText1;
+	private TextView tvCertified;
+	private View checked;
+	private Button btnCertifyPhoneNumber;
+	
+	private TextView tvTitleText2;
 	private Button[] btnImages;
 	private ImageView[] ivImages;
-	private TextView tvProfile;
-	
-	private TextView tvCertifyPhoneNumberText;
-	private Button btnEditPhoneNumber;
-	private TextView tvPhoneNumber;
-	private View checkIcon;
-	
-	private TextView tvCommonInfoText;
-	private HoloStyleEditText[] etInfos;
-	
-	private TextView tvAddedInfoText;
 	private TextView tvUploadText;
+	private HoloStyleEditText[] etInfos;
+	private Button btnSearch;
 	
+	private TextView tvTitleText3;
 	private TextView tvIntroduceText;
 	private EditText etIntroduce;
-	private Button btnComplete;
+	private Button btnSubmit;
 	
 	private int selectedImageIndex;
-	private String[] selectedImageSdCardPaths = new String[3];
+	private String[] selectedImageSdCardPaths = new String[2];
+	private int dong_id;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -91,47 +86,38 @@ public class EditDealerInfoPage extends BCPFragment {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.editDealerInfoPage_titleBar);
 		
-		btnImages = new Button[3];
-		btnImages[0] = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnProfile);
-		btnImages[1] = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnImage1);
-		btnImages[2] = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnImage2);
+		tvTitleText1 = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvTitleText1);
+		tvCertified = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvCertified);
+		checked = mThisView.findViewById(R.id.editDealerInfoPage_checked);
+		btnCertifyPhoneNumber = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnCertifyPhoneNumber);
 		
-		ivImages = new ImageView[3];
-		ivImages[0] = (ImageView) mThisView.findViewById(R.id.editDealerInfoPage_ivProfile);
-		ivImages[1] = (ImageView) mThisView.findViewById(R.id.editDealerInfoPage_ivImage1);
-		ivImages[2] = (ImageView) mThisView.findViewById(R.id.editDealerInfoPage_ivImage2);
+		tvTitleText2 = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvTitleText2);
 		
-		tvProfile = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvProfile);
+		btnImages = new Button[2];
+		btnImages[0] = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnImage1);
+		btnImages[1] = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnImage2);
 		
-		tvCertifyPhoneNumberText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvCertifyPhoneNumberText);
-		btnEditPhoneNumber = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnEditPhoneNumber);
-		tvPhoneNumber = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvPhoneNumber);
-		checkIcon = mThisView.findViewById(R.id.editDealerInfoPage_checkIcon);
+		ivImages = new ImageView[2];
+		ivImages[0] = (ImageView) mThisView.findViewById(R.id.editDealerInfoPage_ivImage1);
+		ivImages[1] = (ImageView) mThisView.findViewById(R.id.editDealerInfoPage_ivImage2);
 		
-		tvCommonInfoText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvCommonInfoText);
-		
-		etInfos = new HoloStyleEditText[7];
-		etInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etCommonInfo1);
-		etInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etCommonInfo2);
-		etInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etCommonInfo3);
-		etInfos[3] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etAddedInfo1);
-		etInfos[4] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etAddedInfo2);
-		etInfos[5] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etAddedInfo3);
-		etInfos[6] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etAddedInfo4);
-		
-		tvAddedInfoText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvAddedInfoText);
 		tvUploadText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvUploadText);
 		
-		tvIntroduceText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvIntroduceText);
+		etInfos = new HoloStyleEditText[2];
+		etInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etInfo1);
+		etInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.editDealerInfoPage_etInfo2);
+		
+		btnSearch = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnSearchArea);
+		
+		tvTitleText3 = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvTitleText3);
+		tvIntroduceText = (TextView) mThisView.findViewById(R.id.editDealerInfoPage_tvIntroduce);
 		etIntroduce = (EditText) mThisView.findViewById(R.id.editDealerInfoPage_etIntroduce);
-		btnComplete = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnComplete);
+		btnSubmit = (Button) mThisView.findViewById(R.id.editDealerInfoPage_btnSubmit);
 	}
 
 	@Override
 	public void setVariables() {
 		
-		PHONE_AUTH_KEY = "";
-
 		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
 			selectedImageSdCardPaths[i] = null;
 		}
@@ -140,46 +126,151 @@ public class EditDealerInfoPage extends BCPFragment {
 	@Override
 	public void createPage() {
 
-//		etInfos[0].getEditText().setHint(R.string.hintForName);
-//		etInfos[1].getEditText().setHint(R.string.hintForNickname);
-//		etInfos[2].getEditText().setHint(R.string.hintForBirthDate);
-//		etInfos[3].getEditText().setHint(R.string.hintForAddress);
-//		etInfos[4].getEditText().setHint(R.string.hintForAssociation);
-//		etInfos[5].getEditText().setHint(R.string.hintForComplex);
-//		etInfos[6].getEditText().setHint(R.string.hintForCompany);
+		tvTitleText1.setText(R.string.certifyPhoneNumber);
+		tvTitleText2.setText(R.string.addedInfo);
+		tvTitleText3.setText(R.string.introduce);
 		
-		setInfos();
-		downloadImages();
+		int[] hintTextResIds = new int[] {
+			R.string.hintForName,
+			R.string.hintForComplex,
+			R.string.hintForAddress,
+		};
+		
+		int size = etInfos.length;
+		for(int i=0; i<size; i++) {
+			etInfos[i].getEditText().setTextColor(getResources().getColor(R.color.holo_text));
+			etInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+			etInfos[i].setHint(hintTextResIds[i]);
+			etInfos[i].getEditText().setSingleLine();
+			etInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_TEXT);
+		}
+
+		//딜러증 이미지.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getEmployee_card_img_url())) {
+			selectedImageSdCardPaths[0] = MainActivity.dealer.getEmployee_card_img_url();
+			
+			BCPDownloadUtils.downloadBitmap(MainActivity.dealer.getEmployee_card_img_url(), new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("EditDealerInfoPage.onError." + "\nurl : " + url);
+
+					// TODO Auto-generated method stub		
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("EditDealerInfoPage.onCompleted." + "\nurl : " + url);
+
+						if(bitmap != null && !bitmap.isRecycled()
+								&& ivImages != null && ivImages[0] != null) {
+							ivImages[0].setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			}, 256);
+		}
+		
+		//명함 이미지.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getName_card_img_url())) {
+			
+			selectedImageSdCardPaths[1] = MainActivity.dealer.getName_card_img_url();
+			
+			BCPDownloadUtils.downloadBitmap(MainActivity.dealer.getName_card_img_url(), new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("EditDealerInfoPage.onError." + "\nurl : " + url);
+
+					// TODO Auto-generated method stub		
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("EditDealerInfoPage.onCompleted." + "\nurl : " + url);
+
+						if(bitmap != null && !bitmap.isRecycled()
+								&& ivImages != null && ivImages[1] != null) {
+							ivImages[1].setImageBitmap(bitmap);
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			}, 256);
+		}
+		
+		//본명.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getName())) {
+			etInfos[0].getEditText().setText(MainActivity.dealer.getName());
+		}
+		
+		//상사 이름.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getCompany())) {
+			etInfos[1].getEditText().setText(MainActivity.dealer.getCompany());
+		}
+		
+		//상사주소.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getAddress())) {
+			btnSearch.setText(MainActivity.dealer.getAddress());
+			dong_id = MainActivity.user.getDong_id();
+		}
+		
+		//자기소개.
+		if(!StringUtils.isEmpty(MainActivity.dealer.getDesc())) {
+			etIntroduce.setText(MainActivity.dealer.getDesc());
+		}
 	}
 
 	@Override
 	public void setListeners() {
-
-		for(int i=0; i<3; i++) {
-			final int I = i;
-			btnImages[i].setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					selectedImageIndex = I;
-					mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
-				}
-			});
-		}
 		
-		btnEditPhoneNumber.setOnClickListener(new OnClickListener() {
+		setImageViewsOnClickListener();
+		
+		tvCertified.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putBoolean("forEditDealerInfo", true);
+				bundle.putBoolean("forDealerSignUp", true);
 				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, bundle);
 			}
 		});
+
+		btnCertifyPhoneNumber.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putBoolean("forDealerSignUp", true);
+				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, bundle);
+			}
+		});
+	
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_AREA, null);
+			}
+		});
 		
-		btnComplete.setOnClickListener(new OnClickListener() {
+		btnSubmit.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -195,76 +286,44 @@ public class EditDealerInfoPage extends BCPFragment {
 	public void setSizes() {
 
 		RelativeLayout.LayoutParams rp = null;
-
-		//profileFrame
-		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(R.id.editDealerInfoPage_profileFrame)).getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(219);
-		rp.height = ResizeUtils.getSpecificLength(219);
-		rp.topMargin = ResizeUtils.getSpecificLength(60);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(20);
-
-		//tvCertifyPhoneNumberText.
-		rp = (RelativeLayout.LayoutParams) (mThisView.findViewById(R.id.editDealerInfoPage_tvCertifyPhoneNumberText)).getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
-
-		//btnEditPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) btnEditPhoneNumber.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(160);
-		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(20);
-		rp.rightMargin = ResizeUtils.getSpecificLength(26);
 		
-		//tvPhoneNumber.
-		rp = (RelativeLayout.LayoutParams) tvPhoneNumber.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(95);
+		//tvTitleText1.
+		rp = (RelativeLayout.LayoutParams) tvTitleText1.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvTitleText1.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
-		//checkIcon.
-		rp = (RelativeLayout.LayoutParams) checkIcon.getLayoutParams();
+		//tvCertified.
+		rp = (RelativeLayout.LayoutParams) tvCertified.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(176);
+		
+		//checked.
+		rp = (RelativeLayout.LayoutParams) checked.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(24);
 		rp.height = ResizeUtils.getSpecificLength(18);
-		rp.topMargin = ResizeUtils.getSpecificLength(38);
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.rightMargin = ResizeUtils.getSpecificLength(8);
 		
-		//tvCommonInfoText.
-		rp = (RelativeLayout.LayoutParams) tvCommonInfoText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		//btnCertifyPhoneNumber.
+		rp = (RelativeLayout.LayoutParams) btnCertifyPhoneNumber.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(588);
+		rp.height = ResizeUtils.getSpecificLength(83);
 		
-		//etInfos.
-		int size = etInfos.length;
-		for(int i=0; i<size; i++) {
-			
-			if(i == 1) {
-				continue;
-			}
-			
-			rp = (RelativeLayout.LayoutParams) etInfos[i].getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(586);
-			rp.height = ResizeUtils.getSpecificLength(60);
-			
-			if(i != 0) {
-				rp.topMargin = ResizeUtils.getSpecificLength(32);
-			}
-			
-			FontUtils.setFontAndHintSize(etInfos[i], 26, 20);
-		}
+		//tvTitleText2.
+		rp = (RelativeLayout.LayoutParams) tvTitleText2.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		rp.topMargin = ResizeUtils.getSpecificLength(57);
+		tvTitleText2.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
-		//tvAddedInfoText.
-		rp = (RelativeLayout.LayoutParams) tvAddedInfoText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
-		
-		for(int i=1; i<3; i++) {
+		for(int i=0; i<2; i++) {
 
 			//btnImages.
 			rp = (RelativeLayout.LayoutParams) btnImages[i].getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(257);
 			rp.height = ResizeUtils.getSpecificLength(157);
 			
-			if(i == 1) {
+			if(i == 0) {
 				rp.leftMargin = ResizeUtils.getSpecificLength(52);
-				rp.topMargin = ResizeUtils.getSpecificLength(13);
+				rp.topMargin = ResizeUtils.getSpecificLength(54);
 			} else {
 				rp.leftMargin = ResizeUtils.getSpecificLength(24);
 			}
@@ -279,27 +338,56 @@ public class EditDealerInfoPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) tvUploadText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(80);
 		
-		//tvIntroduceText.
-		rp = (RelativeLayout.LayoutParams) tvIntroduceText.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(70);
-		rp.leftMargin = ResizeUtils.getSpecificLength(26);
+		//etInfos.
+		int size = etInfos.length;
+		for(int i=0; i<size; i++) {
+			rp = (RelativeLayout.LayoutParams) etInfos[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(586);
+			rp.height = ResizeUtils.getSpecificLength(60);
+			
+			if(i != 0) {
+				rp.topMargin = ResizeUtils.getSpecificLength(32);
+			}
+			
+			FontUtils.setFontAndHintSize(etInfos[i], 26, 20);
+		}
+		
+		//btnSearch.
+		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(584);
+		rp.height = ResizeUtils.getSpecificLength(82);
+		rp.topMargin = ResizeUtils.getSpecificLength(32);
+		
+		//tvTitleText3.
+		rp = (RelativeLayout.LayoutParams) tvTitleText3.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		rp.topMargin = ResizeUtils.getSpecificLength(72);
+		tvTitleText3.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//etIntroduce.
 		rp = (RelativeLayout.LayoutParams) etIntroduce.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(586);
-		rp.height = ResizeUtils.getSpecificLength(160);
+		rp.width = ResizeUtils.getSpecificLength(594);
+		rp.height = ResizeUtils.getSpecificLength(226);
+		rp.topMargin = ResizeUtils.getSpecificLength(38);
 		
-		//btnComplete.
-		rp = (RelativeLayout.LayoutParams) btnComplete.getLayoutParams();
+		//btnSubmit.
+		rp = (RelativeLayout.LayoutParams) btnSubmit.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(586);
 		rp.height = ResizeUtils.getSpecificLength(82);
-		
-		FontUtils.setFontSize(tvProfile, 20);
-		FontUtils.setFontSize(tvCertifyPhoneNumberText, 30);
-		FontUtils.setFontSize(tvPhoneNumber, 30);
-		FontUtils.setFontSize(tvCommonInfoText, 30);
-		FontUtils.setFontSize(tvAddedInfoText, 30);
+		rp.topMargin = ResizeUtils.getSpecificLength(36);
+
+		FontUtils.setFontSize(tvTitleText1, 24);
+		FontUtils.setFontStyle(tvTitleText1, FontUtils.BOLD);
+		FontUtils.setFontSize(tvCertified, 34);
+
+		FontUtils.setFontSize(tvTitleText2, 24);
+		FontUtils.setFontStyle(tvTitleText2, FontUtils.BOLD);
 		FontUtils.setFontSize(tvUploadText, 20);
+		
+		FontUtils.setFontSize(btnSearch, 30);
+		
+		FontUtils.setFontSize(tvTitleText3, 24);
+		FontUtils.setFontStyle(tvTitleText3, FontUtils.BOLD);
 		FontUtils.setFontSize(tvIntroduceText, 30);
 		FontUtils.setFontAndHintSize(etIntroduce, 26, 20);
 	}
@@ -309,11 +397,11 @@ public class EditDealerInfoPage extends BCPFragment {
 
 		return R.layout.fragment_edit_dealer_info;
 	}
-	
+
 	@Override
 	public int getPageTitleTextResId() {
 
-		return 0;
+		return R.string.pageTitle_editDealerInfo;
 	}
 
 	@Override
@@ -344,139 +432,73 @@ public class EditDealerInfoPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		if(tempPhoneNumber != null) {
-			tvPhoneNumber.setText(tempPhoneNumber);
-		} else if(!StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
-			tvPhoneNumber.setText(MainActivity.user.getPhone_number());
+		if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+			tvCertified.setTextColor(getResources().getColor(R.color.color_red));
+			tvCertified.setText(R.string.phoneNumberisNotCertified);
+			checked.setVisibility(View.INVISIBLE);
+		} else {
+			phone_number = MainActivity.user.getPhone_number();
+			tvCertified.setTextColor(getResources().getColor(R.color.color_green));
+			tvCertified.setText(phone_number);
+			checked.setVisibility(View.VISIBLE);
 		}
+		
+		if(mActivity.bundle != null) {
+			btnSearch.setText(mActivity.bundle.getString("address"));
+			dong_id = mActivity.bundle.getInt("dong_id");
+			mActivity.bundle = null;
+		}
+	}
+	
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		
+		phone_number = null;
+		phone_auth_key = null;
 	}
 	
 //////////////////// Custom methods.
 
-	public void setInfos() {
+	public void setImageViewsOnClickListener() {
 		
-		if(!StringUtils.isEmpty(MainActivity.user.getProfile_img_url())) {
-			selectedImageSdCardPaths[0] = MainActivity.user.getProfile_img_url();
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.user.getName())) {
-			etInfos[0].getEditText().setText(MainActivity.user.getName());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.user.getNickname())) {
-			etInfos[1].getEditText().setText(MainActivity.user.getNickname());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getBirthdate())) {
-			etInfos[2].getEditText().setText(MainActivity.dealer.getBirthdate());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getEmployee_card_img_url())) {
-			selectedImageSdCardPaths[1] = MainActivity.dealer.getEmployee_card_img_url();
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getName_card_img_url())) {
-			selectedImageSdCardPaths[2] = MainActivity.dealer.getName_card_img_url();
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getAddress())) {
-			etInfos[3].getEditText().setText(MainActivity.dealer.getAddress());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getAssociation())) {
-			etInfos[4].getEditText().setText(MainActivity.dealer.getAssociation());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getComplex())) {
-			etInfos[5].getEditText().setText(MainActivity.dealer.getComplex());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getCompany())) {
-			etInfos[6].getEditText().setText(MainActivity.dealer.getCompany());
-		}
-		
-		if(!StringUtils.isEmpty(MainActivity.dealer.getDesc())) {
-			etIntroduce.setText(MainActivity.dealer.getDesc());
-		}
-	}
-	
-	public void downloadImages() {
-
-		for(int i=0; i<3; i++) {
+		int size = btnImages.length;
+		for(int i=0; i<size; i++) {
 			
 			final int INDEX = i;
-			
-			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])) {
-				
-				ivImages[i].setTag(selectedImageSdCardPaths[i]);
-				BCPDownloadUtils.downloadBitmap(selectedImageSdCardPaths[i], new OnBitmapDownloadListener() {
+			btnImages[i].setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onError(String url) {
-
-						LogUtils.log("EditDealerInfoPage.downloadImages.onError." + "\nurl : " + url);
-
-						// TODO Auto-generated method stub		
-					}
-
-					@Override
-					public void onCompleted(String url, Bitmap bitmap) {
-
-						try {
-							LogUtils.log("EditDealerInfoPage.downloadImages.onCompleted." + "\nurl : " + url);
-
-							ivImages[INDEX].setImageBitmap(bitmap);
-						} catch (Exception e) {
-							LogUtils.trace(e);
-						} catch (OutOfMemoryError oom) {
-							LogUtils.trace(oom);
-						}
-					}
-				}, 257);
-			}
+				@Override
+				public void onClick(View view) {
+					
+					selectedImageIndex = INDEX;
+					mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
+				}
+			});
 		}
 	}
 	
 	public boolean checkInformation() {
 
-		//name.
-		if(StringUtils.checkForbidContains(etInfos[0].getEditText(), false, false, false, false, true, true)
+		if(checked.getVisibility() != View.VISIBLE) {
+			ToastUtils.showToast(R.string.checkToCertifyPhoneNumber);
+
+		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[0])) {
+			ToastUtils.showToast(R.string.checkEmployeeCardImage);
+		
+		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[1])) {
+			ToastUtils.showToast(R.string.checkNameCardImage);
+		
+		} else if(StringUtils.checkForbidContains(etInfos[0].getEditText(), false, false, false, false, true, true)
 				|| StringUtils.checkTextLength(etInfos[0].getEditText(), NAME_MIN, NAME_MAX) != StringUtils.PASS) {
 			ToastUtils.showToast(R.string.hintForName);
 		
-//		//nickname.
-//		} else if(StringUtils.checkTextLength(etInfos[1].getEditText(), NICKNAME_MIN, NICKNAME_MAX) != StringUtils.PASS
-//				|| StringUtils.checkForbidContains(etInfos[1].getEditText(), false, false, false, true, true, false)) {
-//			ToastUtils.showToast(R.string.checkNickname);
+		} else if(StringUtils.isEmpty(etInfos[1].getEditText())) {
+			ToastUtils.showToast(R.string.hintForComplex);
 			
-		//birthdate.
-		} else if(StringUtils.checkForbidContains(etInfos[2].getEditText(), true, true, false, true, true, true)
-				|| StringUtils.checkTextLength(etInfos[2].getEditText(), BIRTHDATE_MIN, BIRTHDATE_MAX) != StringUtils.PASS) {
-//			ToastUtils.showToast(R.string.hintForBirthDate);
-			
-		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[1])) {
-			ToastUtils.showToast(R.string.checkEmployeeCardImage);
-		
-		} else if(StringUtils.isEmpty(selectedImageSdCardPaths[2])) {
-			ToastUtils.showToast(R.string.checkNameCardImage);
-		
-		//address.
-		} else if(StringUtils.isEmpty(etInfos[2].getEditText())) {
+		} else if(dong_id == 0) {
 			ToastUtils.showToast(R.string.hintForAddress);
 		
-		//association.
-		} else if(StringUtils.isEmpty(etInfos[3].getEditText())) {
-//			ToastUtils.showToast(R.string.hintForAssociation);
-		
-		//complex.
-		} else if(StringUtils.isEmpty(etInfos[4].getEditText())) {
-			ToastUtils.showToast(R.string.hintForComplex);
-		
-		//company.
-		} else if(StringUtils.isEmpty(etInfos[5].getEditText())) {
-//			ToastUtils.showToast(R.string.hintForCompany);
-		
-		//introduce.
 		} else if(StringUtils.isEmpty(etIntroduce)) {
 			ToastUtils.showToast(R.string.hintForIntroduce);
 		
@@ -492,11 +514,11 @@ public class EditDealerInfoPage extends BCPFragment {
 		int size = selectedImageSdCardPaths.length;
 		
 		for(int i=0; i<size; i++) {
-
-			ToastUtils.showToast(R.string.uploadingImage);
 			
 			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
 					&& !selectedImageSdCardPaths[i].contains("http://")) {
+			
+				ToastUtils.showToast(R.string.uploadingImage);
 				
 				final int INDEX = i;
 				
@@ -517,6 +539,7 @@ public class EditDealerInfoPage extends BCPFragment {
 						uploadImages();
 					}
 				};
+				
 				ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedImageSdCardPaths[i]);
 				return;
 			}
@@ -528,131 +551,72 @@ public class EditDealerInfoPage extends BCPFragment {
 	public void submit() {
 
 		/*
-		 * 바꾸고 싶은 것만 전송.
-		 * http://byecar.minsangk.com/users/update/additional_info.json
-		 * &user[profile_img_url]=abc
-		 * ?phone_auth_key=abc
-		 * &user[name]=%EA%B9%80%EB%AF%BC%EC%83%81
-		 * &user[nickname]=%EB%AF%BC%EC%83%81kk
-		 * &dealer[birthdate]=12345678
-		 * &dealer[employee_card_img_url]=ecu1
-		 * &dealer[name_card_img_url]=nciu1
-		 * &user[address]=%EC%84%9C%EC%9A%B8%EA%B0%95%EB%82%A8%EB%8F%84%EA%B3%A1
-		 * &dealer[association]=%EC%A1%B0%EC%A1%B0%ED%95%A9
-		 * &dealer[complex]=%EB%8B%A8%EB%8B%A8%EC%A7%80
-		 * &dealer[company]=%EC%83%81%EC%83%81%EC%82%AC
+		http://dev.bye-car.com/users/update/additional_info.json
+		?phone_auth_key=abc&user[nickname]=%EB%AF%BC%EC%83%81kk
+		
+		&user[profile_img_url]=abc&user[name]=%EA%B9%80%EB%AF%BC%EC%83%81
+		&user[dong_id]=1594
+		&dealer[company]=%EC%83%81%EC%83%81%EC%82%AC
+		&dealer[employee_card_img_url]=ecu1
+		&dealer[name_card_img_url]=nciu1
+		
+		phone_auth_key : 전화번호 인증키
+		user[name] : 본명
+		user[dong_id] : 동 검색 결과 id
+		user[desc] : 설명
+		dealer[company] : 상사
+		dealer[employee_card_img_url] : 사원증 이미지 URL
+		dealer[name_card_img_url] : 명함 이미지 URL
 		 */
-		String url = BCPAPIs.EDIT_DEALER_INFO_URL
-				+ "?user[profile_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[0])
-				+ "&phone_auth_key=" + PHONE_AUTH_KEY
-				+ "&user[name]=" + StringUtils.getUrlEncodedString(etInfos[0].getEditText())
-//				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(etInfos[1].getEditText())
-				+ "&dealer[birthdate]=" + StringUtils.getUrlEncodedString(etInfos[2].getEditText())
-				+ "&dealer[employee_card_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[1])
-				+ "&dealer[name_card_img_url]=" + StringUtils.getUrlEncodedString(selectedImageSdCardPaths[2])
-				+ "&user[address]=" + StringUtils.getUrlEncodedString(etInfos[3].getEditText())
-				+ "&dealer[association]=" + StringUtils.getUrlEncodedString(etInfos[4].getEditText())
-				+ "&dealer[complex]=" + StringUtils.getUrlEncodedString(etInfos[5].getEditText())
-				+ "&dealer[company]=" + StringUtils.getUrlEncodedString(etInfos[6].getEditText())
-				+ "&user[desc]=" + StringUtils.getUrlEncodedString(etIntroduce);
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("EditUserInfoPage.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.failToUpdateUserInfo);
+		try {
+			StringBuilder sb = new StringBuilder(BCPAPIs.EDIT_DEALER_INFO_URL);
+			sb.append("?dealer[employee_card_img_url]=").append(StringUtils.getUrlEncodedString(selectedImageSdCardPaths[0]))
+					.append("&dealer[name_card_img_url]=").append(StringUtils.getUrlEncodedString(selectedImageSdCardPaths[1]))
+					.append("&user[name]=").append(StringUtils.getUrlEncodedString(etInfos[0].getEditText()))
+					.append("&dealer[company]=").append(StringUtils.getUrlEncodedString(etInfos[1].getEditText()))
+					.append("&user[dong_id]=").append(dong_id)
+					.append("&user[desc]=").append(StringUtils.getUrlEncodedString(etIntroduce));
+			
+			if(phone_auth_key != null) {
+				sb.append("&phone_auth_key=").append(phone_auth_key);
 			}
+			
+			String url = sb.toString();
+			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
+				@Override
+				public void onError(String url) {
 
-				try {
-					LogUtils.log("EditUserInfoPage.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					if(objJSON.getInt("result") == 1) {
-						
-						LogUtils.log("###EditUserInfoPage.onCompleted.  "
-								+ "\nbefore url : " + MainActivity.user.getProfile_img_url());
-						
-						if(selectedImageSdCardPaths[0] != null) {
-							MainActivity.user.setProfile_img_url(selectedImageSdCardPaths[0]);
-							MainActivity.dealer.setProfile_img_url(selectedImageSdCardPaths[0]);
-						}
-
-						if(!StringUtils.isEmpty(PHONE_AUTH_KEY)) {
-							MainActivity.user.setPhone_number(tvPhoneNumber.getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[0].getEditText())) {
-							MainActivity.user.setName(etInfos[0].getEditText().getText().toString());
-							MainActivity.dealer.setName(etInfos[0].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[1].getEditText())) {
-							MainActivity.user.setNickname(etInfos[1].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[2].getEditText())) {
-							MainActivity.dealer.setBirthdate(etInfos[2].getEditText().getText().toString());
-						}
-						
-						if(selectedImageSdCardPaths[1] != null) {
-							MainActivity.dealer.setEmployee_card_img_url(selectedImageSdCardPaths[1]);
-						}
-						
-						if(selectedImageSdCardPaths[2] != null) {
-							MainActivity.dealer.setName_card_img_url(selectedImageSdCardPaths[2]);
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[3].getEditText())) {
-							MainActivity.user.setAddress(etInfos[3].getEditText().getText().toString());
-							MainActivity.dealer.setAddress(etInfos[3].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[4].getEditText())) {
-							MainActivity.dealer.setAssociation(etInfos[4].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[5].getEditText())) {
-							MainActivity.dealer.setComplex(etInfos[5].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etInfos[6].getEditText())) {
-							MainActivity.dealer.setCompany(etInfos[6].getEditText().getText().toString());
-						}
-						
-						if(!StringUtils.isEmpty(etIntroduce)) {
-							MainActivity.dealer.setDesc(etIntroduce.getText().toString());
-						}
-						
-						if(getArguments() != null
-								&& getArguments().containsKey("dealer")) {
-							
-							Dealer dealer = (Dealer) getArguments().getSerializable("dealer");
-							dealer.setProfile_img_url(MainActivity.dealer.getProfile_img_url());
-							dealer.setName(MainActivity.dealer.getName());
-							dealer.setAddress(MainActivity.dealer.getAddress());
-							dealer.setAssociation(MainActivity.dealer.getAssociation());
-							dealer.setComplex(MainActivity.dealer.getComplex());
-							dealer.setCompany(MainActivity.dealer.getCompany());
-							dealer.setDesc(MainActivity.dealer.getDesc());
-						}
-						
-						ToastUtils.showToast(R.string.complete_editUserInfo);
-						mActivity.closeTopPage();
-					} else {
-						ToastUtils.showToast(objJSON.getString("message"));
-					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.failToUpdateUserInfo);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					ToastUtils.showToast(R.string.failToUpdateUserInfo);
+					LogUtils.log("SignUpForDealerPage.onError." + "\nurl : " + url);
+					ToastUtils.showToast(R.string.failToEditUserInfo);
 				}
-			}
-		}, mActivity.getLoadingView());
+
+				@Override
+				public void onCompleted(String url, JSONObject objJSON) {
+
+					try {
+						LogUtils.log("SignUpForDealerPage.onCompleted." + "\nurl : " + url
+								+ "\nresult : " + objJSON);
+
+						if(objJSON.getInt("result") == 1) {
+							mActivity.closeTopPage();
+							((MainActivity)mActivity).checkSession();
+						} else {
+							ToastUtils.showToast(objJSON.getString("message"));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+						ToastUtils.showToast(R.string.failToEditUserInfo);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+						ToastUtils.showToast(R.string.failToEditUserInfo);
+					}
+				}
+			}, mActivity.getLoadingView());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 }

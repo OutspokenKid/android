@@ -12,31 +12,38 @@
     	android:layout_height="0dp" />
     
     <Button 
-        android:id="@+id/myPage_btnGrade"
+        android:id="@+id/myPage_btn1"
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_below="@id/myPage_titleBar"
     	android:background="@drawable/mypage_cell1_btn" />
     
     <Button 
-        android:id="@+id/myPage_btnTicket"
+        android:id="@+id/myPage_btn2"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_below="@id/myPage_btnGrade"
+    	android:layout_below="@id/myPage_btn1"
     	android:background="@drawable/mypage_cell2_btn" />
     
     <Button 
-        android:id="@+id/myPage_btnCompletedList"
+        android:id="@+id/myPage_btn3"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_below="@id/myPage_btnTicket"
+    	android:layout_below="@id/myPage_btn2"
     	android:background="@drawable/mypage_cell3_btn" />
     
     <Button 
-        android:id="@+id/myPage_btnReview"
+        android:id="@+id/myPage_btn4"
         android:layout_width="0dp"
     	android:layout_height="0dp"
-    	android:layout_below="@id/myPage_btnCompletedList"
+    	android:layout_below="@id/myPage_btn3"
     	android:background="@drawable/mypage_cell4_btn" />
+    
+    <Button 
+        android:id="@+id/myPage_btn5"
+        android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_below="@id/myPage_btn4"
+    	android:background="@drawable/mypage_cell5_btn" />
     
 </RelativeLayout>

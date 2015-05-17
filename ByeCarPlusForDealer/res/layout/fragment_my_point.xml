@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myPointPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.byecar.views.TitleBar
+        android:id="@+id/myPointPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <ScrollView
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:layout_below="@id/myPointPage_titleBar"
+    	android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvTitle1"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+			
+			<View 
+			    android:id="@+id/myPointPage_bgForAccount"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myPointPage_tvTitle1"
+		        android:background="@drawable/cash_bg1" />
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvAccount1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignLeft="@id/myPointPage_bgForAccount"
+		        android:layout_alignTop="@id/myPointPage_bgForAccount"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical" />
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvAccount2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_alignBottom="@id/myPointPage_bgForAccount"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center" />
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvTitle2"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/myPointPage_bgForAccount"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+			
+			<View 
+			    android:id="@+id/myPointPage_bgForPoint"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myPointPage_tvTitle2"
+		        android:background="@drawable/cash_bg2" />
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvPoint"
+		        android:layout_width="wrap_content"
+		        android:layout_height="0dp"
+		        android:layout_alignRight="@id/myPointPage_bgForPoint"
+		        android:layout_alignTop="@id/myPointPage_bgForPoint"
+		        android:textColor="@color/holo_text"
+		        android:gravity="center_vertical|right" />
+			
+			<TextView 
+		        android:id="@+id/myPointPage_tvTitle3"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_below="@id/myPointPage_bgForPoint"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
+			
+			<LinearLayout 
+			    android:id="@+id/myPointPage_linearForHistory"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="vertical"
+			    />
+			
+			<View 
+			    android:id="@+id/myPointPage_noList"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myPointPage_tvTitle3"
+		        android:background="@drawable/no_list" />
+            
+        </RelativeLayout>
+        
+    </ScrollView>
+    
+
+</RelativeLayout>

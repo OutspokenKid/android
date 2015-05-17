@@ -1531,7 +1531,7 @@ containing a value of this type.
         public static final int detail_option6_btn_a=0x7f020155;
         public static final int detail_option6_btn_b=0x7f020156;
         public static final int detail_option7_btn_a=0x7f020157;
-        public static final int detail_option7_btn_bpng=0x7f020158;
+        public static final int detail_option7_btn_b=0x7f020158;
         public static final int detail_option8_btn_a=0x7f020159;
         public static final int detail_option8_btn_b=0x7f02015a;
         public static final int detail_option9_btn_a=0x7f02015b;
@@ -2066,10 +2066,10 @@ containing a value of this type.
         public static final int sort_toggle_b2=0x7f02036c;
         public static final int sort_toggle_c=0x7f02036d;
         public static final int sort_toggle_c2=0x7f02036e;
-        public static final int splash2_1=0x7f02036f;
-        public static final int splash2_2=0x7f020370;
-        public static final int splash2_3=0x7f020371;
-        public static final int splash2_4=0x7f020372;
+        public static final int splash2_0=0x7f02036f;
+        public static final int splash2_1=0x7f020370;
+        public static final int splash2_2=0x7f020371;
+        public static final int splash2_3=0x7f020372;
         public static final int splash_bg1=0x7f020373;
         public static final int splash_bg2=0x7f020374;
         public static final int splash_bg3=0x7f020375;

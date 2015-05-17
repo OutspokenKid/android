@@ -2,6 +2,7 @@ package com.byecar.fragments.dealer;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -15,20 +16,19 @@ import com.outspoken_kid.utils.ResizeUtils;
 
 public class MyPage extends BCPFragment {
 
-	private Button btnGrade;
-	private Button btnTicket;
-	private Button btnCompletedList;
-	private Button btnReview;
+	private Button[] buttons;
 	
 	@Override
 	public void bindViews() {
 
 		titleBar = (TitleBar) mThisView.findViewById(R.id.myPage_titleBar);
-		
-		btnGrade = (Button) mThisView.findViewById(R.id.myPage_btnGrade);
-		btnTicket = (Button) mThisView.findViewById(R.id.myPage_btnTicket);
-		btnCompletedList = (Button) mThisView.findViewById(R.id.myPage_btnCompletedList);
-		btnReview = (Button) mThisView.findViewById(R.id.myPage_btnReview);
+
+		buttons = new Button[5];
+		buttons[0] = (Button) mThisView.findViewById(R.id.myPage_btn1);
+		buttons[1] = (Button) mThisView.findViewById(R.id.myPage_btn2);
+		buttons[2] = (Button) mThisView.findViewById(R.id.myPage_btn3);
+		buttons[3] = (Button) mThisView.findViewById(R.id.myPage_btn4);
+		buttons[4] = (Button) mThisView.findViewById(R.id.myPage_btn5);
 	}
 
 	@Override
@@ -46,50 +46,56 @@ public class MyPage extends BCPFragment {
 	@Override
 	public void setListeners() {
 
-		btnGrade.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(BCPConstants.PAGE_MY_GRADE, null);
-			}
-		});
-		
-		btnTicket.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(BCPConstants.PAGE_MY_TICKET, null);
-			}
-		});
-		
-		btnCompletedList.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(BCPConstants.PAGE_MY_COMPLETED_LIST, null);
-			}
-		});
-		
-		btnReview.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showPage(BCPConstants.PAGE_MY_REVIEW, null);
-			}
-		});
+		for(int i=0; i<buttons.length; i++) {
+			
+			final int INDEX = i;
+			buttons[i].setOnClickListener(new OnClickListener() {
+			
+				@Override
+				public void onClick(View view) {
+	
+					switch (INDEX) {
+					
+					//나의 정보/후기.
+					case 0:
+						mActivity.showPage(BCPConstants.PAGE_MY_INFO_REVIEW, null);
+						break;
+						
+					//바이카 입찰권.
+					case 1:
+						Bundle bundle = new Bundle();
+						bundle.putInt("type", MyTicketPage.TYPE_AUCTION);
+						mActivity.showPage(BCPConstants.PAGE_MY_TICKET, bundle);
+						break;
+						
+					//중고마켓 등록권.
+					case 2:
+						bundle = new Bundle();
+						bundle.putInt("type", MyTicketPage.TYPE_DEALER);
+						mActivity.showPage(BCPConstants.PAGE_MY_TICKET, bundle);
+						break;
+						
+					//거래완료내역.
+					case 3:
+						mActivity.showPage(BCPConstants.PAGE_MY_COMPLETED_LIST, null);
+						break;
+						
+					//적립금내역.
+					case 4:
+						mActivity.showPage(BCPConstants.PAGE_MY_POINT, null);
+						break;
+					}
+				}
+			});	
+		}
 	}
 
 	@Override
 	public void setSizes() {
 
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnGrade, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnTicket, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnCompletedList, null, null, null);
-		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnReview, null, null, null);
+		for(int i=0; i<buttons.length; i++) {
+			ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, buttons[i], null, null, null);
+		}
 	}
 
 	@Override
@@ -100,8 +106,8 @@ public class MyPage extends BCPFragment {
 	
 	@Override
 	public int getPageTitleTextResId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.string.pageTitle_my;
 	}
 
 	@Override

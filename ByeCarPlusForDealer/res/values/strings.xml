@@ -7,6 +7,10 @@
     <string name="app_name">ByeCarPlus For Dealer</string>
     <string name="auctionedPrice">낙찰금액</string>
 
+    <string name="biddingPrice1">+100</string>
+    <string name="biddingPrice2">+50</string>
+    <string name="biddingPrice3">+10</string>
+    <string name="biddingPrice4">+5</string>
     <string name="biddingSuccessPrice">낙찰가</string>
     <string name="bidPriceMustOverCurrentPrice">입찰 금액은 현재 금액보다 커야합니다.</string>
     <string name="bidPriceMustLessThan500m">최대 가격은 5억 원 이하로 입력해주세요.</string>
@@ -59,6 +63,7 @@
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editUserInfo">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_payment">결제가 완료되었습니다.</string>
     <string name="complete_report">신고가 완료되었습니다.</string>
     <string name="complete_sendEmail">비밀번호 재설정을 위한 링크를 발송하였습니다.\n이메일을 확인해주세요.</string>
     <string name="complete_sendSMS">SMS를 발송하였습니다.</string>
@@ -95,13 +100,15 @@
     
     <string name="edit">수정</string>
     <string name="emptyDealerDesc">딜러 소개가 없습니다.</string>
-
     <string name="failToCompleteSelling">거래 완료 상태로 변경하지 못했습니다.</string>
+    <string name="failToBidding">입찰하지 못했습니다.</string>
     <string name="failToDelete">삭제하지 못했습니다.</string>
+    <string name="failToEditUserInfo">프로필 수정 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadDealerInfo">딜러 정보를 불러오지 못했습니다.</string>
     <string name="failToLoadList">리스트를 불러오지 못했습니다.</string>
     <string name="failToFindPw">비번 찾기 실패</string>
+    <string name="failToPay">결제 실패</string>
     <string name="failToReportCar">해당 매물을 신고하지 못했습니다.</string>
     <string name="failToSendAuthRequest">인증번호를 발송하지 못했습니다.</string>
     <string name="failToSendSMS">SMS를 발송하지 못했습니다.</string>
@@ -111,7 +118,7 @@
 
     <string name="hadAccident">사고보험 이력이 존재합니다. 버튼을 눌러 확인해주세요.</string>
     <string name="highestPrice">최고가</string>
-    <string name="hintForAddress">상사주소를 입력해주세요.(ex 인천 연수구 송도동)</string>
+    <string name="hintForAddress">상사주소를 검색해주세요.</string>
     <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
     <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
     <string name="hintForComplex">단지명과 상사이름 (ex 간석매매단지 나이스모터스)</string>
@@ -149,6 +156,10 @@
     <string name="minPriceCannotOverMaxPrice">최저가는 최고가보다 클 수 없습니다</string>
     <string name="month">월</string>
     <string name="myBiddingPrice">내 입찰가</string>
+    <string name="myPointTitle1">나의 가상계좌</string>
+    <string name="myPointTitle2">현재 보유 적립금</string>
+    <string name="myPointTitle3">적립금내역</string>
+    <string name="myPointHintText">가상계좌에 입금하시면 자동으로 적립금에 충전됩니다.</string>
     
     <string name="notificationSetting">알림설정</string>
     
@@ -182,24 +193,19 @@
     <string name="pageTitle_typeSearchCar_transmission">변속기</string>
     <string name="pageTitle_typeSearchCar_oneman">1인신조</string>
     <string name="pageTitle_typeSearchCar_month">연식</string>
-<!--     <string name="pageTitle_searchArea">판매지역</string> -->
     <string name="pageTitle_carDetail">상세보기</string>
-<!--     <string name="pageTitle_carList_auction">입찰 진행중</string> -->
-<!--     <string name="pageTitle_carList_dealer">중고차마켓</string> -->
     <string name="pageTitle_carRegistration_edit">차량 수정</string>
     <string name="pageTitle_carRegistration_registration">내 차 등록</string>
-<!--     <string name="pageTitle_carRegistration_registration_direct">내 차 직거래등록</string> -->
-<!--     <string name="pageTitle_my">마이페이지</string> -->
-<!--     <string name="pageTitle_signIn">로그인</string> -->
-<!--     <string name="pageTitle_writeForum">새글쓰기</string> -->
-<!--     <string name="pageTitle_writeReply">댓글 달기</string> -->
-<!--     <string name="pageTitle_writeReview">리뷰 작성</string> -->
+    <string name="pageTitle_my">마이페이지</string>
+    <string name="pageTitle_editDealerInfo">프로필 수정</string>
     <string name="pageTitle_qnA">Q&amp;A</string>
-<!--     <string name="pageTitle_forum">자유게시판</string> -->
-<!--     <string name="pageTitle_reviewList">입찰완료/후기</string> -->
-<!--     <string name="pageTitle_phoneInfo">휴대폰 정보</string> -->
 	<string name="pageTitle_myCar">내 차 보기</string>
 	<string name="pageTitle_guide">바이카 이용안내</string>
+	<string name="pageTitle_myInfoReview">나의 정보/후기</string>
+	<string name="pageTitle_ticket_auction">바이카 입찰권</string>
+	<string name="pageTitle_ticket_dealer">중고차마켓 등록권</string>
+	<string name="pageTitle_completedList">거래완료내역</string>
+	<string name="pageTitle_myPoint">적립금내역</string>
     <string name="phoneNumberisNotCertified">휴대폰 번호가 인증되지 않았습니다.</string>
     <string name="popup_bid">입찰신청이 완료되었습니다.</string>
     <string name="popup_completeSelling">차량판매가 완료되었습니다!</string>
@@ -218,6 +224,7 @@
 	
 	<string name="salesPrice">판매가</string>
 	<string name="searchArea">지역검색</string>
+	<string name="searchCompanyAddress">상사주소 검색</string>
 	<string name="searchCondition">검색조건</string>
 	<string name="selectArea1First">시도를 먼저 선택해주세요.</string>
     <string name="selectCarFirst">차량을 먼저 선택해주세요.</string>

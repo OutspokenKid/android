@@ -390,10 +390,10 @@ public class SignPage extends BCPFragment {
 		guideImageViews = new ImageView[size];
 		
 		int[] resIds = new int[]{
+				R.drawable.splash2_0,
 				R.drawable.splash2_1,
 				R.drawable.splash2_2,
 				R.drawable.splash2_3,
-				R.drawable.splash2_4,
 		};
 		
 		for(int i=0; i<size; i++) {
@@ -869,7 +869,7 @@ public class SignPage extends BCPFragment {
 						
 						tvUserCount = new TextView(mContext);
 						FrameLayout.LayoutParams fp = new FrameLayout.LayoutParams(
-								LayoutParams.WRAP_CONTENT, ResizeUtils.getSpecificLength(80),
+								LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(80),
 								Gravity.CENTER_HORIZONTAL|Gravity.TOP);
 						fp.topMargin = topMargin;
 						tvUserCount.setLayoutParams(fp);
@@ -891,8 +891,11 @@ public class SignPage extends BCPFragment {
 						FontUtils.addSpan(tvUserCount, " 명", 0, 0.5f, false);
 					}
 				}
+
+				if(guideFrame.getParent() == null) {
+					container.addView(guideFrame);
+				}
 				
-				container.addView(guideFrame);
 				return guideFrame;
 				
 			} else if(position < NUMBER_OF_PAGE - 1) {

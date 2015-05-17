@@ -118,22 +118,29 @@
 		        android:layout_below="@id/signUpForDealerPage_etInfo1"
 		        android:layout_centerHorizontal="true" />
             
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/signUpForDealerPage_etInfo3"
+            <Button 
+                android:id="@+id/signUpForDealerPage_btnSearchArea"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForDealerPage_etInfo2"
-		        android:layout_centerHorizontal="true" />
+		        android:text="@string/searchCompanyAddress"
+		        android:textColor="#fff"
+		        android:gravity="center"
+		        android:singleLine="true"
+		        android:ellipsize="end"
+		        android:paddingLeft="20dp"
+		        android:paddingRight="20dp"
+		        android:background="@drawable/sign2_search_btn_a" />
 
             <TextView
 		        android:id="@+id/signUpForDealerPage_tvTitleText3"
 		        android:layout_width="match_parent"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/signUpForDealerPage_etInfo3"
+		        android:layout_below="@id/signUpForDealerPage_btnSearchArea"
 		        android:textColor="#fff"
 		        android:gravity="center_vertical"
-		        android:background="@color/title_gray" />
-            
+		        android:background="@color/title_gray" />            
             <TextView
 		        android:id="@+id/signUpForDealerPage_tvIntroduce"
 		        android:layout_width="wrap_content"

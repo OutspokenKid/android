@@ -48,10 +48,10 @@ public class BCPConstants {
 	public static final int PAGE_MAIN = 10;
 	public static final int PAGE_NOTIFICATION = 11;
 	public static final int PAGE_MY = 12;
-	public static final int PAGE_MY_GRADE = 13;
+	public static final int PAGE_MY_INFO_REVIEW = 13;
 	public static final int PAGE_MY_TICKET = 14;
 	public static final int PAGE_MY_COMPLETED_LIST = 15;
-	public static final int PAGE_MY_REVIEW = 16;
+	public static final int PAGE_MY_POINT = 16;
 	public static final int PAGE_OPENABLE_POST_LIST = 17;
 	public static final int PAGE_ASK = 18;
 	public static final int PAGE_SETTING = 19;

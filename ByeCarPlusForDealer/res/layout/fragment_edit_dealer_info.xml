@@ -21,156 +21,53 @@
             android:layout_width="match_parent"
     		android:layout_height="wrap_content" >
     
-            <FrameLayout
-                android:id="@+id/editDealerInfoPage_profileFrame"
-                android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_centerHorizontal="true"
-		        android:layout_alignParentTop="true" >
-                
-                <Button
-                    android:id="@+id/editDealerInfoPage_btnProfile"
-                    android:layout_width="match_parent"
-		        	android:layout_height="match_parent"
-		        	android:background="@drawable/sign2_picture_btn" />
-                
-                <ImageView
-                    android:id="@+id/editDealerInfoPage_ivProfile"
-                    android:layout_width="match_parent"
-		        	android:layout_height="match_parent"
-		        	android:scaleType="centerCrop" />
-                
-                <View
-                    android:layout_width="match_parent"
-		        	android:layout_height="match_parent"
-		        	android:background="@drawable/sign1_frame" />
-                
-            </FrameLayout>
-            
             <TextView
-		        android:id="@+id/editDealerInfoPage_tvProfile"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="@string/touchCameraIcon"
-		        android:textColor="#000"
-		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/editDealerInfoPage_profileFrame" />
-            
-            <View
-                android:id="@+id/editDealerInfoPage_lineAfterProfile"
+		        android:id="@+id/editDealerInfoPage_tvTitleText1"
 		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/editDealerInfoPage_tvProfile"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="15dp"
-		        android:background="@color/holo_text_hint" />
-            
-            <TextView
-		        android:id="@+id/editDealerInfoPage_tvCertifyPhoneNumberText"
-		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/editDealerInfoPage_lineAfterProfile"
+		        android:textColor="#fff"
 		        android:gravity="center_vertical"
-		        android:text="@string/certifyPhoneNumber"
-		        android:textColor="@color/holo_text" />
+		        android:background="@color/title_gray" />
             
             <TextView 
-                android:id="@+id/editDealerInfoPage_tvPhoneNumber"
+                android:id="@+id/editDealerInfoPage_tvCertified"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_tvCertifyPhoneNumberText"
+		        android:layout_below="@id/editDealerInfoPage_tvTitleText1"
 		        android:layout_centerHorizontal="true"
-		        android:gravity="center"
-		        android:textColor="@color/color_green" />
+		        android:gravity="center" />
             
-            <View
-		        android:id="@+id/editDealerInfoPage_checkIcon"
+            <View 
+                android:id="@+id/editDealerInfoPage_checked"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_toLeftOf="@id/editDealerInfoPage_tvPhoneNumber"
-		        android:layout_alignTop="@id/editDealerInfoPage_tvPhoneNumber"
+		        android:layout_alignTop="@id/editDealerInfoPage_tvCertified"
+		        android:layout_toLeftOf="@id/editDealerInfoPage_tvCertified"
 		        android:background="@drawable/user_check" />
             
             <Button 
-                android:id="@+id/editDealerInfoPage_btnEditPhoneNumber"
+                android:id="@+id/editDealerInfoPage_btnCertifyPhoneNumber"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignTop="@id/editDealerInfoPage_tvCertifyPhoneNumberText"
-				android:layout_alignParentRight="true"		        
-		        android:background="@drawable/registration_phone_info_btn" />
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/editDealerInfoPage_tvCertified"
+		        android:background="@drawable/sign2_phone_btn" />
             
-    		<View
-                android:id="@+id/editDealerInfoPage_lineAfterPhoneNumber"
+            <TextView
+		        android:id="@+id/editDealerInfoPage_tvTitleText2"
 		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/editDealerInfoPage_tvPhoneNumber"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="15dp"
-		        android:background="@color/holo_text_hint" />
-    		
-    		<TextView
-		        android:id="@+id/editDealerInfoPage_tvCommonInfoText"
-		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/editDealerInfoPage_lineAfterPhoneNumber"
+		        android:layout_below="@id/editDealerInfoPage_btnCertifyPhoneNumber"
+		        android:textColor="#fff"
 		        android:gravity="center_vertical"
-		        android:text="@string/commonInfo"
-		        android:textColor="@color/holo_text" />
-    		
-    		<com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etCommonInfo1"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_tvCommonInfoText"
-		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etCommonInfo2"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_etCommonInfo1"
-		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etCommonInfo3"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_etCommonInfo2"
-		        android:layout_centerHorizontal="true" />
-            
-    		<View
-                android:id="@+id/editDealerInfoPage_lineAfterCommonInfo"
-		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/editDealerInfoPage_etCommonInfo3"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="15dp"
-		        android:background="@color/holo_text_hint" />
-    		
-			<TextView
-		        android:id="@+id/editDealerInfoPage_tvAddedInfoText"
-		        android:layout_width="wrap_content"
-		        android:layout_height="0dp"
-		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/editDealerInfoPage_lineAfterCommonInfo"
-		        android:gravity="center_vertical"
-		        android:text="@string/addedInfo"
-		        android:textColor="@color/holo_text" />
+		        android:background="@color/title_gray" />
 			
 			<Button 
                 android:id="@+id/editDealerInfoPage_btnImage1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/editDealerInfoPage_tvAddedInfoText"
+		        android:layout_below="@id/editDealerInfoPage_tvTitleText2"
 		        android:background="@drawable/sign2_picture2_btn" />
             
             <ImageView
@@ -208,50 +105,49 @@
 		        android:textColor="@color/holo_text" />
             
             <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etAddedInfo1"
+                android:id="@+id/editDealerInfoPage_etInfo1"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/editDealerInfoPage_tvUploadText"
 		        android:layout_centerHorizontal="true" />
             
             <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etAddedInfo2"
+                android:id="@+id/editDealerInfoPage_etInfo2"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_etAddedInfo1"
+		        android:layout_below="@id/editDealerInfoPage_etInfo1"
 		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etAddedInfo3"
+
+            <Button 
+                android:id="@+id/editDealerInfoPage_btnSearchArea"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_etAddedInfo2"
-		        android:layout_centerHorizontal="true" />
-            
-            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
-                android:id="@+id/editDealerInfoPage_etAddedInfo4"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_below="@id/editDealerInfoPage_etAddedInfo3"
-		        android:layout_centerHorizontal="true" />
-            
-            <View
-                android:id="@+id/editDealerInfoPage_lineAfterInfo"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/editDealerInfoPage_etInfo2"
+		        android:text="@string/searchCompanyAddress"
+		        android:textColor="#fff"
+		        android:gravity="center"
+		        android:singleLine="true"
+		        android:ellipsize="end"
+		        android:paddingLeft="20dp"
+		        android:paddingRight="20dp"
+		        android:background="@drawable/sign2_search_btn_a" />
+
+            <TextView
+		        android:id="@+id/editDealerInfoPage_tvTitleText3"
 		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/editDealerInfoPage_etAddedInfo4"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="15dp"
-		        android:background="@color/holo_text_hint" />
+		        android:layout_height="0dp"
+		        android:layout_below="@id/editDealerInfoPage_btnSearchArea"
+		        android:textColor="#fff"
+		        android:gravity="center_vertical"
+		        android:background="@color/title_gray" />
             
             <TextView
-		        android:id="@+id/editDealerInfoPage_tvIntroduceText"
+		        android:id="@+id/editDealerInfoPage_tvIntroduce"
 		        android:layout_width="wrap_content"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/editDealerInfoPage_lineAfterInfo"
+		        android:layout_below="@id/editDealerInfoPage_tvTitleText3"
 		        android:gravity="center_vertical"
 		        android:text="@string/introduce"
 		        android:textColor="@color/holo_text" />
@@ -261,7 +157,7 @@
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/editDealerInfoPage_tvIntroduceText"
+		        android:layout_below="@id/editDealerInfoPage_tvIntroduce"
 		        android:textColor="@color/holo_text"
 				android:textColorHint="@color/holo_text_hint"
 				android:hint="@string/hintForIntroduce"
@@ -269,23 +165,12 @@
 				android:padding="10dp"
 				android:background="@drawable/white_round_box" />
 			
-			<View
-                android:id="@+id/editDealerInfoPage_lineAfterIntroduce"
-		        android:layout_width="match_parent"
-		        android:layout_height="1dp"
-		        android:layout_below="@id/editDealerInfoPage_etIntroduce"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginTop="20dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_marginBottom="20dp"
-		        android:background="@color/holo_text_hint" />
-			
 			<Button 
-			    android:id="@+id/editDealerInfoPage_btnComplete"
+			    android:id="@+id/editDealerInfoPage_btnSubmit"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
-		        android:layout_below="@id/editDealerInfoPage_lineAfterIntroduce"
+		        android:layout_below="@id/editDealerInfoPage_etIntroduce"
 		        android:background="@drawable/profile_complete_btn" />
 
 			<!-- Bottom blank. -->
@@ -293,7 +178,7 @@
 			<View 
 			    android:layout_width="10dp"
 		        android:layout_height="20dp"
-		        android:layout_below="@id/editDealerInfoPage_btnComplete" />
+		        android:layout_below="@id/editDealerInfoPage_btnSubmit" />
 						
         </RelativeLayout>
         

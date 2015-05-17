@@ -53,11 +53,122 @@
 		        android:layout_below="@id/carDetailPage_carInfoView" />
 		    
 		    <RelativeLayout
-		        android:id="@+id/carDetailPage_relativeForReview"
+		        android:id="@+id/carDetailPage_relativeForBidding"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carDetailPage_relativeForType" >
+		        
+		        <View 
+			        android:id="@+id/carDetailPage_headerForBidding"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_alignParentTop="true"
+			        android:background="@drawable/detail_cash_header" />
+			    
+			    <View
+			        android:id="@+id/carDetailPage_arrowForBidding"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_headerForBidding"
+			        android:layout_alignRight="@id/carDetailPage_headerForBidding"
+			        android:background="@drawable/detail_toggle_up" />
+			    
+			    <RelativeLayout 
+			        android:id="@+id/carDetailPage_relativeForBidding2"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_headerForBidding"
+			        android:background="@drawable/detail_cash_bg" />
+			    
+			    <TextView 
+			        android:id="@+id/carDetailPage_tvPrice"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/carDetailPage_relativeForBidding2"
+			        android:layout_alignTop="@id/carDetailPage_relativeForBidding2"
+			        android:textColor="@color/color_orange"
+			        android:gravity="center"
+			        android:background="@drawable/detail_cash_box1" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnPrice1"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_tvPrice"
+			        android:layout_toRightOf="@id/carDetailPage_tvPrice"
+			        android:text="@string/biddingPrice1"
+			        android:textColor="@color/color_darkgray"
+			        android:gravity="center"
+			        android:background="@drawable/detail_cash_box2_btn" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnPrice2"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_btnPrice1"
+			        android:layout_toRightOf="@id/carDetailPage_btnPrice1"
+			        android:text="@string/biddingPrice2"
+			        android:textColor="@color/color_darkgray"
+			        android:gravity="center"
+			        android:background="@drawable/detail_cash_box2_btn" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnPrice3"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/carDetailPage_btnPrice1"
+			        android:layout_below="@id/carDetailPage_btnPrice1"
+			        android:text="@string/biddingPrice3"
+			        android:textColor="@color/color_darkgray"
+			        android:gravity="center"
+			        android:background="@drawable/detail_cash_box2_btn" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnPrice4"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_btnPrice3"
+			        android:layout_toRightOf="@id/carDetailPage_btnPrice3"
+			        android:text="@string/biddingPrice4"
+			        android:textColor="@color/color_darkgray"
+			        android:gravity="center"
+			        android:background="@drawable/detail_cash_box2_btn" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnClear"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignLeft="@id/carDetailPage_tvPrice"
+			        android:layout_below="@id/carDetailPage_tvPrice"
+			        android:background="@drawable/detail_cash_clear_btn" />
+			    
+			    <Button
+			        android:id="@+id/carDetailPage_btnBidding"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp"
+			        android:layout_alignTop="@id/carDetailPage_btnClear"
+			        android:layout_toRightOf="@id/carDetailPage_btnClear"
+			        android:background="@drawable/detail_cash_bid_btn" />
+			    
+			    <View 
+			        android:id="@+id/carDetailPage_footerForBidding"
+			        android:layout_width="match_parent"
+			        android:layout_height="0dp"
+			        android:layout_centerHorizontal="true"
+			        android:layout_below="@id/carDetailPage_relativeForBidding2"
+			        android:background="@drawable/detail_foot" />
+		        
+		    </RelativeLayout>
+		    
+		    <RelativeLayout
+		        android:id="@+id/carDetailPage_relativeForReview"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/carDetailPage_relativeForBidding" >
 		        
 		        <View 
 			        android:id="@+id/carDetailPage_headerForReview"
@@ -480,12 +591,12 @@
         android:background="@drawable/button_bg" />
     
     <Button
-        android:id="@+id/carDetailPage_btnCall"
+        android:id="@+id/carDetailPage_btnPayment"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/buy_call_btn" />
+        android:background="@drawable/detail_purchase_btn" />
     
     <Button
         android:id="@+id/carDetailPage_btnReport"

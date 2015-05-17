@@ -50,6 +50,7 @@ public class SignUpForDealerPage extends BCPFragment {
 	private ImageView[] ivImages;
 	private TextView tvUploadText;
 	private HoloStyleEditText[] etInfos;
+	private Button btnSearch;
 	
 	private TextView tvTitleText3;
 	private TextView tvIntroduceText;
@@ -60,6 +61,7 @@ public class SignUpForDealerPage extends BCPFragment {
 	
 	private int selectedImageIndex;
 	private String[] selectedImageSdCardPaths = new String[2];
+	private int dong_id;
 	
 	private String email;
 	private String pw;
@@ -104,10 +106,11 @@ public class SignUpForDealerPage extends BCPFragment {
 		
 		tvUploadText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvUploadText);
 		
-		etInfos = new HoloStyleEditText[3];
+		etInfos = new HoloStyleEditText[2];
 		etInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo1);
 		etInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo2);
-		etInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.signUpForDealerPage_etInfo3);
+		
+		btnSearch = (Button) mThisView.findViewById(R.id.signUpForDealerPage_btnSearchArea);
 		
 		tvTitleText3 = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvTitleText3);
 		tvIntroduceText = (TextView) mThisView.findViewById(R.id.signUpForDealerPage_tvIntroduce);
@@ -178,6 +181,15 @@ public class SignUpForDealerPage extends BCPFragment {
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("forDealerSignUp", true);
 				mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, bundle);
+			}
+		});
+		
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_SEARCH_AREA, null);
 			}
 		});
 		
@@ -272,6 +284,12 @@ public class SignUpForDealerPage extends BCPFragment {
 			FontUtils.setFontAndHintSize(etInfos[i], 26, 20);
 		}
 		
+		//btnSearch.
+		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(584);
+		rp.height = ResizeUtils.getSpecificLength(82);
+		rp.topMargin = ResizeUtils.getSpecificLength(32);
+		
 		//tvTitleText3.
 		rp = (RelativeLayout.LayoutParams) tvTitleText3.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(41);
@@ -309,6 +327,8 @@ public class SignUpForDealerPage extends BCPFragment {
 		FontUtils.setFontSize(tvTitleText2, 24);
 		FontUtils.setFontStyle(tvTitleText2, FontUtils.BOLD);
 		FontUtils.setFontSize(tvUploadText, 20);
+		
+		FontUtils.setFontSize(btnSearch, 30);
 		
 		FontUtils.setFontSize(tvTitleText3, 24);
 		FontUtils.setFontStyle(tvTitleText3, FontUtils.BOLD);
@@ -366,6 +386,12 @@ public class SignUpForDealerPage extends BCPFragment {
 			tvCertified.setText(phone_number);
 			checked.setVisibility(View.VISIBLE);
 		}
+		
+		if(mActivity.bundle != null) {
+			btnSearch.setText(mActivity.bundle.getString("address"));
+			dong_id = mActivity.bundle.getInt("dong_id");
+			mActivity.bundle = null;
+		}
 	}
 	
 	@Override
@@ -414,7 +440,7 @@ public class SignUpForDealerPage extends BCPFragment {
 		} else if(StringUtils.isEmpty(etInfos[1].getEditText())) {
 			ToastUtils.showToast(R.string.hintForComplex);
 			
-		} else if(StringUtils.isEmpty(etInfos[2].getEditText())) {
+		} else if(dong_id == 0) {
 			ToastUtils.showToast(R.string.hintForAddress);
 		
 		} else if(StringUtils.isEmpty(etIntroduce)) {
@@ -482,7 +508,7 @@ public class SignUpForDealerPage extends BCPFragment {
 					.append("&user[pw]=").append(pw)
 					.append("&user[name]=").append(StringUtils.getUrlEncodedString(etInfos[0].getEditText()))
 					.append("&dealer[company]=").append(StringUtils.getUrlEncodedString(etInfos[1].getEditText()))
-					.append("&user[address]=").append(StringUtils.getUrlEncodedString(etInfos[2].getEditText()))
+					.append("&user[dong_id]=").append(dong_id)
 					.append("&user[desc]=").append(StringUtils.getUrlEncodedString(etIntroduce))
 					.append("&phone_auth_key=").append(phone_auth_key)
 					.append("&dealer[employee_card_img_url]=").append(StringUtils.getUrlEncodedString(selectedImageSdCardPaths[0]))

@@ -146,8 +146,8 @@ public class MyCompletedListPage extends BCPFragment {
 	
 	@Override
 	public int getPageTitleTextResId() {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return R.string.pageTitle_completedList;
 	}
 	
 	@Override

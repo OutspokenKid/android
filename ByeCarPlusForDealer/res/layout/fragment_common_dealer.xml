@@ -129,7 +129,7 @@
 		        android:layout_height="0dp"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/dealerPage_footerForIntro"
-		        android:background="@drawable/detail_head2" />
+		        android:background="@drawable/dealer_header2" />
 		    
 		    <LinearLayout
 		        android:id="@+id/dealerPage_linearForReview"

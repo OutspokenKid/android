@@ -49,6 +49,10 @@ public class Dealer extends BCPBaseModel implements Serializable {
 	
 	private int avg_rating;
 	
+	private String vaccount_no;
+	private String vaccount_bank;
+	private int cash;
+	
 	public Dealer() {
 		
 	}
@@ -129,6 +133,18 @@ public class Dealer extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("avg_rating")) {
 				this.avg_rating = objJSON.getInt("avg_rating");
+			}
+			
+			if(objJSON.has("vaccount_no")) {
+				this.vaccount_no = objJSON.getString("vaccount_no");
+			}
+			
+			if(objJSON.has("vaccount_bank")) {
+				this.vaccount_bank = objJSON.getString("vaccount_bank");
+			}
+			
+			if(objJSON.has("cash")) {
+				this.cash = objJSON.getInt("cash");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -256,5 +272,29 @@ public class Dealer extends BCPBaseModel implements Serializable {
 
 	public void setAvg_rating(int avg_rating) {
 		this.avg_rating = avg_rating;
+	}
+
+	public String getVaccount_no() {
+		return vaccount_no;
+	}
+
+	public void setVaccount_no(String vaccount_no) {
+		this.vaccount_no = vaccount_no;
+	}
+
+	public String getVaccount_bank() {
+		return vaccount_bank;
+	}
+
+	public void setVaccount_bank(String vaccount_bank) {
+		this.vaccount_bank = vaccount_bank;
+	}
+
+	public int getCash() {
+		return cash;
+	}
+
+	public void setCash(int cash) {
+		this.cash = cash;
 	}
 }

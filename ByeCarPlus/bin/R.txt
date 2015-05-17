@@ -571,7 +571,7 @@ int drawable detail_option5_btn_b 0x7f020154
 int drawable detail_option6_btn_a 0x7f020155
 int drawable detail_option6_btn_b 0x7f020156
 int drawable detail_option7_btn_a 0x7f020157
-int drawable detail_option7_btn_bpng 0x7f020158
+int drawable detail_option7_btn_b 0x7f020158
 int drawable detail_option8_btn_a 0x7f020159
 int drawable detail_option8_btn_b 0x7f02015a
 int drawable detail_option9_btn_a 0x7f02015b
@@ -1106,10 +1106,10 @@ int drawable sort_toggle_b 0x7f02036b
 int drawable sort_toggle_b2 0x7f02036c
 int drawable sort_toggle_c 0x7f02036d
 int drawable sort_toggle_c2 0x7f02036e
-int drawable splash2_1 0x7f02036f
-int drawable splash2_2 0x7f020370
-int drawable splash2_3 0x7f020371
-int drawable splash2_4 0x7f020372
+int drawable splash2_0 0x7f02036f
+int drawable splash2_1 0x7f020370
+int drawable splash2_2 0x7f020371
+int drawable splash2_3 0x7f020372
 int drawable splash_bg1 0x7f020373
 int drawable splash_bg2 0x7f020374
 int drawable splash_bg3 0x7f020375

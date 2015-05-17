@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myInfoReviewPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/page_bg" >
+    
+    <com.outspoken_kid.views.OffsetScrollView
+        android:id="@+id/myInfoReviewPage_scrollView"
+        android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+        android:fillViewport="true" >
+        
+        <RelativeLayout
+            android:id="@+id/myInfoReviewPage_innerRelative"
+        	android:layout_width="match_parent"
+    		android:layout_height="wrap_content" >
+
+			<ImageView 
+		        android:id="@+id/myInfoReviewPage_ivImage"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
+		        android:scaleType="centerCrop"
+		        android:background="@drawable/dealer_default" />
+            		
+            <View 
+                android:id="@+id/myInfoReviewPage_bg"
+		        android:layout_width="match_parent"
+		        android:layout_height="0dp"
+		        android:layout_alignParentTop="true"
+		        android:background="@drawable/dealer_bg" />
+            
+            <View
+                android:id="@+id/myInfoReviewPage_gradeBadge"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_ivImage"
+		        android:layout_toRightOf="@id/myInfoReviewPage_ivImage" />
+            
+            <TextView 
+                android:id="@+id/myInfoReviewPage_tvRating"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_gradeBadge"
+		        android:layout_toRightOf="@id/myInfoReviewPage_gradeBadge"
+		        android:gravity="center"
+		        android:textColor="#fff"
+		        android:background="@drawable/dealer_appraisal_" />
+            
+            <TextView 
+                android:id="@+id/myInfoReviewPage_tvSuccess"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_tvRating"
+		        android:layout_toRightOf="@id/myInfoReviewPage_tvRating"
+		        android:gravity="center"
+		        android:textColor="#fff"
+		        android:background="@drawable/dealer_successl_" />
+
+            <TextView
+		        android:id="@+id/myInfoReviewPage_tvName"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/myInfoReviewPage_ivImage"
+		        android:gravity="center"
+		        android:ellipsize="end"
+		        android:textColor="#fff" />
+            
+            <TextView
+		        android:id="@+id/myInfoReviewPage_tvGrade"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_tvName"
+		        android:layout_toRightOf="@id/myInfoReviewPage_tvName"
+		        android:gravity="center" />
+            
+            <TextView
+		        android:id="@+id/myInfoReviewPage_tvRatingText"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_tvGrade"
+		        android:layout_toRightOf="@id/myInfoReviewPage_tvGrade"
+		        android:gravity="center"
+		        android:text="@string/customerSatisfactionDegree"
+		        android:textColor="#fff" />
+            
+            <TextView
+		        android:id="@+id/myInfoReviewPage_tvSuccessText"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_alignTop="@id/myInfoReviewPage_tvRatingText"
+		        android:layout_toRightOf="@id/myInfoReviewPage_tvRatingText"
+		        android:gravity="center"
+		        android:text="@string/tradeSuccessCount"
+		        android:textColor="#fff" />
+            
+            <Button
+	            android:id="@+id/myInfoGradePage_btnEditDealerInfo"
+	        	android:layout_width="0dp"
+	        	android:layout_height="0dp"
+	        	android:layout_centerHorizontal="true"
+	        	android:layout_alignBottom="@id/myInfoReviewPage_bg"
+	        	android:background="@drawable/menu_modify_btn" />
+		    
+		    <View 
+		        android:id="@+id/myInfoReviewPage_headerForIntro"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_bg"
+		        android:background="@drawable/dealer_header1" />
+		    
+		    <TextView
+		        android:id="@+id/myInfoReviewPage_tvIntro"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_headerForIntro"
+		        android:background="@drawable/detail_body2" />
+		    
+		    <View 
+		        android:id="@+id/myInfoReviewPage_footerForIntro"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_tvIntro"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/myInfoGradePage_headerForGrade"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_footerForIntro"
+		        android:background="@drawable/my_info_indroduce_header" />
+		    
+		    <LinearLayout
+		        android:id="@+id/myInfoGradePage_linearForGrade"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoGradePage_headerForGrade"
+		        android:orientation="vertical"
+		        android:background="@drawable/detail_body2" >
+		        
+		        <View 
+			        android:id="@+id/myInfoGradePage_gradeView"
+			        android:layout_width="0dp"
+			        android:layout_height="0dp" />
+		        
+		        <Button
+		            android:id="@+id/myInfoGradePage_btnDealerGrade"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:background="@drawable/dealer_more_btn" />
+		        
+		    </LinearLayout>
+		    
+		    <View 
+		        android:id="@+id/myInfoGradePage_footerForGrade"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoGradePage_linearForGrade"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:id="@+id/myInfoReviewPage_headerForReview"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoGradePage_footerForGrade"
+		        android:background="@drawable/dealer_header2" />
+		    
+		    <LinearLayout
+		        android:id="@+id/myInfoReviewPage_linearForReview"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_headerForReview"
+		        android:orientation="vertical"
+		        android:background="@drawable/detail_body2" >
+		        
+		        <Button
+		            android:id="@+id/myInfoReviewPage_btnMore"
+		        	android:layout_width="0dp"
+		        	android:layout_height="0dp"
+		        	android:background="@drawable/dealer_more_btn" />
+		        
+		    </LinearLayout>
+		    
+		    <View 
+		        android:id="@+id/myInfoReviewPage_footerForReview"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/myInfoReviewPage_linearForReview"
+		        android:background="@drawable/detail_foot" />
+		    
+		    <View 
+		        android:layout_width="10dp"
+		        android:layout_height="10dp"
+		        android:layout_below="@id/myInfoReviewPage_footerForReview" />
+            
+        </RelativeLayout>
+        
+    </com.outspoken_kid.views.OffsetScrollView>
+    
+    <com.byecar.views.TitleBar
+        android:id="@+id/myInfoReviewPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+</RelativeLayout>

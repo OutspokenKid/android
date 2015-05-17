@@ -132,6 +132,24 @@ public class IntentUtils {
 		return false;
 	}
 
+	public static boolean sendSMS(Context context, String text, String sendTo) {
+		
+		try {
+			Intent sendIntent = new Intent(Intent.ACTION_VIEW);
+			sendIntent.putExtra("sms_body", text);
+			sendIntent.putExtra("address", sendTo);
+			sendIntent.setType("vnd.android-dir/mms-sms");
+			context.startActivity(sendIntent);
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
+	
 	public static boolean sendEmail(Context context, String mailTo) {
 	
 		try {

@@ -19,6 +19,7 @@ public class User extends BCPBaseModel {
 	private int blocked_until;
 	private int to_get_pushed; 
 	private long created_at;
+	private int dong_id;
 	
 	public User() {
 		
@@ -80,6 +81,13 @@ public class User extends BCPBaseModel {
 			
 			if(objJSON.has("created_at")) {
 				this.created_at = objJSON.getLong("created_at");
+			}
+			
+			try {
+				if(objJSON.has("dong_id")) {
+					this.dong_id = objJSON.getInt("dong_id");
+				}
+			} catch (Exception e) {
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -163,5 +171,13 @@ public class User extends BCPBaseModel {
 	}
 	public void setCreated_at(long created_at) {
 		this.created_at = created_at;
+	}
+
+	public int getDong_id() {
+		return dong_id;
+	}
+
+	public void setDong_id(int dong_id) {
+		this.dong_id = dong_id;
 	}
 }
