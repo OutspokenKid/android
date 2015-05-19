@@ -2049,7 +2049,32 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void requestDealing() {
 
-		IntentUtils.sendSMS(mContext, "거래요청", car.getDealer_phone_number());
+		//http://dev.bye-car.com/onsalecars/bids/request.json?onsalecar_id=1
+		String url = BCPAPIs.CAR_BID_REQUEST_URL + "?onsalecar_id=" + car.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					IntentUtils.sendSMS(mContext, "거래요청", car.getDealer_phone_number());
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void setStatusToComplete() {
