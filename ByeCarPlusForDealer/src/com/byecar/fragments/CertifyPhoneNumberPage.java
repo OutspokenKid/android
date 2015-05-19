@@ -182,7 +182,7 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		String url = BCPAPIs.PHONE_AUTH_REQUEST_URL
 				+ "?no_sms=0"
 				+ "&phone_number=" + PHONE_NUMBER
-				+ "&role=200";
+				+ "&role=100";
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

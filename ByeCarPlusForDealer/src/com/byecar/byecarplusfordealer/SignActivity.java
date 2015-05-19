@@ -14,6 +14,7 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.FindPwPage;
+import com.byecar.fragments.SearchAreaPage;
 import com.byecar.fragments.SignUpPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.dealer.SignPage;
@@ -110,6 +111,9 @@ public class SignActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_CERTIFY_PHONE_NUMBER:
 			return new CertifyPhoneNumberPage();
+			
+		case BCPConstants.PAGE_SEARCH_AREA:
+			return new SearchAreaPage();
 		}
 		return null;
 	}
