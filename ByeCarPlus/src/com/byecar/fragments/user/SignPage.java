@@ -60,7 +60,7 @@ import com.outspoken_kid.views.PageNavigatorView;
 
 public class SignPage extends BCPFragment {
 
-	private static final int SLIDE_DURATION = 30000;
+	private static final int SLIDE_DURATION = 10000;
 	private static final int ANIM_DURATION = 1000;
 	private static final int DELAY = 2000;
 	
@@ -309,28 +309,25 @@ public class SignPage extends BCPFragment {
 	public void onResume() {
 		super.onResume();
 		
-		setImages();
-		playingIndex = 0;
-		playingCount++;
-		needPlay = true;
-		needStop = false;
-		play();
+		if(matrices == null) {
+			setImages();
+			playingIndex = 0;
+			playingCount++;
+			needPlay = true;
+			needStop = false;
+			play();
+		}
 	}
 	
 	@Override
-	public void onPause() {
-		super.onPause();
-		
+	public void onDetach() {
+
 		needPlay = false;
 		needStop = true;
 		
 		if(currentTask != null) {
 			currentTask.cancel(true);
 		}
-	}
-	
-	@Override
-	public void onDetach() {
 		
 		kf.setOnAfterSignInListener(null);
 		ff.setOnAfterSignInListener(null);
@@ -588,22 +585,13 @@ public class SignPage extends BCPFragment {
 		
 		float scale = (float) screenHeight / (float) height;
 
-		LogUtils.log("###SignPage.getBitmapMatrix.  scale : " + scale);
-
-	//배율 설정.
-		//가로가 부족한 경우.
-		if(scale * (float) width < screenWidth * (1 + MOVE_DIST)) {
-			
-			//가로에 맞게 변환.
-			scale *= (float) screenWidth * (1 + MOVE_DIST) / (scale * (float) width); 
-		}
-		
+		//배율 설정.
 		matrix.postScale(scale, scale);
 		
 	//정렬 설정.
 		//짝수번째 스플래쉬 인 경우 오른쪽 정렬.
 		if(index % 2 == 1) {
-			matrix.postTranslate(-(float)(width - screenWidth) * scale, 0);
+			matrix.postTranslate(screenWidth - (float)width*scale, 0);
 		}
 		
 		return matrix;
