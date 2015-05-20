@@ -66,7 +66,7 @@ public class ForumView extends FrameLayout {
 		
 		tvName = new TextView(getContext());
 		ResizeUtils.viewResize(100, 46, tvName, 2, Gravity.LEFT|Gravity.BOTTOM, null);
-		tvName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvName.setGravity(Gravity.CENTER);
 		tvName.setSingleLine();
 		tvName.setEllipsize(TruncateAt.END);
@@ -74,7 +74,7 @@ public class ForumView extends FrameLayout {
 		
 		tvContent = new TextView(getContext());
 		ResizeUtils.viewResize(436, 70, tvContent, 2, Gravity.LEFT|Gravity.TOP, new int[]{116, 17, 0, 2});
-		tvContent.setTextColor(getResources().getColor(R.color.holo_text));
+		tvContent.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvContent.setGravity(Gravity.CENTER_VERTICAL);
 		tvContent.setMaxLines(2);
 		tvContent.setEllipsize(TruncateAt.END);
@@ -82,7 +82,7 @@ public class ForumView extends FrameLayout {
 
 		tvRegdate = new TextView(getContext());
 		ResizeUtils.viewResize(120, 46, tvRegdate, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{129, 0, 0, 2});
-		tvRegdate.setTextColor(getResources().getColor(R.color.holo_text));
+		tvRegdate.setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
 		tvRegdate.setSingleLine();
 		tvRegdate.setEllipsize(TruncateAt.END);
@@ -90,7 +90,7 @@ public class ForumView extends FrameLayout {
 		
 		tvHitCount = new TextView(getContext());
 		ResizeUtils.viewResize(90, 46, tvHitCount, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{282, 0, 0, 2});
-		tvHitCount.setTextColor(getResources().getColor(R.color.holo_text));
+		tvHitCount.setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		tvHitCount.setGravity(Gravity.CENTER_VERTICAL);
 		tvHitCount.setSingleLine();
 		tvHitCount.setEllipsize(TruncateAt.END);
@@ -98,7 +98,7 @@ public class ForumView extends FrameLayout {
 		
 		tvReplyCount = new TextView(getContext());
 		ResizeUtils.viewResize(90, 46, tvReplyCount, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{393, 0, 0, 2});
-		tvReplyCount.setTextColor(getResources().getColor(R.color.holo_text));
+		tvReplyCount.setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		tvReplyCount.setGravity(Gravity.CENTER_VERTICAL);
 		tvReplyCount.setSingleLine();
 		tvReplyCount.setEllipsize(TruncateAt.END);
@@ -106,7 +106,7 @@ public class ForumView extends FrameLayout {
 		
 		tvLikeCount = new TextView(getContext());
 		ResizeUtils.viewResize(90, 46, tvLikeCount, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{510, 0, 0, 2});
-		tvLikeCount.setTextColor(getResources().getColor(R.color.holo_text));
+		tvLikeCount.setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		tvLikeCount.setGravity(Gravity.CENTER_VERTICAL);
 		tvLikeCount.setSingleLine();
 		tvLikeCount.setEllipsize(TruncateAt.END);
@@ -188,17 +188,11 @@ public class ForumView extends FrameLayout {
 		}
 		
 		tvName.setText(post.getAuthor_nickname());
-
-//		if(System.currentTimeMillis()/1000 - post.getCreated_at() < 86400 * 10) {
-//			SpannableStringBuilder ssb = new SpannableStringBuilder(post.getContent() + "  ");
-//			Drawable newIconDrawable = getResources().getDrawable(R.drawable.new_icon);
-//			newIconDrawable.setBounds(0, 0, ResizeUtils.getSpecificLength(28), ResizeUtils.getSpecificLength(28));
-//			ssb.setSpan(new ImageSpan(newIconDrawable, DynamicDrawableSpan.ALIGN_BOTTOM), 
-//					ssb.length() - 1, ssb.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-//			tvContent.setText(ssb, BufferType.SPANNABLE);
-//		} else {
-			tvContent.setText(post.getTitle());
-//		}
+		
+		tvContent.setText(null);
+		FontUtils.addSpan(tvContent, "[" + post.getBoard_title() + "]", 
+				getResources().getColor(R.color.new_color_text_orange), 1);
+		FontUtils.addSpan(tvContent, post.getTitle(), 0, 1);
 		
 		tvRegdate.setText(StringUtils.getDateString("yyyy, MM, dd", post.getCreated_at()*1000));
 		tvHitCount.setText(post.getHits_cnt() + "회");

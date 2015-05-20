@@ -44,7 +44,7 @@
         android:layout_alignTop="@id/list_my_car_cover"
         android:ellipsize="end"
         android:maxLines="2"
-        android:textColor="@color/holo_text" />
+        android:textColor="@color/new_color_text_gray" />
 
     <TextView
         android:id="@+id/list_my_car_tvCarName"
@@ -55,7 +55,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:gravity="center_vertical"
-        android:textColor="@color/holo_text" />
+        android:textColor="@color/new_color_text_brown" />
 
     <TextView
         android:id="@+id/list_my_car_tvInfo"
@@ -66,7 +66,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:gravity="center_vertical"
-        android:textColor="@color/holo_text" />
+        android:textColor="@color/new_color_text_gray" />
     
     <Button 
         android:id="@+id/list_my_car_btnReview"

@@ -30,7 +30,6 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.OpenablePostListPage;
 import com.byecar.models.Banner;
 import com.byecar.models.Car;

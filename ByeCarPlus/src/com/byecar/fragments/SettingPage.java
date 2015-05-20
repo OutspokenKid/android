@@ -161,10 +161,10 @@ public class SettingPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(110);
 		tvNotification.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
-		//tvBidding.
-		rp = (RelativeLayout.LayoutParams) tvBidding.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(110);
-		tvBidding.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+//		//tvBidding.
+//		rp = (RelativeLayout.LayoutParams) tvBidding.getLayoutParams();
+//		rp.height = ResizeUtils.getSpecificLength(110);
+//		tvBidding.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//tvWithdraw.
 		rp = (RelativeLayout.LayoutParams) tvWithdraw.getLayoutParams();
@@ -183,12 +183,12 @@ public class SettingPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(28);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 		
-		//btnBidding.
-		rp = (RelativeLayout.LayoutParams) btnBidding.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(228);
-		rp.height = ResizeUtils.getSpecificLength(52);
-		rp.topMargin = ResizeUtils.getSpecificLength(28);
-		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+//		//btnBidding.
+//		rp = (RelativeLayout.LayoutParams) btnBidding.getLayoutParams();
+//		rp.width = ResizeUtils.getSpecificLength(228);
+//		rp.height = ResizeUtils.getSpecificLength(52);
+//		rp.topMargin = ResizeUtils.getSpecificLength(28);
+//		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 
 		//btnWithdraw.
 		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();

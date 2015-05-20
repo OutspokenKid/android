@@ -77,7 +77,7 @@ public class DealerView extends FrameLayout {
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 40, tvDealerName, 2, Gravity.TOP, 
 				new int[]{0, 170, 0, 0}, new int[]{20, 0, 20, 0});
 		tvDealerName.setGravity(Gravity.CENTER);
-		tvDealerName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvDealerName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		this.addView(tvDealerName);
 		
 		gradeBadge = new View(getContext());

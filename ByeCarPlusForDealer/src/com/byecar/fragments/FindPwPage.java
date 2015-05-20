@@ -47,6 +47,7 @@ public class FindPwPage extends BCPFragment {
 	public void createPage() {
 
 		etEmail.setHint(R.string.hintForFindPw);
+		etEmail.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 	}
 

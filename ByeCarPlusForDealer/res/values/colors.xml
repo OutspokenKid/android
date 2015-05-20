@@ -16,6 +16,7 @@
 	
     <color name="page_bg">#f5f5f5</color>
     <color name="page_bg2">#dcdcdc</color>
+    
     <color name="progress_bg">#b2604633</color>
     <color name="progress_guage_orange">#febc2a</color>
     <color name="progress_guage_green">#0c902a</color>
@@ -26,5 +27,14 @@
     <color name="color_dealer_level2">#455bff</color>
     <color name="color_dealer_level3">#febc2a</color>
     <color name="color_dealer_level4">#ff4747</color>
+
+    <color name="new_color_page_bg_white1">#ffffff</color>	<!-- 255, 255, 255 -->
+    <color name="new_color_page_bg_white2">#DCDCDC</color>	<!-- 220, 220, 200 -->
+    <color name="new_color_page_bg_white3">#F5F5F5</color>	<!-- 245, 245, 245 -->
+	<color name="new_color_text_brown">#3D1F0A</color>		<!-- 61, 31, 10 -->
+	<color name="new_color_text_gray">#878787</color>		<!-- 135, 135, 135 -->
+	<color name="new_color_text_darkgray">#393939</color>	<!-- 57, 57, 57 -->
+	<color name="new_color_text_orange">#FFA800</color>	<!-- 255, 168, 0 -->
+	<color name="new_color_text_red">#FF2222</color>	<!-- 255, 34, 34 -->
     
 </resources>

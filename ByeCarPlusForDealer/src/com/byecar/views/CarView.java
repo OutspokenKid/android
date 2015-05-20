@@ -144,7 +144,7 @@ public class CarView extends RelativeLayout {
 		rp.addRule(RIGHT_OF, R.id.carView_ivImage);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		tvCarName.setLayoutParams(rp);
-		tvCarName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvCarName, 30);
@@ -160,7 +160,7 @@ public class CarView extends RelativeLayout {
 		rp.topMargin = ResizeUtils.getSpecificLength(9);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 		tvBiddingInfo.setLayoutParams(rp);
-		tvBiddingInfo.setTextColor(getResources().getColor(R.color.holo_text));
+		tvBiddingInfo.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvBiddingInfo.setSingleLine();
 		tvBiddingInfo.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvBiddingInfo, 16);
@@ -455,11 +455,11 @@ public class CarView extends RelativeLayout {
 			break;
 			
 		case BCPConstants.ITEM_CAR_BID_COMPLETED:
-			cover.setBackgroundResource(R.drawable.bid_frame1);
+			cover.setBackgroundResource(R.drawable.mypage_complete_frame);
 			break;
 			
 		case BCPConstants.ITEM_CAR_DEALER_COMPLETED:
-			cover.setBackgroundResource(R.drawable.used_market_car_frame);
+			cover.setBackgroundResource(R.drawable.mypage_complete_frame);
 			break;
 		}
 		
@@ -785,7 +785,7 @@ public class CarView extends RelativeLayout {
 		//http://dev.bye-car.com/onsalecars/dealer/set_status.json?onsalecar_id=1&status=30
 		String url = BCPAPIs.CAR_DEALER_STATUS_URL
 				+ "?onsalecar_id=" + onsalecar_id
-				+ "&status=30";
+				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override

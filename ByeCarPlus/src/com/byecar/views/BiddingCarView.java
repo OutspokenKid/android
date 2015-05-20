@@ -76,7 +76,7 @@ public class BiddingCarView extends FrameLayout {
 		//tvCarName.
 		tvCarName = new TextView(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 38, tvCarName, 2, Gravity.CENTER_HORIZONTAL, new int[]{10, 135, 10, 0});
-		tvCarName.setTextColor(getContext().getResources().getColor(R.color.holo_text));
+		tvCarName.setTextColor(getContext().getResources().getColor(R.color.new_color_text_brown));
 		FontUtils.setFontSize(tvCarName, 24);
 		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
 		tvCarName.setGravity(Gravity.CENTER);
@@ -87,7 +87,7 @@ public class BiddingCarView extends FrameLayout {
 		//tvBiddingInfo.
 		tvBiddingInfo = new TextView(getContext());
 		ResizeUtils.viewResize(146, 26, tvBiddingInfo, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 174, 0, 0});
-		tvBiddingInfo.setTextColor(getContext().getResources().getColor(R.color.holo_text));
+		tvBiddingInfo.setTextColor(getContext().getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvBiddingInfo, 16);
 		tvBiddingInfo.setGravity(Gravity.CENTER);
 		tvBiddingInfo.setSingleLine();

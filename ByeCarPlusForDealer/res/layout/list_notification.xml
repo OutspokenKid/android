@@ -40,7 +40,7 @@
         android:ellipsize="end"
         android:maxLines="2"
         android:gravity="center_vertical"
-        android:textColor="@color/holo_text" />
+        android:textColor="@color/new_color_text_darkgray" />
     
     <TextView
         android:id="@+id/list_notification_tvRegdate"
@@ -50,6 +50,6 @@
         android:layout_alignBottom="@id/list_notification_cover"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/holo_text_hint" />
+        android:textColor="@color/new_color_text_gray" />
 
 </RelativeLayout>

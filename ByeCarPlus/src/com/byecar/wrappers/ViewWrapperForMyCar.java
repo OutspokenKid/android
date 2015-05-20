@@ -158,6 +158,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				case Car.STATUS_BID_COMPLETE:
 				case Car.STATUS_BID_SUCCESS:
 				case Car.STATUS_BID_FAIL:
+				case Car.STATUS_NEED_PAYMENT:
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
 					break;
 				
@@ -227,17 +228,23 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					}
 				}
 				
+				tvInfo.setText(null);
+				
 				//입찰진행중 상태일 때는 "참여딜러 x명, xx만원”, 그 외에는 “판매가 xx만원”
 				if(car.getType() == Car.TYPE_BID) {
 					if(showButton) {
-						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "\n" 
-								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+						FontUtils.addSpan(tvInfo, "참여딜러 " + car.getBids_cnt() + "명" + "\n", 0, 1);
+						FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원", 
+								row.getContext().getResources().getColor(R.color.new_color_text_darkgray), 1);
 					} else {
-						tvInfo.setText("참여딜러 " + car.getBids_cnt() + "명" + "  " 
-								+ StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+						FontUtils.addSpan(tvInfo, "참여딜러 " + car.getBids_cnt() + "명" + "  ", 0, 1);
+						FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원", 
+								row.getContext().getResources().getColor(R.color.new_color_text_darkgray), 1);
 					}
 				} else {
-					tvInfo.setText("판매가 " + StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원");
+					FontUtils.addSpan(tvInfo, "판매가 ", 0, 1);
+					FontUtils.addSpan(tvInfo, StringUtils.getFormattedNumber(car.getPrice()/10000) + "만원", 
+							row.getContext().getResources().getColor(R.color.new_color_text_darkgray), 1);
 				}
 				
 				//좋아요 버튼.
@@ -309,7 +316,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		
 		String url = BCPAPIs.CAR_BID_COMPLETE_URL 
 				+ "?onsalecar_id=" + car.getId()
-				+ "&status=30";
+				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		
 		DownloadUtils.downloadJSONString(url,
 				new OnJSONDownloadListener() {

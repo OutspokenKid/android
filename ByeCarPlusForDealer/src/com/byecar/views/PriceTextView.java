@@ -50,7 +50,7 @@ public class PriceTextView extends RelativeLayout {
 			textViews[i] = new TextView(getContext());
 			
 			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			rp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			rp.addRule(RelativeLayout.CENTER_VERTICAL);
 			
 			switch(i) {
 			
@@ -127,7 +127,7 @@ public class PriceTextView extends RelativeLayout {
 		if(type == TYPE_MY_BIDDING) {
 			setTextColor(getContext().getResources().getColor(R.color.holo_text));
 		} else {
-			setTextColor(getContext().getResources().getColor(R.color.color_orange));
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
 		}
 	}
 	
@@ -148,7 +148,7 @@ public class PriceTextView extends RelativeLayout {
 		
 		if(isBig) {
 			FontUtils.setFontSize(textViews[0], 20);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
+			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
 			
 			FontUtils.setFontSize(textViews[1], 32);
 			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
@@ -157,12 +157,12 @@ public class PriceTextView extends RelativeLayout {
 			FontUtils.setFontSize(textViews[2], 20);
 			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
 			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
+			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(3));
 			
 		//75%
 		} else {
 			FontUtils.setFontSize(textViews[0], 15);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
+			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
 			
 			FontUtils.setFontSize(textViews[1], 24);
 			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
@@ -171,7 +171,7 @@ public class PriceTextView extends RelativeLayout {
 			FontUtils.setFontSize(textViews[2], 15);
 			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
 			rp.rightMargin = ResizeUtils.getSpecificLength(3);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
+			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
 		}
 	}
 	

@@ -28,7 +28,6 @@ import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
-import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.models.Car;
 import com.byecar.models.Dealer;
 import com.byecar.views.CarInfoView;
@@ -410,7 +409,7 @@ public class CarDetailPage extends BCPFragment {
 
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
-				bundle.putInt("carType", Car.TYPE_BID);
+				bundle.putInt("carType", Car.TYPE_DEALER);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
@@ -1056,7 +1055,7 @@ public class CarDetailPage extends BCPFragment {
 		TextView tvDealerName = new TextView(mContext);
 		ResizeUtils.viewResizeForRelative(150, 100, tvDealerName, null, null, new int[]{190, 115, 0, 0});
 		tvDealerName.setGravity(Gravity.CENTER);
-		tvDealerName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvDealerName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvDealerName, 32);
 		FontUtils.setFontStyle(tvDealerName, FontUtils.BOLD);
 		relativeForType.addView(tvDealerName);
@@ -1614,8 +1613,8 @@ public class CarDetailPage extends BCPFragment {
 
 		switch(car.getType()) {
 
-		//옥션. -> 내가 올린 경우에만 수정, 삭제.
-		case Car.TYPE_BID:
+		//중고차거래. -> 내가 올린 경우에만 수정, 삭제.
+		case Car.TYPE_DEALER:
 
 			btnReport.setVisibility(View.GONE);
 			
@@ -1629,8 +1628,7 @@ public class CarDetailPage extends BCPFragment {
 			
 			break;
 
-		case Car.TYPE_DEALER:
-		case Car.TYPE_DIRECT:
+		case Car.TYPE_BID:
 			btnReport.setVisibility(View.VISIBLE);
 			btnEdit.setVisibility(View.GONE);
 			btnDelete.setVisibility(View.GONE);
@@ -1963,7 +1961,7 @@ public class CarDetailPage extends BCPFragment {
 
 		String url = BCPAPIs.CAR_DEALER_COMPLETE_URL 
 				+ "?onsalecar_id=" + car.getId()
-				+ "&status=30";
+				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

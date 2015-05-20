@@ -4,7 +4,7 @@
     android:id="@+id/signUpForCommonPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/new_color_page_bg_white1" >
 
     <com.byecar.views.TitleBar
         android:id="@+id/signUpForCommonPage_titleBar"
@@ -60,7 +60,7 @@
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:text="@string/touchCameraIcon"
-		        android:textColor="#000"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForCommonPage_profileFrame" />
             

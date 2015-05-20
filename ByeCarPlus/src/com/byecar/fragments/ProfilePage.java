@@ -100,6 +100,7 @@ public class ProfilePage extends BCPFragment {
 		
 		etNickname.setHint(R.string.hintForNickname);
 		etNickname.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+		etNickname.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_orange));
 		tvNickname2.setText(R.string.inputNewNickname);
 		
 		selectedImageUrl = MainActivity.user.getProfile_img_url();

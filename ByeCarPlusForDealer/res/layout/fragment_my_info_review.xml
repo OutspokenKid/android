@@ -4,7 +4,7 @@
     android:id="@+id/myInfoReviewPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/new_color_page_bg_white2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/myInfoReviewPage_scrollView"
@@ -120,6 +120,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/myInfoReviewPage_headerForIntro"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 

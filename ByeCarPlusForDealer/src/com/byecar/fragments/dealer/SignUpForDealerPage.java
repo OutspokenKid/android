@@ -149,8 +149,8 @@ public class SignUpForDealerPage extends BCPFragment {
 		
 		int size = etInfos.length;
 		for(int i=0; i<size; i++) {
-			etInfos[i].getEditText().setTextColor(getResources().getColor(R.color.holo_text));
-			etInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.holo_text_hint));
+			etInfos[i].getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
+			etInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.new_color_text_gray));
 			etInfos[i].setHint(hintTextResIds[i]);
 			etInfos[i].getEditText().setSingleLine();
 			etInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_TEXT);

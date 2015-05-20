@@ -4,7 +4,7 @@
     android:id="@+id/searchCarPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/new_color_page_bg_white2" >
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/searchCarPage_swipe_container"
@@ -109,8 +109,8 @@
 	        android:layout_height="0dp"
 	        android:layout_centerHorizontal="true"
 	        android:layout_below="@id/searchCarPage_btnArea1"
-	        android:textColor="@color/holo_text"
-	        android:textColorHint="@color/holo_text_hint"
+	        android:textColor="@color/new_color_text_gray"
+	        android:textColorHint="@color/new_color_text_gray"
 	        android:hint="@string/hintForSearch"
 	        android:background="@drawable/filter_text_box"
 	        android:gravity="center"

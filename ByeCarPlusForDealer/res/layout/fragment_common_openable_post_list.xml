@@ -4,7 +4,7 @@
     android:id="@+id/openablePostList_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/new_color_page_bg_white2" >
 
     <com.byecar.views.TitleBar
         android:id="@+id/openablePostList_titleBar"

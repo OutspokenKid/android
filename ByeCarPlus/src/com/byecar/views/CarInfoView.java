@@ -17,11 +17,11 @@ import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.models.Car;
 import com.outspoken_kid.utils.DownloadUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
-import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class CarInfoView extends RelativeLayout {
 	
@@ -95,12 +95,12 @@ public class CarInfoView extends RelativeLayout {
 		tvCarInfo1 = new TextView(getContext());
 		tvCarInfo1.setId(R.id.bidInfoView_tvCarInfo1);
 		ResizeUtils.viewResizeForRelative(340, 63, tvCarInfo1, 
-				new int[]{RelativeLayout.ALIGN_PARENT_LEFT, BELOW}, 
-				new int[]{0, R.id.bidInfoView_progressBar}, 
+				new int[]{RelativeLayout.ALIGN_PARENT_LEFT, ALIGN_TOP}, 
+				new int[]{0, R.id.bidInfoView_infoBg}, 
 				new int[]{20, 0, 0, 0});
 		tvCarInfo1.setSingleLine();
 		tvCarInfo1.setEllipsize(TruncateAt.END);
-		tvCarInfo1.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarInfo1.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		tvCarInfo1.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvCarInfo1, 32);
 		FontUtils.setFontStyle(tvCarInfo1, FontUtils.BOLD);
@@ -109,17 +109,17 @@ public class CarInfoView extends RelativeLayout {
 		priceTextView = new PriceTextView(getContext());
 		priceTextView.setId(R.id.bidInfoView_priceTextView);
 		ResizeUtils.viewResizeForRelative(LayoutParams.WRAP_CONTENT, 63, priceTextView, 
-				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, BELOW}, 
-				new int[]{0, R.id.bidInfoView_progressBar}, 
+				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, ALIGN_TOP}, 
+				new int[]{0, R.id.bidInfoView_infoBg}, 
 				new int[]{0, 0, 20, 0});
 		this.addView(priceTextView);
 		
 		lineForCarInfo = new View(getContext());
 		lineForCarInfo.setId(R.id.bidInfoView_lineForCarInfo);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, ResizeUtils.ONE, lineForCarInfo, 
-				new int[]{RelativeLayout.ALIGN_PARENT_LEFT}, 
-				new int[]{0}, 
-				new int[]{12, 105, 12, 0});
+				new int[]{RelativeLayout.ALIGN_PARENT_LEFT, ALIGN_TOP}, 
+				new int[]{0, R.id.bidInfoView_infoBg}, 
+				new int[]{12, 63, 12, 0});
 		lineForCarInfo.setBackgroundColor(getResources().getColor(R.color.color_ltgray));
 		this.addView(lineForCarInfo);
 		
@@ -131,7 +131,7 @@ public class CarInfoView extends RelativeLayout {
 				new int[]{20, 0, 0, 0});
 		tvCarInfo2.setSingleLine();
 		tvCarInfo2.setEllipsize(TruncateAt.END);
-		tvCarInfo2.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarInfo2.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvCarInfo2.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvCarInfo2, 22);
 		this.addView(tvCarInfo2);
@@ -289,6 +289,11 @@ public class CarInfoView extends RelativeLayout {
 			priceTextView.setPrice(car.getPrice());
 			
 			if(car.getType() == Car.TYPE_BID) {
+				progressBar.setVisibility(View.VISIBLE);
+				centerView.setVisibility(View.VISIBLE);
+				tvRemainTime.setVisibility(View.VISIBLE);
+				timeIcon.setVisibility(View.VISIBLE);
+				
 				tvBidCount.setVisibility(View.VISIBLE);
 				btnLike.setVisibility(View.INVISIBLE);
 				tvLike.setVisibility(View.INVISIBLE);
@@ -298,6 +303,11 @@ public class CarInfoView extends RelativeLayout {
 				
 				priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
 			} else {
+				progressBar.setVisibility(View.GONE);
+				centerView.setVisibility(View.GONE);
+				tvRemainTime.setVisibility(View.GONE);
+				timeIcon.setVisibility(View.GONE);
+				
 				tvBidCount.setVisibility(View.INVISIBLE);
 				btnLike.setVisibility(View.VISIBLE);
 				tvLike.setVisibility(View.VISIBLE);

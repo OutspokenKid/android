@@ -4,7 +4,7 @@
     android:id="@+id/mainForUserPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg2" >
+    android:background="@color/new_color_page_bg_white2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/mainForUserPage_scrollView"
@@ -98,7 +98,7 @@
     				android:layout_height="0dp"
     				android:layout_alignParentLeft="true"
     				android:layout_alignParentTop="true"
-    				android:textColor="@color/color_red"
+    				android:textColor="@color/new_color_text_red"
     				android:gravity="center_vertical" />
                 
                 <Button 

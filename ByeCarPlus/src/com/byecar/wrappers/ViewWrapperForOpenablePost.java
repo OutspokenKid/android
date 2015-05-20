@@ -91,7 +91,11 @@ public class ViewWrapperForOpenablePost extends ViewWrapper {
 		try {
 			openablePost = (Post) baseModel;
 			
-			tvHeaderView.setText(openablePost.getTitle());
+			tvHeaderView.setText(null);
+			FontUtils.addSpan(tvHeaderView, openablePost.getTitle(), 0, 1);
+			FontUtils.addSpan(tvHeaderView, StringUtils.getDateString("  MM/dd", openablePost.getCreated_at()*1000), 
+					row.getContext().getResources().getColor(R.color.new_color_text_gray), 0.9f);
+			
 			tvText.setText(openablePost.getContent());
 			
 			if(openablePost.isOpened()) {

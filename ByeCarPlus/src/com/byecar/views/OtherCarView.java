@@ -120,7 +120,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.addRule(RIGHT_OF, R.id.usedCarView_ivImage);
 		rp.leftMargin = ResizeUtils.getSpecificLength(20);
 		tvCarName.setLayoutParams(rp);
-		tvCarName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvCarName, 30);
@@ -164,7 +164,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.topMargin = ResizeUtils.getSpecificLength(58);
 		rp.rightMargin = ResizeUtils.getSpecificLength(15);
 		tvInfo.setLayoutParams(rp);
-		tvInfo.setTextColor(getResources().getColor(R.color.holo_text));
+		tvInfo.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvInfo.setSingleLine();
 		tvInfo.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvInfo, 18);

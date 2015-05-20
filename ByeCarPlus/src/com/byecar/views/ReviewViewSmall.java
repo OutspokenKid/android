@@ -54,7 +54,7 @@ public class ReviewViewSmall extends FrameLayout {
 		this.addView(ivImage);
 		
 		//cover.
-		View cover = new View(getContext());
+		cover = new View(getContext());
 		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, cover, 2, 0, null);
 		cover.setBackgroundResource(R.drawable.main_complete_frame2);
 		this.addView(cover);
@@ -72,7 +72,7 @@ public class ReviewViewSmall extends FrameLayout {
 		//tvCarName.
 		tvCarName = new TextView(getContext());
 		ResizeUtils.viewResize(135, 55, tvCarName, 2, Gravity.LEFT, new int[]{260, 0, 0, 0});
-		tvCarName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvCarName, 26);
@@ -89,7 +89,7 @@ public class ReviewViewSmall extends FrameLayout {
 		//tvReview.
 		tvReview = new TextView(getContext());
 		ResizeUtils.viewResize(307, 86, tvReview, 2, Gravity.LEFT, new int[]{268, 70, 0, 0});
-		tvCarName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvReview.setMaxLines(2);
 		tvReview.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvReview, 20);

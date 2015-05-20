@@ -75,7 +75,7 @@ public class ForumReplyView extends RelativeLayout {
 				tvContent, null, null, new int[]{0, 30, 0, 0}, null);
 		tvContent.setMinHeight(ResizeUtils.getSpecificLength(113));
 		tvContent.setId(R.id.forumReplyView_tvContent);
-		tvContent.setTextColor(color.holo_text);
+		tvContent.setTextColor(color.new_color_text_darkgray);
 		FontUtils.setFontSize(tvContent, 22);
 		this.addView(tvContent);
 		
@@ -85,7 +85,7 @@ public class ForumReplyView extends RelativeLayout {
 				new int[]{RelativeLayout.BELOW}, new int[]{R.id.forumReplyView_tvContent}, 
 				null, new int[]{156, 4, 0, 0});
 		tvRegdate.setId(R.id.forumReplyView_tvRegdate);
-		tvRegdate.setTextColor(color.holo_text_hint);
+		tvRegdate.setTextColor(color.new_color_text_gray);
 		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvRegdate, 16);
 		this.addView(tvRegdate);
@@ -118,7 +118,7 @@ public class ForumReplyView extends RelativeLayout {
 				new int[]{10, 4, 0, 0});
 		tvNickname.setId(R.id.forumReplyView_tvNickname);
 		tvNickname.setEllipsize(TruncateAt.END);
-		tvNickname.setTextColor(color.holo_text);
+		tvNickname.setTextColor(color.new_color_text_darkgray);
 		tvNickname.setGravity(Gravity.CENTER);
 		FontUtils.setFontSize(tvNickname, 22);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);

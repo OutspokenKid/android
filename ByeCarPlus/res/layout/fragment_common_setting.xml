@@ -4,7 +4,7 @@
     android:id="@+id/settingPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg" >
+    android:background="@color/new_color_page_bg_white1" >
 
     <com.byecar.views.TitleBar
         android:id="@+id/settingPage_titleBar"
@@ -36,7 +36,7 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/settingPage_tvNotificationTitle"
 		        android:text="@string/toggle_notification"
-		        android:textColor="@color/holo_text"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:gravity="center_vertical" />
             
             <Button 
@@ -52,7 +52,7 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/settingPage_tvNotification"
 		        android:text="@string/toggle_bidding"
-		        android:textColor="@color/holo_text"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:gravity="center_vertical" />
             
             <Button 
@@ -84,7 +84,7 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/settingPage_tvWithdrawTitle"
 		        android:text="@string/wannaWithdraw"
-		        android:textColor="@color/holo_text"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:gravity="center_vertical" />
             
             <Button 
@@ -111,7 +111,7 @@
 		        android:layout_height="0dp"
 		        android:layout_below="@id/settingPage_tvSignOutTitle"
 		        android:text="@string/wannaSignOut"
-		        android:textColor="@color/holo_text"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:gravity="center_vertical" />
             
             <Button 

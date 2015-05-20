@@ -158,6 +158,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				case Car.STATUS_BID_COMPLETE:
 				case Car.STATUS_BID_SUCCESS:
 				case Car.STATUS_BID_FAIL:
+				case Car.STATUS_NEED_PAYMENT:
 					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
 					break;
 				
@@ -309,7 +310,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 		
 		String url = BCPAPIs.CAR_DEALER_COMPLETE_URL 
 				+ "?onsalecar_id=" + car.getId()
-				+ "&status=30";
+				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		
 		DownloadUtils.downloadJSONString(url,
 				new OnJSONDownloadListener() {

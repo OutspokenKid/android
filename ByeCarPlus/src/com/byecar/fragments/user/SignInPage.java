@@ -70,9 +70,11 @@ public class SignInPage extends BCPFragment {
 	public void createPage() {
 		
 		etEmail.setHint(R.string.hintForEmailSignIn);
+		etEmail.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		
 		etPw.setHint(R.string.hintForPassword);
+		etPw.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		
 		initFacebookFragment();

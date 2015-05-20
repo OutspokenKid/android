@@ -1,4 +1,4 @@
-package com.byecar.fragments;
+package com.byecar.fragments.dealer;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -31,6 +31,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
+import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.models.Car;
 import com.byecar.models.CarModelDetailInfo;
 import com.byecar.views.TitleBar;
@@ -236,8 +237,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 		int size = etDetailCarInfos.length;
 		for(int i=0; i<size; i++) {
-			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.color_orange));
-			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.color_orange));
+			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.new_color_text_orange));
+			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.new_color_text_orange));
 		}
 		
 		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo12);
@@ -1201,6 +1202,9 @@ public class CarRegistrationPage extends BCPFragment {
 			//배기량.
 			etDetailCarInfos[2].getEditText().setText("" + car.getDisplacement());
 			
+			//차량 색상.
+			etDetailCarInfos[3].getEditText().setText("" + car.getColor());
+			
 			//차량 옵션 및 튜닝.
 			if(car.getOptions() != null) {
 				
@@ -1564,12 +1568,18 @@ public class CarRegistrationPage extends BCPFragment {
 		LogUtils.log("###CarRegistrationPage.checkProgress.  ########################################");
 
 
-		//차량 사진 개당 5, 총 20.
+		//차량 사진 개당 8, 총 32.
 		for(int i=0; i<4; i++) {
 			if(selectedImageSdCardPaths[i] != null) {
-				progress += 5;
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by photo");
+				progress += 8;
+				LogUtils.log("###CarRegistrationPage.checkProgress. add 8 by photo");
 			}
+		}
+		
+		//성능점검기록부 8.
+		if(selectedImageSdCardPaths[selectedImageSdCardPaths.length-1] != null) {
+			progress += 8;
+			LogUtils.log("###CarRegistrationPage.checkProgress. add 8 by check");
 		}
 		
 		//차량검색 7, 총 35.
@@ -1577,22 +1587,22 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			if(btnCarInfos[i].length() > 0) {
 				progress += 5;
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by info");
+				LogUtils.log("###CarRegistrationPage.checkProgress. add 7 by info");
 			}
 		}
 		
-		//세부차량 정보 개당 10, 총 30.
+		//세부차량 정보 개당 5, 총 20.
 		for(int i=0; i<etDetailCarInfos.length; i++) {
 			if(etDetailCarInfos[i].getEditText().length() > 0) {
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 10 by detail info");
-				progress += 10;
+				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by detail info");
+				progress += 5;
 			}
 		}
 		
-		//약관, 15.
+		//약관, 5.
 		if(isTermOfUseClicked) {
-			progress += 15;
-			LogUtils.log("###CarRegistrationPage.checkProgress. add 15 by termofuse");
+			progress += 5;
+			LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by termofuse");
 		}
 		
 		setProgress(progress);

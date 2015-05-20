@@ -863,6 +863,7 @@ public class CarDetailPage extends BCPFragment {
 					
 				//낙찰, 딜러와 연락 및 거래.
 				case Car.STATUS_BID_SUCCESS:
+				case Car.STATUS_NEED_PAYMENT:
 					//딜러뷰 + 딜러에게 연락, 완료 버튼.
 					addViewsForBidding_withButtons(true);
 					break;
@@ -1182,7 +1183,7 @@ public class CarDetailPage extends BCPFragment {
 		TextView tvDealerName = new TextView(mContext);
 		ResizeUtils.viewResizeForRelative(150, 100, tvDealerName, null, null, new int[]{190, 115, 0, 0});
 		tvDealerName.setGravity(Gravity.CENTER);
-		tvDealerName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvDealerName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvDealerName, 32);
 		FontUtils.setFontStyle(tvDealerName, FontUtils.BOLD);
 		relativeForType.addView(tvDealerName);
@@ -1296,7 +1297,7 @@ public class CarDetailPage extends BCPFragment {
 		TextView tvSellerName = new TextView(mContext);
 		ResizeUtils.viewResizeForRelative(126, 100, tvSellerName, null, null, new int[]{170, 120, 0, 0});
 		tvSellerName.setGravity(Gravity.CENTER_VERTICAL);
-		tvSellerName.setTextColor(getResources().getColor(R.color.holo_text));
+		tvSellerName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvSellerName, 30);
 		relativeForType.addView(tvSellerName);
 		
@@ -1306,7 +1307,7 @@ public class CarDetailPage extends BCPFragment {
 		TextView tvPhoneNumber = new TextView(mContext);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 100, tvPhoneNumber, null, null, new int[]{334, 120, 20, 0});
 		tvPhoneNumber.setGravity(Gravity.CENTER_VERTICAL);
-		tvPhoneNumber.setTextColor(getResources().getColor(R.color.holo_text));
+		tvPhoneNumber.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvPhoneNumber, 30);
 		relativeForType.addView(tvPhoneNumber);
 		
@@ -2081,7 +2082,7 @@ public class CarDetailPage extends BCPFragment {
 
 		String url = BCPAPIs.CAR_BID_COMPLETE_URL 
 				+ "?onsalecar_id=" + car.getId()
-				+ "&status=30";
+				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

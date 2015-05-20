@@ -70,7 +70,7 @@ public class ReviewView extends RelativeLayout {
 				tvContent, null, null, new int[]{0, 30, 0, 0}, null);
 		tvContent.setMinHeight(ResizeUtils.getSpecificLength(113));
 		tvContent.setId(R.id.reviewView_tvContent);
-		tvContent.setTextColor(color.holo_text);
+		tvContent.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		FontUtils.setFontSize(tvContent, 22);
 		this.addView(tvContent);
 		
@@ -80,7 +80,7 @@ public class ReviewView extends RelativeLayout {
 				new int[]{RelativeLayout.BELOW}, new int[]{R.id.reviewView_tvContent}, 
 				null, new int[]{156, 4, 0, 0});
 		tvRegdate.setId(R.id.reviewView_tvRegdate);
-		tvRegdate.setTextColor(color.holo_text_hint);
+		tvRegdate.setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		tvRegdate.setGravity(Gravity.CENTER_VERTICAL);
 		FontUtils.setFontSize(tvRegdate, 16);
 		this.addView(tvRegdate);
@@ -163,7 +163,7 @@ public class ReviewView extends RelativeLayout {
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
 		tvCarName.setGravity(Gravity.CENTER_VERTICAL);
-		tvCarName.setTextColor(color.holo_text);
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		FontUtils.setFontSize(tvCarName, 26);
 		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
 		this.addView(tvCarName);

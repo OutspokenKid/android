@@ -256,8 +256,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 		int size = etDetailCarInfos.length;
 		for(int i=0; i<size; i++) {
-			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.color_orange));
-			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.color_orange));
+			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.new_color_text_orange));
+			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.new_color_text_orange));
 		}
 		
 		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo12);

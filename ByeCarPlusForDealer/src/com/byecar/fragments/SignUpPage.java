@@ -106,12 +106,15 @@ public class SignUpPage extends BCPFragment {
 		
 		etEmail.setHint(R.string.hintForEmailSignIn);
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+		etEmail.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		
 		etPw.setHint(R.string.hintForPassword2);
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		etPw.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		
 		etPwConfirm.setHint(R.string.hintForPasswordConfirm);
 		etPwConfirm.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
+		etPwConfirm.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 	}
 
 	@Override

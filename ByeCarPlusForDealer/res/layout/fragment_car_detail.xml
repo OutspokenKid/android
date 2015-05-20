@@ -4,7 +4,7 @@
     android:id="@+id/carDetailPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/page_bg2" >
+    android:background="@color/new_color_page_bg_white2" >
     
     <com.outspoken_kid.views.OffsetScrollView
         android:id="@+id/carDetailPage_scrollView"
@@ -279,7 +279,7 @@
 		        	android:layout_alignParentLeft="true"
 		        	android:layout_below="@id/carDetailPage_detailInfoView1"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView2"
@@ -288,7 +288,7 @@
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoTextView1"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoTextView1"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView3"
@@ -297,7 +297,7 @@
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoTextView2"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoTextView2"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView4"
@@ -306,7 +306,7 @@
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoTextView3"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoTextView3"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView5"
@@ -315,7 +315,7 @@
 		        	android:layout_alignParentLeft="true"
 		        	android:layout_below="@id/carDetailPage_detailInfoTextView1"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView6"
@@ -324,7 +324,7 @@
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoTextView5"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoTextView5"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView7"
@@ -333,7 +333,7 @@
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoTextView6"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoTextView6"
 		        	android:gravity="center"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 		        
 		        <Button 
 		        	android:id="@+id/carDetailPage_btnHistory"
@@ -434,7 +434,7 @@
 			        android:layout_below="@id/carDetailPage_headerForAccident"
 			        android:gravity="center"
 			        android:text="@string/hadAccident"
-		        	android:textColor="@color/holo_text" />
+		        	android:textColor="@color/new_color_text_darkgray" />
 			    
 			    <Button
 			        android:id="@+id/carDetailPage_btnAccident"
@@ -559,6 +559,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carDetailPage_headerForDescription"
+		        android:textColor="@color/new_color_text_darkgray"
 		        android:background="@drawable/detail_body2" />
 		    
 		    <View 
