@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.R;
@@ -42,15 +41,14 @@ public class PriceTextView extends LinearLayout {
 		
 		textViews = new TextView[3];
 		
-		FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-		
 		for(int i=0; i<textViews.length; i++) {
 			textViews[i] = new TextView(getContext());
-			ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, textViews[i], 
-					1, Gravity.CENTER_VERTICAL, i==0?new int[]{6, 0, 4, 0}:null);
+			ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
+					textViews[i], 1, Gravity.CENTER_VERTICAL, null);
 			this.addView(textViews[i]);
 		}
 		
+		FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
 		textViews[2].setText(" 만원");
 	}
 	
@@ -59,73 +57,39 @@ public class PriceTextView extends LinearLayout {
 		switch(type) {
 		
 		case TYPE_DETAIL_AUCTION:
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.currentPrice);
+			setTextSize(22);
+			break;
+			
 		case TYPE_DETAIL_OTHERS:
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
-			
-			if(type == TYPE_DETAIL_AUCTION) {
-				textViews[0].setText(R.string.currentPrice);
-			} else {
-				textViews[0].setText(R.string.salesPrice);
-			}
-			
-			FontUtils.setFontSize(textViews[0], 22);
-			
-			FontUtils.setFontSize(textViews[1], 28);
-			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 22);
+			textViews[0].setText(R.string.salesPrice);
+			setTextSize(22);
 			break;
 			
 		case TYPE_MAIN_BIDDING:
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
 			textViews[0].setText(R.string.currentPrice);
-			FontUtils.setFontSize(textViews[0], 16);
-			
-			FontUtils.setFontSize(textViews[1], 24);
-			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 16);
+			setTextSize(16);
 			break;
 			
 		case TYPE_MAIN_REVIEW:
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
 			textViews[0].setText(R.string.biddingPrice);
-			
-			FontUtils.setFontSize(textViews[0], 18);
-			
-			FontUtils.setFontSize(textViews[1], 26);
-			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 18);
+			setTextSize(18);
 			break;
 			
 		case TYPE_NORMAL_CAR:
 			setTextColor(getContext().getResources().getColor(R.color.color_brown));
 			textViews[0].setText(R.string.salesPrice);
-			
-			FontUtils.setFontSize(textViews[0], 18);
-			
-			FontUtils.setFontSize(textViews[1], 24);
-			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 18);
+			setTextSize(18);
 			break;
 			
 		case TYPE_USED_CAR:
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
-			
 			textViews[0].setText(null);
-			FontUtils.setFontSize(textViews[0], 22);
-			
-			FontUtils.setFontSize(textViews[1], 28);
-			textViews[1].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
-			
-			FontUtils.setFontSize(textViews[2], 22);
+			setTextSize(22);
 		}
 	}
 	
@@ -140,37 +104,21 @@ public class PriceTextView extends LinearLayout {
 		}
 	}
 
-	public void setTextSize(boolean isBig) {
+	public void setTextSize(float baseSize) {
 		
-		RelativeLayout.LayoutParams rp = null;
+		int fontSize_small = (int)baseSize;
+		int fontSize_big = (int) (baseSize*1.6f);
+		int padding = (int) (baseSize*0.3f);
+		int margin = (int) (baseSize*0.3f);
 		
-		if(isBig) {
-			FontUtils.setFontSize(textViews[0], 20);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
-			
-			FontUtils.setFontSize(textViews[1], 32);
-			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(6);
-			
-			FontUtils.setFontSize(textViews[2], 20);
-			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(6));
-			
-		//75%
-		} else {
-			FontUtils.setFontSize(textViews[0], 15);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
-			
-			FontUtils.setFontSize(textViews[1], 24);
-			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			
-			FontUtils.setFontSize(textViews[2], 15);
-			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(3);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(4));
-		}
+		FontUtils.setFontSize(textViews[0], fontSize_small);
+		ResizeUtils.setMargin(textViews[0], new int[]{0, 0, margin, 0});
+		textViews[0].setPadding(0, padding, 0, 0);
+		
+		FontUtils.setFontSize(textViews[1], fontSize_big);
+		
+		FontUtils.setFontSize(textViews[2], fontSize_small);
+		textViews[2].setPadding(0, padding, 0, 0);
 	}
 	
 	public void setTextColor(int color) {

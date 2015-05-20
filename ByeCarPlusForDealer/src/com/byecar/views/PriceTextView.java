@@ -2,7 +2,8 @@ package com.byecar.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.RelativeLayout;
+import android.view.Gravity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
@@ -11,7 +12,7 @@ import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 
-public class PriceTextView extends RelativeLayout {
+public class PriceTextView extends LinearLayout {
 
 	public static final int TYPE_CURRENT_BIG = 0;		//현재가(옥션상세).
 	public static final int TYPE_CURRENT_SMALL = 1;		//현재가(입찰중, 내 입찰).
@@ -29,52 +30,27 @@ public class PriceTextView extends RelativeLayout {
 	private TextView[] textViews;
 	
 	public PriceTextView(Context context) {
-		this(context, null, 0);
+		this(context, null);
 	}
 	
 	public PriceTextView(Context context, AttributeSet attrs) {
-		this(context, attrs, 0);
-	}
-	
-	public PriceTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
+		super(context, attrs);
 		init();
 	}
 	
 	public void init() {
 		
 		textViews = new TextView[3];
-		RelativeLayout.LayoutParams rp = null;
 		
 		for(int i=0; i<textViews.length; i++) {
 			textViews[i] = new TextView(getContext());
-			
-			rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			rp.addRule(RelativeLayout.CENTER_VERTICAL);
-			
-			switch(i) {
-			
-			case 0:
-				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				textViews[i].setId(R.id.priceTextView_textView1);
-				break;
-				
-			case 1:
-				rp.addRule(RelativeLayout.LEFT_OF, R.id.priceTextView_textView1);
-				FontUtils.setFontStyle(textViews[i], FontUtils.BOLD);
-				textViews[i].setId(R.id.priceTextView_textView2);
-				break;
-				
-			case 2:
-				rp.addRule(RelativeLayout.LEFT_OF, R.id.priceTextView_textView2);
-				break;
-			}
-			
-			textViews[i].setLayoutParams(rp);
+			ResizeUtils.viewResize(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 
+					textViews[i], 1, Gravity.CENTER_VERTICAL, null);
 			this.addView(textViews[i]);
 		}
 		
-		textViews[0].setText("만원");
+		FontUtils.setFontStyle(textViews[1], FontUtils.BOLD);
+		textViews[2].setText(" 만원");
 	}
 	
 	public void setType(int type) {
@@ -83,51 +59,52 @@ public class PriceTextView extends RelativeLayout {
 		
 //		public static final int TYPE_CURRENT_BIG = 0;		//현재가(옥션상세).
 		case TYPE_CURRENT_BIG:
-			setTextSize(true);
-			textViews[2].setText(R.string.currentPrice);
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.currentPrice);
+			setTextSize(22);
 			break;
 			
 //		public static final int TYPE_CURRENT_SMALL = 1;		//현재가(입찰중, 내 입찰).
 		case TYPE_CURRENT_SMALL:
-			setTextSize(false);
-			textViews[2].setText(R.string.currentPrice);
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.currentPrice);
+			setTextSize(15);
 			break;
 			
 //		public static final int TYPE_HIGHEST = 2;			//최고가(입찰 성공).
 		case TYPE_HIGHEST:
-			setTextSize(false);
-			textViews[2].setText(R.string.highestPrice);
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.highestPrice);
+			setTextSize(15);
 			break;
 			
 //		public static final int TYPE_MY_BIDDING = 3;		//내 입찰가(모든 옥션리스트).
 		case TYPE_MY_BIDDING:
-			setTextSize(false);
-			textViews[2].setText(R.string.myBiddingPrice);
+			setTextColor(getContext().getResources().getColor(R.color.color_brown));
+			textViews[0].setText(R.string.myBiddingPrice);
+			setTextSize(15);
 			break;
 			
 //		public static final int TYPE_SUCCESS = 4;			//낙찰가(마이페이지 - 거래완료내역 - 바이카옥션).
 		case TYPE_SUCCESS:
-			setTextSize(false);
-			textViews[2].setText(R.string.biddingSuccessPrice);
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.biddingSuccessPrice);
+			setTextSize(15);
 			break;
 			
 //		public static final int TYPE_SELLING_BIG = 5;		//판매가(중고상세).
 		case TYPE_SELLING_BIG:
-			setTextSize(true);
-			textViews[2].setText(R.string.salesPrice);
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.salesPrice);
+			setTextSize(22);
 			break;
 			
 //		public static final int TYPE_SELLING_SMALL = 6;		//판매가(중고리스트).
 		case TYPE_SELLING_SMALL:
-			setTextSize(false);
-			textViews[2].setText(R.string.salesPrice);
-			break;
-		}
-		
-		if(type == TYPE_MY_BIDDING) {
-			setTextColor(getContext().getResources().getColor(R.color.holo_text));
-		} else {
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.salesPrice);
+			setTextSize(15);
+			break;
 		}
 	}
 	
@@ -142,37 +119,21 @@ public class PriceTextView extends RelativeLayout {
 		}
 	}
 	
-	public void setTextSize(boolean isBig) {
+	public void setTextSize(float baseSize) {
 		
-		RelativeLayout.LayoutParams rp = null;
+		int fontSize_small = (int)baseSize;
+		int fontSize_big = (int) (baseSize*1.6f);
+		int padding = (int) (baseSize*0.3f);
+		int margin = (int) (baseSize*0.3f);
 		
-		if(isBig) {
-			FontUtils.setFontSize(textViews[0], 20);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			
-			FontUtils.setFontSize(textViews[1], 32);
-			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(6);
-			
-			FontUtils.setFontSize(textViews[2], 20);
-			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(3));
-			
-		//75%
-		} else {
-			FontUtils.setFontSize(textViews[0], 15);
-			textViews[0].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-			
-			FontUtils.setFontSize(textViews[1], 24);
-			rp = (RelativeLayout.LayoutParams) textViews[1].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(4);
-			
-			FontUtils.setFontSize(textViews[2], 15);
-			rp = (RelativeLayout.LayoutParams) textViews[2].getLayoutParams();
-			rp.rightMargin = ResizeUtils.getSpecificLength(3);
-			textViews[2].setPadding(0, 0, 0, ResizeUtils.getSpecificLength(2));
-		}
+		FontUtils.setFontSize(textViews[0], fontSize_small);
+		ResizeUtils.setMargin(textViews[0], new int[]{0, 0, margin, 0});
+		textViews[0].setPadding(0, padding, 0, 0);
+		
+		FontUtils.setFontSize(textViews[1], fontSize_big);
+		
+		FontUtils.setFontSize(textViews[2], fontSize_small);
+		textViews[2].setPadding(0, padding, 0, 0);
 	}
 	
 	public void setTextColor(int color) {
