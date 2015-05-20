@@ -107,7 +107,6 @@ public class WriteForumPage extends BCPFragment {
 	@Override
 	public void createPage() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -200,7 +199,7 @@ public class WriteForumPage extends BCPFragment {
 		
 		//etContent.
 		etContent.setPadding(ResizeUtils.getSpecificLength(18), ResizeUtils.getSpecificLength(24),
-				ResizeUtils.getSpecificLength(18), ResizeUtils.getSpecificLength(126));
+				ResizeUtils.getSpecificLength(18), ResizeUtils.getSpecificLength(24));
 		
 		//btnComplete.
 		rp = (RelativeLayout.LayoutParams) btnComplete.getLayoutParams();
