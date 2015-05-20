@@ -672,7 +672,7 @@ public class CarView extends RelativeLayout {
 				
 			case Car.STATUS_BID_SUCCESS:
 			case Car.STATUS_BID_FAIL:
-			case Car.STATUS_NEED_PAYMENT:
+			case Car.STATUS_PAYMENT_COMPLETED:
 			case Car.STATUS_TRADE_COMPLETE:
 				statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon4);
 				break;

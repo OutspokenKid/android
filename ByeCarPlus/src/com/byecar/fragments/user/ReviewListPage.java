@@ -22,7 +22,6 @@ import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Car;
-import com.byecar.models.Review;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
@@ -89,8 +88,8 @@ public class ReviewListPage extends BCPFragment {
 					long id) {
 				
 				try {
-					Review review = (Review) models.get(position);
-					((MainActivity)mActivity).showCarDetailPage(review.getOnsalecar_id(), null, Car.TYPE_BID);
+					Car car = (Car) models.get(position);
+					((MainActivity)mActivity).showCarDetailPage(0, car, Car.TYPE_BID);
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

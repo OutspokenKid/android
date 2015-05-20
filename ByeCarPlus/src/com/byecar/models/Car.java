@@ -19,14 +19,14 @@ public class Car extends BCPBaseModel implements Serializable {
 	public static final int TYPE_DEALER = 2;
 	public static final int TYPE_DIRECT = 4;
 	
-	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 결제 필요, 40 : 거래 완료.
+	//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 결제 완료, 40 : 거래 완료.
 	public static final int STATUS_STAND_BY_APPROVAL = 0;
 	public static final int STATUS_STAND_BY_BIDING = 5;
 	public static final int STATUS_BIDDING = 10;
 	public static final int STATUS_BID_COMPLETE = 15;
 	public static final int STATUS_BID_SUCCESS = 20;
 	public static final int STATUS_BID_FAIL = 21;
-	public static final int STATUS_NEED_PAYMENT = 30;
+	public static final int STATUS_PAYMENT_COMPLETED = 30;
 	public static final int STATUS_TRADE_COMPLETE = 40;
 	
 	private int id;

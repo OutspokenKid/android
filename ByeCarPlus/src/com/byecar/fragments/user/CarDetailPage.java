@@ -863,7 +863,6 @@ public class CarDetailPage extends BCPFragment {
 					
 				//낙찰, 딜러와 연락 및 거래.
 				case Car.STATUS_BID_SUCCESS:
-				case Car.STATUS_NEED_PAYMENT:
 					//딜러뷰 + 딜러에게 연락, 완료 버튼.
 					addViewsForBidding_withButtons(true);
 					break;
@@ -873,20 +872,14 @@ public class CarDetailPage extends BCPFragment {
 					//딜러뷰만.
 					addViewsForBidding_dealerViewOnly();
 					break;
-				
+					
+				case Car.STATUS_PAYMENT_COMPLETED:
+					addViewsForBidding_withButtons(true);
+					break;
+					
 				//거래 완료.
 				case Car.STATUS_TRADE_COMPLETE:
-					
-					//후기 작성 한 경우.
-					if(car.getHas_review() == 1) {
-						//딜러뷰만.
-						addViewsForBidding_dealerViewOnly();
-						
-					//후기 작성 안한 경우.
-					} else {
-						//딜러뷰 + 딜러에게 연락, 후기 버튼.
-						addViewsForBidding_withButtons(false);
-					}
+					addViewsForBidding_withButtons(false);
 					break;
 				}
 				
@@ -1044,11 +1037,21 @@ public class CarDetailPage extends BCPFragment {
 					public void onClick(View view) {
 
 						if(needCompleteButton) {
-							setStatusToComplete();
+							
+							if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
+								//입금 전까지 거래완료 버튼 비활성화.
+							} else {
+								setStatusToComplete();
+							}
 						} else {
-							Bundle bundle = new Bundle();
-							bundle.putSerializable("car", car);
-							mActivity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+							
+							if(car.getHas_review() == 1) {
+								//리뷰를 작성한 경우 리뷰 버튼 비활성화.
+							} else {
+								Bundle bundle = new Bundle();
+								bundle.putSerializable("car", car);
+								mActivity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+							}
 						}
 					}
 				});
@@ -1381,7 +1384,16 @@ public class CarDetailPage extends BCPFragment {
 		//유사고.
 		} else if(car.getHad_accident() == 1) {
 			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_b);
-			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);			
+			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);
+			btnHistory.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					mActivity.showAlertDialog(getString(R.string.changingPartsHistory), 
+							car.getAccident_desc(), getString(R.string.confirm), null);
+				}
+			});
 			
 		//사고여부 모름.
 		} else {
@@ -2025,13 +2037,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void callToDealerOrSeller() {
 		
-		String message = null;
-		
-		if(type == Car.TYPE_DEALER) {
-			message = getString(R.string.wannaCallToDealer);
-		} else {
-			message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
-		}
+		String message = getString(R.string.wannaCallToDealer);
 		
 		mActivity.showAlertDialog(getString(R.string.call), message, 
 				getString(R.string.confirm), getString(R.string.cancel), 
@@ -2040,10 +2046,7 @@ public class CarDetailPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						IntentUtils.call(mContext, 
-								type == Car.TYPE_DEALER?
-										car.getDealer_phone_number()
-										: car.getSeller_phone_number());
+						IntentUtils.call(mContext, car.getDealer_phone_number());
 					}
 				}, null);
 	}

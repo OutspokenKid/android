@@ -190,7 +190,7 @@ public class ForumView extends FrameLayout {
 		tvName.setText(post.getAuthor_nickname());
 		
 		tvContent.setText(null);
-		FontUtils.addSpan(tvContent, "[" + post.getBoard_title() + "]", 
+		FontUtils.addSpan(tvContent, "[" + post.getBoard_title() + "] ", 
 				getResources().getColor(R.color.new_color_text_orange), 1);
 		FontUtils.addSpan(tvContent, post.getTitle(), 0, 1);
 		

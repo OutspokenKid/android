@@ -139,11 +139,15 @@ public class TypeSearchCarPage extends BCPFragment {
 				@Override
 				public void onClick(View view) {
 
-					mActivity.bundle = new Bundle();
-					mActivity.bundle.putInt("type", TYPE_ACCIDENT);
-					mActivity.bundle.putString("text", getString(R.string.carSearchString_accident2));
-					mActivity.bundle.putString("history", etHistory.getText().toString());
-					mActivity.closeTopPage();
+					if(etHistory.length() == 0) {
+						ToastUtils.showToast(R.string.checkChangingPartsHistory);
+					} else {
+						mActivity.bundle = new Bundle();
+						mActivity.bundle.putInt("type", TYPE_ACCIDENT);
+						mActivity.bundle.putString("text", getString(R.string.carSearchString_accident2));
+						mActivity.bundle.putString("history", etHistory.getText().toString());
+						mActivity.closeTopPage();
+					}
 				}
 			});
 			

@@ -1119,55 +1119,51 @@ public class CarRegistrationPage extends BCPFragment {
 
 						carModelDetailInfo = new CarModelDetailInfo(objJSON.getJSONObject("car"));
 						
-						if(car != null) {
+						if(car != null && !isSetInfo) {
+							isSetInfo = true;
 							
-							//수정 들어와서 처음 차량트림 받은 경우 다른 정보들도 넣어주기.
-							if(!isSetInfo) {
-								isSetInfo = true;
-								
-								//연식.
-								carInfoStrings[0] = "" + car.getYear() + "년 " + car.getMonth() + "월";
-								year = car.getYear();
-								month = car.getMonth();
+							//연식.
+							carInfoStrings[0] = "" + car.getYear() + "년 " + car.getMonth() + "월";
+							year = car.getYear();
+							month = car.getMonth();
 
-								//사고유무.
-								carInfoStrings[1] = Car.getAccidentTypeString(mContext, car.getHad_accident());
-								history = car.getAccident_desc();
-								
-								//연료.
-								carInfoStrings[2] = Car.getFuelTypeString(mContext, car.getFuel_type()); 
+							//사고유무.
+							carInfoStrings[1] = Car.getAccidentTypeString(mContext, car.getHad_accident());
+							history = car.getAccident_desc();
+							
+							//연료.
+							carInfoStrings[2] = Car.getFuelTypeString(mContext, car.getFuel_type()); 
 
-								//변속기.
-								carInfoStrings[3] = Car.getTransmissionTypeString(mContext, car.getTransmission_type());
-								
-								//1인신조.
-								carInfoStrings[4] = Car.getOneManOwnedTypeString(mContext, car.getIs_oneman_owned());
-								
-								//판매지역.
-								carInfoStrings[5] = car.getArea();
-								dong_id = car.getDong_id();
-								
-							//수정들어와서 차량 트림을 새로 선택한 경우 판매지역을 제외한 나머지 정보 다 날리기.
-							} else {
-								
-								//연식.
-								carInfoStrings[0] = null;
-								year = 0;
-								month = 0;
+							//변속기.
+							carInfoStrings[3] = Car.getTransmissionTypeString(mContext, car.getTransmission_type());
+							
+							//1인신조.
+							carInfoStrings[4] = Car.getOneManOwnedTypeString(mContext, car.getIs_oneman_owned());
+							
+							//판매지역.
+							carInfoStrings[5] = car.getArea();
+							dong_id = car.getDong_id();
+							
+						//차량 트림을 선택한 경우 판매지역을 제외한 나머지 정보 다 날리기.
+						} else {
+							
+							//연식.
+							carInfoStrings[0] = null;
+							year = 0;
+							month = 0;
 
-								//사고유무.
-								carInfoStrings[1] = null;
-								history = null;
-								
-								//연료.
-								carInfoStrings[2] = null; 
+							//사고유무.
+							carInfoStrings[1] = null;
+							history = null;
+							
+							//연료.
+							carInfoStrings[2] = null; 
 
-								//변속기.
-								carInfoStrings[3] = null;
-								
-								//1인신조.
-								carInfoStrings[4] = null;
-							}
+							//변속기.
+							carInfoStrings[3] = null;
+							
+							//1인신조.
+							carInfoStrings[4] = null;
 						}
 						
 						setBtnCarInfos();

@@ -858,57 +858,7 @@ public class CarDetailPage extends BCPFragment {
 		switch(type) {
 		
 		case Car.TYPE_BID:
-			
-			//내 매물인 경우.
-			if(car.getSeller_id() == MainActivity.user.getId()) {
-				
-				switch(car.getStatus()) {
-				
-				//입찰 중.
-				case Car.STATUS_BIDDING:
-					//딜러뷰만.
-					addViewsForBidding_dealerViewOnly();
-					break;
-					
-				//입찰 종료, 딜러 선택.
-				case Car.STATUS_BID_COMPLETE:
-					//딜러뷰 + 딜러 선택 버튼.
-//					addViewsForBidding_withSelectButtons();
-					break;
-					
-				//낙찰, 딜러와 연락 및 거래.
-				case Car.STATUS_BID_SUCCESS:
-					//딜러뷰 + 딜러에게 연락, 완료 버튼.
-//					addViewsForBidding_withButtons(true);
-					break;
-					
-				//유찰, 딜러 선택 실패.
-				case Car.STATUS_BID_FAIL:
-					//딜러뷰만.
-					addViewsForBidding_dealerViewOnly();
-					break;
-				
-				//거래 완료.
-				case Car.STATUS_TRADE_COMPLETE:
-					
-					//후기 작성 한 경우.
-					if(car.getHas_review() == 1) {
-						//딜러뷰만.
-						addViewsForBidding_dealerViewOnly();
-						
-					//후기 작성 안한 경우.
-					} else {
-						//딜러뷰 + 딜러에게 연락, 후기 버튼.
-//						addViewsForBidding_withButtons(false);
-					}
-					break;
-				}
-				
-			//내 매물이 아닌 경우.
-			} else {
-				//딜러뷰만.
-				addViewsForBidding_dealerViewOnly();
-			}
+			addViewsForBidding_dealerViewOnly();
 			break;
 			
 		case Car.TYPE_DEALER:
@@ -1296,7 +1246,16 @@ public class CarDetailPage extends BCPFragment {
 		//유사고.
 		} else if(car.getHad_accident() == 1) {
 			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_b);
-			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);			
+			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);
+			btnHistory.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					mActivity.showAlertDialog(getString(R.string.changingPartsHistory), 
+							car.getAccident_desc(), getString(R.string.confirm), null);
+				}
+			});
 			
 		//사고여부 모름.
 		} else {
@@ -1582,7 +1541,7 @@ public class CarDetailPage extends BCPFragment {
 		RelativeLayout.LayoutParams rp = null;
 		
 		if(type == Car.TYPE_BID
-				&& car.getStatus() == Car.STATUS_NEED_PAYMENT) {
+				&& car.getStatus() == Car.STATUS_PAYMENT_COMPLETED) {
 			buttonBg.setVisibility(View.VISIBLE);
 			btnPayment.setVisibility(View.VISIBLE);
 			

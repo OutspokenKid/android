@@ -46,7 +46,9 @@
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
     <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
+    <string name="changingPartsHistory">부품 교환 이력</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
+    <string name="checkChangingPartsHistory">부품 교환 이력을 입력해주세요.</string>
     <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
     <string name="checkEmployeeCardImage">사원증이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
     <string name="checkNameCardImage">명함이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
