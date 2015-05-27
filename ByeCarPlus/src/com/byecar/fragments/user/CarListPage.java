@@ -239,7 +239,7 @@ public class CarListPage extends BCPAuctionableFragment {
 					break;
 					
 				case Car.TYPE_DIRECT:
-					intent.putExtra("type", GuideActivity.TYPE_USER_NORMAL);
+					intent.putExtra("type", GuideActivity.TYPE_USER_DIRECT);
 					break;
 				}
 				

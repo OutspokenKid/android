@@ -73,7 +73,7 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signInPage_tvEmail" />
 		        
-		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+		    <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText
 		        android:id="@+id/signInPage_etPw"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp" 

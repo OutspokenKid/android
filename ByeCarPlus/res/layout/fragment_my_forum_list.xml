@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/myForumListPage_mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/new_color_page_bg_white1" >
+
+    <com.byecar.views.TitleBar
+        android:id="@+id/myForumListPage_titleBar"
+        android:layout_width="match_parent"
+    	android:layout_height="0dp" />
+    
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/myForumListPage_swipe_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/myForumListPage_titleBar" >
+
+        <ListView
+            android:id="@+id/myForumListPage_listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:listSelector="@android:color/transparent"
+    		android:cacheColorHint="#0000"
+            android:background="#0000" />
+        
+    </android.support.v4.widget.SwipeRefreshLayout>
+        
+</RelativeLayout>

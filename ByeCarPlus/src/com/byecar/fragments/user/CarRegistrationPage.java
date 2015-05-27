@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
@@ -77,7 +78,6 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private TextView tvDetailCarInfoTitle;
 	private HoloStyleEditText[] etDetailCarInfos;
-	private TextView[] tvDetailCarInfos;
 	
 	private TextView tvCarPhotoTitle;
 	private TextView tvRightPhoto;
@@ -123,7 +123,7 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private int selectedImageIndex;
 	private String[] selectedImageSdCardPaths = new String[8];
-	
+	private Bitmap[] carPhotoThumbnails = new Bitmap[8];
 	
 	private boolean isLoaded;
 	private boolean isSetInfo;
@@ -138,6 +138,7 @@ public class CarRegistrationPage extends BCPFragment {
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
 				
 				if(thumbnails != null && thumbnails.length > 0) {
+					carPhotoThumbnails[selectedImageIndex] = thumbnails[0];
 					ivPhotos[selectedImageIndex].setImageBitmap(thumbnails[0]);
 					selectedImageSdCardPaths[selectedImageIndex] = sdCardPaths[0];
 				}
@@ -145,7 +146,203 @@ public class CarRegistrationPage extends BCPFragment {
 				checkProgress();
 			}
 		};
+		
+		if(savedInstanceState != null) {
+			
+			try {
+				//id.
+				if(savedInstanceState.containsKey("id")) {
+					id = savedInstanceState.getInt("id");
+				}
+				
+				//carType.
+				carType = savedInstanceState.getInt("carType");
+				
+				//car.
+				car = (Car) savedInstanceState.getSerializable("car");
+
+				//carModelDetailInfo.
+				carModelDetailInfo = (CarModelDetailInfo) savedInstanceState.getSerializable("carModelDetailInfo");
+				
+				//etDetailCarInfos.
+				for(int i=0; i<etDetailCarInfos.length; i++) {
+					
+					if(savedInstanceState.containsKey("etDetailCarInfos" + i)) {
+						etDetailCarInfos[i].getEditText().setText(savedInstanceState.getString("etDetailCarInfos" + i));
+					}
+				}
+				
+				//etCarDescription.
+				if(savedInstanceState.containsKey("etCarDescription")) {
+					etCarDescription.setText(savedInstanceState.getString("etCarDescription"));
+				}
+				
+				
+				
+				//carInfoStrings.
+				for(int i=0; i<carInfoStrings.length; i++) {
+				
+					if(savedInstanceState.containsKey("carInfoStrings" + i)) {
+						carInfoStrings[i] = savedInstanceState.getString("carInfoStrings" + i);
+					}
+				}
+				
+				setBtnCarInfos();
+				
+				//checked.
+				for(int i=0; i<checked.length; i++) {
+					checked[i] = savedInstanceState.getBoolean("checked" + i);
+				}
+				
+				//type.
+				type = savedInstanceState.getInt("type");
+				
+				//isTermOfUseClicked.
+				isTermOfUseClicked = savedInstanceState.getBoolean("isTermOfUseClicked");
+				
+				//isImmediatlySaleClicked.
+				isImmediatlySaleClicked = savedInstanceState.getBoolean("isImmediatlySaleClicked");
+				
+				//dong_id.
+				dong_id = savedInstanceState.getInt("dong_id");
+				
+				//year.
+				year = savedInstanceState.getInt("year");
+				
+				//month.
+				month = savedInstanceState.getInt("month");
+				
+				//history.
+				history = savedInstanceState.getString("history");
+				
+				//trim_id.
+				trim_id = savedInstanceState.getInt("trim_id");
+				
+				//selectedImageSdCardPaths.
+				for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+				
+					if(savedInstanceState.containsKey("selectedImageSdCardPaths" + i)) {
+						selectedImageSdCardPaths[i] = savedInstanceState.getString("selectedImageSdCardPaths" + i);
+					}
+				}
+				
+				//carPhotoThumbnails.
+				for(int i=0; i<carPhotoThumbnails.length; i++) {
+
+					if(savedInstanceState.containsKey("carPhotoThumbnails" + i)) {
+						carPhotoThumbnails[i] = savedInstanceState.getParcelable("carPhotoThumbnails" + i);
+					}
+					
+					ivPhotos[i].setImageBitmap(carPhotoThumbnails[i]);
+				}
+				
+				//isLoaded.
+				isLoaded = savedInstanceState.getBoolean("isLoaded");
+				
+				//isSetInfo.
+				isSetInfo = savedInstanceState.getBoolean("isSetInfo");
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
 	};
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		try {
+			//id.
+			outState.putInt("id", id);
+			
+			//carType.
+			outState.putInt("carType", carType);
+			
+			//car.
+			outState.putSerializable("car", car);
+			
+			//carModelDetailInfo.
+			outState.putSerializable("carModelDetailInfo", carModelDetailInfo);
+			
+			//etDetailCarInfos.
+			for(int i=0; i<etDetailCarInfos.length; i++) {
+				
+				if(!StringUtils.isEmpty(etDetailCarInfos[i].getEditText())) {
+					outState.putString("etDetailCarInfos" + i, etDetailCarInfos[i].getEditText().getText().toString());
+				}
+			}
+			
+			//etCarDescription.
+			if(!StringUtils.isEmpty(etCarDescription)) {
+				outState.putString("etCarDescription", etCarDescription.getText().toString());
+			}
+			
+			//carInfoStrings.
+			for(int i=0; i<carInfoStrings.length; i++) {
+			
+				if(!StringUtils.isEmpty(carInfoStrings[i])) {
+					outState.putString("carInfoStrings" + i, carInfoStrings[i]);
+				}
+			}
+			
+			//checked.
+			for(int i=0; i<checked.length; i++) {
+				outState.putBoolean("checked" + i, checked[i]);
+			}
+			
+			//type.
+			outState.putInt("type", type);
+			
+			//isTermOfUseClicked.
+			outState.putBoolean("isTermOfUseClicked", isTermOfUseClicked);
+			
+			//isImmediatlySaleClicked.
+			outState.putBoolean("isImmediatlySaleClicked", isImmediatlySaleClicked);
+			
+			//dong_id.
+			outState.putInt("dong_id", dong_id);
+			
+			//year.
+			outState.putInt("year", year);
+			
+			//month.
+			outState.putInt("month", month);
+			
+			//history.
+			outState.putString("history", history);
+			
+			//trim_id.
+			outState.putInt("trim_id", trim_id);
+			
+			//selectedImageSdCardPaths.
+			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+				
+				if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])) {
+					outState.putString("selectedImageSdCardPaths" + i, selectedImageSdCardPaths[i]);
+				}
+			}
+			
+			//carPhotoThumbnails.
+			for(int i=0; i<carPhotoThumbnails.length; i++) {
+			
+				if(carPhotoThumbnails[i] != null) {
+					outState.putParcelable("carPhotoThumbnails" + i, carPhotoThumbnails[i]);
+				}
+			}
+			
+			//isLoaded.
+			outState.putBoolean("isLoaded", isLoaded);
+			
+			//isSetInfo.
+			outState.putBoolean("isSetInfo", isSetInfo);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
 	
 	@Override
  	public void bindViews() {
@@ -170,14 +367,11 @@ public class CarRegistrationPage extends BCPFragment {
 		btnCarInfos[6] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnCarInfo7);
 		
 		tvDetailCarInfoTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfoTitle);
-		etDetailCarInfos = new HoloStyleEditText[3];
+		etDetailCarInfos = new HoloStyleEditText[4];
 		etDetailCarInfos[0] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo1);
 		etDetailCarInfos[1] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo2);
 		etDetailCarInfos[2] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo3);
-		tvDetailCarInfos = new TextView[3];
-		tvDetailCarInfos[0] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo1);
-		tvDetailCarInfos[1] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo2);
-		tvDetailCarInfos[2] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvDetailCarInfo3);
+		etDetailCarInfos[3] = (HoloStyleEditText) mThisView.findViewById(R.id.carRegistrationPage_etDetailCarInfo4);
 		
 		tvCarPhotoTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhotoTitle);
 		tvRightPhoto = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvRightPhoto);
@@ -256,13 +450,25 @@ public class CarRegistrationPage extends BCPFragment {
 
 		int size = etDetailCarInfos.length;
 		for(int i=0; i<size; i++) {
-			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.new_color_text_orange));
-			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.new_color_text_orange));
+			etDetailCarInfos[i].getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
+			etDetailCarInfos[i].getEditText().setHintTextColor(getResources().getColor(R.color.new_color_text_gray));
+			
+			//차량 번호.
+			if(i == 0) {
+				etDetailCarInfos[i].getEditText().setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+				
+			//주행거리.
+			//배기량.
+			//차량 가격.
+			} else {
+				etDetailCarInfos[i].getEditText().setInputType(InputType.TYPE_CLASS_PHONE);
+			}
 		}
 		
-		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo12);
-		etDetailCarInfos[1].setHint(R.string.hintForDetailCarInfo22);
-		etDetailCarInfos[2].setHint(R.string.hintForDetailCarInfo32);
+		etDetailCarInfos[0].setHint(R.string.hintForDetailCarInfo1);
+		etDetailCarInfos[1].setHint(R.string.hintForDetailCarInfo2);
+		etDetailCarInfos[2].setHint(R.string.hintForDetailCarInfo3);
+		etDetailCarInfos[3].setHint(R.string.hintForDetailCarInfo4);
 		
 		etCarDescription.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_DESC_COUNT)});
 		tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
@@ -548,20 +754,11 @@ public class CarRegistrationPage extends BCPFragment {
 		tvDetailCarInfoTitle.setPadding(titlePadding, 0, 0, 0);
 
 		//etDetailCarInfos
-		int editTextPadding = ResizeUtils.getSpecificLength(260);
 		for(int i=0; i<etDetailCarInfos.length; i++) {
 			rp = (RelativeLayout.LayoutParams) etDetailCarInfos[i].getLayoutParams();
 			rp.width = ResizeUtils.getSpecificLength(586);
 			rp.height = ResizeUtils.getSpecificLength(60);
 			rp.topMargin = ResizeUtils.getSpecificLength(20);
-			etDetailCarInfos[i].setPadding(editTextPadding, 0, 0, 0);
-		}
-		
-		//tvDetailCarInfos
-		for(int i=0; i<tvDetailCarInfos.length; i++) {
-			rp = (RelativeLayout.LayoutParams) tvDetailCarInfos[i].getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(260);
-			rp.height = ResizeUtils.getSpecificLength(60);
 		}
 		
 		//tvCarPhotoTitle.
@@ -717,10 +914,6 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		for(int i=0; i<etDetailCarInfos.length; i++) {
 			FontUtils.setFontSize(etDetailCarInfos[i].getEditText(), 20);
-		}
-		
-		for(int i=0; i<tvDetailCarInfos.length; i++) {
-			FontUtils.setFontSize(tvDetailCarInfos[i], 20);
 		}
 		
 		FontUtils.setFontSize(tvCarPhotoTitle, 24);
@@ -1492,6 +1685,9 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				//onsalecar[displacement] : 배기량
 				sb.append("&onsalecar[displacement]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[2].getEditText()));
+				
+				//onsalecar[price] : 가격
+				sb.append("&onsalecar[price]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[3].getEditText()));
 				
 				//onsalecar[options][option_id] : 옵션 아이디를 키로 하는 객체
 				//&onsalecar[options][1]=1

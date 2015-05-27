@@ -149,7 +149,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 									return;
 								} else if(css.getType() == TypeSearchCarPage.TYPE_YEAR) {
 									mActivity.bundle = new Bundle();
-									mActivity.bundle.putString("year", css.getText());
+									mActivity.bundle.putString("year", css.getText().replace("년", ""));
 									
 									bundle.putInt("type", TypeSearchCarPage.TYPE_MONTH);
 									type = BCPConstants.PAGE_TYPE_SEARCH_CAR;
@@ -157,7 +157,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 									return;
 								} else if(css.getType() == TypeSearchCarPage.TYPE_MONTH) {
 									mActivity.bundle.putInt("requestCode", BCPConstants.REQUEST_SEARCH_MONTH);
-									mActivity.bundle.putString("month", css.getText());
+									mActivity.bundle.putString("month", css.getText().replace("월", ""));
 									mActivity.closePages(2);
 									return;
 								}

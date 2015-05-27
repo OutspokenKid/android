@@ -57,6 +57,7 @@ public class SignUpPage extends BCPFragment {
 	
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
+	private Bitmap thumbnail;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -68,11 +69,94 @@ public class SignUpPage extends BCPFragment {
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
 				
 				if(thumbnails != null && thumbnails.length > 0) {
-					ivProfile.setImageBitmap(thumbnails[0]);
+					thumbnail = thumbnails[0];
+					ivProfile.setImageBitmap(thumbnail);
 					selectedSdCardPath = sdCardPaths[0];
 				}
 			}
 		};
+		
+		if(savedInstanceState != null) {
+			
+			try {
+				//selectedSdCardPath.
+				if(savedInstanceState.containsKey("selectedSdCardPath")) {
+					this.selectedSdCardPath = savedInstanceState.getString("selectedSdCardPath");
+				}
+
+				//selectedImageUrl.
+				if(savedInstanceState.containsKey("selectedImageUrl")) {
+					this.selectedImageUrl = savedInstanceState.getString("selectedImageUrl");
+				}
+				
+				//thumbnail.
+				if(savedInstanceState.containsKey("thumbnail")) {
+					this.selectedImageUrl = savedInstanceState.getString("selectedImageUrl");
+					this.thumbnail = savedInstanceState.getParcelable("bitmap");
+					ivProfile.setImageBitmap(thumbnail);
+				}
+				
+				//etEmail.
+				if(savedInstanceState.containsKey("etEmail")) {
+					etEmail.getEditText().setText(savedInstanceState.getString("etEmail"));
+				}
+				
+				//etPw.
+				if(savedInstanceState.containsKey("etPw")) {
+					etPw.getEditText().setText(savedInstanceState.getString("etPw"));
+				}
+				
+				//etPwConfirm.
+				if(savedInstanceState.containsKey("etPwConfirm")) {
+					etPwConfirm.getEditText().setText(savedInstanceState.getString("etPwConfirm"));
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		try {
+			//selectedSdCardPath.
+			if(!StringUtils.isEmpty(selectedSdCardPath)) {
+				outState.putString("selectedSdCardPath", selectedSdCardPath);
+			}
+
+			//selectedImageUrl.
+			if(!StringUtils.isEmpty(selectedImageUrl)) {
+				outState.putString("selectedImageUrl", selectedImageUrl);
+			}
+			
+			//thumbnail.
+			if(thumbnail != null) {
+				outState.putParcelable("thumbnail", thumbnail);
+			}
+
+			//etEmail.
+			if(etEmail.getEditText().length() > 0) {
+				outState.putString("etEmail", etEmail.getEditText().getText().toString());
+			}
+			
+			//etPw.
+			if(etPw.getEditText().length() > 0) {
+				outState.putString("etPw", etPw.getEditText().getText().toString());
+			}
+			
+			//etPwConfirm.
+			if(etPwConfirm.getEditText().length() > 0) {
+				outState.putString("etPwConfirm", etPwConfirm.getEditText().getText().toString());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override

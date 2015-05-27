@@ -218,6 +218,8 @@ public class ReviewView extends RelativeLayout {
 						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
 					}
 				});
+			} else {
+				btnEdit.setVisibility(View.INVISIBLE);
 			}
 			
 			if(!StringUtils.isEmpty(review.getReviewer_profile_img_url())) {

@@ -209,6 +209,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_REVIEW:
 		case BCPConstants.ITEM_CAR_MY:
 		case BCPConstants.ITEM_CAR_MY_PURCHASE:
+		case BCPConstants.ITEM_CAR_MY_LIKE:
 		case BCPConstants.ITEM_MY_BIDS_REVIEW:
 
 			if(position == 0) {

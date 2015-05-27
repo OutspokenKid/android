@@ -997,64 +997,82 @@ public class CarDetailPage extends BCPFragment {
 			case 0:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				rp.leftMargin = ResizeUtils.getSpecificLength(24);
-				button.setBackgroundResource(R.drawable.select_contact_call_btn);
-				button.setOnClickListener(new OnClickListener() {
+				
+				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+					button.setBackgroundResource(R.drawable.select_contact_call_btn_b);
+					button.setOnClickListener(null);
+				} else {
+					button.setBackgroundResource(R.drawable.select_contact_call_btn);
+					button.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
+						@Override
+						public void onClick(View view) {
 
-						callToDealerOrSeller();
-					}
-				});
+							callToDealerOrSeller();
+						}
+					});
+				}
 				break;
 				
 			case 1:
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
-				button.setBackgroundResource(R.drawable.select_contact_message_btn);
-				button.setOnClickListener(new OnClickListener() {
+				
+				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+					button.setBackgroundResource(R.drawable.select_contact_message_btn_b);
+					button.setOnClickListener(null);
+				} else {
+					button.setBackgroundResource(R.drawable.select_contact_message_btn);
+					button.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
+						@Override
+						public void onClick(View view) {
 
-						requestDealing();
-					}
-				});
+							requestDealing();
+						}
+					});
+				}
 				break;
 				
 			case 2:
 				rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				rp.rightMargin = ResizeUtils.getSpecificLength(24);
 				
-				if(needCompleteButton) {
-					button.setBackgroundResource(R.drawable.select_complete_btn);
+				//리뷰를 작성한 경우 리뷰 버튼 비활성화.
+				if(!needCompleteButton
+						&& car.getHas_review() == 1) {
+					button.setBackgroundResource(R.drawable.select_contact_post_btn_b);
+					button.setOnClickListener(null);
 				} else {
-					button.setBackgroundResource(R.drawable.select_contact_post_btn);
-				}
-				
-				button.setOnClickListener(new OnClickListener() {
+					
+					if(needCompleteButton) {
+						button.setBackgroundResource(R.drawable.select_complete_btn);
+					} else {
+						button.setBackgroundResource(R.drawable.select_contact_post_btn);
+					}
+					
+					button.setOnClickListener(new OnClickListener() {
 
-					@Override
-					public void onClick(View view) {
-
-						if(needCompleteButton) {
-							
-							if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
-								//입금 전까지 거래완료 버튼 비활성화.
+						@Override
+						public void onClick(View view) {
+	
+							if(needCompleteButton) {
+								
+								if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
+									//입금 전까지 거래완료 버튼 비활성화.
+								} else {
+									setStatusToComplete();
+								}
 							} else {
-								setStatusToComplete();
-							}
-						} else {
-							
-							if(car.getHas_review() == 1) {
-								//리뷰를 작성한 경우 리뷰 버튼 비활성화.
-							} else {
+								
 								Bundle bundle = new Bundle();
 								bundle.putSerializable("car", car);
+								bundle.putInt("dealer_id", car.getDealer_id());
+								bundle.putInt("onsalecar_id", car.getId());
 								mActivity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
 							}
 						}
-					}
-				});
+					});
+				}
 				break;
 			}
 			
@@ -1377,13 +1395,13 @@ public class CarDetailPage extends BCPFragment {
 		
 		//무사고.
 		if(car.getHad_accident() == 2) {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_a);
+			detailInfoViews[0].setVisibility(View.VISIBLE);
 			btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
 			btnHistory.setOnClickListener(null);
 			
 		//유사고.
 		} else if(car.getHad_accident() == 1) {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_b);
+			detailInfoViews[0].setVisibility(View.INVISIBLE);
 			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);
 			btnHistory.setOnClickListener(new OnClickListener() {
 
@@ -1397,38 +1415,37 @@ public class CarDetailPage extends BCPFragment {
 			
 		//사고여부 모름.
 		} else {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_c);
+			detailInfoViews[0].setVisibility(View.INVISIBLE);
 			btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
 			btnHistory.setOnClickListener(null);
 		}
 		
 		//1인 신조.
 		if(car.getIs_oneman_owned() == 1) {
-			detailInfoViews[1].setBackgroundResource(R.drawable.detail_info2_icon_a);
+			detailInfoViews[1].setVisibility(View.VISIBLE);
 			
 		//1인 신조 아님.
 		} else {
-			detailInfoViews[1].setBackgroundResource(R.drawable.detail_info2_icon_b);
+			detailInfoViews[1].setVisibility(View.INVISIBLE);
 		}
 		
 		//4륜 구동.
 		if("4WD".equals(car.getCar_wd())) {
-			detailInfoViews[2].setBackgroundResource(R.drawable.detail_info3_icon_a);
+			detailInfoViews[2].setVisibility(View.VISIBLE);
 			
 		//2륜 구동.
 		} else {
-			detailInfoViews[2].setBackgroundResource(R.drawable.detail_info3_icon_b);
+			detailInfoViews[2].setVisibility(View.INVISIBLE);
 		}
 		
 		//자동.
 		if("auto".equals(car.getTransmission_type())) {
-			detailInfoViews[3].setBackgroundResource(R.drawable.detail_info4_icon_a);
+			detailInfoViews[3].setVisibility(View.INVISIBLE);
 			
 		//수동.
 		} else {
-			detailInfoViews[3].setBackgroundResource(R.drawable.detail_info4_icon_b);
+			detailInfoViews[3].setVisibility(View.VISIBLE);
 		}
-		
 
 		int padding = ResizeUtils.getSpecificLength(4);
 		RelativeLayout.LayoutParams rp = null;
@@ -1473,7 +1490,7 @@ public class CarDetailPage extends BCPFragment {
 		detailInfoTextViews[5].setText(car.getColor());
 		
 		//주소.
-		detailInfoTextViews[6].setText(car.getSeller_address());
+		detailInfoTextViews[6].setText(car.getArea());
 	}
 
 	public void setCheck() {

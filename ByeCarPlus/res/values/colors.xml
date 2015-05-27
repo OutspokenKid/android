@@ -32,6 +32,7 @@
     <color name="new_color_page_bg_white2">#DCDCDC</color>	<!-- 220, 220, 200 -->
     <color name="new_color_page_bg_white3">#F5F5F5</color>	<!-- 245, 245, 245 -->
 	<color name="new_color_text_brown">#3D1F0A</color>		<!-- 61, 31, 10 -->
+	<color name="new_color_text_brown2">#442811</color>		<!-- 68, 40, 17 -->
 	<color name="new_color_text_gray">#878787</color>		<!-- 135, 135, 135 -->
 	<color name="new_color_text_darkgray">#393939</color>	<!-- 57, 57, 57 -->
 	<color name="new_color_text_orange">#FFA800</color>	<!-- 255, 168, 0 -->

@@ -67,11 +67,12 @@ public class BCPConstants {
 	
 	//Pages for community.
 	public static final int PAGE_FORUM_LIST = 41;
-	public static final int PAGE_WRITE_FORUM = 42;
-	public static final int PAGE_FORUM_DETAIL = 43;
-	public static final int PAGE_FORUM_WRITE_REPLY = 44;
-	public static final int PAGE_VIDEO_LIST = 45;
-	public static final int PAGE_BID_REVIEW_LIST = 46;
+	public static final int PAGE_MY_FORUM_DETAIL = 42;
+	public static final int PAGE_WRITE_FORUM = 43;
+	public static final int PAGE_FORUM_DETAIL = 44;
+	public static final int PAGE_FORUM_WRITE_REPLY = 45;
+	public static final int PAGE_VIDEO_LIST = 46;
+	public static final int PAGE_BID_REVIEW_LIST = 47;
 
 	public static final int PAGE_WEB_BROWSER = 50;
 	public static final int PAGE_SEARCH_AREA = 51;

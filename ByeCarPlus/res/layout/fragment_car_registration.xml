@@ -174,32 +174,12 @@
 		        android:layout_below="@id/carRegistrationPage_tvDetailCarInfoTitle"
 		        android:layout_centerHorizontal="true" />
             
-            <TextView 
-                android:id="@+id/carRegistrationPage_tvDetailCarInfo1"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo1"
-		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo1"
-		        android:text="@string/hintForDetailCarInfo11"
-		        android:textColor="@color/new_color_text_gray"
-		        android:gravity="center" />
-            
             <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
                 android:id="@+id/carRegistrationPage_etDetailCarInfo2"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo1"
 		        android:layout_centerHorizontal="true" />
-            
-            <TextView 
-                android:id="@+id/carRegistrationPage_tvDetailCarInfo2"
-		        android:layout_width="0dp"
-		        android:layout_height="0dp"
-		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo2"
-		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo2"
-		        android:text="@string/hintForDetailCarInfo21"
-		        android:textColor="@color/new_color_text_gray"
-		        android:gravity="center" />
             
             <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
                 android:id="@+id/carRegistrationPage_etDetailCarInfo3"
@@ -208,22 +188,19 @@
 		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo2"
 		        android:layout_centerHorizontal="true" />
             
-            <TextView 
-                android:id="@+id/carRegistrationPage_tvDetailCarInfo3"
+            <com.outspoken_kid.views.holo.holo_light.HoloStyleEditText 
+                android:id="@+id/carRegistrationPage_etDetailCarInfo4"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
-		        android:layout_alignLeft="@id/carRegistrationPage_etDetailCarInfo3"
-		        android:layout_alignTop="@id/carRegistrationPage_etDetailCarInfo3"
-		        android:text="@string/hintForDetailCarInfo31"
-		        android:textColor="@color/new_color_text_gray"
-		        android:gravity="center" />
+		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo3"
+		        android:layout_centerHorizontal="true" />
             
             <TextView
 		        android:id="@+id/carRegistrationPage_tvCarPhotoTitle"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo3"
+		        android:layout_below="@id/carRegistrationPage_etDetailCarInfo4"
 		        android:gravity="center_vertical"
 		        android:text="@string/carRegistrationTitle3"
 		        android:textColor="#fff"

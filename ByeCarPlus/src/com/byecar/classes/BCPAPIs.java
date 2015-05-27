@@ -93,6 +93,7 @@ public class BCPAPIs {
 	public static String FORUM_REPLY_DELETE_URL = BASE_API_URL + "/posts/reply/delete.json";
 	public static String FORUM_READ_URL = BASE_API_URL + "/posts/read.json";
 	public static String FORUM_BOARDS_URL = BASE_API_URL + "/boards.json";
+	public static String FORUM_MY_URL = BASE_API_URL + "/users/mine/posts.json";
 	
 	public static String VIDEO_LIST_URL = BASE_API_URL + "/posts/videos.json";
 	

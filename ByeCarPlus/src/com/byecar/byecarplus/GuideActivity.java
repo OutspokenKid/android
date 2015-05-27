@@ -85,6 +85,12 @@ public class GuideActivity extends Activity {
 			};
 			imageResIds = new int[][]{
 					{
+						R.drawable.infomation_auction0_img1,
+						R.drawable.infomation_auction0_img2,
+						R.drawable.infomation_auction0_img3,
+					},
+					
+					{
 						R.drawable.infomation_auction1_img1,
 						R.drawable.infomation_auction1_img2,
 						R.drawable.infomation_auction1_img3,
@@ -113,10 +119,18 @@ public class GuideActivity extends Activity {
 			buttonResIds = new int[]{
 					R.drawable.information_buy_tab1_tab_a,
 					R.drawable.information_buy_tab2_tab_a,
+					R.drawable.information_buy_tab3_tab_a,
 					R.drawable.information_buy_tab1_tab_b,
 					R.drawable.information_buy_tab2_tab_b,
+					R.drawable.information_buy_tab3_tab_b,
 			};
 			imageResIds = new int[][]{
+					{
+						R.drawable.information_buy0_img1,
+						R.drawable.information_buy0_img2,
+						R.drawable.information_buy0_img3,
+					},
+					
 					{
 						R.drawable.information_buy_img1,
 						R.drawable.information_buy_img2,
@@ -125,16 +139,43 @@ public class GuideActivity extends Activity {
 					
 					{
 						R.drawable.information_buy2_img1,
-						R.drawable.information_buy2_img2,
-						R.drawable.information_buy2_img3,
 					},
 			};
 			break;
 			
 		case TYPE_USER_DIRECT:
+			buttonResIds = new int[]{
+					R.drawable.information_directmarket_tab1_tab_a,
+					R.drawable.information_directmarket_tab2_tab_a,
+					R.drawable.information_directmarket_tab3_tab_a,
+					R.drawable.information_directmarket_tab4_tab_a,
+					R.drawable.information_directmarket_tab1_tab_b,
+					R.drawable.information_directmarket_tab2_tab_b,
+					R.drawable.information_directmarket_tab3_tab_b,
+					R.drawable.information_directmarket_tab4_tab_b,
+			};
 			imageResIds = new int[][]{
 					{
-						R.drawable.directmarket_information_img,
+						R.drawable.directmarket_information1_img1,
+						R.drawable.directmarket_information1_img2,
+						R.drawable.directmarket_information1_img3,
+					},
+					
+					{
+						R.drawable.directmarket_information2_img1,
+						R.drawable.directmarket_information2_img2,
+						R.drawable.directmarket_information2_img3,
+					},
+					
+					{
+						R.drawable.directmarket_information3_img1,
+						R.drawable.directmarket_information3_img2,
+						R.drawable.directmarket_information3_img3,
+					},
+					
+					{
+						R.drawable.directmarket_information4_img1,
+						R.drawable.directmarket_information4_img2,
 					},
 			};
 			break;

@@ -264,7 +264,7 @@ public class TypeSearchCarPage extends BCPFragment {
 				int year_end = getArguments().getInt("year_end") + 1;
 				
 				for(int i=year_begin; i<year_end; i++) {
-					CarSearchString css = new CarSearchString(type, "" + i);
+					CarSearchString css = new CarSearchString(type, i + "년");
 					css.setItemCode(BCPConstants.ITEM_CAR_TEXT);
 					models.add(css);
 				}
@@ -335,7 +335,7 @@ public class TypeSearchCarPage extends BCPFragment {
 
 			try {
 				for(int i=1; i<13; i++) {
-					CarSearchString css = new CarSearchString(type, "" + i);
+					CarSearchString css = new CarSearchString(type, i + "월");
 					css.setItemCode(BCPConstants.ITEM_CAR_TEXT);
 					models.add(css);
 				}

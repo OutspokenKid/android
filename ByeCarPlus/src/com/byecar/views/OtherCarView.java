@@ -181,6 +181,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.bottomMargin = ResizeUtils.getSpecificLength(41);
 		infoBadges[0].setLayoutParams(rp);
 		infoBadges[0].setId(R.id.usedCarView_infoBadg1);
+		infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_a);
 		this.addView(infoBadges[0]);
 		
 		infoBadges[1] = new View(getContext());
@@ -189,6 +190,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.addRule(RIGHT_OF, R.id.usedCarView_infoBadg1);
 		rp.leftMargin = ResizeUtils.getSpecificLength(7);
 		infoBadges[1].setLayoutParams(rp);
+		infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_a);
 		this.addView(infoBadges[1]);
 
 		infoBadges[2] = new View(getContext());
@@ -197,6 +199,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.addRule(ALIGN_TOP, R.id.usedCarView_infoBadg1);
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[2].setLayoutParams(rp);
+		infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_a);
 		this.addView(infoBadges[2]);
 		
 		infoBadges[3] = new View(getContext());
@@ -206,6 +209,7 @@ public class OtherCarView extends RelativeLayout {
 		rp.leftMargin = ResizeUtils.getSpecificLength(7);
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[3].setLayoutParams(rp);
+		infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_b);
 		this.addView(infoBadges[3]);
 		
 		//priceTextView.
@@ -328,42 +332,42 @@ public class OtherCarView extends RelativeLayout {
 		
 		//무사고.
 		if(car.getHad_accident() == 2) {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_a);
+			infoBadges[0].setVisibility(View.VISIBLE);
 			
 		//유사고.
 		} else if(car.getHad_accident() == 1) {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_b);
+			infoBadges[0].setVisibility(View.INVISIBLE);
 			
 		//사고여부 모름.
 		} else {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_c);
+			infoBadges[0].setVisibility(View.INVISIBLE);
 		}
 		
 		//1인신조.
 		if(car.getIs_oneman_owned() == 1) {
-			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_a);
+			infoBadges[1].setVisibility(View.VISIBLE);
 			
 		//1인신조 아님.
 		} else {
-			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_b);
+			infoBadges[1].setVisibility(View.INVISIBLE);
 		}
 		
 		//4륜구동.
 		if(car.getCar_wd().equals("4WD")) {
-			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_a);
+			infoBadges[2].setVisibility(View.VISIBLE);
 			
 		//2륜구동.
 		} else {
-			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_b);
+			infoBadges[2].setVisibility(View.INVISIBLE);
 		}
 		
 		//수동.
 		if(car.getTransmission_type().equals("manual")) {
-			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_a);
+			infoBadges[3].setVisibility(View.VISIBLE);
 			
 		//자동
 		} else {
-			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_b);
+			infoBadges[2].setVisibility(View.INVISIBLE);
 		}
 		
 		priceTextView.setPrice(car.getPrice());
@@ -382,17 +386,14 @@ public class OtherCarView extends RelativeLayout {
 
 		if(AppInfoUtils.checkMinVersionLimit(16)) {
 			rankBadge.setBackground(null);
-			infoBadges[0].setBackground(null);
-			infoBadges[1].setBackground(null);
-			infoBadges[2].setBackground(null);
-			infoBadges[3].setBackground(null);
 		} else {
 			rankBadge.setBackgroundDrawable(null);
-			infoBadges[0].setBackgroundDrawable(null);
-			infoBadges[1].setBackgroundDrawable(null);
-			infoBadges[2].setBackgroundDrawable(null);
-			infoBadges[3].setBackgroundDrawable(null);
 		}
+		
+		infoBadges[0].setVisibility(View.INVISIBLE);
+		infoBadges[1].setVisibility(View.INVISIBLE);
+		infoBadges[2].setVisibility(View.INVISIBLE);
+		infoBadges[3].setVisibility(View.INVISIBLE);
 		
 		priceTextView.setPrice(0);
 	}

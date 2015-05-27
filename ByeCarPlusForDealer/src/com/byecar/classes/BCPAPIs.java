@@ -48,6 +48,7 @@ public class BCPAPIs {
 	
 	public static String DEALER_SHOW_URL = BASE_API_URL + "/dealers/show.json";
 	public static String REVIEW_DEALER_URL = BASE_API_URL + "/dealers/reviews.json";
+	public static String REVIEW_WRITE_REPLY_URL = BASE_API_URL + "/dealers/reviews/save.json";
 	
 	public static String MY_BIDS_URL = BASE_API_URL + "/users/mine/bids.json";
 	public static String MY_CAR_URL = BASE_API_URL + "/users/mine/onsalecars.json";

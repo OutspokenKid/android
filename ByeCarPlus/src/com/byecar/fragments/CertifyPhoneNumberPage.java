@@ -114,8 +114,8 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 		rp.height = buttonHeight;
 		rp.bottomMargin = ResizeUtils.getSpecificLength(30);
 
-		FontUtils.setFontAndHintSize(etPhoneNumber.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etCertificationNumber.getEditText(), 30, 20);
+		FontUtils.setFontAndHintSize(etPhoneNumber.getEditText(), 30, 24);
+		FontUtils.setFontAndHintSize(etCertificationNumber.getEditText(), 30, 24);
 	}
 
 	@Override
@@ -152,6 +152,54 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 	public int getRootViewResId() {
 
 		return R.id.certifyPhoneNumberPage_mainLayout;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		try {
+			if(savedInstanceState != null) {
+				
+				if(savedInstanceState.containsKey("mode")) {
+					mode = savedInstanceState.getInt("mode");
+				}
+				
+				if(savedInstanceState.containsKey("etPhoneNumber")) {
+					etPhoneNumber.getEditText().setText(savedInstanceState.getString("etPhoneNumber"));
+				}
+				
+				if(savedInstanceState.containsKey("etCertificationNumber")) {
+					etCertificationNumber.getEditText().setText(savedInstanceState.getString("etCertificationNumber"));
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		try {
+			outState.putInt("mode", mode);
+			outState.putString("requestedPhoneNumber", requestedPhoneNumber);
+			
+			if(etPhoneNumber.getEditText().length() > 0) {
+				outState.putString("etPhoneNumber", etPhoneNumber.getEditText().getText().toString());	
+			}
+			
+			if(etCertificationNumber.getEditText().length() > 0) {
+				outState.putString("etCertificationNumber", etCertificationNumber.getEditText().getText().toString());	
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 //////////////////// Custom methods.

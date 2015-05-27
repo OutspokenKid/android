@@ -154,14 +154,14 @@ public class SignPage extends BCPFragment {
 		
 		//btnFindPw.
 		rp = (RelativeLayout.LayoutParams) btnFindPw.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(298);
-		rp.height = ResizeUtils.getSpecificLength(30);
+		rp.width = ResizeUtils.getSpecificLength(445);
+		rp.height = ResizeUtils.getSpecificLength(68);
 		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		
 		FontUtils.setFontSize(tvSignInText, 30);
 		FontUtils.setFontStyle(tvSignInText, FontUtils.BOLD);
-		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 20);
-		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 20);
+		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 24);
+		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 24);
 	}
 
 	@Override

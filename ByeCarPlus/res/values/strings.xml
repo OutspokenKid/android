@@ -129,12 +129,10 @@
     <string name="hintForCarDescriptionFromDealer">차량에 대한 추가 설명을 입력해주세요. 정성껏 작성해야 높은 금액으로 입찰될 수 있습니다.</string>
     <string name="hintForCategory">카테고리를 선택해주세요</string>
     <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo11">차량 번호를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo12">예) 02가 1234</string>
-    <string name="hintForDetailCarInfo21">주행거리를 입력해주세요.</string>
-    <string name="hintForDetailCarInfo22">예) 103555</string>
-    <string name="hintForDetailCarInfo31">배기량을 입력해주세요.</string>
-    <string name="hintForDetailCarInfo32">예) 2500</string>
+    <string name="hintForDetailCarInfo1">차량 번호를 입력해주세요.  예) 02가 1234</string>
+    <string name="hintForDetailCarInfo2">주행거리를 입력해주세요.  예) 103555</string>
+    <string name="hintForDetailCarInfo3">배기량을 입력해주세요.  예) 2500</string>
+    <string name="hintForDetailCarInfo4">차량 가격을 입력해주세요. (단위 만원)</string>
     <string name="hintForDetailCarHistory">차량의 부품 교환 이력을 작성해주세요.</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
@@ -217,6 +215,7 @@
     <string name="pageTitle_writeReview">리뷰 작성</string>
     <string name="pageTitle_qnA">Q&amp;A</string>
     <string name="pageTitle_forum">자유게시판</string>
+    <string name="pageTitle_my_forum">내가 쓴 글</string>
     <string name="pageTitle_reviewList">입찰완료/후기</string>
     <string name="pageTitle_videoList">동영상게시판</string>
     <string name="pageTitle_phoneInfo">휴대폰 정보</string>

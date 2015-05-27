@@ -220,6 +220,7 @@ public class CarView extends RelativeLayout {
 		rp.bottomMargin = ResizeUtils.getSpecificLength(41);
 		infoBadges[0].setLayoutParams(rp);
 		infoBadges[0].setId(R.id.carView_infoBadg1);
+		infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_a);
 		this.addView(infoBadges[0]);
 		
 		infoBadges[1] = new View(getContext());
@@ -228,6 +229,7 @@ public class CarView extends RelativeLayout {
 		rp.addRule(RIGHT_OF, R.id.carView_infoBadg1);
 		rp.leftMargin = ResizeUtils.getSpecificLength(7);
 		infoBadges[1].setLayoutParams(rp);
+		infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_a);
 		this.addView(infoBadges[1]);
 
 		infoBadges[2] = new View(getContext());
@@ -236,6 +238,7 @@ public class CarView extends RelativeLayout {
 		rp.addRule(ALIGN_TOP, R.id.carView_infoBadg1);
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[2].setLayoutParams(rp);
+		infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_a);
 		this.addView(infoBadges[2]);
 		
 		infoBadges[3] = new View(getContext());
@@ -245,6 +248,7 @@ public class CarView extends RelativeLayout {
 		rp.leftMargin = ResizeUtils.getSpecificLength(7);
 		rp.topMargin = ResizeUtils.getSpecificLength(30);
 		infoBadges[3].setLayoutParams(rp);
+		infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_b);
 		this.addView(infoBadges[3]);
 
 		LinearLayout priceLinear = new LinearLayout(getContext());
@@ -398,6 +402,8 @@ public class CarView extends RelativeLayout {
 			downloadImage(car.getRep_img_url(), ivImage);
 		}
 
+		LogUtils.log("###CarView.setCar.  itemCode : " + car.getItemCode() + ", carNAme : " + car.getCar_full_name());
+		
 		//Set cover.
 		switch(car.getItemCode()) {
 		
@@ -470,7 +476,6 @@ public class CarView extends RelativeLayout {
 			tvBiddingInfo.setVisibility(View.INVISIBLE);
 			tvLikeText.setVisibility(View.VISIBLE);
 			btnLike.setVisibility(View.VISIBLE);
-			cover.setBackgroundResource(R.drawable.main_used_car_frame2);
 			
 			downloadImage(car.getDealer_profile_img_url(), ivProfile);
 			tvDealerName.setText(car.getDealer_name());
@@ -500,8 +505,6 @@ public class CarView extends RelativeLayout {
 			tvLikeText.setVisibility(View.INVISIBLE);
 			btnLike.setVisibility(View.INVISIBLE);
 			
-			cover.setBackgroundResource(R.drawable.bid_frame1);
-			
 			downloadImage(car.getSeller_profile_img_url(), ivProfile);
 		}
 		
@@ -527,42 +530,42 @@ public class CarView extends RelativeLayout {
 		
 		//무사고.
 		if(car.getHad_accident() == 2) {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_a);
+			infoBadges[0].setVisibility(View.VISIBLE);
 			
 		//유사고.
 		} else if(car.getHad_accident() == 1) {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_b);
+			infoBadges[0].setVisibility(View.INVISIBLE);
 			
 		//사고여부 모름.
 		} else {
-			infoBadges[0].setBackgroundResource(R.drawable.main_used_option1_c);
+			infoBadges[0].setVisibility(View.INVISIBLE);
 		}
 		
 		//1인신조.
 		if(car.getIs_oneman_owned() == 1) {
-			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_a);
+			infoBadges[1].setVisibility(View.VISIBLE);
 			
 		//1인신조 아님.
 		} else {
-			infoBadges[1].setBackgroundResource(R.drawable.main_used_option2_b);
+			infoBadges[1].setVisibility(View.INVISIBLE);
 		}
 		
 		//4륜구동.
 		if(car.getCar_wd().equals("4WD")) {
-			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_a);
+			infoBadges[2].setVisibility(View.VISIBLE);
 			
 		//2륜구동.
 		} else {
-			infoBadges[2].setBackgroundResource(R.drawable.main_used_option3_b);
+			infoBadges[2].setVisibility(View.INVISIBLE);
 		}
 		
 		//수동.
 		if(car.getTransmission_type().equals("manual")) {
-			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_a);
+			infoBadges[3].setVisibility(View.VISIBLE);
 			
 		//자동
 		} else {
-			infoBadges[3].setBackgroundResource(R.drawable.main_used_option4_b);
+			infoBadges[3].setVisibility(View.INVISIBLE);
 		}
 
 		//내가 입찰한 경우에만 내 입찰가 표시.
@@ -645,76 +648,31 @@ public class CarView extends RelativeLayout {
 			immediatlyBadge.setVisibility(View.GONE);
 		}
 		
-		//statusBadge.
-		if(car.getType() == Car.TYPE_BID) {
-
-			statusBadge.setVisibility(View.VISIBLE);
-			
-			switch(car.getStatus()) {
-			
-			case Car.STATUS_STAND_BY_APPROVAL:
-			case Car.STATUS_STAND_BY_BIDING:
-				statusBadge.setVisibility(View.GONE);
-				break;
-				
-			case Car.STATUS_BIDDING:
-				
-				if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
-					statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon2);
-				} else {
-					statusBadge.setVisibility(View.GONE);
-				}
-				break;
-				
-			case Car.STATUS_BID_COMPLETE:
-				statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon3);
-				break;
-				
-			case Car.STATUS_BID_SUCCESS:
-			case Car.STATUS_BID_FAIL:
-			case Car.STATUS_PAYMENT_COMPLETED:
-			case Car.STATUS_TRADE_COMPLETE:
-				statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon4);
-				break;
-			}
-		} else {
-			statusBadge.setVisibility(View.GONE);
-		}
+		//Set badges. (statusBadge, rankBadge2, completeBadge)
+		statusBadge.setVisibility(View.GONE);
+		rankBadge2.setVisibility(View.GONE);
+		completeBadge.setVisibility(View.GONE);
 		
-		//rankBadge2.
 		if(car.getItemCode() == BCPConstants.ITEM_CAR_BID_COMPLETED) {
-			
 			rankBadge2.setVisibility(View.VISIBLE);
-			
-			int rank = -1;
-			
-			if(car.getBids().size() > 0) {
-				
-				for(int i=0; i<car.getBids().size(); i++) {
-					
-					if(car.getBids().get(i).getDealer_id() == MainActivity.dealer.getId()) {
-						rank = i;
-					}
-				}
-			}
 
-			boolean isSelected = car.getPrice() == car.getMy_bid_price();
+			boolean isSelected = car.getDealer_id() == MainActivity.dealer.getId();
 			
-			switch(rank) {
+			switch(car.getMy_bid_ranking()) {
 			
-			case 0:
+			case 1:
 				rankBadge2.setBackgroundResource(
 						isSelected?R.drawable.mypage_complete_icon1_1
 								:R.drawable.mypage_complete_icon2_1 );
 				break;
 				
-			case 1:
+			case 2:
 				rankBadge2.setBackgroundResource(
 						isSelected?R.drawable.mypage_complete_icon1_2
 								:R.drawable.mypage_complete_icon2_2 );
 				break;
 				
-			case 2:
+			case 3:
 				rankBadge2.setBackgroundResource(
 						isSelected?R.drawable.mypage_complete_icon1_3
 								:R.drawable.mypage_complete_icon2_3 );
@@ -724,15 +682,45 @@ public class CarView extends RelativeLayout {
 					rankBadge2.setBackgroundResource(R.drawable.mypage_complete_icon3);
 					break;
 			}
-		} else {
-			rankBadge2.setVisibility(View.GONE);
-		}
-		
-		//completeBadge.
-		if(car.getItemCode() == BCPConstants.ITEM_CAR_DEALER_COMPLETED) {
+			
+		} else if(car.getItemCode() == BCPConstants.ITEM_CAR_DEALER_COMPLETED) {
 			completeBadge.setVisibility(View.VISIBLE);
 		} else {
-			completeBadge.setVisibility(View.GONE);
+			
+			if(car.getType() == Car.TYPE_BID) {
+
+				statusBadge.setVisibility(View.VISIBLE);
+				
+				switch(car.getStatus()) {
+				
+				case Car.STATUS_STAND_BY_APPROVAL:
+				case Car.STATUS_STAND_BY_BIDING:
+					statusBadge.setVisibility(View.GONE);
+					break;
+					
+				case Car.STATUS_BIDDING:
+					
+					if(car.getBid_until_at() -System.currentTimeMillis() / 1000 <= 3600) {
+						statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon2);
+					} else {
+						statusBadge.setVisibility(View.GONE);
+					}
+					break;
+					
+				case Car.STATUS_BID_COMPLETE:
+					statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon3);
+					break;
+					
+				case Car.STATUS_BID_SUCCESS:
+				case Car.STATUS_BID_FAIL:
+				case Car.STATUS_PAYMENT_COMPLETED:
+				case Car.STATUS_TRADE_COMPLETE:
+					statusBadge.setBackgroundResource(R.drawable.auction_sale2_icon4);
+					break;
+				}
+			} else {
+				statusBadge.setVisibility(View.GONE);
+			}
 		}
 	}
 
@@ -751,18 +739,15 @@ public class CarView extends RelativeLayout {
 		if(AppInfoUtils.checkMinVersionLimit(16)) {
 			cover.setBackground(null);
 			rankBadge.setBackground(null);
-			infoBadges[0].setBackground(null);
-			infoBadges[1].setBackground(null);
-			infoBadges[2].setBackground(null);
-			infoBadges[3].setBackground(null);
 		} else {
 			cover.setBackgroundDrawable(null);
 			rankBadge.setBackgroundDrawable(null);
-			infoBadges[0].setBackgroundDrawable(null);
-			infoBadges[1].setBackgroundDrawable(null);
-			infoBadges[2].setBackgroundDrawable(null);
-			infoBadges[3].setBackgroundDrawable(null);
 		}
+		
+		infoBadges[0].setVisibility(View.INVISIBLE);
+		infoBadges[1].setVisibility(View.INVISIBLE);
+		infoBadges[2].setVisibility(View.INVISIBLE);
+		infoBadges[3].setVisibility(View.INVISIBLE);
 		
 		priceTextView1.setPrice(0);
 		priceTextView2.setPrice(0);

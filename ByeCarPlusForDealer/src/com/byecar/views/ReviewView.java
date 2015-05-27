@@ -47,6 +47,7 @@ public class ReviewView extends RelativeLayout {
 	private TextView tvCarName;
 	private OutSpokenRatingBar ratingBar;
 	private Button btnEdit;
+	private Button btnReply;
 	
 	public ReviewView(Context context) {
 		this(context, null);
@@ -193,6 +194,16 @@ public class ReviewView extends RelativeLayout {
 		btnEdit.setBackgroundResource(R.drawable.mypage_review_modify_btn);
 		btnEdit.setVisibility(View.INVISIBLE);
 		this.addView(btnEdit);
+		
+		//btnReply.
+		btnReply = new Button(getContext());
+		ResizeUtils.viewResizeForRelative(83, 32, btnReply, 
+				new int[]{RelativeLayout.ALIGN_RIGHT, RelativeLayout.ALIGN_BOTTOM}, 
+				new int[]{R.id.reviewView_tvRegdate, R.id.reviewView_tvRegdate},
+				new int[]{0, 0, 18, 16});
+		btnReply.setBackgroundResource(R.drawable.my_info_comment_btn);
+		btnReply.setVisibility(View.INVISIBLE);
+		this.addView(btnReply);
 	}
 	
 	public void setReview(final Review review, final BCPFragmentActivity activity) {
@@ -203,18 +214,19 @@ public class ReviewView extends RelativeLayout {
 			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot);
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 0, 0);
-			
-			//내가 쓴 리뷰이고 아직 리플이 안달린 경우 수정 버튼 노출.
-			if(review.getReviewer_id() == MainActivity.user.getId()
+				
+			//나에게 달린 리뷰이고, 아직 리플이 안달린 경우
+			if(review.getDealer_id() == MainActivity.dealer.getId()
 					&& review.getReply() == null) {
-				btnEdit.setVisibility(View.VISIBLE);
-				btnEdit.setOnClickListener(new OnClickListener() {
+				btnReply.setVisibility(View.VISIBLE);
+				btnReply.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View view) {
 
 						Bundle bundle = new Bundle();
-						bundle.putSerializable("review", review);
+						bundle.putString("to", review.getReviewer_name());
+						bundle.putInt("parent_id", review.getId());
 						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
 					}
 				});

@@ -299,7 +299,7 @@ public class CarInfoView extends RelativeLayout {
 				tvLike.setVisibility(View.INVISIBLE);
 				
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
-						+ "명/입찰횟수 " + car.getBids_cnt() + "명");
+						+ "명/입찰횟수 " + car.getBids_cnt() + "회");
 				
 				priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
 			} else {

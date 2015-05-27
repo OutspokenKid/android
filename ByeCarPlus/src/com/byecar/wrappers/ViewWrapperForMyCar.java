@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
@@ -267,6 +268,15 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 	public void setListeners() {
 		
 		if(car != null) {
+
+			btnSelectDealer.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					((MainActivity)activity).showCarDetailPage(0, car, car.getType());
+				}
+			});
 			
 			btnReview.setOnClickListener(new OnClickListener() {
 
@@ -275,7 +285,6 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					
 					Bundle bundle = new Bundle();
 					bundle.putSerializable("car", car);
-					bundle.putInt("manager_id", car.getManager_id());
 					bundle.putInt("dealer_id", car.getDealer_id());
 					bundle.putInt("onsalecar_id", car.getId());
 					activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);

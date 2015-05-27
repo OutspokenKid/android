@@ -62,6 +62,9 @@ public class EditDealerInfoPage extends BCPFragment {
 	
 	private int selectedImageIndex;
 	private String[] selectedImageSdCardPaths = new String[2];
+	private Bitmap thumbnail1;
+	private Bitmap thumbnail2;
+	private String address;
 	private int dong_id;
 	
 	@Override
@@ -76,9 +79,148 @@ public class EditDealerInfoPage extends BCPFragment {
 				if(thumbnails != null && thumbnails.length > 0) {
 					ivImages[selectedImageIndex].setImageBitmap(thumbnails[0]);
 					selectedImageSdCardPaths[selectedImageIndex] = sdCardPaths[0];
+					
+					if(selectedImageIndex == 0) {
+						thumbnail1 = thumbnails[0];
+					} else {
+						thumbnail2 = thumbnails[0];
+					}
 				}
 			}
 		};
+		
+		if(savedInstanceState != null) {
+			
+			try {
+				//phone_auth_key.
+				if(savedInstanceState.containsKey("phone_auth_key")) {
+					phone_auth_key = savedInstanceState.getString("phone_auth_key");
+				}
+
+				//phone_number.
+				if(savedInstanceState.containsKey("phone_number")) {
+					phone_number = savedInstanceState.getString("phone_number");
+				}
+				
+				//etInfos[0].
+				if(savedInstanceState.containsKey("etInfos[0]")) {
+					etInfos[0].getEditText().setText(savedInstanceState.getString("etInfos[0]"));
+				}
+				
+				//etInfos[1].
+				if(savedInstanceState.containsKey("etInfos[1]")) {
+					etInfos[1].getEditText().setText(savedInstanceState.getString("etInfos[1]"));
+				}
+				
+				//etIntroduce.
+				if(savedInstanceState.containsKey("etIntroduce")) {
+					etIntroduce.setText(savedInstanceState.getString("etIntroduce"));
+				}
+				
+				//selectedImageSdCardPaths[0].
+				if(savedInstanceState.containsKey("selectedImageSdCardPaths[0]")) {
+					selectedImageSdCardPaths[0] = savedInstanceState.getString("selectedImageSdCardPaths[0]");
+				}
+				
+				//selectedImageSdCardPaths[1].
+				if(savedInstanceState.containsKey("selectedImageSdCardPaths[1]")) {
+					selectedImageSdCardPaths[1] = savedInstanceState.getString("selectedImageSdCardPaths[1]");
+				}
+				
+				//address.
+				if(savedInstanceState.containsKey("address")) {
+					address = savedInstanceState.getString("address");
+					btnSearch.setText(address);
+				}
+				
+				//dong_id.
+				if(savedInstanceState.containsKey("dong_id")) {
+					dong_id = savedInstanceState.getInt("dong_id");
+				}
+				
+				//thumbnail1.
+				if(savedInstanceState.containsKey("thumbnail1")) {
+					thumbnail1 = savedInstanceState.getParcelable("thumbnail1");
+					ivImages[0].setImageBitmap(thumbnail1);
+				}
+				
+				//thumbnail2.
+				if(savedInstanceState.containsKey("thumbnail2")) {
+					thumbnail2 = savedInstanceState.getParcelable("thumbnail2");
+					ivImages[1].setImageBitmap(thumbnail2);
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		try {
+			//phone_auth_key.
+			if(!StringUtils.isEmpty(phone_auth_key)) {
+				outState.putString("phone_auth_key", phone_auth_key);
+			}
+
+			//phone_number.
+			if(!StringUtils.isEmpty(phone_number)) {
+				outState.putString("phone_number", phone_number);
+			}
+			
+			//etInfos[0].
+			if(etInfos[0].getEditText().length() > 0) {
+				outState.putString("etInfos[0]", etInfos[0].getEditText().getText().toString());
+			}
+			
+			//etInfos[1].
+			if(etInfos[1].getEditText().length() > 0) {
+				outState.putString("etInfos[1]", etInfos[1].getEditText().getText().toString());
+			}
+			
+			//etIntroduce.
+			if(etIntroduce.length() > 0) {
+				outState.putString("etIntroduce", etIntroduce.getText().toString());
+			}
+			
+			//selectedImageSdCardPaths[0].
+			if(selectedImageSdCardPaths[0] != null) {
+				outState.putString("selectedImageSdCardPaths[0]", selectedImageSdCardPaths[0]);
+			}
+			
+			//selectedImageSdCardPaths[1].
+			if(selectedImageSdCardPaths[1] != null) {
+				outState.putString("selectedImageSdCardPaths[1]", selectedImageSdCardPaths[1]);
+			}
+			
+			//address.
+			if(!StringUtils.isEmpty(address)) {
+				outState.putString("address", address);
+			}
+			
+			//dong_id.
+			if(dong_id != 0) {
+				outState.putInt("dong_id", dong_id);
+			}
+			
+			//thumbnail1.
+			if(thumbnail1 != null) {
+				outState.putParcelable("thumbnail1", thumbnail1);
+			}
+			
+			//thumbnail2.
+			if(thumbnail2 != null) {
+				outState.putParcelable("thumbnail2", thumbnail2);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override
@@ -444,7 +586,8 @@ public class EditDealerInfoPage extends BCPFragment {
 		}
 		
 		if(mActivity.bundle != null) {
-			btnSearch.setText(mActivity.bundle.getString("address"));
+			address = mActivity.bundle.getString("address");
+			btnSearch.setText(address);
 			dong_id = mActivity.bundle.getInt("dong_id");
 			mActivity.bundle = null;
 		}

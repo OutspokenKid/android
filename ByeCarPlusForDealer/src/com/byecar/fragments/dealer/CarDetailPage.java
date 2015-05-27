@@ -38,9 +38,9 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
@@ -74,7 +74,7 @@ public class CarDetailPage extends BCPFragment {
 	private RelativeLayout relativeForBidding;
 	private View headerForBidding;
 	private View arrowForBidding;
-	private View relativeForBidding2;
+	private RelativeLayout relativeForBidding2;
 	private TextView tvPrice;
 	private Button[] btnPrices = new Button[4];
 	private Button btnClear;
@@ -153,7 +153,7 @@ public class CarDetailPage extends BCPFragment {
 		relativeForBidding = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForBidding);
 		headerForBidding = mThisView.findViewById(R.id.carDetailPage_headerForBidding);
 		arrowForBidding = mThisView.findViewById(R.id.carDetailPage_arrowForBidding);
-		relativeForBidding2 = mThisView.findViewById(R.id.carDetailPage_relativeForBidding2);
+		relativeForBidding2 = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForBidding2);
 		tvPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvPrice);
 		btnPrices[0] = (Button) mThisView.findViewById(R.id.carDetailPage_btnPrice1);
 		btnPrices[1] = (Button) mThisView.findViewById(R.id.carDetailPage_btnPrice2);
@@ -378,27 +378,7 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				String message = null;
-				
-				if(type == Car.TYPE_DEALER) {
-					message = getString(R.string.wannaCallToDealer);
-				} else {
-					message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
-				}
-				
-				mActivity.showAlertDialog(getString(R.string.call), message, 
-						getString(R.string.confirm), getString(R.string.cancel), 
-						new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								IntentUtils.call(mContext, 
-										type == Car.TYPE_DEALER?
-												car.getDealer_phone_number()
-												: car.getSeller_phone_number());
-							}
-						}, null);
+				checkPayable();
 			}
 		});
 	
@@ -806,7 +786,7 @@ public class CarDetailPage extends BCPFragment {
 					setOptions();
 					setCheck();
 					setDescription();
-					setCallButton();
+					setPaymentButton();
 					setTitleBarButtons();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -821,30 +801,36 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setMainCarInfo() {
 
-		if(car.getStatus() == -1) {
-			closePage(R.string.holdOffByAdmin);
-		}
-		
-//		//딜러에게 전화 걸기를 위해서.
-//		MainActivity.dealerPhoneNumber = car.getDealer_phone_number();
+		try {
+			if(car.getStatus() == -1) {
+				closePage(R.string.holdOffByAdmin);
+			}
+			
+//			//딜러에게 전화 걸기를 위해서.
+//			MainActivity.dealerPhoneNumber = car.getDealer_phone_number();
 
-		setAuctionButton(car);
-		
-		if(car.getType() == Car.TYPE_BID) {
-			setOnTimerListener();
-			TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
+			setAuctionButton(car);
+			
+			if(car.getType() == Car.TYPE_BID) {
+				setOnTimerListener();
+				TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
+			}
+			
+			carInfoView.setDetail();
+			carInfoView.setCarInfo(car);
+			
+			imagePagerAdapter.setArrayList(car.getImages());
+			viewPager.getAdapter().notifyDataSetChanged();
+			viewPager.setCurrentItem(0);
+			
+			pageNavigator.setSize(car.getImages().size());
+			pageNavigator.setEmptyOffCircle();
+			pageNavigator.invalidate();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
-		
-		carInfoView.setDetail();
-		carInfoView.setCarInfo(car);
-		
-		imagePagerAdapter.setArrayList(car.getImages());
-		viewPager.getAdapter().notifyDataSetChanged();
-		viewPager.setCurrentItem(0);
-		
-		pageNavigator.setSize(car.getImages().size());
-		pageNavigator.setEmptyOffCircle();
-		pageNavigator.invalidate();
 	}
 
 	public void setRelativeForType() {
@@ -853,17 +839,23 @@ public class CarDetailPage extends BCPFragment {
 			return;
 		}
 		
-		relativeForType.removeAllViews();
-		
-		switch(type) {
-		
-		case Car.TYPE_BID:
-			addViewsForBidding_dealerViewOnly();
-			break;
+		try {
+			relativeForType.removeAllViews();
 			
-		case Car.TYPE_DEALER:
-			addViewsForDealer();
-			break;
+			switch(type) {
+			
+			case Car.TYPE_BID:
+				addViewsForBidding_dealerViewOnly();
+				break;
+				
+			case Car.TYPE_DEALER:
+				addViewsForDealer();
+				break;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1059,175 +1051,197 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setBiddingViews() {
 		
-		if(car.getType() == Car.TYPE_BID
-				&& car.getStatus() == Car.STATUS_BIDDING) {
-			relativeForBidding.setVisibility(View.VISIBLE);
-			
-			RelativeLayout.LayoutParams rp = null;
-			
-			rp = (RelativeLayout.LayoutParams) relativeForBidding.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			rp.height = LayoutParams.WRAP_CONTENT;
-			rp.topMargin = ResizeUtils.getSpecificLength(20);
-			
-			rp = (RelativeLayout.LayoutParams) headerForBidding.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(68);
-
-			rp = (RelativeLayout.LayoutParams) arrowForBidding.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(33);
-			rp.height = ResizeUtils.getSpecificLength(33);
-			rp.topMargin = ResizeUtils.getSpecificLength(18);
-			rp.rightMargin = ResizeUtils.getSpecificLength(18);
-			
-			rp = (RelativeLayout.LayoutParams) relativeForBidding2.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			rp.height = ResizeUtils.getSpecificLength(291);
-
-			rp = (RelativeLayout.LayoutParams) tvPrice.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(358);
-			rp.height = ResizeUtils.getSpecificLength(147);
-			rp.leftMargin = ResizeUtils.getSpecificLength(23);
-			rp.topMargin = ResizeUtils.getSpecificLength(23);
-			FontUtils.setFontSize(tvPrice, 60);
-			FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
-			
-			for(int i=0; i<btnPrices.length; i++) {
+		try {
+			if(car.getType() == Car.TYPE_BID
+					&& car.getStatus() == Car.STATUS_BIDDING) {
+				relativeForBidding.setVisibility(View.VISIBLE);
 				
-				rp = (RelativeLayout.LayoutParams) btnPrices[i].getLayoutParams();
-				rp.width = ResizeUtils.getSpecificLength(84);
-				rp.height = ResizeUtils.getSpecificLength(64);
+				RelativeLayout.LayoutParams rp = null;
 				
-				if(i == 2) {
-					rp.topMargin = ResizeUtils.getSpecificLength(19);
-				} else {
-					rp.leftMargin = ResizeUtils.getSpecificLength(19);
+				rp = (RelativeLayout.LayoutParams) relativeForBidding.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				rp.height = LayoutParams.WRAP_CONTENT;
+				rp.topMargin = ResizeUtils.getSpecificLength(20);
+				
+				rp = (RelativeLayout.LayoutParams) headerForBidding.getLayoutParams();
+				rp.height = ResizeUtils.getSpecificLength(68);
+
+				rp = (RelativeLayout.LayoutParams) arrowForBidding.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(33);
+				rp.height = ResizeUtils.getSpecificLength(33);
+				rp.topMargin = ResizeUtils.getSpecificLength(18);
+				rp.rightMargin = ResizeUtils.getSpecificLength(18);
+				
+				rp = (RelativeLayout.LayoutParams) relativeForBidding2.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				rp.height = ResizeUtils.getSpecificLength(291);
+
+				rp = (RelativeLayout.LayoutParams) tvPrice.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(358);
+				rp.height = ResizeUtils.getSpecificLength(147);
+				rp.leftMargin = ResizeUtils.getSpecificLength(23);
+				rp.topMargin = ResizeUtils.getSpecificLength(23);
+				FontUtils.setFontSize(tvPrice, 60);
+				FontUtils.setFontStyle(tvPrice, FontUtils.BOLD);
+				
+				for(int i=0; i<btnPrices.length; i++) {
+					
+					rp = (RelativeLayout.LayoutParams) btnPrices[i].getLayoutParams();
+					rp.width = ResizeUtils.getSpecificLength(84);
+					rp.height = ResizeUtils.getSpecificLength(64);
+					
+					if(i == 2) {
+						rp.topMargin = ResizeUtils.getSpecificLength(19);
+					} else {
+						rp.leftMargin = ResizeUtils.getSpecificLength(19);
+					}
+					
+					FontUtils.setFontSize(btnPrices[i], 24);
+					
+					final int INDEX = i;
+					btnPrices[i].setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+
+							long newPrice = biddingPrice;
+							
+							switch(INDEX) {
+							
+							case 0:
+								newPrice += 1000000;
+								break;
+								
+							case 1:
+								newPrice += 500000;
+								break;
+								
+							case 2:
+								newPrice += 100000;
+								break;
+								
+							case 3:
+								newPrice += 50000;
+								break;
+							}
+							
+							setBiddingPrice(newPrice);
+						}
+					});
 				}
 				
-				FontUtils.setFontSize(btnPrices[i], 24);
+				rp = (RelativeLayout.LayoutParams) btnClear.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(84);
+				rp.height = ResizeUtils.getSpecificLength(84);
+				rp.topMargin = ResizeUtils.getSpecificLength(19);
 				
-				final int INDEX = i;
-				btnPrices[i].setOnClickListener(new OnClickListener() {
+				btnClear.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View view) {
 
-						long newPrice = biddingPrice;
-						
-						switch(INDEX) {
-						
-						case 0:
-							newPrice += 1000000;
-							break;
-							
-						case 1:
-							newPrice += 500000;
-							break;
-							
-						case 2:
-							newPrice += 100000;
-							break;
-							
-						case 3:
-							newPrice += 50000;
-							break;
-						}
-						
-						setBiddingPrice(newPrice);
+						setBiddingPrice(car.getPrice());
 					}
 				});
-			}
-			
-			rp = (RelativeLayout.LayoutParams) btnClear.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(84);
-			rp.height = ResizeUtils.getSpecificLength(84);
-			rp.topMargin = ResizeUtils.getSpecificLength(19);
-			
-			btnClear.setOnClickListener(new OnClickListener() {
+				
+				rp = (RelativeLayout.LayoutParams) btnBidding.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(461);
+				rp.height = ResizeUtils.getSpecificLength(84);
+				rp.leftMargin = ResizeUtils.getSpecificLength(19);
+				
+				btnBidding.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View view) {
+					@Override
+					public void onClick(View view) {
 
-					setBiddingPrice(car.getPrice());
-				}
-			});
-			
-			rp = (RelativeLayout.LayoutParams) btnBidding.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(461);
-			rp.height = ResizeUtils.getSpecificLength(84);
-			rp.leftMargin = ResizeUtils.getSpecificLength(19);
-			
-			btnBidding.setOnClickListener(new OnClickListener() {
+						boolean needCheck = SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noBiddingPush");
+						
+						if(needCheck) {
+							bid();
+						} else {
+							showBiddingCheckDialog();
+						}
+					}
+				});
 
-				@Override
-				public void onClick(View view) {
+				rp = (RelativeLayout.LayoutParams) footerForBidding.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				rp.height = ResizeUtils.getSpecificLength(20);
 
-					bid();
-				}
-			});
-
-			rp = (RelativeLayout.LayoutParams) footerForBidding.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			rp.height = ResizeUtils.getSpecificLength(20);
-			
-			if(biddingPrice == 0) {
 				biddingPrice = car.getPrice();
-				setBiddingPrice(biddingPrice);
+				setBiddingPrice(biddingPrice + 50000);
+			} else {
+				relativeForBidding.setVisibility(View.GONE);
 			}
-		} else {
-			relativeForBidding.setVisibility(View.GONE);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
 	public void setBiddingPrice(long price) {
-		
-		biddingPrice = price;
-		
-		tvPrice.setText(null);
-		FontUtils.addSpan(tvPrice, StringUtils.getFormattedNumber(price/10000), 0, 1);
-		FontUtils.addSpan(tvPrice, "만원", 0, 0.4f);
+
+		try {
+			biddingPrice = price;
+			
+			tvPrice.setText(null);
+			FontUtils.addSpan(tvPrice, StringUtils.getFormattedNumber(price/10000), 0, 1);
+			FontUtils.addSpan(tvPrice, "만원", 0, 0.4f);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	public void setReviews() {
 		
-		//옥션 매물이고, 리뷰가 있는 경우에만 리뷰 영역 노출.
-		if(car.getType() == Car.TYPE_BID
-				&& car.getHas_review() == 1 && car.getReview() != null) {
-			relativeForReview.setVisibility(View.VISIBLE);
-			
-			RelativeLayout.LayoutParams rp = null;
-			
-			rp = (RelativeLayout.LayoutParams) relativeForReview.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			rp.height = LayoutParams.WRAP_CONTENT;
-			rp.topMargin = ResizeUtils.getSpecificLength(20);
-			
-			rp = (RelativeLayout.LayoutParams) headerForReview.getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(68);
+		try {
+			//옥션 매물이고, 리뷰가 있는 경우에만 리뷰 영역 노출.
+			if(car.getType() == Car.TYPE_BID
+					&& car.getHas_review() == 1 && car.getReview() != null) {
+				relativeForReview.setVisibility(View.VISIBLE);
+				
+				RelativeLayout.LayoutParams rp = null;
+				
+				rp = (RelativeLayout.LayoutParams) relativeForReview.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				rp.height = LayoutParams.WRAP_CONTENT;
+				rp.topMargin = ResizeUtils.getSpecificLength(20);
+				
+				rp = (RelativeLayout.LayoutParams) headerForReview.getLayoutParams();
+				rp.height = ResizeUtils.getSpecificLength(68);
 
-			rp = (RelativeLayout.LayoutParams) arrowForReview.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(33);
-			rp.height = ResizeUtils.getSpecificLength(33);
-			rp.topMargin = ResizeUtils.getSpecificLength(18);
-			rp.rightMargin = ResizeUtils.getSpecificLength(18);
-			
-			rp = (RelativeLayout.LayoutParams) linearForReview.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			linearForReview.setPadding(0, ResizeUtils.getSpecificLength(18), 
-					0, ResizeUtils.getSpecificLength(18));
-			
-			ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, review, 1, Gravity.CENTER_HORIZONTAL, null);
-			review.setReview(car.getReview(), mActivity);
-			
-			if(car.getReview().getReply() != null) {
-				ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-				reply.setReply(car.getReview().getReply());
+				rp = (RelativeLayout.LayoutParams) arrowForReview.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(33);
+				rp.height = ResizeUtils.getSpecificLength(33);
+				rp.topMargin = ResizeUtils.getSpecificLength(18);
+				rp.rightMargin = ResizeUtils.getSpecificLength(18);
+				
+				rp = (RelativeLayout.LayoutParams) linearForReview.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				linearForReview.setPadding(0, ResizeUtils.getSpecificLength(18), 
+						0, ResizeUtils.getSpecificLength(18));
+				
+				ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, review, 1, Gravity.CENTER_HORIZONTAL, null);
+				review.setReview(car.getReview(), mActivity);
+				
+				if(car.getReview().getReply() != null) {
+					ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
+					reply.setReply(car.getReview().getReply());
+				}
+
+				rp = (RelativeLayout.LayoutParams) footerForReview.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(608);
+				rp.height = ResizeUtils.getSpecificLength(20);
+			} else {
+				relativeForReview.setVisibility(View.GONE);
 			}
-
-			rp = (RelativeLayout.LayoutParams) footerForReview.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(608);
-			rp.height = ResizeUtils.getSpecificLength(20);
-		} else {
-			relativeForReview.setVisibility(View.GONE);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1237,235 +1251,258 @@ public class CarDetailPage extends BCPFragment {
 			return;
 		}
 		
-		//무사고.
-		if(car.getHad_accident() == 2) {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_a);
-			btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
-			btnHistory.setOnClickListener(null);
+		try {
+			//무사고.
+			if(car.getHad_accident() == 2) {
+				detailInfoViews[0].setVisibility(View.VISIBLE);
+				btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
+				btnHistory.setOnClickListener(null);
+				
+			//유사고.
+			} else if(car.getHad_accident() == 1) {
+				detailInfoViews[0].setVisibility(View.INVISIBLE);
+				btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);
+				btnHistory.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+
+						mActivity.showAlertDialog(getString(R.string.changingPartsHistory), 
+								car.getAccident_desc(), getString(R.string.confirm), null);
+					}
+				});
+				
+			//사고여부 모름.
+			} else {
+				detailInfoViews[0].setVisibility(View.INVISIBLE);
+				btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
+				btnHistory.setOnClickListener(null);
+			}
 			
-		//유사고.
-		} else if(car.getHad_accident() == 1) {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_b);
-			btnHistory.setBackgroundResource(R.drawable.detail_parts_btn);
-			btnHistory.setOnClickListener(new OnClickListener() {
+			//1인 신조.
+			if(car.getIs_oneman_owned() == 1) {
+				detailInfoViews[1].setVisibility(View.VISIBLE);
+				
+			//1인 신조 아님.
+			} else {
+				detailInfoViews[1].setVisibility(View.INVISIBLE);
+			}
+			
+			//4륜 구동.
+			if("4WD".equals(car.getCar_wd())) {
+				detailInfoViews[2].setVisibility(View.VISIBLE);
+				
+			//2륜 구동.
+			} else {
+				detailInfoViews[2].setVisibility(View.INVISIBLE);
+			}
+			
+			//자동.
+			if("auto".equals(car.getTransmission_type())) {
+				detailInfoViews[3].setVisibility(View.INVISIBLE);
+				
+			//수동.
+			} else {
+				detailInfoViews[3].setVisibility(View.VISIBLE);
+			}
 
-				@Override
-				public void onClick(View view) {
-
-					mActivity.showAlertDialog(getString(R.string.changingPartsHistory), 
-							car.getAccident_desc(), getString(R.string.confirm), null);
+			int padding = ResizeUtils.getSpecificLength(4);
+			RelativeLayout.LayoutParams rp = null;
+			
+			//detailInfoTextViews.
+			for(int i=0; i<detailInfoTextViews.length; i++) {
+				
+				//경매나 직거래라면 색상영역을 숨긴다.
+				if(type != Car.TYPE_DEALER && i == 5) {
+					continue;
 				}
-			});
-			
-		//사고여부 모름.
-		} else {
-			detailInfoViews[0].setBackgroundResource(R.drawable.detail_info1_icon_c);
-			btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
-			btnHistory.setOnClickListener(null);
-		}
-		
-		//1인 신조.
-		if(car.getIs_oneman_owned() == 1) {
-			detailInfoViews[1].setBackgroundResource(R.drawable.detail_info2_icon_a);
-			
-		//1인 신조 아님.
-		} else {
-			detailInfoViews[1].setBackgroundResource(R.drawable.detail_info2_icon_b);
-		}
-		
-		//4륜 구동.
-		if("4WD".equals(car.getCar_wd())) {
-			detailInfoViews[2].setBackgroundResource(R.drawable.detail_info3_icon_a);
-			
-		//2륜 구동.
-		} else {
-			detailInfoViews[2].setBackgroundResource(R.drawable.detail_info3_icon_b);
-		}
-		
-		//자동.
-		if("auto".equals(car.getTransmission_type())) {
-			detailInfoViews[3].setBackgroundResource(R.drawable.detail_info4_icon_a);
-			
-		//수동.
-		} else {
-			detailInfoViews[3].setBackgroundResource(R.drawable.detail_info4_icon_b);
-		}
-		
+				
+				rp = (RelativeLayout.LayoutParams) detailInfoTextViews[i].getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(i==detailInfoTextViews.length-1|i==3?304:152);
+				rp.height = ResizeUtils.getSpecificLength(88);
+				
+				if(i == 0) {
+					rp.topMargin = ResizeUtils.getSpecificLength(22);
+				} else if(i == 4) {
+					rp.topMargin = ResizeUtils.getSpecificLength(2);
+				}
 
-		int padding = ResizeUtils.getSpecificLength(4);
-		RelativeLayout.LayoutParams rp = null;
-		
-		//detailInfoTextViews.
-		for(int i=0; i<detailInfoTextViews.length; i++) {
-			
-			//경매나 직거래라면 색상영역을 숨긴다.
-			if(type != Car.TYPE_DEALER && i == 5) {
-				continue;
+				detailInfoTextViews[i].setPadding(padding, 0, padding, 0);
 			}
 			
-			rp = (RelativeLayout.LayoutParams) detailInfoTextViews[i].getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(i==detailInfoTextViews.length-1|i==3?304:152);
-			rp.height = ResizeUtils.getSpecificLength(88);
+			//연월식.
+			detailInfoTextViews[0].setText(car.getYear() + getString(R.string.year) + " " + car.getMonth() + getString(R.string.month));
 			
-			if(i == 0) {
-				rp.topMargin = ResizeUtils.getSpecificLength(22);
-			} else if(i == 4) {
-				rp.topMargin = ResizeUtils.getSpecificLength(2);
-			}
+			//주행거리.
+			detailInfoTextViews[1].setText(StringUtils.getFormattedNumber(car.getMileage()) + "km");
+			
+			//배기량.
+			detailInfoTextViews[2].setText(StringUtils.getFormattedNumber(car.getDisplacement()) + "cc");
+			
+			//연료.
+			detailInfoTextViews[3].setText(Car.getFuelTypeString(mContext, car.getFuel_type()));
+			
+			//번호.
+			detailInfoTextViews[4].setText(car.getCar_number());
 
-			detailInfoTextViews[i].setPadding(padding, 0, padding, 0);
+			//색상.
+			detailInfoTextViews[5].setText(car.getColor());
+			
+			//주소.
+			detailInfoTextViews[6].setText(car.getArea());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
-		
-		//연월식.
-		detailInfoTextViews[0].setText(car.getYear() + getString(R.string.year) + " " + car.getMonth() + getString(R.string.month));
-		
-		//주행거리.
-		detailInfoTextViews[1].setText(StringUtils.getFormattedNumber(car.getMileage()) + "km");
-		
-		//배기량.
-		detailInfoTextViews[2].setText(StringUtils.getFormattedNumber(car.getDisplacement()) + "cc");
-		
-		//연료.
-		detailInfoTextViews[3].setText(Car.getFuelTypeString(mContext, car.getFuel_type()));
-		
-		//번호.
-		detailInfoTextViews[4].setText(car.getCar_number());
-
-		//색상.
-		detailInfoTextViews[5].setText(car.getColor());
-		
-		//주소.
-		detailInfoTextViews[6].setText(car.getSeller_address());
 	}
 
 	public void setCheck() {
 
-		if(car.getType() == Car.TYPE_DEALER
-				&& !StringUtils.isEmpty(car.getInspection_note_url())) {
-			relativeForCheck.setVisibility(View.VISIBLE);
-			
-			ivCheck.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					mActivity.showImageViewer(0, null, new String[]{car.getInspection_note_url()}, null);
-				}
-			});
-			
-			ivCheck.setTag(car.getInspection_note_url());
-			BCPDownloadUtils.downloadBitmap(car.getInspection_note_url(), new OnBitmapDownloadListener() {
+		try {
+			if(car.getType() == Car.TYPE_DEALER
+					&& !StringUtils.isEmpty(car.getInspection_note_url())) {
+				relativeForCheck.setVisibility(View.VISIBLE);
 				
-				@Override
-				public void onError(String url) {
+				ivCheck.setOnClickListener(new OnClickListener() {
 
-					LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
-					relativeForCheck.setVisibility(View.GONE);
-				}
+					@Override
+					public void onClick(View view) {
+
+						mActivity.showImageViewer(0, null, new String[]{car.getInspection_note_url()}, null);
+					}
+				});
 				
-				@Override
-				public void onCompleted(String url, Bitmap bitmap) {
+				ivCheck.setTag(car.getInspection_note_url());
+				BCPDownloadUtils.downloadBitmap(car.getInspection_note_url(), new OnBitmapDownloadListener() {
+					
+					@Override
+					public void onError(String url) {
 
-					try {
-						LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
-
-						if(ivCheck != null && bitmap != null && !bitmap.isRecycled()) {
-							ivCheck.setImageBitmap(bitmap);
-						}
-					} catch (Exception e) {
-						LogUtils.trace(e);
-						relativeForCheck.setVisibility(View.GONE);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
+						LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
 						relativeForCheck.setVisibility(View.GONE);
 					}
-				}
-			}, 540);
-		} else {
-			relativeForCheck.setVisibility(View.GONE);
+					
+					@Override
+					public void onCompleted(String url, Bitmap bitmap) {
+
+						try {
+							LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url);
+
+							if(ivCheck != null && bitmap != null && !bitmap.isRecycled()) {
+								ivCheck.setImageBitmap(bitmap);
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+							relativeForCheck.setVisibility(View.GONE);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+							relativeForCheck.setVisibility(View.GONE);
+						}
+					}
+				}, 540);
+			} else {
+				relativeForCheck.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
 	public void setAccident() {
-		
-		if(car.getHad_accident() == 1) {
-			relativeForAccident.setVisibility(View.VISIBLE);
-		} else {
-			relativeForAccident.setVisibility(View.GONE);
+
+		try {
+			if(car.getHad_accident() == 1) {
+				relativeForAccident.setVisibility(View.VISIBLE);
+			} else {
+				relativeForAccident.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
 	public void setOptions() {
 
-		boolean isSetTitle2 = false;
-		int[] addedCount = new int[3];
-		int biggestIndex = 0;
-		int addedAtRelativeCount = 0;
-		RelativeLayout.LayoutParams rp = null;
-		
-		linearForOptions[0].removeAllViews();
-		linearForOptions[1].removeAllViews();
-		linearForOptions[2].removeAllViews();
-		relativeForOption2.removeAllViews();
-		
-		//서버에서 보내주는 것도 이미지처럼 1~31 인 듯?
-		int size = car.getOptions().length;
-		for(int i=0; i<size; i++) {
-
-			View optionView = getOptionView(car.getOptions()[i]);
+		try {
+			boolean isSetTitle2 = false;
+			int[] addedCount = new int[3];
+			int biggestIndex = 0;
+			int addedAtRelativeCount = 0;
+			RelativeLayout.LayoutParams rp = null;
 			
-			if(car.getOptions()[i] < 25) {
-				addedCount[(car.getOptions()[i]-1)%3]++;
-				ResizeUtils.viewResize(180, 90, optionView, 1, 0, new int[]{0, 40, 0, 0});
-				linearForOptions[(car.getOptions()[i]-1)%3].addView(optionView);
+			linearForOptions[0].removeAllViews();
+			linearForOptions[1].removeAllViews();
+			linearForOptions[2].removeAllViews();
+			relativeForOption2.removeAllViews();
+			
+			//서버에서 보내주는 것도 이미지처럼 1~31 인 듯?
+			int size = car.getOptions().length;
+			for(int i=0; i<size; i++) {
+
+				View optionView = getOptionView(car.getOptions()[i]);
 				
-			} else if(car.getOptions()[i] == 25 || car.getOptions()[i] == 26) {
-				addedCount[car.getOptions()[i]%3]++;
-				ResizeUtils.viewResize(180, 90, optionView, 1, 0, new int[]{0, 40, 0, 0});
-				linearForOptions[car.getOptions()[i]%3].addView(optionView);
-				
-			} else {
-				
-				if(!isSetTitle2) {
-					isSetTitle2 = true;
+				if(car.getOptions()[i] < 25) {
+					addedCount[(car.getOptions()[i]-1)%3]++;
+					ResizeUtils.viewResize(180, 90, optionView, 1, 0, new int[]{0, 40, 0, 0});
+					linearForOptions[(car.getOptions()[i]-1)%3].addView(optionView);
 					
-					if(addedCount[0] < addedCount[1]) {
+				} else if(car.getOptions()[i] == 25 || car.getOptions()[i] == 26) {
+					addedCount[car.getOptions()[i]%3]++;
+					ResizeUtils.viewResize(180, 90, optionView, 1, 0, new int[]{0, 40, 0, 0});
+					linearForOptions[car.getOptions()[i]%3].addView(optionView);
+					
+				} else {
+					
+					if(!isSetTitle2) {
+						isSetTitle2 = true;
 						
-						if(addedCount[1] > addedCount[2]) {
-							biggestIndex = 1;
-						} else {
+						if(addedCount[0] < addedCount[1]) {
+							
+							if(addedCount[1] > addedCount[2]) {
+								biggestIndex = 1;
+							} else {
+								biggestIndex = 2;
+							}
+						} else if(addedCount[0] < addedCount[2]) {
 							biggestIndex = 2;
 						}
-					} else if(addedCount[0] < addedCount[2]) {
-						biggestIndex = 2;
+						
+						rp = (RelativeLayout.LayoutParams) 
+								mThisView.findViewById(R.id.carDetailPage_optionTitle2).getLayoutParams();
+						rp.width = ResizeUtils.getSpecificLength(308);
+						rp.height = ResizeUtils.getSpecificLength(43);
+						rp.topMargin = ResizeUtils.getSpecificLength(46);
+						
+						switch(biggestIndex) {
+						
+						case 0:
+							rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption1);
+							break;
+							
+						case 1:
+							rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption2);
+							break;
+							
+						case 2:
+							rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption3);
+							break;
+						}
 					}
 					
-					rp = (RelativeLayout.LayoutParams) 
-							mThisView.findViewById(R.id.carDetailPage_optionTitle2).getLayoutParams();
-					rp.width = ResizeUtils.getSpecificLength(308);
-					rp.height = ResizeUtils.getSpecificLength(43);
-					rp.topMargin = ResizeUtils.getSpecificLength(46);
-					
-					switch(biggestIndex) {
-					
-					case 0:
-						rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption1);
-						break;
-						
-					case 1:
-						rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption2);
-						break;
-						
-					case 2:
-						rp.addRule(RelativeLayout.BELOW, R.id.carDetailPage_linearForOption3);
-						break;
-					}
+					optionView.setLayoutParams(getRelativeLayoutParamsForOptionView(addedAtRelativeCount));
+					relativeForOption2.addView(optionView);
+					addedAtRelativeCount++;
 				}
-				
-				optionView.setLayoutParams(getRelativeLayoutParamsForOptionView(addedAtRelativeCount));
-				relativeForOption2.addView(optionView);
-				addedAtRelativeCount++;
 			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1533,65 +1570,83 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setDescription() {
 		
-		tvDescription.setText(car.getDesc());
+		try {
+			tvDescription.setText(car.getDesc());
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
-	public void setCallButton() {
-		
-		RelativeLayout.LayoutParams rp = null;
-		
-		if(type == Car.TYPE_BID
-				&& car.getStatus() == Car.STATUS_PAYMENT_COMPLETED) {
-			buttonBg.setVisibility(View.VISIBLE);
-			btnPayment.setVisibility(View.VISIBLE);
+	public void setPaymentButton() {
+
+		try {
+			RelativeLayout.LayoutParams rp = null;
 			
-			//buttonBg.
-			rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_buttonBg).getLayoutParams();
-			rp.height = ResizeUtils.getSpecificLength(123);
-			
-			//btnPayment.
-			rp = (RelativeLayout.LayoutParams) btnPayment.getLayoutParams();
-			rp.width = ResizeUtils.getSpecificLength(612);
-			rp.height = ResizeUtils.getSpecificLength(84);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(15);
-			
-			//scrollView.
-			rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
-			rp.bottomMargin = ResizeUtils.getSpecificLength(115);
-		} else {
-			buttonBg.setVisibility(View.GONE);
-			btnPayment.setVisibility(View.GONE);
-			
-			//scrollView.
-			rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
-			rp.bottomMargin = 0;
+			if(type == Car.TYPE_BID
+					&& car.getStatus() == Car.STATUS_BID_SUCCESS) {
+				buttonBg.setVisibility(View.VISIBLE);
+				btnPayment.setVisibility(View.VISIBLE);
+				
+				//buttonBg.
+				rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_buttonBg).getLayoutParams();
+				rp.height = ResizeUtils.getSpecificLength(123);
+				
+				//btnPayment.
+				rp = (RelativeLayout.LayoutParams) btnPayment.getLayoutParams();
+				rp.width = ResizeUtils.getSpecificLength(612);
+				rp.height = ResizeUtils.getSpecificLength(84);
+				rp.bottomMargin = ResizeUtils.getSpecificLength(15);
+				
+				//scrollView.
+				rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
+				rp.bottomMargin = ResizeUtils.getSpecificLength(115);
+			} else {
+				buttonBg.setVisibility(View.GONE);
+				btnPayment.setVisibility(View.GONE);
+				
+				//scrollView.
+				rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
+				rp.bottomMargin = 0;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 
 	public void setTitleBarButtons() {
 
-		switch(car.getType()) {
+		try {
+			switch(car.getType()) {
 
-		//중고차거래. -> 내가 올린 경우에만 수정, 삭제.
-		case Car.TYPE_DEALER:
+			//중고차거래. -> 내가 올린 경우에만 수정, 삭제.
+			case Car.TYPE_DEALER:
 
-			btnReport.setVisibility(View.GONE);
-			
-			if(car.getSeller_id() == MainActivity.user.getId()) {
-				btnEdit.setVisibility(View.VISIBLE);
-				btnDelete.setVisibility(View.VISIBLE);
-			} else {
+				btnReport.setVisibility(View.GONE);
+				
+				if(car.getSeller_id() == MainActivity.user.getId()) {
+					btnEdit.setVisibility(View.VISIBLE);
+					btnDelete.setVisibility(View.VISIBLE);
+				} else {
+					btnEdit.setVisibility(View.GONE);
+					btnDelete.setVisibility(View.GONE);
+				}
+				
+				break;
+
+			case Car.TYPE_BID:
+				btnReport.setVisibility(View.VISIBLE);
 				btnEdit.setVisibility(View.GONE);
 				btnDelete.setVisibility(View.GONE);
+				break;
 			}
-			
-			break;
-
-		case Car.TYPE_BID:
-			btnReport.setVisibility(View.VISIBLE);
-			btnEdit.setVisibility(View.GONE);
-			btnDelete.setVisibility(View.GONE);
-			break;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
@@ -1953,6 +2008,22 @@ public class CarDetailPage extends BCPFragment {
 		});
 	}
 
+	public void showBiddingCheckDialog() {
+
+		mActivity.showAlertDialog(getString(R.string.bidding), 
+				StringUtils.getFormattedNumber(biddingPrice/10000) + getString(R.string.wannaBiddingAt), 
+				getString(R.string.confirm), getString(R.string.cancel),
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						bid();
+					}
+				}, null);
+		
+	}
+	
 	public void bid() {
 		
 		//http://dev.bye-car.com/onsalecars/bids/bid.json?onsalecar_id=1&price=1000000

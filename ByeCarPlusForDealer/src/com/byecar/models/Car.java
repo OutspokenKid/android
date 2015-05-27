@@ -99,6 +99,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private String accident_desc;
 	private int max_bid_price;
 	private int my_bid_price;
+	private int my_bid_ranking;
 	
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -173,6 +174,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.accident_desc = null;
 			this.max_bid_price = 0;
 			this.my_bid_price = 0;
+			this.my_bid_ranking = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -244,6 +246,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.accident_desc = newCar.accident_desc;
 			this.max_bid_price = newCar.max_bid_price;
 			this.my_bid_price = newCar.my_bid_price;
+			this.my_bid_ranking = newCar.my_bid_ranking;
 		}
 	}
 	
@@ -546,6 +549,13 @@ public class Car extends BCPBaseModel implements Serializable {
 			try {
 				if(objJSON.has("my_bid_price")) {
 					this.my_bid_price = objJSON.getInt("my_bid_price");
+				}
+			} catch (Exception e) {
+			}
+			
+			try {
+				if(objJSON.has("my_bid_ranking")) {
+					this.my_bid_ranking = objJSON.getInt("my_bid_ranking");
 				}
 			} catch (Exception e) {
 			}
@@ -1229,5 +1239,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setMy_bid_price(int my_bid_price) {
 		this.my_bid_price = my_bid_price;
+	}
+
+	public int getMy_bid_ranking() {
+		return my_bid_ranking;
+	}
+
+	public void setMy_bid_ranking(int my_bid_ranking) {
+		this.my_bid_ranking = my_bid_ranking;
 	}
 }

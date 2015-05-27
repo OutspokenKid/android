@@ -2,6 +2,7 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
+import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -121,6 +122,42 @@ public class FindPwPage extends BCPFragment {
 	public int getRootViewResId() {
 
 		return R.id.findPwPage_mainLayout;
+	}
+	
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+		
+		try {
+			if(savedInstanceState != null) {
+				
+				if(savedInstanceState.containsKey("etEmail")) {
+					etEmail.getEditText().setText(savedInstanceState.getString("etEmail"));
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		try {
+			if(outState != null) {
+				
+				if(etEmail.getEditText().length() > 0) {
+					outState.putString("etEmail", etEmail.getEditText().getText().toString());
+				}
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 //////////////////// Custom methods.

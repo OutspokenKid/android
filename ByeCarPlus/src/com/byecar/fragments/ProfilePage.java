@@ -54,6 +54,7 @@ public class ProfilePage extends BCPFragment {
 	
 	private String selectedSdCardPath;
 	private String selectedImageUrl;
+	private Bitmap thumbnail;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -65,11 +66,74 @@ public class ProfilePage extends BCPFragment {
 			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails) {
 				
 				if(thumbnails != null && thumbnails.length > 0) {
-					ivProfile.setImageBitmap(thumbnails[0]);
+					thumbnail = thumbnails[0];
+					ivProfile.setImageBitmap(thumbnail);
 					selectedSdCardPath = sdCardPaths[0];
 				}
 			}
 		};
+
+		if(savedInstanceState != null) {
+			
+			try {
+				//selectedSdCardPath.
+				if(savedInstanceState.containsKey("selectedSdCardPath")) {
+					this.selectedSdCardPath = savedInstanceState.getString("selectedSdCardPath");
+				}
+
+				//selectedImageUrl.
+				if(savedInstanceState.containsKey("selectedImageUrl")) {
+					this.selectedImageUrl = savedInstanceState.getString("selectedImageUrl");
+				}
+				
+				//thumbnail.
+				if(savedInstanceState.containsKey("thumbnail")) {
+					this.selectedImageUrl = savedInstanceState.getString("selectedImageUrl");
+					this.thumbnail = savedInstanceState.getParcelable("bitmap");
+					ivProfile.setImageBitmap(thumbnail);
+				}
+				
+				//etNickname.
+				if(savedInstanceState.containsKey("etNickname")) {
+					etNickname.getEditText().setText(savedInstanceState.getString("etNickname"));
+				}
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		try {
+			//selectedSdCardPath.
+			if(!StringUtils.isEmpty(selectedSdCardPath)) {
+				outState.putString("selectedSdCardPath", selectedSdCardPath);
+			}
+
+			//selectedImageUrl.
+			if(!StringUtils.isEmpty(selectedImageUrl)) {
+				outState.putString("selectedImageUrl", selectedImageUrl);
+			}
+			
+			//thumbnail.
+			if(thumbnail != null) {
+				outState.putParcelable("thumbnail", thumbnail);
+			}
+			
+			//etNickname.
+			if(etNickname.getEditText().length() > 0) {
+				outState.putString("etNickname", etNickname.getEditText().getText().toString());
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 	}
 	
 	@Override
@@ -222,7 +286,7 @@ public class ProfilePage extends BCPFragment {
 		FontUtils.setFontSize(tvProfile, 20);
 		FontUtils.setFontSize(tvNickname, 24);
 		FontUtils.setFontStyle(tvNickname, FontUtils.BOLD);
-		FontUtils.setFontAndHintSize(etNickname.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etNickname.getEditText(), 24, 24);
 		FontUtils.setFontSize(tvCheckNickname, 20);
 		FontUtils.setFontSize(tvNickname2, 24);
 	}

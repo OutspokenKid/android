@@ -56,6 +56,7 @@ import com.byecar.fragments.user.CarRegistrationPage;
 import com.byecar.fragments.user.ForumDetailPage;
 import com.byecar.fragments.user.ForumListPage;
 import com.byecar.fragments.user.MainPage;
+import com.byecar.fragments.user.MyForumListPage;
 import com.byecar.fragments.user.MyPage;
 import com.byecar.fragments.user.ReviewListPage;
 import com.byecar.fragments.user.VideoListPage;
@@ -412,6 +413,9 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_FORUM_LIST:
 			return new ForumListPage();
+			
+		case BCPConstants.PAGE_MY_FORUM_DETAIL:
+			return new MyForumListPage();
 			
 		case BCPConstants.PAGE_WRITE_FORUM:
 			return new WriteForumPage();

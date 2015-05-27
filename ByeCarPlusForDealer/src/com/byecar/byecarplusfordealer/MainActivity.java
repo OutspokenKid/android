@@ -60,6 +60,7 @@ import com.byecar.fragments.dealer.MyInfoReviewPage;
 import com.byecar.fragments.dealer.MyPage;
 import com.byecar.fragments.dealer.MyPointPage;
 import com.byecar.fragments.dealer.MyTicketPage;
+import com.byecar.fragments.dealer.WriteReplyPage;
 import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
@@ -473,6 +474,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_SEARCH_AREA:
 			return new SearchAreaPage();
+			
+		case BCPConstants.PAGE_WRITE_REVIEW:
+			return new WriteReplyPage();
 			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();
@@ -1225,8 +1229,8 @@ public class MainActivity extends BCPFragmentActivity {
 				}, 190);
 			}
 			
-			if(!StringUtils.isEmpty(user.getNickname())) {
-				tvNickname.setText(user.getNickname());
+			if(!StringUtils.isEmpty(user.getName())) {
+				tvNickname.setText(user.getName());
 			}
 			
 			grade.setVisibility(View.VISIBLE);

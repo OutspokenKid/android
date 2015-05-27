@@ -300,8 +300,28 @@ public class MainPage extends BCPAuctionableFragment {
 				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
 			}
 		});
+		
+		ivDirectMarket.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				Bundle bundle = new Bundle();
+				bundle.putInt("type", Car.TYPE_DIRECT);
+				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+			}
+		});
 	
 		btnVideo.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_VIDEO_LIST, null);
+			}
+		});
+		
+		ivVideo.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {

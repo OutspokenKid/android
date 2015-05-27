@@ -154,6 +154,15 @@ public class ForumListPage extends BCPFragment {
 				mActivity.showPage(BCPConstants.PAGE_WRITE_FORUM, null);
 			}
 		});
+	
+		btnMyPost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_MY_FORUM_DETAIL, null);
+			}
+		});
 	}
 
 	@Override

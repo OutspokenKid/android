@@ -30,7 +30,6 @@ public class WriteReviewPage extends BCPFragment {
 
 	private Review review;
 	private Car car;
-	private int manager_id;
 	private int dealer_id;
 	private int onsalecar_id;
 	
@@ -66,11 +65,9 @@ public class WriteReviewPage extends BCPFragment {
 			
 			if(getArguments().containsKey("review")) {
 				review = (Review) getArguments().getSerializable("review");
-				manager_id = review.getCertifier_id();
 				dealer_id = review.getDealer_id();
 				onsalecar_id = review.getOnsalecar_id();
 			} else {
-				manager_id = getArguments().getInt("manager_id");
 				dealer_id = getArguments().getInt("dealer_id");
 				onsalecar_id = getArguments().getInt("onsalecar_id");
 			}
@@ -241,11 +238,6 @@ public class WriteReviewPage extends BCPFragment {
 		if(dealer_id != 0) {
 			url = BCPAPIs.REVIEW_DEALER_WRITE_URL
 					+ "?dealer_id=" + dealer_id;
-			
-		//검증사.
-		} else if(manager_id != 0){
-			url = BCPAPIs.REVIEW_CERTIFIER_WRITE_URL
-					+ "?certifier_id=" + manager_id;
 			
 		} else {
 			ToastUtils.showToast(R.string.failToWriteReview);

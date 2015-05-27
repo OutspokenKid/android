@@ -135,7 +135,8 @@
 		        	android:layout_width="0dp"
 		        	android:layout_height="0dp"
 		        	android:layout_alignParentLeft="true"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info1_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView2"
@@ -143,7 +144,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView1"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView1"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info2_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView3"
@@ -151,7 +153,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView2"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView2"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info3_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView4"
@@ -159,7 +162,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView3"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView3"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info4_icon_b" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView1"

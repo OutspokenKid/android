@@ -60,7 +60,7 @@ import com.outspoken_kid.views.PageNavigatorView;
 
 public class SignPage extends BCPFragment {
 
-	private static final int SLIDE_DURATION = 10000;
+	private static final int SLIDE_DURATION = 30000;
 	private static final int ANIM_DURATION = 1000;
 	private static final int DELAY = 2000;
 	
@@ -665,7 +665,6 @@ public class SignPage extends BCPFragment {
 					}
 				}
 			});
-
 		}
 	}
 	

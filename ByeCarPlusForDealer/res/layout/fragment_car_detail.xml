@@ -81,77 +81,77 @@
 			        android:layout_height="0dp"
 			        android:layout_centerHorizontal="true"
 			        android:layout_below="@id/carDetailPage_headerForBidding"
-			        android:background="@drawable/detail_cash_bg" />
-			    
-			    <TextView 
-			        android:id="@+id/carDetailPage_tvPrice"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignLeft="@id/carDetailPage_relativeForBidding2"
-			        android:layout_alignTop="@id/carDetailPage_relativeForBidding2"
-			        android:textColor="@color/color_orange"
-			        android:gravity="center"
-			        android:background="@drawable/detail_cash_box1" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnPrice1"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_tvPrice"
-			        android:layout_toRightOf="@id/carDetailPage_tvPrice"
-			        android:text="@string/biddingPrice1"
-			        android:textColor="@color/color_darkgray"
-			        android:gravity="center"
-			        android:background="@drawable/detail_cash_box2_btn" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnPrice2"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_btnPrice1"
-			        android:layout_toRightOf="@id/carDetailPage_btnPrice1"
-			        android:text="@string/biddingPrice2"
-			        android:textColor="@color/color_darkgray"
-			        android:gravity="center"
-			        android:background="@drawable/detail_cash_box2_btn" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnPrice3"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignLeft="@id/carDetailPage_btnPrice1"
-			        android:layout_below="@id/carDetailPage_btnPrice1"
-			        android:text="@string/biddingPrice3"
-			        android:textColor="@color/color_darkgray"
-			        android:gravity="center"
-			        android:background="@drawable/detail_cash_box2_btn" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnPrice4"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_btnPrice3"
-			        android:layout_toRightOf="@id/carDetailPage_btnPrice3"
-			        android:text="@string/biddingPrice4"
-			        android:textColor="@color/color_darkgray"
-			        android:gravity="center"
-			        android:background="@drawable/detail_cash_box2_btn" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnClear"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignLeft="@id/carDetailPage_tvPrice"
-			        android:layout_below="@id/carDetailPage_tvPrice"
-			        android:background="@drawable/detail_cash_clear_btn" />
-			    
-			    <Button
-			        android:id="@+id/carDetailPage_btnBidding"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_btnClear"
-			        android:layout_toRightOf="@id/carDetailPage_btnClear"
-			        android:background="@drawable/detail_cash_bid_btn" />
+			        android:background="@drawable/detail_cash_bg" >
+			        
+			        <TextView 
+				        android:id="@+id/carDetailPage_tvPrice"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:textColor="@color/color_orange"
+				        android:gravity="center"
+				        android:background="@drawable/detail_cash_box1" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnPrice1"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignTop="@id/carDetailPage_tvPrice"
+				        android:layout_toRightOf="@id/carDetailPage_tvPrice"
+				        android:text="@string/biddingPrice1"
+				        android:textColor="@color/color_darkgray"
+				        android:gravity="center"
+				        android:background="@drawable/detail_cash_box2_btn" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnPrice2"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignTop="@id/carDetailPage_btnPrice1"
+				        android:layout_toRightOf="@id/carDetailPage_btnPrice1"
+				        android:text="@string/biddingPrice2"
+				        android:textColor="@color/color_darkgray"
+				        android:gravity="center"
+				        android:background="@drawable/detail_cash_box2_btn" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnPrice3"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignLeft="@id/carDetailPage_btnPrice1"
+				        android:layout_below="@id/carDetailPage_btnPrice1"
+				        android:text="@string/biddingPrice3"
+				        android:textColor="@color/color_darkgray"
+				        android:gravity="center"
+				        android:background="@drawable/detail_cash_box2_btn" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnPrice4"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignTop="@id/carDetailPage_btnPrice3"
+				        android:layout_toRightOf="@id/carDetailPage_btnPrice3"
+				        android:text="@string/biddingPrice4"
+				        android:textColor="@color/color_darkgray"
+				        android:gravity="center"
+				        android:background="@drawable/detail_cash_box2_btn" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnClear"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignLeft="@id/carDetailPage_tvPrice"
+				        android:layout_below="@id/carDetailPage_tvPrice"
+				        android:background="@drawable/detail_cash_clear_btn" />
+				    
+				    <Button
+				        android:id="@+id/carDetailPage_btnBidding"
+				        android:layout_width="0dp"
+				        android:layout_height="0dp"
+				        android:layout_alignTop="@id/carDetailPage_btnClear"
+				        android:layout_toRightOf="@id/carDetailPage_btnClear"
+				        android:background="@drawable/detail_cash_bid_btn" />
+			        
+			    </RelativeLayout>
 			    
 			    <View 
 			        android:id="@+id/carDetailPage_footerForBidding"
@@ -246,7 +246,8 @@
 		        	android:layout_width="0dp"
 		        	android:layout_height="0dp"
 		        	android:layout_alignParentLeft="true"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info1_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView2"
@@ -254,7 +255,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView1"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView1"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info2_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView3"
@@ -262,7 +264,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView2"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView2"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info3_icon_a" />
 		        
 		        <View 
 		        	android:id="@+id/carDetailPage_detailInfoView4"
@@ -270,7 +273,8 @@
 		        	android:layout_height="0dp"
 		        	android:layout_toRightOf="@id/carDetailPage_detailInfoView3"
 		        	android:layout_alignTop="@id/carDetailPage_detailInfoView3"
-		        	android:layout_alignParentTop="true" />
+		        	android:layout_alignParentTop="true"
+		        	android:background="@drawable/detail_info4_icon_b" />
 		        
 		        <TextView 
 		        	android:id="@+id/carDetailPage_detailInfoTextView1"

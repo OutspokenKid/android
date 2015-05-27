@@ -30,8 +30,6 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
-import com.byecar.fragments.OpenablePostListPage;
-import com.byecar.models.Banner;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.views.TitleBar;
@@ -142,15 +140,8 @@ public class MainPage extends BCPAuctionableFragment {
 					long id) {
 				
 				try {
-					if(models.get(position) instanceof Banner) {
-						Bundle bundle = new Bundle();
-						bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-						mActivity.showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
-						
-					} else {
-						Car car = (Car) models.get(position);
-						((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
-					}
+					Car car = (Car) models.get(position);
+					((MainActivity)mActivity).showCarDetailPage(car.getId(), null, car.getType());
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (Error e) {

@@ -162,8 +162,8 @@ public class SignInPage extends BCPFragment {
 		
 		FontUtils.setFontSize(tvSNS, 30);
 		FontUtils.setFontSize(tvEmail, 30);
-		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 24);
-		FontUtils.setFontAndHintSize(etPw.getEditText(), 30, 24);
+		FontUtils.setFontAndHintSize(etEmail, 30, 24);
+		FontUtils.setFontAndHintSize(etPw, 30, 24);
 	}
 
 	@Override
