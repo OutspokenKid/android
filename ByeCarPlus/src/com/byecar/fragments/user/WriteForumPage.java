@@ -280,6 +280,8 @@ public class WriteForumPage extends BCPFragment {
 		}, 500);
 		
 		if(post != null) {
+			board_id = post.getBoard_id();
+			btnCategory.setText(post.getBoard_title());
 			etTitle.setText(post.getTitle());
 			etContent.setText(post.getContent());
 			addPicturesFromLastPost();
@@ -395,10 +397,9 @@ public class WriteForumPage extends BCPFragment {
 		int size = pictureInfos.size();
 		for(int i=0; i<size; i++) {
 			
-			if(!StringUtils.isEmpty(pictureInfos.get(i).getUrl())) {
+			if(StringUtils.isEmpty(pictureInfos.get(i).getUrl())) {
 				
 				ToastUtils.showToast(R.string.uploadingImage);
-				
 				final int INDEX = i;
 				
 				OnAfterUploadImage oaui = new OnAfterUploadImage() {
