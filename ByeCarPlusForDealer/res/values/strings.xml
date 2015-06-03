@@ -135,12 +135,13 @@
     <string name="hintForDetailCarInfo4">차량 색상을 입력해주세요.  예) 다이아몬드 화이트</string>
     <string name="hintForDetailCarInfo5">차량 가격을 입력해주세요. (단위 만원)</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
+    <string name="hintForEmailSignUp">이메일 주소 입력(아이디로 사용 됩니다)</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
     <string name="hintForIntroduce">인사글은 소비자가 딜러 선택시 보여지는 글이며, 신뢰 있는 글 작성으로 보다 많은 차량 매입을 성사시키세요.</string>
     <string name="hintForName">본명을 입력해주세요. (딜러증에 적혀있는 동일한 이름)</string>
     <string name="hintForNickname">별명을 입력해주세요.(3~15자)</string>
     <string name="hintForPassword">비밀번호를 입력해주세요.</string>
-    <string name="hintForPassword2">비밀번호를 입력해주세요.(8~15자)</string>
+    <string name="hintForPassword2">비밀번호 입력(아이디 비밀번호 입니다)</string>
     <string name="hintForPasswordConfirm">비밀번호를 다시 입력해주세요.(8~15자)</string>
     <string name="hintForPhoneNumber">휴대폰번호를 입력해주세요.</string>
     <string name="hintForPriceBid">경매 시작가격을 입력해주세요.</string>
@@ -245,6 +246,7 @@
 	<string name="toggle_notification">전체 알림 ON / OFF</string>
     <string name="toggle_bidding">입찰 알림창 ON / OFF</string>
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
+    <string name="touchCameraIcon2">(본인 얼굴 사진만 등록 필수)</string>
     <string name="touchImageIcon">사원증이미지, 명함이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
 	<string name="tradeSuccessCount">차량 성사수</string>
 

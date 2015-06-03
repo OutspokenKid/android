@@ -104,7 +104,6 @@ public class CarDetailPage extends BCPFragment {
 	private Button btnCall;
 	private View buttonBg;
 	
-	private Button btnDelete;
 	private Button btnEdit;
 	private Button btnReport;
 	
@@ -182,7 +181,6 @@ public class CarDetailPage extends BCPFragment {
 		btnCall = (Button) mThisView.findViewById(R.id.carDetailPage_btnCall);
 		buttonBg = mThisView.findViewById(R.id.carDetailPage_buttonBg);
 		
-		btnDelete = (Button) mThisView.findViewById(R.id.carDetailPage_btnDelete);
 		btnEdit = (Button) mThisView.findViewById(R.id.carDetailPage_btnEdit);
 		btnReport = (Button) mThisView.findViewById(R.id.carDetailPage_btnReport);
 	}
@@ -370,24 +368,6 @@ public class CarDetailPage extends BCPFragment {
 				bundle.putInt("carType", Car.TYPE_BID);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
-			}
-		});
-		
-		btnDelete.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showAlertDialog(R.string.delete, R.string.wannaDelete,
-						R.string.confirm, R.string.cancel, 
-						new DialogInterface.OnClickListener() {
-					
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								delete();
-							}
-						}, null);
 			}
 		});
 
@@ -617,18 +597,12 @@ public class CarDetailPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(608);
 		rp.height = ResizeUtils.getSpecificLength(20);
 		
-		//btnDelete.
-		rp = (RelativeLayout.LayoutParams) btnDelete.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(60);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
-		rp.rightMargin = ResizeUtils.getSpecificLength(14);
-		
 		//btnEdit.
 		rp = (RelativeLayout.LayoutParams) btnEdit.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(60);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.rightMargin = ResizeUtils.getSpecificLength(8);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 		
 		//btnReport.
 		rp = (RelativeLayout.LayoutParams) btnReport.getLayoutParams();
@@ -1715,10 +1689,8 @@ public class CarDetailPage extends BCPFragment {
 			
 			if(car.getSeller_id() == MainActivity.user.getId()) {
 				btnEdit.setVisibility(View.VISIBLE);
-				btnDelete.setVisibility(View.VISIBLE);
 			} else {
 				btnEdit.setVisibility(View.GONE);
-				btnDelete.setVisibility(View.GONE);
 			}
 			
 			break;
@@ -1727,7 +1699,6 @@ public class CarDetailPage extends BCPFragment {
 		case Car.TYPE_DIRECT:
 			btnReport.setVisibility(View.VISIBLE);
 			btnEdit.setVisibility(View.GONE);
-			btnDelete.setVisibility(View.GONE);
 			break;
 		}
 	}
@@ -2054,7 +2025,13 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void callToDealerOrSeller() {
 		
-		String message = getString(R.string.wannaCallToDealer);
+		String message = null;
+		
+		if(type == Car.TYPE_DEALER) {
+			message = getString(R.string.wannaCallToDealer);
+		} else {
+			message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
+		}
 		
 		mActivity.showAlertDialog(getString(R.string.call), message, 
 				getString(R.string.confirm), getString(R.string.cancel), 
@@ -2063,7 +2040,8 @@ public class CarDetailPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						IntentUtils.call(mContext, car.getDealer_phone_number());
+						IntentUtils.call(mContext, 
+								car.getType() == Car.TYPE_DEALER?car.getDealer_phone_number():car.getSeller_phone_number());
 					}
 				}, null);
 	}

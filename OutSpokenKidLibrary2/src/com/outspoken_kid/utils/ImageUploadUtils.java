@@ -61,12 +61,13 @@ public class ImageUploadUtils {
 			//샘플링 사이즈 계산.
 				int inSampleSize = 1;
 				
-				if(ResizeUtils.getScreenWidth() >= 720) {
-					inSampleSize = BitmapUtils.getBitmapInSampleSize(filePath, 720);
-				} else {
-					inSampleSize = BitmapUtils.getBitmapInSampleSize(filePath, 640);
-				}
-				
+				//샘플링 생략.
+//				if(ResizeUtils.getScreenWidth() >= 720) {
+//					inSampleSize = BitmapUtils.getBitmapInSampleSize(filePath, 720);
+//				} else {
+//					inSampleSize = BitmapUtils.getBitmapInSampleSize(filePath, 640);
+//				}
+//				
 			//샘플링 비트맵 생성.
 				tempSamplingBitmap = BitmapUtils.getBitmapFromSdCardPath(filePath, inSampleSize);
 				

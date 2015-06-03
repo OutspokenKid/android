@@ -160,6 +160,7 @@
 	
     <string name="lastList">마지막 리스트입니다.</string>
     <string name="like">좋아요</string>
+    <string name="loadingImage">이미지를 불러오는 중입니다.</string>
     
     <string name="mainImage">* 차량 번호판과 주행거리수가 정확히 보여지는 사진을 등록해주세요.</string>
     <string name="maxDisplacementCannotUnderMinDisplacement">최고 배기량은 최저 배기량보다 작을 수 없습니다</string>

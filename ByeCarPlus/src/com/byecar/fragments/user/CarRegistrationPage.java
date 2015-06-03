@@ -1,14 +1,20 @@
 package com.byecar.fragments.user;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -88,7 +94,7 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private TextView tvOptionTitle;
 	private RelativeLayout relativeForOption;
-	private View[] optionViews;
+	private View[] optionViews = new View[OPTION_VIEW_SIZE];
 	
 	private TextView tvCarDescriptionTitle;
 	private EditText etCarDescription;
@@ -111,7 +117,7 @@ public class CarRegistrationPage extends BCPFragment {
 	private TextView tvDesc;
 	
 	private String[] carInfoStrings = new String[6];
-	private boolean[] checked;
+	private boolean[] checked = new boolean[OPTION_VIEW_SIZE];
 	private int type;
 	private boolean isTermOfUseClicked;
 	private boolean isImmediatlySaleClicked;
@@ -125,7 +131,7 @@ public class CarRegistrationPage extends BCPFragment {
 	private String[] selectedImageSdCardPaths = new String[8];
 	private Bitmap[] carPhotoThumbnails = new Bitmap[8];
 	
-	private boolean isLoaded;
+	private boolean isDownloadedCarInfo;
 	private boolean isSetInfo;
 	
 	@Override
@@ -147,6 +153,7 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		};
 		
+		//프래그먼트 복구.
 		if(savedInstanceState != null) {
 			
 			try {
@@ -236,8 +243,8 @@ public class CarRegistrationPage extends BCPFragment {
 					ivPhotos[i].setImageBitmap(carPhotoThumbnails[i]);
 				}
 				
-				//isLoaded.
-				isLoaded = savedInstanceState.getBoolean("isLoaded");
+				//isDownloadedCarInfo.
+				isDownloadedCarInfo = savedInstanceState.getBoolean("isDownloadedCarInfo");
 				
 				//isSetInfo.
 				isSetInfo = savedInstanceState.getBoolean("isSetInfo");
@@ -246,6 +253,10 @@ public class CarRegistrationPage extends BCPFragment {
 			} catch (Error e) {
 				LogUtils.trace(e);
 			}
+			
+		//이전 작성 불러오기.
+		} else if(!isSetInfo) {
+			loadInfos();
 		}
 	};
 	
@@ -332,8 +343,8 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			}
 			
-			//isLoaded.
-			outState.putBoolean("isLoaded", isLoaded);
+			//isDownloadedCarInfo.
+			outState.putBoolean("isDownloadedCarInfo", isDownloadedCarInfo);
 			
 			//isSetInfo.
 			outState.putBoolean("isSetInfo", isSetInfo);
@@ -993,8 +1004,8 @@ public class CarRegistrationPage extends BCPFragment {
 			addOptionViews();
 		}
 		
-		if(type == TYPE_EDIT && !isLoaded) {
-			isLoaded = true;
+		if(type == TYPE_EDIT && !isDownloadedCarInfo) {
+			isDownloadedCarInfo = true;
 			
 			if(id != 0) {
 				downloadCarInfo(carType);
@@ -1008,6 +1019,13 @@ public class CarRegistrationPage extends BCPFragment {
 		checkBundle();
 		checkProgress();		
 	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		saveInfos();
+	}
 	
 	@Override
 	public int getRootViewResId() {
@@ -1016,13 +1034,266 @@ public class CarRegistrationPage extends BCPFragment {
 	}
 	
 //////////////////// Custom method.
+	
+	public void saveInfos() {
 
+		if(id != 0 || car != null) {
+			return;
+		}
+		
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_REG, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+
+			//carType.
+			ed.putInt("carType", carType);
+			
+			//etDetailCarInfos.
+			for(int i=0; i<etDetailCarInfos.length; i++) {
+				ed.putString("etDetailCarInfos" + i, etDetailCarInfos[i].getEditText().getText().toString());
+			}
+			
+			//etCarDescription.
+			ed.putString("etCarDescription", etCarDescription.getText().toString());
+			
+			//carInfoStrings.
+			for(int i=0; i<carInfoStrings.length; i++) {
+				ed.putString("carInfoStrings" + i, carInfoStrings[i]);	
+			}
+			
+			//checked.
+			for(int i=0; i<checked.length; i++) {
+				ed.putBoolean("checked" + i, checked[i]);
+			}
+			
+			//type.
+			ed.putInt("type", type);
+			
+			//isTermOfUseClicked.
+			ed.putBoolean("isTermOfUseClicked", isTermOfUseClicked);
+			
+			//isImmediatlySaleClicked.
+			ed.putBoolean("isImmediatlySaleClicked", isImmediatlySaleClicked);
+			
+			//dong_id.
+			ed.putInt("dong_id", dong_id);
+			
+			//year.
+			ed.putInt("year", year);
+			
+			//month.
+			ed.putInt("month", month);
+			
+			//history.
+			ed.putString("history", history);
+			
+			//trim_id.
+			ed.putInt("trim_id", trim_id);
+			
+			//selectedImageSdCardPaths.
+			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+				ed.putString("selectedImageSdCardPaths" + i, selectedImageSdCardPaths[i]);
+			}
+			
+			ed.commit();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void loadInfos() {
+
+		if(id != 0 || car != null) {
+			return;
+		}
+		
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_REG, Context.MODE_PRIVATE);
+
+			//carType.
+			carType = prefs.getInt("carType", 0);
+			
+			//etDetailCarInfos.
+			for(int i=0; i<etDetailCarInfos.length; i++) {
+				etDetailCarInfos[i].getEditText().setText(prefs.getString("etDetailCarInfos" + i, null));
+			}
+			
+			//etCarDescription.
+			etCarDescription.setText(prefs.getString("etCarDescription", null));
+			
+			//carInfoStrings.
+			for(int i=0; i<carInfoStrings.length; i++) {
+				carInfoStrings[i] = prefs.getString("carInfoStrings" + i, null);
+			}
+			
+			//checked.
+			for(int i=0; i<checked.length; i++) {
+				checked[i] = prefs.getBoolean("checked" + i, false);
+			}
+			
+			//type.
+			type = prefs.getInt("type", 0);
+			
+			//isTermOfUseClicked.
+			isTermOfUseClicked = prefs.getBoolean("isTermOfUseClicked", false);
+			
+			if(isTermOfUseClicked) {
+				termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_b);
+			} else {
+				termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_a);
+			}
+			
+			//isImmediatlySaleClicked.
+			isImmediatlySaleClicked = prefs.getBoolean("isImmediatlySaleClicked", false);
+			
+			if(isImmediatlySaleClicked) {
+				immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_b);
+			} else {
+				immediatlySale.setBackgroundResource(R.drawable.registration_direct_btn_a);
+			}
+			
+			//dong_id.
+			dong_id = prefs.getInt("dong_id", 0);
+			
+			//year.
+			year = prefs.getInt("year", 0);
+			
+			//month.
+			month = prefs.getInt("month", 0);
+			
+			//history.
+			history = prefs.getString("history", null);
+			
+			//trim_id.
+			trim_id = prefs.getInt("trim_id", 0);
+			downloadCarDetailModelInfo();
+			
+			boolean isLoadingImages = false;
+			
+			//selectedImageSdCardPaths.
+			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+				selectedImageSdCardPaths[i] = prefs.getString("selectedImageSdCardPaths" + i, null);
+				
+				if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])) {
+					
+					isLoadingImages = true;
+					
+					if(selectedImageSdCardPaths[i].contains("http://")) {
+						final int INDEX = i;
+						ivPhotos[i].setTag(selectedImageSdCardPaths[i]);
+						BCPDownloadUtils.downloadBitmap(selectedImageSdCardPaths[i],
+								new OnBitmapDownloadListener() {
+
+									@Override
+									public void onError(String url) {
+
+										LogUtils.log("CarRegistrationPage.onError."
+												+ "\nurl : " + url);
+										// TODO Auto-generated method stub		
+									}
+
+									@Override
+									public void onCompleted(String url,
+											Bitmap bitmap) {
+
+										try {
+											LogUtils.log("CarRegistrationPage.onCompleted."
+													+ "\nurl : " + url);
+
+											ivPhotos[INDEX].setImageBitmap(bitmap);
+										} catch (Exception e) {
+											LogUtils.trace(e);
+										} catch (OutOfMemoryError oom) {
+											LogUtils.trace(oom);
+										}
+									}
+								}, 144);
+						
+					} else {
+						(new AsyncLoadThumbnail(selectedImageSdCardPaths[i], ivPhotos[i])).execute();
+					}
+				}
+			}
+			
+			if(isLoadingImages) {
+				ToastUtils.showToast(R.string.loadingImage);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
+	public void clearInfos() {
+
+		try {
+			SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_REG, Context.MODE_PRIVATE);
+			Editor ed = prefs.edit();
+
+			//carType.
+			ed.remove("carType");
+			
+			//etDetailCarInfos.
+			for(int i=0; i<etDetailCarInfos.length; i++) {
+				ed.remove("etDetailCarInfos" + i);
+			}
+			
+			//etCarDescription.
+			ed.remove("etCarDescription");
+			
+			//carInfoStrings.
+			for(int i=0; i<carInfoStrings.length; i++) {
+				ed.remove("carInfoStrings" + i);
+			}
+			
+			//checked.
+			for(int i=0; i<checked.length; i++) {
+				ed.remove("checked" + i);
+			}
+			
+			//type.
+			ed.remove("type");
+			
+			//isTermOfUseClicked.
+			ed.remove("isTermOfUseClicked");
+			
+			//isImmediatlySaleClicked.
+			ed.remove("isImmediatlySaleClicked");
+			
+			//dong_id.
+			ed.remove("dong_id");
+			
+			//year.
+			ed.remove("year");
+			
+			//month.
+			ed.remove("month");
+			
+			//history.
+			ed.remove("history");
+			
+			//trim_id.
+			ed.remove("trim_id");
+			
+			//selectedImageSdCardPaths.
+			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+				ed.remove("selectedImageSdCardPaths" + i);
+			}
+			
+			ed.commit();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 	public void addOptionViews() {
 		
 		relativeForOption.removeAllViews();
-		
-		optionViews = new View[OPTION_VIEW_SIZE];
-		checked = new boolean[OPTION_VIEW_SIZE];
 		
 		RelativeLayout.LayoutParams rp = null;
 
@@ -1205,9 +1476,17 @@ public class CarRegistrationPage extends BCPFragment {
 			view.setLayoutParams(rp);
 			view.setId(getResources().getIdentifier("carRegistrationPage_optionView" + (index + 1), 
 							"id", "com.byecar.byecarplus"));
-			view.setBackgroundResource(
-					getResources().getIdentifier("detail_option" + (index + 1) + "_btn_a", 
-							"drawable", "com.byecar.byecarplus"));
+			
+			if(checked[index]) {
+				view.setBackgroundResource(
+						getResources().getIdentifier("detail_option" + (index + 1) + "_btn_b", 
+								"drawable", "com.byecar.byecarplus"));
+			} else {
+				view.setBackgroundResource(
+						getResources().getIdentifier("detail_option" + (index + 1) + "_btn_a", 
+								"drawable", "com.byecar.byecarplus"));
+			}
+			
 			
 			return view;
 		} catch (Exception e) {
@@ -1249,7 +1528,6 @@ public class CarRegistrationPage extends BCPFragment {
 			public void onError(String url) {
 
 				LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
-
 			}
 
 			@Override
@@ -1286,9 +1564,16 @@ public class CarRegistrationPage extends BCPFragment {
 							+ "?car_id=" + car.getCar_id();
 				}
 			}
-		} else {
+		//이전 작성 불러오기.
+		} else if(trim_id != 0) {
+			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
+					+ "?trim_id=" + trim_id;
+		} else if(mActivity.bundle != null
+				&& mActivity.bundle.containsKey("trim_id")) {
 			url = BCPAPIs.SEARCH_CAR_DETAIL_INFO
 					+ "?trim_id=" + mActivity.bundle.getInt("trim_id");
+		} else {
+			return;
 		}
 		
 		DownloadUtils.downloadJSONString(url,
@@ -1298,7 +1583,6 @@ public class CarRegistrationPage extends BCPFragment {
 				public void onError(String url) {
 
 					LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
-
 				}
 
 				@Override
@@ -1312,34 +1596,41 @@ public class CarRegistrationPage extends BCPFragment {
 
 						carModelDetailInfo = new CarModelDetailInfo(objJSON.getJSONObject("car"));
 						
-						if(car != null && !isSetInfo) {
+						//차량 수정인 경우 car에서 정보 받아서 세팅.
+						if(!isSetInfo) {
 							isSetInfo = true;
 							
-							//연식.
-							carInfoStrings[0] = "" + car.getYear() + "년 " + car.getMonth() + "월";
-							year = car.getYear();
-							month = car.getMonth();
+							if(car != null) {
+								
+								//연식.
+								carInfoStrings[0] = "" + car.getYear() + "년 " + car.getMonth() + "월";
+								year = car.getYear();
+								month = car.getMonth();
 
-							//사고유무.
-							carInfoStrings[1] = Car.getAccidentTypeString(mContext, car.getHad_accident());
-							history = car.getAccident_desc();
-							
-							//연료.
-							carInfoStrings[2] = Car.getFuelTypeString(mContext, car.getFuel_type()); 
+								//사고유무.
+								carInfoStrings[1] = Car.getAccidentTypeString(mContext, car.getHad_accident());
+								history = car.getAccident_desc();
+								
+								//연료.
+								carInfoStrings[2] = Car.getFuelTypeString(mContext, car.getFuel_type()); 
 
-							//변속기.
-							carInfoStrings[3] = Car.getTransmissionTypeString(mContext, car.getTransmission_type());
-							
-							//1인신조.
-							carInfoStrings[4] = Car.getOneManOwnedTypeString(mContext, car.getIs_oneman_owned());
-							
-							//판매지역.
-							carInfoStrings[5] = car.getArea();
-							dong_id = car.getDong_id();
+								//변속기.
+								carInfoStrings[3] = Car.getTransmissionTypeString(mContext, car.getTransmission_type());
+								
+								//1인신조.
+								carInfoStrings[4] = Car.getOneManOwnedTypeString(mContext, car.getIs_oneman_owned());
+								
+								//판매지역.
+								carInfoStrings[5] = car.getArea();
+								dong_id = car.getDong_id();
+								
+							//이전 작성을 불러오는 경우 정보 그대로 유지. 
+							} else {
+								//Do nothing.
+							}
 							
 						//차량 트림을 선택한 경우 판매지역을 제외한 나머지 정보 다 날리기.
 						} else {
-							
 							//연식.
 							carInfoStrings[0] = null;
 							year = 0;
@@ -1476,9 +1767,7 @@ public class CarRegistrationPage extends BCPFragment {
 				int size = car.getOptions().length;
 				for(int i=0; i<size; i++) {
 					checked[car.getOptions()[i] - 1] = true;
-					optionViews[car.getOptions()[i] - 1].setBackgroundResource(
-							getResources().getIdentifier("detail_option" + car.getOptions()[i] + "_btn_b", 
-									"drawable", "com.byecar.byecarplus"));
+					setOption(car.getOptions()[i] - 1);
 				}
 			}
 			
@@ -1497,6 +1786,19 @@ public class CarRegistrationPage extends BCPFragment {
 			//약관 동의.
 			isTermOfUseClicked = true;
 			termOfUse.setBackgroundResource(R.drawable.registration_agree_btn_b);
+		}
+	}
+	
+	public void setOption(int index) {
+		
+		if(checked[index]) {
+			optionViews[index].setBackgroundResource(
+					getResources().getIdentifier("detail_option" + (index + 1) + "_btn_b", 
+							"drawable", "com.byecar.byecarplus"));
+		} else {
+			optionViews[index].setBackgroundResource(
+					getResources().getIdentifier("detail_option" + (index + 1) + "_btn_a", 
+							"drawable", "com.byecar.byecarplus"));
 		}
 	}
 	
@@ -1754,6 +2056,7 @@ public class CarRegistrationPage extends BCPFragment {
 											+ objJSON);
 
 									if(objJSON.getInt("result") == 1) {
+										clearInfos();
 										pageRequestCompleted();
 									} else {
 										ToastUtils.showToast(objJSON.getString("message"));
@@ -1839,21 +2142,22 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 		
 		//모든 이미지 업로드 완료.
-		register();
+		
+		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
+			LogUtils.log("###where.uploadImages.  i : " + i + ", path : " + selectedImageSdCardPaths[i]);
+		}
+		
+//		register();
 	}
 	
 	public void checkProgress() {
 		
 		int progress = 0;
 		
-		LogUtils.log("###CarRegistrationPage.checkProgress.  ########################################");
-
-
 		//차량 사진 개당 5, 총 20.
 		for(int i=0; i<4; i++) {
 			if(selectedImageSdCardPaths[i] != null) {
 				progress += 5;
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by photo");
 			}
 		}
 		
@@ -1862,14 +2166,12 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			if(btnCarInfos[i].length() > 0) {
 				progress += 5;
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by info");
 			}
 		}
 		
 		//세부차량 정보 개당 10, 총 30.
 		for(int i=0; i<etDetailCarInfos.length; i++) {
 			if(etDetailCarInfos[i].getEditText().length() > 0) {
-				LogUtils.log("###CarRegistrationPage.checkProgress. add 10 by detail info");
 				progress += 10;
 			}
 		}
@@ -1877,7 +2179,6 @@ public class CarRegistrationPage extends BCPFragment {
 		//약관, 15.
 		if(isTermOfUseClicked) {
 			progress += 15;
-			LogUtils.log("###CarRegistrationPage.checkProgress. add 15 by termofuse");
 		}
 		
 		setProgress(progress);
@@ -1920,5 +2221,57 @@ public class CarRegistrationPage extends BCPFragment {
 		cover.setVisibility(View.INVISIBLE);
 		popup.startAnimation(aaOut);
 		popup.setVisibility(View.INVISIBLE);
+	}
+	
+//////////////////// Classes.
+	
+	public class AsyncLoadThumbnail extends AsyncTask<Void, Void, Void> {
+
+		private String path;
+		private ImageView imageView;
+		private Bitmap thumbnail;
+		
+		public AsyncLoadThumbnail(String path, ImageView imageView) {
+			this.path = path;
+			this.imageView = imageView;
+		}
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			try {
+				File image = new File(path);
+				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+				Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+
+				//원래세로 x ResizeUtils.getSpecificLength(144) / 원래가로.
+				int scaledHeight = (int)((float)bitmap.getHeight() 
+											* (float)ResizeUtils.getSpecificLength(144)
+											/ (float)bitmap.getWidth()); 
+				
+				thumbnail = Bitmap.createScaledBitmap(bitmap, 
+						ResizeUtils.getSpecificLength(144), 
+						scaledHeight,
+						true);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+		
+			try {
+				imageView.setImageBitmap(thumbnail);
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
 	}
 }

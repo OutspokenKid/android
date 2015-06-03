@@ -313,9 +313,9 @@ public class CarInfoView extends RelativeLayout {
 				tvLike.setVisibility(View.VISIBLE);
 				
 				if(car.getIs_liked() == 1) {
-					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
-				} else {
 					btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+				} else {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 				}
 				
 				btnLike.setText("" + car.getLikes_cnt());
@@ -354,7 +354,7 @@ public class CarInfoView extends RelativeLayout {
 		String url = null;
 		
 		if(isLike) {
-			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
 			car.setLikes_cnt(car.getLikes_cnt() + 1);
 			car.setIs_liked(1);
 			
@@ -374,7 +374,7 @@ public class CarInfoView extends RelativeLayout {
 			}
 			
 		} else {
-			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 			car.setLikes_cnt(car.getLikes_cnt() - 1);
 			car.setIs_liked(0);
 			

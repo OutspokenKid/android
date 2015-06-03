@@ -172,15 +172,15 @@ public class ForumView extends FrameLayout {
 		switch(index) {
 		
 		case 0:
-			badge.setBackgroundResource(R.drawable.main_rank1);
+			badge.setBackgroundResource(R.drawable.main_forum_rank1);
 			break;
 			
 		case 1:
-			badge.setBackgroundResource(R.drawable.main_rank2);
+			badge.setBackgroundResource(R.drawable.main_forum_rank2);
 			break;
 			
 		case 2:
-			badge.setBackgroundResource(R.drawable.main_rank3);
+			badge.setBackgroundResource(R.drawable.main_forum_rank3);
 			break;
 			
 		default:

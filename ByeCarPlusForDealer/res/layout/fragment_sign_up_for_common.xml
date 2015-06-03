@@ -59,7 +59,7 @@
 		        android:id="@+id/signUpForCommonPage_tvProfile"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:text="@string/touchCameraIcon"
+		        android:gravity="center_horizontal"
 		        android:textColor="@color/new_color_text_darkgray"
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/signUpForCommonPage_profileFrame" />

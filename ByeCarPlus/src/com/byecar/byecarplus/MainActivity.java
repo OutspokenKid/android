@@ -570,6 +570,7 @@ public class MainActivity extends BCPFragmentActivity {
 						//Do nothing.
 					} else if(getFragmentsSize() > 1){
 						closeTopPage();
+						hideLoadingView();
 					} else {
 						finish();
 					}

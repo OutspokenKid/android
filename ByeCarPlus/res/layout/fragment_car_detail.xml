@@ -501,19 +501,11 @@
         android:background="@drawable/faulty_btn" />
     
     <Button
-        android:id="@+id/carDetailPage_btnDelete"
+        android:id="@+id/carDetailPage_btnEdit"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:background="@drawable/modification_delete_btn" />
-    
-    <Button
-        android:id="@+id/carDetailPage_btnEdit"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignTop="@id/carDetailPage_btnDelete"
-        android:layout_toLeftOf="@id/carDetailPage_btnDelete"
         android:background="@drawable/modification_modify_btn" />
     
 </RelativeLayout>

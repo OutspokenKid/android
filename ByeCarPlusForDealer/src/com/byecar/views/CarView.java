@@ -522,6 +522,12 @@ public class CarView extends RelativeLayout {
 			}
 			
 			btnLike.setText("" + likesCount);
+			
+			if(car.getIs_liked() == 1) {
+				btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+			} else {
+				btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+			}
 		}
 		
 		tvInfo.setText(car.getYear() + "년 / "

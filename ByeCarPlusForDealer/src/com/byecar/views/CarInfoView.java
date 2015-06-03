@@ -308,9 +308,9 @@ public class CarInfoView extends RelativeLayout {
 				tvLike.setVisibility(View.VISIBLE);
 				
 				if(car.getIs_liked() == 1) {
-					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
-				} else {
 					btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+				} else {
+					btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 				}
 				
 				btnLike.setText("" + car.getLikes_cnt());

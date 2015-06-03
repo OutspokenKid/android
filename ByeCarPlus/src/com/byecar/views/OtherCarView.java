@@ -326,6 +326,12 @@ public class OtherCarView extends RelativeLayout {
 		
 		btnLike.setText("" + likesCount);
 		
+		if(car.getIs_liked() == 1) {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_b);
+		} else {
+			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
+		}
+		
 		tvInfo.setText(car.getYear() + "년 / "
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
@@ -412,13 +418,21 @@ public class OtherCarView extends RelativeLayout {
 			car.setLikes_cnt(car.getLikes_cnt() + 1);
 			car.setIs_liked(1);
 
-			url = BCPAPIs.CAR_DEALER_LIKE_URL;
+			if(car.getType() == Car.TYPE_DEALER) {
+				url = BCPAPIs.CAR_DEALER_LIKE_URL;
+			} else {
+				url = BCPAPIs.CAR_DIRECT_NORMAL_LIKE_URL;
+			}
 		} else {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 			car.setLikes_cnt(car.getLikes_cnt() - 1);
 			car.setIs_liked(0);
 
-			url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
+			if(car.getType() == Car.TYPE_DEALER) {
+				url = BCPAPIs.CAR_DEALER_UNLIKE_URL;
+			} else {
+				url = BCPAPIs.CAR_DIRECT_NORMAL_UNLIKE_URL;
+			}
 		}
 		
 		btnLike.setText("" + car.getLikes_cnt());

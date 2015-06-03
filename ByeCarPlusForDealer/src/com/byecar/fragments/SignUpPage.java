@@ -188,7 +188,12 @@ public class SignUpPage extends BCPFragment {
 		tvProfileTitle.setText("1. " + getString(R.string.profileImage));
 		tvCommonInfo.setText("2. " + getString(R.string.commonInfo));
 		
-		etEmail.setHint(R.string.hintForEmailSignIn);
+		tvProfile.setText(null);
+		FontUtils.addSpan(tvProfile, R.string.touchCameraIcon, 0, 1);
+		FontUtils.addSpan(tvProfile,
+				"\n" + getString(R.string.touchCameraIcon2), getResources().getColor(R.color.new_color_text_red), 1);
+		
+		etEmail.setHint(R.string.hintForEmailSignUp);
 		etEmail.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 		etEmail.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		
@@ -196,7 +201,7 @@ public class SignUpPage extends BCPFragment {
 		etPw.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		etPw.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 		
-		etPwConfirm.setHint(R.string.hintForPasswordConfirm);
+		etPwConfirm.setHint(R.string.hintForPassword2);
 		etPwConfirm.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
 		etPwConfirm.getEditText().setTextColor(getResources().getColor(R.color.new_color_text_gray));
 	}
@@ -331,9 +336,9 @@ public class SignUpPage extends BCPFragment {
 		FontUtils.setFontSize(tvProfile, 20);
 		FontUtils.setFontSize(tvCommonInfo, 24);
 		FontUtils.setFontStyle(tvCommonInfo, FontUtils.BOLD);
-		FontUtils.setFontAndHintSize(etEmail.getEditText(), 24, 20);
-		FontUtils.setFontAndHintSize(etPw.getEditText(), 24, 20);
-		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 24, 20);
+		FontUtils.setFontAndHintSize(etEmail.getEditText(), 24, 24);
+		FontUtils.setFontAndHintSize(etPw.getEditText(), 24, 24);
+		FontUtils.setFontAndHintSize(etPwConfirm.getEditText(), 24, 24);
 		FontUtils.setFontSize(tvCheckEmail, 20);
 		FontUtils.setFontSize(tvCheckPw, 20);
 		FontUtils.setFontSize(tvCheckPwConfirm, 20);
