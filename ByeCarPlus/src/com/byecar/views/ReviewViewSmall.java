@@ -88,7 +88,7 @@ public class ReviewViewSmall extends FrameLayout {
 		
 		//tvReview.
 		tvReview = new TextView(getContext());
-		ResizeUtils.viewResize(307, 86, tvReview, 2, Gravity.LEFT, new int[]{268, 70, 0, 0});
+		ResizeUtils.viewResize(286, 67, tvReview, 2, Gravity.LEFT, new int[]{267, 83, 0, 0});
 		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvReview.setMaxLines(2);
 		tvReview.setEllipsize(TruncateAt.END);

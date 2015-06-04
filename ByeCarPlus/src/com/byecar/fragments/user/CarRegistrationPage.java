@@ -55,6 +55,7 @@ import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
@@ -133,6 +134,7 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private boolean isDownloadedCarInfo;
 	private boolean isSetInfo;
+	private boolean isRegistrationCompleted;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -1037,7 +1039,7 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void saveInfos() {
 
-		if(id != 0 || car != null) {
+		if(id != 0 || car != null || isRegistrationCompleted) {
 			return;
 		}
 		
@@ -1112,6 +1114,10 @@ public class CarRegistrationPage extends BCPFragment {
 		try {
 			SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_REG, Context.MODE_PRIVATE);
 
+			if(!prefs.contains("carType")) {
+				return;
+			}
+			
 			//carType.
 			carType = prefs.getInt("carType", 0);
 			
@@ -1220,70 +1226,6 @@ public class CarRegistrationPage extends BCPFragment {
 			if(isLoadingImages) {
 				ToastUtils.showToast(R.string.loadingImage);
 			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
-	}
-	
-	public void clearInfos() {
-
-		try {
-			SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_REG, Context.MODE_PRIVATE);
-			Editor ed = prefs.edit();
-
-			//carType.
-			ed.remove("carType");
-			
-			//etDetailCarInfos.
-			for(int i=0; i<etDetailCarInfos.length; i++) {
-				ed.remove("etDetailCarInfos" + i);
-			}
-			
-			//etCarDescription.
-			ed.remove("etCarDescription");
-			
-			//carInfoStrings.
-			for(int i=0; i<carInfoStrings.length; i++) {
-				ed.remove("carInfoStrings" + i);
-			}
-			
-			//checked.
-			for(int i=0; i<checked.length; i++) {
-				ed.remove("checked" + i);
-			}
-			
-			//type.
-			ed.remove("type");
-			
-			//isTermOfUseClicked.
-			ed.remove("isTermOfUseClicked");
-			
-			//isImmediatlySaleClicked.
-			ed.remove("isImmediatlySaleClicked");
-			
-			//dong_id.
-			ed.remove("dong_id");
-			
-			//year.
-			ed.remove("year");
-			
-			//month.
-			ed.remove("month");
-			
-			//history.
-			ed.remove("history");
-			
-			//trim_id.
-			ed.remove("trim_id");
-			
-			//selectedImageSdCardPaths.
-			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
-				ed.remove("selectedImageSdCardPaths" + i);
-			}
-			
-			ed.commit();
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -1836,6 +1778,13 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				setBtnCarInfos();
 				
+			//전화번호 인증 후.
+			} else if(mActivity.bundle.containsKey("requestedPhoneNumber")) {
+				//Bundle[{requestedPhoneNumber=01098138005, phone_auth_key=zOIyDFxNbQgXQQNcYufQwvtitoHItsUysLKcmqzSIEViBWLLumZfqDuFBcgmicgw}]
+				ToastUtils.showToast(R.string.registringPhoneNumber);
+				updatePhoneNumber(mActivity.bundle.getString("requestedPhoneNumber"), 
+						mActivity.bundle.getString("phone_auth_key"));
+				
 			} else {
 				LogUtils.log("###CarRegistrationPage.checkBundle.  "
 						+ "\n bundle : " + mActivity.bundle.toString());
@@ -1922,7 +1871,7 @@ public class CarRegistrationPage extends BCPFragment {
 	}
 
 	public void register() {
-
+		
 		try {
 			String url = null;
 			
@@ -2035,7 +1984,6 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				url += sb.toString();
 				
-				
 				DownloadUtils.downloadJSONString(url,
 						new OnJSONDownloadListener() {
 
@@ -2056,7 +2004,8 @@ public class CarRegistrationPage extends BCPFragment {
 											+ objJSON);
 
 									if(objJSON.getInt("result") == 1) {
-										clearInfos();
+										SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_REG);
+										isRegistrationCompleted = true;
 										pageRequestCompleted();
 									} else {
 										ToastUtils.showToast(objJSON.getString("message"));
@@ -2142,12 +2091,7 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 		
 		//모든 이미지 업로드 완료.
-		
-		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
-			LogUtils.log("###where.uploadImages.  i : " + i + ", path : " + selectedImageSdCardPaths[i]);
-		}
-		
-//		register();
+		register();
 	}
 	
 	public void checkProgress() {
@@ -2169,8 +2113,8 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		}
 		
-		//세부차량 정보 개당 10, 총 30.
-		for(int i=0; i<etDetailCarInfos.length; i++) {
+		//세부차량 정보 개당 10, 총 30, 가격은 제외.
+		for(int i=0; i<3; i++) {
 			if(etDetailCarInfos[i].getEditText().length() > 0) {
 				progress += 10;
 			}
@@ -2221,6 +2165,45 @@ public class CarRegistrationPage extends BCPFragment {
 		cover.setVisibility(View.INVISIBLE);
 		popup.startAnimation(aaOut);
 		popup.setVisibility(View.INVISIBLE);
+	}
+	
+	public void updatePhoneNumber(final String requestedPhoneNumber, String phone_auth_key) {
+		
+		/*
+		http://dev.bye-car.com/users/update/additional_info.json
+			?phone_auth_key=abc
+		*/
+		String url = BCPAPIs.EDIT_USER_INFO_UR_COMMON
+				+ "?phone_auth_key=" + phone_auth_key;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarRegistrationPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarRegistrationPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						MainActivity.user.setPhone_number(requestedPhoneNumber);
+						ToastUtils.showToast(R.string.complete_certifyPhoneNumber);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 //////////////////// Classes.

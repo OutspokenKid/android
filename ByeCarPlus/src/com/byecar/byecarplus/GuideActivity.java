@@ -74,10 +74,12 @@ public class GuideActivity extends Activity {
 		
 		case TYPE_USER_AUCTION:
 			buttonResIds = new int[]{
+					R.drawable.infomation_auction_tab0_tab_a,
 					R.drawable.infomation_auction_tab1_tab_a,
 					R.drawable.infomation_auction_tab2_tab_a,
 					R.drawable.infomation_auction_tab3_tab_a,
 					R.drawable.infomation_auction_tab4_tab_a,
+					R.drawable.infomation_auction_tab0_tab_b,
 					R.drawable.infomation_auction_tab1_tab_b,
 					R.drawable.infomation_auction_tab2_tab_b,
 					R.drawable.infomation_auction_tab3_tab_b,

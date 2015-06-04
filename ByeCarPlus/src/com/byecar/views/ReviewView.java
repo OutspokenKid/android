@@ -202,7 +202,8 @@ public class ReviewView extends RelativeLayout {
 			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body);
 			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot);
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
-			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 0, 0);
+			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
+					ResizeUtils.getSpecificLength(34), 0);
 			
 			//내가 쓴 리뷰이고 아직 리플이 안달린 경우 수정 버튼 노출.
 			if(review.getReviewer_id() == MainActivity.user.getId()
@@ -260,7 +261,8 @@ public class ReviewView extends RelativeLayout {
 			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body2);
 			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot2);
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame2);
-			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 0, 0);
+			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
+					ResizeUtils.getSpecificLength(34), 0);
 			tvCarName.setPadding(ResizeUtils.getSpecificLength(21), ResizeUtils.getSpecificLength(10), 0, 0);
 			
 			if(!StringUtils.isEmpty(reply.getReviewer_profile_img_url())) {

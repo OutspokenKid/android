@@ -530,7 +530,7 @@ public class CarView extends RelativeLayout {
 			}
 		}
 		
-		tvInfo.setText(car.getYear() + "년 / "
+		tvInfo.setText(car.getYear() + "." + car.getMonth() + " / "
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
 		

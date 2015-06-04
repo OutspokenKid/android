@@ -1331,7 +1331,7 @@ public class CarDetailPage extends BCPFragment {
 			}
 			
 			//연월식.
-			detailInfoTextViews[0].setText(car.getYear() + getString(R.string.year) + " " + car.getMonth() + getString(R.string.month));
+			detailInfoTextViews[0].setText(car.getYear() + "." + car.getMonth());
 			
 			//주행거리.
 			detailInfoTextViews[1].setText(StringUtils.getFormattedNumber(car.getMileage()) + "km");
@@ -1738,12 +1738,12 @@ public class CarDetailPage extends BCPFragment {
 		
 		if(remainTime < 0) {
 			//경매 종료.
-			if(car.getStatus() < Car.STATUS_BID_COMPLETE) {
+			if(car.getStatus() == Car.STATUS_BIDDING) {
 				car.setStatus(Car.STATUS_BID_COMPLETE);
 				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon3);
 				
 			//입찰 종료.
-			} else {
+			} else if(car.getStatus() == Car.STATUS_BID_COMPLETE) {
 				car.setStatus(Car.STATUS_BID_FAIL);
 				auctionIcon.setBackgroundResource(R.drawable.auction_sale_icon4);
 			}

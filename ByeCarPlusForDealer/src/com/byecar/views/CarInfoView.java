@@ -278,7 +278,7 @@ public class CarInfoView extends RelativeLayout {
 			statusChanged(car);
 			
 			tvCarInfo1.setText(car.getCar_full_name());
-			tvCarInfo2.setText(car.getYear() + "년/"
+			tvCarInfo2.setText(car.getYear() + "." + car.getMonth() + "/"
 					+ StringUtils.getFormattedNumber(car.getMileage()) + "km/"
 					+ car.getArea());
 			priceTextView.setPrice(car.getPrice());

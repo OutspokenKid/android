@@ -925,10 +925,6 @@ public class CarRegistrationPage extends BCPFragment {
 					rp.leftMargin = ResizeUtils.getSpecificLength(35);
 					
 					if(index == 0) {
-						//Test.
-						LogUtils.log("###CarRegistrationPage.getViewForOption.  id : " 
-								+ getResources().getIdentifier("carRegistrationPage_optionTitleView1", 
-								"id", "com.byecar.byecarplusfordealer"));
 						rp.addRule(RelativeLayout.BELOW, 
 								getResources().getIdentifier("carRegistrationPage_optionTitleView1", 
 										"id", "com.byecar.byecarplusfordealer"));
@@ -1680,8 +1676,8 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		}
 		
-		//세부차량 정보 개당 5, 총 20.
-		for(int i=0; i<etDetailCarInfos.length; i++) {
+		//세부차량 정보 개당 5, 총 20, 가격은 제외.
+		for(int i=0; i<4; i++) {
 			if(etDetailCarInfos[i].getEditText().length() > 0) {
 				LogUtils.log("###CarRegistrationPage.checkProgress. add 5 by detail info");
 				progress += 5;

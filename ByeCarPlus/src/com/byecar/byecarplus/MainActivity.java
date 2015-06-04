@@ -879,6 +879,11 @@ public class MainActivity extends BCPFragmentActivity {
 					SharedPrefsUtils.clearCookie(getCookieName_D1());
 					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
+					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_PUSH);
+					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_NOTICE);
+					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_REG);
+					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_CERTIFY);
+					
 					launchSignActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);

@@ -17,7 +17,7 @@
     <string name="carPhoto">차량사진</string>
     <string name="carRegistrationPhoto1">앞면 / 측면</string>
     <string name="carRegistrationPhoto2">뒷면 / 측면</string>
-    <string name="carRegistrationPhoto3">실내</string>
+    <string name="carRegistrationPhoto3">시트/변속기/네비</string>
     <string name="carRegistrationPhoto4">주행거리</string>
     <string name="carRegistrationTitle1">1. 차량정보</string>
     <string name="carRegistrationTitle2">2. 세부차량정보</string>
@@ -35,7 +35,7 @@
     <string name="carSearchString_accident1">무사고</string>
     <string name="carSearchString_accident2">유사고</string>
     <string name="carSearchString_accident3">사고유무 알 수 없음</string>
-    <string name="carSearchString_accidentHistory">부품 교환 이력</string>
+    <string name="carSearchString_accidentHistory">사고 상세내역</string>
     <string name="carSearchString_oneManOwned1">1인신조</string>
     <string name="carSearchString_oneManOwned2">1인신조 아님</string>
     <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
@@ -132,8 +132,8 @@
     <string name="hintForDetailCarInfo1">차량 번호를 입력해주세요.  예) 02가 1234</string>
     <string name="hintForDetailCarInfo2">주행거리를 입력해주세요.  예) 103555</string>
     <string name="hintForDetailCarInfo3">배기량을 입력해주세요.  예) 2500</string>
-    <string name="hintForDetailCarInfo4">차량 가격을 입력해주세요. (단위 만원)</string>
-    <string name="hintForDetailCarHistory">차량의 부품 교환 이력을 작성해주세요.</string>
+    <string name="hintForDetailCarInfo4">희망금액 입력 (바이카 본사 참고사항 / 단위 만원)</string>
+    <string name="hintForDetailCarHistory">기재되지 않은 사고 내용은 최종입찰금액의 감액사유가 될 수 있습니다.</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
     <string name="hintForForumContent">내용을 입력해주세요.</string>
@@ -231,6 +231,7 @@
     <string name="priceRange">가격범위</string>
     <string name="profileImage">프로필 사진</string>
     
+    <string name="registringPhoneNumber">휴대폰 번호 등록중..</string>
     <string name="reply">댓글</string>
     <string name="report">신고</string>
     <string name="remainBiddingTime">남은 입찰시간123</string>

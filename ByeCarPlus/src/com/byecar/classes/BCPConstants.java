@@ -15,6 +15,7 @@ public class BCPConstants {
 	public static final String PREFS_PUSH = "pushSetting";
 	public static final String PREFS_NOTICE = "noticePopup";
 	public static final String PREFS_REG = "carRegistration";
+	public static final String PREFS_CERTIFY = "certifyPhoneNumber";
 	
 	//Items for user.
 	public static final int ITEM_NOTICE = 1;

@@ -332,7 +332,7 @@ public class OtherCarView extends RelativeLayout {
 			btnLike.setBackgroundResource(R.drawable.main_like_btn_a);
 		}
 		
-		tvInfo.setText(car.getYear() + "년 / "
+		tvInfo.setText(car.getYear() + "." + car.getMonth() + " / "
 				+ StringUtils.getFormattedNumber(car.getMileage()) + "km / "
 				+ car.getArea());
 		

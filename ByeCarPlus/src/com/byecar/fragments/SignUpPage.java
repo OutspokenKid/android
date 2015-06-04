@@ -2,9 +2,11 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -573,6 +575,15 @@ public class SignUpPage extends BCPFragment {
 				+ "&user[pw]=" + StringUtils.getUrlEncodedString(etPw.getEditText())
 				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(etNickname.getEditText())
 				+ "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(selectedImageUrl);
+		
+		try {
+			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+			url += "&user[phone_number]=" + tMgr.getLine1Number(); 
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

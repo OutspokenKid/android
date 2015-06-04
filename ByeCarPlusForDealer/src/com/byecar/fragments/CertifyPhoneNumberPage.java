@@ -2,6 +2,8 @@ package com.byecar.fragments;
 
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
+import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.fragments.dealer.SignUpForDealerPage;
 import com.byecar.views.TitleBar;
@@ -19,6 +22,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.holo.holo_light.HoloStyleEditText;
 
@@ -173,6 +177,14 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 				if(savedInstanceState.containsKey("etCertificationNumber")) {
 					etCertificationNumber.getEditText().setText(savedInstanceState.getString("etCertificationNumber"));
 				}
+				
+			//이전 내용 복원.
+			} else {
+				SharedPreferences prefs = mContext.getSharedPreferences(BCPConstants.PREFS_CERTIFY, Context.MODE_PRIVATE);
+				
+				if(prefs.contains("phoneNumber")) {
+					etPhoneNumber.getEditText().setText(prefs.getString("phoneNumber", null));
+				}
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -200,6 +212,16 @@ public class CertifyPhoneNumberPage extends BCPFragment {
 			LogUtils.trace(e);
 		} catch (Error e) {
 			LogUtils.trace(e);
+		}
+	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		
+		if(etPhoneNumber.getEditText().length() != 0) {
+			SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_CERTIFY, "phoneNumber", 
+					etPhoneNumber.getEditText().getText().toString());
 		}
 	}
 	

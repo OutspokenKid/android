@@ -13,6 +13,7 @@ public class BCPConstants {
 	public static final int REQUEST_SEARCH_MONTH = 4;
 	
 	public static final String PREFS_PUSH = "pushSetting";
+	public static final String PREFS_CERTIFY = "certifyPhoneNumber";
 	
 	//Items for dealer.
 	public static final int ITEM_NOTICE = 1;

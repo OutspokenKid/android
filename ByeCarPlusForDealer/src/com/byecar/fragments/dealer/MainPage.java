@@ -30,6 +30,7 @@ import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAdapter;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
+import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.views.TitleBar;
@@ -301,7 +302,7 @@ public class MainPage extends BCPAuctionableFragment {
 		switch(menuIndex) {
 			
 		case 0:
-			url = BCPAPIs.CAR_BID_LIST_URL + "?status=in_progress";
+			url = BCPAPIs.CAR_BID_LIST_URL + "?status=10";
 			break;
 			
 		case 1:
@@ -393,6 +394,10 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		if(MainActivity.companyInfo == null) {
 			checkCover();
+		}
+		
+		if(MainActivity.area == null) {
+			downloadAreaInfo();
 		}
 		
 		if(models.size() == 0) {
@@ -609,5 +614,34 @@ public class MainPage extends BCPAuctionableFragment {
 			//해당 매물 삭제.
 			deleteSelectedCar(car);
 		}
+	}
+
+	public void downloadAreaInfo() {
+		
+		String url = BCPAPIs.AREA_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainPage.onError." + "\nurl : " + url);
+
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					MainActivity.area = new Area(objJSON.getJSONObject("areas"));
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 }
