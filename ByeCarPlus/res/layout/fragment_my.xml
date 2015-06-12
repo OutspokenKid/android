@@ -4,7 +4,7 @@
     android:id="@+id/myPage_mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/new_color_page_bg_white2" >
+    android:background="@color/page_bg" >
 
     <com.byecar.views.TitleBar
         android:id="@+id/myPage_titleBar"

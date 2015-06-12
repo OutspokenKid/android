@@ -17,6 +17,9 @@ public class BCPConstants {
 	public static final String PREFS_REG = "carRegistration";
 	public static final String PREFS_CERTIFY = "certifyPhoneNumber";
 	
+	public static final String COOKIE_NAME_D1 = "BYECAR_D1";
+	public static final String COOKIE_NAME_S = "BYECAR_S";
+	
 	//Items for user.
 	public static final int ITEM_NOTICE = 1;
 	public static final int ITEM_FAQ = 2;

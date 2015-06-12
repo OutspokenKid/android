@@ -121,12 +121,12 @@ public class SignPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signPage_logo).getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(299);
 		rp.height = ResizeUtils.getSpecificLength(339);
-		rp.topMargin = ResizeUtils.getSpecificLength(134);
+		rp.topMargin = ResizeUtils.getSpecificLength(130);
 		
 		//tvSignInText
 		rp = (RelativeLayout.LayoutParams) tvSignInText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(136);
+		rp.topMargin = ResizeUtils.getSpecificLength(100);
 		
 		//etEmail
 		rp = (RelativeLayout.LayoutParams) etEmail.getLayoutParams();

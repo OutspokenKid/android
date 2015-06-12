@@ -403,11 +403,21 @@
 		        android:scaleType="centerCrop" />
             
             <TextView
+		        android:id="@+id/carRegistrationPage_tvAddedPhoto"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:gravity="center"
+		        android:text="@string/addedPhotoText"
+		        android:textColor="@color/new_color_text_red" />
+            
+            <TextView
 		        android:id="@+id/carRegistrationPage_tvCheckTitle"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:layout_below="@id/carRegistrationPage_tvAddedPhoto"
 		        android:gravity="center_vertical"
 		        android:text="@string/carRegistrationTitle5"
 		        android:textColor="#fff"

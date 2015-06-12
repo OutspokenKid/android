@@ -325,6 +325,7 @@ public class SignInPage extends BCPFragment {
 	
 	public void signInWithSNS(String sns_key, String sns_user_key, 
 			String nickname, String profileUrl) {
+		
 		/*
 		http://byecar.minsangk.com/users/sns_join.json
 		?sns_key=facebook

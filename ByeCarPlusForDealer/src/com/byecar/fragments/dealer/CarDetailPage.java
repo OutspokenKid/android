@@ -124,7 +124,6 @@ public class CarDetailPage extends BCPFragment {
 	
 	private Button btnDelete;
 	private Button btnEdit;
-	private Button btnReport;
 	
 	private ImagePagerAdapter imagePagerAdapter;
 	
@@ -217,7 +216,6 @@ public class CarDetailPage extends BCPFragment {
 		
 		btnDelete = (Button) mThisView.findViewById(R.id.carDetailPage_btnDelete);
 		btnEdit = (Button) mThisView.findViewById(R.id.carDetailPage_btnEdit);
-		btnReport = (Button) mThisView.findViewById(R.id.carDetailPage_btnReport);
 	}
 	
 	@Override
@@ -408,24 +406,6 @@ public class CarDetailPage extends BCPFragment {
 							public void onClick(DialogInterface dialog, int which) {
 
 								delete();
-							}
-						}, null);
-			}
-		});
-
-		btnReport.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				mActivity.showAlertDialog(R.string.report, R.string.wannaReport, 
-						R.string.confirm, R.string.cancel, 
-						new DialogInterface.OnClickListener() {
-					
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								
-								report();
 							}
 						}, null);
 			}
@@ -628,13 +608,6 @@ public class CarDetailPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.rightMargin = ResizeUtils.getSpecificLength(8);
 		
-		//btnReport.
-		rp = (RelativeLayout.LayoutParams) btnReport.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(60);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
-		rp.rightMargin = ResizeUtils.getSpecificLength(14);
-		
 		FontUtils.setFontSize(tvAccident, 20);
 		
 		for(int i=0; i<detailInfoTextViews.length; i++) {
@@ -776,18 +749,8 @@ public class CarDetailPage extends BCPFragment {
 					} else {
 						car.copyValuesFromNewItem(newCar);
 					}
-					
-					setRelativeForType();
-					setMainCarInfo();
-					setBiddingViews();
-					setReviews();
-					setInfos();
-					setAccident();
-					setOptions();
-					setCheck();
-					setDescription();
-					setPaymentButton();
-					setTitleBarButtons();
+
+					setAllInfos();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					closePage(R.string.failToLoadCarInfo);
@@ -797,6 +760,29 @@ public class CarDetailPage extends BCPFragment {
 				}
 			}
 		});
+	}
+
+	public void setAllInfos() {
+		
+		try {
+			setRelativeForType();
+			setMainCarInfo();
+			setBiddingViews();
+			setReviews();
+			setInfos();
+			setAccident();
+			setOptions();
+			setCheck();
+			setDescription();
+			setPaymentButton();
+			setTitleBarButtons();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			closePage(R.string.failToLoadCarInfo);
+		} catch (Error e) {
+			LogUtils.trace(e);
+			closePage(R.string.failToLoadCarInfo);
+		}
 	}
 	
 	public void setMainCarInfo() {
@@ -1625,8 +1611,6 @@ public class CarDetailPage extends BCPFragment {
 			//중고차거래. -> 내가 올린 경우에만 수정, 삭제.
 			case Car.TYPE_DEALER:
 
-				btnReport.setVisibility(View.GONE);
-				
 				if(car.getSeller_id() == MainActivity.user.getId()) {
 					btnEdit.setVisibility(View.VISIBLE);
 					btnDelete.setVisibility(View.VISIBLE);
@@ -1638,7 +1622,6 @@ public class CarDetailPage extends BCPFragment {
 				break;
 
 			case Car.TYPE_BID:
-				btnReport.setVisibility(View.VISIBLE);
 				btnEdit.setVisibility(View.GONE);
 				btnDelete.setVisibility(View.GONE);
 				break;
@@ -1718,7 +1701,7 @@ public class CarDetailPage extends BCPFragment {
 			//유저가 딜러를 선택한 경우 (낙찰).
 			} else {
 				this.car.copyValuesFromNewItem(car);
-				setMainCarInfo();
+				setAllInfos();
 			}
 		}
 	}

@@ -54,13 +54,17 @@ public abstract class BCPFragment extends BaseFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if(getActivity() != null && mActivity == null) {
+			mActivity = (BCPFragmentActivity) getActivity();
+		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		
-		if(mActivity == null) {
+		if(getActivity() != null && mActivity == null) {
 			mActivity = (BCPFragmentActivity) getActivity();
 		}
 		

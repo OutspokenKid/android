@@ -53,7 +53,7 @@ public class BitmapUtils {
 		}
 		return degree;
 	}
-
+	
 	public static int getBitmapInSampleSize(String filePath, int standardLength) {
 		
 		try {
@@ -61,42 +61,31 @@ public class BitmapUtils {
 			options.inSampleSize = 4;
 			BitmapFactory.decodeFile(filePath, options);
 
-			int width = 0;
-			int height = 0;
+			int length = 0;
 
 			if(BitmapUtils.GetExifOrientation(filePath) % 180 == 0) {
-				width = options.outWidth;
-				height = options.outHeight;
+				length = options.outWidth;
 			} else {
-				width = options.outHeight;
-				height = options.outWidth;
+				length = options.outHeight;
 			}
-
-			//가로, 세로 중 긴 값으로 최대치 제한.
-//			int length = Math.max(width, height);
-			//이걸로 하면 가로 기준.
-			int length = width;
 			
-			int sampleSize = 1;
+			//option에서 얻어오는 길이는 4배 작아진 가로 길이니까 * 4 해서 원래 길이 구함..
 			int calculateSize = length * options.inSampleSize;
+
+			int sampleSize = 1;
+			float scale = (float)calculateSize / (float)standardLength;
 			
-			if (calculateSize <= standardLength) {
-				sampleSize = 1;
-			} else if (calculateSize <= standardLength * 2) {
-				sampleSize = 2;
-			} else if (calculateSize <= standardLength * 4) {
-				sampleSize = 4;
-			} else if (calculateSize <= standardLength * 8) {
-				sampleSize = 8;
-			} else {
-				sampleSize = 16;
+			if(scale > 1) {
+				double logBased2 = Math.log(scale) / Math.log(2);
+				int index = (int) Math.floor(logBased2) + (logBased2%1==0?0:1);
+				sampleSize = (int)Math.pow(2, index);
 			}
 			
 			LogUtils.log("###ImageUploadUtils.getBitmapInSampleSize.  " +
-					"\nstandardLength : " + standardLength +
-					"\norigin width : " + width * options.inSampleSize +
-					"\norigin height : " + height * options.inSampleSize +
-					"\nsampleSize : " + sampleSize);
+					"\n calculateSize : " + calculateSize +
+					"\n standardLength : " + standardLength +
+					"\n scale : " + scale +
+					"\n sampleSize : " + sampleSize);
 			
 			return sampleSize;
 		} catch (Exception e) {
@@ -105,7 +94,7 @@ public class BitmapUtils {
 			LogUtils.trace(e);
 		}
 		
-		return 8;
+		return 1;
 	}
 	
 	public static int getBitmapInSampleSize(File file, int standardLength) {

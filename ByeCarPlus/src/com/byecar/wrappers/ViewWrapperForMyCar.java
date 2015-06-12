@@ -135,44 +135,37 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 						typeIcon.setBackgroundDrawable(null);
 					}
 				}
-				
-				//status에 따른 아이콘(검수중, 진행중, 거래완료)
-				switch(car.getStatus()) {
-				
-				//0: 승인대기, 5 : 입찰대기, 10: 입찰중, 15: 입찰종료, 20: 낙찰, 21: 유찰, 30: 거래완료
-//				public static final int STATUS_STAND_BY_APPROVAL = 0;
-//				public static final int STATUS_STAND_BY_BIDING = 5;
-				
-//				public static final int STATUS_BIDDING = 10;
-//				public static final int STATUS_BID_COMPLETE = 15;
-				
-//				public static final int STATUS_BID_SUCCESS = 20;
-//				public static final int STATUS_BID_FAIL = 21;
-//				public static final int STATUS_TRADE_COMPLETE = 30;
-				
-				case Car.STATUS_STAND_BY_APPROVAL:
-				case Car.STATUS_STAND_BY_BIDING:
-					statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
-					break;
+
+				if(car.getType() == Car.TYPE_BID) {
+					//status에 따른 아이콘(검수중, 진행중, 거래완료)
+					switch(car.getStatus()) {
 					
-				case Car.STATUS_BIDDING:
-				case Car.STATUS_BID_COMPLETE:
-				case Car.STATUS_BID_SUCCESS:
-				case Car.STATUS_BID_FAIL:
-				case Car.STATUS_PAYMENT_COMPLETED:
-					statusIcon.setBackgroundResource(R.drawable.mypage_sale);
-					break;
-				
-				case Car.STATUS_TRADE_COMPLETE:
-					statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
-					break;
+					case Car.STATUS_STAND_BY_APPROVAL:
+					case Car.STATUS_STAND_BY_BIDING:
+						statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
+						break;
+						
+					case Car.STATUS_BIDDING:
+					case Car.STATUS_BID_COMPLETE:
+					case Car.STATUS_BID_SUCCESS:
+					case Car.STATUS_BID_FAIL:
+					case Car.STATUS_PAYMENT_COMPLETED:
+						statusIcon.setBackgroundResource(R.drawable.mypage_sale);
+						break;
 					
-				default:
-					if(AppInfoUtils.checkMinVersionLimit(16)) {
-						statusIcon.setBackground(null);
-					} else {
-						statusIcon.setBackgroundDrawable(null);
-					}
+					case Car.STATUS_TRADE_COMPLETE:
+						statusIcon.setBackgroundResource(R.drawable.mypage_sale2);
+						break;
+						
+					default:
+						if(AppInfoUtils.checkMinVersionLimit(16)) {
+							statusIcon.setBackground(null);
+						} else {
+							statusIcon.setBackgroundDrawable(null);
+						}
+					}	
+				} else {
+					statusIcon.setVisibility(View.INVISIBLE);
 				}
 				
 				//나의 차량, 구매 신청내역에서는 등록일, 좋아요에서는 찜한 날, 직거래의 경우 마감일도 있음.
@@ -215,7 +208,7 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 						showButton = true;
 						break;
 					
-					case Car.STATUS_BID_SUCCESS:
+					case Car.STATUS_PAYMENT_COMPLETED:
 						btnComplete.setVisibility(View.VISIBLE);
 						showButton = true;
 						break;

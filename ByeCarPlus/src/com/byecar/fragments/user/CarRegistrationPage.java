@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -34,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.byecar.byecarplus.GuideActivity;
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
@@ -53,6 +51,7 @@ import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.ImageUploadUtils;
 import com.outspoken_kid.utils.ImageUploadUtils.OnAfterUploadImage;
+import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -93,6 +92,8 @@ public class CarRegistrationPage extends BCPFragment {
 	private ImageView[] ivPhotos;
 	private TextView[] tvCarPhotos;
 	
+	private TextView tvAddedPhoto;
+	
 	private TextView tvOptionTitle;
 	private RelativeLayout relativeForOption;
 	private View[] optionViews = new View[OPTION_VIEW_SIZE];
@@ -108,8 +109,7 @@ public class CarRegistrationPage extends BCPFragment {
 	private View immediatlySale;
 	private Button btnImmediatlySale;
 	private Button btnComplete;
-	private Button btnGuide;
-	
+
 	private View cover;
 	private FrameLayout popup;
 	private TextView tvTitle;
@@ -186,8 +186,6 @@ public class CarRegistrationPage extends BCPFragment {
 					etCarDescription.setText(savedInstanceState.getString("etCarDescription"));
 				}
 				
-				
-				
 				//carInfoStrings.
 				for(int i=0; i<carInfoStrings.length; i++) {
 				
@@ -226,6 +224,9 @@ public class CarRegistrationPage extends BCPFragment {
 				
 				//trim_id.
 				trim_id = savedInstanceState.getInt("trim_id");
+				
+				//selectedImageIndex.
+				selectedImageIndex = savedInstanceState.getInt("selectedImageIndex");
 				
 				//selectedImageSdCardPaths.
 				for(int i=0; i<selectedImageSdCardPaths.length; i++) {
@@ -329,6 +330,9 @@ public class CarRegistrationPage extends BCPFragment {
 			//trim_id.
 			outState.putInt("trim_id", trim_id);
 			
+			//selectedImageIndex.
+			outState.putInt("selectedImageIndex", selectedImageIndex);
+			
 			//selectedImageSdCardPaths.
 			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
 				
@@ -416,6 +420,8 @@ public class CarRegistrationPage extends BCPFragment {
 		tvCarPhotos[2] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto3);
 		tvCarPhotos[3] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto4);
 		
+		tvAddedPhoto = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvAddedPhoto);
+		
 		tvOptionTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvOptionTitle);
 		relativeForOption = (RelativeLayout) mThisView.findViewById(R.id.carRegistrationPage_relativeForOption);
 		
@@ -431,8 +437,6 @@ public class CarRegistrationPage extends BCPFragment {
 		immediatlySale = mThisView.findViewById(R.id.carRegistrationPage_immediatlySale);
 		btnImmediatlySale = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnImmediatlySale);
 		btnComplete = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnComplete);
-		
-		btnGuide = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnGuide);
 		
 		cover = mThisView.findViewById(R.id.carRegistrationPage_cover);
 		popup = (FrameLayout) mThisView.findViewById(R.id.carRegistrationPage_popup);
@@ -684,23 +688,21 @@ public class CarRegistrationPage extends BCPFragment {
 			});
 		}
 		
-		btnGuide.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Intent intent = new Intent(mActivity, GuideActivity.class);
-				intent.putExtra("type", GuideActivity.TYPE_USER_UPLOAD);
-				mActivity.startActivity(intent);
-			}
-		});
-	
 		cover.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 
 				hidePopup();
+			}
+		});
+		
+		popup.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
 			}
 		});
 		
@@ -827,11 +829,15 @@ public class CarRegistrationPage extends BCPFragment {
 			rp.topMargin = ResizeUtils.getSpecificLength(10);
 		}
 		
+		//tvAddedPhoto.
+		rp = (RelativeLayout.LayoutParams) tvAddedPhoto.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		
 		//tvOptionTitle.
 		rp = (RelativeLayout.LayoutParams) tvOptionTitle.getLayoutParams();
 		rp.width = LayoutParams.MATCH_PARENT;
 		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		tvOptionTitle.setPadding(titlePadding, 0, 0, 0);
 		
 		//tvCarDescriptionTitle.
@@ -889,13 +895,6 @@ public class CarRegistrationPage extends BCPFragment {
 		rp.width = ResizeUtils.getSpecificLength(588);
 		rp.height = ResizeUtils.getSpecificLength(83);
 		rp.topMargin = ResizeUtils.getSpecificLength(50);
-		
-		//btnGuide.
-		rp = (RelativeLayout.LayoutParams) btnGuide.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(60);
-		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(14);
-		rp.rightMargin = ResizeUtils.getSpecificLength(10);
 
 		//popup.
 		rp = (RelativeLayout.LayoutParams) popup.getLayoutParams();
@@ -942,6 +941,9 @@ public class CarRegistrationPage extends BCPFragment {
 			FontUtils.setFontSize(tvCarPhotos[i], 20);
 		}
 		
+		FontUtils.setFontSize(tvAddedPhoto, 20);
+		FontUtils.setFontStyle(tvAddedPhoto, FontUtils.BOLD);
+		
 		FontUtils.setFontSize(tvOptionTitle, 24);
 		FontUtils.setFontStyle(tvOptionTitle, FontUtils.BOLD);
 		
@@ -954,7 +956,7 @@ public class CarRegistrationPage extends BCPFragment {
 		FontUtils.setFontStyle(tvTermOfUseTitle, FontUtils.BOLD);
 		
 		FontUtils.setFontSize(tvTitle, 30);
-		FontUtils.setFontSize(tvDesc, 24);
+		FontUtils.setFontSize(tvDesc, 22);
 	}
 
 	@Override
@@ -1092,6 +1094,9 @@ public class CarRegistrationPage extends BCPFragment {
 			//trim_id.
 			ed.putInt("trim_id", trim_id);
 			
+			//selectedImageIndex.
+			ed.putInt("selectedImageIndex", selectedImageIndex);
+			
 			//selectedImageSdCardPaths.
 			for(int i=0; i<selectedImageSdCardPaths.length; i++) {
 				ed.putString("selectedImageSdCardPaths" + i, selectedImageSdCardPaths[i]);
@@ -1175,6 +1180,9 @@ public class CarRegistrationPage extends BCPFragment {
 			//trim_id.
 			trim_id = prefs.getInt("trim_id", 0);
 			downloadCarDetailModelInfo();
+
+			//selectedImageIndex.
+			selectedImageIndex = prefs.getInt("selectedImageIndex", selectedImageIndex);
 			
 			boolean isLoadingImages = false;
 			
@@ -2225,17 +2233,9 @@ public class CarRegistrationPage extends BCPFragment {
 			try {
 				File image = new File(path);
 				BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-				Bitmap bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
-
-				//원래세로 x ResizeUtils.getSpecificLength(144) / 원래가로.
-				int scaledHeight = (int)((float)bitmap.getHeight() 
-											* (float)ResizeUtils.getSpecificLength(144)
-											/ (float)bitmap.getWidth()); 
-				
-				thumbnail = Bitmap.createScaledBitmap(bitmap, 
-						ResizeUtils.getSpecificLength(144), 
-						scaledHeight,
-						true);
+				bmOptions.inSampleSize = BitmapUtils.getBitmapInSampleSize(path, 
+						ResizeUtils.getSpecificLength(144)); 
+				thumbnail = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {

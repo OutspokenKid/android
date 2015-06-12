@@ -235,7 +235,7 @@ public class CarListPage extends BCPAuctionableFragment {
 					break;
 					
 				case Car.TYPE_DEALER:
-					intent.putExtra("type", GuideActivity.TYPE_USER_BUY);
+					intent.putExtra("type", GuideActivity.TYPE_USER_DEALER);
 					break;
 					
 				case Car.TYPE_DIRECT:

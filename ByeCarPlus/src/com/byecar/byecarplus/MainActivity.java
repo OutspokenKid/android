@@ -69,6 +69,7 @@ import com.byecar.models.CompanyInfo;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -114,6 +115,8 @@ public class MainActivity extends BCPFragmentActivity {
 	private Button btnHome;
 	private Button btnCall;
 
+	private View loadingView;
+	
 	private View cover;
 	
 	private RelativeLayout noticePopup;
@@ -158,7 +161,7 @@ public class MainActivity extends BCPFragmentActivity {
 		btnHome = (Button) findViewById(R.id.mainForUserActivity_btnHome);
 		btnCall = (Button) findViewById(R.id.mainForUserActivity_btnCall);
 		
-		setLoadingView(findViewById(R.id.mainForUserActivity_loadingView));
+		loadingView = findViewById(R.id.mainForUserActivity_loadingView);
 		
 		cover = findViewById(R.id.mainForUserActivity_cover);
 		
@@ -191,6 +194,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public void createPage() {
 		
 		try {
+			setLoadingView(loadingView);
 			setLeftView();
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -277,6 +281,33 @@ public class MainActivity extends BCPFragmentActivity {
 			public void onClick(View view) {
 
 				hideNoticePopup();
+			}
+		});
+
+		loadingView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
+		
+		cover.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
+		
+		popup.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
 			}
 		});
 	}
@@ -543,7 +574,7 @@ public class MainActivity extends BCPFragmentActivity {
 			switch(keyCode) {
 			
 			case KeyEvent.KEYCODE_MENU :
-
+				
 				try {
 					if(getTopFragment().onMenuPressed()) {
 						//Do nothing.
@@ -560,10 +591,11 @@ public class MainActivity extends BCPFragmentActivity {
 			case KeyEvent.KEYCODE_BACK :
 				
 				try {
-					if(GestureSlidingLayout.isOpenToLeft()) {
-						gestureSlidingLayout.close(true, null);
-					} else if(noticePopup.getVisibility() == View.VISIBLE) {
+					
+					if(noticePopup.getVisibility() == View.VISIBLE) {
 						hideNoticePopup();
+					} else if(GestureSlidingLayout.isOpenToLeft()) {
+						gestureSlidingLayout.close(true, null);
 					} else if(popup.getVisibility() == View.VISIBLE) {
 						//Do nothing.
 					} else if(getTopFragment() != null && getTopFragment().onBackPressed()) {
@@ -876,8 +908,7 @@ public class MainActivity extends BCPFragmentActivity {
 
 					MainActivity.user = null;
 					
-					SharedPrefsUtils.clearCookie(getCookieName_D1());
-					SharedPrefsUtils.clearCookie(getCookieName_S());
+					clearCookies();
 					
 					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_PUSH);
 					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_NOTICE);
@@ -912,10 +943,8 @@ public class MainActivity extends BCPFragmentActivity {
 				try {
 					LogUtils.log("MainForUserActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
-					SharedPrefsUtils.clearCookie(getCookieName_D1());
-					SharedPrefsUtils.clearCookie(getCookieName_S());
 					
+					clearCookies();
 					launchSignActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -924,6 +953,13 @@ public class MainActivity extends BCPFragmentActivity {
 				}
 			}
 		});
+	}
+	
+	public void clearCookies() {
+		
+		SharedPrefsUtils.clearPrefs(getCookieName_D1());
+		SharedPrefsUtils.clearPrefs(getCookieName_S());
+		RequestManager.getCookieStore().clear();
 	}
 	
 	public void checkSession() {

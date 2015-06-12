@@ -26,6 +26,7 @@ public class FindPwPage extends BCPFragment {
 
 	private HoloStyleEditText etEmail;
 	private Button btnFindPw;
+	private View phoneCall;
 	
 	@Override
 	public void bindViews() {
@@ -34,6 +35,8 @@ public class FindPwPage extends BCPFragment {
 		
 		etEmail = (HoloStyleEditText) mThisView.findViewById(R.id.findPwPage_etEmail);
 		btnFindPw = (Button) mThisView.findViewById(R.id.findPwPage_btnConfirm);
+		
+		phoneCall = mThisView.findViewById(R.id.findPwPage_phoneCall);
 	}
 
 	@Override
@@ -84,6 +87,12 @@ public class FindPwPage extends BCPFragment {
 		rp.height = buttonHeight;
 		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		rp.bottomMargin = ResizeUtils.getSpecificLength(40);
+		
+		//phoneCall.
+		rp = (RelativeLayout.LayoutParams) phoneCall.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(426);
+		rp.height = ResizeUtils.getSpecificLength(89);
+		rp.topMargin = ResizeUtils.getSpecificLength(50);
 		
 		FontUtils.setFontAndHintSize(etEmail.getEditText(), 30, 24);
 	}

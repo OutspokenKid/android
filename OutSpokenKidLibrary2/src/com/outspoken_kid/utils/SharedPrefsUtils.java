@@ -233,31 +233,6 @@ public class SharedPrefsUtils {
 		
 		return false;
 	}
-
-	public static boolean clearCookie(String prefsName) {
-		
-		try {
-			//domain, expirydate, path, (secure), value, version
-			SharedPreferences prefs = context.getSharedPreferences(prefsName, Context.MODE_PRIVATE);
-			Editor ed = prefs.edit();
-
-			ed.putString("name", null);
-			ed.putString("value", null);
-			ed.putString("domain", null);
-			ed.putString("expiryDate", null);
-			ed.putString("path", null);
-			ed.putInt("version", 0);
-			ed.commit();
-			
-			return true;
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
-		
-		return false;
-	}
 	
 	@SuppressWarnings("deprecation")
 	public static BasicClientCookie getCookie(String prefsName) {

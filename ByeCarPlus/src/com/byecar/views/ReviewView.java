@@ -238,7 +238,7 @@ public class ReviewView extends RelativeLayout {
 			}
 			
 			downloadImage(review.getReviewer_profile_img_url());
-			tvNickname.setText(review.getReviewer_name());
+			tvNickname.setText(review.getReviewer_nickname());
 			tvCarName.setText(review.getCar_full_name());
 			ratingBar.setRating(review.getRating());
 			tvContent.setText(review.getContent());

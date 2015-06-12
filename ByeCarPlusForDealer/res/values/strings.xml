@@ -3,6 +3,7 @@
 
     <string name="addedInfo">추가정보</string>
     <string name="addedPhoto">추가사진</string>
+    <string name="addedPhotoText">* 추가사진 등록시 더 높은 견적을 받을 수 있습니다.</string>
     <string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
     <string name="app_name">ByeCarPlus For Dealer</string>
     <string name="auctionedPrice">낙찰금액</string>
@@ -255,7 +256,7 @@
     <string name="wannaBiddingAt">만원에 입찰하시겠습니까?</string>
     <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
-    <string name="wannaCompleteSelling">차량 판매를 완료하시겠습니까?</string>
+    <string name="wannaCompleteSelling">거래를 완료하시겠습니까?</string>
     <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaReport">신고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>

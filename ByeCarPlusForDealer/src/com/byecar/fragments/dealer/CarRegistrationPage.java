@@ -83,6 +83,8 @@ public class CarRegistrationPage extends BCPFragment {
 	private ImageView[] ivPhotos;
 	private TextView[] tvCarPhotos;
 	
+	private TextView tvAddedPhoto;
+	
 	private TextView tvCheckTitle;
 	private Button btnCheck;
 	
@@ -286,6 +288,8 @@ public class CarRegistrationPage extends BCPFragment {
 		tvCarPhotos[1] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto2);
 		tvCarPhotos[2] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto3);
 		tvCarPhotos[3] = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCarPhoto4);
+		
+		tvAddedPhoto = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvAddedPhoto);
 		
 		tvCheckTitle = (TextView) mThisView.findViewById(R.id.carRegistrationPage_tvCheckTitle);
 		ivPhotos[8] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCheck);
@@ -640,11 +644,15 @@ public class CarRegistrationPage extends BCPFragment {
 			rp.topMargin = ResizeUtils.getSpecificLength(10);
 		}
 
+		//tvAddedPhoto.
+		rp = (RelativeLayout.LayoutParams) tvAddedPhoto.getLayoutParams();
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
+		
 		//tvCheckTitle.
 		rp = (RelativeLayout.LayoutParams) tvCheckTitle.getLayoutParams();
 		rp.width = LayoutParams.MATCH_PARENT;
 		rp.height = ResizeUtils.getSpecificLength(40);
-		rp.topMargin = ResizeUtils.getSpecificLength(80);
+		rp.topMargin = ResizeUtils.getSpecificLength(40);
 		tvCheckTitle.setPadding(titlePadding, 0, 0, 0);
 		
 		//ivPhotos[ivPhotos.length-1].
@@ -735,6 +743,9 @@ public class CarRegistrationPage extends BCPFragment {
 		for(int i=0; i<tvCarPhotos.length; i++) {
 			FontUtils.setFontSize(tvCarPhotos[i], 20);
 		}
+		
+		FontUtils.setFontSize(tvAddedPhoto, 20);
+		FontUtils.setFontStyle(tvAddedPhoto, FontUtils.BOLD);
 		
 		FontUtils.setFontSize(tvOptionTitle, 24);
 		FontUtils.setFontStyle(tvOptionTitle, FontUtils.BOLD);

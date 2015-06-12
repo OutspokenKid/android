@@ -39,7 +39,8 @@ public class Review extends BCPBaseModel implements Serializable {
 	private String content;
 	private int rating;
 	private long created_at;
-	private String reviewer_name;						//
+	private String reviewer_name;
+	private String reviewer_nickname;
 	private String reviewer_profile_img_url;
 	private String onsalecar_rep_img_url;				//
 	private String car_full_name;						//
@@ -90,6 +91,10 @@ public class Review extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("reviewer_name")) {
 				this.reviewer_name = objJSON.getString("reviewer_name");
+			}
+			
+			if(objJSON.has("reviewer_nickname")) {
+				this.reviewer_nickname = objJSON.getString("reviewer_nickname");
 			}
 			
 			if(objJSON.has("reviewer_profile_img_url")) {
@@ -311,5 +316,13 @@ public class Review extends BCPBaseModel implements Serializable {
 	
 	public void setDealer_level(int dealer_level) {
 		this.dealer_level = dealer_level;
+	}
+
+	public String getReviewer_nickname() {
+		return reviewer_nickname;
+	}
+
+	public void setReviewer_nickname(String reviewer_nickname) {
+		this.reviewer_nickname = reviewer_nickname;
 	}
 }

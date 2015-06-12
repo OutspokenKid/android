@@ -3,6 +3,7 @@
 
     <string name="app_name">ByeCarPlus</string>
 	<string name="addedPhoto">추가사진</string>
+	<string name="addedPhotoText">* 추가사진 등록시 더 높은 견적을 받을 수 있습니다.</string>
 	<string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
 
 	<string name="best3">베스트3</string>
@@ -79,6 +80,7 @@
     <string name="dealerLevel2">일반딜러</string>
     <string name="dealerLevel3">우수딜러</string>
     <string name="dealerLevel4">파워딜러</string>
+    <string name="dealingRequest">거래요청</string>
     <string name="delete">삭제</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>
@@ -174,6 +176,7 @@
     <string name="nickname">닉네임</string>
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
+    <string name="notification">알림</string>
     <string name="notificationSetting">알림설정</string>
     
     <string name="order_1">마감순</string>
@@ -266,6 +269,7 @@
     <string name="uploadingImage">이미지 업로드 중..</string>
     <string name="uploadingImageCountError">이미지는 최대 4장까지 첨부 가능합니다.</string>
 
+    <string name="waitingForDealerPayment">딜러분의 승인을 기다리고 있습니다.</string>
     <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
@@ -274,7 +278,7 @@
     <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>
     <string name="withdraw">탈퇴하기</string>
     <string name="whatIsSellingDirectly">즉시판매란 무엇인가요?</string>
-    <string name="whatIsSellingDirectlyDesc">즉시판매란 차량 판매가 24시간 이내로 될 수 있도록 차량을 설정하는 기능입니다. 바이카 관리자가 고객님의 차량을 검수한 후에 빠르게 판매할 수 있도록 차량을 등록합니다.</string>
+    <string name="whatIsSellingDirectlyDesc">즉시판매란 차량 판매가 24시간 이내로 급한 고객의 차량을 바이카 본사에서 도와드리는 서비스입니다.\n내 차 판매가 급하시면 즉시 판매를 체크 해주세요.</string>
     <string name="writeAllContentForRegistration">* 1번부터 6번은 모두 입력해야 입찰요청이 가능한 필수항목입니다.</string>
     <string name="writePercentage">작성률</string>
     

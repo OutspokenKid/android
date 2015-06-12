@@ -61,13 +61,13 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	@Override
 	public String getCookieName_D1() {
 
-		return "BYECAR_D1";
+		return BCPConstants.COOKIE_NAME_D1;
 	}
 	
 	@Override
 	public String getCookieName_S() {
 
-		return "BYECAR_S";
+		return BCPConstants.COOKIE_NAME_S;
 	}
 
 //////////////////// Custom methods.
@@ -150,6 +150,24 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		}
 		
 		if(imageUrls != null) {
+
+			//원본을 불러오는 경우, 이미지 사이즈가 4096이 넘으면 에러나므로 리사이징.
+			for(int i=0; i<imageUrls.length; i++) {
+				
+				if(imageUrls[i].contains(BCPAPIs.IMAGE_SERVER_URL + "/src/")) {
+					imageUrls[i] = imageUrls[i].replace("/src/", "/thumb/");
+
+					if(!imageUrls[i].matches("=w[0-9]+$")) {
+						
+						if(imageUrls[i].contains("?")) {
+							imageUrls[i] = new StringBuffer(imageUrls[i]).insert(imageUrls[i].indexOf("?"), "=w1080").toString();
+						} else {
+							imageUrls[i] += "=w1080";
+						}						
+					}
+				}
+			}
+			
 			intent.putExtra("imageUrls", imageUrls);
 		}
 		

@@ -253,8 +253,6 @@ public class OtherCarView extends RelativeLayout {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					LogUtils.log("UsedCarView.downloadImage.onCompleted." + "\nurl : " + url);
-					
 					if(bitmap != null && !bitmap.isRecycled()) {
 						ivImage.setImageBitmap(bitmap);
 					}
@@ -279,6 +277,11 @@ public class OtherCarView extends RelativeLayout {
 		}
 		
 		if(car.getType() == Car.TYPE_DEALER) {
+			tvDealerName.getLayoutParams().width = ResizeUtils.getSpecificLength(70);
+			rankBadge.getLayoutParams().width = ResizeUtils.getSpecificLength(96);
+			
+			
+			
 			downloadImage(car.getDealer_profile_img_url(), ivProfile);
 			tvDealerName.setText(car.getDealer_name());
 			
@@ -302,8 +305,11 @@ public class OtherCarView extends RelativeLayout {
 				
 			}
 		} else {
+			tvDealerName.getLayoutParams().width = ResizeUtils.getSpecificLength(170);
+			rankBadge.getLayoutParams().width = 0;
+			
 			downloadImage(car.getSeller_profile_img_url(), ivProfile);
-			tvDealerName.setText(car.getSeller_name());
+			tvDealerName.setText(car.getSeller_nickname());
 			rankBadge.setVisibility(View.INVISIBLE);
 		}
 		

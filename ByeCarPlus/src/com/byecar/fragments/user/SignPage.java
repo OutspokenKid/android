@@ -237,6 +237,15 @@ public class SignPage extends BCPFragment {
 				mActivity.showPage(BCPConstants.PAGE_TERM_OF_USE, null);
 			}
 		});
+	
+		cover.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
 	}
 
 	@Override

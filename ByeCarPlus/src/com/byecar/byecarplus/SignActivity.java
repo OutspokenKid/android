@@ -8,6 +8,8 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
@@ -26,12 +28,14 @@ public class SignActivity extends BCPFragmentActivity {
 
 	public static boolean onSignPage;
 	
+	private View loadingView;
+	
 	private boolean isMainLaunched;
 	
 	@Override
 	public void bindViews() {
 
-		setLoadingView(findViewById(R.id.signActivity_loadingView));
+		loadingView = findViewById(R.id.signActivity_loadingView);
 	}
 
 	@Override
@@ -42,14 +46,21 @@ public class SignActivity extends BCPFragmentActivity {
 
 	@Override
 	public void createPage() {
-		// TODO Auto-generated method stub
 
+		setLoadingView(loadingView);
 	}
 
 	@Override
 	public void setListeners() {
-		// TODO Auto-generated method stub
 
+		loadingView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
 	}
 
 	@Override

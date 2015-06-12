@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
@@ -771,43 +772,52 @@ public class CarView extends RelativeLayout {
 		return ivImage;
 	}
 
-	public void setComplete(int onsalecar_id) {
+	public void setComplete(final int onsalecar_id) {
 		
-		//http://dev.bye-car.com/onsalecars/dealer/set_status.json?onsalecar_id=1&status=30
-		String url = BCPAPIs.CAR_DEALER_STATUS_URL
-				+ "?onsalecar_id=" + onsalecar_id
-				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+		activity.showAlertDialog(R.string.complete_selling, R.string.wannaCompleteSelling, 
+				R.string.confirm, R.string.cancel,
+				new DialogInterface.OnClickListener() {
 
-			@Override
-			public void onError(String url) {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-				LogUtils.log("CarView.onError." + "\nurl : " + url);
-				ToastUtils.showToast(R.string.failToCompleteSelling);
-			}
+						//http://dev.bye-car.com/onsalecars/dealer/set_status.json?onsalecar_id=1&status=30
+						String url = BCPAPIs.CAR_DEALER_STATUS_URL
+								+ "?onsalecar_id=" + onsalecar_id
+								+ "&status=" + Car.STATUS_TRADE_COMPLETE;
+						DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
+							@Override
+							public void onError(String url) {
 
-				try {
-					LogUtils.log("CarView.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
+								LogUtils.log("CarView.onError." + "\nurl : " + url);
+								ToastUtils.showToast(R.string.failToCompleteSelling);
+							}
 
-					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_selling);
-						MainActivity.activity.getTopFragment().refreshPage();
-					} else {
-						ToastUtils.showToast(R.string.failToCompleteSelling);
+							@Override
+							public void onCompleted(String url, JSONObject objJSON) {
+
+								try {
+									LogUtils.log("CarView.onCompleted." + "\nurl : " + url
+											+ "\nresult : " + objJSON);
+
+									if(objJSON.getInt("result") == 1) {
+										ToastUtils.showToast(R.string.complete_selling);
+										MainActivity.activity.getTopFragment().refreshPage();
+									} else {
+										ToastUtils.showToast(R.string.failToCompleteSelling);
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+									ToastUtils.showToast(R.string.failToCompleteSelling);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+									ToastUtils.showToast(R.string.failToCompleteSelling);
+								}
+							}
+						});
 					}
-				} catch (Exception e) {
-					LogUtils.trace(e);
-					ToastUtils.showToast(R.string.failToCompleteSelling);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-					ToastUtils.showToast(R.string.failToCompleteSelling);
-				}
-			}
-		});
+				}, null);
 	}
 
 	public void setActivity(BCPFragmentActivity activity) {

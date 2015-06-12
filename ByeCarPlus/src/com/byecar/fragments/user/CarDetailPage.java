@@ -757,16 +757,7 @@ public class CarDetailPage extends BCPFragment {
 						car.copyValuesFromNewItem(newCar);
 					}
 					
-					setRelativeForType();
-					setMainCarInfo();
-					setReviews();
-					setInfos();
-					setAccident();
-					setOptions();
-					setCheck();
-					setDescription();
-					setCallButton();
-					setTitleBarButtons();
+					setAllInfos();
 				} catch (Exception e) {
 					LogUtils.trace(e);
 					closePage(R.string.failToLoadCarInfo);
@@ -776,6 +767,29 @@ public class CarDetailPage extends BCPFragment {
 				}
 			}
 		});
+	}
+	
+	public void setAllInfos() {
+		
+		try {
+			setRelativeForType();
+			setMainCarInfo();
+			setReviews();
+			setInfos();
+			setAccident();
+			setOptions();
+			setCheck();
+			setDescription();
+			setCallButton();
+			setTitleBarButtons();
+			setMessage();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+			closePage(R.string.failToLoadCarInfo);
+		} catch (Error e) {
+			LogUtils.trace(e);
+			closePage(R.string.failToLoadCarInfo);
+		}
 	}
 	
 	public void setMainCarInfo() {
@@ -847,6 +861,7 @@ public class CarDetailPage extends BCPFragment {
 					addViewsForBidding_dealerViewOnly();
 					break;
 					
+				//입금 완료.
 				case Car.STATUS_PAYMENT_COMPLETED:
 					addViewsForBidding_withButtons(true);
 					break;
@@ -972,7 +987,8 @@ public class CarDetailPage extends BCPFragment {
 				rp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 				rp.leftMargin = ResizeUtils.getSpecificLength(24);
 				
-				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+				if(car.getStatus() == Car.STATUS_BID_SUCCESS
+						|| car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
 					button.setBackgroundResource(R.drawable.select_contact_call_btn_b);
 					button.setOnClickListener(null);
 				} else {
@@ -982,7 +998,7 @@ public class CarDetailPage extends BCPFragment {
 						@Override
 						public void onClick(View view) {
 
-							callToDealerOrSeller();
+							callToDealer();
 						}
 					});
 				}
@@ -991,7 +1007,8 @@ public class CarDetailPage extends BCPFragment {
 			case 1:
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				
-				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+				if(car.getStatus() == Car.STATUS_BID_SUCCESS
+						|| car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
 					button.setBackgroundResource(R.drawable.select_contact_message_btn_b);
 					button.setOnClickListener(null);
 				} else {
@@ -1019,7 +1036,13 @@ public class CarDetailPage extends BCPFragment {
 				} else {
 					
 					if(needCompleteButton) {
-						button.setBackgroundResource(R.drawable.select_complete_btn);
+						
+						if(car.getStatus() != Car.STATUS_PAYMENT_COMPLETED) {
+							//입금 완료 전까지 거래완료 버튼 비활성화.
+							button.setBackgroundResource(R.drawable.select_complete_btn_b);
+						} else {
+							button.setBackgroundResource(R.drawable.select_complete_btn);
+						}
 					} else {
 						button.setBackgroundResource(R.drawable.select_contact_post_btn);
 					}
@@ -1031,13 +1054,12 @@ public class CarDetailPage extends BCPFragment {
 	
 							if(needCompleteButton) {
 								
-								if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
-									//입금 전까지 거래완료 버튼 비활성화.
+								if(car.getStatus() != Car.STATUS_PAYMENT_COMPLETED) {
+									//입금 완료 전까지 거래완료 버튼 비활성화.
 								} else {
 									setStatusToComplete();
 								}
 							} else {
-								
 								Bundle bundle = new Bundle();
 								bundle.putSerializable("car", car);
 								bundle.putInt("dealer_id", car.getDealer_id());
@@ -1296,7 +1318,7 @@ public class CarDetailPage extends BCPFragment {
 		FontUtils.setFontSize(tvSellerName, 30);
 		relativeForType.addView(tvSellerName);
 		
-		tvSellerName.setText(car.getSeller_name());
+		tvSellerName.setText(car.getSeller_nickname());
 		
 		//tvPhoneNumber.
 		TextView tvPhoneNumber = new TextView(mContext);
@@ -1311,7 +1333,7 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				callToDealerOrSeller();
+				callToSeller();
 			}
 		});
 		tvPhoneNumber.setText(car.getSeller_phone_number());
@@ -1703,6 +1725,27 @@ public class CarDetailPage extends BCPFragment {
 		}
 	}
 	
+	public void setMessage() {
+		
+		if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
+			
+			mThisView.postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					try {
+						mActivity.showAlertDialog(R.string.notification, R.string.waitingForDealerPayment, R.string.confirm, null);
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+				}
+			}, 1000);
+		}
+	}
+	
 	public void setOnTimerListener() {
 		
 		if(onTimeChangedListener == null) {
@@ -1758,7 +1801,7 @@ public class CarDetailPage extends BCPFragment {
 		if(event == null) {
 			return;
 		}
-		
+
 		if(this.car.getId() == car.getId()) {
 			
 			//관리자에 의해 보류된 경우.
@@ -1770,8 +1813,12 @@ public class CarDetailPage extends BCPFragment {
 			//딜러 선택 시간이 종료된 경우 (유찰).
 			//유저가 딜러를 선택한 경우 (낙찰).
 			} else {
-				this.car.copyValuesFromNewItem(car);
-				setMainCarInfo();
+
+				//딜러를 선택하여 수정된 경우 어차피 onResume에서 최신화 하기 때문에 할 필요가 없다.
+				if(car.getStatus() != Car.STATUS_BID_SUCCESS) {
+					this.car.copyValuesFromNewItem(car);
+					setAllInfos();
+				}
 			}
 		}
 	}
@@ -2023,16 +2070,9 @@ public class CarDetailPage extends BCPFragment {
 		}
 	}
 	
-	public void callToDealerOrSeller() {
+	public void callToDealer() {
 		
-		String message = null;
-		
-		if(type == Car.TYPE_DEALER) {
-			message = getString(R.string.wannaCallToDealer);
-		} else {
-			message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
-		}
-		
+		String message = getString(R.string.wannaCallToDealer);
 		mActivity.showAlertDialog(getString(R.string.call), message, 
 				getString(R.string.confirm), getString(R.string.cancel), 
 				new DialogInterface.OnClickListener() {
@@ -2040,8 +2080,22 @@ public class CarDetailPage extends BCPFragment {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 
-						IntentUtils.call(mContext, 
-								car.getType() == Car.TYPE_DEALER?car.getDealer_phone_number():car.getSeller_phone_number());
+						IntentUtils.call(mContext, car.getDealer_phone_number());
+					}
+				}, null);
+	}
+	
+	public void callToSeller() {
+		
+		String message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
+		mActivity.showAlertDialog(getString(R.string.call), message, 
+				getString(R.string.confirm), getString(R.string.cancel), 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+
+						IntentUtils.call(mContext, car.getSeller_phone_number());
 					}
 				}, null);
 	}
@@ -2066,7 +2120,7 @@ public class CarDetailPage extends BCPFragment {
 					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					IntentUtils.sendSMS(mContext, "거래요청", car.getDealer_phone_number());
+					IntentUtils.sendSMS(mContext, getString(R.string.dealingRequest), car.getDealer_phone_number());
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

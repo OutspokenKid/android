@@ -75,6 +75,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private String car_full_name;
 	
 	private String seller_name;
+	private String seller_nickname;
 	private String seller_phone_number;
 	private String seller_address;
 	private String seller_profile_img_url;
@@ -147,6 +148,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.car_full_name = null;
 			
 			this.seller_name = null;
+			this.seller_nickname = null;
 			this.seller_phone_number = null;
 			this.seller_address = null;
 			this.seller_profile_img_url = null;
@@ -216,6 +218,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.car_full_name = newCar.car_full_name;
 			
 			this.seller_name = newCar.seller_name;
+			this.seller_nickname = newCar.seller_nickname;
 			this.seller_phone_number = newCar.seller_phone_number;
 			this.seller_address = newCar.seller_address;
 			this.seller_profile_img_url = newCar.seller_profile_img_url;
@@ -376,6 +379,10 @@ public class Car extends BCPBaseModel implements Serializable {
 				
 				if(objJSON.has("seller_name")) {
 					this.seller_name = objJSON.getString("seller_name");
+				}
+				
+				if(objJSON.has("seller_nickname")) {
+					this.seller_nickname = objJSON.getString("seller_nickname");
 				}
 				
 				if(objJSON.has("seller_phone_number")) {
@@ -1193,5 +1200,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setAccident_desc(String accident_desc) {
 		this.accident_desc = accident_desc;
+	}
+
+	public String getSeller_nickname() {
+		return seller_nickname;
+	}
+
+	public void setSeller_nickname(String seller_nickname) {
+		this.seller_nickname = seller_nickname;
 	}
 }

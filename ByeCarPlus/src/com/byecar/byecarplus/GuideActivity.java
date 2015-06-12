@@ -21,11 +21,8 @@ import com.outspoken_kid.views.PageNavigatorView;
 public class GuideActivity extends Activity {
 
 	public static final int TYPE_USER_AUCTION = 0;
-	public static final int TYPE_USER_BUY = 1;
+	public static final int TYPE_USER_DEALER = 1;
 	public static final int TYPE_USER_DIRECT = 2;
-	public static final int TYPE_USER_CERTIFIED = 3;
-	public static final int TYPE_USER_NORMAL = 4;
-	public static final int TYPE_USER_UPLOAD = 5;
 	
 	private int type;
 	private int[] buttonResIds;
@@ -117,7 +114,7 @@ public class GuideActivity extends Activity {
 			};
 			break;
 			
-		case TYPE_USER_BUY:
+		case TYPE_USER_DEALER:
 			buttonResIds = new int[]{
 					R.drawable.information_buy_tab1_tab_a,
 					R.drawable.information_buy_tab2_tab_a,
@@ -178,57 +175,6 @@ public class GuideActivity extends Activity {
 					{
 						R.drawable.directmarket_information4_img1,
 						R.drawable.directmarket_information4_img2,
-					},
-			};
-			break;
-
-		case TYPE_USER_CERTIFIED:
-			buttonResIds = new int[]{
-					R.drawable.verification_information_tab1_tab_a,
-					R.drawable.verification_information_tab2_tab_a,
-					R.drawable.verification_information_tab1_tab_b,
-					R.drawable.verification_information_tab2_tab_b,
-			};
-			imageResIds = new int[][]{
-					{
-						R.drawable.verification_information_img1,
-						R.drawable.verification_information_img2,
-						R.drawable.verification_information_img3,
-						R.drawable.verification_information_img4,
-					},
-					
-					{
-						R.drawable.verification_information2_img1,
-						R.drawable.verification_information2_img2,
-					},
-			};
-			break;
-			
-		case TYPE_USER_NORMAL:
-			buttonResIds = new int[]{
-					R.drawable.normaldirect_information_tab1_tab_a,
-					R.drawable.normaldirect_information_tab2_tab_a,
-					R.drawable.normaldirect_information_tab1_tab_b,
-					R.drawable.normaldirect_information_tab2_tab_b,
-			};
-			imageResIds = new int[][]{
-					{
-						R.drawable.normaldirect_information_img1,
-						R.drawable.normaldirect_information_img2,
-						R.drawable.normaldirect_information_img3,
-					},
-					
-					{
-						R.drawable.normaldirect_information2_img1,
-						R.drawable.normaldirect_information2_img2,
-					},
-			};
-			break;
-			
-		case TYPE_USER_UPLOAD:
-			imageResIds = new int[][]{
-					{
-						R.drawable.directmarket_information_img2,
 					},
 			};
 			break;
@@ -352,7 +298,7 @@ public class GuideActivity extends Activity {
 			//pageNavigator.
 			rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(16);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(700);
+			rp.bottomMargin = ResizeUtils.getSpecificLength(720);
 			
 			//btnLeft.
 			rp = (RelativeLayout.LayoutParams) btnLeft.getLayoutParams();

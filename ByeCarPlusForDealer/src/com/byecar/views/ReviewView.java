@@ -226,7 +226,7 @@ public class ReviewView extends RelativeLayout {
 					public void onClick(View view) {
 
 						Bundle bundle = new Bundle();
-						bundle.putString("to", review.getReviewer_name());
+						bundle.putString("to", review.getReviewer_nickname());
 						bundle.putInt("parent_id", review.getId());
 						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
 					}
@@ -248,7 +248,7 @@ public class ReviewView extends RelativeLayout {
 			}
 			
 			downloadImage(review.getReviewer_profile_img_url());
-			tvNickname.setText(review.getReviewer_name());
+			tvNickname.setText(review.getReviewer_nickname());
 			tvCarName.setText(review.getCar_full_name());
 			ratingBar.setRating(review.getRating());
 			tvContent.setText(review.getContent());

@@ -356,6 +356,13 @@ public class DealerPage extends BCPFragment {
 		return R.id.dealerPage_mainLayout;
 	}
 	
+	@Override
+	public void refreshPage() {
+		
+		reviews.clear();
+		loadReviews();
+	}
+	
 //////////////////// Custom methods.
 	
 	public void downloadDealerInfo() {

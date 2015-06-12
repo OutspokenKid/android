@@ -68,6 +68,7 @@ import com.byecar.models.Dealer;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
+import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
@@ -113,6 +114,8 @@ public class MainActivity extends BCPFragmentActivity {
 	private TextView tvNotification;
 	private Button btnEdit;
 	private Button[] menuButtons;
+	
+	private View loadingView;
 	
 	private RelativeLayout popup;
 	private View popupBg;
@@ -167,7 +170,7 @@ public class MainActivity extends BCPFragmentActivity {
 		btnClose = (Button) findViewById(R.id.mainForDealerActivity_btnClose);
 		btnClose2 = (Button) findViewById(R.id.mainForDealerActivity_btnClose2);
 		
-		setLoadingView(findViewById(R.id.mainForDealerActivity_loadingView));
+		loadingView = findViewById(R.id.mainForDealerActivity_loadingView);
 	}
 
 	@Override
@@ -192,6 +195,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public void createPage() {
 		
 		try {
+			setLoadingView(loadingView);
 			setLeftView();
 		} catch(Exception e) {
 			LogUtils.trace(e);
@@ -344,6 +348,24 @@ public class MainActivity extends BCPFragmentActivity {
 						animating = false;
 					}
 				}, 300);
+			}
+		});
+	
+		loadingView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
+		
+		popup.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
 			}
 		});
 	}
@@ -975,8 +997,7 @@ public class MainActivity extends BCPFragmentActivity {
 					MainActivity.user = null;
 					MainActivity.dealer = null;
 					
-					SharedPrefsUtils.clearCookie(getCookieName_D1());
-					SharedPrefsUtils.clearCookie(getCookieName_S());
+					clearCookies();
 					
 					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_PUSH);
 					SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_CERTIFY);
@@ -1010,9 +1031,7 @@ public class MainActivity extends BCPFragmentActivity {
 					LogUtils.log("MainForDealerActivity.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
 
-					SharedPrefsUtils.clearCookie(getCookieName_D1());
-					SharedPrefsUtils.clearCookie(getCookieName_S());
-					
+					clearCookies();
 					launchSignActivity();
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -1021,6 +1040,13 @@ public class MainActivity extends BCPFragmentActivity {
 				}
 			}
 		});
+	}
+	
+	public void clearCookies() {
+		
+		SharedPrefsUtils.clearPrefs(getCookieName_D1());
+		SharedPrefsUtils.clearPrefs(getCookieName_S());
+		RequestManager.getCookieStore().clear();
 	}
 	
 	public void checkSession() {

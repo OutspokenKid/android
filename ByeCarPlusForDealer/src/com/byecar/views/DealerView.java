@@ -107,13 +107,13 @@ public class DealerView extends FrameLayout {
 		switch(index) {
 		
 		case 0:
-			rankBadge.setBackgroundResource(R.drawable.main_rank1);
+			rankBadge.setBackgroundResource(R.drawable.main_rank1_b);
 			break;
 		case 1:
-			rankBadge.setBackgroundResource(R.drawable.main_rank2);
+			rankBadge.setBackgroundResource(R.drawable.main_rank2_b);
 			break;
 		case 2:
-			rankBadge.setBackgroundResource(R.drawable.main_rank3);
+			rankBadge.setBackgroundResource(R.drawable.main_rank3_b);
 			break;
 		}
 		
@@ -197,13 +197,13 @@ public class DealerView extends FrameLayout {
 		switch(index) {
 		
 		case 0:
-			rankBadge.setBackgroundResource(R.drawable.main_rank1);
+			rankBadge.setBackgroundResource(R.drawable.main_rank1_b);
 			break;
 		case 1:
-			rankBadge.setBackgroundResource(R.drawable.main_rank2);
+			rankBadge.setBackgroundResource(R.drawable.main_rank2_b);
 			break;
 		case 2:
-			rankBadge.setBackgroundResource(R.drawable.main_rank3);
+			rankBadge.setBackgroundResource(R.drawable.main_rank3_b);
 			break;
 		}
 	}

@@ -396,11 +396,21 @@
 		        android:scaleType="centerCrop" />
             
             <TextView
+		        android:id="@+id/carRegistrationPage_tvAddedPhoto"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:gravity="center"
+		        android:text="@string/addedPhotoText"
+		        android:textColor="@color/new_color_text_red" />
+            
+            <TextView
 		        android:id="@+id/carRegistrationPage_tvOptionTitle"
 		        android:layout_width="0dp"
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@id/carRegistrationPage_btnAddedPhoto1"
+		        android:layout_below="@id/carRegistrationPage_tvAddedPhoto"
 		        android:gravity="center_vertical"
 		        android:text="@string/carRegistrationTitle5"
 		        android:textColor="#fff"
@@ -517,14 +527,6 @@
         </RelativeLayout>
         
     </com.outspoken_kid.views.OffsetScrollView>
-    
-	<Button
-        android:id="@+id/carRegistrationPage_btnGuide"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/normal_direct_guide_btn" />
         
 	<View 
         android:id="@+id/carRegistrationPage_cover"
@@ -538,7 +540,6 @@
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_centerInParent="true"
-    	android:clickable="true"
     	android:visibility="invisible"
     	android:background="@drawable/accident_pop_bg" >
         
