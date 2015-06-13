@@ -30,6 +30,7 @@ public class GuideActivity extends Activity {
 	
 	private Button btnBack;
 	private TextView tvTitle;
+	private Button btnSkip;
 	private LinearLayout menuLinear;
 	private View bottomLine;
 	private ArrayList<Button> menuButtons = new ArrayList<Button>();
@@ -56,6 +57,7 @@ public class GuideActivity extends Activity {
 		
 		btnBack = (Button) findViewById(R.id.guideActivity_btnBack);
 		tvTitle = (TextView) findViewById(R.id.guideActivity_tvTitle);
+		btnSkip = (Button) findViewById(R.id.guideActivity_btnSkip);
 		menuLinear = (LinearLayout) findViewById(R.id.guideActivity_menuLinear);
 		bottomLine = findViewById(R.id.guideActivity_bottomLine);
 		
@@ -67,6 +69,13 @@ public class GuideActivity extends Activity {
 	
 	public void setVariables() {
 
+		if(getIntent().hasExtra("forSignUp")
+				&& getIntent().getBooleanExtra("forSignUp", false)) {
+			btnSkip.setVisibility(View.VISIBLE);
+		} else {
+			btnSkip.setVisibility(View.INVISIBLE);
+		}
+		
 		type = getIntent().getIntExtra("type", 0);
 		
 		switch(type) {
@@ -120,10 +129,26 @@ public class GuideActivity extends Activity {
 			}
 		});
 		
-		rp = ((RelativeLayout.LayoutParams)tvTitle.getLayoutParams());
+		rp = ((RelativeLayout.LayoutParams) tvTitle.getLayoutParams());
 		rp.height = ResizeUtils.getSpecificLength(88);
 		FontUtils.setFontSize(tvTitle, 32);
 		FontUtils.setFontStyle(tvTitle, FontUtils.BOLD);
+		
+		rp = ((RelativeLayout.LayoutParams) btnSkip.getLayoutParams());
+		rp.width = ResizeUtils.getSpecificLength(120);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+		
+		btnSkip.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				setResult(RESULT_OK);
+				finish();
+			}
+		});
 	}
 	
 	public void setMenu() {
@@ -211,7 +236,7 @@ public class GuideActivity extends Activity {
 			//pageNavigator.
 			rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(16);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(720);
+			rp.topMargin = ResizeUtils.getSpecificLength(140);
 			
 			//btnLeft.
 			rp = (RelativeLayout.LayoutParams) btnLeft.getLayoutParams();

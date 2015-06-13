@@ -343,7 +343,7 @@ public class MyInfoReviewPage extends BCPFragment {
 
 		return R.string.pageTitle_myInfoReview;
 	}
-
+	
 	@Override
 	public boolean parseJSON(JSONObject objJSON) {
 		// TODO Auto-generated method stub
@@ -368,9 +368,11 @@ public class MyInfoReviewPage extends BCPFragment {
 		
 		setDealerInfo();
 		setIntro();
-		
+
 		if(reviews.size() == 0) {
 			loadReviews();
+		} else {
+			refreshReviews();
 		}
 		
 		checkPageScrollOffset();
@@ -511,7 +513,7 @@ public class MyInfoReviewPage extends BCPFragment {
 	}
 	
 	public void loadReviews() {
-
+		
 		String url = BCPAPIs.REVIEW_DEALER_URL
 				+ "?dealer_id=" + MainActivity.dealer.getId();
 		
@@ -521,7 +523,6 @@ public class MyInfoReviewPage extends BCPFragment {
 			public void onError(String url) {
 
 				LogUtils.log("DealerPage.onError." + "\nurl : " + url);
-
 			}
 
 			@Override
@@ -542,6 +543,8 @@ public class MyInfoReviewPage extends BCPFragment {
 					
 					if(size < NUMBER_OF_LISTITEMS) {
 						btnMore.setVisibility(View.GONE);
+					} else {
+						btnMore.setVisibility(View.VISIBLE);
 					}
 					
 					addReviewViews(newReviews);
@@ -566,6 +569,13 @@ public class MyInfoReviewPage extends BCPFragment {
 		});
 	}
 	
+	public void refreshReviews() {
+
+		linearForReview.removeAllViews();
+		linearForReview.addView(btnMore);
+		addReviewViews(reviews);
+	}
+	
 	public void addReviewViews(ArrayList<Review> reviews) {
 		
 		int size = reviews.size();
@@ -578,7 +588,7 @@ public class MyInfoReviewPage extends BCPFragment {
 			if(reviews.get(i).getReply() != null) {
 				ReviewView reply = new ReviewView(mContext);
 				ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-				reply.setReply(reviews.get(i).getReply());
+				reply.setReply(reviews.get(i).getReply(), reviews.get(i), mActivity);
 				linearForReview.addView(reply, linearForReview.getChildCount() - 1);
 				
 				if(i != size - 1) {

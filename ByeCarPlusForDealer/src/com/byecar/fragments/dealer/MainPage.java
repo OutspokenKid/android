@@ -595,8 +595,34 @@ public class MainPage extends BCPAuctionableFragment {
 		//경매가 시작되는 물건이 있는 경우.
 		//딜러 선택 시간이 종료된 경우 (유찰).
 		//유저가 딜러를 선택한 경우 (낙찰).
-		if(event.equals("auction_begun")
-				|| event.equals("selection_time_ended")
+		if(event.equals("auction_begun")) {
+			
+			switch(menuIndex) {
+			
+			case 0:
+				//Don't need to check.
+				break;
+				
+			case 1:
+				//내 입찰 매물이 아니면 종료.
+				if(car.getMy_bid_price() == 0) {
+					return;
+				}
+				break;
+				
+			case 2:
+				//내 입찰 + 내가 입찰 성공한 매물이 아니면 종료.
+				if(car.getMy_bid_price() == 0
+						|| car.getMy_bid_ranking() > 3) {
+					return;
+				}
+				
+				break;
+			}
+			
+			reorderList(startIndex, car);
+			
+		} else if(event.equals("selection_time_ended")
 				|| event.equals("dealer_selected")) {
 			//새로운 매물보다 더 늦게 끝나는 매물이 있거나 경매중이 아닌 매물이 있다면 그 위에 삽입.
 			reorderList(startIndex, car);

@@ -253,7 +253,11 @@ public class SharedPrefsUtils {
 			if(name != null) {
 				cookie = new BasicClientCookie(name, value);
 				cookie.setDomain(domain);
-				cookie.setExpiryDate(new Date(expiryDate));
+				
+				if(expiryDate != null) {
+					cookie.setExpiryDate(new Date(expiryDate));
+				}
+				
 				cookie.setPath(path);
 				cookie.setVersion(version);
 			}

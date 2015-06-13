@@ -578,7 +578,11 @@ public class SignUpPage extends BCPFragment {
 		
 		try {
 			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
-			url += "&user[phone_number]=" + tMgr.getLine1Number(); 
+			String phone_number = tMgr.getLine1Number();
+			
+			if(!StringUtils.isEmpty(phone_number)) {
+				url += "&user[phone_number]=" + phone_number;
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {

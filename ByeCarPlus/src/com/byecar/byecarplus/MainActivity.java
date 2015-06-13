@@ -74,7 +74,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
-import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -89,10 +88,7 @@ public class MainActivity extends BCPFragmentActivity {
 	
 	public static MainActivity activity;
 
-	public static final int POPUP_REQUEST_CERTIFICATION = 0;
-	public static final int POPUP_REQUEST_BUY = 1;
 	public static final int POPUP_REGISTRATION = 2;
-	public static final int POPUP_CHOICE_DEALER = 3;
 
 	public static User user;
 	public static CompanyInfo companyInfo;
@@ -111,9 +107,7 @@ public class MainActivity extends BCPFragmentActivity {
 	private RelativeLayout popup;
 	private View popupBg;
 	private View popupImage;
-	private TextView tvPopupText;
 	private Button btnHome;
-	private Button btnCall;
 
 	private View loadingView;
 	
@@ -157,9 +151,7 @@ public class MainActivity extends BCPFragmentActivity {
 		popup = (RelativeLayout) findViewById(R.id.mainForUserActivity_popup);
 		popupBg = findViewById(R.id.mainForUserActivity_popupBg);
 		popupImage = findViewById(R.id.mainForUserActivity_popupImage);
-		tvPopupText = (TextView) findViewById(R.id.mainForUserActivity_tvPopupText);
 		btnHome = (Button) findViewById(R.id.mainForUserActivity_btnHome);
-		btnCall = (Button) findViewById(R.id.mainForUserActivity_btnCall);
 		
 		loadingView = findViewById(R.id.mainForUserActivity_loadingView);
 		
@@ -229,26 +221,6 @@ public class MainActivity extends BCPFragmentActivity {
 			}
 		});
 		
-		btnCall.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				showAlertDialog(R.string.call, R.string.wannaCallToDealer, 
-						R.string.confirm, R.string.cancel,
-						new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								
-								if(dealerPhoneNumber != null) {
-									IntentUtils.call(MainActivity.this, dealerPhoneNumber);
-								}
-							}
-						}, null);
-			}
-		});
-	
 		ivNotice.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -336,19 +308,14 @@ public class MainActivity extends BCPFragmentActivity {
 		FontUtils.setFontSize(tvMenuTitle, 18);
 		FontUtils.setFontStyle(tvMenuTitle, FontUtils.BOLD);
 		
-		ResizeUtils.viewResizeForRelative(304, 314, popupImage, null, null, new int[]{0, 40, 0, 0});
-		ResizeUtils.setMargin(tvPopupText, new int[]{0, 40, 0, 0});
+		ResizeUtils.viewResizeForRelative(304, 314, popupImage, null, null, new int[]{0, 110, 0, 0});
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
-		ResizeUtils.viewResizeForRelative(488, 82, btnCall, null, null, new int[]{0, 0, 0, 32});
 
 		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
 		ResizeUtils.viewResizeForRelative(578, 778, ivNotice, null, null, new int[]{0, 0, 0, 0});
 		ResizeUtils.viewResizeForRelative(558, 73, buttonBg, null, null, new int[]{0, 0, 0, 14});
 		ResizeUtils.viewResizeForRelative(210, 73, btnDoNotSeeAgain, null, null, new int[]{21, 0, 0, 0});
 		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 0});
-		
-		FontUtils.setFontSize(tvPopupText, 30);
-		FontUtils.setFontStyle(tvPopupText, FontUtils.BOLD);
 	}
 
 	@Override
@@ -843,33 +810,10 @@ public class MainActivity extends BCPFragmentActivity {
 	public void showPopup(int type) {
 
 		switch(type) {
-		
-		case POPUP_REQUEST_CERTIFICATION:
-			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
-			tvPopupText.setText(R.string.popup_request_certification);
-			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-			btnCall.setVisibility(View.INVISIBLE);
-			break;
-			
-		case POPUP_REQUEST_BUY:
-			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
-			tvPopupText.setText(R.string.popup_request_buy);
-			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
-			btnCall.setVisibility(View.VISIBLE);
-			break;
 			
 		case POPUP_REGISTRATION:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
-			tvPopupText.setText(R.string.popup_registration);
 			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-			btnCall.setVisibility(View.INVISIBLE);
-			break;
-			
-		case POPUP_CHOICE_DEALER:
-			popupImage.setBackgroundResource(R.drawable.dealer_sel_cartoon);
-			tvPopupText.setText(R.string.popup_choice_dealer);
-			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-			btnCall.setVisibility(View.INVISIBLE);
 			break;
 		}
 		

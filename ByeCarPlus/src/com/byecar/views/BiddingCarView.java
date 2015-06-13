@@ -63,9 +63,9 @@ public class BiddingCarView extends FrameLayout {
 		
 		//tvRemainTime.
 		tvRemainTime = new TextView(getContext());
-		ResizeUtils.viewResize(160, 38, tvRemainTime, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 80, 0, 0}, new int[]{16, 0, 0, 0});
+		ResizeUtils.viewResize(110, 26, tvRemainTime, 2, Gravity.CENTER_HORIZONTAL, new int[]{0, 8, 0, 0});
 		tvRemainTime.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvRemainTime, 22);
+		FontUtils.setFontSize(tvRemainTime, 18);
 		FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
 		tvRemainTime.setGravity(Gravity.CENTER);
 		tvRemainTime.setSingleLine();

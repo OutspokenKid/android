@@ -10,6 +10,7 @@ public class BCPAPIs {
 	public static String AREA_URL = BASE_API_URL + "/zipcodes/areas.json";
 	public static String AREA_SEARCH_URL = BASE_API_URL + "/dongs/search.json";
 	public static String DEALER_COUNT_URL = BASE_API_URL + "/users/count/dealer.json";
+	public static String CDN_URL = BASE_API_URL + "/files/upload/link.json";
 	
 	public static String EMAIL_CHECK_URL = BASE_API_URL + "/users/check/email.json";
 	public static String NICKNAME_CHECK_URL = BASE_API_URL + "/users/check/nickname.json";

@@ -33,6 +33,9 @@ import com.outspoken_kid.views.OutSpokenRatingBar;
 
 public class ReviewView extends RelativeLayout {
 
+	private Review review;
+	private Review reply;
+	
 	private View bgTop;
 	private TextView tvContent;
 	private TextView tvRegdate;
@@ -209,18 +212,21 @@ public class ReviewView extends RelativeLayout {
 	public void setReview(final Review review, final BCPFragmentActivity activity) {
 		
 		try {
+			this.review = review;
+			
 			bgTop.setBackgroundResource(R.drawable.dealer_post_frame_head);
 			tvContent.setBackgroundResource(R.drawable.dealer_post_frame_body);
 			tvRegdate.setBackgroundResource(R.drawable.dealer_post_frame_foot);
 			cover.setBackgroundResource(R.drawable.dealer_post_pic_frame);
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
 					ResizeUtils.getSpecificLength(34), 0);
+			tvNickname.setSingleLine(false);
 				
 			//나에게 달린 리뷰이고, 아직 리플이 안달린 경우
 			if(review.getDealer_id() == MainActivity.dealer.getId()
 					&& review.getReply() == null) {
-				btnReply.setVisibility(View.VISIBLE);
-				btnReply.setOnClickListener(new OnClickListener() {
+				btnEdit.setVisibility(View.VISIBLE);
+				btnEdit.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View view) {
@@ -260,9 +266,11 @@ public class ReviewView extends RelativeLayout {
 		}
 	}
 	
-	public void setReply(final Review reply) {
+	public void setReply(final Review reply, final Review review, final BCPFragmentActivity activity) {
 		
 		try {
+			this.reply = reply;
+			
 			gradeBadge.setVisibility(View.VISIBLE);
 			tvGrade.setVisibility(View.VISIBLE);
 			replyBadge.setVisibility(View.VISIBLE);
@@ -274,6 +282,24 @@ public class ReviewView extends RelativeLayout {
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
 					ResizeUtils.getSpecificLength(34), 0);
 			tvCarName.setPadding(ResizeUtils.getSpecificLength(21), ResizeUtils.getSpecificLength(10), 0, 0);
+			tvNickname.setSingleLine(true);
+			
+			//내가 쓴 리뷰인 경우.
+			if(reply.getDealer_id() == MainActivity.dealer.getId()) {
+				btnEdit.setVisibility(View.VISIBLE);
+				btnEdit.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						
+						Bundle bundle = new Bundle();
+						bundle.putString("to", review.getReviewer_nickname());
+						bundle.putInt("parent_id", review.getId());
+						bundle.putSerializable("review", review.getReply());
+						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+					}
+				});
+			}
 			
 			if(!StringUtils.isEmpty(reply.getReviewer_profile_img_url())) {
 				ivImage.setOnClickListener(new OnClickListener() {
@@ -365,5 +391,31 @@ public class ReviewView extends RelativeLayout {
 				}
 			}
 		}, 86);
+	}
+
+	public void setContent(String content) {
+		
+		tvContent.setText(content);
+	}
+	
+	public Review getReview() {
+		
+		return review;
+	}
+	
+	public Review getReply() {
+		
+		return reply;
+	}
+	
+	public int getId() {
+		
+		if(reply != null) {
+			return reply.getId();
+		} else if(review != null) {
+			return review.getId();
+		} else {
+			return 0;
+		}
 	}
 }

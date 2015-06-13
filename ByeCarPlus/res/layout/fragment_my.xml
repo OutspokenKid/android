@@ -33,19 +33,11 @@
     	android:background="@drawable/mypage_tab1_tab_a" />
     
     <Button 
-        android:id="@+id/myPage_btnPurchase"
+        android:id="@+id/myPage_btnLike"
         android:layout_width="0dp"
     	android:layout_height="0dp"
     	android:layout_alignTop="@id/myPage_btnCar"
     	android:layout_toRightOf="@id/myPage_btnCar"
-    	android:background="@drawable/mypage_tab2_tab_b" />
-    
-    <Button 
-        android:id="@+id/myPage_btnLike"
-        android:layout_width="0dp"
-    	android:layout_height="0dp"
-    	android:layout_alignTop="@id/myPage_btnPurchase"
-    	android:layout_toRightOf="@id/myPage_btnPurchase"
     	android:textColor="#fff"
     	android:gravity="center"
     	android:background="@drawable/mypage_tab3_tab_b" />

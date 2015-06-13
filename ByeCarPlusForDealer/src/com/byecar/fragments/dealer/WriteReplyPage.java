@@ -185,7 +185,21 @@ public class WriteReplyPage extends BCPFragment {
 
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_writeReply);
-						mActivity.closePageWithRefreshPreviousPage();
+						
+						if(review != null) {
+
+							try {
+								JSONObject objReview = objJSON.getJSONObject("review");
+								review.setContent(objReview.getString("content"));
+								review.setRating(objReview.getInt("rating"));
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (Error e) {
+								LogUtils.trace(e);
+							}
+						}
+						
+						mActivity.closeTopPage();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

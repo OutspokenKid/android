@@ -30,7 +30,6 @@ import com.outspoken_kid.utils.ResizeUtils;
 public class MyPage extends BCPFragment {
 
 	private Button btnCar;
-	private Button btnPurchase;
 	private Button btnLike;
 	private Button btnReview;
 	
@@ -45,7 +44,6 @@ public class MyPage extends BCPFragment {
 		btnCar = (Button) mThisView.findViewById(R.id.myPage_btnCar);
 		btnReview = (Button) mThisView.findViewById(R.id.myPage_btnReview);
 		btnLike = (Button) mThisView.findViewById(R.id.myPage_btnLike);
-		btnPurchase = (Button) mThisView.findViewById(R.id.myPage_btnPurchase);
 		listView = (ListView) mThisView.findViewById(R.id.myPage_listView);
 	}
 
@@ -76,22 +74,13 @@ public class MyPage extends BCPFragment {
 				setMenu(0);
 			}
 		});
-		
-		btnPurchase.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-				
-				setMenu(1);
-			}
-		});
 
 		btnLike.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
 				
-				setMenu(2);
+				setMenu(1);
 			}
 		});
 		
@@ -100,7 +89,7 @@ public class MyPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 				
-				setMenu(3);
+				setMenu(2);
 			}
 		});
 		
@@ -127,7 +116,7 @@ public class MyPage extends BCPFragment {
 					long arg3) {
 				
 				try {
-					if(menuIndex != 3) {
+					if(menuIndex != 2) {
 						Car car = (Car) models.get(position);
 						((MainActivity)mActivity).showCarDetailPage(0, car, car.getType());
 					}
@@ -146,9 +135,8 @@ public class MyPage extends BCPFragment {
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, 
 				mThisView.findViewById(R.id.myPage_bgForButtons), null, null, null);
 		
-		ResizeUtils.viewResizeForRelative(160, 88, btnCar, null, null, null);
-		ResizeUtils.viewResizeForRelative(160, 88, btnPurchase, null, null, null);
-		ResizeUtils.viewResizeForRelative(160, 88, btnLike, null, null, null);
+		ResizeUtils.viewResizeForRelative(214, 88, btnCar, null, null, null);
+		ResizeUtils.viewResizeForRelative(214, 88, btnLike, null, null, null);
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 88, btnReview, null, null, null);
 	}
 
@@ -176,8 +164,6 @@ public class MyPage extends BCPFragment {
 		if(menuIndex == 0) {
 			url = BCPAPIs.MY_CAR_URL;
 		} else if(menuIndex == 1) {
-			url = BCPAPIs.MY_PURCHASE_URL;
-		} else if(menuIndex == 2) {
 			url = BCPAPIs.MY_LIKE_URL;
 		} else {
 			url = BCPAPIs.MY_REVIEW_URL;
@@ -203,15 +189,6 @@ public class MyPage extends BCPFragment {
 					models.add(car);
 				}
 			} else if(menuIndex == 1) {
-				arJSON = objJSON.getJSONArray("purchases");
-				size = arJSON.length();
-				
-				for(int i=0; i<size; i++) {
-					Car car = new Car(arJSON.getJSONObject(i));
-					car.setItemCode(BCPConstants.ITEM_CAR_MY_PURCHASE);
-					models.add(car);
-				}
-			} else if(menuIndex == 2) {
 				arJSON = objJSON.getJSONArray("onsalecars");
 				size = arJSON.length();
 				
@@ -273,25 +250,16 @@ public class MyPage extends BCPFragment {
 		
 		if(menuIndex == 0) {
 			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_a);
-			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
 			btnLike.setBackgroundResource(R.drawable.mypage_tab3_tab_b);
 			btnReview.setBackgroundResource(R.drawable.mypage_tab4_tab_b);
 			
 		} else if(menuIndex == 1) {
 			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
-			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_a);
-			btnLike.setBackgroundResource(R.drawable.mypage_tab3_tab_b);
-			btnReview.setBackgroundResource(R.drawable.mypage_tab4_tab_b);
-			
-		} else if(menuIndex == 2) {
-			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
-			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
 			btnLike.setBackgroundResource(R.drawable.mypage_tab3_tab_a);
 			btnReview.setBackgroundResource(R.drawable.mypage_tab4_tab_b);
 			
 		} else {
 			btnCar.setBackgroundResource(R.drawable.mypage_tab1_tab_b);
-			btnPurchase.setBackgroundResource(R.drawable.mypage_tab2_tab_b);
 			btnLike.setBackgroundResource(R.drawable.mypage_tab3_tab_b);
 			btnReview.setBackgroundResource(R.drawable.mypage_tab4_tab_a);
 		}

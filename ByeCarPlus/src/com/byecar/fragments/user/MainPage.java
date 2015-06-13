@@ -707,9 +707,7 @@ public class MainPage extends BCPAuctionableFragment {
 						pageNavigator.setEmptyOffCircle();
 						pageNavigator.invalidate();
 
-						if(bids1.size() > 0) {
-							setPagerInfo(0);
-						}
+						setPagerInfo(0);
 					} catch (Exception e) {
 						LogUtils.trace(e);
 					}
@@ -955,7 +953,7 @@ public class MainPage extends BCPAuctionableFragment {
 			carInfoView.clearView();
 			pageNavigator.setVisibility(View.INVISIBLE);
 			auctionIcon.setVisibility(View.INVISIBLE);
-			
+			setTopDealerViews(null);
 		} else {
 			Car car = bids1.get(index);
 			

@@ -294,14 +294,14 @@ public class CarView extends RelativeLayout {
 		
 		//tvRemainTime.
 		tvRemainTime = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(140), ResizeUtils.getSpecificLength(42));
-		rp.addRule(ALIGN_PARENT_LEFT);
-		rp.addRule(ALIGN_PARENT_BOTTOM);
-		rp.leftMargin = ResizeUtils.getSpecificLength(62);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(11);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(110), ResizeUtils.getSpecificLength(26));
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.addRule(ALIGN_RIGHT, R.id.carView_ivImage);
+		rp.topMargin = ResizeUtils.getSpecificLength(10);
+		rp.rightMargin = ResizeUtils.getSpecificLength(7);
 		tvRemainTime.setLayoutParams(rp);
 		tvRemainTime.setTextColor(Color.WHITE);
-		FontUtils.setFontSize(tvRemainTime, 26);
+		FontUtils.setFontSize(tvRemainTime, 18);
 		FontUtils.setFontStyle(tvRemainTime, FontUtils.BOLD);
 		tvRemainTime.setGravity(Gravity.CENTER);
 		tvRemainTime.setSingleLine();
@@ -471,9 +471,18 @@ public class CarView extends RelativeLayout {
 		}
 		
 		if(car.getType() == Car.TYPE_DEALER) {
-			ivProfile.setVisibility(View.VISIBLE);
-			tvDealerName.setVisibility(View.VISIBLE);
-			rankBadge.setVisibility(View.VISIBLE);
+			
+			if(car.getItemCode() != BCPConstants.ITEM_CAR_BID_COMPLETED
+				&& car.getItemCode() != BCPConstants.ITEM_CAR_DEALER_COMPLETED) {
+				ivProfile.setVisibility(View.VISIBLE);
+				tvDealerName.setVisibility(View.VISIBLE);
+				rankBadge.setVisibility(View.VISIBLE);
+			} else {
+				ivProfile.setVisibility(View.INVISIBLE);
+				tvDealerName.setVisibility(View.INVISIBLE);
+				rankBadge.setVisibility(View.INVISIBLE);
+			}
+			
 			tvBiddingInfo.setVisibility(View.INVISIBLE);
 			tvLikeText.setVisibility(View.VISIBLE);
 			btnLike.setVisibility(View.VISIBLE);

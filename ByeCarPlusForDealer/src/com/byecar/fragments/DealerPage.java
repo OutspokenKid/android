@@ -332,9 +332,11 @@ public class DealerPage extends BCPFragment {
 		if(dealer != null) {
 			setDealerInfo();
 			setIntro();
-			
+
 			if(reviews.size() == 0) {
 				loadReviews();
+			} else {
+				refreshReviews();
 			}
 		} else {
 			downloadDealerInfo();
@@ -354,13 +356,6 @@ public class DealerPage extends BCPFragment {
 	public int getRootViewResId() {
 
 		return R.id.dealerPage_mainLayout;
-	}
-	
-	@Override
-	public void refreshPage() {
-		
-		reviews.clear();
-		loadReviews();
 	}
 	
 //////////////////// Custom methods.
@@ -504,7 +499,7 @@ public class DealerPage extends BCPFragment {
 			tvIntro.setText(R.string.emptyDealerDesc);
 		}
 	}
-
+	
 	public void loadReviews() {
 
 		String url = BCPAPIs.REVIEW_DEALER_URL
@@ -561,6 +556,13 @@ public class DealerPage extends BCPFragment {
 		});
 	}
 	
+	public void refreshReviews() {
+
+		linearForReview.removeAllViews();
+		linearForReview.addView(btnMore);
+		addReviewViews(reviews);
+	}
+	
 	public void addReviewViews(ArrayList<Review> reviews) {
 		
 		int size = reviews.size();
@@ -573,7 +575,7 @@ public class DealerPage extends BCPFragment {
 			if(reviews.get(i).getReply() != null) {
 				ReviewView reply = new ReviewView(mContext);
 				ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-				reply.setReply(reviews.get(i).getReply());
+				reply.setReply(reviews.get(i).getReply(), reviews.get(i), mActivity);
 				linearForReview.addView(reply, linearForReview.getChildCount() - 1);
 				
 				if(i != size - 1) {

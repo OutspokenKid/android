@@ -29,6 +29,14 @@
     	android:textColor="#fff"
     	android:gravity="center_vertical" />
    	
+   	<Button 
+   	    android:id="@+id/guideActivity_btnSkip"
+   		android:layout_width="0dp"
+    	android:layout_height="0dp"
+    	android:layout_alignRight="@id/guideActivity_titleBg"
+    	android:layout_alignTop="@id/guideActivity_titleBg"
+    	android:background="@drawable/guide_skip_btn" />
+   	
    	<LinearLayout 
    	    android:id="@+id/guideActivity_menuLinear"
    		android:layout_width="match_parent"
@@ -56,7 +64,7 @@
    		android:layout_width="match_parent"
     	android:layout_height="0dp"
    	    android:layout_centerHorizontal="true"
-   	    android:layout_alignParentBottom="true" />
+   	    android:layout_alignTop="@id/guideActivity_viewPager" />
    	
    	<Button 
    	    android:id="@+id/guideActivity_btnLeft"

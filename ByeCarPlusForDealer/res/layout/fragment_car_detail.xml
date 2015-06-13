@@ -604,6 +604,14 @@
         android:background="@drawable/detail_purchase_btn" />
     
     <Button
+        android:id="@+id/carDetailPage_btnCall"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/detail_purchase_btn" />
+    
+    <Button
         android:id="@+id/carDetailPage_btnDelete"
         android:layout_width="0dp"
         android:layout_height="0dp"

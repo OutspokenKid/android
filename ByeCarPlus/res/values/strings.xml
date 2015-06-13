@@ -69,7 +69,6 @@
     <string name="complete_writeReply">댓글 작성 완료</string>
     <string name="complete_writeReview">리뷰 작성 완료</string>
     <string name="confirm">확인</string>
-    <string name="copyright">Copyright(C) (C)Bye Car Plus. All rights reserved.</string>
     <string name="currentPrice">현재가</string>
     <string name="customerSatisfactionDegree">고객 만족도</string>
     
@@ -80,7 +79,7 @@
     <string name="dealerLevel2">일반딜러</string>
     <string name="dealerLevel3">우수딜러</string>
     <string name="dealerLevel4">파워딜러</string>
-    <string name="dealingRequest">거래요청</string>
+    <string name="dealingRequest">딜러에게 보내는 문자 내용 [ 소비자의 선택을 받았습니다.바이카본사로문의주세요. 032&#8211;720&#8211;5888 ]</string>
     <string name="delete">삭제</string>
     <string name="detailCarInfo">세부차량정보</string>
     <string name="detailCarInfoString1">제조사</string>

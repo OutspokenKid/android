@@ -7,6 +7,7 @@ import org.apache.http.impl.cookie.BasicClientCookie;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -142,6 +143,18 @@ public class SignActivity extends BCPFragmentActivity {
 		super.finish();
 	}
 	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(requestCode == BCPConstants.REQUEST_GUIDE
+				&& resultCode == RESULT_OK) {
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("forDealer", true);
+			showPage(BCPConstants.PAGE_SIGN_UP_FOR_COMMON, bundle);
+		}
+	}
+	
 //////////////////// Custom methods.
 
 	public void loadCookies() {
@@ -180,6 +193,14 @@ public class SignActivity extends BCPFragmentActivity {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+	}
+
+	public void launchGuideActivity() {
+		
+		Intent intent = new Intent(this, GuideActivity.class);
+		intent.putExtra("forSignUp", true);
+		intent.putExtra("type", GuideActivity.TYPE_DEALER);
+		startActivityForResult(intent, BCPConstants.REQUEST_GUIDE);
 	}
 	
 	public void launchMainForUserActivity() {

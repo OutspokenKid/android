@@ -334,27 +334,11 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				String message = null;
-				
 				if(type == Car.TYPE_DEALER) {
-					message = getString(R.string.wannaCallToDealer);
+					callToDealer();
 				} else {
-					message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
+					callToSeller();
 				}
-				
-				mActivity.showAlertDialog(getString(R.string.call), message, 
-						getString(R.string.confirm), getString(R.string.cancel), 
-						new DialogInterface.OnClickListener() {
-							
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-
-								IntentUtils.call(mContext, 
-										type == Car.TYPE_DEALER?
-												car.getDealer_phone_number()
-												: car.getSeller_phone_number());
-							}
-						}, null);
 			}
 		});
 	
@@ -1412,7 +1396,7 @@ public class CarDetailPage extends BCPFragment {
 		//사고여부 모름.
 		} else {
 			detailInfoViews[0].setVisibility(View.INVISIBLE);
-			btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
+			btnHistory.setBackgroundResource(R.drawable.detail_no_parts2);
 			btnHistory.setOnClickListener(null);
 		}
 		
@@ -1539,7 +1523,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setAccident() {
 		
-		if(car.getHad_accident() == 1) {
+		if(car.getHad_accident() == 1 && type == Car.TYPE_BID) {
 			relativeForAccident.setVisibility(View.VISIBLE);
 		} else {
 			relativeForAccident.setVisibility(View.GONE);
@@ -2087,7 +2071,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void callToSeller() {
 		
-		String message = car.getSeller_name() + getString(R.string.wannaCallToSeller);
+		String message = car.getSeller_nickname() + getString(R.string.wannaCallToSeller);
 		mActivity.showAlertDialog(getString(R.string.call), message, 
 				getString(R.string.confirm), getString(R.string.cancel), 
 				new DialogInterface.OnClickListener() {

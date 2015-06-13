@@ -106,14 +106,6 @@
 	    	android:layout_alignTop="@id/mainForUserActivity_popupBg"
 	    	android:layout_centerHorizontal="true" />
         
-        <TextView 
-            android:id="@+id/mainForUserActivity_tvPopupText"
-	    	android:layout_width="wrap_content"
-	    	android:layout_height="wrap_content"
-	    	android:layout_below="@id/mainForUserActivity_popupImage"
-	    	android:layout_centerHorizontal="true"
-	    	android:textColor="@color/holo_text" />
-        
         <Button 
             android:id="@+id/mainForUserActivity_btnHome"
 	    	android:layout_width="0dp"
@@ -121,14 +113,6 @@
 	    	android:layout_centerHorizontal="true"
 	    	android:layout_alignBottom="@id/mainForUserActivity_popupBg"
 	    	android:background="@drawable/complete_home_btn" />
-        
-        <Button 
-            android:id="@+id/mainForUserActivity_btnCall"
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_centerHorizontal="true"
-	    	android:layout_above="@id/mainForUserActivity_btnHome"
-	    	android:background="@drawable/complete_call_btn" />
         
     </RelativeLayout>
 

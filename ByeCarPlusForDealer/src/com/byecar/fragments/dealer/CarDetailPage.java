@@ -38,6 +38,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -120,6 +121,7 @@ public class CarDetailPage extends BCPFragment {
 	private View footerForDescription;
 	
 	private Button btnPayment;
+	private Button btnCall;
 	private View buttonBg;
 	
 	private Button btnDelete;
@@ -212,6 +214,7 @@ public class CarDetailPage extends BCPFragment {
 		footerForDescription = mThisView.findViewById(R.id.carDetailPage_footerForDescription);
 		
 		btnPayment = (Button) mThisView.findViewById(R.id.carDetailPage_btnPayment);
+		btnCall = (Button) mThisView.findViewById(R.id.carDetailPage_btnCall);
 		buttonBg = mThisView.findViewById(R.id.carDetailPage_buttonBg);
 		
 		btnDelete = (Button) mThisView.findViewById(R.id.carDetailPage_btnDelete);
@@ -377,6 +380,15 @@ public class CarDetailPage extends BCPFragment {
 			public void onClick(View view) {
 
 				checkPayable();
+			}
+		});
+		
+		btnCall.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				call();
 			}
 		});
 	
@@ -774,7 +786,7 @@ public class CarDetailPage extends BCPFragment {
 			setOptions();
 			setCheck();
 			setDescription();
-			setPaymentButton();
+			setButtomButtons();
 			setTitleBarButtons();
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1215,7 +1227,7 @@ public class CarDetailPage extends BCPFragment {
 				
 				if(car.getReview().getReply() != null) {
 					ResizeUtils.viewResize(574, LayoutParams.WRAP_CONTENT, reply, 1, Gravity.CENTER_HORIZONTAL, new int[]{0, 16, 0, 0});
-					reply.setReply(car.getReview().getReply());
+					reply.setReply(car.getReview().getReply(), car.getReview(), mActivity);
 				}
 
 				rp = (RelativeLayout.LayoutParams) footerForReview.getLayoutParams();
@@ -1261,7 +1273,7 @@ public class CarDetailPage extends BCPFragment {
 			//사고여부 모름.
 			} else {
 				detailInfoViews[0].setVisibility(View.INVISIBLE);
-				btnHistory.setBackgroundResource(R.drawable.detail_no_parts);
+				btnHistory.setBackgroundResource(R.drawable.detail_no_parts2);
 				btnHistory.setOnClickListener(null);
 			}
 			
@@ -1400,7 +1412,7 @@ public class CarDetailPage extends BCPFragment {
 	public void setAccident() {
 
 		try {
-			if(car.getHad_accident() == 1) {
+			if(car.getHad_accident() == 1 && type == Car.TYPE_BID) {
 				relativeForAccident.setVisibility(View.VISIBLE);
 			} else {
 				relativeForAccident.setVisibility(View.GONE);
@@ -1565,32 +1577,52 @@ public class CarDetailPage extends BCPFragment {
 		}
 	}
 	
-	public void setPaymentButton() {
-
+	public void setButtomButtons() {
+		
 		try {
 			RelativeLayout.LayoutParams rp = null;
 			
-			if(type == Car.TYPE_BID
-					&& car.getStatus() == Car.STATUS_BID_SUCCESS) {
+			if(car.getDealer_id() == MainActivity.dealer.getId()
+					&& type == Car.TYPE_BID
+					&& (car.getStatus() == Car.STATUS_BID_SUCCESS
+							|| car.getStatus() == Car.STATUS_PAYMENT_COMPLETED)) {
+				
+				if(car.getStatus() == Car.STATUS_BID_SUCCESS) {
+					btnPayment.setVisibility(View.VISIBLE);
+					btnCall.setVisibility(View.GONE);
+					
+					//btnPayment.
+					rp = (RelativeLayout.LayoutParams) btnPayment.getLayoutParams();
+					rp.width = ResizeUtils.getSpecificLength(612);
+					rp.height = ResizeUtils.getSpecificLength(84);
+					rp.bottomMargin = ResizeUtils.getSpecificLength(15);
+					
+
+				} else {
+					btnPayment.setVisibility(View.GONE);
+					btnCall.setVisibility(View.VISIBLE);
+					
+					//btnCall.
+					rp = (RelativeLayout.LayoutParams) btnCall.getLayoutParams();
+					rp.width = ResizeUtils.getSpecificLength(612);
+					rp.height = ResizeUtils.getSpecificLength(84);
+					rp.bottomMargin = ResizeUtils.getSpecificLength(15);
+				}
+				
 				buttonBg.setVisibility(View.VISIBLE);
-				btnPayment.setVisibility(View.VISIBLE);
 				
 				//buttonBg.
 				rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.carDetailPage_buttonBg).getLayoutParams();
 				rp.height = ResizeUtils.getSpecificLength(123);
 				
-				//btnPayment.
-				rp = (RelativeLayout.LayoutParams) btnPayment.getLayoutParams();
-				rp.width = ResizeUtils.getSpecificLength(612);
-				rp.height = ResizeUtils.getSpecificLength(84);
-				rp.bottomMargin = ResizeUtils.getSpecificLength(15);
-				
 				//scrollView.
 				rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
 				rp.bottomMargin = ResizeUtils.getSpecificLength(115);
+				
 			} else {
 				buttonBg.setVisibility(View.GONE);
 				btnPayment.setVisibility(View.GONE);
+				btnCall.setVisibility(View.GONE);
 				
 				//scrollView.
 				rp = (RelativeLayout.LayoutParams) scrollView.getLayoutParams();
@@ -1602,7 +1634,7 @@ public class CarDetailPage extends BCPFragment {
 			LogUtils.trace(e);
 		}
 	}
-
+	
 	public void setTitleBarButtons() {
 
 		try {
@@ -2123,5 +2155,10 @@ public class CarDetailPage extends BCPFragment {
 				}
 			}
 		});
+	}
+
+	public void call() {
+		
+		IntentUtils.call(mContext, car.getSeller_phone_number());
 	}
 }

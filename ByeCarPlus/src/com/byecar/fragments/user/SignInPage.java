@@ -2,6 +2,8 @@ package com.byecar.fragments.user;
 
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -245,7 +247,7 @@ public class SignInPage extends BCPFragment {
 					FBUserInfo fbUserInfo = (FBUserInfo) userInfo;
 					fbUserInfo.printSNSUserInfo();
 					
-					signInWithSNS("facebook", fbUserInfo.id, 
+					getByeCarCDNUrl("facebook", fbUserInfo.id, 
 							fbUserInfo.userName, fbUserInfo.profileImage);
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -276,7 +278,7 @@ public class SignInPage extends BCPFragment {
 					KakaoUserInfo kakaoUserInfo = (KakaoUserInfo) userInfo;
 					kakaoUserInfo.printSNSUserInfo();
 					
-					signInWithSNS("kakaotalk", "" + kakaoUserInfo.id, 
+					getByeCarCDNUrl("kakaotalk", "" + kakaoUserInfo.id, 
 							kakaoUserInfo.nickname, kakaoUserInfo.profile_image);
 				} catch (Exception e) {
 					LogUtils.trace(e);
@@ -323,6 +325,46 @@ public class SignInPage extends BCPFragment {
 		}, mActivity.getLoadingView());
 	}
 	
+	public void getByeCarCDNUrl(final String sns_key, final String sns_user_key, 
+			final String nickname, final String profileUrl) {
+		
+		if(StringUtils.isEmpty(profileUrl)) {
+			signInWithSNS(sns_key, sns_user_key, nickname, null);
+		}
+		
+		String url = BCPAPIs.CDN_URL + "?url=" + StringUtils.getUrlEncodedString(profileUrl);
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("SignInPage.onError." + "\nurl : " + url);
+				signInWithSNS(sns_key, sns_user_key, nickname, null);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("SignInPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					if(objJSON.getInt("result") == 1) {
+						String newUrl = objJSON.getJSONObject("file").getString("url");
+						signInWithSNS(sns_key, sns_user_key, nickname, newUrl);
+						return;
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+				
+				signInWithSNS(sns_key, sns_user_key, nickname, null);
+			}
+		});
+	}
+	
 	public void signInWithSNS(String sns_key, String sns_user_key, 
 			String nickname, String profileUrl) {
 		
@@ -336,8 +378,24 @@ public class SignInPage extends BCPFragment {
 		String url = BCPAPIs.SIGN_IN_WITH_SNS_URL 
 				+ "?sns_key=" + sns_key
 				+ "&sns_user_key=" + sns_user_key
-				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(nickname)
-				+ "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
+				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(nickname);
+		
+		if(!StringUtils.isEmpty(profileUrl)) {
+			url += "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
+		}
+		
+		try {
+			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+			String phone_number = tMgr.getLine1Number();
+			
+			if(!StringUtils.isEmpty(phone_number)) {
+				url += "&user[phone_number]=" + phone_number;
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

@@ -11,6 +11,7 @@ public class BCPConstants {
 	public static final int REQUEST_ALBUM = 2;
 	public static final int REQUEST_SEARCH_AREA = 3;
 	public static final int REQUEST_SEARCH_MONTH = 4;
+	public static final int REQUEST_GUIDE = 5;
 	
 	public static final String PREFS_PUSH = "pushSetting";
 	public static final String PREFS_CERTIFY = "certifyPhoneNumber";

@@ -264,6 +264,7 @@ public class ReviewView extends RelativeLayout {
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
 					ResizeUtils.getSpecificLength(34), 0);
 			tvCarName.setPadding(ResizeUtils.getSpecificLength(21), ResizeUtils.getSpecificLength(10), 0, 0);
+			tvNickname.setSingleLine(true);
 			
 			if(!StringUtils.isEmpty(reply.getReviewer_profile_img_url())) {
 				ivImage.setOnClickListener(new OnClickListener() {

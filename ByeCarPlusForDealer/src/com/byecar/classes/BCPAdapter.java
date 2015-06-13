@@ -52,6 +52,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			return R.layout.list_car;
 			
@@ -89,6 +90,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			ViewWrapperForCar vwfc = new ViewWrapperForCar(convertView, itemCode);
 			vwfc.setActivity(activity);
@@ -122,6 +124,7 @@ public class BCPAdapter extends OutSpokenAdapter {
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 		case BCPConstants.ITEM_CAR_BID_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER:
+		case BCPConstants.ITEM_CAR_DEALER_COMPLETED:
 		case BCPConstants.ITEM_CAR_DEALER_MINE:
 			
 			if(position == 0) {

@@ -86,10 +86,8 @@ public class SignPage extends BCPFragment {
 
 			@Override
 			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putBoolean("forDealer", true);
-				mActivity.showPage(BCPConstants.PAGE_SIGN_UP_FOR_COMMON, bundle);
+				
+				((SignActivity)mActivity).launchGuideActivity();
 			}
 		});
 		

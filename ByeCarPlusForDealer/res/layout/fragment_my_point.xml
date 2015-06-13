@@ -94,9 +94,9 @@
 			<LinearLayout 
 			    android:id="@+id/myPointPage_linearForHistory"
 		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+		        android:layout_height="match_parent"
 		        android:orientation="vertical"
-			    />
+		        android:layout_below="@id/myPointPage_tvTitle3" />
 			
 			<View 
 			    android:id="@+id/myPointPage_noList"

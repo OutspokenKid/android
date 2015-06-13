@@ -298,7 +298,7 @@ public class GuideActivity extends Activity {
 			//pageNavigator.
 			rp = (RelativeLayout.LayoutParams) pageNavigator.getLayoutParams();
 			rp.height = ResizeUtils.getSpecificLength(16);
-			rp.bottomMargin = ResizeUtils.getSpecificLength(720);
+			rp.topMargin = ResizeUtils.getSpecificLength(140);
 			
 			//btnLeft.
 			rp = (RelativeLayout.LayoutParams) btnLeft.getLayoutParams();
