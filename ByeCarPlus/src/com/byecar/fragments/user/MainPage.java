@@ -622,15 +622,19 @@ public class MainPage extends BCPAuctionableFragment {
 		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
 		setPagerTimer();
 		
-		new Handler().postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-
-//				Bundle bundle = new Bundle();
-//				mActivity.showPage(BCPConstants.PAGE_SEARCH_AREA, bundle);
-			}
-		}, 1000);
+//		new Handler().postDelayed(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//
+//				try {
+//					Bundle bundle = new Bundle();
+//					mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
+//				} catch (Exception e) {
+//					LogUtils.trace(e);
+//				}
+//			}
+//		}, 2000);
 	}
 	
 	@Override

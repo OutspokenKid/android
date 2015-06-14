@@ -27,6 +27,14 @@
 		    	android:layout_alignParentTop="true"
 		    	android:layout_centerHorizontal="true"
 		    	android:background="@drawable/d_splash_logo" />
+		    
+		    <View 
+		        android:id="@+id/signPage_catchphrase"
+		        android:layout_width="0dp"
+		        android:layout_height="0dp"
+		        android:layout_centerHorizontal="true"
+		        android:layout_below="@id/signPage_logo"
+		        android:background="@drawable/d_splash_catchphrase" />
 		
 		    <TextView
 		        android:id="@+id/signPage_tvSignInText"

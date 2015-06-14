@@ -1166,8 +1166,11 @@ public class CarDetailPage extends BCPFragment {
 				rp.width = ResizeUtils.getSpecificLength(608);
 				rp.height = ResizeUtils.getSpecificLength(20);
 
-				biddingPrice = car.getPrice();
-				setBiddingPrice(biddingPrice + 50000);
+				//biddingPrice가 car.getPrice()보다 5만원 이상 비싸면 패스.
+				if(biddingPrice < car.getPrice() + 50000) {
+					biddingPrice = car.getPrice();
+					setBiddingPrice(biddingPrice + 50000);
+				}
 			} else {
 				relativeForBidding.setVisibility(View.GONE);
 			}

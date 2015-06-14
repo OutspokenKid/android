@@ -221,23 +221,6 @@ public class ReviewView extends RelativeLayout {
 			tvContent.setPadding(ResizeUtils.getSpecificLength(175), ResizeUtils.getSpecificLength(48), 
 					ResizeUtils.getSpecificLength(34), 0);
 			tvNickname.setSingleLine(false);
-				
-			//나에게 달린 리뷰이고, 아직 리플이 안달린 경우
-			if(review.getDealer_id() == MainActivity.dealer.getId()
-					&& review.getReply() == null) {
-				btnEdit.setVisibility(View.VISIBLE);
-				btnEdit.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View view) {
-
-						Bundle bundle = new Bundle();
-						bundle.putString("to", review.getReviewer_nickname());
-						bundle.putInt("parent_id", review.getId());
-						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
-					}
-				});
-			}
 			
 			if(!StringUtils.isEmpty(review.getReviewer_profile_img_url())) {
 				ivImage.setOnClickListener(new OnClickListener() {

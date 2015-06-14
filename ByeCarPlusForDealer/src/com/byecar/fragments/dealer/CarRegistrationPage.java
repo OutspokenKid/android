@@ -1617,44 +1617,50 @@ public class CarRegistrationPage extends BCPFragment {
 
 	public void uploadImages() {
 
-		mActivity.showLoadingView();
-		
-		int size = selectedImageSdCardPaths.length;
-		
-		for(int i=0; i<size; i++) {
+		try {
+			mActivity.showLoadingView();
 			
-			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
-					&& !selectedImageSdCardPaths[i].contains("http://")) {
+			int size = selectedImageSdCardPaths.length;
+			
+			for(int i=0; i<size; i++) {
 				
-				ToastUtils.showToast(R.string.uploadingImage);
-				
-				final int INDEX = i;
-				
-				OnAfterUploadImage oaui = new OnAfterUploadImage() {
+				if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
+						&& !selectedImageSdCardPaths[i].contains("http://")) {
 					
-					@Override
-					public void onAfterUploadImage(String resultString) {
-
-						try {
-							selectedImageSdCardPaths[INDEX] = new JSONObject(resultString).getJSONObject("file").getString("url");
-						} catch (Exception e) {
-							LogUtils.trace(e);
-						} catch (Error e) {
-							LogUtils.trace(e);
-						}
+					ToastUtils.showToast(R.string.uploadingImage);
+					
+					final int INDEX = i;
+					
+					OnAfterUploadImage oaui = new OnAfterUploadImage() {
 						
-						//Recursive call.
-						uploadImages();
-					}
-				};
-				
-				ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedImageSdCardPaths[i]);
-				return;
+						@Override
+						public void onAfterUploadImage(String resultString) {
+
+							try {
+								selectedImageSdCardPaths[INDEX] = new JSONObject(resultString).getJSONObject("file").getString("url");
+							} catch (Exception e) {
+								LogUtils.trace(e);
+							} catch (Error e) {
+								LogUtils.trace(e);
+							}
+							
+							//Recursive call.
+							uploadImages();
+						}
+					};
+					
+					ImageUploadUtils.uploadImage(BCPAPIs.UPLOAD_URL, oaui, selectedImageSdCardPaths[i]);
+					return;
+				}
 			}
+			
+			//모든 이미지 업로드 완료.
+			register();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
-		
-		//모든 이미지 업로드 완료.
-		register();
 	}
 	
 	public void checkProgress() {

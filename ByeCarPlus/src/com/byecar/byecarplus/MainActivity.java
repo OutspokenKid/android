@@ -38,6 +38,7 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
+import com.byecar.fragments.CarHistoryPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
@@ -226,6 +227,7 @@ public class MainActivity extends BCPFragmentActivity {
 			@Override
 			public void onClick(View view) {
 
+				hideNoticePopup();
 				Bundle bundle = new Bundle();
 				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
 				showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
@@ -438,6 +440,10 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_PROFILE:
 			return new ProfilePage();
+		
+		case BCPConstants.PAGE_CAR_HISTORY:
+			return new CarHistoryPage();
+			
 		}
 		
 		return null;

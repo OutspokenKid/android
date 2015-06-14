@@ -48,6 +48,7 @@ public class Dealer extends BCPBaseModel implements Serializable {
 	private String desc;
 	
 	private int avg_rating;
+	private int success_bids_cnt;
 	
 	private String vaccount_no;
 	private String vaccount_bank;
@@ -133,6 +134,10 @@ public class Dealer extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("avg_rating")) {
 				this.avg_rating = objJSON.getInt("avg_rating");
+			}
+			
+			if(objJSON.has("success_bids_cnt")) {
+				this.success_bids_cnt = objJSON.getInt("success_bids_cnt");
 			}
 			
 			if(objJSON.has("vaccount_no")) {
@@ -296,5 +301,13 @@ public class Dealer extends BCPBaseModel implements Serializable {
 
 	public void setCash(int cash) {
 		this.cash = cash;
+	}
+
+	public int getSuccess_bids_cnt() {
+		return success_bids_cnt;
+	}
+
+	public void setSuccess_bids_cnt(int success_bids_cnt) {
+		this.success_bids_cnt = success_bids_cnt;
 	}
 }

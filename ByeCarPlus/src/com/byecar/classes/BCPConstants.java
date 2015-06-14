@@ -69,6 +69,7 @@ public class BCPConstants {
 	public static final int PAGE_CAR_REGISTRATION = 33;
 	public static final int PAGE_SEARCH_CAR = 37;
 	public static final int PAGE_TYPE_SEARCH_CAR = 39;
+	public static final int PAGE_CAR_HISTORY = 40;
 	
 	//Pages for community.
 	public static final int PAGE_FORUM_LIST = 41;

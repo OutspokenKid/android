@@ -54,11 +54,18 @@ public class BitmapUtils {
 		return degree;
 	}
 	
+	/**
+	 * 이미지의 길이가 standardLength를 넘지 않도록 하는 inSampleSize 리턴.
+	 * 
+	 * @param filePath
+	 * @param standardLength
+	 * @return inSampleSize
+	 */
 	public static int getBitmapInSampleSize(String filePath, int standardLength) {
 		
 		try {
 			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inSampleSize = 4;
+			options.inSampleSize = 16;
 			BitmapFactory.decodeFile(filePath, options);
 
 			int length = 0;
@@ -69,7 +76,7 @@ public class BitmapUtils {
 				length = options.outHeight;
 			}
 			
-			//option에서 얻어오는 길이는 4배 작아진 가로 길이니까 * 4 해서 원래 길이 구함..
+			//option에서 얻어오는 길이는 16배 작아진 가로 길이니까 * 16 해서 원래 길이 구함..
 			int calculateSize = length * options.inSampleSize;
 
 			int sampleSize = 1;

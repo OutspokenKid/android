@@ -121,6 +121,12 @@ public class SignPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(339);
 		rp.topMargin = ResizeUtils.getSpecificLength(130);
 		
+		//catchphrase.
+		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.signPage_catchphrase).getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(234);
+		rp.height = ResizeUtils.getSpecificLength(24);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		
 		//tvSignInText
 		rp = (RelativeLayout.LayoutParams) tvSignInText.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(40);

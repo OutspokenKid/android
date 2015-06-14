@@ -1334,8 +1334,7 @@ public class MainActivity extends BCPFragmentActivity {
 			public void run() {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("dealer_id", dealer.getId());
-				showPage(BCPConstants.PAGE_DEALER, bundle);
+				showPage(BCPConstants.PAGE_MY_INFO_REVIEW, bundle);
 			}
 		}, 500);
 	}

@@ -456,7 +456,7 @@ public class MyInfoReviewPage extends BCPFragment {
 		}
 		
 		tvSuccess.setText(null);
-		FontUtils.addSpan(tvSuccess, "" + 25, 0, 1);
+		FontUtils.addSpan(tvSuccess, "" + MainActivity.dealer.getSuccess_bids_cnt(), 0, 1);
 		FontUtils.addSpan(tvSuccess, "대", 0, 0.7f);
 
 		tvName.setText(null);

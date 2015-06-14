@@ -109,15 +109,10 @@ public abstract class BCPFragment extends BaseFragment {
 	}
 	
 	@Override
-	public void onDestroyView() {
-		super.onDestroyView();
-		
+	public void onDetach() {
+
 		mActivity = null;
 		titleBar = null;
-	}
-	
-	@Override
-	public void onDetach() {
 		
 		if(getRootViewResId() != 0 && mThisView != null) {
 			ViewUnbindHelper.unbindReferences(mThisView.findViewById(getRootViewResId()));

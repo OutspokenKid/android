@@ -261,9 +261,9 @@ public class SignPage extends BCPFragment {
 		
 		//catchphrase.
 		rp = (RelativeLayout.LayoutParams) catchphrase.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(450);
-		rp.height = ResizeUtils.getSpecificLength(76);
-		rp.topMargin = ResizeUtils.getSpecificLength(170);
+		rp.width = ResizeUtils.getSpecificLength(234);
+		rp.height = ResizeUtils.getSpecificLength(24);
+		rp.topMargin = ResizeUtils.getSpecificLength(20);
 		
 		//btnMember.
 		rp = (RelativeLayout.LayoutParams) btnMember.getLayoutParams();
