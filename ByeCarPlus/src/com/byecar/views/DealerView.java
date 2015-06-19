@@ -3,6 +3,7 @@ package com.byecar.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -78,6 +79,8 @@ public class DealerView extends FrameLayout {
 				new int[]{0, 170, 0, 0}, new int[]{20, 0, 20, 0});
 		tvDealerName.setGravity(Gravity.CENTER);
 		tvDealerName.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
+		tvDealerName.setSingleLine();
+		tvDealerName.setEllipsize(TruncateAt.END);
 		this.addView(tvDealerName);
 		
 		gradeBadge = new View(getContext());

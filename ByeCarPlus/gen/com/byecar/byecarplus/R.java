@@ -1009,7 +1009,7 @@ containing a value of this type.
         public static final int abc_split_action_bar_is_narrow=0x7f060002;
     }
     public static final class color {
-        public static final int abc_search_url_text_holo=0x7f070031;
+        public static final int abc_search_url_text_holo=0x7f070032;
         public static final int abc_search_url_text_normal=0x7f070000;
         public static final int abc_search_url_text_pressed=0x7f070002;
         public static final int abc_search_url_text_selected=0x7f070001;
@@ -1036,10 +1036,10 @@ containing a value of this type.
         public static final int com_kakao_button_background_press=0x7f07000e;
         public static final int com_kakao_button_text_press=0x7f07000b;
         public static final int com_kakao_cancel_button_background=0x7f07000d;
-        public static final int holo_target_off=0x7f07002e;
-        public static final int holo_target_on=0x7f07002d;
-        public static final int holo_text=0x7f07002f;
-        public static final int holo_text_hint=0x7f070030;
+        public static final int holo_target_off=0x7f07002f;
+        public static final int holo_target_on=0x7f07002e;
+        public static final int holo_text=0x7f070030;
+        public static final int holo_text_hint=0x7f070031;
         public static final int new_color_page_bg_white1=0x7f070024;
         /**  255, 255, 255 
          */
@@ -1053,18 +1053,19 @@ containing a value of this type.
         /**  61, 31, 10 
          */
         public static final int new_color_text_brown2=0x7f070028;
-        /**  135, 135, 135 
-         */
-        public static final int new_color_text_darkgray=0x7f07002a;
+        public static final int new_color_text_darkgray=0x7f07002b;
         /**  68, 40, 17 
          */
         public static final int new_color_text_gray=0x7f070029;
+        /**  135, 135, 135 
+         */
+        public static final int new_color_text_ltgray=0x7f07002a;
         /**  57, 57, 57 
          */
-        public static final int new_color_text_orange=0x7f07002b;
+        public static final int new_color_text_orange=0x7f07002c;
         /**  255, 168, 0 
          */
-        public static final int new_color_text_red=0x7f07002c;
+        public static final int new_color_text_red=0x7f07002d;
         public static final int page_bg=0x7f070019;
         public static final int page_bg2=0x7f07001a;
         public static final int progress_bg=0x7f07001b;

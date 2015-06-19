@@ -310,7 +310,7 @@ public class MainPage extends BCPAuctionableFragment {
 			break;
 			
 		case 2:
-			url = BCPAPIs.MY_BIDS_URL + "?status=" + Car.STATUS_BID_SUCCESS;
+			url = BCPAPIs.MY_BIDS_URL + "?status=success";
 			break;
 			
 		case 3:

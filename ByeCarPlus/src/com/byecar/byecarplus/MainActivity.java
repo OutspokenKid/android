@@ -443,7 +443,6 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_CAR_HISTORY:
 			return new CarHistoryPage();
-			
 		}
 		
 		return null;

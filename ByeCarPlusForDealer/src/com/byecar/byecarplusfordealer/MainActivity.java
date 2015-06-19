@@ -40,6 +40,7 @@ import com.byecar.classes.BCPFragment;
 import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
+import com.byecar.fragments.CarHistoryPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
@@ -502,6 +503,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_WEB_BROWSER:
 			return new WebBrowserPage();
+			
+		case BCPConstants.PAGE_CAR_HISTORY:
+			return new CarHistoryPage();
 		}
 		
 		return null;

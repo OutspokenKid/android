@@ -629,6 +629,7 @@ public class MainPage extends BCPAuctionableFragment {
 //
 //				try {
 //					Bundle bundle = new Bundle();
+//					bundle.putString("carNumber", "12가1001");
 //					mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
 //				} catch (Exception e) {
 //					LogUtils.trace(e);

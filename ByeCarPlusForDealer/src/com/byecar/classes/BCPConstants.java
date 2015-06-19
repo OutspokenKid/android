@@ -70,6 +70,7 @@ public class BCPConstants {
 	public static final int PAGE_CAR_MY_DEALER = 34;
 	public static final int PAGE_SEARCH_CAR = 35;
 	public static final int PAGE_TYPE_SEARCH_CAR = 36;
+	public static final int PAGE_CAR_HISTORY = 37;
 	
 	public static final int PAGE_WEB_BROWSER = 40;
 	public static final int PAGE_SEARCH_AREA = 51;

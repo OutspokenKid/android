@@ -311,6 +311,19 @@ public class CarDetailPage extends BCPFragment {
 			}
 		});
 		
+		btnAccident.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				if(car != null) {
+					Bundle bundle = new Bundle();
+					bundle.putString("carNumber", car.getCar_number());
+					mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
+				}
+			}
+		});
+		
 		headerForOption.setOnClickListener(new OnClickListener() {
 
 			@Override
