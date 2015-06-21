@@ -9,12 +9,14 @@ public class BCPConstants {
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
-	public static final int REQUEST_SEARCH_AREA = 3;
-	public static final int REQUEST_SEARCH_MONTH = 4;
-	public static final int REQUEST_GUIDE = 5;
+	public static final int REQUEST_SEARCH_TRIM = 3;
+	public static final int REQUEST_SEARCH_AREA = 4;
+	public static final int REQUEST_SEARCH_MONTH = 5;
+	public static final int REQUEST_GUIDE = 6;
 	
 	public static final String PREFS_PUSH = "pushSetting";
 	public static final String PREFS_CERTIFY = "certifyPhoneNumber";
+	public static final String PREFS_REG = "carRegistratin";
 
 	public static final String COOKIE_NAME_D1 = "BYECAR_D1";
 	public static final String COOKIE_NAME_S = "BYECAR_S";

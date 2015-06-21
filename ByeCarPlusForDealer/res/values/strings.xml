@@ -55,26 +55,15 @@
     <string name="carRegistrationPhoto2">뒷면 / 측면</string>
     <string name="carRegistrationPhoto3">시트/변속기/네비</string>
     <string name="carRegistrationPhoto4">주행거리</string>
-    <string name="carRegistrationTitle1">1. 차량정보</string>
-    <string name="carRegistrationTitle2">2. 세부차량정보</string>
-    <string name="carRegistrationTitle3">3. 필수사진</string>
-    <string name="carRegistrationTitle4">4. 추가사진</string>
-    <string name="carRegistrationTitle5">5. 성능점검 기록부</string>
-    <string name="carRegistrationTitle6">6. 옵션 및 튜닝</string>
-    <string name="carRegistrationTitle7">7. 판매자 차량설명</string>
-    <string name="carSearchString_fuel1">휘발유</string>
-    <string name="carSearchString_fuel2">디젤</string>
-    <string name="carSearchString_fuel3">LPG 일반</string>
-    <string name="carSearchString_fuel4">LPG 장애</string>
-    <string name="carSearchString_transmission1">자동</string>
-    <string name="carSearchString_transmission2">수동</string>
-    <string name="carSearchString_accident1">무사고</string>
-    <string name="carSearchString_accident2">유사고</string>
-    <string name="carSearchString_accident3">사고유무 알 수 없음</string>
+    <string name="carRegistrationTitle1">차량정보</string>
+    <string name="carRegistrationTitle2">세부차량정보</string>
+    <string name="carRegistrationTitle3">필수사진</string>
+    <string name="carRegistrationTitle4">추가사진</string>
+    <string name="carRegistrationTitle5">성능점검 기록부</string>
+    <string name="carRegistrationTitle6">옵션 및 튜닝</string>
+    <string name="carRegistrationTitle7">판매자 차량설명</string>
+    <string name="carRegistrationTitle8">바이카 공지사항 및 이용 약관 동의</string>
     <string name="carSearchString_accidentHistory">사고 상세내역</string>
-    <string name="carSearchString_oneManOwned1">1인신조</string>
-    <string name="carSearchString_oneManOwned2">1인신조 아님</string>
-    <string name="carSearchString_oneManOwned3">1인신조는 차량의 주인이 바뀐적이 있는지의 여부를 의미합니다.\n차량의 주인이 바뀐적이 없다. (1인신조)\n차량의 주인이 바뀐적이 있다. (1인신조아님)</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
     <string name="changingPartsHistory">부품 교환 이력</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
@@ -200,6 +189,7 @@
     
     <string name="lastList">마지막 리스트입니다.</string>
     <string name="like">좋아요</string>
+    <string name="loadingImage">이미지를 불러오는 중입니다.</string>
     
     <string name="order_1">마감순</string>
     <string name="order_2">좋아요순</string>
@@ -221,14 +211,12 @@
     <string name="pageTitle_typeSearchCar_model">모델검색</string>
     <string name="pageTitle_typeSearchCar_trim">트림검색</string>
     <string name="pageTitle_typeSearchCar_year">연식</string>
-    <string name="pageTitle_typeSearchCar_accident">사고유무</string>
-    <string name="pageTitle_typeSearchCar_fuel">연료</string>
-    <string name="pageTitle_typeSearchCar_transmission">변속기</string>
-    <string name="pageTitle_typeSearchCar_oneman">1인신조</string>
     <string name="pageTitle_typeSearchCar_month">연식</string>
     <string name="pageTitle_carDetail">상세보기</string>
     <string name="pageTitle_carRegistration_edit">차량 수정</string>
-    <string name="pageTitle_carRegistration_registration">내 차 등록</string>
+    <string name="pageTitle_carRegistration_registration_bid">내 차 입찰 요청</string>
+    <string name="pageTitle_carRegistration_registration_dealer">내 차 등록</string>
+    <string name="pageTitle_carRegistration_registration_direct">내 차 직거래등록</string>
     <string name="pageTitle_my">마이페이지</string>
     <string name="pageTitle_editDealerInfo">프로필 수정</string>
     <string name="pageTitle_qnA">Q&amp;A</string>
@@ -251,6 +239,7 @@
     <string name="profileImage">프로필 이미지</string>
     
     <string name="regardAgree">가입과 함께 약관에 동의 하신것으로 간주합니다.</string>
+    <string name="registringPhoneNumber">휴대폰 번호 등록중..</string>
     <string name="remainTime">남은시간</string>
     <string name="report">신고</string>
     <string name="requireCertifyDealerInfo">판매자 정보를 인증해야 차량을\n등록할 수 있습니다.</string>
@@ -289,8 +278,11 @@
     <string name="wannaReport">신고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">탈퇴하시겠습니까?</string>
+    <string name="whatIsSellingDirectly">즉시판매란 무엇인가요?</string>
+    <string name="whatIsSellingDirectlyDesc">즉시판매란 차량 판매가 24시간 이내로 급한 고객의 차량을 바이카 본사에서 도와드리는 서비스입니다.\n내 차 판매가 급하시면 즉시 판매를 체크 해주세요.</string>
     <string name="withdraw">회원탈퇴</string>
 	<string name="writeAllContentForRegistration">* 1번부터 6번은 모두 입력해야 입찰요청이 가능한 필수항목입니다.</string>
+	<string name="writeCarPartChangedHistory">차량의 부품 교환 이력을 작성해주세요.</string>
     <string name="writePercentage">작성률</string>
     
     <string name="year">년</string>

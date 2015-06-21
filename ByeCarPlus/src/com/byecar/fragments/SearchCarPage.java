@@ -219,8 +219,6 @@ public class SearchCarPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				ToastUtils.showToast("current : " + isDomestic);
-				
 				isDomestic = !isDomestic;
 				
 				if(isDomestic) {

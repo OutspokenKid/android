@@ -131,7 +131,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 								
 							} else if(model instanceof CarTrim) {
 								mActivity.bundle = new Bundle();
-								mActivity.bundle.putInt("type", TypeSearchCarPage.TYPE_TRIM);
+								mActivity.bundle.putInt("requestCode", BCPConstants.REQUEST_SEARCH_TRIM);
 								mActivity.bundle.putInt("trim_id", ((CarTrim) model).getId());
 								mActivity.closePages(4);
 							
@@ -143,11 +143,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 									return;
 								}
 								
-								if(css.getType() == TypeSearchCarPage.TYPE_ACCIDENT
-										&& row.getContext().getString(R.string.carSearchString_accident2).equals(css.getText())) {
-									((TypeSearchCarPage) mActivity.getTopFragment()).showPopup();
-									return;
-								} else if(css.getType() == TypeSearchCarPage.TYPE_YEAR) {
+								if(css.getType() == TypeSearchCarPage.TYPE_YEAR) {
 									mActivity.bundle = new Bundle();
 									mActivity.bundle.putString("year", css.getText().replace("년", ""));
 									

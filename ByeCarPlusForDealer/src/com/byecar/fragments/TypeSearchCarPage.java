@@ -3,20 +3,10 @@ package com.byecar.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
-import android.view.animation.AlphaAnimation;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
@@ -29,10 +19,7 @@ import com.byecar.models.CarModelGroup;
 import com.byecar.models.CarSearchString;
 import com.byecar.models.CarTrim;
 import com.byecar.views.TitleBar;
-import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.SoftKeyboardUtils;
 import com.outspoken_kid.utils.ToastUtils;
 
 public class TypeSearchCarPage extends BCPFragment {
@@ -42,21 +29,10 @@ public class TypeSearchCarPage extends BCPFragment {
 	public static final int TYPE_MODEL = 3;
 	public static final int TYPE_TRIM = 4;
 	public static final int TYPE_YEAR = 5;
-	public static final int TYPE_ACCIDENT = 6;
-	public static final int TYPE_FUEL = 7;
-	public static final int TYPE_TRANSMISSION = 8;
-	public static final int TYPE_ONEMANOWNED = 9;
-	public static final int TYPE_MONTH = 10;
+	public static final int TYPE_MONTH = 6;
 	
 	private ListView listView;
 	private GridView gridView;
-	
-	private View cover;
-	private FrameLayout popup;
-	private TextView tvTitle;
-	private Button btnClose;
-	private EditText etHistory;
-	private Button btnComplete;
 
 	private int type;
 	
@@ -76,13 +52,6 @@ public class TypeSearchCarPage extends BCPFragment {
 		
 		listView = (ListView) mThisView.findViewById(R.id.typeSearchCarPage_listView);
 		gridView = (GridView) mThisView.findViewById(R.id.typeSearchCarPage_gridView);
-		
-		cover = mThisView.findViewById(R.id.typeSearchCarPage_cover);
-		popup = (FrameLayout) mThisView.findViewById(R.id.typeSearchCarPage_popup);
-		tvTitle = (TextView) mThisView.findViewById(R.id.typeSearchCarPage_tvTitle);
-		btnClose = (Button) mThisView.findViewById(R.id.typeSearchCarPage_btnClose);
-		etHistory = (EditText) mThisView.findViewById(R.id.typeSearchCarPage_etHistory);
-		btnComplete = (Button) mThisView.findViewById(R.id.typeSearchCarPage_btnComplete);
 	}
 
 	@Override
@@ -123,61 +92,11 @@ public class TypeSearchCarPage extends BCPFragment {
 	@Override
 	public void setListeners() {
 		
-		if(type == TYPE_ACCIDENT) {
-			
-			btnClose.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					hidePopup();
-				}
-			});
-
-			btnComplete.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					if(etHistory.length() == 0) {
-						ToastUtils.showToast(R.string.checkChangingPartsHistory);
-					} else {
-						mActivity.bundle = new Bundle();
-						mActivity.bundle.putInt("type", TYPE_ACCIDENT);
-						mActivity.bundle.putString("text", getString(R.string.carSearchString_accident2));
-						mActivity.bundle.putString("history", etHistory.getText().toString());
-						mActivity.closeTopPage();
-					}
-				}
-			});
-			
-			cover.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View view) {
-
-					hidePopup();
-				}
-			});
-		}
 	}
 
 	@Override
 	public void setSizes() {
 
-		RelativeLayout.LayoutParams rp = (RelativeLayout.LayoutParams) popup.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(562);
-		rp.height = ResizeUtils.getSpecificLength(657);
-	
-		ResizeUtils.viewResize(LayoutParams.MATCH_PARENT, 88, tvTitle, 2, 0, new int[]{0, 4, 0, 0});
-		ResizeUtils.viewResize(60, 60, btnClose, 2, Gravity.RIGHT, new int[]{0, 20, 11, 0});
-		ResizeUtils.viewResize(515, 420, etHistory, 2, Gravity.CENTER_HORIZONTAL, 
-				new int[]{0, 112, 0, 0}, new int[]{14, 14, 14, 14});
-		ResizeUtils.viewResize(514, 83, btnComplete, 2, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 
-				new int[]{0, 0, 0, 23});
-		
-		FontUtils.setFontSize(tvTitle, 30);
-		FontUtils.setFontSize(etHistory, 24);
 	}
 
 	@Override
@@ -206,18 +125,6 @@ public class TypeSearchCarPage extends BCPFragment {
 		case TYPE_YEAR:
 			return R.string.pageTitle_typeSearchCar_year;
 		
-		case TYPE_ACCIDENT:
-			return R.string.pageTitle_typeSearchCar_accident;
-			
-		case TYPE_FUEL:
-			return R.string.pageTitle_typeSearchCar_fuel;
-			
-		case TYPE_TRANSMISSION:
-			return R.string.pageTitle_typeSearchCar_transmission;
-			
-		case TYPE_ONEMANOWNED:
-			return R.string.pageTitle_typeSearchCar_oneman;
-			
 		case TYPE_MONTH:
 			return R.string.pageTitle_typeSearchCar_month;
 		}
@@ -273,62 +180,6 @@ public class TypeSearchCarPage extends BCPFragment {
 			} catch (Error e) {
 				LogUtils.trace(e);
 			}
-			break;
-			
-		case TYPE_ACCIDENT:
-			CarSearchString css1 = new CarSearchString(type, getString(R.string.carSearchString_accident1));
-			css1.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css1);
-			
-			CarSearchString css2 = new CarSearchString(type, getString(R.string.carSearchString_accident2));
-			css2.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css2);
-			
-			CarSearchString css3 = new CarSearchString(type, getString(R.string.carSearchString_accident3));
-			css3.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css3);
-			break;
-			
-		case TYPE_FUEL:
-			css1 = new CarSearchString(type, getString(R.string.carSearchString_fuel1));
-			css1.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css1);
-			
-			css2 = new CarSearchString(type, getString(R.string.carSearchString_fuel2));
-			css2.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css2);
-			
-			css3 = new CarSearchString(type, getString(R.string.carSearchString_fuel3));
-			css3.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css3);
-			
-			CarSearchString css4 = new CarSearchString(type, getString(R.string.carSearchString_fuel4));
-			css4.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css4);
-			break;
-			
-		case TYPE_TRANSMISSION:
-			css1 = new CarSearchString(type, getString(R.string.carSearchString_transmission1));
-			css1.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css1);
-			
-			css2 = new CarSearchString(type, getString(R.string.carSearchString_transmission2));
-			css2.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css2);
-			break;
-			
-		case TYPE_ONEMANOWNED:
-			css1 = new CarSearchString(type, getString(R.string.carSearchString_oneManOwned1));
-			css1.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css1);
-			
-			css2 = new CarSearchString(type, getString(R.string.carSearchString_oneManOwned2));
-			css2.setItemCode(BCPConstants.ITEM_CAR_TEXT);
-			models.add(css2);
-			
-			css3 = new CarSearchString(type, getString(R.string.carSearchString_oneManOwned3));
-			css3.setItemCode(BCPConstants.ITEM_CAR_TEXT_DESC);
-			models.add(css3);
 			break;
 			
 		case TYPE_MONTH:
@@ -422,10 +273,6 @@ public class TypeSearchCarPage extends BCPFragment {
 	@Override
 	public boolean onBackPressed() {
 
-		if(popup.getVisibility() == View.VISIBLE) {
-			hidePopup();
-			return true;
-		}
 		return false;
 	}
 
@@ -451,37 +298,5 @@ public class TypeSearchCarPage extends BCPFragment {
 				}
 			}
 		}, 1000);
-	}
-
-	public void showPopup() {
-		
-		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
-		aaIn.setDuration(300);
-
-		cover.setVisibility(View.VISIBLE);
-		cover.startAnimation(aaIn);
-		popup.setVisibility(View.VISIBLE);
-		popup.startAnimation(aaIn);
-		
-	}
-	
-	public void hidePopup() {
-		
-		AlphaAnimation aaOut = new AlphaAnimation(1, 0);
-		aaOut.setDuration(300);
-		
-		cover.startAnimation(aaOut);
-		cover.setVisibility(View.INVISIBLE);
-		popup.startAnimation(aaOut);
-		popup.setVisibility(View.INVISIBLE);
-
-		mThisView.postDelayed(new Runnable() {
-
-			@Override
-			public void run() {
-
-				SoftKeyboardUtils.hideKeyboard(mContext, etHistory);
-			}
-		}, 300);
 	}
 }

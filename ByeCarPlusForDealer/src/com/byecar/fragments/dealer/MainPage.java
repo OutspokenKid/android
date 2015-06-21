@@ -193,7 +193,8 @@ public class MainPage extends BCPAuctionableFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
+				bundle.putInt("carType", Car.TYPE_DEALER);
+				bundle.putBoolean("forDealer", true);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
 		});

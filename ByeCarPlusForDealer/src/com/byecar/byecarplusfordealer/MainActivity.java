@@ -41,6 +41,7 @@ import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.classes.SocketDataHandler;
 import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CarHistoryPage;
+import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
@@ -52,7 +53,6 @@ import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
 import com.byecar.fragments.WebBrowserPage;
 import com.byecar.fragments.dealer.CarDetailPage;
-import com.byecar.fragments.dealer.CarRegistrationPage;
 import com.byecar.fragments.dealer.EditDealerInfoPage;
 import com.byecar.fragments.dealer.MainPage;
 import com.byecar.fragments.dealer.MyCarPage;
@@ -89,7 +89,7 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public static MainActivity activity;
 	
-	public static final int POPUP_REQUEST_REGISTRATION = 0;
+	public static final int POPUP_REGISTRATION = 0;
 	public static final int POPUP_REQUEST_BID = 1;
 	public static final int POPUP_NOT_ENOUGH = 2;
 	public static final int POPUP_COMPLETE_SELLING = 3;
@@ -252,7 +252,10 @@ public class MainActivity extends BCPFragmentActivity {
 					@Override
 					public void run() {
 
-						showPage(BCPConstants.PAGE_CAR_REGISTRATION, null);
+						Bundle bundle = new Bundle();
+						bundle.putInt("carType", Car.TYPE_DEALER);
+						bundle.putBoolean("forDealer", true);
+						showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 						animating = false;
 					}
 				}, 600);
@@ -917,7 +920,7 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		switch(type) {
 		
-		case POPUP_REQUEST_REGISTRATION:
+		case POPUP_REGISTRATION:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
 			tvPopupText.setText(R.string.popup_registration);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);

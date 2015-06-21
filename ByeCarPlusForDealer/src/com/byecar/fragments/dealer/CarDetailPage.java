@@ -411,8 +411,8 @@ public class CarDetailPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
 				bundle.putInt("carType", Car.TYPE_DEALER);
+				bundle.putBoolean("forDealer", true);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
@@ -1354,7 +1354,15 @@ public class CarDetailPage extends BCPFragment {
 			detailInfoTextViews[2].setText(StringUtils.getFormattedNumber(car.getDisplacement()) + "cc");
 			
 			//연료.
-			detailInfoTextViews[3].setText(Car.getFuelTypeString(mContext, car.getFuel_type()));
+			if("gasoline".equals(car.getFuel_type())) {
+				detailInfoTextViews[3].setText("휘발유");
+			} else if("diesel".equals(car.getFuel_type())) {
+				detailInfoTextViews[3].setText("디젤");
+			} else if("lpg".equals(car.getFuel_type())) {
+				detailInfoTextViews[3].setText("LPG");
+			} else {
+				detailInfoTextViews[3].setText("LPG장애");
+			}
 			
 			//번호.
 			detailInfoTextViews[4].setText(car.getCar_number());

@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import android.content.Context;
-
-import com.byecar.byecarplus.R;
 import com.outspoken_kid.utils.LogUtils;
 
 public class Car extends BCPBaseModel implements Serializable {
@@ -98,6 +95,10 @@ public class Car extends BCPBaseModel implements Serializable {
 	private long liked_at;
 	private int dong_id;
 	private String accident_desc;
+	
+	private long my_bid_price;
+	private int my_bid_ranking;
+	private long max_bid_price;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -171,6 +172,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.liked_at = 0;
 			this.dong_id = 0;
 			this.accident_desc = null;
+			
+			this.my_bid_price = 0;
+			this.my_bid_ranking = 0;
+			this.max_bid_price = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -241,6 +246,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.liked_at = newCar.liked_at;
 			this.dong_id = newCar.dong_id;
 			this.accident_desc = newCar.accident_desc;
+			
+			this.my_bid_price = newCar.my_bid_price;
+			this.my_bid_ranking = newCar.my_bid_ranking;
+			this.max_bid_price = newCar.max_bid_price;
 		}
 	}
 	
@@ -536,190 +545,156 @@ public class Car extends BCPBaseModel implements Serializable {
 			if(objJSON.has("accident_desc")) {
 				this.accident_desc = objJSON.getString("accident_desc");
 			}
+			
+			if(objJSON.has("my_bid_price")) {
+				this.my_bid_price = objJSON.getLong("my_bid_price");
+			}
+			
+			if(objJSON.has("my_bid_ranking")) {
+				this.my_bid_ranking = objJSON.getInt("my_bid_ranking");
+			}
+			
+			if(objJSON.has("max_bid_price")) {
+				this.max_bid_price = objJSON.getLong("max_bid_price");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		}
 	}
 	
-	public static String getFuelTypeString(Context context, String origin) {
-		
-		if(context == null || origin == null) {
-			return null;
+	public static int getFuelIndex(String fuel) {
+
+		if("gasoline".equals(fuel)) {
+			return 0;
+		} else if("diesel".equals(fuel)) {
+			return 1;
+		} else if("lpg".equals(fuel)) {
+			return 2;
 		} else {
-			if(origin.equals("gasoline")) {
-				return context.getString(R.string.carSearchString_fuel1);
-			} else if(origin.equals("diesel")) {
-				return context.getString(R.string.carSearchString_fuel2);
-			} else {
-				return context.getString(R.string.carSearchString_fuel3);
-			}
+			return 3;
 		}
+	}
+	
+	public static String getFuelString_ToServer(int index) {
+		
+		switch(index) {
+		case 0:
+			return "gasoline";
+			
+		case 1:
+			return "diesel";
+			
+		case 2:
+			return "lpg";
+			
+		case 3:
+			return "lpgd";
+		
+		}
+		
+		return null;
+	}
+	
+	public static String getFuelString_ToUser(String fuel) {
+		
+		if("gasoline".equals(fuel)) {
+			return "휘발유";
+		} else if("diesel".equals(fuel)) {
+			return "디젤";
+		} else if("lpg".equals(fuel)) {
+			return "LPG 일반";
+		} else {
+			return "LPG 장애";
+		}
+	}
+	
+	public static int getAccidentIndexToUser(int serverIndex) {
+		
+		switch(serverIndex) {
+		
+		//사고여부 모름.
+		case 0:
+			return 2;
+			
+		//유사고.
+		case 1:
+			return 1;
+			
+		//무사고.
+		case 2:
+			return 0;
+		}
+		
+		return 0;
+	}
+	
+	public static int getAccidentIndexToServer(int userIndex) {
+		
+		switch(userIndex) {
+
+		//무사고.
+		case 0:
+			return 2;
+		
+		//유사고.
+		case 1:
+			return 1;
+			
+		//사고여부 모름.
+		case 2:
+			return 0;
+		}
+		
+		return 0;
+	}
+	
+	public static int getOwnedIndexToUser(int serverIndex) {
+		
+		switch(serverIndex) {
+		
+		//1인 신조 아님.
+		case 0:
+			return 1;
+			
+		//1인 신조.
+		case 1:
+			return 0;
+		}
+		
+		return 0;
+	}
+	
+	public static int getOwnedIndexToServer(int userIndex) {
+		
+		switch(userIndex) {
+
+		//1인 신조.
+		case 0:
+			return 1;
+		
+		//1인 신조 아님.
+		case 1:
+			return 0;
+		}
+		
+		return 0;
 	}
 
-	public static String getFuelOriginString(Context context, String text) {
+	public static int getTransmissionIndex(String transmission) {
 		
-		if(context == null || text == null) {
-			return null;
+		if("auto".equals(transmission)) {
+			return 0;
 		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_fuel1))) {
-				return "gasoline";
-			} else if(text.equals(context.getString(R.string.carSearchString_fuel2))) {
-				return "diesel";
-			} else {
-				return "lpg";
-			}
+			return 1;
 		}
 	}
 	
-	public void setFuelTypeString(Context context, String text) {
+	public static String getTransmissionSring_ToServer(int index) {
 		
-		if(context == null || text == null) {
-			return;
+		if(index == 0) {
+			return "auto";
 		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_fuel1))) {
-				setFuel_type("gasoline");
-			} else if(text.equals(context.getString(R.string.carSearchString_fuel2))) {
-				setFuel_type("diesel");
-			} else {
-				setFuel_type("lpg");
-			}
-		}
-	}
-	
-	public static String getTransmissionTypeString(Context context, String origin) {
-		
-		if(context == null || origin == null) {
-			return null;
-		} else {
-			if(origin.equals("auto")) {
-				return context.getString(R.string.carSearchString_transmission1);
-			} else {
-				return context.getString(R.string.carSearchString_transmission2);
-			}
-		}
-	}
-	
-	public static String getTransmissionOriginString(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return null;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_transmission1))) {
-				return "auto";
-			} else {
-				return "manual";
-			}
-		}
-	}
-	
-	public void setTransmissionTypeString(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_transmission1))) {
-				setTransmission_type("auto");
-			} else {
-				setTransmission_type("manual");
-			}
-		}
-	}
-	
-	public static String getAccidentTypeString(Context context, int type) {
-		
-		if(context == null) {
-			return null;
-		} else {
-
-			switch(type) {
-			
-			case 0:
-				return context.getString(R.string.carSearchString_accident3);
-				
-			case 1:
-				return context.getString(R.string.carSearchString_accident2);
-				
-				default:
-					return context.getString(R.string.carSearchString_accident1);
-			}
-		}
-	}
-	
-	public static String getAccidentOriginString(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return null;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_accident3))) {
-				return "0";
-			} else if(text.equals(context.getString(R.string.carSearchString_accident2))) {
-				return "1";
-			} else {
-				return "2";
-			}
-		}
-	}
-	
-	public void setAccidentType(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_accident3))) {
-				setHad_accident(0);
-			} else if(text.equals(context.getString(R.string.carSearchString_accident2))) {
-				setHad_accident(1);
-			} else {
-				setHad_accident(2);
-			}
-		}
-	}
-	
-	public static String getOneManOwnedTypeString(Context context, int type) {
-
-		if(context == null) {
-			return null;
-		} else {
-
-			if(type == 0) {
-				return context.getString(R.string.carSearchString_oneManOwned2);
-			} else {
-				return context.getString(R.string.carSearchString_oneManOwned1);
-			}
-		}
-	}
-	
-	public static String getOneManOwnedOriginString(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return null;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_oneManOwned2))) {
-				return "0";
-			} else {
-				return "1";
-			}
-		}
-	}
-	
-	public void setOneManOwnedType(Context context, String text) {
-		
-		if(context == null || text == null) {
-			return;
-		} else {
-			
-			if(text.equals(context.getString(R.string.carSearchString_oneManOwned2))) {
-				setIs_oneman_owned(0);
-			} else {
-				setIs_oneman_owned(1);
-			}
+			return "manual";
 		}
 	}
 	
@@ -1208,5 +1183,29 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setSeller_nickname(String seller_nickname) {
 		this.seller_nickname = seller_nickname;
+	}
+
+	public long getMy_bid_price() {
+		return my_bid_price;
+	}
+
+	public void setMy_bid_price(long my_bid_price) {
+		this.my_bid_price = my_bid_price;
+	}
+
+	public int getMy_bid_ranking() {
+		return my_bid_ranking;
+	}
+
+	public void setMy_bid_ranking(int my_bid_ranking) {
+		this.my_bid_ranking = my_bid_ranking;
+	}
+
+	public long getMax_bid_price() {
+		return max_bid_price;
+	}
+
+	public void setMax_bid_price(long max_bid_price) {
+		this.max_bid_price = max_bid_price;
 	}
 }

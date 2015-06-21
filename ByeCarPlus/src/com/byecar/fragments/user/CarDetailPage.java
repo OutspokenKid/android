@@ -361,7 +361,6 @@ public class CarDetailPage extends BCPFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_EDIT);
 				bundle.putInt("carType", Car.TYPE_BID);
 				bundle.putSerializable("car", car);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
@@ -1474,7 +1473,7 @@ public class CarDetailPage extends BCPFragment {
 		detailInfoTextViews[2].setText(StringUtils.getFormattedNumber(car.getDisplacement()) + "cc");
 		
 		//연료.
-		detailInfoTextViews[3].setText(Car.getFuelTypeString(mContext, car.getFuel_type()));
+		detailInfoTextViews[3].setText(Car.getFuelString_ToUser(car.getFuel_type()));
 		
 		//번호.
 		detailInfoTextViews[4].setText(car.getCar_number());

@@ -206,7 +206,6 @@ public class CarListPage extends BCPAuctionableFragment {
 			public void onClick(View view) {
 
 				Bundle bundle = new Bundle();
-				bundle.putInt("type", CarRegistrationPage.TYPE_REGISTRATION);
 				bundle.putInt("carType", type);
 				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 			}
