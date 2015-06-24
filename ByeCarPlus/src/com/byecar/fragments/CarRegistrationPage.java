@@ -34,16 +34,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.byecar.byecarplus.MainActivity;
+import com.byecar.byecarplus.MultiSelectGalleryActivity.OnAfterPickImagesListener;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.BCPFragment;
+import com.byecar.classes.BCPFragmentActivity;
 import com.byecar.models.Car;
 import com.byecar.models.CarModelDetailInfo;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
-import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
+import com.outspoken_kid.activities.ImageSelectActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.BitmapUtils;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -91,7 +93,8 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private TextView tvRightPhoto;
 	private Button[] btnPhotos;
-	private ImageView[] ivPhotos;
+	private ImageView[] ivPhotos = new ImageView[9];
+	private Bitmap[] thumbnails = new Bitmap[9];
 	private TextView[] tvCarPhotos;
 	
 	private TextView tvAddedPhoto;
@@ -153,6 +156,27 @@ public class CarRegistrationPage extends BCPFragment {
 					carPhotoThumbnails[selectedImageIndex] = thumbnails[0];
 					ivPhotos[selectedImageIndex].setImageBitmap(thumbnails[0]);
 					selectedImageSdCardPaths[selectedImageIndex] = sdCardPaths[0];
+				}
+				
+				checkProgress();
+			}
+		};
+
+		BCPFragmentActivity.onAfterPickImagesListener = new OnAfterPickImagesListener() {
+			
+			@Override
+			public void onAfterPickImage(String[] sdCardPaths, Bitmap[] thumbnails, boolean isEssential) {
+				
+				if(thumbnails != null && thumbnails.length > 0) {
+					
+					for(int i=0; i<sdCardPaths.length; i++) {
+					
+						int target = isEssential? i : i + 4;
+						
+						selectedImageSdCardPaths[target] = sdCardPaths[i];
+						carPhotoThumbnails[target] = thumbnails[i];
+						ivPhotos[target].setImageBitmap(thumbnails[i]);
+					}
 				}
 				
 				checkProgress();
@@ -415,7 +439,6 @@ public class CarRegistrationPage extends BCPFragment {
 		btnPhotos[6] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto3);
 		btnPhotos[7] = (Button) mThisView.findViewById(R.id.carRegistrationPage_btnAddedPhoto4);
 
-		ivPhotos = new ImageView[9];
 		ivPhotos[0] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto1);
 		ivPhotos[1] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto2);
 		ivPhotos[2] = (ImageView) mThisView.findViewById(R.id.carRegistrationPage_ivCarPhoto3);
@@ -1434,6 +1457,7 @@ public class CarRegistrationPage extends BCPFragment {
 													+ "\nurl : " + url);
 
 											ivPhotos[INDEX].setImageBitmap(bitmap);
+											thumbnails[INDEX] = bitmap;
 										} catch (Exception e) {
 											LogUtils.trace(e);
 										} catch (OutOfMemoryError oom) {
@@ -1441,9 +1465,8 @@ public class CarRegistrationPage extends BCPFragment {
 										}
 									}
 								}, 144);
-						
 					} else {
-						(new AsyncLoadThumbnail(selectedImageSdCardPaths[i], ivPhotos[i])).execute();
+						(new AsyncLoadThumbnail(selectedImageSdCardPaths[i], ivPhotos[i], i)).execute();
 					}
 				}
 			}
@@ -2119,10 +2142,10 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	public void setImageViewsOnClickListener() {
 		
-		int size = btnPhotos.length;
-		for(int i=0; i<size; i++) {
-			
+		//Test.
+		for(int i=0; i<btnPhotos.length; i++) {
 			final int INDEX = i;
+			
 			btnPhotos[i].setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -2133,6 +2156,45 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			});
 		}
+		
+//		int size = btnPhotos.length - 1;
+//		for(int i=0; i<size; i++) {
+//
+//			final int INDEX = i;
+//			
+//			btnPhotos[i].setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View view) {
+//					
+//					boolean isEssential = INDEX>3;
+//					
+//					//final , final Bitmap thumbnails
+//					String[] selectedImageUrls = new String[4];
+//					Bitmap[] selectedThumbnails = new Bitmap[4];
+//					
+//					for(int j=0; j<4; j++) {
+//						int startIndex = isEssential? 0 : 4;
+//						
+//						selectedImageUrls[j] = selectedImageSdCardPaths[startIndex + j];
+//						selectedThumbnails[j] = thumbnails[startIndex + j];
+//					}
+//					
+//					mActivity.showUploadPhotoPopup(selectedImageUrls, selectedThumbnails, isEssential);
+//				}
+//			});
+//		}
+//		
+//		final int INDEX = btnPhotos.length - 1;
+//		btnPhotos[btnPhotos.length - 1].setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View view) {
+//				
+//				selectedImageIndex = INDEX;
+//				mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
+//			}
+//		});
 		
 		btnCheck.setOnClickListener(new OnClickListener() {
 
@@ -2655,10 +2717,12 @@ public class CarRegistrationPage extends BCPFragment {
 		private String path;
 		private ImageView imageView;
 		private Bitmap thumbnail;
+		private int index;
 		
-		public AsyncLoadThumbnail(String path, ImageView imageView) {
+		public AsyncLoadThumbnail(String path, ImageView imageView, int index) {
 			this.path = path;
 			this.imageView = imageView;
+			this.index = index;
 		}
 		
 		@Override
@@ -2684,6 +2748,7 @@ public class CarRegistrationPage extends BCPFragment {
 		
 			try {
 				imageView.setImageBitmap(thumbnail);
+				thumbnails[index] = thumbnail;
 			} catch (Exception e) {
 				LogUtils.trace(e);
 			} catch (Error e) {

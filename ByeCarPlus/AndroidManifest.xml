@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.byecar.byecarplus"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="2"
+    android:versionName="1.0.1" >
     
     <uses-sdk
         android:minSdkVersion="8"
@@ -57,7 +57,7 @@
         	android:windowSoftInputMode="stateHidden|adjustResize"
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
         
-        <activity android:name="com.outspoken_kid.activities.MultiSelectGalleryActivity"
+        <activity android:name="com.outspoken_kid.activities.ImageSelectActivity"
 		    android:screenOrientation="portrait"
         	android:windowSoftInputMode="stateHidden|adjustResize"
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
@@ -70,6 +70,12 @@
         
         <activity 
             android:name=".GuideActivity"
+        	android:screenOrientation="portrait"
+        	android:windowSoftInputMode="stateHidden"
+        	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />
+
+        <activity 
+            android:name=".MultiSelectGalleryActivity"
         	android:screenOrientation="portrait"
         	android:windowSoftInputMode="stateHidden"
         	android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale" />

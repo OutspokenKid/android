@@ -20,7 +20,7 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.activities.BaseFragmentActivity;
-import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
+import com.outspoken_kid.activities.ImageSelectActivity.OnAfterPickImageListener;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;

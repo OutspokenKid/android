@@ -1,5 +1,6 @@
 package com.byecar.classes;
 
+import java.io.File;
 import java.util.Set;
 
 import org.json.JSONObject;
@@ -7,18 +8,26 @@ import org.json.JSONObject;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.byecar.byecarplusfordealer.ImageViewer;
+import com.byecar.byecarplusfordealer.MultiSelectGalleryActivity;
+import com.byecar.byecarplusfordealer.MultiSelectGalleryActivity.OnAfterPickImagesListener;
 import com.byecar.models.PushObject;
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
+import com.outspoken_kid.classes.OutSpokenConstants;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
@@ -26,6 +35,8 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
 	public abstract BCPFragment getFragmentByPageCode(int pageCode);
 	public abstract void handleUri(Uri uri);
+	
+	public static OnAfterPickImagesListener onAfterPickImagesListener; 
 	
 	private View loadingView;
 	
@@ -69,6 +80,63 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		return BCPConstants.COOKIE_NAME_S;
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		try {
+			switch(requestCode) {
+			
+			case OutSpokenConstants.REQUEST_ALBUM_MULTI:
+				
+				if(resultCode == RESULT_OK) {
+
+					try {
+						LogUtils.log("###BCPFragmentActivity.onActivityResult.  data : " + data);
+						
+						String[] selectedImageUrls = data.getStringArrayExtra("selectedImageUrls");
+						boolean isEssential = data.getBooleanExtra("isEssential", true);
+						
+						Parcelable[] parcelables = getIntent().getParcelableArrayExtra("thumbnails");
+						Bitmap[] thumbnails = new Bitmap[parcelables.length];
+						
+						for(int i=0; i<parcelables.length; i++) {
+							
+							if(parcelables[i] != null) {
+								thumbnails[i] = (Bitmap) parcelables[i];
+							}
+						}
+						
+						if(onAfterPickImagesListener != null) {
+							onAfterPickImagesListener.onAfterPickImage(selectedImageUrls, thumbnails, isEssential);
+							return;
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+
+						if(onAfterPickImagesListener != null) {
+							onAfterPickImagesListener.onAfterPickImage(null, null, true);
+						}
+						
+					} catch (Error e) {
+						LogUtils.trace(e);
+						
+						if(onAfterPickImagesListener != null) {
+							onAfterPickImagesListener.onAfterPickImage(null, null, true);
+						}
+					}
+				}
+				
+				break;
+			}
+
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
+	
 //////////////////// Custom methods.
 
 	public void checkSession(final OnAfterCheckSessionListener onAfterCheckSessionListener) {
@@ -187,6 +255,67 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		
 		intent.putExtra("imageResId", imageResId);
 		startActivity(intent);
+	}
+
+	public void showUploadPhotoPopup(final String[] selectedImageUrls, final Bitmap[] thumbnails, final boolean isEssential) {
+		
+		showSelectDialog("사진 업로드", 
+				new String[]{"앨범", "카메라"}, 
+				new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+
+				Intent intent = null;
+				int requestCode = 0;
+				
+				//앨범.
+				if(which == 0) {
+					showMultiImageSelectActivity(selectedImageUrls, thumbnails, isEssential);
+					
+				//카메라.
+				} else if(which == 1) {
+					intent = new Intent();
+					intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+				    File fileDerectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+				    String fileName = System.currentTimeMillis() + ".jpg";
+				    String filePath = fileDerectory.getPath();
+				    File file = new File(fileDerectory, fileName);
+				    
+				    LogUtils.log("###CmonsFramentActivity.onClick.  Set fileName, filePath." +
+				    		"\nfileName : " + fileName+
+				    		"\nfilePath : " + filePath);
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "fileName", fileName);
+				    SharedPrefsUtils.addDataToPrefs(OutSpokenConstants.PREFS_IMAGE_UPLOAD, "filePath", filePath);
+				    
+				    if(!fileDerectory.exists()) {
+				    	fileDerectory.mkdirs();
+				    }
+				    
+				    Uri uri = Uri.fromFile(file);
+				    intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+				    requestCode = OutSpokenConstants.REQUEST_CAMERA;
+				}
+				
+				if(intent != null) {
+					startActivityForResult(intent, requestCode);
+				}
+			}
+		});
+	}
+	
+	public void showMultiImageSelectActivity(String[] selectedImageUrls, Bitmap[] thumbnails, boolean isEssential) {
+		
+		Intent intent = new Intent(this, MultiSelectGalleryActivity.class);
+		
+		intent.putExtra("titleText", getString(com.byecar.byecarplusfordealer.R.string.selectPhoto));
+		intent.putExtra("titleBgColor", getResources().getColor(com.byecar.byecarplusfordealer.R.color.titlebar_bg_brown));
+		intent.putExtra("selectedImageUrls", selectedImageUrls);
+		intent.putExtra("thumbnails", thumbnails);
+		intent.putExtra("isEssential", isEssential);
+
+		startActivityForResult(intent, OutSpokenConstants.REQUEST_ALBUM_MULTI);
 	}
 	
 	public void setLoadingView(View view) {

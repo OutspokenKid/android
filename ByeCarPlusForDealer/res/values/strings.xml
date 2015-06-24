@@ -5,7 +5,7 @@
     <string name="addedPhoto">추가사진</string>
     <string name="addedPhotoText">* 추가사진 등록시 더 높은 견적을 받을 수 있습니다.</string>
     <string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
-    <string name="app_name">ByeCarPlus For Dealer</string>
+    <string name="app_name">바이카 딜러전용</string>
     <string name="auctionedPrice">낙찰금액</string>
 
     <string name="bidding">입찰</string>
@@ -251,6 +251,7 @@
 	<string name="searchCondition">검색조건</string>
 	<string name="selectArea1First">시도를 먼저 선택해주세요.</string>
     <string name="selectCarFirst">차량을 먼저 선택해주세요.</string>
+    <string name="selectPhoto">사진 선택</string>
 	<string name="sellingPrice">판매금액</string>
 	<string name="sellingPriceMustOver10000">판매 가격은 10000원 이상이어야 합니다</string>
 	<string name="searchPrice1">0</string>

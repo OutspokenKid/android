@@ -2,7 +2,9 @@ package com.outspoken_kid.activities;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.http.cookie.Cookie;
 
@@ -27,7 +29,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.outspoken_kid.R;
-import com.outspoken_kid.activities.MultiSelectGalleryActivity.OnAfterPickImageListener;
+import com.outspoken_kid.activities.ImageSelectActivity.OnAfterPickImageListener;
 import com.outspoken_kid.classes.BaseFragment;
 import com.outspoken_kid.classes.OutSpokenConstants;
 import com.outspoken_kid.classes.RequestManager;
@@ -112,6 +114,27 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				"\nresultCode : " + resultCode +
 				"\nrequestCode : " + requestCode +
 				"\ndata : " + data);
+		
+		if(data != null) {
+			Bundle bundle = data.getExtras();
+			
+			Set<String> keySet = bundle.keySet();
+			Iterator<String> it = keySet.iterator();
+			
+			String logString = "";
+			while(it.hasNext()) {
+				String key = it.next();
+				
+				if(logString != null) {
+					logString += "\n";
+				}
+				
+				logString += "key : " + key;
+			}
+			
+			LogUtils.log("###############################BaseFragmentActivity.onActivityResult.  datas "
+					+ logString);
+		}
 		
 		switch(requestCode) {
 		
@@ -202,6 +225,15 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				ToastUtils.showToast(R.string.canceled);
 			}
 
+			break;
+			
+		case OutSpokenConstants.REQUEST_ALBUM_MULTI:
+			
+			if(resultCode == RESULT_OK) {
+				//Do nothing.
+				return;
+			}
+			
 			break;
 		}
 		
@@ -343,7 +375,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				
 				//앨범.
 				if(which == 0) {
-					intent = new Intent(BaseFragmentActivity.this, MultiSelectGalleryActivity.class);
+					intent = new Intent(BaseFragmentActivity.this, ImageSelectActivity.class);
 					intent.putExtra("maxImageCount", maxImageCount);
 					requestCode = OutSpokenConstants.REQUEST_ALBUM;
 					
@@ -390,7 +422,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				
 				//앨범.
 				if(which == 0) {
-					intent = new Intent(BaseFragmentActivity.this, MultiSelectGalleryActivity.class);
+					intent = new Intent(BaseFragmentActivity.this, ImageSelectActivity.class);
 					intent.putExtra("maxImageCount", maxImageCount);
 					intent.putExtra("titleBgColor", Color.BLACK);
 					

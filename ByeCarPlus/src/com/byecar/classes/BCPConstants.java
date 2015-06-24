@@ -9,9 +9,9 @@ public class BCPConstants {
 	
 	public static final int REQUEST_CAMERA = 1;
 	public static final int REQUEST_ALBUM = 2;
-	public static final int REQUEST_SEARCH_TRIM = 3;
-	public static final int REQUEST_SEARCH_AREA = 4;
-	public static final int REQUEST_SEARCH_MONTH = 5;
+	public static final int REQUEST_SEARCH_TRIM = 4;
+	public static final int REQUEST_SEARCH_AREA = 5;
+	public static final int REQUEST_SEARCH_MONTH = 6;
 	
 	public static final String PREFS_PUSH = "pushSetting";
 	public static final String PREFS_NOTICE = "noticePopup";
