@@ -1698,26 +1698,37 @@ public class CarDetailPage extends BCPFragment {
 
 	public void setTitleBarButtons() {
 
-		switch(car.getType()) {
+		try {
+			switch(car.getType()) {
 
-		//옥션. -> 내가 올린 경우에만 수정, 삭제.
-		case Car.TYPE_BID:
+			//옥션. -> 내가 올린 경우에만 수정, 삭제.
+			case Car.TYPE_BID:
 
-			btnReport.setVisibility(View.GONE);
-			
-			if(car.getSeller_id() == MainActivity.user.getId()) {
-				btnEdit.setVisibility(View.VISIBLE);
-			} else {
+				btnReport.setVisibility(View.GONE);
+				
+				if(car.getSeller_id() == MainActivity.user.getId()) {
+					
+					if(car.getStatus() < Car.STATUS_BIDDING) {
+						btnEdit.setVisibility(View.VISIBLE);
+					} else {
+						btnEdit.setVisibility(View.GONE);
+					}
+				} else {
+					btnEdit.setVisibility(View.GONE);
+				}
+				
+				break;
+
+			case Car.TYPE_DEALER:
+			case Car.TYPE_DIRECT:
+				btnReport.setVisibility(View.VISIBLE);
 				btnEdit.setVisibility(View.GONE);
-			}
-			
-			break;
-
-		case Car.TYPE_DEALER:
-		case Car.TYPE_DIRECT:
-			btnReport.setVisibility(View.VISIBLE);
-			btnEdit.setVisibility(View.GONE);
-			break;
+				break;
+			}			
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	

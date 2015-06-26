@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -92,37 +91,25 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 				if(resultCode == RESULT_OK) {
 
 					try {
-						LogUtils.log("###BCPFragmentActivity.onActivityResult.  data : " + data);
-						
 						String[] selectedImageUrls = data.getStringArrayExtra("selectedImageUrls");
 						boolean isEssential = data.getBooleanExtra("isEssential", true);
 						
-						Parcelable[] parcelables = getIntent().getParcelableArrayExtra("thumbnails");
-						Bitmap[] thumbnails = new Bitmap[parcelables.length];
-						
-						for(int i=0; i<parcelables.length; i++) {
-							
-							if(parcelables[i] != null) {
-								thumbnails[i] = (Bitmap) parcelables[i];
-							}
-						}
-						
 						if(onAfterPickImagesListener != null) {
-							onAfterPickImagesListener.onAfterPickImage(selectedImageUrls, thumbnails, isEssential);
+							onAfterPickImagesListener.onAfterPickImage(selectedImageUrls, isEssential);
 							return;
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
 
 						if(onAfterPickImagesListener != null) {
-							onAfterPickImagesListener.onAfterPickImage(null, null, true);
+							onAfterPickImagesListener.onAfterPickImage(null, true);
 						}
 						
 					} catch (Error e) {
 						LogUtils.trace(e);
 						
 						if(onAfterPickImagesListener != null) {
-							onAfterPickImagesListener.onAfterPickImage(null, null, true);
+							onAfterPickImagesListener.onAfterPickImage(null, true);
 						}
 					}
 				}
@@ -257,7 +244,10 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		startActivity(intent);
 	}
 
-	public void showUploadPhotoPopup(final String[] selectedImageUrls, final Bitmap[] thumbnails, final boolean isEssential) {
+	public void showUploadPhotoPopup(final String[] selectedImageUrls, 
+			final Bitmap[] thumbnails, 
+			final boolean isEssential, 
+			final int targetIndex) {
 		
 		showSelectDialog("사진 업로드", 
 				new String[]{"앨범", "카메라"}, 
@@ -271,7 +261,7 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 				
 				//앨범.
 				if(which == 0) {
-					showMultiImageSelectActivity(selectedImageUrls, thumbnails, isEssential);
+					showMultiImageSelectActivity(selectedImageUrls, thumbnails, isEssential, targetIndex);
 					
 				//카메라.
 				} else if(which == 1) {
@@ -305,7 +295,10 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		});
 	}
 	
-	public void showMultiImageSelectActivity(String[] selectedImageUrls, Bitmap[] thumbnails, boolean isEssential) {
+	public void showMultiImageSelectActivity(String[] selectedImageUrls, 
+			Bitmap[] thumbnails, 
+			boolean isEssential,
+			int targetIndex) {
 		
 		Intent intent = new Intent(this, MultiSelectGalleryActivity.class);
 		
@@ -314,6 +307,7 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		intent.putExtra("selectedImageUrls", selectedImageUrls);
 		intent.putExtra("thumbnails", thumbnails);
 		intent.putExtra("isEssential", isEssential);
+		intent.putExtra("targetIndex", targetIndex);
 
 		startActivityForResult(intent, OutSpokenConstants.REQUEST_ALBUM_MULTI);
 	}
