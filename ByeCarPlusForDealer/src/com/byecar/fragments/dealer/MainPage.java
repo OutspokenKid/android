@@ -303,7 +303,7 @@ public class MainPage extends BCPAuctionableFragment {
 		switch(menuIndex) {
 			
 		case 0:
-			url = BCPAPIs.CAR_BID_LIST_URL + "?status=10";
+			url = BCPAPIs.CAR_BID_LIST_URL + "?status=in_progress";
 			break;
 			
 		case 1:

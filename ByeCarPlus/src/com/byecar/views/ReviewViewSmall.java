@@ -61,7 +61,7 @@ public class ReviewViewSmall extends FrameLayout {
 		
 		//tvBiddingInfo.
 		tvBiddingInfo = new TextView(getContext());
-		ResizeUtils.viewResize(236, 43, tvBiddingInfo, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{2, 0, 0, 0});
+		ResizeUtils.viewResize(242, 44, tvBiddingInfo, 2, Gravity.LEFT|Gravity.TOP, new int[]{2, 0, 0, 0});
 		tvBiddingInfo.setTextColor(Color.WHITE);
 		tvBiddingInfo.setSingleLine();
 		tvBiddingInfo.setEllipsize(TruncateAt.END);

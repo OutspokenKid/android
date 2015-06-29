@@ -65,6 +65,7 @@ public class CarView extends RelativeLayout {
 	private View statusBadge;
 	private View rankBadge2;
 	private View completeBadge;
+	private View paymentBadge;
 	
 	private BCPFragmentActivity activity;
 	private OnTimeChangedListener onTimeChangedListener;
@@ -97,11 +98,11 @@ public class CarView extends RelativeLayout {
 		
 		//ivProfile.
 		ivProfile = new ImageView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(43), 
-				ResizeUtils.getSpecificLength(43));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
-		rp.leftMargin = ResizeUtils.getSpecificLength(9);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(7);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(45), 
+				ResizeUtils.getSpecificLength(45));
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.leftMargin = ResizeUtils.getSpecificLength(8);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		ivProfile.setLayoutParams(rp);
 		ivProfile.setId(R.id.carView_ivProfile);
 		ivProfile.setScaleType(ScaleType.CENTER_CROP);
@@ -116,25 +117,26 @@ public class CarView extends RelativeLayout {
 		
 		//tvDealerName.
 		tvDealerName = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(70), ResizeUtils.getSpecificLength(56));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
-		rp.addRule(RIGHT_OF, R.id.carView_ivProfile);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(74), ResizeUtils.getSpecificLength(37));
+		rp.addRule(ALIGN_PARENT_LEFT);
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.leftMargin = ResizeUtils.getSpecificLength(64);
 		tvDealerName.setLayoutParams(rp);
 		tvDealerName.setId(R.id.carView_tvDealerName);
 		tvDealerName.setTextColor(Color.WHITE);
 		tvDealerName.setSingleLine();
 		tvDealerName.setEllipsize(TruncateAt.END);
-		FontUtils.setFontSize(tvDealerName, 20);
+		FontUtils.setFontSize(tvDealerName, 18);
 		tvDealerName.setGravity(Gravity.CENTER_VERTICAL);
+		tvDealerName.setPadding(ResizeUtils.getSpecificLength(6), 0, ResizeUtils.getSpecificLength(6), 0);
 		this.addView(tvDealerName);
 		
 		//rankBadge.
 		rankBadge = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(96), ResizeUtils.getSpecificLength(25));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
+		rp.addRule(ALIGN_PARENT_TOP);
 		rp.addRule(RIGHT_OF, R.id.carView_tvDealerName);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(15);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		rankBadge.setLayoutParams(rp);
 		this.addView(rankBadge);
 		
@@ -326,6 +328,13 @@ public class CarView extends RelativeLayout {
 		immediatlyBadge.setBackgroundResource(R.drawable.auction_sale2_icon1);
 		immediatlyBadge.setVisibility(View.GONE);
 		buttonLinear.addView(immediatlyBadge);
+		
+		//paymentBadge.
+		paymentBadge = new View(getContext());
+		ResizeUtils.viewResize(90, 27, paymentBadge, 1, 0, new int[]{0, 0, 0, 7});
+		paymentBadge.setVisibility(View.GONE);
+		paymentBadge.setBackgroundResource(R.drawable.complete_payment_icon);
+		buttonLinear.addView(paymentBadge);
 		
 		//statusBadge.
 		statusBadge = new View(getContext());
@@ -662,6 +671,14 @@ public class CarView extends RelativeLayout {
 			immediatlyBadge.setVisibility(View.VISIBLE);
 		} else {
 			immediatlyBadge.setVisibility(View.GONE);
+		}
+		
+		//paymentBadge.
+		if(car.getType() == Car.TYPE_BID
+				&& car.getStatus() == Car.STATUS_PAYMENT_COMPLETED) {
+			paymentBadge.setVisibility(View.VISIBLE);
+		} else {
+			paymentBadge.setVisibility(View.GONE);
 		}
 		
 		//Set badges. (statusBadge, rankBadge2, completeBadge)

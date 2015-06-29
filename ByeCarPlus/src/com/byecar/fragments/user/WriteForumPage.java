@@ -284,7 +284,10 @@ public class WriteForumPage extends BCPFragment {
 			btnCategory.setText(post.getBoard_title());
 			etTitle.setText(post.getTitle());
 			etContent.setText(post.getContent());
-			addPicturesFromLastPost();
+			
+			if(pictureLinear.getChildCount() == 0) {
+				addPicturesFromLastPost();
+			}
 		}
 	}
 	
@@ -297,62 +300,36 @@ public class WriteForumPage extends BCPFragment {
 			return;
 		}
 		
-		OnBitmapDownloadListener obdl = new OnBitmapDownloadListener() {
-
-			public int downloadCount = 0;
-			
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("WriteForumPage.onError." + "\nurl : " + url);
-				complete();
-			}
-
-			@Override
-			public void onCompleted(String url, Bitmap bitmap) {
-
-				try {
-					LogUtils.log("WriteForumPage.onCompleted." + "\nurl : " + url);
-					
-					for(int i=0; i<pictureInfos.size(); i++) {
-						
-						if(pictureInfos.get(i).getUrl().equals(url)) {
-							pictureInfos.get(i).setThumbnail(bitmap);
-							break;
-						}
-					}
-					
-					complete();
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-			
-			public void complete() {
-				downloadCount++;
-				
-				if(downloadCount == post.getImages().length) {
-					addViews();
-				}
-			}
-			
-			public void addViews() {
-				
-				for(int i=0; i<pictureInfos.size(); i++) {
-					addPictureView(pictureInfos.get(i));
-				}
-			}
-		};
-		
 		for(int i=0; i<post.getImages().length; i++) {
 			
+			final int INDEX = i;
+			
 			AttatchedPictureInfo attatedPictureInfo = new AttatchedPictureInfo();
-			attatedPictureInfo.setUrl(url);
+			attatedPictureInfo.setUrl(post.getImages()[i]);
 			pictureInfos.add(attatedPictureInfo);
 			
-			BCPDownloadUtils.downloadBitmap(post.getImages()[i], obdl, 60);
+			BCPDownloadUtils.downloadBitmap(post.getImages()[i], new OnBitmapDownloadListener() {
+
+				@Override
+				public void onError(String url) {
+
+					LogUtils.log("from.onError." + "\nurl : " + url);
+				}
+
+				@Override
+				public void onCompleted(String url, Bitmap bitmap) {
+
+					try {
+						LogUtils.log("from.onCompleted." + "\nurl : " + url);
+						pictureInfos.get(INDEX).setThumbnail(bitmap);
+						addPictureView(pictureInfos.get(INDEX));
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (OutOfMemoryError oom) {
+						LogUtils.trace(oom);
+					}
+				}
+			}, 60);
 		}
 	}
 	

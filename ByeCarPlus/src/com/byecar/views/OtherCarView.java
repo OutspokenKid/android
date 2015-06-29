@@ -91,10 +91,10 @@ public class OtherCarView extends RelativeLayout {
 		
 		//tvDealerName.
 		tvDealerName = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(70), ResizeUtils.getSpecificLength(56));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
-		rp.addRule(RIGHT_OF, R.id.usedCarView_ivProfile);
-		rp.leftMargin = ResizeUtils.getSpecificLength(10);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(74), ResizeUtils.getSpecificLength(37));
+		rp.addRule(ALIGN_PARENT_LEFT);
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.leftMargin = ResizeUtils.getSpecificLength(64);
 		tvDealerName.setLayoutParams(rp);
 		tvDealerName.setId(R.id.usedCarView_tvDealerName);
 		tvDealerName.setTextColor(Color.WHITE);
@@ -107,9 +107,10 @@ public class OtherCarView extends RelativeLayout {
 		//rankBadge.
 		rankBadge = new View(getContext());
 		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(96), ResizeUtils.getSpecificLength(25));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
+		rp.addRule(ALIGN_PARENT_TOP);
 		rp.addRule(RIGHT_OF, R.id.usedCarView_tvDealerName);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(15);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
+		
 		rankBadge.setLayoutParams(rp);
 		this.addView(rankBadge);
 		

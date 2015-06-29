@@ -187,12 +187,13 @@ public class ForumDetailPage extends BCPFragment {
 				}
 				
 				String url = null;
-				
-				if(post.getIs_liked() == 0) {
+
+				//무조건 추천만.
+//				if(post.getIs_liked() == 0) {
 					url = BCPAPIs.FORUM_LIKE_URL;
-				} else {
-					url = BCPAPIs.FORUM_UNLIKE_URL;
-				}
+//				} else {
+//					url = BCPAPIs.FORUM_UNLIKE_URL;
+//				}
 				
 				url += "?post_id=" + post.getId();
 				DownloadUtils.downloadJSONString(url,
@@ -215,7 +216,11 @@ public class ForumDetailPage extends BCPFragment {
 											+ objJSON);
 
 									if(objJSON.getInt("result") == 1) {
-										post.setIs_liked((post.getIs_liked() + 1)%2); 
+										post.setIs_liked((post.getIs_liked() + 1)%2);
+										post.setLikes_cnt(post.getLikes_cnt() + 1);
+										forumView.setForum(post, -1);
+										
+										ToastUtils.showToast(R.string.complete_recommendPost);
 									} else {
 										ToastUtils.showToast(objJSON.getString("message"));
 									}
@@ -238,39 +243,17 @@ public class ForumDetailPage extends BCPFragment {
 					return;
 				}
 				
-				String url = BCPAPIs.FORUM_REPORT_URL
-						+ "+?post_id=" + post.getId();
-				DownloadUtils.downloadJSONString(url,
-						new OnJSONDownloadListener() {
+				mActivity.showAlertDialog(
+						R.string.report, R.string.wannaReport, 
+						R.string.confirm, R.string.cancel,
+						new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
 
-							@Override
-							public void onError(String url) {
-
-								LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
-								ToastUtils.showToast(R.string.failToReportPost);
-							}
-
-							@Override
-							public void onCompleted(String url,
-									JSONObject objJSON) {
-
-								try {
-									LogUtils.log("ForumDetailPage.onCompleted."
-											+ "\nurl : " + url + "\nresult : "
-											+ objJSON);
-
-									if(objJSON.getInt("result") == 1) {
-										ToastUtils.showToast(R.string.complete_report);
-									} else {
-										ToastUtils.showToast(objJSON.getString("message"));
-									}
-								} catch (Exception e) {
-									LogUtils.trace(e);
-								} catch (OutOfMemoryError oom) {
-									LogUtils.trace(oom);
-								}
-							}
-						});
+						report();
+					}
+				}, null);
 			}
 		});
 
@@ -740,5 +723,42 @@ public class ForumDetailPage extends BCPFragment {
 				}
 			}
 		});
+	}
+
+	public void report() {
+
+		String url = BCPAPIs.FORUM_REPORT_URL
+				+ "?post_id=" + post.getId();
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
+						ToastUtils.showToast(R.string.failToReportPost);
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("ForumDetailPage.onCompleted."
+									+ "\nurl : " + url + "\nresult : "
+									+ objJSON);
+
+							if(objJSON.getInt("result") == 1) {
+								ToastUtils.showToast(R.string.complete_report);
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
 	}
 }

@@ -609,7 +609,7 @@
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/buy_call_btn_a" />
+        android:background="@drawable/normal_direct_call_btn" />
     
     <Button
         android:id="@+id/carDetailPage_btnDelete"

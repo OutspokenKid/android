@@ -78,6 +78,7 @@
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editProfile">프로필정보 수정이 완료되었습니다.</string>
     <string name="complete_loadingImage">이미지 불러오기 완료</string>
+    <string name="complete_recommendPost">추천 완료</string>
     <string name="complete_report">신고가 완료되었습니다.</string>
     <string name="complete_selectDealer">딜러 선택이 완료되었습니다.</string>
     <string name="complete_selling">거래 완료 처리되었습니다.</string>

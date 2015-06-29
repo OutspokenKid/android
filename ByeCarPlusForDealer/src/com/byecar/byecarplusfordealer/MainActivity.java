@@ -69,7 +69,6 @@ import com.byecar.models.Dealer;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
-import com.outspoken_kid.classes.OutSpokenConstants;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -90,10 +89,12 @@ public class MainActivity extends BCPFragmentActivity {
 
 	public static MainActivity activity;
 	
-	public static final int POPUP_REGISTRATION = 0;
-	public static final int POPUP_REQUEST_BID = 1;
-	public static final int POPUP_NOT_ENOUGH = 2;
-	public static final int POPUP_COMPLETE_SELLING = 3;
+	public static final int POPUP_REGISTRATION_AUCTION = 0;
+	public static final int POPUP_REGISTRATION_DEALER = 1;
+	public static final int POPUP_REGISTRATION_DIRECT = 2;
+	public static final int POPUP_REQUEST_BID = 3;
+	public static final int POPUP_NOT_ENOUGH = 4;
+	public static final int POPUP_COMPLETE_SELLING = 5;
 
 	public static User user;
 	public static Dealer dealer;
@@ -921,7 +922,7 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		switch(type) {
 		
-		case POPUP_REGISTRATION:
+		case POPUP_REGISTRATION_DEALER:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
 			tvPopupText.setText(R.string.popup_registration);
 			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);

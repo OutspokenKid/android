@@ -70,7 +70,6 @@ import com.byecar.models.CompanyInfo;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
-import com.outspoken_kid.classes.OutSpokenConstants;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
@@ -90,7 +89,9 @@ public class MainActivity extends BCPFragmentActivity {
 	
 	public static MainActivity activity;
 
-	public static final int POPUP_REGISTRATION = 2;
+	public static final int POPUP_REGISTRATION_AUCTION = 2;
+	public static final int POPUP_REGISTRATION_DEALER = 3;
+	public static final int POPUP_REGISTRATION_DIRECT = 4;
 
 	public static User user;
 	public static CompanyInfo companyInfo;
@@ -817,7 +818,12 @@ public class MainActivity extends BCPFragmentActivity {
 
 		switch(type) {
 			
-		case POPUP_REGISTRATION:
+		case POPUP_REGISTRATION_AUCTION:
+			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
+			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
+			break;
+			
+		case POPUP_REGISTRATION_DIRECT:
 			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
 			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
 			break;

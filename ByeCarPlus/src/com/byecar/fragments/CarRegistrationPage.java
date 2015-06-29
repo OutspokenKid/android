@@ -1502,7 +1502,7 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 		
 		if(isLoadingImages) {
-			ToastUtils.showToast(R.string.loadingImage);
+//			ToastUtils.showToast(R.string.loadingImage);
 		}
 	}
 	
@@ -1511,7 +1511,7 @@ public class CarRegistrationPage extends BCPFragment {
 		imageLoadingCount++;
 		
 		if(imageLoadingCount == selectedImageSdCardPaths.length) {
-			ToastUtils.showToast(R.string.complete_loadingImage);
+//			ToastUtils.showToast(R.string.complete_loadingImage);
 		}
 	}
 	
@@ -2403,7 +2403,24 @@ public class CarRegistrationPage extends BCPFragment {
 			
 		//차량 등록.
 		} else {
-			((MainActivity) mActivity).showPopup(MainActivity.POPUP_REGISTRATION);
+			int type = 0;
+			
+			switch(carType) {
+			
+			case Car.TYPE_BID:
+				type = MainActivity.POPUP_REGISTRATION_AUCTION;
+				break;
+				
+			case Car.TYPE_DEALER:
+				type = MainActivity.POPUP_REGISTRATION_DEALER;
+				break;
+				
+			case Car.TYPE_DIRECT:
+				type = MainActivity.POPUP_REGISTRATION_DIRECT;
+				break;
+			}
+			
+			((MainActivity) mActivity).showPopup(type);
 		}
 	}
 
@@ -2525,12 +2542,18 @@ public class CarRegistrationPage extends BCPFragment {
 
 	public void showPopup(int type) {
 		
+		//즉시판매.
 		if(type == POPUP_IMMEDIATELY) {
+			tvTitle.setText(R.string.whatIsSellingDirectly);
+			
 			clock.setVisibility(View.VISIBLE);
 			tvDesc.setVisibility(View.VISIBLE);
 			etAccident.setVisibility(View.INVISIBLE);
 			btnCompleteWriting.setVisibility(View.INVISIBLE);
+			
+		//사고내역.
 		} else {
+			tvTitle.setText(R.string.changingPartsHistory);
 			etAccident.setText(history);
 			
 			clock.setVisibility(View.INVISIBLE);

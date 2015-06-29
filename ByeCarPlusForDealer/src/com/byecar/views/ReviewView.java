@@ -236,6 +236,23 @@ public class ReviewView extends RelativeLayout {
 				});
 			}
 			
+			//내게 쓴 리뷰이고, 아직 댓글을 달지 않은 경우.
+			if(review.getDealer_id() == MainActivity.dealer.getId()
+					&& review.getReply() == null) {
+				btnReply.setVisibility(View.VISIBLE);
+				btnReply.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						
+						Bundle bundle = new Bundle();
+						bundle.putString("to", review.getReviewer_nickname());
+						bundle.putInt("parent_id", review.getId());
+						activity.showPage(BCPConstants.PAGE_WRITE_REVIEW, bundle);
+					}
+				});
+			}
+			
 			downloadImage(review.getReviewer_profile_img_url());
 			tvNickname.setText(review.getReviewer_nickname());
 			tvCarName.setText(review.getCar_full_name());
