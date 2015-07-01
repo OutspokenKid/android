@@ -666,6 +666,12 @@ public class MainActivity extends BCPFragmentActivity {
 		finish();
 	}
 	
+	public void launchTutorialActivity() {
+		
+		Intent intent = new Intent(this, TutorialActivity.class);
+		startActivity(intent);
+	}
+	
 	public void setLeftView() {
 
 		setImageViews();
@@ -824,7 +830,7 @@ public class MainActivity extends BCPFragmentActivity {
 			break;
 			
 		case POPUP_REGISTRATION_DIRECT:
-			popupImage.setBackgroundResource(R.drawable.complete_cartoon);
+			popupImage.setBackgroundResource(R.drawable.complete_direct2);
 			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
 			break;
 		}

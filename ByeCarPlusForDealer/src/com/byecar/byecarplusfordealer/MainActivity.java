@@ -711,6 +711,12 @@ public class MainActivity extends BCPFragmentActivity {
 		finish();
 	}
 	
+	public void launchTutorialActivity() {
+		
+		Intent intent = new Intent(this, TutorialActivity.class);
+		startActivity(intent);
+	}
+	
 	public void setLeftView() {
 
 		setImageView();

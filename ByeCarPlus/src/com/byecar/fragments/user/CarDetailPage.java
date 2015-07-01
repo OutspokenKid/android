@@ -1703,7 +1703,6 @@ public class CarDetailPage extends BCPFragment {
 
 			//옥션. -> 내가 올린 경우에만 수정, 삭제.
 			case Car.TYPE_BID:
-
 				btnReport.setVisibility(View.GONE);
 				
 				if(car.getSeller_id() == MainActivity.user.getId()) {
@@ -1720,9 +1719,20 @@ public class CarDetailPage extends BCPFragment {
 				break;
 
 			case Car.TYPE_DEALER:
-			case Car.TYPE_DIRECT:
 				btnReport.setVisibility(View.VISIBLE);
 				btnEdit.setVisibility(View.GONE);
+				break;
+				
+			case Car.TYPE_DIRECT:
+
+				if(car.getSeller_id() == MainActivity.user.getId()) {
+					btnEdit.setVisibility(View.VISIBLE);
+					btnReport.setVisibility(View.GONE);
+				} else {
+					btnEdit.setVisibility(View.GONE);
+					btnReport.setVisibility(View.VISIBLE);
+				}
+				
 				break;
 			}			
 		} catch (Exception e) {

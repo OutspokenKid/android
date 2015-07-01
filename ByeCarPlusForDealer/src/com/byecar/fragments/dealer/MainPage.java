@@ -38,6 +38,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 
 public class MainPage extends BCPAuctionableFragment {
 
@@ -403,6 +404,19 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		if(models.size() == 0) {
 			downloadInfo();
+		}
+		
+		if(!SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_TUTORIAL, "shown")) {
+			
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
+					((MainActivity)mActivity).launchTutorialActivity();
+				}
+			}, 1000);
 		}
 	}
 	

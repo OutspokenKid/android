@@ -71,11 +71,11 @@ public class OtherCarView extends RelativeLayout {
 		
 		//ivProfile.
 		ivProfile = new ImageView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(43), 
-				ResizeUtils.getSpecificLength(43));
-		rp.addRule(ALIGN_PARENT_BOTTOM);
-		rp.leftMargin = ResizeUtils.getSpecificLength(9);
-		rp.bottomMargin = ResizeUtils.getSpecificLength(7);
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(45), 
+				ResizeUtils.getSpecificLength(45));
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.leftMargin = ResizeUtils.getSpecificLength(8);
+		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		ivProfile.setLayoutParams(rp);
 		ivProfile.setId(R.id.usedCarView_ivProfile);
 		ivProfile.setScaleType(ScaleType.CENTER_CROP);
@@ -91,10 +91,10 @@ public class OtherCarView extends RelativeLayout {
 		
 		//tvDealerName.
 		tvDealerName = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(74), ResizeUtils.getSpecificLength(37));
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(66), ResizeUtils.getSpecificLength(37));
 		rp.addRule(ALIGN_PARENT_LEFT);
 		rp.addRule(ALIGN_PARENT_TOP);
-		rp.leftMargin = ResizeUtils.getSpecificLength(64);
+		rp.leftMargin = ResizeUtils.getSpecificLength(72);
 		tvDealerName.setLayoutParams(rp);
 		tvDealerName.setId(R.id.usedCarView_tvDealerName);
 		tvDealerName.setTextColor(Color.WHITE);

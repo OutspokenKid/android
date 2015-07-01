@@ -621,6 +621,19 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
 		setPagerTimer();
+
+		if(!SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_TUTORIAL, "shown")) {
+			
+			new Handler().postDelayed(new Runnable() {
+
+				@Override
+				public void run() {
+
+					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
+					((MainActivity)mActivity).launchTutorialActivity();
+				}
+			}, 1000);
+		}
 		
 //		new Handler().postDelayed(new Runnable() {
 //

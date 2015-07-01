@@ -117,10 +117,10 @@ public class CarView extends RelativeLayout {
 		
 		//tvDealerName.
 		tvDealerName = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(74), ResizeUtils.getSpecificLength(37));
+		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(66), ResizeUtils.getSpecificLength(37));
 		rp.addRule(ALIGN_PARENT_LEFT);
 		rp.addRule(ALIGN_PARENT_TOP);
-		rp.leftMargin = ResizeUtils.getSpecificLength(64);
+		rp.leftMargin = ResizeUtils.getSpecificLength(72);
 		tvDealerName.setLayoutParams(rp);
 		tvDealerName.setId(R.id.carView_tvDealerName);
 		tvDealerName.setTextColor(Color.WHITE);
