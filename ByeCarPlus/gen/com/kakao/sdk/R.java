@@ -318,7 +318,7 @@ public final class R {
 		public static final int com_facebook_list_section_header_background = 0x7f0200c0;
 		public static final int com_facebook_loginbutton_silver = 0x7f0200c1;
 		public static final int com_facebook_logo = 0x7f0200c2;
-		public static final int com_facebook_picker_default_separator_color = 0x7f0203c9;
+		public static final int com_facebook_picker_default_separator_color = 0x7f0203ca;
 		public static final int com_facebook_picker_item_background = 0x7f0200c3;
 		public static final int com_facebook_picker_list_focused = 0x7f0200c4;
 		public static final int com_facebook_picker_list_longpressed = 0x7f0200c5;
@@ -343,19 +343,19 @@ public final class R {
 		public static final int com_facebook_top_background = 0x7f0200d8;
 		public static final int com_facebook_top_button = 0x7f0200d9;
 		public static final int com_facebook_usersettingsfragment_background_gradient = 0x7f0200da;
-		public static final int kakao_account_button_background = 0x7f020204;
-		public static final int kakao_account_logo = 0x7f020205;
-		public static final int kakao_cancel_button_background = 0x7f020206;
-		public static final int kakao_close_button = 0x7f020207;
-		public static final int kakao_default_profile_image = 0x7f020208;
-		public static final int kakao_editable_profile = 0x7f020209;
-		public static final int kakao_login_bar = 0x7f02020a;
-		public static final int kakao_login_button_background = 0x7f02020b;
-		public static final int kakao_login_symbol = 0x7f02020c;
-		public static final int kakao_profile_boxbg = 0x7f02020d;
-		public static final int kakaoaccount_icon = 0x7f02020e;
-		public static final int kakaostory_icon = 0x7f02020f;
-		public static final int kakaotalk_icon = 0x7f020210;
+		public static final int kakao_account_button_background = 0x7f020205;
+		public static final int kakao_account_logo = 0x7f020206;
+		public static final int kakao_cancel_button_background = 0x7f020207;
+		public static final int kakao_close_button = 0x7f020208;
+		public static final int kakao_default_profile_image = 0x7f020209;
+		public static final int kakao_editable_profile = 0x7f02020a;
+		public static final int kakao_login_bar = 0x7f02020b;
+		public static final int kakao_login_button_background = 0x7f02020c;
+		public static final int kakao_login_symbol = 0x7f02020d;
+		public static final int kakao_profile_boxbg = 0x7f02020e;
+		public static final int kakaoaccount_icon = 0x7f02020f;
+		public static final int kakaostory_icon = 0x7f020210;
+		public static final int kakaotalk_icon = 0x7f020211;
 	}
 	public static final class id {
 		public static final int action_bar = 0x7f05006f;

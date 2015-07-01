@@ -26,6 +26,7 @@ public class ReviewViewSmall extends FrameLayout {
 	private ImageView ivImage;
 	private View cover;
 	private TextView tvBiddingInfo;
+	private TextView tvRegdate;
 	private TextView tvCarName;
 	private PriceTextView priceTextView;
 	private TextView tvReview;
@@ -68,6 +69,17 @@ public class ReviewViewSmall extends FrameLayout {
 		FontUtils.setFontSize(tvBiddingInfo, 18);
 		tvBiddingInfo.setGravity(Gravity.CENTER);
 		this.addView(tvBiddingInfo);
+		
+		//tvRegdate.
+		tvRegdate = new TextView(getContext());
+		ResizeUtils.viewResize(99, 22, tvRegdate, 2, Gravity.LEFT|Gravity.BOTTOM, new int[]{136, 0, 0, 8});
+		tvRegdate.setTextColor(Color.WHITE);
+		tvRegdate.setSingleLine();
+		tvRegdate.setEllipsize(TruncateAt.END);
+		FontUtils.setFontSize(tvRegdate, 16);
+		tvRegdate.setGravity(Gravity.CENTER);
+		tvRegdate.setBackgroundResource(R.drawable.complete_date_bg);
+		this.addView(tvRegdate);
 		
 		//tvCarName.
 		tvCarName = new TextView(getContext());
@@ -117,6 +129,7 @@ public class ReviewViewSmall extends FrameLayout {
 		
 		tvBiddingInfo.setText("참여딜러 " + car.getBidders_cnt()
 				+ "명/입찰횟수 " + car.getBids_cnt() + "회");
+		tvRegdate.setText(StringUtils.getDateString("yyyy.MM.dd", car.getReview().getCreated_at()*1000));
 		tvCarName.setText(car.getModel_name());
 		priceTextView.setPrice(car.getPrice());
 		tvReview.setText(car.getReview().getContent());
