@@ -29,6 +29,7 @@ public class Bid extends BCPBaseModel implements Serializable {
 	private String dealer_profile_img_url;
 	private String dealer_address;
 	private int dealer_level;
+	private int ranking;
 	
 	public Bid() {
 		
@@ -81,6 +82,10 @@ public class Bid extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("dealer_level")) {
 				this.dealer_level = objJSON.getInt("dealer_level");
+			}
+			
+			if(objJSON.has("ranking")) {
+				this.ranking = objJSON.getInt("ranking");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -152,5 +157,13 @@ public class Bid extends BCPBaseModel implements Serializable {
 
 	public void setDealer_level(int dealer_level) {
 		this.dealer_level = dealer_level;
+	}
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
 	}
 }

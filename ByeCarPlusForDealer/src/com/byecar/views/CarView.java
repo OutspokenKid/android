@@ -432,13 +432,7 @@ public class CarView extends RelativeLayout {
 			
 		case BCPConstants.ITEM_CAR_BID_SUCCESS:
 			
-			int rank = 0;
-			for(int i=0; i<car.getBids().size(); i++) {
-				
-				if(car.getBids().get(i).getDealer_id() == MainActivity.dealer.getId()) {
-					rank = i;
-				}
-			}
+			int rank = car.getMy_bid_ranking() - 1;
 			
 			switch(rank) {
 			

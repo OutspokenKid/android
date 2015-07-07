@@ -123,7 +123,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/carRegistrationPage_btnCarInfo3"
-		        android:background="@drawable/registration_car_info41_btn_b" />
+		        android:background="@drawable/registration_car_info41_btn_a" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnFuel2"
@@ -155,7 +155,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/carRegistrationPage_btnFuel1"
-		        android:background="@drawable/registration_car_info31_btn_b" />
+		        android:background="@drawable/registration_car_info31_btn_a" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnAccident2"
@@ -179,7 +179,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/carRegistrationPage_btnAccident1"
-		        android:background="@drawable/registration_car_info61_btn_b" />
+		        android:background="@drawable/registration_car_info61_btn_a" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnOwned2"
@@ -195,7 +195,7 @@
 		        android:layout_height="0dp"
 		        android:layout_alignParentLeft="true"
 		        android:layout_below="@id/carRegistrationPage_btnOwned1"
-		        android:background="@drawable/registration_car_info51_btn_b" />
+		        android:background="@drawable/registration_car_info51_btn_a" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnTransmission2"

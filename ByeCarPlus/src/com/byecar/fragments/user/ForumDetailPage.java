@@ -185,52 +185,22 @@ public class ForumDetailPage extends BCPFragment {
 				if(post == null) {
 					return;
 				}
-				
-				String url = null;
 
-				//무조건 추천만.
-//				if(post.getIs_liked() == 0) {
-					url = BCPAPIs.FORUM_LIKE_URL;
-//				} else {
-//					url = BCPAPIs.FORUM_UNLIKE_URL;
-//				}
-				
-				url += "?post_id=" + post.getId();
-				DownloadUtils.downloadJSONString(url,
-						new OnJSONDownloadListener() {
+				if(post.getIs_liked() == 0) {
 
-							@Override
-							public void onError(String url) {
+					mActivity.showAlertDialog(R.string.recommend, R.string.wannaRecommend, 
+							R.string.confirm, R.string.cancel, 
+							new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
 
-								LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
-
-							}
-
-							@Override
-							public void onCompleted(String url,
-									JSONObject objJSON) {
-
-								try {
-									LogUtils.log("ForumDetailPage.onCompleted."
-											+ "\nurl : " + url + "\nresult : "
-											+ objJSON);
-
-									if(objJSON.getInt("result") == 1) {
-										post.setIs_liked((post.getIs_liked() + 1)%2);
-										post.setLikes_cnt(post.getLikes_cnt() + 1);
-										forumView.setForum(post, -1);
-										
-										ToastUtils.showToast(R.string.complete_recommendPost);
-									} else {
-										ToastUtils.showToast(objJSON.getString("message"));
-									}
-								} catch (Exception e) {
-									LogUtils.trace(e);
-								} catch (OutOfMemoryError oom) {
-									LogUtils.trace(oom);
+									recommend();
 								}
-							}
-						});
+							}, null);
+				} else {
+					ToastUtils.showToast(R.string.alreadyRecommended);
+				}
 			}
 		});
 	
@@ -750,6 +720,55 @@ public class ForumDetailPage extends BCPFragment {
 
 							if(objJSON.getInt("result") == 1) {
 								ToastUtils.showToast(R.string.complete_report);
+							} else {
+								ToastUtils.showToast(objJSON.getString("message"));
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (OutOfMemoryError oom) {
+							LogUtils.trace(oom);
+						}
+					}
+				});
+	}
+	
+	public void recommend() {
+
+		String url = null;
+		
+		//지금은 추천만.
+//		if(post.getIs_liked() == 0) {
+			url = BCPAPIs.FORUM_LIKE_URL;
+//		} else {
+//			url = BCPAPIs.FORUM_UNLIKE_URL;
+//		}
+		
+		url += "?post_id=" + post.getId();
+		DownloadUtils.downloadJSONString(url,
+				new OnJSONDownloadListener() {
+
+					@Override
+					public void onError(String url) {
+
+						LogUtils.log("ForumDetailPage.onError." + "\nurl : " + url);
+
+					}
+
+					@Override
+					public void onCompleted(String url,
+							JSONObject objJSON) {
+
+						try {
+							LogUtils.log("ForumDetailPage.onCompleted."
+									+ "\nurl : " + url + "\nresult : "
+									+ objJSON);
+
+							if(objJSON.getInt("result") == 1) {
+								post.setIs_liked((post.getIs_liked() + 1)%2);
+								post.setLikes_cnt(post.getLikes_cnt() + 1);
+								forumView.setForum(post, -1);
+								
+								ToastUtils.showToast(R.string.complete_recommendPost);
 							} else {
 								ToastUtils.showToast(objJSON.getString("message"));
 							}

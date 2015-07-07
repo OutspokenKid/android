@@ -5,6 +5,7 @@
 	<string name="addedPhoto">추가사진</string>
 	<string name="addedPhotoText">* 추가사진 등록시 더 높은 견적을 받을 수 있습니다.</string>
 	<string name="agreeTermOfUse">이용약관 및 개인정보취급방침에 동의해주세요</string>
+	<string name="alreadyRecommended">이미 추천하셨습니다</string>
 
 	<string name="best3">베스트3</string>
 	<string name="biddingPrice">입찰가</string>
@@ -77,6 +78,7 @@
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editProfile">프로필정보 수정이 완료되었습니다.</string>
+    <string name="complete_like">이 글을 좋아요 했습니다.</string>
     <string name="complete_loadingImage">이미지 불러오기 완료</string>
     <string name="complete_recommendPost">추천 완료</string>
     <string name="complete_report">신고가 완료되었습니다.</string>
@@ -193,6 +195,7 @@
 
     <string name="needCertifyPhoneNumber">휴대폰 번호가 인증 되지 않았습니다.\n휴대폰번호를 인증해주세요.</string>
     <string name="nickname">닉네임</string>
+    <string name="noCarHistory">사고보험 이력이 없습니다.</string>
     <string name="notCertifiedPhoneNumber1">인증된 번호가 없습니다.</string>
     <string name="notCertifiedPhoneNumber2">휴대폰번호 수정 버튼을 눌러 휴대폰번호를 등록해주세요.</string>
     <string name="notification">알림</string>
@@ -250,6 +253,7 @@
     <string name="priceRange">가격범위</string>
     <string name="profileImage">프로필 사진</string>
     
+    <string name="recommend">추천</string>
     <string name="registringPhoneNumber">휴대폰 번호 등록중..</string>
     <string name="reply">댓글</string>
     <string name="report">신고</string>
@@ -290,6 +294,8 @@
     <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
+    <string name="wannaLikeThisCar">이 매물을 좋아요 하시겠습니까?</string>
+    <string name="wannaRecommend">추천하시겠습니까?</string>
     <string name="wannaReport">신고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>

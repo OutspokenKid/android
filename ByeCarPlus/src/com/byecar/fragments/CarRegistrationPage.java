@@ -131,10 +131,10 @@ public class CarRegistrationPage extends BCPFragment {
 	private int month;
 	private String history;
 	private int trim_id;
-	private int selectedIndex_fuel;
-	private int selectedIndex_accident;
-	private int selectedIndex_owned;
-	private int selectedIndex_transmission;
+	private int selectedIndex_fuel = -1;
+	private int selectedIndex_accident = -1;
+	private int selectedIndex_owned = -1;
+	private int selectedIndex_transmission = -1;
 	
 	private int selectedImageIndex;
 	private String[] selectedImageSdCardPaths = new String[9];
@@ -657,6 +657,7 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					selectedIndex_fuel = INDEX;
 					setCarInfos_fuel();
+					checkProgress();
 				}
 			});
 		}
@@ -676,6 +677,7 @@ public class CarRegistrationPage extends BCPFragment {
 						history = null;
 						selectedIndex_accident = INDEX;
 						setCarInfos_Accident();
+						checkProgress();
 					}
 				}
 			});
@@ -691,6 +693,7 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					selectedIndex_owned = INDEX;
 					setCarInfos_Owned();
+					checkProgress();
 				}
 			});
 		}
@@ -705,6 +708,7 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					selectedIndex_transmission = INDEX;
 					setCarInfos_Transmission();
+					checkProgress();
 				}
 			});
 		}
@@ -797,6 +801,7 @@ public class CarRegistrationPage extends BCPFragment {
 				history = etAccident.getText().toString();
 				
 				hidePopup();
+				checkProgress();
 			}
 		});
 		
@@ -1418,16 +1423,16 @@ public class CarRegistrationPage extends BCPFragment {
 			trim_id = prefs.getInt("trim_id", 0);
 
 			//selectedIndex_fuel.
-			selectedIndex_fuel = prefs.getInt("selectedIndex_fuel", 0);
+			selectedIndex_fuel = prefs.getInt("selectedIndex_fuel", -1);
 			
 			//selectedIndex_accident.
-			selectedIndex_accident = prefs.getInt("selectedIndex_accident", 0);
+			selectedIndex_accident = prefs.getInt("selectedIndex_accident", -1);
 			
 			//selectedIndex_owned.
-			selectedIndex_owned = prefs.getInt("selectedIndex_owned", 0);
+			selectedIndex_owned = prefs.getInt("selectedIndex_owned", -1);
 			
 			//selectedIndex_transmission.
-			selectedIndex_transmission = prefs.getInt("selectedIndex_transmission", 0);
+			selectedIndex_transmission = prefs.getInt("selectedIndex_transmission", -1);
 			
 			//selectedImageIndex.
 			selectedImageIndex = prefs.getInt("selectedImageIndex", selectedImageIndex);
@@ -2476,6 +2481,26 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		int progress = 0;
 		
+		//연료. 5.
+		if(selectedIndex_fuel != -1) {
+			progress += 5;
+		}
+		
+		//사고 유무. 5.
+		if(selectedIndex_accident != -1) {
+			progress += 5;
+		}
+		
+		//1인신조. 5.
+		if(selectedIndex_owned != -1) {
+			progress += 5;
+		}
+		
+		//변속기. 5.
+		if(selectedIndex_transmission != -1) {
+			progress += 5;
+		}
+		
 		//트림, 연식, 지역 개당 5, 총 15.
 		for(int i=0; i<btnCarInfos.length; i++) {
 			
@@ -2484,10 +2509,10 @@ public class CarRegistrationPage extends BCPFragment {
 			}
 		}
 		
-		//차량 사진 개당 10, 총 40.
+		//차량 사진 개당 5, 총 20.
 		for(int i=0; i<4; i++) {
 			if(selectedImageSdCardPaths[i] != null) {
-				progress += 10;
+				progress += 5;
 			}
 		}
 		

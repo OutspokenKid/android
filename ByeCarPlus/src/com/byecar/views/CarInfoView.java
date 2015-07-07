@@ -3,6 +3,7 @@ package com.byecar.views;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.models.Car;
@@ -324,7 +326,22 @@ public class CarInfoView extends RelativeLayout {
 					@Override
 					public void onClick(View view) {
 
-						setLike(car, car.getIs_liked() == 0);
+						if(MainActivity.activity != null && car.getIs_liked() == 0) {
+							MainActivity.activity.showAlertDialog(
+									R.string.like, R.string.wannaLikeThisCar, 
+									R.string.confirm, R.string.cancel,
+									new DialogInterface.OnClickListener() {
+										
+										@Override
+										public void onClick(DialogInterface dialog, int which) {
+											
+											setLike(car, car.getIs_liked() == 0);
+										}
+									}, null);
+							
+						} else {
+							setLike(car, car.getIs_liked() == 0);
+						}
 					}
 				});
 			
@@ -415,6 +432,11 @@ public class CarInfoView extends RelativeLayout {
 							LogUtils.log("CarInfoView.onCompleted."
 									+ "\nurl : " + url
 									+ "\nresult : " + objJSON);
+							
+							if(MainActivity.activity != null) {
+								MainActivity.activity.showAlertDialog(R.string.like, R.string.complete_like, 
+										R.string.confirm, null);
+							}
 						} catch (Exception e) {
 							LogUtils.trace(e);
 						} catch (OutOfMemoryError oom) {

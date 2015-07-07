@@ -311,19 +311,6 @@ public class CarDetailPage extends BCPFragment {
 			}
 		});
 		
-		btnAccident.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				if(car != null) {
-					Bundle bundle = new Bundle();
-					bundle.putString("carNumber", car.getCar_number());
-					mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
-				}
-			}
-		});
-		
 		headerForOption.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -1535,10 +1522,37 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void setAccident() {
 		
-		if(car.getHad_accident() == 1 && type == Car.TYPE_BID) {
-			relativeForAccident.setVisibility(View.VISIBLE);
-		} else {
-			relativeForAccident.setVisibility(View.GONE);
+		try {
+			if(type == Car.TYPE_BID && car.getHas_review() == 0) {
+				relativeForAccident.setVisibility(View.VISIBLE);
+				
+				if(car.getHas_carhistory() == 1) {
+					tvAccident.setText(R.string.hadAccident);
+					btnAccident.setBackgroundResource(R.drawable.detail_accident_btn);
+					btnAccident.setOnClickListener(new OnClickListener() {
+
+						@Override
+						public void onClick(View view) {
+
+							if(car != null) {
+								Bundle bundle = new Bundle();
+								bundle.putString("carNumber", car.getCar_number());
+								mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
+							}
+						}
+					});
+				} else {
+					tvAccident.setText(R.string.noCarHistory);
+					btnAccident.setBackgroundResource(R.drawable.detail_accident_btn_b);
+					btnAccident.setOnClickListener(null);
+				}
+			} else {
+				relativeForAccident.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 	}
 	
