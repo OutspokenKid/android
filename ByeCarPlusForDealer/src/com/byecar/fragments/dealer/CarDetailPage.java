@@ -2128,12 +2128,23 @@ public class CarDetailPage extends BCPFragment {
 				try {
 					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
+					
 					if(objJSON.getInt("result") == 1) {
-						pay();
-					} else {
+						int amount_to_pay = (int)(objJSON.getLong("amount_to_pay")/10000);
 						
-						mActivity.showAlertDialog("결제", "적립금이 부족합니다.\n적립금 페이지로 이동하시겠습니까?", 
+						mActivity.showAlertDialog("결제", "결제하시겠습니까?\n(적립금 " + amount_to_pay + "만원이 차감됩니다.)", 
+								"확인", "취소",
+								new DialogInterface.OnClickListener() {
+									
+									@Override
+									public void onClick(DialogInterface dialog, int which) {
+
+										pay();
+									}
+								}, null);
+					} else {
+						int amount_to_need = (int)(objJSON.getLong("amount_to_need")/10000);
+						mActivity.showAlertDialog("결제", "금액이 " + amount_to_need + "만원 부족합니다.\n적립금 페이지로 이동하시겠습니까?", 
 								"확인", "취소",
 								new DialogInterface.OnClickListener() {
 									
@@ -2173,7 +2184,8 @@ public class CarDetailPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_payment);
+						mActivity.showAlertDialog("결제", "결제가 완료되었습니다.\n(소비자 통화 후 매입진행 해주세요.)", 
+								"확인", null);
 						downloadCarInfo();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));

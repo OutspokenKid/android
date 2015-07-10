@@ -178,7 +178,7 @@
 	    	android:layout_height="0dp"
 	    	android:layout_centerHorizontal="true"
 	    	android:layout_alignBottom="@id/mainForDealerActivity_popupBg"
-	    	android:background="@drawable/complete_home_btn" />
+	    	android:background="@drawable/reg_complete_btn1" />
         
         <Button 
             android:id="@+id/mainForDealerActivity_btnRecharge"

@@ -92,9 +92,6 @@ public class MainActivity extends BCPFragmentActivity {
 	public static final int POPUP_REGISTRATION_AUCTION = 0;
 	public static final int POPUP_REGISTRATION_DEALER = 1;
 	public static final int POPUP_REGISTRATION_DIRECT = 2;
-	public static final int POPUP_REQUEST_BID = 3;
-	public static final int POPUP_NOT_ENOUGH = 4;
-	public static final int POPUP_COMPLETE_SELLING = 5;
 
 	public static User user;
 	public static Dealer dealer;
@@ -937,39 +934,6 @@ public class MainActivity extends BCPFragmentActivity {
 			btnHome.setVisibility(View.VISIBLE);
 			btnClose.setVisibility(View.INVISIBLE);
 			btnClose2.setVisibility(View.INVISIBLE);
-			break;
-			
-		case POPUP_REQUEST_BID:
-			popupImage.setBackgroundResource(R.drawable.buy_cartoon);
-			tvPopupText.setText(R.string.popup_bid);
-			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-			btnMore.setVisibility(View.INVISIBLE);
-			btnRecharge.setVisibility(View.INVISIBLE);
-			btnHome.setVisibility(View.VISIBLE);
-			btnClose.setVisibility(View.INVISIBLE);
-			btnClose2.setVisibility(View.INVISIBLE);
-			break;
-			
-		case POPUP_NOT_ENOUGH:
-			popupImage.setBackgroundResource(R.drawable.empty_cartoon);
-			tvPopupText.setText(R.string.popup_not_enough);
-			ResizeUtils.viewResizeForRelative(564, 722, popupBg, null, null, null);
-			btnMore.setVisibility(View.INVISIBLE);
-			btnRecharge.setVisibility(View.VISIBLE);
-			btnHome.setVisibility(View.INVISIBLE);
-			btnClose.setVisibility(View.VISIBLE);
-			btnClose2.setVisibility(View.INVISIBLE);
-			break;
-			
-		case POPUP_COMPLETE_SELLING:
-			popupImage.setBackgroundResource(R.drawable.dealer_sel_cartoon);
-			tvPopupText.setText(R.string.popup_completeSelling);
-			ResizeUtils.viewResizeForRelative(564, 614, popupBg, null, null, null);
-			btnMore.setVisibility(View.INVISIBLE);
-			btnRecharge.setVisibility(View.INVISIBLE);
-			btnHome.setVisibility(View.INVISIBLE);
-			btnClose.setVisibility(View.INVISIBLE);
-			btnClose2.setVisibility(View.VISIBLE);
 			break;
 			
 			default:

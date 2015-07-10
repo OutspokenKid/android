@@ -41,6 +41,7 @@ import com.outspoken_kid.utils.FontUtils;
 import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.TimerUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
@@ -990,8 +991,10 @@ public class CarDetailPage extends BCPFragment {
 			case 1:
 				rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
 				
+				boolean alreadyDeal = SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_REQUESTDEALING, "dealing");
+				
 				if(car.getStatus() == Car.STATUS_BID_SUCCESS
-						|| car.getStatus() == Car.STATUS_TRADE_COMPLETE) {
+						|| car.getStatus() == Car.STATUS_TRADE_COMPLETE || alreadyDeal) {
 					button.setBackgroundResource(R.drawable.select_contact_message_btn_b);
 					button.setOnClickListener(null);
 				} else {
@@ -1040,7 +1043,16 @@ public class CarDetailPage extends BCPFragment {
 								if(car.getStatus() != Car.STATUS_PAYMENT_COMPLETED) {
 									//입금 완료 전까지 거래완료 버튼 비활성화.
 								} else {
-									setStatusToComplete();
+									mActivity.showAlertDialog(R.string.complete_deal, R.string.wasItGoodDeal, 
+											R.string.confirm, R.string.cancel,
+											new DialogInterface.OnClickListener() {
+												
+												@Override
+												public void onClick(DialogInterface dialog, int which) {
+
+													setStatusToComplete();
+												}
+											}, null);
 								}
 							} else {
 								Bundle bundle = new Bundle();
@@ -2103,7 +2115,7 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void callToDealer() {
 		
-		String message = getString(R.string.wannaCallToDealer);
+		String message = car.getDealer_name() + getString(R.string.wannaCallToDealer);
 		mActivity.showAlertDialog(getString(R.string.call), message, 
 				getString(R.string.confirm), getString(R.string.cancel), 
 				new DialogInterface.OnClickListener() {
@@ -2150,7 +2162,8 @@ public class CarDetailPage extends BCPFragment {
 				try {
 					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
+					
+					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_REQUESTDEALING, "dealing", true);
 					IntentUtils.sendSMS(mContext, getString(R.string.dealingRequest), car.getDealer_phone_number());
 				} catch (Exception e) {
 					LogUtils.trace(e);

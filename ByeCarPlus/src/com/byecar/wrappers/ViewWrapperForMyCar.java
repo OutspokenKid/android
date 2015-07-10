@@ -289,8 +289,8 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				@Override
 				public void onClick(View view) {
 
-					activity.showAlertDialog("거래완료", "거래완료 처리하시겠습니까?",
-							"확인", "취소", 
+					activity.showAlertDialog(R.string.complete_deal, R.string.wannaCompleteDealing,
+							R.string.confirm, R.string.cancel, 
 							new DialogInterface.OnClickListener() {
 								
 								@Override

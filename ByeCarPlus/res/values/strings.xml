@@ -75,6 +75,7 @@
     <string name="commonInfo">기본 정보</string>
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
+    <string name="complete_deal">거래완료</string>
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
     <string name="complete_editProfile">프로필정보 수정이 완료되었습니다.</string>
@@ -292,13 +293,15 @@
 
     <string name="waitingForDealerPayment">딜러분의 승인을 기다리고 있습니다.</string>
     <string name="wannaDelete">삭제하시겠습니까?</string>
-    <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
-    <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
+    <string name="wannaCallToDealer">님과 통화하시겠습니까?\n(허위매물이거나 차량금액이 다를 시 본사로 신고해주세요. 032&#8211;720&#8211;5888)</string>
+    <string name="wannaCallToSeller">님과 통화하시겠습니까?\n(직거래는 신중한 판단으로 거래를 해야 하며 거래시 발생할 수 있는 문제의 책임과 손해 보상의 책임은 각 본인에게 있음을 알려드립니다.\n자세한 내용은 약관을 참조하세요.)</string>
+    <string name="wannaCompleteDealing">거래 완료 하시겠습니까?\n(완료시 차량내역이 사라집니다.)</string>
     <string name="wannaLikeThisCar">이 매물을 좋아요 하시겠습니까?</string>
     <string name="wannaRecommend">추천하시겠습니까?</string>
     <string name="wannaReport">신고하시겠습니까?</string>
     <string name="wannaSignOut">로그아웃하시겠습니까?</string>
     <string name="wannaWithdraw">바이카를 탈퇴하시겠습니까?</string>
+    <string name="wasItGoodDeal">만족스러운 거래가 되셨나요?\n딜러에게 좋은 후기를 남겨주세요.</string>
     <string name="withdraw">탈퇴하기</string>
     <string name="whatIsSellingDirectly">즉시판매란 무엇인가요?</string>
     <string name="whatIsSellingDirectlyDesc">즉시판매란 차량 판매가 24시간 이내로 급한 고객의 차량을 바이카 본사에서 도와드리는 서비스입니다.\n내 차 판매가 급하시면 즉시 판매를 체크 해주세요.</string>
