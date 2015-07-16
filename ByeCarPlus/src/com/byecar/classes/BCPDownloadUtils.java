@@ -15,6 +15,10 @@ public class BCPDownloadUtils {
 			OnBitmapDownloadListener onBitmapDownloadListener,
 			int imageWidth) {
 
+		if(url == "null") {
+			return;
+		}
+		
 		if(imageWidth != 0 && url.contains(BCPAPIs.IMAGE_SERVER_URL + "/src/")) {
 			url = url.replace("/src/", "/thumb/");
 			

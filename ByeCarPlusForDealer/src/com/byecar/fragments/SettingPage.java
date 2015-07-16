@@ -25,14 +25,17 @@ import com.outspoken_kid.utils.SharedPrefsUtils;
 public class SettingPage extends BCPFragment {
 
 	private TextView tvNotificationTitle;
+	private TextView tvChangePwTitle;
 	private TextView tvWithdrawTitle;
 	private TextView tvSignOutTitle;
 	private TextView tvNotification;
 	private TextView tvBidding;
+	private TextView tvChangePw;
 	private TextView tvWithdraw;
 	private TextView tvSignOut;
 	private Button btnNotification;
 	private Button btnBidding;
+	private Button btnChangePw;
 	private Button btnWithdraw;
 	private Button btnSignOut;
 	
@@ -42,16 +45,19 @@ public class SettingPage extends BCPFragment {
 		titleBar = (TitleBar) mThisView.findViewById(R.id.settingPage_titleBar);
 		
 		tvNotificationTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvNotificationTitle);
+		tvChangePwTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvChangePwTitle);
 		tvWithdrawTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvWithdrawTitle);
 		tvSignOutTitle = (TextView) mThisView.findViewById(R.id.settingPage_tvSignOutTitle);
 		
 		tvNotification = (TextView) mThisView.findViewById(R.id.settingPage_tvNotification);
 		tvBidding = (TextView) mThisView.findViewById(R.id.settingPage_tvBidding);
+		tvChangePw = (TextView) mThisView.findViewById(R.id.settingPage_tvChangePw);
 		tvWithdraw = (TextView) mThisView.findViewById(R.id.settingPage_tvWithdraw);
 		tvSignOut = (TextView) mThisView.findViewById(R.id.settingPage_tvSignOut);
 		
 		btnNotification = (Button) mThisView.findViewById(R.id.settingPage_btnNotification);
 		btnBidding = (Button) mThisView.findViewById(R.id.settingPage_btnBidding);
+		btnChangePw = (Button) mThisView.findViewById(R.id.settingPage_btnChangePw);
 		btnWithdraw = (Button) mThisView.findViewById(R.id.settingPage_btnWithdraw);
 		btnSignOut = (Button) mThisView.findViewById(R.id.settingPage_btnSignOut);
 	}
@@ -96,6 +102,15 @@ public class SettingPage extends BCPFragment {
 			public void onClick(View view) {
 
 				setPushSetting(true, !SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_PUSH, "noBiddingPush"));
+			}
+		});
+		
+		btnChangePw.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_CHANGE_PASSWORD, null);
 			}
 		});
 		
@@ -146,6 +161,12 @@ public class SettingPage extends BCPFragment {
 		rp.height = ResizeUtils.getSpecificLength(41);
 		tvNotificationTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
+		//tvChangePwTitle.
+		rp = (RelativeLayout.LayoutParams) tvChangePwTitle.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(41);
+		tvChangePwTitle.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+
+		
 		//tvWithdrawTitle.
 		rp = (RelativeLayout.LayoutParams) tvWithdrawTitle.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(41);
@@ -165,6 +186,11 @@ public class SettingPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) tvBidding.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(110);
 		tvBidding.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
+		
+		//tvChangePw.
+		rp = (RelativeLayout.LayoutParams) tvChangePw.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(110);
+		tvChangePw.setPadding(ResizeUtils.getSpecificLength(20), 0, 0, 0);
 		
 		//tvWithdraw.
 		rp = (RelativeLayout.LayoutParams) tvWithdraw.getLayoutParams();
@@ -190,6 +216,13 @@ public class SettingPage extends BCPFragment {
 		rp.topMargin = ResizeUtils.getSpecificLength(28);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 
+		//btnChangePw.
+		rp = (RelativeLayout.LayoutParams) btnChangePw.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(227);
+		rp.height = ResizeUtils.getSpecificLength(52);
+		rp.topMargin = ResizeUtils.getSpecificLength(28);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+		
 		//btnWithdraw.
 		rp = (RelativeLayout.LayoutParams) btnWithdraw.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(227);
@@ -206,12 +239,15 @@ public class SettingPage extends BCPFragment {
 		
 		FontUtils.setFontSize(tvNotificationTitle, 24);
 		FontUtils.setFontStyle(tvNotificationTitle, FontUtils.BOLD);
+		FontUtils.setFontSize(tvChangePwTitle, 24);
+		FontUtils.setFontStyle(tvChangePwTitle, FontUtils.BOLD);
 		FontUtils.setFontSize(tvWithdrawTitle, 24);
 		FontUtils.setFontStyle(tvWithdrawTitle, FontUtils.BOLD);
 		FontUtils.setFontSize(tvSignOutTitle, 24);
 		FontUtils.setFontStyle(tvSignOutTitle, FontUtils.BOLD);
 		FontUtils.setFontSize(tvNotification, 24);
 		FontUtils.setFontSize(tvBidding, 24);
+		FontUtils.setFontSize(tvChangePw, 24);
 		FontUtils.setFontSize(tvWithdraw, 24);
 		FontUtils.setFontSize(tvSignOut, 24);
 	}

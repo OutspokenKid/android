@@ -155,8 +155,16 @@ public class ForumView extends FrameLayout {
 
 					try {
 						LogUtils.log("ForumView.onCompleted." + "\nurl : " + url);
+						
+						String tag = ivProfile.getTag().toString().replace("/src/", "/thumb/");
+						
+						if(tag.contains("?")) {
+							tag = tag.split("?")[0];
+						}
 
-						if(bitmap != null && !bitmap.isRecycled()) {
+						if(bitmap != null 
+								&& !bitmap.isRecycled()
+								&& url.contains(tag)) {
 							ivProfile.setImageBitmap(bitmap);
 						}
 					} catch (Exception e) {

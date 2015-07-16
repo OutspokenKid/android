@@ -142,6 +142,7 @@ public class CarRegistrationPage extends BCPFragment {
 	
 	private boolean isRegistrationCompleted;
 	private int imageLoadingCount;
+	private int lastPrice;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -535,7 +536,13 @@ public class CarRegistrationPage extends BCPFragment {
 		etDetailCarInfos[1].setHint(R.string.hintForDetailCarInfo2);
 		etDetailCarInfos[2].setHint(R.string.hintForDetailCarInfo3);
 		etDetailCarInfos[3].setHint(R.string.hintForDetailCarInfo4);
-		etDetailCarInfos[4].setHint(R.string.hintForDetailCarInfo5);
+		
+		if(carType == Car.TYPE_BID) {
+			etDetailCarInfos[4].setHint(R.string.hintForDetailCarInfo51);
+		} else {
+			etDetailCarInfos[4].setHint(R.string.hintForDetailCarInfo52);
+		}
+		
 		
 		if(!forDealer) {
 			//색상 숨기기.
@@ -818,10 +825,6 @@ public class CarRegistrationPage extends BCPFragment {
 					String text = getString(R.string.writeAllContentForRegistration);
 					ToastUtils.showToast(text.replace("*", ""));
 					
-				} else if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
-					ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
-					mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
-					
 				} else {
 					SoftKeyboardUtils.hideKeyboard(mContext, etCarDescription);
 					uploadImages();
@@ -831,10 +834,13 @@ public class CarRegistrationPage extends BCPFragment {
 	
 		for(int i=0; i<etDetailCarInfos.length; i++) {
 			
+			final int INDEX = i;
+			
 			etDetailCarInfos[i].getEditText().addTextChangedListener(new TextWatcher() {
 				
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
+
 				}
 				
 				@Override
@@ -845,6 +851,24 @@ public class CarRegistrationPage extends BCPFragment {
 				public void afterTextChanged(Editable s) {
 					
 					checkProgress();
+					
+					if(INDEX == etDetailCarInfos.length - 1) {
+
+						try {
+							int price = Integer.parseInt(etDetailCarInfos[INDEX].getEditText().getText().toString());
+							
+							if(price > 99999) {
+								etDetailCarInfos[INDEX].getEditText().setText("" + lastPrice);
+								etDetailCarInfos[INDEX].getEditText().setSelection(etDetailCarInfos[INDEX].getEditText().length());
+							} else {
+								lastPrice = price;
+							}
+						} catch (Exception e) {
+							LogUtils.trace(e);
+						} catch (Error e) {
+							LogUtils.trace(e);
+						}
+					}
 				}
 			});
 		}
@@ -1158,7 +1182,7 @@ public class CarRegistrationPage extends BCPFragment {
 		}
 		
 		for(int i=0; i<etDetailCarInfos.length; i++) {
-			FontUtils.setFontSize(etDetailCarInfos[i].getEditText(), 20);
+			FontUtils.setFontSize(etDetailCarInfos[i].getEditText(), 22);
 		}
 		
 		FontUtils.setFontSize(tvRightPhoto, 20);
@@ -2212,6 +2236,16 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 			});
 		}
+		
+		ivPhotos[ivPhotos.length - 1].setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				selectedImageIndex = ivPhotos.length - 1;
+				mActivity.showUploadPhotoPopup(1, Color.rgb(254, 188, 42));
+			}
+		});
 		
 		btnCheck.setOnClickListener(new OnClickListener() {
 

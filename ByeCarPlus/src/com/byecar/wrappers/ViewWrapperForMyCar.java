@@ -121,11 +121,11 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 					break;
 					
 				case Car.TYPE_DEALER:
-					typeIcon.setBackgroundResource(R.drawable.mypage_title2);
+					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
 					break;
 					
 				case Car.TYPE_DIRECT:
-					typeIcon.setBackgroundResource(R.drawable.mypage_title3);
+					typeIcon.setBackgroundResource(R.drawable.mypage_title2);
 					break;
 					
 				default:

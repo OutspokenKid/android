@@ -67,14 +67,6 @@
 			        android:layout_alignParentTop="true"
 			        android:background="@drawable/detail_cash_header" />
 			    
-			    <View
-			        android:id="@+id/carDetailPage_arrowForBidding"
-			        android:layout_width="match_parent"
-			        android:layout_height="0dp"
-			        android:layout_alignTop="@id/carDetailPage_headerForBidding"
-			        android:layout_alignRight="@id/carDetailPage_headerForBidding"
-			        android:background="@drawable/detail_toggle_up" />
-			    
 			    <RelativeLayout 
 			        android:id="@+id/carDetailPage_relativeForBidding2"
 			        android:layout_width="match_parent"

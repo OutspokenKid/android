@@ -180,6 +180,18 @@ public class NotificationPage extends BCPFragment {
 	}
 	
 //////////////////// Custom methods.
+
+	public void deleteNotification(Notification notification) {
+
+		try {
+			models.remove(notification);
+			adapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+	}
 	
 	public void requestReadNotification(int notification_id) {
 		

@@ -65,6 +65,7 @@ public class BCPConstants {
 	public static final int PAGE_NOTIFICATION = 19;
 	public static final int PAGE_SETTING = 20;
 	public static final int PAGE_PROFILE = 21;
+	public static final int PAGE_CHANGE_PASSWORD = 22;
 	
 	//Pages for car.
 	public static final int PAGE_CAR_DETAIL = 31;
@@ -82,6 +83,7 @@ public class BCPConstants {
 	public static final int PAGE_FORUM_WRITE_REPLY = 45;
 	public static final int PAGE_VIDEO_LIST = 46;
 	public static final int PAGE_BID_REVIEW_LIST = 47;
+	public static final int PAGE_BID_REVIEW_SEARCH = 48;
 
 	public static final int PAGE_WEB_BROWSER = 50;
 	public static final int PAGE_SEARCH_AREA = 51;

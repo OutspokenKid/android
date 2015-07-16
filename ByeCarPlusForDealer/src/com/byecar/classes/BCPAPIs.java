@@ -19,6 +19,7 @@ public class BCPAPIs {
 	public static String WITHDRAW_URL = BASE_API_URL + "/users/withdraw.json";
 	public static String DEALER_INFO_URL = BASE_API_URL + "/dealers/show.json";
 	public static String EDIT_DEALER_INFO_URL = BASE_API_URL + "/users/update/additional_info.json";
+	public static String CHANGE_PASSWORD_URL = BASE_API_URL + "/users/update/password.json";
 	
 	public static String PHONE_AUTH_REQUEST_URL = BASE_API_URL + "/users/auth/request";
 	public static String PHONE_AUTH_RESPONSE_URL = BASE_API_URL + "/users/auth/response";
@@ -28,6 +29,7 @@ public class BCPAPIs {
 	
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
+	public static String NOTIFICATION_DELETE_URL = BASE_API_URL + "/notifications/delete.json";
 	
 	public static String NOTICE_URL = BASE_API_URL + "/posts/notices/dealer.json";
 	public static String FAQ_URL = BASE_API_URL + "/posts/faqs/dealer.json";

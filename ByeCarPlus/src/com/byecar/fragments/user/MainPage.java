@@ -49,6 +49,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.TimerUtils;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
@@ -354,8 +355,15 @@ public class MainPage extends BCPAuctionableFragment {
 					switch(INDEX) {
 					
 					case 0:
-						pageCode = BCPConstants.PAGE_CAR_REGISTRATION;
-						bundle.putInt("carType", Car.TYPE_BID);
+						
+						if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+							ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
+							mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
+						} else {
+							pageCode = BCPConstants.PAGE_CAR_REGISTRATION;
+							bundle.putInt("carType", Car.TYPE_BID);
+						}
+						
 						break;
 						
 					case 1:
@@ -629,26 +637,17 @@ public class MainPage extends BCPAuctionableFragment {
 				@Override
 				public void run() {
 
-					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
-					((MainActivity)mActivity).launchTutorialActivity();
+					try {
+						SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
+						((MainActivity)mActivity).launchTutorialActivity();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
 				}
 			}, 1000);
 		}
-		
-//		new Handler().postDelayed(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//
-//				try {
-//					Bundle bundle = new Bundle();
-//					bundle.putString("carNumber", "12가1001");
-//					mActivity.showPage(BCPConstants.PAGE_CAR_HISTORY, bundle);
-//				} catch (Exception e) {
-//					LogUtils.trace(e);
-//				}
-//			}
-//		}, 2000);
 	}
 	
 	@Override

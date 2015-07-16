@@ -21,6 +21,7 @@ public class BCPAPIs {
 	public static String SIGN_CHECK_URL = BASE_API_URL + "/users/login_check.json";
 	public static String SIGN_OUT_URL = BASE_API_URL + "/users/logout.json";
 	public static String WITHDRAW_URL = BASE_API_URL + "/users/withdraw.json";
+	public static String CHANGE_PASSWORD_URL = BASE_API_URL + "/users/update/password.json";
 	
 	public static String MAIN_COVER_URL = BASE_API_URL + "/appinfo/cover.json";
 
@@ -84,6 +85,7 @@ public class BCPAPIs {
 	public static String MY_REVIEW_URL = BASE_API_URL + "/users/mine/reviews.json";
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
+	public static String NOTIFICATION_DELETE_URL = BASE_API_URL + "/notifications/delete.json";
 	
 	public static String FORUM_LIST_URL = BASE_API_URL + "/posts/forum.json";
 	public static String FORUM_DETAIL_URL = BASE_API_URL + "/posts/show.json";

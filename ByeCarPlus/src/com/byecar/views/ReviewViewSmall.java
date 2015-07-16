@@ -154,10 +154,17 @@ public class ReviewViewSmall extends FrameLayout {
 				try {
 					LogUtils.log("UsedCarView.downloadImage.onCompleted." + "\nurl : " + url);
 					
-					if(bitmap != null && !bitmap.isRecycled()) {
-						ivImage.setImageBitmap(bitmap);
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
+					
+					if(tag.contains("?")) {
+						tag = tag.split("?")[0];
 					}
 					
+					if(bitmap != null 
+							&& !bitmap.isRecycled()
+							&& url.contains(tag)) {
+						ivImage.setImageBitmap(bitmap);
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

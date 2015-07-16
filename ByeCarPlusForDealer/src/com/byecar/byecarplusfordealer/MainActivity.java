@@ -43,6 +43,7 @@ import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CarHistoryPage;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
+import com.byecar.fragments.ChangePwPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
@@ -508,6 +509,9 @@ public class MainActivity extends BCPFragmentActivity {
 			
 		case BCPConstants.PAGE_CAR_HISTORY:
 			return new CarHistoryPage();
+			
+		case BCPConstants.PAGE_CHANGE_PASSWORD:
+			return new ChangePwPage();
 		}
 		
 		return null;

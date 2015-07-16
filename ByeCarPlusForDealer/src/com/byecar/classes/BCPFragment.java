@@ -125,7 +125,7 @@ public abstract class BCPFragment extends BaseFragment {
 	public void downloadInfo() {
 		
 		try {
-			if(isDownloading || isLastList) {
+			if(isDownloading || isLastList || url == null) {
 				return;
 			}
 			

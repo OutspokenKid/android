@@ -45,7 +45,6 @@ public class MainPage extends BCPAuctionableFragment {
 	private SwipeRefreshLayout swipeRefreshLayout;
 	
 	private Button[] btnTabs = new Button[4];
-	private View icon;
 	private View buttonBg;
 	private Button btnRegistration;
 	private Button btnGuide;
@@ -67,8 +66,6 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.mainPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.mainPage_listView);
-
-		icon = mThisView.findViewById(R.id.mainPage_icon);
 
 		buttonBg = mThisView.findViewById(R.id.mainPage_buttonBg);
 		btnRegistration = (Button) mThisView.findViewById(R.id.mainPage_btnRegistration);
@@ -270,8 +267,6 @@ public class MainPage extends BCPAuctionableFragment {
 					btnTabs[i], null, null, null);
 		}
 		
-		ResizeUtils.viewResizeForRelative(246, 225, icon, null, null, new int[]{0, 100, 0, 80});
-
 		ResizeUtils.viewResizeForRelative(LayoutParams.MATCH_PARENT, 119, buttonBg, null, null, null);
 		ResizeUtils.viewResizeForRelative(612, 84, btnRegistration, null, null, new int[]{0, 0, 0, 16});
 		
@@ -413,8 +408,14 @@ public class MainPage extends BCPAuctionableFragment {
 				@Override
 				public void run() {
 
-					SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
-					((MainActivity)mActivity).launchTutorialActivity();
+					try {
+						SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_TUTORIAL, "shown", true);
+						((MainActivity)mActivity).launchTutorialActivity();
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
 				}
 			}, 1000);
 		}

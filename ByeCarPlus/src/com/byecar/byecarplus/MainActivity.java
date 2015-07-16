@@ -41,6 +41,7 @@ import com.byecar.fragments.AskPage;
 import com.byecar.fragments.CarHistoryPage;
 import com.byecar.fragments.CarRegistrationPage;
 import com.byecar.fragments.CertifyPhoneNumberPage;
+import com.byecar.fragments.ChangePwPage;
 import com.byecar.fragments.DealerPage;
 import com.byecar.fragments.NotificationPage;
 import com.byecar.fragments.OpenablePostListPage;
@@ -48,6 +49,7 @@ import com.byecar.fragments.PhoneInfoPage;
 import com.byecar.fragments.ProfilePage;
 import com.byecar.fragments.SearchAreaPage;
 import com.byecar.fragments.SearchCarPage;
+import com.byecar.fragments.SearchReviewPage;
 import com.byecar.fragments.SettingPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.TypeSearchCarPage;
@@ -445,6 +447,12 @@ public class MainActivity extends BCPFragmentActivity {
 		
 		case BCPConstants.PAGE_CAR_HISTORY:
 			return new CarHistoryPage();
+			
+		case BCPConstants.PAGE_CHANGE_PASSWORD:
+			return new ChangePwPage();
+			
+		case BCPConstants.PAGE_BID_REVIEW_SEARCH:
+			return new SearchReviewPage();
 		}
 		
 		return null;
@@ -669,6 +677,7 @@ public class MainActivity extends BCPFragmentActivity {
 	public void launchTutorialActivity() {
 		
 		Intent intent = new Intent(this, TutorialActivity.class);
+		intent.putExtra("isForUser", true);
 		startActivity(intent);
 	}
 	

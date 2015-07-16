@@ -74,7 +74,6 @@ public class CarDetailPage extends BCPFragment {
 	
 	private RelativeLayout relativeForBidding;
 	private View headerForBidding;
-	private View arrowForBidding;
 	private RelativeLayout relativeForBidding2;
 	private TextView tvPrice;
 	private Button[] btnPrices = new Button[4];
@@ -153,7 +152,6 @@ public class CarDetailPage extends BCPFragment {
 		
 		relativeForBidding = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForBidding);
 		headerForBidding = mThisView.findViewById(R.id.carDetailPage_headerForBidding);
-		arrowForBidding = mThisView.findViewById(R.id.carDetailPage_arrowForBidding);
 		relativeForBidding2 = (RelativeLayout) mThisView.findViewById(R.id.carDetailPage_relativeForBidding2);
 		tvPrice = (TextView) mThisView.findViewById(R.id.carDetailPage_tvPrice);
 		btnPrices[0] = (Button) mThisView.findViewById(R.id.carDetailPage_btnPrice1);
@@ -1063,12 +1061,6 @@ public class CarDetailPage extends BCPFragment {
 				
 				rp = (RelativeLayout.LayoutParams) headerForBidding.getLayoutParams();
 				rp.height = ResizeUtils.getSpecificLength(68);
-
-				rp = (RelativeLayout.LayoutParams) arrowForBidding.getLayoutParams();
-				rp.width = ResizeUtils.getSpecificLength(33);
-				rp.height = ResizeUtils.getSpecificLength(33);
-				rp.topMargin = ResizeUtils.getSpecificLength(18);
-				rp.rightMargin = ResizeUtils.getSpecificLength(18);
 				
 				rp = (RelativeLayout.LayoutParams) relativeForBidding2.getLayoutParams();
 				rp.width = ResizeUtils.getSpecificLength(608);
@@ -1819,19 +1811,6 @@ public class CarDetailPage extends BCPFragment {
 	public void changeMenuOpenStatus(int index) {
 
 		switch(index) {
-
-		//입찰금액.
-		case MENU_BIDDING:
-			
-			if(relativeForBidding2.getVisibility() == View.VISIBLE) {
-				relativeForBidding2.setVisibility(View.GONE);
-				arrowForBidding.setBackgroundResource(R.drawable.detail_toggle);
-			} else {
-				relativeForBidding2.setVisibility(View.VISIBLE);
-				arrowForBidding.setBackgroundResource(R.drawable.detail_toggle_up);
-			}
-			
-			break;
 		
 		//후기.
 		case MENU_REVIEW:

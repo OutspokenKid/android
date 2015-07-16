@@ -20,6 +20,8 @@ public class PriceTextView extends LinearLayout {
 	public static final int TYPE_DETAIL_OTHERS = 3;
 	public static final int TYPE_NORMAL_CAR = 4;
 	public static final int TYPE_USED_CAR = 5;
+	public static final int TYPE_BIDDING_FINISH = 7;	//최종 낙찰가(옥션리스트, 상세).
+	public static final int TYPE_BIDDING_FAIL = 8;		//최고가(옥션리스트, 상세).
 
 	/**
 	 * 0 : 만원
@@ -90,6 +92,19 @@ public class PriceTextView extends LinearLayout {
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
 			textViews[0].setText(null);
 			setTextSize(22);
+			break;
+			
+		case TYPE_BIDDING_FINISH:
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.finalPrice);
+			setTextSize(22);
+			break;
+			
+		case TYPE_BIDDING_FAIL:
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.highestPrice);
+			setTextSize(22);
+			break;
 		}
 	}
 	

@@ -21,6 +21,8 @@ public class PriceTextView extends LinearLayout {
 	public static final int TYPE_SUCCESS = 4;			//낙찰가(마이페이지 - 거래완료내역 - 바이카옥션).
 	public static final int TYPE_SELLING_BIG = 5;		//판매가(중고상세).
 	public static final int TYPE_SELLING_SMALL = 6;		//판매가(중고리스트).
+	public static final int TYPE_BIDDING_FINISH = 7;	//최종 낙찰가(옥션리스트, 상세).
+	public static final int TYPE_BIDDING_FAIL = 8;		//최고가(옥션리스트, 상세).
 
 	/**
 	 * textViews[0] : 만원.
@@ -104,6 +106,18 @@ public class PriceTextView extends LinearLayout {
 			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
 			textViews[0].setText(R.string.salesPrice);
 			setTextSize(15);
+			break;
+			
+		case TYPE_BIDDING_FINISH:
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.finalPrice);
+			setTextSize(22);
+			break;
+			
+		case TYPE_BIDDING_FAIL:
+			setTextColor(getContext().getResources().getColor(R.color.new_color_text_orange));
+			textViews[0].setText(R.string.highestPrice);
+			setTextSize(22);
 			break;
 		}
 	}

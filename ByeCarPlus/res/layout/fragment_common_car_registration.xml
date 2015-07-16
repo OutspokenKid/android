@@ -478,7 +478,7 @@
 		        android:layout_centerHorizontal="true"
 		        android:layout_below="@id/carRegistrationPage_tvTitleText5"
 		        android:scaleType="fitCenter"
-		        android:src="@drawable/used_check_sample" />
+		        android:background="@drawable/used_check_sample" />
             
             <Button 
                 android:id="@+id/carRegistrationPage_btnCheck"

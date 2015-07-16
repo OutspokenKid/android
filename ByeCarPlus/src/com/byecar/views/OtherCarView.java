@@ -256,10 +256,17 @@ public class OtherCarView extends RelativeLayout {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					if(bitmap != null && !bitmap.isRecycled()) {
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
+					
+					if(tag.contains("?")) {
+						tag = tag.split("?")[0];
+					}
+
+					if(bitmap != null 
+							&& !bitmap.isRecycled()
+							&& url.contains(tag)) {
 						ivImage.setImageBitmap(bitmap);
 					}
-					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -282,8 +289,6 @@ public class OtherCarView extends RelativeLayout {
 		if(car.getType() == Car.TYPE_DEALER) {
 			tvDealerName.getLayoutParams().width = ResizeUtils.getSpecificLength(70);
 			rankBadge.getLayoutParams().width = ResizeUtils.getSpecificLength(96);
-			
-			
 			
 			downloadImage(car.getDealer_profile_img_url(), ivProfile);
 			tvDealerName.setText(car.getDealer_name());

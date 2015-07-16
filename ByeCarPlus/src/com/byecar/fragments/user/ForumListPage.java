@@ -279,6 +279,8 @@ public class ForumListPage extends BCPFragment {
 		
 		if(boards.size() == 0) {
 			downloadCategories();
+		} else {
+			setCategories();
 		}
 	}
 	

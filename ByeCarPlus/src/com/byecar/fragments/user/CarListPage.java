@@ -33,6 +33,8 @@ import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.StringUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class CarListPage extends BCPAuctionableFragment {
 
@@ -205,9 +207,14 @@ public class CarListPage extends BCPAuctionableFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("carType", type);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+				if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+					ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
+					mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putInt("carType", type);
+					mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+				}
 			}
 		});
 		

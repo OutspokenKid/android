@@ -9,11 +9,14 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.byecar.byecarplus.MainActivity;
 import com.byecar.byecarplus.R;
@@ -30,6 +33,7 @@ public class ReviewListPage extends BCPFragment {
 
 	private SwipeRefreshLayout swipeRefreshLayout;
 	private ListView listView;
+	private Button btnSearch; 
 	
 	@Override
 	public void bindViews() {
@@ -38,6 +42,8 @@ public class ReviewListPage extends BCPFragment {
 		
 		swipeRefreshLayout = (SwipeRefreshLayout) mThisView.findViewById(R.id.reviewListPage_swipe_container);
 		listView = (ListView) mThisView.findViewById(R.id.reviewListPage_listView);
+		
+		btnSearch = (Button) mThisView.findViewById(R.id.reviewListPage_btnSearch);
 	}
 
 	@Override
@@ -114,12 +120,28 @@ public class ReviewListPage extends BCPFragment {
 			    }, 2000);
 			}
 		});
+	
+		btnSearch.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				mActivity.showPage(BCPConstants.PAGE_BID_REVIEW_SEARCH, null);
+			}
+		});
 	}
 
 	@Override
 	public void setSizes() {
-		// TODO Auto-generated method stub
 
+		RelativeLayout.LayoutParams rp = null;
+		
+		//btnSearch.
+		rp = (RelativeLayout.LayoutParams) btnSearch.getLayoutParams();
+		rp.width = ResizeUtils.getSpecificLength(60);
+		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 	}
 
 	@Override

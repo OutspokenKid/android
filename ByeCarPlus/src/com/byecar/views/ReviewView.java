@@ -343,10 +343,15 @@ public class ReviewView extends RelativeLayout {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					LogUtils.log("ReviewView.onCompleted." + "\nurl : " + url);
-
-					if(ivImage != null
-							&& !bitmap.isRecycled()) {
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
+					
+					if(tag.contains("?")) {
+						tag = tag.split("?")[0];
+					}
+					
+					if(bitmap != null 
+							&& !bitmap.isRecycled()
+							&& url.contains(tag)) {
 						ivImage.setImageBitmap(bitmap);
 					}
 				} catch (Exception e) {

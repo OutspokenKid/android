@@ -65,13 +65,16 @@
     <string name="carRegistrationTitle8">바이카 공지사항 및 이용 약관 동의</string>
     <string name="carSearchString_accidentHistory">사고 상세내역</string>
     <string name="certifyPhoneNumber">휴대폰번호 인증</string>
+    <string name="changePw">비밀번호 변경</string>
     <string name="changingPartsHistory">부품 교환 이력</string>
     <string name="checkCertificationNumber">올바른 인증번호를 입력해주세요.</string>
     <string name="checkChangingPartsHistory">부품 교환 이력을 입력해주세요.</string>
-    <string name="checkEmail">이메일 형식이 맞지 않습니다.</string>
+    <string name="checkEmail">정확한 이메일주소를 입력해주세요.</string>
     <string name="checkEmployeeCardImage">사원증이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
     <string name="checkNameCardImage">명함이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
+    <string name="checkNewPassword">8~15자 내의 새 비밀번호를 입력해주세요.</string>
     <string name="checkNickname">3~15자 내의 닉네임을 입력해주세요.</string>
+    <string name="checkOriginalPassword">8~15자 내의 기존 비밀번호를 입력해주세요.</string>
     <string name="checkPassword">8~15자 내의 비밀번호를 입력해주세요.</string>
     <string name="checkPasswordConfirm">두 비밀번호가 일치하지 않습니다.</string>
     <string name="checkPhoneNumber">올바른 휴대폰 번호를 입력해주세요.</string>
@@ -81,6 +84,7 @@
     <string name="complete_auth">수정되었습니다.</string>
     <string name="complete_bid">입찰신청이 완료되었습니다.</string>
     <string name="complete_certifyPhoneNumber">휴대폰번호가 인증되었습니다.</string>
+    <string name="complete_changePw">비밀번호가 변경되었습니다.</string>
     <string name="complete_completeSelling">거래완료 처리되었습니다.</string>
     <string name="complete_delete">삭제되었습니다.</string>
     <string name="complete_edit">수정 완료</string>
@@ -124,8 +128,9 @@
     
     <string name="edit">수정</string>
     <string name="emptyDealerDesc">딜러 소개가 없습니다.</string>
-    <string name="failToCompleteSelling">거래 완료 상태로 변경하지 못했습니다.</string>
     <string name="failToBidding">입찰하지 못했습니다.</string>
+    <string name="failToChangePw">비밀번호를 변경하지 못했습니다.</string>
+    <string name="failToCompleteSelling">거래 완료 상태로 변경하지 못했습니다.</string>
     <string name="failToDelete">삭제하지 못했습니다.</string>
     <string name="failToEditUserInfo">프로필 수정 실패</string>
     <string name="failToLoadCarInfo">차량 정보를 불러오지 못했습니다.</string>
@@ -140,7 +145,8 @@
     <string name="failToSignUp">회원가입 실패</string>
     <string name="failToUpdateUserInfo">사용자 정보를 수정하지 못했습니다.</string>
     <string name="failToWriteReply">댓글 작성 실패</string>
-
+	<string name="finalPrice">최종 낙찰가</string>
+    
     <string name="hadAccident">사고보험 이력이 존재합니다. 버튼을 눌러 확인해주세요.</string>
     <string name="highestPrice">최고가</string>
     <string name="hintForAddress">상사주소를 검색해주세요.</string>
@@ -152,13 +158,17 @@
     <string name="hintForDetailCarInfo2">주행거리를 입력해주세요.  예) 103555</string>
     <string name="hintForDetailCarInfo3">배기량을 입력해주세요.  예) 2500</string>
     <string name="hintForDetailCarInfo4">차량 색상을 입력해주세요.  예) 다이아몬드 화이트</string>
-    <string name="hintForDetailCarInfo5">희망금액 입력 (바이카 본사 참고사항 / 단위 만원)</string>
+    <string name="hintForDetailCarInfo51">희망금액 입력 (바이카 본사 참고사항 / 단위 만원)</string>
+    <string name="hintForDetailCarInfo52">판매가 입력 (바이카 본사 참고사항 / 단위 만원)</string>
     <string name="hintForEmailSignIn">이메일 주소를 입력해주세요.</string>
     <string name="hintForEmailSignUp">이메일 주소 입력(아이디로 사용 됩니다)</string>
     <string name="hintForFindPw">가입하신 이메일 주소를 입력해주세요.</string>
     <string name="hintForIntroduce">인사글은 소비자가 딜러 선택시 보여지는 글이며, 신뢰 있는 글 작성으로 보다 많은 차량 매입을 성사시키세요.</string>
     <string name="hintForName">본명을 입력해주세요. (딜러증에 적혀있는 동일한 이름)</string>
+    <string name="hintForNewPassword">새 비밀번호</string>
+    <string name="hintForNewPasswordConfirm">새 비밀번호 확인</string>
     <string name="hintForNickname">별명을 입력해주세요.(3~15자)</string>
+    <string name="hintForOriginalPassword">기존 비밀번호</string>
     <string name="hintForPassword">비밀번호를 입력해주세요.</string>
     <string name="hintForPassword2">비밀번호 입력(아이디 비밀번호 입니다)</string>
     <string name="hintForPasswordConfirm">비밀번호를 다시 입력해주세요.(8~15자)</string>
@@ -198,6 +208,7 @@
     <string name="order_3">등록순</string>
     
     <string name="pageTitle_certifyPhoneNumber">휴대폰 번호 인증</string>
+    <string name="pageTitle_changePw">비밀번호 변경</string>
     <string name="pageTitle_dealer">딜러정보</string>
     <string name="pageTitle_findPw">비밀번호 찾기</string>
     <string name="pageTitle_notification">알림</string>
@@ -262,12 +273,13 @@
     <string name="signIn">로그인</string>
     <string name="signOut">로그아웃</string>
 	<string name="sideMenuTitle2">메뉴</string>
+	<string name="snsLoginUserCanNotUseThisService">SNS로그인 이용자에게는 지원되지 않는 기능입니다</string>
 	<string name="standingByBid">입찰대기중</string>
     
 	<string name="toggle_notification">전체 알림 ON / OFF</string>
     <string name="toggle_bidding">입찰 알림창 ON / OFF</string>
     <string name="touchCameraIcon">카메라 아이콘을 터치해 프로필 사진을 업로드해주세요.</string>
-    <string name="touchCameraIcon2">(본인 얼굴 사진만 등록 필수)</string>
+    <string name="touchCameraIcon2">* 신뢰도 높은 증명사진을 올려주세요.\n(수정이 불가하오니 신중히 등록해주세요.)</string>
     <string name="touchImageIcon">사원증이미지, 명함이미지 아이콘을 클릭해 사진을 업로드해주세요.</string>
 	<string name="tradeSuccessCount">차량 성사수</string>
 
@@ -276,6 +288,7 @@
     <string name="wannaBiddingAt">만원에 입찰하시겠습니까?</string>
     <string name="wannaCallToDealer">딜러에게 전화하시겠습니까?</string>
     <string name="wannaCallToSeller">님과 통화하시겠습니까?</string>
+    <string name="wannaChangePassword">비밀번호를 변경하시겠습니까?</string>
     <string name="wannaCompleteSelling">차량판매를 완료하시겠습니까?\n(완료시 차량정보는 삭제됩니다.)</string>
     <string name="wannaDelete">삭제하시겠습니까?</string>
     <string name="wannaReport">신고하시겠습니까?</string>

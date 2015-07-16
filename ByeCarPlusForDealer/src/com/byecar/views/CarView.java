@@ -385,12 +385,17 @@ public class CarView extends RelativeLayout {
 			public void onCompleted(String url, Bitmap bitmap) {
 
 				try {
-					LogUtils.log("UsedCarView.downloadImage.onCompleted." + "\nurl : " + url);
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
 					
-					if(bitmap != null && !bitmap.isRecycled()) {
+					if(tag.contains("?")) {
+						tag = tag.split("?")[0];
+					}
+
+					if(bitmap != null 
+							&& !bitmap.isRecycled()
+							&& url.contains(tag)) {
 						ivImage.setImageBitmap(bitmap);
 					}
-					
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

@@ -82,7 +82,6 @@ public class ViewWrapperForAuctionCar extends ViewWrapper {
 				if(car.getItemCode() == BCPConstants.ITEM_CAR_BID) {
 					setAuctionButton(car);
 					setOnTimeListener();
-					
 				} else {
 					auctionIcon.setVisibility(View.INVISIBLE);
 				}
@@ -135,7 +134,15 @@ public class ViewWrapperForAuctionCar extends ViewWrapper {
 				try {
 					LogUtils.log("ViewWrapperForAuctionCar.downloadImage.onCompleted." + "\nurl : " + url);
 					
-					if(bitmap != null && !bitmap.isRecycled()) {
+					String tag = ivImage.getTag().toString().replace("/src/", "/thumb/");
+					
+					if(tag.contains("?")) {
+						tag = tag.split("?")[0];
+					}
+					
+					if(bitmap != null 
+							&& !bitmap.isRecycled()
+							&& url.contains(tag)) {
 						ivImage.setImageBitmap(bitmap);
 					}
 					
@@ -163,6 +170,11 @@ public class ViewWrapperForAuctionCar extends ViewWrapper {
 					if(car == null) {
 						return;
 					}
+					
+					if(car.getStatus() > Car.STATUS_BID_COMPLETE) {
+						carInfoView.clearTime();
+						return;
+					}
 
 					try {
 						long remainTime = car.getBid_until_at() * 1000 
@@ -177,6 +189,7 @@ public class ViewWrapperForAuctionCar extends ViewWrapper {
 			        	}
 					} catch (Exception e) {
 						LogUtils.trace(e);
+						TimerUtils.removeOnTimeChangedListener(onTimeChangedListener);
 						carInfoView.clearTime();
 					}
 				}

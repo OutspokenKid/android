@@ -22,6 +22,10 @@ public class BCPDownloadUtils {
 					+ "\n + imageWidth : " + imageWidth
 					+ "\n + " + url);
 			
+			if(url == "null") {
+				return;
+			}
+			
 			url = url.replace("/src/", "/thumb/");
 			
 			if(url.contains("?")) {

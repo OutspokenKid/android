@@ -348,10 +348,15 @@ public class CarDetailPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("carType", Car.TYPE_BID);
-				bundle.putSerializable("car", car);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+				if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
+					ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
+					mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
+				} else {
+					Bundle bundle = new Bundle();
+					bundle.putInt("carType", Car.TYPE_BID);
+					bundle.putSerializable("car", car);
+					mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+				}
 			}
 		});
 

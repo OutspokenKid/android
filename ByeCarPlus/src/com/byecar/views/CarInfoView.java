@@ -303,7 +303,17 @@ public class CarInfoView extends RelativeLayout {
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
 						+ "명/입찰횟수 " + car.getBids_cnt() + "회");
 				
-				priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE
+						|| car.getStatus() == Car.STATUS_PAYMENT_COMPLETED
+						|| car.getStatus() == Car.STATUS_BID_SUCCESS) {
+					priceTextView.setType(PriceTextView.TYPE_BIDDING_FINISH);
+					
+				} else if(car.getStatus() == Car.STATUS_BID_FAIL) {
+					priceTextView.setType(PriceTextView.TYPE_BIDDING_FAIL);
+					
+				} else {
+					priceTextView.setType(PriceTextView.TYPE_DETAIL_AUCTION);
+				}
 			} else {
 				progressBar.setVisibility(View.GONE);
 				centerView.setVisibility(View.GONE);
