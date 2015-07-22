@@ -2230,7 +2230,8 @@ public class CarRegistrationPage extends BCPFragment {
 						LogUtils.log("###CarRegistrationPage.onClick. selectedImageSdCardPaths" + j + " : " + selectedImageSdCardPaths[j]);
 						LogUtils.log("###CarRegistrationPage.onClick. selectedThumbnails" + j + " : " + selectedThumbnails[j]);
 					}
-					
+
+					selectedImageIndex = INDEX;
 					int targetIndex = INDEX % 4;
 					mActivity.showUploadPhotoPopup(selectedImageUrls, selectedThumbnails, isEssential, targetIndex);
 				}

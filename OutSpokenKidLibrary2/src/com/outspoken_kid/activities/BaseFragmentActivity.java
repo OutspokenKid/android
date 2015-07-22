@@ -115,25 +115,31 @@ public abstract class BaseFragmentActivity extends FragmentActivity
 				"\nrequestCode : " + requestCode +
 				"\ndata : " + data);
 		
-		if(data != null) {
-			Bundle bundle = data.getExtras();
-			
-			Set<String> keySet = bundle.keySet();
-			Iterator<String> it = keySet.iterator();
-			
-			String logString = "";
-			while(it.hasNext()) {
-				String key = it.next();
+		try {
+			if(data != null) {
+				Bundle bundle = data.getExtras();
 				
-				if(logString != null) {
-					logString += "\n";
+				Set<String> keySet = bundle.keySet();
+				Iterator<String> it = keySet.iterator();
+				
+				String logString = "";
+				while(it.hasNext()) {
+					String key = it.next();
+					
+					if(logString != null) {
+						logString += "\n";
+					}
+					
+					logString += "key : " + key;
 				}
 				
-				logString += "key : " + key;
+				LogUtils.log("###############################BaseFragmentActivity.onActivityResult.  datas "
+						+ logString);
 			}
-			
-			LogUtils.log("###############################BaseFragmentActivity.onActivityResult.  datas "
-					+ logString);
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
 		}
 		
 		switch(requestCode) {

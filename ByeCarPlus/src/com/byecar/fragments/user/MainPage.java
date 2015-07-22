@@ -814,7 +814,7 @@ public class MainPage extends BCPAuctionableFragment {
 									@Override
 									public void run() {
 
-										((MainActivity)mActivity).showNoticePopup(notice.getRep_img_url());
+										((MainActivity)mActivity).showNoticePopup(notice);
 									}
 								}, 1000);
 							}

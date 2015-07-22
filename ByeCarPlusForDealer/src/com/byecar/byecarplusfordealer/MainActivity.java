@@ -1436,4 +1436,10 @@ public class MainActivity extends BCPFragmentActivity {
 			tvNotification.setVisibility(View.VISIBLE);
 		}
 	}
+
+	public void signOutForForbidDuplicatedSignIn() {
+
+		ToastUtils.showToast(R.string.duplicatedSignIn);
+		signOut();
+	}
 }

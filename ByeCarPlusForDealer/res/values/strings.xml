@@ -125,6 +125,7 @@
     <string name="detailOptionText2">편의장치</string>
     <string name="detailOptionText3">안전장치</string>
     <string name="detailOptionText4">오디오/AV/네비게이션</string>
+    <string name="duplicatedSignIn">다른 기기에서 로그인했습니다.</string>
     
     <string name="edit">수정</string>
     <string name="emptyDealerDesc">딜러 소개가 없습니다.</string>

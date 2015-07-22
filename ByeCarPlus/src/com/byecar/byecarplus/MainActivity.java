@@ -69,6 +69,7 @@ import com.byecar.fragments.user.WriteReviewPage;
 import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
+import com.byecar.models.Post;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
@@ -223,18 +224,6 @@ public class MainActivity extends BCPFragmentActivity {
 						animating = false;
 					}
 				}, 300);
-			}
-		});
-		
-		ivNotice.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				hideNoticePopup();
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
-				showPage(BCPConstants.PAGE_OPENABLE_POST_LIST, bundle);
 			}
 		});
 		
@@ -1277,7 +1266,7 @@ public class MainActivity extends BCPFragmentActivity {
 		}
 	}
 
-	public void showNoticePopup(final String imageUrl) {
+	public void showNoticePopup(final Post notice) {
 		
 		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
 		aaIn.setDuration(300);
@@ -1285,13 +1274,37 @@ public class MainActivity extends BCPFragmentActivity {
 		noticePopup.startAnimation(aaIn);
 		cover.setVisibility(View.VISIBLE);
 		cover.startAnimation(aaIn);
+
+		ivNotice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hideNoticePopup();
+				
+				int pageCode = 0;
+				Bundle bundle = new Bundle();
+				
+				if(!StringUtils.isEmpty(notice.getUrl())) {
+					pageCode = BCPConstants.PAGE_WEB_BROWSER;
+					bundle.putString("url", notice.getUrl());
+					
+				} else {
+					pageCode = BCPConstants.PAGE_OPENABLE_POST_LIST;
+					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+					bundle.putInt("id", notice.getId());
+				}
+				
+				showPage(pageCode, bundle);
+			}
+		});
 		
 		new Handler().postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
-
-				BCPDownloadUtils.downloadBitmap(imageUrl, new OnBitmapDownloadListener() {
+				
+				BCPDownloadUtils.downloadBitmap(notice.getRep_img_url(), new OnBitmapDownloadListener() {
 					
 					@Override
 					public void onError(String url) {
@@ -1323,5 +1336,11 @@ public class MainActivity extends BCPFragmentActivity {
 		if(doNotSeeAgain) {
 			SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_NOTICE, "time", System.currentTimeMillis());
 		}
+	}
+
+	public void signOutForForbidDuplicatedSignIn() {
+
+		ToastUtils.showToast(R.string.duplicatedSignIn);
+		signOut();
 	}
 }

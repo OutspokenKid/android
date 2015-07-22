@@ -1158,11 +1158,18 @@ public class CarDetailPage extends BCPFragment {
 				rp.width = ResizeUtils.getSpecificLength(608);
 				rp.height = ResizeUtils.getSpecificLength(20);
 
-				//biddingPrice가 car.getPrice()보다 5만원 이상 비싸면 패스.
-				if(biddingPrice < car.getPrice() + 50000) {
+//				//biddingPrice가 car.getPrice()보다 5만원 이상 비싸면 패스.
+//				if(biddingPrice < car.getPrice() + 50000) {
+//					biddingPrice = car.getPrice();
+//					setBiddingPrice(biddingPrice + 50000);
+//				}
+
+				//처음에만 설정.
+				if(biddingPrice == 0) {
 					biddingPrice = car.getPrice();
 					setBiddingPrice(biddingPrice + 50000);
 				}
+				
 			} else {
 				relativeForBidding.setVisibility(View.GONE);
 			}
@@ -1756,7 +1763,22 @@ public class CarDetailPage extends BCPFragment {
 			//딜러 선택 시간이 종료된 경우 (유찰).
 			//유저가 딜러를 선택한 경우 (낙찰).
 			} else {
+				
+				long last_my_bid_price = this.car.getMy_bid_price();
+				
 				this.car.copyValuesFromNewItem(car);
+				
+				if(event.equals("bid_price_updated")) {
+					
+					//내가 1등일 때 외엔 원래 값으로 되돌림.
+					if(car.getBids().size() > 0
+							&& car.getBids().get(0).getDealer_id() == MainActivity.dealer.getId()) {
+						//Do nothing.
+					} else {
+						this.car.setMy_bid_price(last_my_bid_price);
+					}
+				}
+				
 				setAllInfos();
 			}
 		}
@@ -2052,6 +2074,11 @@ public class CarDetailPage extends BCPFragment {
 	
 	public void bid() {
 		
+		if(biddingPrice <= car.getPrice()) {
+			mActivity.showAlertDialog("알림", "입찰금액이 현재가보다 낮습니다.", getString(R.string.confirm), null);
+			return;
+		}
+		
 		//http://dev.bye-car.com/onsalecars/bids/bid.json?onsalecar_id=1&price=1000000
 		String url = BCPAPIs.CAR_BID_URL
 				+ "?onsalecar_id=" + car.getId()
@@ -2073,8 +2100,13 @@ public class CarDetailPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
-						ToastUtils.showToast(R.string.complete_bid);
-						downloadCarInfo();
+						
+						if(car.getMy_bid_price() == 0) {
+							closePage(R.string.complete_bid);
+						} else {
+							ToastUtils.showToast(R.string.complete_bid);
+							downloadCarInfo();
+						}
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
 					}

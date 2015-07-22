@@ -121,6 +121,7 @@
     <string name="detailCarInfoString11">사고유무</string>
     <string name="detailCarInfoString12">1인신조</string>
     <string name="duplicatedEmail">이미 사용중인 이메일입니다.</string>
+    <string name="duplicatedSignIn">다른 기기에서 로그인했습니다.</string>
     
     <string name="edit">수정</string>
     <string name="editProfile">프로필 수정</string>

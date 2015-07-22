@@ -17,6 +17,7 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.classes.BCPFragment;
 import com.byecar.models.Post;
 import com.byecar.views.TitleBar;
+import com.byecar.wrappers.ViewWrapperForOpenablePost;
 import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
 
@@ -134,6 +135,11 @@ public class OpenablePostListPage extends BCPFragment {
 											} else {
 												listView.smoothScrollToPosition(i);
 											}
+											
+											if(listView.getChildAt(i).getTag() != null) {
+												((ViewWrapperForOpenablePost)listView.getChildAt(i).getTag()).open();
+											}
+											
 											break;
 										}
 									}

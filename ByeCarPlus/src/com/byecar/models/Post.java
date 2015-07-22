@@ -34,6 +34,7 @@ public class Post extends BCPBaseModel implements Serializable {
 	private int is_liked;
 	private int post_id;
 	private int has_children;
+	private String url;
 	
 	private boolean isOpened;
 	
@@ -161,6 +162,10 @@ public class Post extends BCPBaseModel implements Serializable {
 			if(objJSON.has("has_children")) {
 				this.has_children = objJSON.getInt("has_children");
 			}
+			
+			if(objJSON.has("url")) {
+				this.url = objJSON.getString("url");
+			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 		} catch (Error e) {
@@ -194,6 +199,7 @@ public class Post extends BCPBaseModel implements Serializable {
 			this.is_liked = 0;
 			this.post_id = 0;
 			this.has_children = 0;
+			this.url = null;
 		} else {
 			this.id = newPost.getId();
 			this.type = newPost.getType();
@@ -218,6 +224,7 @@ public class Post extends BCPBaseModel implements Serializable {
 			this.is_liked = newPost.getIs_liked();
 			this.post_id = newPost.getPost_id();
 			this.has_children = newPost.getHas_children();
+			this.url = newPost.getUrl();
 		}
 	}
 	
@@ -411,5 +418,13 @@ public class Post extends BCPBaseModel implements Serializable {
 
 	public void setHas_children(int has_children) {
 		this.has_children = has_children;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

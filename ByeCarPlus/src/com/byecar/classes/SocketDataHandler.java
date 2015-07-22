@@ -85,21 +85,32 @@ public class SocketDataHandler {
 				@Override
 				public void run() {
 					
-					Car car = new Car(objJSON);
-					
-					int size = activity.getFragmentsSize();
-					for(int i=0; i<size; i++) {
-						BaseFragment bf = activity.getFragmentAt(i);
-						
-						if(bf instanceof MainPage) {
-							((MainPage) bf).bidStatusChanged(event, car);
-						
-						} else if(bf instanceof CarListPage) {
-							((CarListPage) bf).bidStatusChanged(event, car);
+					//{"name":"duplicate_joined","args":[{"message_at":1437581833}]}
+					try {
+						if(event.equals("duplicate_joined")) {
+							activity.signOutForForbidDuplicatedSignIn();
+						} else {
+							Car car = new Car(objJSON);
 							
-						} else if(bf instanceof CarDetailPage) {
-							((CarDetailPage) bf).bidStatusChanged(event, car);
+							int size = activity.getFragmentsSize();
+							for(int i=0; i<size; i++) {
+								BaseFragment bf = activity.getFragmentAt(i);
+								
+								if(bf instanceof MainPage) {
+									((MainPage) bf).bidStatusChanged(event, car);
+								
+								} else if(bf instanceof CarListPage) {
+									((CarListPage) bf).bidStatusChanged(event, car);
+									
+								} else if(bf instanceof CarDetailPage) {
+									((CarDetailPage) bf).bidStatusChanged(event, car);
+								}
+							}
 						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
 					}
 				}
 			});
