@@ -126,7 +126,7 @@ public class OtherCarView extends RelativeLayout {
 		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
 		tvCarName.setSingleLine();
 		tvCarName.setEllipsize(TruncateAt.END);
-		FontUtils.setFontSize(tvCarName, 30);
+		FontUtils.setFontSize(tvCarName, 22);
 		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
 		tvCarName.setGravity(Gravity.CENTER_VERTICAL);
 		this.addView(tvCarName);
@@ -321,7 +321,7 @@ public class OtherCarView extends RelativeLayout {
 			rankBadge.setVisibility(View.INVISIBLE);
 		}
 		
-		tvCarName.setText(car.getModel_name());
+		tvCarName.setText(car.getCar_full_name());
 		
 		btnLike.setOnClickListener(new OnClickListener() {
 

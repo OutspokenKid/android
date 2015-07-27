@@ -151,7 +151,8 @@
     <string name="hadAccident">사고보험 이력이 존재합니다. 버튼을 눌러 확인해주세요.</string>
     <string name="highestPrice">최고가</string>
     <string name="hintForAddress">상사주소를 검색해주세요.</string>
-    <string name="hintForCarDescriptionFromDealer">판매차량에 대한 추가적인 설명을 입력해주세요.</string>
+    <string name="hintForCarDescriptionForBid">차량에 대한 추가 설명을 입력해주세요. 정성껏 작성하여 높은 금액으로 입찰될 수 있습니다.\n(단순 교환 내용도 기입해주세요.)</string>
+    <string name="hintForCarDescriptionForOther">차량에 대한 추가 설명을 입력해주세요.\n(단순 교환 내용도 기입해주세요.)</string>
     <string name="hintForCertificationNumber">인증번호를 입력해주세요.</string>
     <string name="hintForComplex">단지명과 상사이름 (ex 간석매매단지 나이스모터스)</string>
     <string name="hintForDetailCarHistory">기재되지 않은 사고 내용은 최종입찰금액의 감액사유가 될 수 있습니다.</string>

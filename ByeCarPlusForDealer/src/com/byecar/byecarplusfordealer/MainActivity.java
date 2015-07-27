@@ -75,6 +75,7 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.FontUtils;
+import com.outspoken_kid.utils.IntentUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -996,33 +997,39 @@ public class MainActivity extends BCPFragmentActivity {
 	}
 	
 	public void withdraw() {
+
+		IntentUtils.sendEmail(activity, 
+				"webmaster@bye-car.com", 
+				"회원탈퇴 요청", 
+				"탈퇴 사유 : ", 
+				"이메일을 보낼 앱을 선택해주세요.");
 		
-		String url = BCPAPIs.WITHDRAW_URL;
-		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
-
-			@Override
-			public void onError(String url) {
-
-				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
-
-			}
-
-			@Override
-			public void onCompleted(String url, JSONObject objJSON) {
-
-				try {
-					LogUtils.log("MainForDealerActivity.onCompleted." + "\nurl : " + url
-							+ "\nresult : " + objJSON);
-
-					clearCookies();
-					launchSignActivity();
-				} catch (Exception e) {
-					LogUtils.trace(e);
-				} catch (OutOfMemoryError oom) {
-					LogUtils.trace(oom);
-				}
-			}
-		});
+//		String url = BCPAPIs.WITHDRAW_URL;
+//		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+//
+//			@Override
+//			public void onError(String url) {
+//
+//				LogUtils.log("MainActivity.onError." + "\nurl : " + url);
+//
+//			}
+//
+//			@Override
+//			public void onCompleted(String url, JSONObject objJSON) {
+//
+//				try {
+//					LogUtils.log("MainForDealerActivity.onCompleted." + "\nurl : " + url
+//							+ "\nresult : " + objJSON);
+//
+//					clearCookies();
+//					launchSignActivity();
+//				} catch (Exception e) {
+//					LogUtils.trace(e);
+//				} catch (OutOfMemoryError oom) {
+//					LogUtils.trace(oom);
+//				}
+//			}
+//		});
 	}
 	
 	public void clearCookies() {

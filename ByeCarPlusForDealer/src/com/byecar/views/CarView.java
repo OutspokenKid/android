@@ -140,35 +140,38 @@ public class CarView extends RelativeLayout {
 		rankBadge.setLayoutParams(rp);
 		this.addView(rankBadge);
 		
-		//tvCarName.
-		tvCarName = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(160), ResizeUtils.getSpecificLength(60));
-		rp.addRule(ALIGN_PARENT_TOP);
-		rp.addRule(RIGHT_OF, R.id.carView_ivImage);
-		rp.leftMargin = ResizeUtils.getSpecificLength(20);
-		tvCarName.setLayoutParams(rp);
-		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
-		tvCarName.setSingleLine();
-		tvCarName.setEllipsize(TruncateAt.END);
-		FontUtils.setFontSize(tvCarName, 30);
-		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
-		tvCarName.setGravity(Gravity.CENTER_VERTICAL);
-		this.addView(tvCarName);
-		
 		//tvBiddingInfo.
 		tvBiddingInfo = new TextView(getContext());
-		rp = new RelativeLayout.LayoutParams(ResizeUtils.getSpecificLength(152), ResizeUtils.getSpecificLength(48));
+		rp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, ResizeUtils.getSpecificLength(48));
 		rp.addRule(ALIGN_PARENT_TOP);
 		rp.addRule(ALIGN_PARENT_RIGHT);
 		rp.topMargin = ResizeUtils.getSpecificLength(9);
 		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 		tvBiddingInfo.setLayoutParams(rp);
+		tvBiddingInfo.setId(R.id.carView_tvBiddingInfo);
 		tvBiddingInfo.setTextColor(getResources().getColor(R.color.new_color_text_darkgray));
 		tvBiddingInfo.setSingleLine();
 		tvBiddingInfo.setEllipsize(TruncateAt.END);
 		FontUtils.setFontSize(tvBiddingInfo, 16);
 		tvBiddingInfo.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
 		this.addView(tvBiddingInfo);
+		
+		//tvCarName.
+		tvCarName = new TextView(getContext());
+		rp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(60));
+		rp.addRule(ALIGN_PARENT_TOP);
+		rp.addRule(RIGHT_OF, R.id.carView_ivImage);
+		rp.addRule(LEFT_OF, R.id.carView_tvBiddingInfo);
+		rp.leftMargin = ResizeUtils.getSpecificLength(20);
+		rp.rightMargin = ResizeUtils.getSpecificLength(10);
+		tvCarName.setLayoutParams(rp);
+		tvCarName.setTextColor(getResources().getColor(R.color.new_color_text_brown));
+		tvCarName.setSingleLine();
+		tvCarName.setEllipsize(TruncateAt.END);
+		FontUtils.setFontSize(tvCarName, 22);
+		FontUtils.setFontStyle(tvCarName, FontUtils.BOLD);
+		tvCarName.setGravity(Gravity.CENTER_VERTICAL);
+		this.addView(tvCarName);
 		
 		//btnLike.
 		btnLike = new Button(getContext());
@@ -416,8 +419,6 @@ public class CarView extends RelativeLayout {
 		if(!StringUtils.isEmpty(car.getRep_img_url())) {
 			downloadImage(car.getRep_img_url(), ivImage);
 		}
-
-		LogUtils.log("###CarView.setCar.  itemCode : " + car.getItemCode() + ", carNAme : " + car.getCar_full_name());
 		
 		//Set cover.
 		switch(car.getItemCode()) {
@@ -526,7 +527,7 @@ public class CarView extends RelativeLayout {
 			downloadImage(car.getSeller_profile_img_url(), ivProfile);
 		}
 		
-		tvCarName.setText(car.getModel_name());
+		tvCarName.setText(car.getCar_full_name());
 		
 		if(car.getType() == Car.TYPE_BID) {
 			tvBiddingInfo.setText(

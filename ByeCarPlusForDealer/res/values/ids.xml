@@ -63,6 +63,7 @@
 	<item name="carView_ivImage" type="id" />
 	<item name="carView_ivProfile" type="id" />
 	<item name="carView_tvDealerName" type="id" />
+	<item name="carView_tvBiddingInfo" type="id" />
 	<item name="carView_btnLike" type="id" />
 	<item name="carView_infoBadg1" type="id" />
 		    

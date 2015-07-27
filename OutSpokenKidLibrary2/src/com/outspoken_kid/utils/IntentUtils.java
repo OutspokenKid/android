@@ -183,4 +183,22 @@ public class IntentUtils {
 		
 		return false;
 	}
+	
+	public static boolean sendEmail(Context context, String mailTo, String title, String body, String choiceText) {
+		
+		try {
+			Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+		            "mailto", mailTo, null));
+			it.putExtra(Intent.EXTRA_SUBJECT, title);
+			it.putExtra(Intent.EXTRA_TEXT, body);   
+			context.startActivity(Intent.createChooser(it, choiceText));
+			return true;
+		} catch (Exception e) {
+			LogUtils.trace(e);
+		} catch (Error e) {
+			LogUtils.trace(e);
+		}
+		
+		return false;
+	}
 }

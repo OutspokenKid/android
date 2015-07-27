@@ -526,7 +526,6 @@
 		        android:layout_below="@id/carRegistrationPage_tvTitleText7"
 		        android:textColor="@color/new_color_text_gray"
 				android:textColorHint="@color/new_color_text_gray"
-				android:hint="@string/hintForCarDescriptionFromDealer"
 				android:gravity="left|top"
 				android:padding="10dp"
 				android:background="@drawable/registration_text_box" />

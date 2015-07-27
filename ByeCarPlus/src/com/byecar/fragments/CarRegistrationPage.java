@@ -562,6 +562,13 @@ public class CarRegistrationPage extends BCPFragment {
 			immediatlySale.setVisibility(View.GONE);
 		}
 		
+		//차량 설명 글 힌트.
+		if(carType == Car.TYPE_BID) {
+			etCarDescription.setHint(R.string.hintForCarDescriptionForBid);
+		} else {
+			etCarDescription.setHint(R.string.hintForCarDescriptionForOther);
+		}
+		
 		etCarDescription.setFilters(new InputFilter[]{new InputFilter.LengthFilter(MAX_DESC_COUNT)});
 		tvTextCount.setText("0 / " + MAX_DESC_COUNT + "자");
 		
@@ -852,7 +859,8 @@ public class CarRegistrationPage extends BCPFragment {
 					
 					checkProgress();
 					
-					if(INDEX == etDetailCarInfos.length - 1) {
+					if(INDEX == etDetailCarInfos.length - 1
+							&& etDetailCarInfos[INDEX].getEditText().length() > 0) {
 
 						try {
 							int price = Integer.parseInt(etDetailCarInfos[INDEX].getEditText().getText().toString());
@@ -1482,7 +1490,8 @@ public class CarRegistrationPage extends BCPFragment {
 		
 		for(int i=0; i<selectedImageSdCardPaths.length; i++) {
 			
-			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])) {
+			if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
+					&& !"null".equals(selectedImageSdCardPaths[i])) {
 				
 				isLoadingImages = true;
 				
@@ -2292,7 +2301,7 @@ public class CarRegistrationPage extends BCPFragment {
 				}
 				
 				//onsalecar[car_id] : 차량 ID (브랜드, 모델, 트림 선택으로 나온 car_id)
-				sb.append("&onsalecar[car_id]=").append(carModelDetailInfo.getId());
+				sb.append("onsalecar[car_id]=").append(carModelDetailInfo.getId());
 				
 				//onsalecar[year], onsalecar[month] : 연식
 				sb.append("&onsalecar[year]=").append(year);
@@ -2471,6 +2480,10 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			int size = selectedImageSdCardPaths.length;
 			
+			if(!forDealer) {
+				size -= 1;
+			}
+			
 			for(int i=0; i<size; i++) {
 				
 				if(!StringUtils.isEmpty(selectedImageSdCardPaths[i])
@@ -2510,6 +2523,33 @@ public class CarRegistrationPage extends BCPFragment {
 		} catch (Error e) {
 			LogUtils.trace(e);
 		}
+		
+		/*
+		
+		http://dev.bye-car.com/onsalecars/bids/save.json
+		?onsalecar[id]=1286
+		&&onsalecar[car_id]=2002
+		&onsalecar[year]=2005
+		&onsalecar[month]=1
+		&onsalecar[had_accident]=0
+		&onsalecar[fuel_type]=gasoline
+		&onsalecar[transmission_type]=manual
+		&onsalecar[is_oneman_owned]=0
+		&onsalecar[dong_id]=1
+		&onsalecar[car_number]=1
+		&onsalecar[mileage]=2
+		&onsalecar[displacement]=3
+		&onsalecar[color]=
+		&onsalecar[price]=0
+		&onsalecar[options][1]=1
+		&onsalecar[options][4]=1
+		&onsalecar[desc]=5
+		&onsalecar[to_sell_directly]=0
+		&onsalecar[m_images][0]=http://175.126.232.36/src/20150725/fce3b5cf82aee5f97e2de3c04c971a00.jpeg
+		&onsalecar[m_images][1]=http://175.126.232.36/src/20150725/e7d66b5fcd49d63b279b6a3406ca9f33.jpeg
+		&onsalecar[m_images][2]=http://175.126.232.36/src/20150725/67b4acfef95ce6b73534bf68aadd861e.jpeg
+		&onsalecar[m_images][3]=http://175.126.232.36/src/20150725/acf40590e208f4715d98cec535cf42b3.jpeg&onsalecar[inspection_note_url]=null
+		*/
 	}
 	
 	public void checkProgress() {
