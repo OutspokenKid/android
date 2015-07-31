@@ -1130,7 +1130,7 @@ public class CarDetailPage extends BCPFragment {
 					@Override
 					public void onClick(View view) {
 
-						setBiddingPrice(car.getPrice());
+						setBiddingPrice(car.getPrice() + 50000);
 					}
 				});
 				
@@ -1166,8 +1166,7 @@ public class CarDetailPage extends BCPFragment {
 
 				//처음에만 설정.
 				if(biddingPrice == 0) {
-					biddingPrice = car.getPrice();
-					setBiddingPrice(biddingPrice + 50000);
+					setBiddingPrice(car.getPrice() + 50000);
 				}
 				
 			} else {
@@ -2083,6 +2082,9 @@ public class CarDetailPage extends BCPFragment {
 		String url = BCPAPIs.CAR_BID_URL
 				+ "?onsalecar_id=" + car.getId()
 				+ "&price=" + biddingPrice;
+		
+		final long LAST_MY_BID_PRICE = car.getMy_bid_price();
+		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
 			@Override
@@ -2100,12 +2102,16 @@ public class CarDetailPage extends BCPFragment {
 							+ "\nresult : " + objJSON);
 
 					if(objJSON.getInt("result") == 1) {
+
+						LogUtils.log("LAST_MY_BID_PRICE : " + LAST_MY_BID_PRICE);
 						
-						if(car.getMy_bid_price() == 0) {
-							closePage(R.string.complete_bid);
+						if(LAST_MY_BID_PRICE == 0) {
+							downloadCarAndClosePage();
 						} else {
 							ToastUtils.showToast(R.string.complete_bid);
 							downloadCarInfo();
+							
+							setBiddingPrice(car.getPrice() + 50000);
 						}
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
@@ -2215,5 +2221,44 @@ public class CarDetailPage extends BCPFragment {
 	public void call() {
 		
 		IntentUtils.call(mContext, car.getSeller_phone_number());
+	}
+
+	public void downloadCarAndClosePage() {
+
+		String url = BCPAPIs.CAR_BID_SHOW_URL
+				+ "?onsalecar_id=" + car.getId();
+		
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+				closePage(R.string.failToLoadCarInfo);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					Car newCar = new Car(objJSON.getJSONObject("onsalecar"));
+					
+					if(car != null) {
+						car.copyValuesFromNewItem(newCar);
+					}
+
+					closePage(R.string.complete_bid);
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					closePage(R.string.failToLoadCarInfo);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					closePage(R.string.failToLoadCarInfo);
+				}
+			}
+		});
 	}
 }

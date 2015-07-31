@@ -318,7 +318,7 @@ public class ProfilePage extends BCPFragment {
 	@Override
 	public int getPageTitleTextResId() {
 
-		return R.string.pageTitle_signUp;
+		return R.string.pageTitle_editProfile;
 	}
 
 	@Override
@@ -344,7 +344,7 @@ public class ProfilePage extends BCPFragment {
 		
 		if(StringUtils.checkTextLength(etNickname.getEditText(), NICKNAME_MIN, NICKNAME_MAX)
 				!= StringUtils.PASS
-				|| StringUtils.checkForbidContains(etNickname.getEditText(), false, false, false, true, true, false)) {
+				|| StringUtils.checkForbidContains(etNickname.getEditText(), false, false, false, false, true, false)) {
 			tvCheckNickname.setText(R.string.checkNickname);
 			tvCheckNickname.setVisibility(View.VISIBLE);
 			passNickname = false;

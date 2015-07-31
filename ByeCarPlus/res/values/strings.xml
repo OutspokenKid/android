@@ -257,6 +257,7 @@
     <string name="pageTitle_reviewList">입찰완료/후기</string>
     <string name="pageTitle_videoList">동영상게시판</string>
     <string name="pageTitle_phoneInfo">휴대폰 정보</string>
+    <string name="pageTitle_editProfile">프로필 수정</string>
     <string name="phone">연락처</string>
     <string name="popup_request_certification">검증 신청이 완료되었습니다!</string>
     <string name="popup_request_buy">구매 신청이 완료되었습니다!</string>
