@@ -66,6 +66,10 @@ public class ReviewListPage extends BCPFragment {
 		
 		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
 		listView.setDividerHeight(ResizeUtils.getSpecificLength(30));
+		
+		if(mActivity != null) {
+        	mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_ENDED);
+        }
 	}
 
 	@Override

@@ -40,12 +40,18 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
 	private View loadingView;
 	
+//	private Tracker mTracker;
+	
 	@Override
 	public void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		
 		//Init application.
 		BCPApplication.initWithActivity(this);
+		
+//		// Obtain the shared Tracker instance.
+//		AnalyticsApplication application = (AnalyticsApplication) getApplication();
+//		mTracker = application.getDefaultTracker();
 	}
 	
 	@Override
@@ -430,6 +436,14 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
              Uri.parse("http://www.youtube.com/watch?v="+youtubeId));
              startActivity(intent);
          }
+	}
+
+	public void tracking(String name) {
+
+		LogUtils.log("######GA.tracking.  name : " + name);
+		
+//		mTracker.setScreenName(name);
+//		mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 	}
 	
 //////////////////// Interfaces.

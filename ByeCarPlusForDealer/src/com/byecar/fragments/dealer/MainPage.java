@@ -430,6 +430,26 @@ public class MainPage extends BCPAuctionableFragment {
 		int lastIndex = menuIndex;
 		menuIndex = index;
 		
+		//Tracking.
+		if(mActivity != null) {
+			mActivity.tracking(BCPConstants.TRACKING_REG_DEALER);
+			
+			switch(index) {
+			
+			case 0:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_BIDDING);
+				break;
+				
+			case 1:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_MY_BID);
+				break;
+				
+			case 3:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_DEALER);
+				break;
+			}
+		}
+		
 		if(index == 3) {
 			swipeRefreshLayout.setPadding(0, 0, 0, ResizeUtils.getSpecificLength(115));
 			buttonBg.setVisibility(View.VISIBLE);

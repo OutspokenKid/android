@@ -143,6 +143,24 @@ public class CarListPage extends BCPAuctionableFragment {
 			buttonBg.setVisibility(View.VISIBLE);
 			break;
 		}
+		
+		if(mActivity != null) {
+			
+			switch(type) {
+			
+			case Car.TYPE_BID:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_AUCTION);	
+				break;
+				
+			case Car.TYPE_DEALER:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_DEALER);
+				break;
+				
+			case Car.TYPE_DIRECT:
+				mActivity.tracking(BCPConstants.TRACKING_LIST_CAR_DIRECT);
+				break;
+			}
+        }
 	}
 
 	@Override

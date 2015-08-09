@@ -85,6 +85,10 @@ public class ForumListPage extends BCPFragment {
         listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
         listView.setDividerHeight(ResizeUtils.getSpecificLength(16));
         listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+        
+        if(mActivity != null) {
+        	mActivity.tracking(BCPConstants.TRACKING_BOARD);
+        }
 	}
 
 	@Override

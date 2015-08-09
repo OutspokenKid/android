@@ -143,10 +143,17 @@ public class CarRegistrationPage extends BCPFragment {
 	private boolean isRegistrationCompleted;
 	private int imageLoadingCount;
 	private int lastPrice;
+	private boolean isUploading;
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
+		
+		if(mActivity != null) {
+			
+			int carType = getArguments().getInt("carType");
+			mActivity.tracking(carType == Car.TYPE_BID? BCPConstants.TRACKING_REG_AUCTION : BCPConstants.TRACKING_REG_DIRECT);
+		}
 		
 		BaseFragmentActivity.onAfterPickImageListener = new OnAfterPickImageListener() {
 			
@@ -833,6 +840,11 @@ public class CarRegistrationPage extends BCPFragment {
 					ToastUtils.showToast(text.replace("*", ""));
 					
 				} else {
+					
+					if(isUploading) {
+						return;
+					}
+					
 					SoftKeyboardUtils.hideKeyboard(mContext, etCarDescription);
 					uploadImages();
 				}
@@ -1313,6 +1325,13 @@ public class CarRegistrationPage extends BCPFragment {
 		super.onStop();
 		
 		saveInfosToPrefs();
+	}
+
+	@Override
+	public void onDestroyView() {
+
+		mActivity.hideLoadingView();
+		super.onDestroyView();
 	}
 	
 	@Override
@@ -2339,7 +2358,18 @@ public class CarRegistrationPage extends BCPFragment {
 				sb.append("&onsalecar[color]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[3].getEditText()));
 				
 				//onsalecar[price] : 가격
-				sb.append("&onsalecar[price]=").append(StringUtils.getUrlEncodedString(etDetailCarInfos[4].getEditText()));
+				if(!StringUtils.isEmpty(etDetailCarInfos[4].getEditText())) {
+					
+					int price = 0;
+					
+					try {
+						price = Integer.parseInt(etDetailCarInfos[4].getEditText().getEditableText().toString()) * 10000;
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+
+					sb.append("&onsalecar[price]=").append(StringUtils.getUrlEncodedString("" + price));
+				}
 				
 				//onsalecar[options][option_id] : 옵션 아이디를 키로 하는 객체
 				//&onsalecar[options][1]=1
@@ -2398,6 +2428,7 @@ public class CarRegistrationPage extends BCPFragment {
 
 								LogUtils.log("CarRegistrationPage.register.onError." + "\nurl : " + url);
 								mActivity.hideLoadingView();
+								isUploading = false;
 							}
 
 							@Override
@@ -2412,6 +2443,9 @@ public class CarRegistrationPage extends BCPFragment {
 									if(objJSON.getInt("result") == 1) {
 										SharedPrefsUtils.clearPrefs(BCPConstants.PREFS_REG + carType);
 										isRegistrationCompleted = true;
+										mActivity.hideLoadingView();
+										isUploading = false;
+										
 										pageRequestCompleted();
 									} else {
 										ToastUtils.showToast(objJSON.getString("message"));
@@ -2427,13 +2461,16 @@ public class CarRegistrationPage extends BCPFragment {
 						}, mActivity.getLoadingView());
 			} else {
 				mActivity.hideLoadingView();
+				isUploading = false;
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
 			mActivity.hideLoadingView();
+			isUploading = false;
 		} catch (Error e) {
 			LogUtils.trace(e);
 			mActivity.hideLoadingView();
+			isUploading = false;
 		}
 	}
 
@@ -2475,6 +2512,8 @@ public class CarRegistrationPage extends BCPFragment {
 
 	public void uploadImages() {
 
+		isUploading = true;
+		
 		try {
 			mActivity.showLoadingView();
 			

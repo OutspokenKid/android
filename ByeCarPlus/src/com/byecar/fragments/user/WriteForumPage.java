@@ -55,6 +55,7 @@ public class WriteForumPage extends BCPFragment {
 	private LinearLayout pictureLinear;
 	
 	private int board_id = -1;
+	private boolean isUploading;
 	
 	private ArrayList<AttatchedPictureInfo> pictureInfos = new ArrayList<AttatchedPictureInfo>();
 	
@@ -163,6 +164,10 @@ public class WriteForumPage extends BCPFragment {
 			@Override
 			public void onClick(View view) {
 
+				if(isUploading) {
+					return;
+				}
+				
 				uploadImages();
 			}
 		});
@@ -368,7 +373,8 @@ public class WriteForumPage extends BCPFragment {
 	}
 
 	public void uploadImages() {
-
+		
+		isUploading = true;
 		mActivity.showLoadingView();
 		
 		int size = pictureInfos.size();
@@ -412,12 +418,15 @@ public class WriteForumPage extends BCPFragment {
 
 		if(board_id == -1) {
 			ToastUtils.showToast(R.string.selectCategory);
+			isUploading = false;
 			return;
 		} else if(etTitle.length() == 0) {
 			ToastUtils.showToast(R.string.inputTitle);
+			isUploading = false;
 			return;
 		} else if(etContent.length() == 0) {
 			ToastUtils.showToast(R.string.inputContent);
+			isUploading = false;
 			return;
 		}
 		
@@ -450,6 +459,7 @@ public class WriteForumPage extends BCPFragment {
 
 				LogUtils.log("WriteForumPage.onError." + "\nurl : " + url);
 				ToastUtils.showToast(R.string.failToWriteForum);
+				isUploading = false;
 			}
 
 			@Override
@@ -462,6 +472,7 @@ public class WriteForumPage extends BCPFragment {
 					if(objJSON.getInt("result") == 1) {
 						ToastUtils.showToast(R.string.complete_writeForum);
 						SoftKeyboardUtils.hideKeyboard(mContext, etTitle);
+						isUploading = false;
 						
 						if(post != null) {
 							post.setTitle(etTitle.getText().toString());
@@ -484,11 +495,14 @@ public class WriteForumPage extends BCPFragment {
 						refreshMainCover();
 					} else {
 						ToastUtils.showToast(objJSON.getString("message"));
+						isUploading = false;
 					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
+					isUploading = false;
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
+					isUploading = false;
 				}
 			}
 		});

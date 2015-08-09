@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.os.Build;
 import android.widget.ListView;
 
+import com.byecar.byecarplusfordealer.MainActivity;
 import com.byecar.models.Car;
 import com.outspoken_kid.utils.AppInfoUtils;
 import com.outspoken_kid.utils.LogUtils;
@@ -113,7 +114,19 @@ public abstract class BCPAuctionableFragment extends BCPFragment {
 		for(int i=startIndex; i<models.size(); i++) {
 			
 			if(((Car)models.get(i)).getId() == car.getId()) {
-				((Car)models.get(i)).copyValuesFromNewItem(car);
+				
+				Car targetCar = (Car)models.get(i);
+				
+				long lastMyBidPrice = targetCar.getMy_bid_price(); 
+				
+				targetCar.copyValuesFromNewItem(car);
+				
+				//첫번째 입찰이 내가 아니면 my_bid_price 원래값으로 복원.
+				if(targetCar.getBids().size() > 0 
+						&& targetCar.getBids().get(0).getDealer_id() != MainActivity.dealer.getId()) {
+					targetCar.setMy_bid_price(lastMyBidPrice);
+				}
+				
 				adapter.notifyDataSetChanged();
 				return true;
 			}

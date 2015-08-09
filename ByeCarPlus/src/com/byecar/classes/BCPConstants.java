@@ -87,4 +87,13 @@ public class BCPConstants {
 
 	public static final int PAGE_WEB_BROWSER = 50;
 	public static final int PAGE_SEARCH_AREA = 51;
+	
+	//For tracking.
+	public static final String TRACKING_LIST_CAR_AUCTION = "입찰진행중_Android";
+	public static final String TRACKING_LIST_CAR_DEALER = "중고차마켓_Android";
+	public static final String TRACKING_LIST_CAR_DIRECT = "직거래_Android";
+	public static final String TRACKING_LIST_CAR_ENDED = "입찰완료/후기_Android";
+	public static final String TRACKING_REG_AUCTION = "내 차 입찰요청_Android";
+	public static final String TRACKING_REG_DIRECT = "내 차 직거래등록_Android";
+	public static final String TRACKING_BOARD = "자유게시판_Android";
 }
