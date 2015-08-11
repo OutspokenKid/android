@@ -49,8 +49,8 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.TimerUtils;
-import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.utils.TimerUtils.OnTimeChangedListener;
+import com.outspoken_kid.utils.ToastUtils;
 import com.outspoken_kid.views.OffsetScrollView;
 import com.outspoken_kid.views.OffsetScrollView.OnScrollChangedListener;
 import com.outspoken_kid.views.PageNavigatorView;
@@ -349,39 +349,78 @@ public class MainPage extends BCPAuctionableFragment {
 				@Override
 				public void onClick(View view) {
 
-					int pageCode = 0;
-					Bundle bundle = new Bundle();
-					
-					switch(INDEX) {
-					
-					case 0:
+					if(INDEX == 0) {
 						
 						if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 							ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
 							mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
 						} else {
-							pageCode = BCPConstants.PAGE_CAR_REGISTRATION;
-							bundle.putInt("carType", Car.TYPE_BID);
+							DownloadUtils.downloadJSONString(BCPAPIs.CAR_BID_CHECK_SAVE_URL,
+									new OnJSONDownloadListener() {
+
+										@Override
+										public void onError(String url) {
+
+											LogUtils.log("MainPage.onError."
+													+ "\nurl : " + url);
+
+										}
+
+										@Override
+										public void onCompleted(String url,
+												JSONObject objJSON) {
+
+											try {
+												LogUtils.log("MainPage.onCompleted."
+														+ "\nurl : "
+														+ url
+														+ "\nresult : "
+														+ objJSON);
+
+												//차량 등록 페이지 중복 호출 방지.
+												if(mActivity.getTopFragment() instanceof MainPage) {
+													if(objJSON.getInt("result") == 1) {
+														Bundle bundle = new Bundle();
+														bundle.putInt("carType", Car.TYPE_BID);
+														mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+													} else {
+														mActivity.showAlertDialog(
+																getString(R.string.notification),
+																objJSON.getString("message"), 
+																getString(R.string.confirm), null);
+													}
+												}
+											} catch (Exception e) {
+												LogUtils.trace(e);
+											} catch (OutOfMemoryError oom) {
+												LogUtils.trace(oom);
+											}
+										}
+									});
+						}
+					} else {
+						int pageCode = 0;
+						Bundle bundle = new Bundle();
+						
+						switch(INDEX) {
+						
+						case 1:
+							pageCode = BCPConstants.PAGE_BID_REVIEW_LIST;
+							break;
+							
+						case 2:
+							pageCode = BCPConstants.PAGE_CAR_LIST;
+							bundle.putInt("type", Car.TYPE_DEALER);
+							break;
+							
+						case 3:
+							pageCode = BCPConstants.PAGE_CAR_LIST;
+							bundle.putInt("type", Car.TYPE_DIRECT);
+							break;
 						}
 						
-						break;
-						
-					case 1:
-						pageCode = BCPConstants.PAGE_BID_REVIEW_LIST;
-						break;
-						
-					case 2:
-						pageCode = BCPConstants.PAGE_CAR_LIST;
-						bundle.putInt("type", Car.TYPE_DEALER);
-						break;
-						
-					case 3:
-						pageCode = BCPConstants.PAGE_CAR_LIST;
-						bundle.putInt("type", Car.TYPE_DIRECT);
-						break;
+						mActivity.showPage(pageCode, bundle);
 					}
-					
-					mActivity.showPage(pageCode, bundle);
 				}
 			});
 		}
@@ -630,6 +669,17 @@ public class MainPage extends BCPAuctionableFragment {
 		TimerUtils.addOnTimeChangedListener(onTimeChangedListener);
 		setPagerTimer();
 
+		if(mActivity.bundle != null) {
+
+			if(mActivity.bundle.containsKey("phone_auth_key")
+					&& mActivity.bundle.containsKey("requestedPhoneNumber")) {
+				updatePhoneNumber(mActivity.bundle.getString("phone_auth_key"), 
+						mActivity.bundle.getString("requestedPhoneNumber"));
+			}
+			
+			mActivity.bundle = null;
+		}
+		
 		if(!SharedPrefsUtils.getBooleanFromPrefs(BCPConstants.PREFS_TUTORIAL, "shown")) {
 			
 			new Handler().postDelayed(new Runnable() {
@@ -1285,5 +1335,50 @@ public class MainPage extends BCPAuctionableFragment {
 				auctionIcon.setVisibility(View.VISIBLE);
 			}
 		}
+	}
+
+	public void updatePhoneNumber(final String phone_auth_key, final String requestedPhoneNumber) {
+
+		if(phone_auth_key == null || requestedPhoneNumber == null) {
+			ToastUtils.showToast(R.string.complete_auth);
+			mActivity.closeTopPage();
+			return;
+		}
+		
+		String url = BCPAPIs.PHONE_UPDATE_URL
+				+ "?phone_auth_key=" + phone_auth_key;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("MainPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSendAuthRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("MainPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_auth);
+						MainActivity.user.setPhone_number(requestedPhoneNumber);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				}
+			}
+		}, mActivity.getLoadingView());
 	}
 }

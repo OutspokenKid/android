@@ -31,10 +31,12 @@ import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
 import com.byecar.models.Car;
 import com.byecar.views.TitleBar;
+import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.StringUtils;
 import com.outspoken_kid.utils.ToastUtils;
+import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 
 public class CarListPage extends BCPAuctionableFragment {
 
@@ -228,9 +230,50 @@ public class CarListPage extends BCPAuctionableFragment {
 				if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 					ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
 					mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
+				} else if(type == Car.TYPE_BID) {
+					DownloadUtils.downloadJSONString(BCPAPIs.CAR_BID_CHECK_SAVE_URL,
+							new OnJSONDownloadListener() {
+
+								@Override
+								public void onError(String url) {
+
+									LogUtils.log("CarListPage.onError."
+											+ "\nurl : " + url);
+
+								}
+
+								@Override
+								public void onCompleted(String url,
+										JSONObject objJSON) {
+
+									try {
+										LogUtils.log("CarListPage.onCompleted."
+												+ "\nurl : "
+												+ url
+												+ "\nresult : "
+												+ objJSON);
+
+										//차량 등록 페이지 중복 호출 방지.
+										if(mActivity.getTopFragment() instanceof CarListPage) {
+											
+											if(objJSON.getInt("result") == 1) {
+												Bundle bundle = new Bundle();
+												bundle.putInt("carType", Car.TYPE_BID);
+												mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+											} else {
+												ToastUtils.showToast(objJSON.getString("message"));
+											}
+										}
+									} catch (Exception e) {
+										LogUtils.trace(e);
+									} catch (OutOfMemoryError oom) {
+										LogUtils.trace(oom);
+									}
+								}
+							});
 				} else {
 					Bundle bundle = new Bundle();
-					bundle.putInt("carType", type);
+					bundle.putInt("carType", Car.TYPE_DIRECT);
 					mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
 				}
 			}
@@ -432,6 +475,17 @@ public class CarListPage extends BCPAuctionableFragment {
 		if(models.size() == 0) {
 			downloadInfo();
 		}
+		
+		if(mActivity.bundle != null) {
+			
+			if(mActivity.bundle.containsKey("phone_auth_key")
+					&& mActivity.bundle.containsKey("requestedPhoneNumber")) {
+				updatePhoneNumber(mActivity.bundle.getString("phone_auth_key"), 
+						mActivity.bundle.getString("requestedPhoneNumber"));
+			}
+			
+			mActivity.bundle = null;
+		}
 	}
 	
 	@Override
@@ -518,5 +572,50 @@ public class CarListPage extends BCPAuctionableFragment {
 			//해당 매물 삭제.
 			deleteSelectedCar(car);
 		}
+	}
+
+	public void updatePhoneNumber(final String phone_auth_key, final String requestedPhoneNumber) {
+
+		if(phone_auth_key == null || requestedPhoneNumber == null) {
+			ToastUtils.showToast(R.string.complete_auth);
+			mActivity.closeTopPage();
+			return;
+		}
+		
+		String url = BCPAPIs.PHONE_UPDATE_URL
+				+ "?phone_auth_key=" + phone_auth_key;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("CarListPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToSendAuthRequest);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarListPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_auth);
+						MainActivity.user.setPhone_number(requestedPhoneNumber);
+						mActivity.closeTopPage();
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+					ToastUtils.showToast(R.string.failToSendAuthRequest);
+				}
+			}
+		}, mActivity.getLoadingView());
 	}
 }

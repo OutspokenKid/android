@@ -190,10 +190,50 @@ public class MainPage extends BCPAuctionableFragment {
 			@Override
 			public void onClick(View view) {
 
-				Bundle bundle = new Bundle();
-				bundle.putInt("carType", Car.TYPE_DEALER);
-				bundle.putBoolean("forDealer", true);
-				mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+				DownloadUtils.downloadJSONString(BCPAPIs.CAR_DEALER_CHECK_SAVE_URL,
+						new OnJSONDownloadListener() {
+
+							@Override
+							public void onError(String url) {
+
+								LogUtils.log("MainPage.onError."
+										+ "\nurl : " + url);
+
+							}
+
+							@Override
+							public void onCompleted(String url,
+									JSONObject objJSON) {
+
+								try {
+									LogUtils.log("MainPage.onCompleted."
+											+ "\nurl : "
+											+ url
+											+ "\nresult : "
+											+ objJSON);
+
+									//차량 등록 페이지 중복 호출 방지.
+									if(mActivity.getTopFragment() instanceof MainPage) {
+										
+										if(objJSON.getInt("result") == 1) {
+											Bundle bundle = new Bundle();
+											bundle.putInt("carType", Car.TYPE_DEALER);
+											bundle.putBoolean("forDealer", true);
+											mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+										} else {
+											mActivity.showAlertDialog(
+													getString(R.string.notification),
+													objJSON.getString("message"), 
+													getString(R.string.confirm), null);
+										}
+									}
+								} catch (Exception e) {
+									LogUtils.trace(e);
+								} catch (OutOfMemoryError oom) {
+									LogUtils.trace(oom);
+								}
+							}
+						});
 			}
 		});
 		

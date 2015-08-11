@@ -101,6 +101,7 @@ public class Car extends BCPBaseModel implements Serializable {
 	private long max_bid_price;
 	
 	private int has_carhistory;
+	private long desired_price;
 
 	public void copyValuesFromNewItem(Car newCar) {
 		
@@ -180,6 +181,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.max_bid_price = 0;
 			
 			this.has_carhistory = 0;
+			this.desired_price = 0;
 		} else {
 			this.id = newCar.id;
 			this.type = newCar.type;
@@ -256,6 +258,7 @@ public class Car extends BCPBaseModel implements Serializable {
 			this.max_bid_price = newCar.max_bid_price;
 			
 			this.has_carhistory = newCar.has_carhistory;
+			this.desired_price = newCar.desired_price;
 		}
 	}
 	
@@ -566,6 +569,10 @@ public class Car extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("has_carhistory")) {
 				this.has_carhistory = objJSON.getInt("has_carhistory");
+			}
+			
+			if(objJSON.has("desired_price")) {
+				this.desired_price = objJSON.getLong("desired_price");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -1225,5 +1232,13 @@ public class Car extends BCPBaseModel implements Serializable {
 
 	public void setHas_carhistory(int has_carhistory) {
 		this.has_carhistory = has_carhistory;
+	}
+
+	public long getDesired_price() {
+		return desired_price;
+	}
+
+	public void setDesired_price(long desired_price) {
+		this.desired_price = desired_price;
 	}
 }

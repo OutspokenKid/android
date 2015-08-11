@@ -54,6 +54,8 @@ public class Dealer extends BCPBaseModel implements Serializable {
 	private String vaccount_bank;
 	private int cash;
 	
+	private long service_end_at;
+	
 	public Dealer() {
 		
 	}
@@ -150,6 +152,10 @@ public class Dealer extends BCPBaseModel implements Serializable {
 			
 			if(objJSON.has("cash")) {
 				this.cash = objJSON.getInt("cash");
+			}
+			
+			if(objJSON.has("service_end_at")) {
+				this.service_end_at = objJSON.getLong("service_end_at");
 			}
 		} catch (Exception e) {
 			LogUtils.trace(e);
@@ -309,5 +315,13 @@ public class Dealer extends BCPBaseModel implements Serializable {
 
 	public void setSuccess_bids_cnt(int success_bids_cnt) {
 		this.success_bids_cnt = success_bids_cnt;
+	}
+
+	public long getService_end_at() {
+		return service_end_at;
+	}
+
+	public void setService_end_at(long service_end_at) {
+		this.service_end_at = service_end_at;
 	}
 }

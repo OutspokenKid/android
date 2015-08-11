@@ -28,6 +28,7 @@ public class BCPAPIs {
 	public static String CAR_BID_LIST_URL = BASE_API_URL + "/onsalecars/bids/list.json";
 	public static String CAR_BID_SHOW_URL = BASE_API_URL + "/onsalecars/bids/show.json";
 	public static String CAR_BID_SAVE_URL = BASE_API_URL + "/onsalecars/bids/save.json";
+	public static String CAR_BID_CHECK_SAVE_URL = BASE_API_URL + "/onsalecars/bids/check_save.json";
 	public static String CAR_BID_CAR_BID_URL = BASE_API_URL + "/onsalecars/bids/bid.json";
 	public static String CAR_BID_SELECT_URL = BASE_API_URL + "/onsalecars/bids/select.json";
 	public static String CAR_BID_LIKE_URL = BASE_API_URL + "/onsalecars/bids/like.json";

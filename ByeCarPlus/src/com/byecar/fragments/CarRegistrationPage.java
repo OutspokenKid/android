@@ -1608,7 +1608,7 @@ public class CarRegistrationPage extends BCPFragment {
 		etDetailCarInfos[3].getEditText().setText("" + car.getColor());
 		
 		//희망금액.
-		etDetailCarInfos[4].getEditText().setText("" + car.getPrice());
+		etDetailCarInfos[4].getEditText().setText("" + car.getDesired_price()/10000);
 
 		//차량 메인 사진.
 		if(car.getM_images() != null 
@@ -2113,6 +2113,9 @@ public class CarRegistrationPage extends BCPFragment {
 			
 			//색상.
 			etDetailCarInfos[3].getEditText().setText("" + car.getColor());
+			
+			//희망가격.
+			etDetailCarInfos[4].getEditText().setText("" + car.getDesired_price()/10000);
 			
 			//차량 옵션 및 튜닝.
 			if(car.getOptions() != null) {

@@ -197,6 +197,7 @@
     <string name="myPointHintText">가상계좌에 입금하시면 자동으로 적립금에 충전됩니다.</string>
     
     <string name="noCarHistory">사고보험 이력이 없습니다.</string>
+    <string name="notification">알림</string>
     <string name="notificationSetting">알림설정</string>
     
     <string name="kakaoTalkNotInstalled">카카오톡이 설치 되어 있지 않습니다.</string>

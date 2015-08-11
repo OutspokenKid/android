@@ -44,6 +44,7 @@ public class BCPAPIs {
 	public static String CAR_DEALER_LIST_URL = BASE_API_URL + "/onsalecars/dealer/list.json";
 	public static String CAR_DEALER_SHOW_URL = BASE_API_URL + "/onsalecars/dealer/show.json";
 	public static String CAR_DEALER_SAVE_URL = BASE_API_URL + "/onsalecars/dealer/save.json";
+	public static String CAR_DEALER_CHECK_SAVE_URL = BASE_API_URL + "/onsalecars/dealer/check_save.json";
 	public static String CAR_DEALER_DELETE_URL = BASE_API_URL + "/onsalecars/dealer/delete.json";
 	public static String CAR_DEALER_STATUS_URL = BASE_API_URL + "/onsalecars/dealer/set_status.json";
 	public static String CAR_DEALER_COMPLETE_URL = BASE_API_URL + "/onsalecars/dealer/set_status.json";

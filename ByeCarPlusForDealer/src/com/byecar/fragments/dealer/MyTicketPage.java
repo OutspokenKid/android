@@ -130,14 +130,29 @@ public class MyTicketPage extends BCPFragment {
 
 					MainActivity.dealer = new Dealer(objJSON.getJSONObject("dealer"));
 					
-					int remainTicketCount = type==TYPE_AUCTION?
-												MainActivity.dealer.getRight_to_bid_cnt()
-												: MainActivity.dealer.getRight_to_sell_cnt();
-					long expirationDate = 0;
+					int remainTicketCount = 0;
+					String remainText = null;
+					String expirationText = null;
 					
-					tvRemainTicket.setText("남은 등록권 수 : " + remainTicketCount + "개");
-					tvExpiration.setText("사용 만료일 : " + StringUtils.getDateString("yyyy년 MM월 dd일", expirationDate));
+					if(type == TYPE_AUCTION) {
+						remainTicketCount = MainActivity.dealer.getRight_to_bid_cnt();
+						remainText = "남은 입찰권 수 : ";
+						expirationText = "입찰 권한 만료일 : ";
+					} else {
+						remainTicketCount = MainActivity.dealer.getRight_to_sell_cnt();
+						remainText = "남은 등록권 수 : ";
+						expirationText = "등록 권한 만료일 : ";
+					}
+
+					long expirationDate = MainActivity.dealer.getService_end_at() * 1000;
 					
+					tvRemainTicket.setText(remainText + remainTicketCount + "개");
+					
+					if(MainActivity.dealer.getLevel() == Dealer.LEVEL_FRESH_MAN) {
+						tvExpiration.setText(expirationText + StringUtils.getDateString("yyyy년 MM월 dd일", expirationDate));
+					} else {
+						tvExpiration.setText(expirationText + "-");
+					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
@@ -145,6 +160,5 @@ public class MyTicketPage extends BCPFragment {
 				}
 			}
 		});
-
 	}
 }

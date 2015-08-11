@@ -308,7 +308,6 @@ public class MainActivity extends BCPFragmentActivity {
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
 
 		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
-		ResizeUtils.viewResizeForRelative(578, 778, ivNotice, null, null, new int[]{0, 0, 0, 0});
 		ResizeUtils.viewResizeForRelative(558, 73, buttonBg, null, null, new int[]{0, 0, 0, 14});
 		ResizeUtils.viewResizeForRelative(210, 73, btnDoNotSeeAgain, null, null, new int[]{21, 0, 0, 0});
 		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 0});
