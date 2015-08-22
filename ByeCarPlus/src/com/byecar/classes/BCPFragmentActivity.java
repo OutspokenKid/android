@@ -21,6 +21,10 @@ import com.byecar.byecarplus.ImageViewer;
 import com.byecar.byecarplus.MultiSelectGalleryActivity;
 import com.byecar.byecarplus.MultiSelectGalleryActivity.OnAfterPickImagesListener;
 import com.byecar.models.PushObject;
+import com.google.analytics.tracking.android.Fields;
+import com.google.analytics.tracking.android.GoogleAnalytics;
+import com.google.analytics.tracking.android.MapBuilder;
+import com.google.analytics.tracking.android.Tracker;
 import com.outspoken_kid.R;
 import com.outspoken_kid.activities.BaseFragmentActivity;
 import com.outspoken_kid.classes.OutSpokenConstants;
@@ -40,7 +44,7 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 	
 	private View loadingView;
 	
-//	private Tracker mTracker;
+	private Tracker mTracker;
 	
 	@Override
 	public void onCreate(Bundle arg0) {
@@ -48,10 +52,6 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 		
 		//Init application.
 		BCPApplication.initWithActivity(this);
-		
-//		// Obtain the shared Tracker instance.
-//		AnalyticsApplication application = (AnalyticsApplication) getApplication();
-//		mTracker = application.getDefaultTracker();
 	}
 	
 	@Override
@@ -442,8 +442,12 @@ public abstract class BCPFragmentActivity extends BaseFragmentActivity {
 
 		LogUtils.log("######GA.tracking.  name : " + name);
 		
-//		mTracker.setScreenName(name);
-//		mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+		if(mTracker == null) {
+			mTracker = GoogleAnalytics.getInstance(this).getTracker("UA-52516912-3");
+		}
+		
+		mTracker.set(Fields.SCREEN_NAME, name);
+		mTracker.send(MapBuilder.createAppView().build());
 	}
 	
 //////////////////// Interfaces.

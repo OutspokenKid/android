@@ -220,6 +220,8 @@ public class MainPage extends BCPAuctionableFragment {
 											bundle.putInt("carType", Car.TYPE_DEALER);
 											bundle.putBoolean("forDealer", true);
 											mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+											
+											mActivity.tracking(BCPConstants.TRACKING_REG_DEALER);
 										} else {
 											mActivity.showAlertDialog(
 													getString(R.string.notification),
@@ -339,7 +341,7 @@ public class MainPage extends BCPAuctionableFragment {
 		switch(menuIndex) {
 			
 		case 0:
-			url = BCPAPIs.CAR_BID_LIST_URL + "?status=in_progress";
+			url = BCPAPIs.CAR_BID_LIST_URL + "?status=10";
 			break;
 			
 		case 1:
@@ -472,7 +474,6 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		//Tracking.
 		if(mActivity != null) {
-			mActivity.tracking(BCPConstants.TRACKING_REG_DEALER);
 			
 			switch(index) {
 			

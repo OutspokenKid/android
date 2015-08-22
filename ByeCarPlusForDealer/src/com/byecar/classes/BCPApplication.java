@@ -11,7 +11,7 @@ import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.views.holo.HoloConstants;
 
 public class BCPApplication extends OutSpokenApplication {
-
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();

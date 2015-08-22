@@ -384,18 +384,18 @@ public class SignInPage extends BCPFragment {
 			url += "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
 		}
 		
-		try {
-			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
-			String phone_number = tMgr.getLine1Number();
-			
-			if(!StringUtils.isEmpty(phone_number)) {
-				url += "&user[phone_number]=" + phone_number;
-			}
-		} catch (Exception e) {
-			LogUtils.trace(e);
-		} catch (Error e) {
-			LogUtils.trace(e);
-		}
+//		try {
+//			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+//			String phone_number = tMgr.getLine1Number();
+//			
+//			if(!StringUtils.isEmpty(phone_number)) {
+//				url += "&user[phone_number]=" + phone_number;
+//			}
+//		} catch (Exception e) {
+//			LogUtils.trace(e);
+//		} catch (Error e) {
+//			LogUtils.trace(e);
+//		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

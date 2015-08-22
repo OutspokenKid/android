@@ -453,7 +453,6 @@ public class MainActivity extends BCPFragmentActivity {
 		try {
 			//byecar://notices
 			//byecar://notices?post_id=41
-			
 			//byecar://posts/forum?post_id=73&reply_id=29
 
 

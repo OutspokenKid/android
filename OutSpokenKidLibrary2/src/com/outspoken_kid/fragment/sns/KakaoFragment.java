@@ -1,37 +1,47 @@
 package com.outspoken_kid.fragment.sns;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-import com.kakao.APIErrorResult;
-import com.kakao.LogoutResponseCallback;
-import com.kakao.MeResponseCallback;
-import com.kakao.Session;
-import com.kakao.SessionCallback;
-import com.kakao.UserManagement;
-import com.kakao.UserProfile;
-import com.kakao.exception.KakaoException;
-import com.kakao.widget.LoginButton;
+import com.kakao.auth.APIErrorResult;
+import com.kakao.auth.Session;
+import com.kakao.auth.SessionCallback;
+import com.kakao.usermgmt.LoginButton;
+import com.kakao.usermgmt.LogoutResponseCallback;
+import com.kakao.usermgmt.MeResponseCallback;
+import com.kakao.usermgmt.UserManagement;
+import com.kakao.usermgmt.UserProfile;
+import com.kakao.util.exception.KakaoException;
 import com.outspoken_kid.model.SNSUserInfo;
 import com.outspoken_kid.utils.LogUtils;
 
 public abstract class KakaoFragment extends SNSFragment {
-
+	
 	private LoginButton loginButton;
 	private KakaoUserInfo kakaoUserInfo;
 	private boolean loggedIn;
     private final SessionCallback mySessionCallback = new MySessionStatusCallback();
     
+    private Session session;
+    
     private boolean wasClicked;
     
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onAttach(Activity activity) {
+    	super.onAttach(activity);
+    
+    	loginButton = new LoginButton(getActivity());
+    	Session.initialize(getActivity());
+        session = Session.getCurrentSession();
+        session.addCallback(mySessionCallback);
+    }
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
     	super.onActivityCreated(savedInstanceState);
-    	
-    	loginButton.setLoginSessionCallback(mySessionCallback);
     	
     	getCoverImage().setOnClickListener(new OnClickListener() {
 
@@ -63,18 +73,14 @@ public abstract class KakaoFragment extends SNSFragment {
     @Override
     public void onResume() {
     	super.onResume();
-    	
-    	 if(Session.initializeSession(getActivity(), mySessionCallback)){
-             // 1. 세션을 갱신 중이면, 프로그레스바를 보이거나 버튼을 숨기는 등의 액션을 취한다
-    		 LogUtils.log("###KakaoFragment.onResume.  세션 갱신중.");
-    		 
-         } else if (Session.getCurrentSession().isOpened()){
-             // 2. 세션이 오픈된된 상태이면, 다음 activity로 이동한다.
-        	 LogUtils.log("###KakaoFragment.onResume.  세션 열린 상태.");
-        	 onSessionOpened();
-         } else {
-        	 LogUtils.log("###KakaoFragment.onResume.  모르는 상태.");
-         }
+
+        if(session.isOpened()) {
+        	//세션이 오픈된된 상태이면, 다음 activity로 이동한다.
+			LogUtils.log("###KakaoFragment.onResume.  세션 열린 상태.");
+        	onSessionOpened();
+        } else {
+        	LogUtils.log("###KakaoFragment.onResume.  모르는 상태.");
+        }
     }
     
 	@Override
@@ -85,11 +91,6 @@ public abstract class KakaoFragment extends SNSFragment {
 
 	@Override
 	protected View getLoginButton(Activity activity) {
-
-		if(loginButton == null) {
-			loginButton = new LoginButton(getActivity());
-	        loginButton.setLoginSessionCallback(mySessionCallback);
-		}
 		
 		return loginButton;
 	}
@@ -99,12 +100,12 @@ public abstract class KakaoFragment extends SNSFragment {
 
 		UserManagement.requestLogout(new LogoutResponseCallback() {
 	        @Override
-	        protected void onSuccess(final long userId) {
+			public void onSuccess(final long userId) {
 	        	loggedIn = false;
 	        }
 
 	        @Override
-	        protected void onFailure(final APIErrorResult apiErrorResult) {
+			public void onFailure(final APIErrorResult apiErrorResult) {
 	        }
 	    });
 	}
@@ -115,7 +116,7 @@ public abstract class KakaoFragment extends SNSFragment {
 		
 		UserManagement.requestMe(new MeResponseCallback() {
 	        @Override
-	        protected void onSuccess(final UserProfile userProfile) {
+			public void onSuccess(final UserProfile userProfile) {
 	        	
 	        	kakaoUserInfo = new KakaoUserInfo(userProfile);
 	        	
@@ -129,15 +130,15 @@ public abstract class KakaoFragment extends SNSFragment {
 	        }
 
 	        @Override
-	        protected void onNotSignedUp() {
+			public void onNotSignedUp() {
 	        }
 
 	        @Override
-	        protected void onSessionClosedFailure(final APIErrorResult errorResult) {
+			public void onSessionClosedFailure(final APIErrorResult errorResult) {
 	        }
 
 	        @Override
-	        protected void onFailure(final APIErrorResult errorResult) {
+			public void onFailure(final APIErrorResult errorResult) {
 	        }
 	    });
 	}
@@ -150,21 +151,55 @@ public abstract class KakaoFragment extends SNSFragment {
     	requestMe();
     }
     
+    @Override
+    public void onDestroy() {
+    	super.onDestroy();
+    	
+    	session.removeCallback(mySessionCallback);
+    }
+    
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
+    	if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    
 //////////////////// Classes.
 
 	private class MySessionStatusCallback implements SessionCallback {
+		
         @Override
         public void onSessionOpened() {
             // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈후 보일 페이지로 이동
             
+        	LogUtils.log("###KakaoFragment.onSessionOpened.  ");
+        	
         	KakaoFragment.this.onSessionOpened();
         }
 
         @Override
         public void onSessionClosed(final KakaoException exception) {
 
+        	if(exception != null) {
+        		LogUtils.log("###KakaoFragment.onSessionClosed.  exception : " + exception.toString());
+        	} else {
+        		LogUtils.log("###KakaoFragment.onSessionClosed.  ");
+        	}
+        	
         	loggedIn = false;
         }
+        
+		@Override
+		public void onSessionOpening() {
+			// TODO Auto-generated method stub
+			
+			LogUtils.log("###KakaoFragment.onSessionOpening.  ");
+			
+		}
     }
     
     public class KakaoUserInfo extends SNSUserInfo {

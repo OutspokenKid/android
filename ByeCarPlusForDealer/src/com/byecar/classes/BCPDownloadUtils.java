@@ -1,9 +1,8 @@
 package com.byecar.classes;
 
 import com.outspoken_kid.utils.DownloadUtils;
-import com.outspoken_kid.utils.LogUtils;
-import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnBitmapDownloadListener;
+import com.outspoken_kid.utils.ResizeUtils;
 
 public class BCPDownloadUtils {
 
@@ -18,9 +17,9 @@ public class BCPDownloadUtils {
 
 		if(imageWidth != 0 && url.contains(BCPAPIs.IMAGE_SERVER_URL + "/src/")) {
 
-			LogUtils.log("###BCPBCPDownloadUtils.downloadThumbnail.  before set, "
-					+ "\n + imageWidth : " + imageWidth
-					+ "\n + " + url);
+//			LogUtils.log("###BCPBCPDownloadUtils.downloadThumbnail.  before set, "
+//					+ "\n + imageWidth : " + imageWidth
+//					+ "\n + " + url);
 			
 			if(url == "null") {
 				return;
@@ -34,8 +33,8 @@ public class BCPDownloadUtils {
 				url += "=w" + ResizeUtils.getSpecificLength(imageWidth);
 			}
 			
-			LogUtils.log("###BCPBCPDownloadUtils.downloadThumbnail.  after set, "
-					+ "\n + " + url);
+//			LogUtils.log("###BCPBCPDownloadUtils.downloadThumbnail.  after set, "
+//					+ "\n + " + url);
 		}
 		
 		DownloadUtils.downloadBitmap(url, onBitmapDownloadListener);

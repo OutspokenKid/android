@@ -165,7 +165,13 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 						}
 					}	
 				} else {
-					statusIcon.setVisibility(View.INVISIBLE);
+					
+					if(car.getStatus() == Car.STATUS_STAND_BY_APPROVAL
+							|| car.getStatus() == Car.STATUS_STAND_BY_BIDING) {
+						statusIcon.setBackgroundResource(R.drawable.mypage_sale3);
+					} else {
+						statusIcon.setVisibility(View.INVISIBLE);
+					}
 				}
 				
 				//나의 차량, 구매 신청내역에서는 등록일, 좋아요에서는 찜한 날, 직거래의 경우 마감일도 있음.

@@ -3219,27 +3219,27 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f0b0015;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f0b0016;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f0b0017;
-        public static final int com_kakao_account_cancel=0x7f0b0034;
+        public static final int com_kakao_account_cancel=0x7f0b0033;
         /**  for kakaolink 
  for kakaolink 
          */
-        public static final int com_kakao_alert_appKey=0x7f0b0035;
-        public static final int com_kakao_alert_install_kakaotalk=0x7f0b0036;
-        public static final int com_kakao_cancel_button=0x7f0b002c;
-        public static final int com_kakao_confirm_logout=0x7f0b002a;
-        public static final int com_kakao_confirm_unlink=0x7f0b002e;
-        public static final int com_kakao_kakaostory_account=0x7f0b0032;
-        public static final int com_kakao_kakaotalk_account=0x7f0b0031;
+        public static final int com_kakao_alert_appKey=0x7f0b0034;
+        public static final int com_kakao_alert_install_kakaotalk=0x7f0b0035;
+        public static final int com_kakao_cancel_button=0x7f0b002b;
+        public static final int com_kakao_confirm_logout=0x7f0b0029;
+        public static final int com_kakao_confirm_unlink=0x7f0b002d;
+        public static final int com_kakao_kakaostory_account=0x7f0b0031;
+        public static final int com_kakao_kakaotalk_account=0x7f0b0030;
         /**  for usermgmt 
  for usermgmt 
          */
-        public static final int com_kakao_login_button=0x7f0b0028;
-        public static final int com_kakao_logout_button=0x7f0b0029;
-        public static final int com_kakao_ok_button=0x7f0b002b;
-        public static final int com_kakao_other_kakaoaccount=0x7f0b0033;
-        public static final int com_kakao_profile_nickname=0x7f0b002f;
-        public static final int com_kakao_profile_userId=0x7f0b0030;
-        public static final int com_kakao_unlink_button=0x7f0b002d;
+        public static final int com_kakao_login_button=0x7f0b0027;
+        public static final int com_kakao_logout_button=0x7f0b0028;
+        public static final int com_kakao_ok_button=0x7f0b002a;
+        public static final int com_kakao_other_kakaoaccount=0x7f0b0032;
+        public static final int com_kakao_profile_nickname=0x7f0b002e;
+        public static final int com_kakao_profile_userId=0x7f0b002f;
+        public static final int com_kakao_unlink_button=0x7f0b002c;
         public static final int commonInfo=0x7f0b0093;
         public static final int completeToSaveImage=0x7f0b0042;
         public static final int complete_auth=0x7f0b0094;
@@ -3261,7 +3261,7 @@ containing a value of this type.
         public static final int complete_writeReply=0x7f0b00a4;
         public static final int complete_writeReview=0x7f0b00a5;
         public static final int confirm=0x7f0b003d;
-        public static final int core_com_kakao_sdk_loading=0x7f0b0027;
+        public static final int core_com_kakao_sdk_loading=0x7f0b0036;
         public static final int currentPrice=0x7f0b00a6;
         public static final int customerSatisfactionDegree=0x7f0b00a7;
         public static final int dealer=0x7f0b00a8;
