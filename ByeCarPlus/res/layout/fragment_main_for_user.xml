@@ -228,6 +228,7 @@
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
     			android:layout_below="@id/mainForUserPage_directMarketTitle"
+    			android:scaleType="centerCrop"
     			android:background="@drawable/main_direct_sample" />
             
             <RelativeLayout

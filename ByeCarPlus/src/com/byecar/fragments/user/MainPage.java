@@ -26,6 +26,7 @@ import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
+import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Area;
@@ -868,6 +869,57 @@ public class MainPage extends BCPAuctionableFragment {
 									}
 								}, 1000);
 							}
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					} catch (Error e) {
+						LogUtils.trace(e);
+					}
+					
+					try {
+						//main_direct_sample
+						String directSampleUrl = objJSON.getString("main_direct_sample");
+						
+						if(!StringUtils.isEmpty(directSampleUrl)) {
+							
+							final String ORIGINAL_URL = directSampleUrl;
+							BCPDownloadUtils.downloadBitmap(directSampleUrl,
+									new OnBitmapDownloadListener() {
+
+										@Override
+										public void onError(String url) {
+
+											LogUtils.log("MainPage.onError."
+													+ "\nurl : " + url);
+
+											// TODO Auto-generated method stub		
+										}
+
+										@Override
+										public void onCompleted(String url,
+												Bitmap bitmap) {
+
+											try {
+												LogUtils.log("MainPage.onCompleted."
+														+ "\nurl : " + url);
+
+												if(ivDirectMarket != null) {
+													
+													if(ivDirectMarket.getTag() != null
+															&& ivDirectMarket.getTag().toString().equals(ORIGINAL_URL)) {
+														//Do nothing.
+													} else {
+														ivDirectMarket.setImageBitmap(bitmap);
+														ivDirectMarket.setTag(ORIGINAL_URL);
+													}
+												}
+											} catch (Exception e) {
+												LogUtils.trace(e);
+											} catch (OutOfMemoryError oom) {
+												LogUtils.trace(oom);
+											}
+										}
+									}, 608);
 						}
 					} catch (Exception e) {
 						LogUtils.trace(e);
