@@ -710,8 +710,11 @@ public class SignPage extends BCPFragment {
 		String url = BCPAPIs.SIGN_IN_WITH_SNS_URL 
 				+ "?sns_key=" + sns_key
 				+ "&sns_user_key=" + sns_user_key
-				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(nickname)
-				+ "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
+				+ "&user[nickname]=" + StringUtils.getUrlEncodedString(nickname);
+
+		if(!StringUtils.isEmpty(profileUrl)) {
+			url += "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
+		}
 		
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 

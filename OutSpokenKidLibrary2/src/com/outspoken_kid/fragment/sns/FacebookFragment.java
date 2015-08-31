@@ -249,9 +249,12 @@ public abstract class FacebookFragment extends SNSFragment {
 				userName = firstName + lastName;
 			}
 			
-			if(user.getProperty("email") != null) {
-				//email.
+			try {
 				email = user.getProperty("email").toString();
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
 			}
 			
 			//profileImage.

@@ -544,7 +544,7 @@ public class MainActivity extends BCPFragmentActivity {
 			switch(keyCode) {
 			
 			case KeyEvent.KEYCODE_MENU :
-				
+			
 				try {
 					if(getTopFragment().onMenuPressed()) {
 						//Do nothing.

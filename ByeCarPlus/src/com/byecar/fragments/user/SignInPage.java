@@ -2,8 +2,6 @@ package com.byecar.fragments.user;
 
 import org.json.JSONObject;
 
-import android.content.Context;
-import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -328,6 +326,8 @@ public class SignInPage extends BCPFragment {
 	public void getByeCarCDNUrl(final String sns_key, final String sns_user_key, 
 			final String nickname, final String profileUrl) {
 		
+		
+		
 		if(StringUtils.isEmpty(profileUrl)) {
 			signInWithSNS(sns_key, sns_user_key, nickname, null);
 		}
@@ -384,6 +384,7 @@ public class SignInPage extends BCPFragment {
 			url += "&user[profile_img_url]=" + StringUtils.getUrlEncodedString(profileUrl);
 		}
 		
+		//전화번호 수집.
 //		try {
 //			TelephonyManager tMgr = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
 //			String phone_number = tMgr.getLine1Number();

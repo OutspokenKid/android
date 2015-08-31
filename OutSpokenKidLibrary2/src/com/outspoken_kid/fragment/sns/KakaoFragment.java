@@ -1,7 +1,6 @@
 package com.outspoken_kid.fragment.sns;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,7 +31,7 @@ public abstract class KakaoFragment extends SNSFragment {
     @Override
     public void onAttach(Activity activity) {
     	super.onAttach(activity);
-    
+    	
     	loginButton = new LoginButton(getActivity());
     	Session.initialize(getActivity());
         session = Session.getCurrentSession();
@@ -111,7 +110,7 @@ public abstract class KakaoFragment extends SNSFragment {
 	}
 
 	private void requestMe() {
-
+		
 		LogUtils.log("###KakaoFragment.requestMe.  ");
 		
 		UserManagement.requestMe(new MeResponseCallback() {
@@ -144,7 +143,7 @@ public abstract class KakaoFragment extends SNSFragment {
 	}
 	
     protected void onSessionOpened(){
-    	
+
     	LogUtils.log("###KakaoFragment.onSessionOpened.  ");
     	
     	loggedIn = true;
@@ -158,16 +157,6 @@ public abstract class KakaoFragment extends SNSFragment {
     	session.removeCallback(mySessionCallback);
     }
     
-    @Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	
-    	if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            return;
-        }
-
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-    
 //////////////////// Classes.
 
 	private class MySessionStatusCallback implements SessionCallback {
@@ -175,7 +164,7 @@ public abstract class KakaoFragment extends SNSFragment {
         @Override
         public void onSessionOpened() {
             // 프로그레스바를 보이고 있었다면 중지하고 세션 오픈후 보일 페이지로 이동
-            
+
         	LogUtils.log("###KakaoFragment.onSessionOpened.  ");
         	
         	KakaoFragment.this.onSessionOpened();
@@ -183,7 +172,7 @@ public abstract class KakaoFragment extends SNSFragment {
 
         @Override
         public void onSessionClosed(final KakaoException exception) {
-
+        	
         	if(exception != null) {
         		LogUtils.log("###KakaoFragment.onSessionClosed.  exception : " + exception.toString());
         	} else {
@@ -195,13 +184,12 @@ public abstract class KakaoFragment extends SNSFragment {
         
 		@Override
 		public void onSessionOpening() {
-			// TODO Auto-generated method stub
 			
 			LogUtils.log("###KakaoFragment.onSessionOpening.  ");
 			
 		}
     }
-    
+
     public class KakaoUserInfo extends SNSUserInfo {
 
     	public long id;

@@ -19,6 +19,7 @@ import com.byecar.fragments.SignUpPage;
 import com.byecar.fragments.TermOfUsePage;
 import com.byecar.fragments.user.SignInPage;
 import com.byecar.fragments.user.SignPage;
+import com.kakao.auth.Session;
 import com.outspoken_kid.classes.RequestManager;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
@@ -133,6 +134,16 @@ public class SignActivity extends BCPFragmentActivity {
 		onSignPage = false;
 		super.finish();
 	}
+	
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    	
+    	if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 	
 //////////////////// Custom methods.
 
