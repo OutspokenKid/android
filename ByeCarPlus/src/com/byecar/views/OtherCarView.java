@@ -402,7 +402,7 @@ public class OtherCarView extends RelativeLayout {
 			
 		//자동
 		} else {
-			infoBadges[2].setVisibility(View.INVISIBLE);
+			infoBadges[3].setVisibility(View.INVISIBLE);
 		}
 		
 		priceTextView.setPrice(car.getPrice());
