@@ -56,6 +56,7 @@ public class BCPAPIs {
 	public static String CAR_DIRECT_NORMAL_PURCHASES_URL = BASE_API_URL + "/onsalecars/normal/purchase.json";
 	public static String CAR_DIRECT_NORMAL_DELETE_URL = BASE_API_URL + "/onsalecars/normal/delete.json";
 	public static String CAR_DIRECT_NORMAL_REPORT_URL = BASE_API_URL + "/onsalecars/normal/report.json";
+	public static String CAR_DIRECT_NORMAL_COMPLETE_URL = BASE_API_URL + "/onsalecars/normal/set_status.json";
 	
 	public static String CAR_HISTORY_URL = BASE_API_URL + "/carhistories/show.json";
 

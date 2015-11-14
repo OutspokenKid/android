@@ -204,27 +204,33 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 				btnComplete.setVisibility(View.INVISIBLE);
 				btnSelectDealer.setVisibility(View.INVISIBLE);
 				
-				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY
-						&& car.getType() == Car.TYPE_BID) {
-					
-					switch(car.getStatus()) {
-					
-					case Car.STATUS_BID_COMPLETE:
-						btnSelectDealer.setVisibility(View.VISIBLE);
-						showButton = true;
-						break;
-					
-					case Car.STATUS_PAYMENT_COMPLETED:
+				if(car.getItemCode() == BCPConstants.ITEM_CAR_MY) {
+
+					if(car.getType() == Car.TYPE_BID) {
+						switch(car.getStatus()) {
+						
+						case Car.STATUS_BID_COMPLETE:
+							btnSelectDealer.setVisibility(View.VISIBLE);
+							showButton = true;
+							break;
+						
+						case Car.STATUS_PAYMENT_COMPLETED:
+							btnComplete.setVisibility(View.VISIBLE);
+							showButton = true;
+							break;
+							
+						case Car.STATUS_TRADE_COMPLETE:
+							if(car.getHas_review() != 1) {
+								btnReview.setVisibility(View.VISIBLE);
+								showButton = true;
+							}
+							break;
+						}
+						
+					//직거래 차량의 판매중 상태도 Car.STATUS_BIDDING.
+					} else if(car.getType() == Car.TYPE_DIRECT && car.getStatus() == Car.STATUS_BIDDING) {
 						btnComplete.setVisibility(View.VISIBLE);
 						showButton = true;
-						break;
-						
-					case Car.STATUS_TRADE_COMPLETE:
-						if(car.getHas_review() != 1) {
-							btnReview.setVisibility(View.VISIBLE);
-							showButton = true;
-						}
-						break;
 					}
 				}
 				
@@ -322,8 +328,17 @@ public class ViewWrapperForMyCar extends ViewWrapper {
 	
 	public void completeSelling() {
 		
-		String url = BCPAPIs.CAR_BID_COMPLETE_URL 
-				+ "?onsalecar_id=" + car.getId()
+		String url = null;
+		
+		if(car.getType() == Car.TYPE_BID) {
+			url = BCPAPIs.CAR_BID_COMPLETE_URL; 	
+		} else if(car.getType() == Car.TYPE_DIRECT) {
+			url = BCPAPIs.CAR_DIRECT_NORMAL_COMPLETE_URL;
+		} else {
+			return;
+		}
+		
+		url += "?onsalecar_id=" + car.getId()
 				+ "&status=" + Car.STATUS_TRADE_COMPLETE;
 		
 		DownloadUtils.downloadJSONString(url,
