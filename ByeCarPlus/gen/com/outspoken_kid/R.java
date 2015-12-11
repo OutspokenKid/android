@@ -438,7 +438,7 @@ public final class R {
 		public static final int imageviewerActivity_thumbnailLinear = 0x7f0900a4;
 		public static final int imageviewerActivity_thumbnailLinearBg = 0x7f0900a3;
 		public static final int imageviewerActivity_title = 0x7f0900a1;
-		public static final int kakao_login_activity_progress_bar = 0x7f0902bf;
+		public static final int kakao_login_activity_progress_bar = 0x7f0902c0;
 		public static final int large = 0x7f09006b;
 		public static final int listMode = 0x7f090057;
 		public static final int list_item = 0x7f09007c;

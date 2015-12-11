@@ -26,7 +26,6 @@ import com.byecar.byecarplus.R;
 import com.byecar.classes.BCPAPIs;
 import com.byecar.classes.BCPAuctionableFragment;
 import com.byecar.classes.BCPConstants;
-import com.byecar.classes.BCPDownloadUtils;
 import com.byecar.classes.ImagePagerAdapter;
 import com.byecar.classes.ImagePagerAdapter.OnPagerItemClickedListener;
 import com.byecar.models.Area;
@@ -78,6 +77,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private BiddingCarView[] biddingCarViews = new BiddingCarView[3];
 	
 	private View reviewBg;
+	private TextView tvReviewCount;
 	private Button btnReview;
 	private ReviewViewSmall[] reviewViewSmalls = new ReviewViewSmall[3];
 	
@@ -149,6 +149,7 @@ public class MainPage extends BCPAuctionableFragment {
 		biddingCarViews[2] = (BiddingCarView) mThisView.findViewById(R.id.mainForUserPage_biddingCarView3);
 		
 		reviewBg = mThisView.findViewById(R.id.mainForUserPage_reviewBg);
+		tvReviewCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvReviewCount);
 		btnReview = (Button) mThisView.findViewById(R.id.mainForUserPage_btnReview);
 		reviewViewSmalls[0] = (ReviewViewSmall) mThisView.findViewById(R.id.mainForUserPage_reviewView1);
 		reviewViewSmalls[1] = (ReviewViewSmall) mThisView.findViewById(R.id.mainForUserPage_reviewView2);
@@ -519,6 +520,11 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.height = ResizeUtils.getSpecificLength(660);
 		rp.topMargin = ResizeUtils.getSpecificLength(18);
 
+		//tvReviewCount.
+		rp = (RelativeLayout.LayoutParams) tvReviewCount.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.leftMargin = ResizeUtils.getSpecificLength(250);
+		
 		//btnReview.
 		rp = (RelativeLayout.LayoutParams) btnReview.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
@@ -667,6 +673,8 @@ public class MainPage extends BCPAuctionableFragment {
 		
 		FontUtils.setFontSize(tvBiddingCount, 30);
 		FontUtils.setFontStyle(tvBiddingCount, FontUtils.BOLD);
+		FontUtils.setFontSize(tvReviewCount, 30);
+		FontUtils.setFontStyle(tvReviewCount, FontUtils.BOLD);
 		FontUtils.setFontSize(tvVideoTitle, 22);
 	}
 
@@ -848,6 +856,10 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					try {
+						if(objJSON.has("bids_onsalecars_today_cnt")) {
+							tvReviewCount.setText(objJSON.getInt("bids_onsalecars_today_cnt") + "대");
+						}
+						
 						reviews.clear();
 						JSONArray arJSON = objJSON.getJSONArray("reviews");
 						size = arJSON.length();
