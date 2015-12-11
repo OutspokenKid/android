@@ -123,12 +123,10 @@ public class MainActivity extends BCPFragmentActivity {
 	private RelativeLayout noticePopup;
 	private ImageView ivNotice;
 	private View buttonBg;
-	private Button btnDoNotSeeAgain;
 	private Button btnClose;
 
 	public static String dealerPhoneNumber;
 	
-	private boolean doNotSeeAgain;
 	private boolean animating;
 	private long last_connected_at;
 	private SocketIO socketIO;
@@ -167,7 +165,6 @@ public class MainActivity extends BCPFragmentActivity {
 		noticePopup = (RelativeLayout) findViewById(R.id.mainForUserActivity_noticePopup);
 		ivNotice = (ImageView) findViewById(R.id.mainForUserActivity_ivNotice);
 		buttonBg = findViewById(R.id.mainForUserActivity_buttonBg);
-		btnDoNotSeeAgain = (Button) findViewById(R.id.mainForUserActivity_btnDoNotSeeAgain);
 		btnClose = (Button) findViewById(R.id.mainForUserActivity_btnClose);
 	}
 
@@ -225,21 +222,6 @@ public class MainActivity extends BCPFragmentActivity {
 						animating = false;
 					}
 				}, 300);
-			}
-		});
-		
-		btnDoNotSeeAgain.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				doNotSeeAgain = !doNotSeeAgain;
-				
-				if(doNotSeeAgain) {
-					btnDoNotSeeAgain.setBackgroundResource(R.drawable.notice_deny_b);
-				} else {
-					btnDoNotSeeAgain.setBackgroundResource(R.drawable.notice_deny_a);
-				}
 			}
 		});
 		
@@ -309,7 +291,6 @@ public class MainActivity extends BCPFragmentActivity {
 
 		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
 		ResizeUtils.viewResizeForRelative(558, 73, buttonBg, null, null, new int[]{0, 0, 0, 14});
-		ResizeUtils.viewResizeForRelative(210, 73, btnDoNotSeeAgain, null, null, new int[]{21, 0, 0, 0});
 		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 0});
 	}
 
@@ -1337,10 +1318,6 @@ public class MainActivity extends BCPFragmentActivity {
 		noticePopup.startAnimation(aaOut);
 		cover.setVisibility(View.INVISIBLE);
 		cover.startAnimation(aaOut);
-		
-		if(doNotSeeAgain) {
-			SharedPrefsUtils.addDataToPrefs(BCPConstants.PREFS_NOTICE, "time", System.currentTimeMillis());
-		}
 	}
 
 	public void signOutForForbidDuplicatedSignIn() {

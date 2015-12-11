@@ -158,15 +158,8 @@
 	    	android:layout_height="0dp"
 	    	android:layout_centerHorizontal="true"
 	    	android:layout_alignParentBottom="true"
+	    	android:clickable="true"
 	    	android:background="@drawable/notice_btn_bg" />
-        
-        <Button 
-            android:id="@+id/mainForUserActivity_btnDoNotSeeAgain"
-	    	android:layout_width="0dp"
-	    	android:layout_height="0dp"
-	    	android:layout_alignParentLeft="@id/mainForUserActivity_buttonBg"
-	    	android:layout_alignTop="@id/mainForUserActivity_buttonBg"
-	    	android:background="@drawable/notice_deny_a" />
         
         <Button 
             android:id="@+id/mainForUserActivity_btnClose"

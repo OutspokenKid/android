@@ -37,6 +37,7 @@ import com.byecar.models.Post;
 import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
+import com.byecar.views.DirectCarView;
 import com.byecar.views.ForumView;
 import com.byecar.views.OtherCarView;
 import com.byecar.views.ReviewViewSmall;
@@ -83,8 +84,14 @@ public class MainPage extends BCPAuctionableFragment {
 	private View usedMarketBg;
 	private OtherCarView[] usedCarViews = new OtherCarView[3];
 	private Button btnUsedMarket;
-	private ImageView ivDirectMarket;
-	private Button btnDirectMarket;
+	
+//	private ImageView ivDirectMarket;
+//	private Button btnDirectMarket;
+	
+	private RelativeLayout relativeForDirect;
+	private TextView tvDirectCount;
+	private Button btnDirect;
+	private DirectCarView[] directCarViews = new DirectCarView[3];
 	
 	private RelativeLayout relativeForVideo;
 	private ImageView ivVideo;
@@ -153,8 +160,15 @@ public class MainPage extends BCPAuctionableFragment {
 		usedCarViews[1] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView2);
 		usedCarViews[2] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_usedCarView3);
 		
-		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
-		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
+//		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
+//		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
+		
+		relativeForDirect = (RelativeLayout) mThisView.findViewById(R.id.mainForUserPage_relativeForDirect);
+		tvDirectCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvDirectCount);
+		btnDirect = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirect);
+		directCarViews[0] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView1);
+		directCarViews[1] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView2);
+		directCarViews[2] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView3);
 		
 		relativeForVideo = (RelativeLayout) mThisView.findViewById(R.id.mainForUserPage_relativeForVideo);
 		ivVideo = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivVideo);
@@ -292,18 +306,29 @@ public class MainPage extends BCPAuctionableFragment {
 			}
 		});
 	
-		btnDirectMarket.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View view) {
-
-				Bundle bundle = new Bundle();
-				bundle.putInt("type", Car.TYPE_DIRECT);
-				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
-			}
-		});
+//		btnDirectMarket.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View view) {
+//
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", Car.TYPE_DIRECT);
+//				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+//			}
+//		});
+//		
+//		ivDirectMarket.setOnClickListener(new OnClickListener() {
+//
+//			@Override
+//			public void onClick(View view) {
+//
+//				Bundle bundle = new Bundle();
+//				bundle.putInt("type", Car.TYPE_DIRECT);
+//				mActivity.showPage(BCPConstants.PAGE_CAR_LIST, bundle);
+//			}
+//		});
 		
-		ivDirectMarket.setOnClickListener(new OnClickListener() {
+		btnDirect.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -534,23 +559,47 @@ public class MainPage extends BCPAuctionableFragment {
 			rp.topMargin = ResizeUtils.getSpecificLength(i==0?84:18);
 		}
 
-		//directMarketTitle.
-		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_directMarketTitle).getLayoutParams();
+//		//directMarketTitle.
+//		rp = (RelativeLayout.LayoutParams) mThisView.findViewById(R.id.mainForUserPage_directMarketTitle).getLayoutParams();
+//		rp.width = ResizeUtils.getSpecificLength(608);
+//		rp.height = ResizeUtils.getSpecificLength(68);
+//		rp.topMargin = ResizeUtils.getSpecificLength(20);
+//		
+//		//ivDirectMarket.
+//		rp = (RelativeLayout.LayoutParams) ivDirectMarket.getLayoutParams();
+//		rp.width = ResizeUtils.getSpecificLength(608);
+//		rp.height = ResizeUtils.getSpecificLength(248);
+//		
+//		//btnDirectMarket.
+//		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
+//		rp.width = ResizeUtils.getSpecificLength(120);
+//		rp.height = ResizeUtils.getSpecificLength(60);
+//		rp.topMargin = ResizeUtils.getSpecificLength(6);
+//		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		
+		//relativeForDirect
+		rp = (RelativeLayout.LayoutParams) relativeForDirect.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
+		rp.height = ResizeUtils.getSpecificLength(373);
+		rp.topMargin = ResizeUtils.getSpecificLength(18);
+		
+		//tvDirectCount.
+		rp = (RelativeLayout.LayoutParams) tvDirectCount.getLayoutParams();
 		rp.height = ResizeUtils.getSpecificLength(68);
-		rp.topMargin = ResizeUtils.getSpecificLength(20);
+		rp.leftMargin = ResizeUtils.getSpecificLength(190);
 		
-		//ivDirectMarket.
-		rp = (RelativeLayout.LayoutParams) ivDirectMarket.getLayoutParams();
-		rp.width = ResizeUtils.getSpecificLength(608);
-		rp.height = ResizeUtils.getSpecificLength(248);
-		
-		//btnDirectMarket.
-		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
+		//btnDirect.
+		rp = (RelativeLayout.LayoutParams) btnDirect.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
 		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		
+		//directCarViews.
+		size = directCarViews.length;
+		for(int i=0; i<3; i++) {
+			ResizeUtils.viewResizeForRelative(174, 255, directCarViews[i], null, null, new int[]{i==0?24:18, 90, 0, 0});
+		}
 		
 		//relativeForVideo.
 		rp = (RelativeLayout.LayoutParams) relativeForVideo.getLayoutParams();
@@ -727,7 +776,7 @@ public class MainPage extends BCPAuctionableFragment {
 
 	public void downloadMainInfos() {
 		
-		//http://byecar.minsangk.com/appinfo/cover.json
+		//http://dev.bye-car.com/appinfo/cover.json
 		String url = BCPAPIs.MAIN_COVER_URL;
 		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
@@ -876,56 +925,56 @@ public class MainPage extends BCPAuctionableFragment {
 						LogUtils.trace(e);
 					}
 					
-					try {
-						//main_direct_sample
-						String directSampleUrl = objJSON.getString("main_direct_sample");
-						
-						if(!StringUtils.isEmpty(directSampleUrl)) {
-							
-							final String ORIGINAL_URL = directSampleUrl;
-							BCPDownloadUtils.downloadBitmap(directSampleUrl,
-									new OnBitmapDownloadListener() {
-
-										@Override
-										public void onError(String url) {
-
-											LogUtils.log("MainPage.onError."
-													+ "\nurl : " + url);
-
-											// TODO Auto-generated method stub		
-										}
-
-										@Override
-										public void onCompleted(String url,
-												Bitmap bitmap) {
-
-											try {
-												LogUtils.log("MainPage.onCompleted."
-														+ "\nurl : " + url);
-
-												if(ivDirectMarket != null) {
-													
-													if(ivDirectMarket.getTag() != null
-															&& ivDirectMarket.getTag().toString().equals(ORIGINAL_URL)) {
-														//Do nothing.
-													} else {
-														ivDirectMarket.setImageBitmap(bitmap);
-														ivDirectMarket.setTag(ORIGINAL_URL);
-													}
-												}
-											} catch (Exception e) {
-												LogUtils.trace(e);
-											} catch (OutOfMemoryError oom) {
-												LogUtils.trace(oom);
-											}
-										}
-									}, 608);
-						}
-					} catch (Exception e) {
-						LogUtils.trace(e);
-					} catch (Error e) {
-						LogUtils.trace(e);
-					}
+//					try {
+//						//main_direct_sample
+//						String directSampleUrl = objJSON.getString("main_direct_sample");
+//						
+//						if(!StringUtils.isEmpty(directSampleUrl)) {
+//							
+//							final String ORIGINAL_URL = directSampleUrl;
+//							BCPDownloadUtils.downloadBitmap(directSampleUrl,
+//									new OnBitmapDownloadListener() {
+//
+//										@Override
+//										public void onError(String url) {
+//
+//											LogUtils.log("MainPage.onError."
+//													+ "\nurl : " + url);
+//
+//											// TODO Auto-generated method stub		
+//										}
+//
+//										@Override
+//										public void onCompleted(String url,
+//												Bitmap bitmap) {
+//
+//											try {
+//												LogUtils.log("MainPage.onCompleted."
+//														+ "\nurl : " + url);
+//
+//												if(ivDirectMarket != null) {
+//													
+//													if(ivDirectMarket.getTag() != null
+//															&& ivDirectMarket.getTag().toString().equals(ORIGINAL_URL)) {
+//														//Do nothing.
+//													} else {
+//														ivDirectMarket.setImageBitmap(bitmap);
+//														ivDirectMarket.setTag(ORIGINAL_URL);
+//													}
+//												}
+//											} catch (Exception e) {
+//												LogUtils.trace(e);
+//											} catch (OutOfMemoryError oom) {
+//												LogUtils.trace(oom);
+//											}
+//										}
+//									}, 608);
+//						}
+//					} catch (Exception e) {
+//						LogUtils.trace(e);
+//					} catch (Error e) {
+//						LogUtils.trace(e);
+//					}
 				} catch (Exception e) {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {

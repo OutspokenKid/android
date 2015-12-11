@@ -205,6 +205,8 @@
                 android:layout_height="0dp"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/mainForUserPage_usedCarView2" />
+
+            <!--  
             
             <View 
                 android:id="@+id/mainForUserPage_directMarketTitle"
@@ -231,12 +233,62 @@
     			android:scaleType="centerCrop"
     			android:background="@drawable/main_direct_sample" />
             
+            -->
+            
+            <RelativeLayout
+                android:id="@+id/mainForUserPage_relativeForDirect"
+                android:layout_width="0dp"
+    			android:layout_height="0dp"
+    			android:layout_centerHorizontal="true"
+    			android:layout_below="@id/mainForUserPage_usedMarketBg"
+    			android:background="@drawable/main_today_frame1" >
+                
+                <TextView 
+                    android:id="@+id/mainForUserPage_tvDirectCount"
+                	android:layout_width="wrap_content"
+    				android:layout_height="0dp"
+    				android:layout_alignParentLeft="true"
+    				android:layout_alignParentTop="true"
+    				android:textColor="@color/new_color_text_brown2"
+    				android:gravity="center_vertical" />
+                
+                <Button 
+                    android:id="@+id/mainForUserPage_btnDirect"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_alignParentRight="true"
+    				android:background="@drawable/main_more_btn" />
+                
+                <com.byecar.views.DirectCarView 
+                    android:id="@+id/mainForUserPage_directCarView1"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_alignParentLeft="true" />
+                
+                <com.byecar.views.DirectCarView 
+                    android:id="@+id/mainForUserPage_directCarView2"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_toRightOf="@id/mainForUserPage_directCarView1" />
+                
+                <com.byecar.views.DirectCarView 
+                    android:id="@+id/mainForUserPage_directCarView3"
+                	android:layout_width="0dp"
+    				android:layout_height="0dp"
+    				android:layout_alignParentTop="true"
+    				android:layout_toRightOf="@id/mainForUserPage_directCarView2" />
+                
+            </RelativeLayout>
+            
             <RelativeLayout
                 android:id="@+id/mainForUserPage_relativeForVideo"
                 android:layout_width="0dp"
     			android:layout_height="0dp"
     			android:layout_centerHorizontal="true"
-    			android:layout_below="@id/mainForUserPage_ivDirectMarket" >
+    			android:layout_below="@id/mainForUserPage_relativeForDirect" >
             
                 <ImageView 
 	                android:id="@+id/mainForUserPage_ivVideo"

@@ -149,7 +149,7 @@ public class BiddingCarView extends FrameLayout {
 			priceTextView.setPrice(car.getPrice());
 			
 			if(!StringUtils.isEmpty(car.getRep_img_url())) {
-				setImageUrl(car.getRep_img_url() + "=w" + ResizeUtils.getSpecificLength(136));
+				setImageUrl(car.getRep_img_url());
 			}
 		} catch (Exception e) {
 			clearView();
