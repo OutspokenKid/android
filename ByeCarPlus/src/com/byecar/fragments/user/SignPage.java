@@ -62,6 +62,8 @@ public class SignPage extends BCPFragment {
 
 	private static final int SLIDE_DURATION = 30000;
 	private static final int ANIM_DURATION = 1000;
+//	private static final int SLIDE_DURATION = 10000;
+//	private static final int ANIM_DURATION = 1000;
 	private static final int DELAY = 2000;
 	
 	private static final float MOVE_DIST = 0.8f;
@@ -598,8 +600,12 @@ public class SignPage extends BCPFragment {
 		matrix.postScale(scale, scale);
 		
 	//정렬 설정.
-		//짝수번째 스플래쉬 인 경우 오른쪽 정렬.
-		if(index % 2 == 1) {
+		//첫번째 스플래쉬인 경우 가운데 정렬.
+		if(index == 0) {
+			matrix.postTranslate((screenWidth - (float)width*scale)/2, 0);
+			
+		//짝수번째 스플래쉬인 경우 오른쪽 정렬.
+		} else if(index % 2 == 1) {
 			matrix.postTranslate(screenWidth - (float)width*scale, 0);
 		}
 		
@@ -612,9 +618,10 @@ public class SignPage extends BCPFragment {
 		final long startTime = System.currentTimeMillis();
 		final long duration = SLIDE_DURATION;
 		final Matrix matrix = new Matrix(matrices[index%NUMBER_OF_SPLASH]);
-		
-		//짝수 번째는 왼쪽으로, 홀수 번째는 오른쪽으로.
-		final float totalDist = (index % 2 == 0? -1 : 1) * ResizeUtils.getScreenWidth() * MOVE_DIST;
+
+		//짝수 번째는 왼쪽으로(첫번째는 절반만), 홀수 번째는 오른쪽으로.
+		final float totalDist = index == 0? -ResizeUtils.getScreenWidth() * MOVE_DIST/2 :
+				(index % 2 == 0? -1 : 1) * ResizeUtils.getScreenWidth() * MOVE_DIST;
 
 		ivImage.post(new Runnable() {
 
