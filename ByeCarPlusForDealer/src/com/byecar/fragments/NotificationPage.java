@@ -56,7 +56,6 @@ public class NotificationPage extends BCPFragment {
 		listView.setDividerHeight(ResizeUtils.getSpecificLength(38));
 		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
 		
-		
 		if(btnReadAll == null || btnReadAll.getParent() == null) {
 			
 			btnReadAll = new Button(mContext);
@@ -67,7 +66,7 @@ public class NotificationPage extends BCPFragment {
 			rp.topMargin = ResizeUtils.getSpecificLength(14);
 			rp.rightMargin = ResizeUtils.getSpecificLength(14);
 			btnReadAll.setLayoutParams(rp);
-			btnReadAll.setBackgroundResource(R.drawable.back_btn);
+			btnReadAll.setBackgroundResource(R.drawable.btn_read_all);
 			titleBar.addView(btnReadAll);
 			
 			btnReadAll.setOnClickListener(new OnClickListener() {

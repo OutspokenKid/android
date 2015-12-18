@@ -57,6 +57,6 @@
         android:layout_height="0dp"
         android:layout_alignTop="@id/carListPage_btnGuide"
         android:layout_toLeftOf="@id/carListPage_btnGuide"
-        android:background="@drawable/search_btn" />
+        android:background="@drawable/search_btn2" />
         
 </RelativeLayout>

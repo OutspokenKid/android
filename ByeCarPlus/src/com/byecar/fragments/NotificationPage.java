@@ -7,7 +7,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -24,10 +27,12 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
+import com.outspoken_kid.utils.ToastUtils;
 
 public class NotificationPage extends BCPFragment {
 
 	private ListView listView;
+	private Button btnReadAll;
 	
 	@Override
 	public void bindViews() {
@@ -50,6 +55,29 @@ public class NotificationPage extends BCPFragment {
 		listView.setDivider(new ColorDrawable(Color.TRANSPARENT));
 		listView.setDividerHeight(ResizeUtils.getSpecificLength(38));
 		listView.setSelector(new ColorDrawable(Color.TRANSPARENT));
+		
+		if(btnReadAll == null || btnReadAll.getParent() == null) {
+			
+			btnReadAll = new Button(mContext);
+			RelativeLayout.LayoutParams rp = new RelativeLayout.LayoutParams(
+					ResizeUtils.getSpecificLength(161), ResizeUtils.getSpecificLength(60));
+			rp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			rp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+			rp.topMargin = ResizeUtils.getSpecificLength(14);
+			rp.rightMargin = ResizeUtils.getSpecificLength(14);
+			btnReadAll.setLayoutParams(rp);
+			btnReadAll.setBackgroundResource(R.drawable.btn_read_all);
+			titleBar.addView(btnReadAll);
+			
+			btnReadAll.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View view) {
+
+					readAll();
+				}
+			});
+		}
 	}
 
 	@Override
@@ -180,6 +208,11 @@ public class NotificationPage extends BCPFragment {
 	
 //////////////////// Custom methods.
 
+	public void readAll() {
+		
+		ToastUtils.showToast("read all notification");
+	}
+	
 	public void deleteNotification(Notification notification) {
 
 		try {

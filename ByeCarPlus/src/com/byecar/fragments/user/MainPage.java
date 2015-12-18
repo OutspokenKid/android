@@ -36,7 +36,6 @@ import com.byecar.models.Post;
 import com.byecar.views.BiddingCarView;
 import com.byecar.views.CarInfoView;
 import com.byecar.views.DealerView;
-import com.byecar.views.DirectCarView;
 import com.byecar.views.ForumView;
 import com.byecar.views.OtherCarView;
 import com.byecar.views.ReviewViewSmall;
@@ -88,10 +87,9 @@ public class MainPage extends BCPAuctionableFragment {
 //	private ImageView ivDirectMarket;
 //	private Button btnDirectMarket;
 	
-	private RelativeLayout relativeForDirect;
-	private TextView tvDirectCount;
-	private Button btnDirect;
-	private DirectCarView[] directCarViews = new DirectCarView[3];
+	private View directMarketBg;
+	private Button btnDirectMarket;
+	private OtherCarView[] directCarViews = new OtherCarView[3];
 	
 	private RelativeLayout relativeForVideo;
 	private ImageView ivVideo;
@@ -164,12 +162,11 @@ public class MainPage extends BCPAuctionableFragment {
 //		ivDirectMarket = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivDirectMarket);
 //		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
 		
-		relativeForDirect = (RelativeLayout) mThisView.findViewById(R.id.mainForUserPage_relativeForDirect);
-		tvDirectCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvDirectCount);
-		btnDirect = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirect);
-		directCarViews[0] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView1);
-		directCarViews[1] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView2);
-		directCarViews[2] = (DirectCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView3);
+		directMarketBg = mThisView.findViewById(R.id.mainForUserPage_directMarketBg);
+		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
+		directCarViews[0] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView1);
+		directCarViews[1] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView2);
+		directCarViews[2] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView3);
 		
 		relativeForVideo = (RelativeLayout) mThisView.findViewById(R.id.mainForUserPage_relativeForVideo);
 		ivVideo = (ImageView) mThisView.findViewById(R.id.mainForUserPage_ivVideo);
@@ -329,7 +326,7 @@ public class MainPage extends BCPAuctionableFragment {
 //			}
 //		});
 		
-		btnDirect.setOnClickListener(new OnClickListener() {
+		btnDirectMarket.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -583,28 +580,27 @@ public class MainPage extends BCPAuctionableFragment {
 //		rp.topMargin = ResizeUtils.getSpecificLength(6);
 //		rp.rightMargin = ResizeUtils.getSpecificLength(6);
 		
-		//relativeForDirect
-		rp = (RelativeLayout.LayoutParams) relativeForDirect.getLayoutParams();
+		//directMarketBg
+		rp = (RelativeLayout.LayoutParams) directMarketBg.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(608);
-		rp.height = ResizeUtils.getSpecificLength(373);
+		rp.height = ResizeUtils.getSpecificLength(659);
 		rp.topMargin = ResizeUtils.getSpecificLength(18);
 		
-		//tvDirectCount.
-		rp = (RelativeLayout.LayoutParams) tvDirectCount.getLayoutParams();
-		rp.height = ResizeUtils.getSpecificLength(68);
-		rp.leftMargin = ResizeUtils.getSpecificLength(190);
-		
-		//btnDirect.
-		rp = (RelativeLayout.LayoutParams) btnDirect.getLayoutParams();
+		//btnDirectMarket.
+		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 		
 		//directCarViews.
 		size = directCarViews.length;
-		for(int i=0; i<3; i++) {
-			ResizeUtils.viewResizeForRelative(174, 255, directCarViews[i], null, null, new int[]{i==0?24:18, 90, 0, 0});
+		for(int i=0; i<size; i++) {
+			rp = (RelativeLayout.LayoutParams) directCarViews[i].getLayoutParams();
+			rp.width = ResizeUtils.getSpecificLength(578);
+			rp.height = ResizeUtils.getSpecificLength(175);
+			rp.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			rp.topMargin = ResizeUtils.getSpecificLength(i==0?84:18);
 		}
 		
 		//relativeForVideo.
