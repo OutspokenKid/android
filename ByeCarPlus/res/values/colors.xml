@@ -12,6 +12,10 @@
 	<color name="titlebar_bg_orange">#febc2a</color>
 	<color name="titlebar_bg_brown">#381800</color>
 	
+	<drawable name="bg_brown">#381800</drawable>
+	<drawable name="bg_orange">#febc2a</drawable>
+    <drawable name="bg_transparent">#00000000</drawable>
+	
 	<color name="title_gray">#b0b0b0</color>
 	
     <color name="page_bg">#f5f5f5</color>
@@ -38,6 +42,5 @@
 	<color name="new_color_text_darkgray">#393939</color>	<!-- 57, 57, 57 -->
 	<color name="new_color_text_orange">#FFA800</color>	<!-- 255, 168, 0 -->
 	<color name="new_color_text_red">#FF2222</color>	<!-- 255, 34, 34 -->
-		
 	    
 </resources>

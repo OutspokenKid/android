@@ -189,13 +189,14 @@ public class ForumListPage extends BCPFragment {
 		rp = (RelativeLayout.LayoutParams) btnWrite.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(90);
 		rp.height = ResizeUtils.getSpecificLength(60);
-		rp.topMargin = ResizeUtils.getSpecificLength(16);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		rp.rightMargin = ResizeUtils.getSpecificLength(14);
 		
 		//btnMyPost.
 		rp = (RelativeLayout.LayoutParams) btnMyPost.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(90);
 		rp.height = ResizeUtils.getSpecificLength(60);
+		rp.topMargin = ResizeUtils.getSpecificLength(14);
 		rp.rightMargin = ResizeUtils.getSpecificLength(8);
 		
 		FontUtils.setFontSize(btnCategory, 26);

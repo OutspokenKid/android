@@ -3,6 +3,7 @@ package com.byecar.fragments;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.view.View;
 import android.widget.GridView;
@@ -86,6 +87,7 @@ public class TypeSearchCarPage extends BCPFragment {
 			listView.setAdapter(adapter);
 			listView.setDividerHeight(0);
 			listView.setDivider(null);
+			listView.setSelector(new ColorDrawable(getResources().getColor(R.color.titlebar_bg_orange)));
 		}
 	}
 

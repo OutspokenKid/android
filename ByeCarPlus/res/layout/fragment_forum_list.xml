@@ -57,7 +57,7 @@
         android:id="@+id/forumListPage_btnMyPost"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_alignTop="@id/forumListPage_btnWrite"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@id/forumListPage_btnWrite"
         android:background="@drawable/forum_my_contents_btn" />
         

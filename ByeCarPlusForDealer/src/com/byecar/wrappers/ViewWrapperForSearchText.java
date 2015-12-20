@@ -88,7 +88,6 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 					row.setLayoutParams(new AbsListView.LayoutParams(
 							LayoutParams.MATCH_PARENT, ResizeUtils.getSpecificLength(80)));
 					FontUtils.setFontSize(tvText, 30);
-					tvText.setTextColor(row.getContext().getResources().getColor(R.color.holo_text_hint));
 					line.setVisibility(View.VISIBLE);
 				}
 			}
@@ -107,7 +106,7 @@ public class ViewWrapperForSearchText extends ViewWrapper {
 		
 		try {
 			if(model != null) {
-				row.setOnClickListener(new OnClickListener() {
+				tvText.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View arg0) {

@@ -9,12 +9,12 @@ import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
-import android.widget.Button;
-import android.widget.RelativeLayout;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.byecar.byecarplusfordealer.R;
 import com.byecar.classes.BCPAPIs;
@@ -27,7 +27,6 @@ import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
-import com.outspoken_kid.utils.ToastUtils;
 
 public class NotificationPage extends BCPFragment {
 
@@ -123,7 +122,6 @@ public class NotificationPage extends BCPFragment {
 				} catch (Error e) {
 					LogUtils.trace(e);
 				}
-
 			}
 		});
 	}
@@ -211,7 +209,30 @@ public class NotificationPage extends BCPFragment {
 
 	public void readAll() {
 		
-		ToastUtils.showToast("read all notification");
+		String url = BCPAPIs.NOTIFICATION_READ_All_URL;
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+
+			@Override
+			public void onError(String url) {
+
+				LogUtils.log("NotificationPage.readAll.onError." + "\nurl : " + url);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("NotificationPage.readAll.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+
+					refreshPageWithoutClearItem();
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
+				}
+			}
+		});
 	}
 	
 	public void deleteNotification(Notification notification) {
@@ -245,7 +266,6 @@ public class NotificationPage extends BCPFragment {
 				try {
 					LogUtils.log("NotificationPage.onCompleted." + "\nurl : " + url
 							+ "\nresult : " + objJSON);
-
 					
 				} catch (Exception e) {
 					LogUtils.trace(e);

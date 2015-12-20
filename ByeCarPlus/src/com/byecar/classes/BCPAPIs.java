@@ -88,6 +88,7 @@ public class BCPAPIs {
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
 	public static String NOTIFICATION_DELETE_URL = BASE_API_URL + "/notifications/delete.json";
+	public static String NOTIFICATION_READ_All_URL = BASE_API_URL + "/notifications/readAll.json?";
 	
 	public static String FORUM_LIST_URL = BASE_API_URL + "/posts/forum.json";
 	public static String FORUM_DETAIL_URL = BASE_API_URL + "/posts/show.json";

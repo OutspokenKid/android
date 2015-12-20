@@ -108,6 +108,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private ArrayList<Car> reviews = new ArrayList<Car>();
 	private ArrayList<Car> bids2 = new ArrayList<Car>();
 	private ArrayList<Car> dealers = new ArrayList<Car>();
+	private ArrayList<Car> directs = new ArrayList<Car>();
 	private ImagePagerAdapter imagePagerAdapter;
 	private Post video;
 	
@@ -884,6 +885,19 @@ public class MainPage extends BCPAuctionableFragment {
 					
 					setUsedCarViews();
 					
+//					try {
+//						directs.clear();
+//						JSONArray arJSON = objJSON.getJSONArray("directs");
+//						size = arJSON.length();
+//						for(int i=0; i<size; i++) {
+//							directs.add(new Car(arJSON.getJSONObject(i)));
+//						}
+//					} catch (Exception e) {
+//						LogUtils.trace(e);
+//					}
+//					
+//					setDirectCarViews();
+					
 					try {
 						video = new Post(objJSON.getJSONObject("video"));
 					} catch (Exception e) {
@@ -1037,6 +1051,33 @@ public class MainPage extends BCPAuctionableFragment {
 						
 						if(INDEX < dealers.size()) {
 							((MainActivity)mActivity).showCarDetailPage(dealers.get(INDEX).getId(), null, Car.TYPE_DEALER);
+						}
+					}
+				});
+			} catch (Exception e) {
+				LogUtils.trace(e);
+			} catch (Error e) {
+				LogUtils.trace(e);
+			}
+		}
+	}
+	
+	public void setDirectCarViews() {
+		
+		int size = directs.size();
+		for(int i=0; i<size; i++) {
+
+			final int INDEX = i;
+			
+			try {
+				directCarViews[i].setCar(directs.get(i));
+				directCarViews[i].setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View view) {
+						
+						if(INDEX < directs.size()) {
+							((MainActivity)mActivity).showCarDetailPage(directs.get(INDEX).getId(), null, Car.TYPE_DIRECT);
 						}
 					}
 				});
