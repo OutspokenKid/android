@@ -145,6 +145,19 @@ public class CarListPage extends BCPAuctionableFragment {
 			buttonBg.setVisibility(View.VISIBLE);
 			break;
 		}
+
+		//상단 버튼 설정.
+		switch(type) {
+		
+		case Car.TYPE_BID:
+		case Car.TYPE_DEALER:
+			btnSearch.setBackgroundResource(R.drawable.search_btn);
+			break;
+			
+		case Car.TYPE_DIRECT:
+			btnSearch.setBackgroundResource(R.drawable.search_btn2);
+			break;
+		}
 		
 		if(mActivity != null) {
 			
@@ -230,51 +243,90 @@ public class CarListPage extends BCPAuctionableFragment {
 				if(StringUtils.isEmpty(MainActivity.user.getPhone_number())) {
 					ToastUtils.showToast("휴대폰 번호 인증이 필요합니다.");
 					mActivity.showPage(BCPConstants.PAGE_CERTIFY_PHONE_NUMBER, null);
-				} else if(type == Car.TYPE_BID) {
-					DownloadUtils.downloadJSONString(BCPAPIs.CAR_BID_CHECK_SAVE_URL,
-							new OnJSONDownloadListener() {
-
-								@Override
-								public void onError(String url) {
-
-									LogUtils.log("CarListPage.onError."
-											+ "\nurl : " + url);
-
-								}
-
-								@Override
-								public void onCompleted(String url,
-										JSONObject objJSON) {
-
-									try {
-										LogUtils.log("CarListPage.onCompleted."
-												+ "\nurl : "
-												+ url
-												+ "\nresult : "
-												+ objJSON);
-
-										//차량 등록 페이지 중복 호출 방지.
-										if(mActivity.getTopFragment() instanceof CarListPage) {
-											
-											if(objJSON.getInt("result") == 1) {
-												Bundle bundle = new Bundle();
-												bundle.putInt("carType", Car.TYPE_BID);
-												mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
-											} else {
-												ToastUtils.showToast(objJSON.getString("message"));
-											}
-										}
-									} catch (Exception e) {
-										LogUtils.trace(e);
-									} catch (OutOfMemoryError oom) {
-										LogUtils.trace(oom);
-									}
-								}
-							});
 				} else {
-					Bundle bundle = new Bundle();
-					bundle.putInt("carType", Car.TYPE_DIRECT);
-					mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+					if(type == Car.TYPE_BID) {
+						DownloadUtils.downloadJSONString(BCPAPIs.CAR_BID_CHECK_SAVE_URL,
+								new OnJSONDownloadListener() {
+
+									@Override
+									public void onError(String url) {
+
+										LogUtils.log("CarListPage.onError."
+												+ "\nurl : " + url);
+
+									}
+
+									@Override
+									public void onCompleted(String url,
+											JSONObject objJSON) {
+
+										try {
+											LogUtils.log("CarListPage.onCompleted."
+													+ "\nurl : "
+													+ url
+													+ "\nresult : "
+													+ objJSON);
+
+											//차량 등록 페이지 중복 호출 방지.
+											if(mActivity.getTopFragment() instanceof CarListPage) {
+												
+												if(objJSON.getInt("result") == 1) {
+													Bundle bundle = new Bundle();
+													bundle.putInt("carType", Car.TYPE_BID);
+													mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+												} else {
+													ToastUtils.showToast(objJSON.getString("message"));
+												}
+											}
+										} catch (Exception e) {
+											LogUtils.trace(e);
+										} catch (OutOfMemoryError oom) {
+											LogUtils.trace(oom);
+										}
+									}
+								});
+					} else {
+						DownloadUtils.downloadJSONString(BCPAPIs.CAR_DIRECT_CHECK_SAVE_URL,
+								new OnJSONDownloadListener() {
+
+									@Override
+									public void onError(String url) {
+
+										LogUtils.log("CarListPage.onError."
+												+ "\nurl : " + url);
+
+									}
+
+									@Override
+									public void onCompleted(String url,
+											JSONObject objJSON) {
+
+										try {
+											LogUtils.log("CarListPage.onCompleted."
+													+ "\nurl : "
+													+ url
+													+ "\nresult : "
+													+ objJSON);
+
+											//차량 등록 페이지 중복 호출 방지.
+											if(mActivity.getTopFragment() instanceof CarListPage) {
+												
+												if(objJSON.getInt("result") == 1) {
+													Bundle bundle = new Bundle();
+													bundle.putInt("carType", Car.TYPE_DIRECT);
+													mActivity.showPage(BCPConstants.PAGE_CAR_REGISTRATION, bundle);
+												} else {
+													ToastUtils.showToast(objJSON.getString("message"));
+												}
+											}
+										} catch (Exception e) {
+											LogUtils.trace(e);
+										} catch (OutOfMemoryError oom) {
+											LogUtils.trace(oom);
+										}
+									}
+								});
+					}
 				}
 			}
 		});

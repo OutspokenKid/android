@@ -229,5 +229,37 @@
             android:layout_gravity="center" />
         
     </FrameLayout>
+    
+    <View 
+        android:id="@+id/mainForDealerActivity_cover"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:visibility="invisible"
+	    android:background="#a000" />
+    
+    <RelativeLayout
+        android:id="@+id/mainForDealerActivity_noticePopup"
+	    android:layout_width="0dp"
+	    android:layout_height="0dp"
+	    android:layout_gravity="center"
+	    android:visibility="invisible"
+	    android:background="@drawable/notice_bg" >
+        
+        <ImageView
+            android:id="@+id/mainForDealerActivity_ivNotice"
+	    	android:layout_width="match_parent"
+	    	android:layout_height="match_parent"
+	    	android:scaleType="centerCrop"
+	    	android:background="@drawable/notice_default" />
+        
+        <Button 
+            android:id="@+id/mainForDealerActivity_btnCloseNoticePopup"
+	    	android:layout_width="0dp"
+	    	android:layout_height="0dp"
+	    	android:layout_alignParentRight="true"
+	    	android:layout_alignParentBottom="true"
+	    	android:background="@drawable/notice_close_btn" />
+        
+    </RelativeLayout>
 
 </com.outspoken_kid.views.GestureSlidingLayout>

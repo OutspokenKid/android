@@ -155,7 +155,7 @@
                 android:layout_height="0dp"
                 android:layout_alignRight="@id/mainForUserPage_reviewBg"
                 android:layout_alignTop="@id/mainForUserPage_reviewBg"
-                android:background="@drawable/main_more_btn" />
+                android:background="@drawable/main_more_btn2" />
             
             <com.byecar.views.ReviewViewSmall
                 android:id="@+id/mainForUserPage_reviewView1" 
@@ -251,13 +251,22 @@
     			android:layout_below="@id/mainForUserPage_usedMarketBg"
     			android:background="@drawable/main_direct_car_frame1" />
             
+			<TextView 
+                android:id="@+id/mainForUserPage_tvDirectCount"
+               	android:layout_width="wrap_content"
+   				android:layout_height="0dp"
+   				android:layout_alignLeft="@id/mainForUserPage_directMarketBg"
+   				android:layout_alignTop="@id/mainForUserPage_directMarketBg"
+   				android:textColor="@color/new_color_text_brown2"
+   				android:gravity="center_vertical" />
+			
             <Button
                 android:id="@+id/mainForUserPage_btnDirectMarket"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_alignRight="@id/mainForUserPage_directMarketBg"
                 android:layout_alignTop="@id/mainForUserPage_directMarketBg"
-                android:background="@drawable/main_more_btn2" />
+                android:background="@drawable/main_more_btn" />
             
             <com.byecar.views.OtherCarView 
                 android:id="@+id/mainForUserPage_directCarView1"

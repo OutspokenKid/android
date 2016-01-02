@@ -33,12 +33,14 @@ import com.byecar.classes.BCPConstants;
 import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
+import com.byecar.models.Post;
 import com.byecar.views.TitleBar;
 import com.outspoken_kid.utils.DownloadUtils;
 import com.outspoken_kid.utils.DownloadUtils.OnJSONDownloadListener;
 import com.outspoken_kid.utils.LogUtils;
 import com.outspoken_kid.utils.ResizeUtils;
 import com.outspoken_kid.utils.SharedPrefsUtils;
+import com.outspoken_kid.utils.StringUtils;
 
 public class MainPage extends BCPAuctionableFragment {
 
@@ -53,6 +55,7 @@ public class MainPage extends BCPAuctionableFragment {
 	private View noListView;
 	
 	private int menuIndex = -1;
+	private boolean needNoticePopup = true;
 	
 	@Override
 	public void bindViews() {
@@ -633,6 +636,34 @@ public class MainPage extends BCPAuctionableFragment {
 					LogUtils.trace(e);
 				} catch (OutOfMemoryError oom) {
 					LogUtils.trace(oom);
+				}
+				
+				try {
+					if(needNoticePopup) {
+						needNoticePopup = false;
+						
+						final Post notice = new Post(objJSON.getJSONObject("notice"));
+						
+						long lastTime = SharedPrefsUtils.getLongFromPrefs(BCPConstants.PREFS_NOTICE, "time");
+						long timeDiff = System.currentTimeMillis() - lastTime; 
+						
+						if(!StringUtils.isEmpty(notice.getRep_img_url())
+								&& timeDiff > 604800000) {
+							
+							new Handler().postDelayed(new Runnable() {
+
+								@Override
+								public void run() {
+
+									((MainActivity)mActivity).showNoticePopup(notice);
+								}
+							}, 1000);
+						}
+					}
+				} catch (Exception e) {
+					LogUtils.trace(e);
+				} catch (Error e) {
+					LogUtils.trace(e);
 				}
 			}
 		});

@@ -153,8 +153,7 @@ public class IntentUtils {
 	public static boolean sendEmail(Context context, String mailTo) {
 	
 		try {
-			Uri uri = Uri.parse("mailto:" + mailTo);
-			Intent intent = new Intent(Intent.ACTION_SENDTO, uri);
+			Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", mailTo, null));
 			context.startActivity(intent);
 			return true;
 		} catch (Exception e) {
@@ -169,8 +168,8 @@ public class IntentUtils {
 	public static boolean sendEmail(Context context, String mailTo, String body) {
 		
 		try {
-			Intent it = new Intent(Intent.ACTION_SEND);   
-			it.putExtra(Intent.EXTRA_EMAIL, mailTo);   
+			Intent it = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+		            "mailto", mailTo, null));   
 			it.putExtra(Intent.EXTRA_TEXT, body);   
 			it.setType("text/plain");   
 			context.startActivity(Intent.createChooser(it, "Choose Email Client"));

@@ -88,6 +88,7 @@ public class MainPage extends BCPAuctionableFragment {
 //	private Button btnDirectMarket;
 	
 	private View directMarketBg;
+	private TextView tvDirectCount;
 	private Button btnDirectMarket;
 	private OtherCarView[] directCarViews = new OtherCarView[3];
 	
@@ -164,6 +165,7 @@ public class MainPage extends BCPAuctionableFragment {
 //		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
 		
 		directMarketBg = mThisView.findViewById(R.id.mainForUserPage_directMarketBg);
+		tvDirectCount = (TextView) mThisView.findViewById(R.id.mainForUserPage_tvDirectCount);
 		btnDirectMarket = (Button) mThisView.findViewById(R.id.mainForUserPage_btnDirectMarket);
 		directCarViews[0] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView1);
 		directCarViews[1] = (OtherCarView) mThisView.findViewById(R.id.mainForUserPage_directCarView2);
@@ -528,7 +530,7 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		rp.rightMargin = ResizeUtils.getSpecificLength(6);
+		rp.rightMargin = ResizeUtils.getSpecificLength(16);
 		
 		//reviewViews.		
 		size = reviewViewSmalls.length;
@@ -587,12 +589,17 @@ public class MainPage extends BCPAuctionableFragment {
 		rp.height = ResizeUtils.getSpecificLength(659);
 		rp.topMargin = ResizeUtils.getSpecificLength(18);
 		
+		//tvDirectCount.
+		rp = (RelativeLayout.LayoutParams) tvDirectCount.getLayoutParams();
+		rp.height = ResizeUtils.getSpecificLength(68);
+		rp.leftMargin = ResizeUtils.getSpecificLength(200);
+		
 		//btnDirectMarket.
 		rp = (RelativeLayout.LayoutParams) btnDirectMarket.getLayoutParams();
 		rp.width = ResizeUtils.getSpecificLength(120);
 		rp.height = ResizeUtils.getSpecificLength(60);
 		rp.topMargin = ResizeUtils.getSpecificLength(6);
-		rp.rightMargin = ResizeUtils.getSpecificLength(16);
+		rp.rightMargin = ResizeUtils.getSpecificLength(6);
 		
 		//directCarViews.
 		size = directCarViews.length;
@@ -672,6 +679,8 @@ public class MainPage extends BCPAuctionableFragment {
 		FontUtils.setFontStyle(tvBiddingCount, FontUtils.BOLD);
 		FontUtils.setFontSize(tvReviewCount, 30);
 		FontUtils.setFontStyle(tvReviewCount, FontUtils.BOLD);
+		FontUtils.setFontSize(tvDirectCount, 30);
+		FontUtils.setFontStyle(tvDirectCount, FontUtils.BOLD);
 		FontUtils.setFontSize(tvVideoTitle, 22);
 	}
 
@@ -853,8 +862,8 @@ public class MainPage extends BCPAuctionableFragment {
 					}
 					
 					try {
-						if(objJSON.has("bids_onsalecars_today_cnt")) {
-							tvReviewCount.setText(objJSON.getInt("bids_onsalecars_today_cnt") + "대");
+						if(objJSON.has("reviewed_onsalecars_cnt")) {
+							tvReviewCount.setText(objJSON.getInt("reviewed_onsalecars_cnt") + "대");
 						}
 						
 						reviews.clear();
@@ -885,18 +894,22 @@ public class MainPage extends BCPAuctionableFragment {
 					
 					setUsedCarViews();
 					
-//					try {
-//						directs.clear();
-//						JSONArray arJSON = objJSON.getJSONArray("directs");
-//						size = arJSON.length();
-//						for(int i=0; i<size; i++) {
-//							directs.add(new Car(arJSON.getJSONObject(i)));
-//						}
-//					} catch (Exception e) {
-//						LogUtils.trace(e);
-//					}
-//					
-//					setDirectCarViews();
+					try {
+						if(objJSON.has("normal_onsalecars_status10_cnt")) {
+							tvDirectCount.setText(objJSON.getInt("normal_onsalecars_status10_cnt") + "대");
+						}
+						
+						directs.clear();
+						JSONArray arJSON = objJSON.getJSONArray("normal");
+						size = arJSON.length();
+						for(int i=0; i<size; i++) {
+							directs.add(new Car(arJSON.getJSONObject(i)));
+						}
+					} catch (Exception e) {
+						LogUtils.trace(e);
+					}
+					
+					setDirectCarViews();
 					
 					try {
 						video = new Post(objJSON.getJSONObject("video"));

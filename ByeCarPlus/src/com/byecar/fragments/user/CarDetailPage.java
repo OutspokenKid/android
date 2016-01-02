@@ -372,7 +372,11 @@ public class CarDetailPage extends BCPFragment {
 							@Override
 							public void onClick(DialogInterface dialog, int which) {
 								
-								report();
+								if(car.getType() == Car.TYPE_DIRECT) {
+									reportWithEmail();
+								} else {
+									report();
+								}
 							}
 						}, null);
 			}
@@ -2074,48 +2078,47 @@ public class CarDetailPage extends BCPFragment {
 
 	public void report() {
 
-		String url = null;
-		
-		if(car.getType() == Car.TYPE_DEALER) {
-			url = BCPAPIs.CAR_DEALER_REPORT_URL;
-		} else {
-			url = BCPAPIs.CAR_DIRECT_NORMAL_REPORT_URL;
-		}
-		
-		if(url != null) {
-			url += "?onsalecar_id=" + car.getId();
-			DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
+		String url = BCPAPIs.CAR_DEALER_REPORT_URL + "?onsalecar_id=" + car.getId();
+		DownloadUtils.downloadJSONString(url, new OnJSONDownloadListener() {
 
-				@Override
-				public void onError(String url) {
+			@Override
+			public void onError(String url) {
 
-					LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+				LogUtils.log("CarDetailPage.onError." + "\nurl : " + url);
+				ToastUtils.showToast(R.string.failToReportCar);
+			}
+
+			@Override
+			public void onCompleted(String url, JSONObject objJSON) {
+
+				try {
+					LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
+							+ "\nresult : " + objJSON);
+					
+					if(objJSON.getInt("result") == 1) {
+						ToastUtils.showToast(R.string.complete_report);
+					} else {
+						ToastUtils.showToast(objJSON.getString("message"));
+					}
+					
+				} catch (Exception e) {
+					LogUtils.trace(e);
+					ToastUtils.showToast(R.string.failToReportCar);
+				} catch (OutOfMemoryError oom) {
+					LogUtils.trace(oom);
 					ToastUtils.showToast(R.string.failToReportCar);
 				}
-
-				@Override
-				public void onCompleted(String url, JSONObject objJSON) {
-
-					try {
-						LogUtils.log("CarDetailPage.onCompleted." + "\nurl : " + url
-								+ "\nresult : " + objJSON);
-						
-						if(objJSON.getInt("result") == 1) {
-							ToastUtils.showToast(R.string.complete_report);
-						} else {
-							ToastUtils.showToast(objJSON.getString("message"));
-						}
-						
-					} catch (Exception e) {
-						LogUtils.trace(e);
-						ToastUtils.showToast(R.string.failToReportCar);
-					} catch (OutOfMemoryError oom) {
-						LogUtils.trace(oom);
-						ToastUtils.showToast(R.string.failToReportCar);
-					}
-				}
-			});
-		}
+			}
+		});
+	}
+	
+	public void reportWithEmail() {
+		
+		String content = "차량명 : " + car.getCar_full_name()
+				+ "\n판매자 : " + car.getSeller_nickname()
+				+ "\n매물ID : " + car.getId()
+				+ "\n신고 내용 : ";
+		IntentUtils.sendEmail(mContext, "webmaster@bye-car.com", "허위 매물 신고", content, "사용할 이메일을 선택해주세요.");
 	}
 	
 	public void callToDealer() {

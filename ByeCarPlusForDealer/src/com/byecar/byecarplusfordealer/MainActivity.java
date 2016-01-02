@@ -67,6 +67,7 @@ import com.byecar.models.Area;
 import com.byecar.models.Car;
 import com.byecar.models.CompanyInfo;
 import com.byecar.models.Dealer;
+import com.byecar.models.Post;
 import com.byecar.models.PushObject;
 import com.byecar.models.User;
 import com.google.android.gcm.GCMRegistrar;
@@ -128,6 +129,11 @@ public class MainActivity extends BCPFragmentActivity {
 	private Button btnHome;
 	private Button btnClose;
 	private Button btnClose2;
+
+	private View cover;
+	private RelativeLayout noticePopup;
+	private ImageView ivNotice;
+	private Button btnCloseNoticePopup;
 	
 	private boolean animating;
 	private long last_connected_at;
@@ -173,6 +179,11 @@ public class MainActivity extends BCPFragmentActivity {
 		btnClose2 = (Button) findViewById(R.id.mainForDealerActivity_btnClose2);
 		
 		loadingView = findViewById(R.id.mainForDealerActivity_loadingView);
+		
+		cover = findViewById(R.id.mainForDealerActivity_cover);
+		noticePopup = (RelativeLayout) findViewById(R.id.mainForDealerActivity_noticePopup);
+		ivNotice = (ImageView) findViewById(R.id.mainForDealerActivity_ivNotice);
+		btnCloseNoticePopup = (Button) findViewById(R.id.mainForDealerActivity_btnCloseNoticePopup);
 	}
 
 	@Override
@@ -373,6 +384,24 @@ public class MainActivity extends BCPFragmentActivity {
 				//Do nothing.
 			}
 		});
+	
+		btnCloseNoticePopup.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hideNoticePopup();
+			}
+		});
+
+		cover.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				//Do nothing.
+			}
+		});
 	}
 
 	@Override
@@ -394,6 +423,9 @@ public class MainActivity extends BCPFragmentActivity {
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
 		ResizeUtils.viewResizeForRelative(488, 82, btnClose, null, null, new int[]{0, 0, 0, 40});
 		ResizeUtils.viewResizeForRelative(488, 82, btnClose2, null, null, new int[]{0, 0, 0, 32});
+		
+		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
+		ResizeUtils.viewResizeForRelative(131, 52, btnCloseNoticePopup, null, null, new int[]{0, 11, 11, 14});
 		
 		FontUtils.setFontSize(tvPopupText, 30);
 		FontUtils.setFontStyle(tvPopupText, FontUtils.BOLD);
@@ -618,7 +650,9 @@ public class MainActivity extends BCPFragmentActivity {
 			case KeyEvent.KEYCODE_BACK :
 				
 				try {
-					if(GestureSlidingLayout.isOpenToLeft()) {
+					if(noticePopup.getVisibility() == View.VISIBLE) {
+						hideNoticePopup();
+					} else if(GestureSlidingLayout.isOpenToLeft()) {
 						gestureSlidingLayout.close(true, null);
 					} else if(popup.getVisibility() == View.VISIBLE) {
 						//Do nothing.
@@ -1448,5 +1482,73 @@ public class MainActivity extends BCPFragmentActivity {
 
 		ToastUtils.showToast(R.string.duplicatedSignIn);
 		signOut();
+	}
+
+	public void showNoticePopup(final Post notice) {
+		
+		AlphaAnimation aaIn = new AlphaAnimation(0, 1);
+		aaIn.setDuration(300);
+		noticePopup.setVisibility(View.VISIBLE);
+		noticePopup.startAnimation(aaIn);
+		cover.setVisibility(View.VISIBLE);
+		cover.startAnimation(aaIn);
+
+		ivNotice.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+
+				hideNoticePopup();
+				
+				int pageCode = 0;
+				Bundle bundle = new Bundle();
+				
+				if(!StringUtils.isEmpty(notice.getUrl())) {
+					pageCode = BCPConstants.PAGE_WEB_BROWSER;
+					bundle.putString("url", notice.getUrl());
+					
+				} else {
+					pageCode = BCPConstants.PAGE_OPENABLE_POST_LIST;
+					bundle.putInt("type", OpenablePostListPage.TYPE_NOTICE);
+					bundle.putInt("id", notice.getId());
+				}
+				
+				showPage(pageCode, bundle);
+			}
+		});
+		
+		new Handler().postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				
+				BCPDownloadUtils.downloadBitmap(notice.getRep_img_url(), new OnBitmapDownloadListener() {
+					
+					@Override
+					public void onError(String url) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void onCompleted(String url, Bitmap bitmap) {
+
+						if(ivNotice != null && !bitmap.isRecycled()) {
+							ivNotice.setImageBitmap(bitmap);
+						}
+					}
+				}, 578);
+			}
+		}, 500);
+	}
+	
+	public void hideNoticePopup() {
+		
+		AlphaAnimation aaOut = new AlphaAnimation(1, 0);
+		aaOut.setDuration(300);
+		noticePopup.setVisibility(View.INVISIBLE);
+		noticePopup.startAnimation(aaOut);
+		cover.setVisibility(View.INVISIBLE);
+		cover.startAnimation(aaOut);
 	}
 }

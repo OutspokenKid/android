@@ -119,10 +119,8 @@ public class MainActivity extends BCPFragmentActivity {
 	private View loadingView;
 	
 	private View cover;
-	
 	private RelativeLayout noticePopup;
 	private ImageView ivNotice;
-	private View buttonBg;
 	private Button btnClose;
 
 	public static String dealerPhoneNumber;
@@ -161,10 +159,8 @@ public class MainActivity extends BCPFragmentActivity {
 		loadingView = findViewById(R.id.mainForUserActivity_loadingView);
 		
 		cover = findViewById(R.id.mainForUserActivity_cover);
-		
 		noticePopup = (RelativeLayout) findViewById(R.id.mainForUserActivity_noticePopup);
 		ivNotice = (ImageView) findViewById(R.id.mainForUserActivity_ivNotice);
-		buttonBg = findViewById(R.id.mainForUserActivity_buttonBg);
 		btnClose = (Button) findViewById(R.id.mainForUserActivity_btnClose);
 	}
 
@@ -290,8 +286,7 @@ public class MainActivity extends BCPFragmentActivity {
 		ResizeUtils.viewResizeForRelative(488, 82, btnHome, null, null, new int[]{0, 0, 0, 40});
 
 		ResizeUtils.viewResize(587, 787, noticePopup, 2, Gravity.CENTER, null);
-		ResizeUtils.viewResizeForRelative(558, 73, buttonBg, null, null, new int[]{0, 0, 0, 14});
-		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 0});
+		ResizeUtils.viewResizeForRelative(131, 52, btnClose, null, null, new int[]{0, 11, 11, 14});
 	}
 
 	@Override

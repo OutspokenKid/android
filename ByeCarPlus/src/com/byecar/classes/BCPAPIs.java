@@ -51,11 +51,11 @@ public class BCPAPIs {
 	public static String CAR_DIRECT_NORMAL_LIST_URL = BASE_API_URL + "/onsalecars/normal/list.json";
 	public static String CAR_DIRECT_NORMAL_SHOW_URL = BASE_API_URL + "/onsalecars/normal/show.json";
 	public static String CAR_DIRECT_NORMAL_SAVE_URL = BASE_API_URL + "/onsalecars/normal/save.json";
+	public static String CAR_DIRECT_CHECK_SAVE_URL = BASE_API_URL + "/onsalecars/normal/check_save.json";
 	public static String CAR_DIRECT_NORMAL_LIKE_URL = BASE_API_URL + "/onsalecars/normal/like.json";
 	public static String CAR_DIRECT_NORMAL_UNLIKE_URL = BASE_API_URL + "/onsalecars/normal/unlike.json";
 	public static String CAR_DIRECT_NORMAL_PURCHASES_URL = BASE_API_URL + "/onsalecars/normal/purchase.json";
 	public static String CAR_DIRECT_NORMAL_DELETE_URL = BASE_API_URL + "/onsalecars/normal/delete.json";
-	public static String CAR_DIRECT_NORMAL_REPORT_URL = BASE_API_URL + "/onsalecars/normal/report.json";
 	public static String CAR_DIRECT_NORMAL_COMPLETE_URL = BASE_API_URL + "/onsalecars/normal/set_status.json";
 	
 	public static String CAR_HISTORY_URL = BASE_API_URL + "/carhistories/show.json";
@@ -88,7 +88,7 @@ public class BCPAPIs {
 	public static String NOTIFICATION_URL = BASE_API_URL + "/notifications/mine.json";
 	public static String NOTIFICATION_READ_URL = BASE_API_URL + "/notifications/read.json?";
 	public static String NOTIFICATION_DELETE_URL = BASE_API_URL + "/notifications/delete.json";
-	public static String NOTIFICATION_READ_All_URL = BASE_API_URL + "/notifications/readAll.json?";
+	public static String NOTIFICATION_READ_All_URL = BASE_API_URL + "/notifications/read_all.json?";
 	
 	public static String FORUM_LIST_URL = BASE_API_URL + "/posts/forum.json";
 	public static String FORUM_DETAIL_URL = BASE_API_URL + "/posts/show.json";
