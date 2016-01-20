@@ -137,7 +137,7 @@ public class CarInfoView extends RelativeLayout {
 				new int[]{RelativeLayout.ALIGN_PARENT_RIGHT, BELOW}, 
 				new int[]{0, R.id.bidInfoView_lineForCarInfo},
 				new int[]{0, 0, 20, 0});
-		tvBidCount.setSingleLine();
+		tvBidCount.setMaxLines(2);
 		tvBidCount.setEllipsize(TruncateAt.END);
 		tvBidCount.setTextColor(getResources().getColor(R.color.holo_text));
 		tvBidCount.setGravity(Gravity.CENTER_VERTICAL|Gravity.RIGHT);
@@ -293,8 +293,10 @@ public class CarInfoView extends RelativeLayout {
 				btnLike.setVisibility(View.INVISIBLE);
 				tvLike.setVisibility(View.INVISIBLE);
 				
+//				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
+//						+ "명/입찰횟수 " + car.getBids_cnt() + "회");
 				tvBidCount.setText("참여딜러 " + car.getBidders_cnt()
-						+ "명/입찰횟수 " + car.getBids_cnt() + "회");
+						+ "명\n입찰횟수 " + car.getBids_cnt() + "회");
 				
 				if(car.getStatus() == Car.STATUS_TRADE_COMPLETE
 						|| car.getStatus() == Car.STATUS_PAYMENT_COMPLETED
